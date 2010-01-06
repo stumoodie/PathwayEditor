@@ -1,0 +1,657 @@
+<html><head><META http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>Castor XML FAQ</title><link rel="stylesheet" href="default.css"></head><body bgcolor="#ffffff" link="#6763a9" vlink="#6763a9" topmargin="0" bottommargin="0" leftmargin="0" marginheight="0" marginwidth="0"><a name="top"></a><table border="0" cellpadding="0" cellspacing="0" height="400"><tr><td width="10" valign="top" align="left" bgcolor="#7270c2"><img src="images/dotTrans.gif" width="1" height="1" border="0"></td><td valign="top" align="left" bgcolor="#7270c2" width="150"><img src="images/dotTrans.gif" width="1" height="1" border="0"></td><td width="7" valign="top" align="left"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td><td width="70" valign="top" align="left"><img src="images/dotTrans.gif" width="70" height="6" border="0"></td><td width="468" valign="top" align="left"><img src="images/top_2.gif" width="468" height="6" border="0"></td><td width="120" valign="top" align="left"><img src="images/line_purple.gif" width="120" height="6" border="0"></td></tr><tr><td width="10" bgcolor="#7270c2" valign="top" align="left"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td><td bgcolor="#7270c2" valign="top" align="left" width="150"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td><td width="7" bgcolor="#ffffff" valign="top" align="left"></td><td width="70" valign="top" align="left"><img src="images/dotTrans.gif" width="1" height="1" border="0"></td><td width="468" valign="middle" align="left"><a href="license.html"><span class="menuTopOff">License</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.codehaus.org"><span class="menuTopOff">Codehaus</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://openejb.org"><span class="menuTopOff">OpenEJB</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://openjms.sf.net"><span class="menuTopOff">OpenJMS</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://openorb.sf.net"><span class="menuTopOn">OpenORB</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://tyrex.sf.net"><span class="menuTopOff">Tyrex</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br><img src="images/dotTrans.gif" width="1" height="2" border="0"></td><td width="120" height="20" valign="top" align="left">&nbsp;</td></tr><tr><td width="10" bgcolor="#7270c2" valign="top" align="left"><img src="images/dotTrans.gif" width="10" height="3" border="0"></td><td bgcolor="#7270c2" valign="top" align="right" width="150"><img src="images/line_sm.gif" width="105" height="3" border="0"></td><td width="7" bgcolor="#a9a5de" valign="top" align="left"><img src="images/line_sm.gif" width="7" height="3" border="0"></td><td width="70" valign="top" align="left"><img src="images/line_light.gif" width="70" height="3" border="0"></td><td width="468" valign="top" align="left"><img src="images/line_light.gif" width="468" height="3" border="0"></td><td width="120" valign="top" align="left"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td></tr><tr><td bgcolor="#7270c2" valign="top" align="left"><img src="images/dotTrans.gif" width="10" height="10" border="0"></td><td bgcolor="#7270c2" valign="top" align="left" width="150"><img src="images/dotTrans.gif" width="1" height="2" border="0"><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Old releases</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="releases-old.html"><span class="subMenuOff">General</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="1.2/index.html"><span class="subMenuOff">Release 1.2</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="1.3cr1/index.html"><span class="subMenuOff">Release 1.3rc1</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Main</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="index.html"><span class="subMenuOff">Home</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="about.html"><span class="subMenuOff">About</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="features.html"><span class="subMenuOff">Features</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="download.html"><span class="subMenuOff">Download</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="dependencies.html"><span class="subMenuOff">Dependencies</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="reference-guide.html"><span class="subMenuOffHighlighted">Reference guide</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="javadoc/overview-summary.html"><span class="subMenuOff">JavaDoc</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="maven-integration.html"><span class="subMenuOff">Maven 2 support</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="maven-archetypes.html"><span class="subMenuOff">Maven 2 archetypes</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="schema.html"><span class="subMenuOff">DTD &amp; Schemas</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="changes.html"><span class="subMenuOff">Recent HTML changes</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="news.html"><span class="subMenuOff">News Archive</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="http://castor.codehaus.org/rss/castor-announce.xml"><span class="subMenuOff">RSS news feed</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Development/Support</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="lists.html"><span class="subMenuOff">Mailing Lists</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="scm.html"><span class="subMenuOff">SVN/JIRA</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="contributing.html"><span class="subMenuOff">Contributing</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="support.html"><span class="subMenuOff">Support</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="http://bamboo.ci.codehaus.org/browse/CASTOR"><span class="subMenuOff">Continuous builds</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="professional-services.html"><span class="subMenuOffHighlighted">Prof. services</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Related projects</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="spring-orm-integration.html"><span class="subMenuOff">Spring ORM support</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="spring-xml-intro.html"><span class="subMenuOff">Spring XML factories</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ws-integration.html"><span class="subMenuOff">WS frameworks</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">XML</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="xml-link.html"><span class="subMenuOff">XML</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">XML Code Generator</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="srcgen-link.html"><span class="subMenuOff">XML Code Generator</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">JDO</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-introduction.html"><span class="subMenuOff">Introduction</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-starter-tutorial.html"><span class="subMenuOff">First steps</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo.html"><span class="subMenuOff">Using JDO</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-database-conf.html"><span class="subMenuOff">JDO Config</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="types.html"><span class="subMenuOff">Types</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-mapping.html"><span class="subMenuOff">JDO Mapping</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-faq.html"><span class="subMenuOff">JDO FAQ</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-examples.html"><span class="subMenuOff">JDO Examples</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-howto.html"><span class="subMenuOffHighlighted">JDO HOW-TOs</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-tips-tricks.html"><span class="subMenuOffHighlighted">Tips &amp; Tricks</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-other-features.html"><span class="subMenuOff">Other Features</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-self-executable-examples.html"><span class="subMenuOff">JDO sample JAR</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Tools</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="schemaGen-anttask.html"><span class="subMenuOff">Schema generator</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Advanced JDO</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-caching-detail.html"><span class="subMenuOff">Caching</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="oql.html"><span class="subMenuOff">OQL</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="locking.html"><span class="subMenuOff">Trans. &amp; Locks</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="design-persist.html"><span class="subMenuOff">Design</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="key-generator.html"><span class="subMenuOff">KeyGen</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="long-transact.html"><span class="subMenuOff">Long Trans.</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="nested-attr.html"><span class="subMenuOff">Nested Attrs.</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-pooling.html"><span class="subMenuOff">Pooling Examples</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="postgresql-blobs.html"><span class="subMenuOff">LOBs</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-best-practice.html"><span class="subMenuOff">Best practice</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">DDL Generator</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen.html"><span class="subMenuOff">Using DDL Generator</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen-properties.html"><span class="subMenuOff">Properties</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen-anttask.html"><span class="subMenuOff">Ant task</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen-mapping.html"><span class="subMenuOff">Type Mapping</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">More</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="presentations.html"><span class="subMenuOff">Presentations</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="examples.html"><span class="subMenuOff">The Examples</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="extras.html"><span class="subMenuOff">3rd Party Tools</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="test-framework.html"><span class="subMenuOff">JDO Tests</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ctf.html"><span class="subMenuOff">XML Tests</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="conf-lib.html"><span class="subMenuOff">Configuration</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href=""><span class="subMenuOff"></span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="http://www.java.net/"><span class="subMenuOff"><img src="images/javanet_button_90.gif" border="0"></span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">About</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="license.html"><span class="subMenuOff">License</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="user-experience.html"><span class="subMenuOffHighlighted">User stories</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="contributors.html"><span class="subMenuOff">Contributors</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="marketplace.html"><span class="subMenuOff">Marketplace</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="status.html"><span class="subMenuOff">Status, Todo</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="release-notes.html"><span class="subMenuOff">Changelog</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="library.html"><span class="subMenuOff">Library</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="contacts.html"><span class="subMenuOff">Contact</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="origins.html"><span class="subMenuOff">Project Name</span></a></td></tr></table><br></td><td width="7" bgcolor="#a9a5de" valign="top" align="left">&nbsp;</td><td width="70" valign="top" align="left">&nbsp;</td><td rowspan="4" width="468" valign="top"><table cols="2" rows="2" border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td valign="top" align="left"><br><img border="0" height="34" hspace="0" src="images/castor.gif" vspace="0" width="115"><br><img border="0" height="10" hspace="0" src="images/dotTrans.gif"></td><td width="120" height="5" valign="top" align="right"></td></tr></table><p></p><p></p><br><h2 align="center">Castor XML FAQ</h2><HR size="1"><span class="bodyGrey"><b><a href="#General">General</a></b><br></span><span class="bodyGrey"></span><span class="bodyGrey">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#How-do-I-set-the-encoding?">How do I set the encoding?</a><br></span><span class="bodyGrey">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#I'm-getting-an-error-about-'xml'-prefix-already-declared?">I'm getting an error about 'xml' prefix already declared?</a><br></span><span class="bodyGrey">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#Why-is-my-'get'-method-called-twice?">Why is my 'get' method called twice?</a><br></span><span class="bodyGrey">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#How-can-I-speed-up-marshalling/unmarshalling-performance?">How can I speed up marshalling/unmarshalling performance?</a><br></span><span class="bodyGrey">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#How-do-I-ignore-elements-during-unmarshalling?">How do I ignore elements during unmarshalling?</a><br></span><span class="bodyGrey">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#Where-does-Castor-search-for-the-castor.properties-file?">Where does Castor search for the castor.properties file?</a><br></span><span class="bodyGrey">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#Can-I-programmatically-change-the-properties-found-in-the-castor.properties-file?">Can I programmatically change the properties found in the castor.properties file?</a><br></span><span class="bodyGrey"><b><a href="#Introspection">Introspection</a></b><br></span><span class="bodyGrey"></span><span class="bodyGrey">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#Can-private-methods-be-introspected?">Can private methods be introspected?</a><br></span><span class="bodyGrey"><b><a href="#Mapping">Mapping</a></b><br></span><span class="bodyGrey"></span><span class="bodyGrey">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#My-mapping-file-seems-to-have-no-effect!">My mapping file seems to have no effect!</a><br></span><span class="bodyGrey">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#Are-there-any-tools-to-automatically-create-a-mapping-file?">Are there any tools to automatically create a mapping file?</a><br></span><span class="bodyGrey">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#How-do-I-specify-a-namespace-in-the-mapping-file?">How do I specify a namespace in the mapping file?</a><br></span><span class="bodyGrey">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#How-do-I-prevent-a-field-from-being-marshaled?">How do I prevent a field from being marshaled?</a><br></span><span class="bodyGrey"><b><a href="#Marshalling">Marshalling</a></b><br></span><span class="bodyGrey"></span><span class="bodyGrey">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#The-XML-is-marshalled-on-one-line,-how-do-I-force-line-breaks?">The XML is marshalled on one line, how do I force line-breaks?</a><br></span><span class="bodyGrey"></span><span class="bodyGrey">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#What-is-the-order-of-the-marshalled-XML-elements?">What is the order of the marshalled XML elements?</a><br></span><span class="bodyGrey"><b><a href="#Source-Code-Generator">Source Code Generator</a></b><br></span><span class="bodyGrey"></span><span class="bodyGrey">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#Can-I-use-a-DTD-with-the-source-generator?">Can I use a DTD with the source generator?</a><br></span><span class="bodyGrey">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#My-XML-output-looks-incorrect,-what-could-be-wrong?">My XML output looks incorrect, what could be wrong?</a><br></span><span class="bodyGrey">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#The-generated-source-code-has-incorrect-or-missing-imports-for-imported-schema-types">The generated source code has incorrect or missing imports for imported schema types</a><br></span><span class="bodyGrey">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#How-can-I-make-the-generated-source-code-more-JDO-friendly?">How can I make the generated source code more JDO friendly?</a><br></span><span class="bodyGrey"><b><a href="#Miscellaneous">Miscellaneous</a></b><br></span><span class="bodyGrey"></span><span class="bodyGrey">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#Is-there-a-way-to-automatically-create-an-XML-Schema-from-an-XML-instance?">Is there a way to automatically create an XML Schema from an XML instance?</a><br></span><span class="bodyGrey">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#How-to-enable-XML-validation-with-Castor-XML">How to enable XML validation with Castor XML</a><br></span><span class="bodyGrey">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#Why-is-mapping-ignored-when-using-a-FieldHandlerFactory">Why is mapping ignored when using a FieldHandlerFactory</a><br></span><span class="bodyGrey"><b><a href="#Serialization">Serialization</a></b><br></span><span class="bodyGrey"><a href="#Is-it-true-that-the-use-of-Castor-XML-mandates-Xerces-as-XML-parser?">&nbsp;&nbsp;&nbsp;&nbsp;Is it true that the use of Castor XML mandates Xerces as XML parser?</a><br></span><span class="bodyGrey"><a href="#Do-I-still-have-to-download-Xerces-when-using-Castor-XML-with-Java-5.0?">&nbsp;&nbsp;&nbsp;&nbsp;Do I still have to download Xerces when using Castor XML with Java 5.0?</a><br></span><HR size="1"><br><a name="General"><h2>General</h2></a>
+      
+      
+        <a name="How-do-I-set-the-encoding?"><h4>How do I set the encoding?</h4></a>
+          <p><span class="bodyGrey">
+            Create a new instance of the <tt>Marshaller</tt> class and use the
+            <tt>setEncoding</tt> method. You'll also need to make sure the
+            encoding for the Writer is set properly as well:
+          </span></p>
+          <span class="bodyBlack"><pre>
+         ...
+         String encoding = "ISO-8859-1";
+         FileOutputStream fos = new FileOutputStream("result.xml");
+         OutputStreamWriter osw = new OuputStreamWriter(fos, encoding);
+         Marshaller marshaller = new Marshaller(osw);
+         marshaller.setEncoding(encoding);
+         ...
+          </pre></span>
+        
+
+        <a name="I'm-getting-an-error-about-'xml'-prefix-already-declared?"><h4>I'm getting an error about 'xml' prefix already declared?</h4></a>
+          <p><span class="bodyGrey">For Castor 0.9.5.2 only</span></p>
+          <p><span class="bodyGrey">
+            The issue occurs with newer versions of Xerces than the version 1.4
+            that ships with Castor. The older version works OK. For some reason,
+            when the newer version of Xerces encounters an "xml" prefixed
+            attribute, such as "xml:lang", it tries to automatically start a
+            prefix mapping for "xml". Which, in my opinion, is technically
+            incorrect. They shouldn't be doing that. According to the w3c, the
+            "xml" prefix should never be declared.
+          </span></p>
+          <p><span class="bodyGrey">
+            The reason it started appearing in the new Castor (0.9.5.2), is
+            because of a switch to SAX 2 by default during unmarshaling.
+          </span></p>
+          <p><span class="bodyGrey">
+            <b>Solution:</b>
+            <br>
+
+            A built in work-around has been checked into the Castor SVN and will
+            automatically exist in any post 0.9.5.2 releases. For those who are
+            using 0.9.5.2 and can't upgrade, I found a simple workaround
+            (tested with Xerces 2.5).  At first I thought about disabling
+            namespace processing in Xerces, but then realized that it's already
+            disabled by default by Castor ... so I have no idea why they call
+            #startPrefixMapping when namespace processing has been disabled.
+            But in any event... explicitly enabling namespace processing seems
+            to fix the problem:
+          </span></p>
+          <p><span class="bodyGrey">
+            in the <tt>castor.properties</tt> file, change the following line:
+          </span></p>
+          <span class="bodyGrey"><pre>
+      org.exolab.castor.parser.namespaces=false
+          </pre></span>
+          <p><span class="bodyGrey">to:</span></p>
+          <span class="bodyGrey"><pre>
+      org.exolab.castor.parser.namespaces=true
+          </pre></span>
+          <p><span class="bodyGrey">
+            Note: this work-around has only been tested with Xerces 2.5.
+          </span></p>
+        
+
+        <a name="Why-is-my-'get'-method-called-twice?"><h4>Why is my 'get' method called twice?</h4></a>
+          <p><span class="bodyGrey">
+            The get method will be called a second time during the validation
+            process. To prevent this from happening, simply disable validation
+            on the Marshaller or Unmarshaller.
+          </span></p>
+        
+
+        <a name="How-can-I-speed-up-marshalling/unmarshalling-performance?"><h4>How can I speed up marshalling/unmarshalling performance?</h4></a>
+          <ol>
+            <li>
+              Cache the descriptors!
+              <span class="bodyBlack"><pre>
+      import org.exolab.castor.xml.ClassDescriptorResolver;
+      import org.exolab.castor.xml.Unmarshaller;
+      import org.exolab.castor.xml.util.ClassDescriptorResolverImpl;
+
+      ...
+
+      ClassDescriptorResolver cdr = new ClassDescriptorResovlerImpl();
+
+      ...
+
+      Unmarshaller unm = new Unmarshaller(...);
+      unm.setResolver(cdr);
+              </pre></span>
+
+              <p><span class="bodyGrey">
+                By reusing the same ClassDescriptorResolver any time you create
+                an Unmarshaller instance, you will be reusing the existing class
+                descriptors previously loaded.
+              </span></p>
+            </li>
+
+            <li>
+              Disable validation
+              <p><span class="bodyGrey"><span class="bodyBlack"><pre>unm.setValidation(false);</pre></span></span></p>
+            </li>
+
+            <li>
+              Reuse objects
+              <p><span class="bodyGrey">
+                To cut down on object creation, you can reuse an existing object
+                model, but be careful because this is an experimental feature.
+                Create an Unmarshaller with your existing root object and set
+                object reuse to true...
+              </span></p>
+
+              <span class="bodyBlack"><pre>Unmarshaller unm = new Unmarshaller(myObjectRoot);</pre></span>
+              <span class="bodyBlack"><pre>unm.setReuseObjects(true);</pre></span>
+            </li>
+
+            <li>
+              If you have enabled pretty-printing (indenting), then disable it.
+              The Xerces Serializer is much slower with indenting enabled.
+            </li>
+
+            <li>Try changing parsers to something other than Xerces.</li>
+          </ol>
+
+          There are probably other approaches you can use as well, but those
+          seem to be the most popular ones.  Let us know if you have a solution
+          that you think we should add here.
+        
+
+        <a name="How-do-I-ignore-elements-during-unmarshalling?"><h4>How do I ignore elements during unmarshalling?</h4></a>
+          <ol>
+            <li>Use the Unmarshaller#setIgnoreExtraElements() method:
+              <span class="bodyBlack"><pre>
+      Unmarshaller unm = new Unmarshaller(...);
+      unm.setIgnoreExtraElements(true);
+              </pre></span>
+
+              <p><span class="bodyGrey">
+                If any elements appear in the XML instance that Castor cannot
+                find mappings for, they will be skipped.
+              </span></p>
+            </li>
+            <li>
+              You can also set the "<tt>org.exolab.castor.xml.strictelements</tt>"
+              property in the <tt>castor.properties</tt> file:
+              <p><span class="bodyGrey"><span class="bodyBlack"><pre>org.exolab.castor.xml.strictelements=false</pre></span></span></p>
+            </li>
+          </ol>
+        
+
+        <a name="Where-does-Castor-search-for-the-castor.properties-file?"><h4>Where does Castor search for the castor.properties file?</h4></a>
+          <p><span class="bodyGrey">
+            Castor loads the castor.properties in the following order:
+          </span></p>
+          <ol>
+            <li>From classpath (usually from the jar file)</li>
+            <li>From {java.home}/lib (if present)</li>
+            <li>From the local working directory</li>
+          </ol>
+          <p><span class="bodyGrey">
+            Each properties file overrides the previous. So you don't have to
+            come up with a properties file with all the properties and values,
+            just the ones you want to change. This also means you don't have to
+            touch the properties file found in the jar file.
+          </span></p>
+          <p><span class="bodyGrey">
+            Note: You can also use
+            <tt>LocalConfiguration.getInstance().getProperties()</tt> to change
+            the properties values programatically.
+          </span></p>
+        
+
+        <a name="Can-I-programmatically-change-the-properties-found-in-the-castor.properties-file?"><h4>Can I programmatically change the properties found in the castor.properties file?</h4></a>
+          <p><span class="bodyGrey">
+            Yes, many of these properties can be set directly on the Marshaller
+            or Unmarshaller, but you can also use
+            <tt>LocalConfiguration.getInstance().getProperties()</tt> to change
+            the properties values programatically.
+
+          </span></p>
+        
+      
+    <a name="Introspection"><h2>Introspection</h2></a>
+      
+      
+        <a name="Can-private-methods-be-introspected?"><h4>Can private methods be introspected?</h4></a>
+          <p><span class="bodyGrey">
+            Castor does not currently support introspection of private methods.
+            Please make sure proper public accesssor methods are available for
+            all fields that you wish to be handled by the Marshalling Framework.
+          </span></p>
+        
+      
+    <a name="Mapping"><h2>Mapping</h2></a>
+      
+      
+        <a name="My-mapping-file-seems-to-have-no-effect!"><h4>My mapping file seems to have no effect!</h4></a>
+          <p><span class="bodyGrey">
+            Make sure you are not using one of the <i>static</i> methods on the
+            Marshaller/Unmarshaller. Any configuration changes that you make to
+            the Marshaller or Unmarshaller are not available from the static
+            methods.
+          </span></p>
+        
+
+        <a name="Are-there-any-tools-to-automatically-create-a-mapping-file?"><h4>Are there any tools to automatically create a mapping file?</h4></a>
+          <p><span class="bodyGrey">
+            Yes! We provide one such tool, see
+            <tt>org.exolab.castor.tools.MappingTool</tt>.  There are some
+            <a href="extras.html">3rd party</a> tools as well.
+          </span></p>
+        
+
+        <a name="How-do-I-specify-a-namespace-in-the-mapping-file?"><h4>How do I specify a namespace in the mapping file?</h4></a>
+          <p><span class="bodyGrey">
+            For a specific field you can use a QName for the value of the
+            bind-xml name attribute as such:
+          </span></p>
+          <span class="bodyBlack"><pre>
+  &lt;bind-xml name="foo:bar" xmlns:foo="http://www.acme.com/foo"/&gt;
+          </pre></span>
+          <p><span class="bodyGrey">
+            Note: The namespace prefix is only used for qualification during
+            the loading of the mapping, it is not used during Marshaling. To
+            map namespace prefixes during marshaling you currently need to set
+            these via the Marshaler directly.
+          </span></p>
+          <p><span class="bodyGrey">
+            For a class mapping, use the &lt;map-to&gt; element. For more
+            information see the <a href="xml-mapping.html">XML Mapping
+            documentation</a>.
+          </span></p>
+        
+
+        <a name="How-do-I-prevent-a-field-from-being-marshaled?"><h4>How do I prevent a field from being marshaled?</h4></a>
+          <p><span class="bodyGrey">
+            Set the <b>transient</b> attribute on the &lt;bind-xml&gt; element
+            to true:
+          </span></p>
+
+          <span class="bodyBlack"><pre>
+  &lt;bind-xml transient="true"/&gt;
+          </pre></span>
+
+          <p><span class="bodyGrey">
+            Note: You can also set transient="true" on the &lt;field&gt; element.
+          </span></p>
+        
+      
+    <a name="Marshalling"><h2>Marshalling</h2></a>
+      
+        <a name="The-XML-is-marshalled-on-one-line,-how-do-I-force-line-breaks?"><h4>The XML is marshalled on one line, how do I force line-breaks?</h4></a>
+          <p><span class="bodyGrey">For all versions of Castor:</span></p>
+          <p><span class="bodyGrey">
+            To enable pretty-printing (indenting, line-breaks) just modify the
+            <i><b>castor.properties</b></i> file and uncomment the following:
+          </span></p>
+
+          <span class="bodyBlack"><pre>
+         # True if all documents should be indented on output by default
+         #
+         #org.exolab.castor.indent=true
+          </pre></span>
+
+            <p><span class="bodyGrey">Note: This will slow down the marshalling process</span></p>
+          
+        
+
+        
+          <a name="What-is-the-order-of-the-marshalled-XML-elements?"><h4>What is the order of the marshalled XML elements?</h4></a>
+            <p><span class="bodyGrey">
+              If you are using Castor's default introspection to automatically
+              map the objects into XML, then there is no guarantee on the order.
+              It simply depends on the order in which the fields are returned to
+              Castor using the Java reflection API.
+            </span></p>
+
+            <p><span class="bodyGrey">
+              Note: If you use a mapping file Castor will generate the XML in
+              the order in which the mapping file is specified.
+            </span></p>
+
+          
+        
+      <a name="Source-Code-Generator"><h2>Source Code Generator</h2></a>
+      
+      
+        <a name="Can-I-use-a-DTD-with-the-source-generator?"><h4>Can I use a DTD with the source generator?</h4></a>
+          <p><span class="bodyGrey">
+            Not directly, however you can convert your DTD to an XML Schema
+            fairly easily. We provide a tool
+            (<tt>org.exolab.castor.xml.dtd.Converter</tt>) to do this. You can
+            also use any number of 3rd-party tools such as XML Spy or XML
+            Authority.
+          </span></p>
+        
+
+        <a name="My-XML-output-looks-incorrect,-what-could-be-wrong?"><h4>My XML output looks incorrect, what could be wrong?</h4></a>
+          <p><span class="bodyGrey">
+            Also: I used the source code generator, but all my xml element names
+            are getting marshaled as lowercase with hyphens, what's up with
+            that?
+          </span></p>
+          <p><span class="bodyGrey">
+            <b>Solution:</b>
+            <br>
+            Are the generated class descriptors compiled? Make sure they
+            get compiled along with the source code for the object model.
+          </span></p>
+        
+
+        <a name="The-generated-source-code-has-incorrect-or-missing-imports-for-imported-schema-types"><h4>The generated source code has incorrect or missing imports for imported schema types</h4></a>
+          <p><span class="bodyGrey">
+            <b>Example:</b>
+            <br>
+            Castor generates the following:
+            <br>
+          </span></p>
+          <span class="bodyBlack"><pre>import types.Foo;</pre></span>
+          <p><span class="bodyGrey">
+            instead of:
+          </span></p>
+          <span class="bodyBlack"><pre>import com.acme.types.Foo;</pre></span>
+          <p><span class="bodyGrey">
+            This usually happens when the namespaces for the imported schemas
+            have not been mapped to appropriate java packages in the
+            <i>castorbuilder.properties</i> file.
+          </span></p>
+
+          <table border="0" cellpadding="2" cellspacing="2"><tr><td colspan="2" height="5"></td></tr><span class="bodyGrey">
+            <b>Solution:</b>
+            <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">
+               Make sure the <tt>castorbuilder.properties</tt> is in your
+               classpath when you run the SourceGenerator.
+            </span></td></tr>
+            <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">
+               Uncomment and edit the
+               <tt>org.exolab.castor.builder.nspackages</tt> property. Make
+               sure to copy the value of the imported namespace exactly as
+               it's referred to in the schema (i.e. trailing slashes and
+               case-sensitivity matter!).
+            </span></td></tr>
+          </span></table>
+
+          <p><span class="bodyGrey">
+            For those using 0.9.5.1, you'll need to upgrade due to a bug
+            that is fixed in later releases.
+          </span></p>
+
+        
+
+        <a name="How-can-I-make-the-generated-source-code-more-JDO-friendly?"><h4>How can I make the generated source code more JDO friendly?</h4></a>
+          <p><span class="bodyGrey">For Castor 0.9.4 and above:</span></p>
+
+          <p><span class="bodyGrey">
+            Castor JDO requires a reference to the actual collection to be
+            returned from the get-method. By default the source generator does
+            not provide such a method. To enable such methods to be created,
+            simple add the following line to your
+            <tt>castorbuilder.properties</tt> file:
+          </span></p>
+
+          <span class="bodyGrey"><pre>
+org.exolab.castor.builder.extraCollectionMethods=true
+          </pre></span>
+
+          <p><span class="bodyGrey">
+            Note: The default <tt>castorbuilder.properties</tt> file has this
+            line commented out.  Simply uncomment it.
+          </span></p>
+
+          <p><span class="bodyGrey">
+            Your mapping file will also need to be updated to include the proper
+            set/get method names.
+          </span></p>
+        
+      
+    <a name="Miscellaneous"><h2>Miscellaneous</h2></a>
+      
+      
+        <a name="Is-there-a-way-to-automatically-create-an-XML-Schema-from-an-XML-instance?"><h4>Is there a way to automatically create an XML Schema from an XML instance?</h4></a>
+          <p><span class="bodyGrey">
+            Yes! We provide such a tool.  Please see
+            <tt>org.exolab.castor.xml.schema.util.XMLInstance2Schema</tt>.
+            It's not 100% perfect, but it does a reasonable job.
+          </span></p>
+        
+
+        <a name="How-to-enable-XML-validation-with-Castor-XML"><h4>How to enable XML validation with Castor XML</h4></a>
+          <p><span class="bodyGrey">
+            To enable XML validation at the parser level, please add properties
+            to your <tt>castor.properties</tt> file as follows:
+          </span></p>
+
+          <span class="bodyBlack"><pre>
+    org.exolab.castor.parser.namespaces=true
+    org.exolab.castor.sax.features=http://xml.org/sax/features/validation,\
+                                   http://apache.org/xml/features/validation/schema,\
+                                   http://apache.org/xml/features/validation/schema-full-checking
+          </pre></span>
+
+          <p><span class="bodyGrey">
+            Please note that the example given relies on the use of Apache
+            Xerces, hence the <tt>apache.org</tt> properties; similar options
+            should exist for other parsers.
+          </span></p>
+
+        
+
+        <a name="Why-is-mapping-ignored-when-using-a-FieldHandlerFactory"><h4>Why is mapping ignored when using a FieldHandlerFactory</h4></a>
+          <p><span class="bodyGrey">When using a custom FieldHandlerFactory as in the following example</span></p>
+
+          <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+Mapping mapping = ... ;
+FieldHandlerFactoyt factory = ...;
+Marshaller m = new Marshaller(writer);
+ClassDescriptorResolverImpl cdr = new ClassDescriptorResolverImpl();
+cdr.getIntrospector().addFieldHandlerFactory(factory);
+m.setResolver(cdr);
+<b>marshaller.setMapping(mapping)</b>;
+          </pre></span></td></tr></table></td></tr></table><p></p>
+
+          <p><span class="bodyGrey">
+            please make sure that you set the mapping file <b>after</b> you set
+            the ClassDescriptorResolver. You will note the following in the
+            Javadoc for
+
+            <a href="javadoc/org/exolab/castor/xml/Marshaller/html#setResolver(org/exolab/castor/xml/ClassDescriptorResolver).html"><javadoc>org.exolab.castor.xml.Marshaller.html#setResolver(org.exolab.castor.xml.ClassDescriptorResolver)</javadoc></a>:
+          </span></p>
+
+          <span class="bodyBlack"><pre><B>Note:</B> This method will nullify any Mapping currently being used by this Marshaller</pre></span>
+
+        
+      
+    <a name="Serialization"><h2>Serialization</h2></a>
+    
+    	<a name="Is-it-true-that-the-use-of-Castor-XML-mandates-Xerces-as-XML-parser?"><h3>Is it true that the use of Castor XML mandates Xerces as XML parser?</h3></a>
+    	
+    		<p><span class="bodyGrey">Yes and no. It actually depends. When requiring <i>pretty printing</i>
+    		   during marshalling, Castor will internally use Apache's Xerces
+    		   to implement this feature. As such, when not using this feature,
+    		   Xerces is not a requirement, and any JAXP-compliant XML parser can
+    		   be used (for unmarshalling).</span></p>
+    		<p><span class="bodyGrey">In other words, with the latter use case, you do <b>not</b> have 
+    		   to download (and use) Xerces separetely.</span></p>
+    		   
+    	
+
+    	<a name="Do-I-still-have-to-download-Xerces-when-using-Castor-XML-with-Java-5.0?"><h3>Do I still have to download Xerces when using Castor XML with Java 5.0?</h3></a>
+    	
+           	<p><span class="bodyGrey">No. Starting with release 1.1, we have added support for using the Xerces 
+           	   instance as shipped with the JRE/JDK for serialization. As such, for 
+           	   Java 5.0 users, this removes the requirement to download Xerces 
+           	   separately when wanting to use 'pretty printing' with Castor XML
+           	   during marshalling.</span></p>
+           	   
+           	<p><span class="bodyGrey">To enable this feature, please change the following 
+           	   properties in your <b>local</b> <tt>castor.properties</tt> file 
+           	   (thus redefining the default value) as shown below:</span></p>
+            	   
+            	<p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+            	
+# Defines the XML parser to be used by Castor.
+# The parser must implement org.xml.sax.Parser.
+org.exolab.castor.parser=org.xml.sax.helpers.XMLReaderAdapter
+
+# Defines the (default) XML serializer factory to use by Castor, which must
+# implement org.exolab.castor.xml.SerializerFactory; default is 
+# org.exolab.castor.xml.XercesXMLSerializerFactory
+org.exolab.castor.xml.serializer.factory=org.exolab.castor.xml.XercesJDK5XMLSerializerFactory
+
+# Defines the default XML parser to be used by Castor.
+org.exolab.castor.parser=com.sun.org.apache.xerces.internal.parsers.SAXParser</pre></span></td></tr></table></td></tr></table><p></p>    		   
+    	
+    	
+    </td></tr><tr height="5"><td width="10" height="5" bgcolor="#7270c2" valign="top" align="left">&nbsp;</td><td height="5" bgcolor="#7270c2" valign="top" width="150"><img src="images/dotTrans.gif" width="1" height="15" border="0"><br><img src="images/line_sm.gif" width="105" height="3" border="0" align="right"></td><td width="7" height="5" bgcolor="#a9a5de" valign="top" align="left">&nbsp;</td><td width="70" height="5" valign="top" align="left">&nbsp;</td><td width="120" height="5" valign="top" align="left">&nbsp;</td></tr><tr><td width="10" height="5" bgcolor="#7270c2" valign="top" align="left">&nbsp;</td><td bgcolor="#7270c2" valign="top" align="left" width="150"></td><td width="7" bgcolor="#a9a5de" valign="top" align="left"><img src="images/dotTrans.gif" width="1" height="25" border="0"></td><td width="70" valign="top" align="left"><img src="images/dotTrans.gif" width="1" height="25" border="0"></td><td width="120" valign="top" align="left">&nbsp;</td></tr><tr height="5"><td width="10" rowspan="2" height="100%" bgcolor="#7270c2" valign="bottom" align="left"><img src="images/stripes1.gif" width="10" height="125" border="0"></td><td rowspan="2" height="100%" bgcolor="#7270c2" valign="bottom" align="left" width="150"><img src="images/stripe105.gif" width="105" height="125" border="0"></td><td width="7" rowspan="2" height="100%" bgcolor="#a9a5de" valign="top" align="left">&nbsp;</td><td width="70" height="100%" valign="top" align="left">&nbsp;</td><td width="120" height="100%" valign="top" align="left">&nbsp;</td></tr><tr height="5"><td width="70" height="25" valign="top" align="left">&nbsp;</td><td width="400" height="25" valign="bottom" align="left"><br><br><img src="images/line_light.gif" border="0" width="400" height="3"><br><p></p><span class="bodyGrey"><small><notice>
+    Copyright &copy; 1999-2005 <a href="http://www.exolab.org">ExoLab Group</a>, Intalio Inc.,
+    and Contributors.  All rights reserved.
+  </notice><br>&nbsp;<br></small><small><notice>
+    Java, EJB, JDBC, JNDI, JTA, Sun, Sun Microsystems are trademarks or registered
+    trademarks of Sun Microsystems, Inc. in the United States and in other
+    countries. XML, XML Schema, XSLT and related standards are trademarks or registered
+    trademarks of MIT, INRIA, Keio or others, and a product of the World Wide Web
+    Consortium. All other product names mentioned herein are trademarks of their respective
+    owners.
+  </notice><br>&nbsp;<br></small></span><p></p>
+          &nbsp;
+        </td><td width="120" height="25" valign="top" align="left">&nbsp;</td></tr></table><script type="text/javascript">
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script><script type="text/javascript">
+        var pageTracker = _gat._getTracker("UA-3544187-1");
+        pageTracker._trackPageview();
+    </script></body></html>

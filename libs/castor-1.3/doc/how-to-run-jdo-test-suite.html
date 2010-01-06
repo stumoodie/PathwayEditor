@@ -1,0 +1,416 @@
+<html><head><META http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>How to run Castor JDO's test suite</title><link rel="stylesheet" href="default.css"></head><body bgcolor="#ffffff" link="#6763a9" vlink="#6763a9" topmargin="0" bottommargin="0" leftmargin="0" marginheight="0" marginwidth="0"><a name="top"></a><table border="0" cellpadding="0" cellspacing="0" height="400"><tr><td width="10" valign="top" align="left" bgcolor="#7270c2"><img src="images/dotTrans.gif" width="1" height="1" border="0"></td><td valign="top" align="left" bgcolor="#7270c2" width="150"><img src="images/dotTrans.gif" width="1" height="1" border="0"></td><td width="7" valign="top" align="left"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td><td width="70" valign="top" align="left"><img src="images/dotTrans.gif" width="70" height="6" border="0"></td><td width="468" valign="top" align="left"><img src="images/top_2.gif" width="468" height="6" border="0"></td><td width="120" valign="top" align="left"><img src="images/line_purple.gif" width="120" height="6" border="0"></td></tr><tr><td width="10" bgcolor="#7270c2" valign="top" align="left"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td><td bgcolor="#7270c2" valign="top" align="left" width="150"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td><td width="7" bgcolor="#ffffff" valign="top" align="left"></td><td width="70" valign="top" align="left"><img src="images/dotTrans.gif" width="1" height="1" border="0"></td><td width="468" valign="middle" align="left"><a href="license.html"><span class="menuTopOff">License</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.codehaus.org"><span class="menuTopOff">Codehaus</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://openejb.org"><span class="menuTopOff">OpenEJB</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://openjms.sf.net"><span class="menuTopOff">OpenJMS</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://openorb.sf.net"><span class="menuTopOn">OpenORB</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://tyrex.sf.net"><span class="menuTopOff">Tyrex</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br><img src="images/dotTrans.gif" width="1" height="2" border="0"></td><td width="120" height="20" valign="top" align="left">&nbsp;</td></tr><tr><td width="10" bgcolor="#7270c2" valign="top" align="left"><img src="images/dotTrans.gif" width="10" height="3" border="0"></td><td bgcolor="#7270c2" valign="top" align="right" width="150"><img src="images/line_sm.gif" width="105" height="3" border="0"></td><td width="7" bgcolor="#a9a5de" valign="top" align="left"><img src="images/line_sm.gif" width="7" height="3" border="0"></td><td width="70" valign="top" align="left"><img src="images/line_light.gif" width="70" height="3" border="0"></td><td width="468" valign="top" align="left"><img src="images/line_light.gif" width="468" height="3" border="0"></td><td width="120" valign="top" align="left"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td></tr><tr><td bgcolor="#7270c2" valign="top" align="left"><img src="images/dotTrans.gif" width="10" height="10" border="0"></td><td bgcolor="#7270c2" valign="top" align="left" width="150"><img src="images/dotTrans.gif" width="1" height="2" border="0"><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Old releases</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="releases-old.html"><span class="subMenuOff">General</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="1.2/index.html"><span class="subMenuOff">Release 1.2</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="1.3cr1/index.html"><span class="subMenuOff">Release 1.3rc1</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Main</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="index.html"><span class="subMenuOff">Home</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="about.html"><span class="subMenuOff">About</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="features.html"><span class="subMenuOff">Features</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="download.html"><span class="subMenuOff">Download</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="dependencies.html"><span class="subMenuOff">Dependencies</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="reference-guide.html"><span class="subMenuOffHighlighted">Reference guide</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="javadoc/overview-summary.html"><span class="subMenuOff">JavaDoc</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="maven-integration.html"><span class="subMenuOff">Maven 2 support</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="maven-archetypes.html"><span class="subMenuOff">Maven 2 archetypes</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="schema.html"><span class="subMenuOff">DTD &amp; Schemas</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="changes.html"><span class="subMenuOff">Recent HTML changes</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="news.html"><span class="subMenuOff">News Archive</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="http://castor.codehaus.org/rss/castor-announce.xml"><span class="subMenuOff">RSS news feed</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Development/Support</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="lists.html"><span class="subMenuOff">Mailing Lists</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="scm.html"><span class="subMenuOff">SVN/JIRA</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="contributing.html"><span class="subMenuOff">Contributing</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="support.html"><span class="subMenuOff">Support</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="http://bamboo.ci.codehaus.org/browse/CASTOR"><span class="subMenuOff">Continuous builds</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="professional-services.html"><span class="subMenuOffHighlighted">Prof. services</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Related projects</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="spring-orm-integration.html"><span class="subMenuOff">Spring ORM support</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="spring-xml-intro.html"><span class="subMenuOff">Spring XML factories</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ws-integration.html"><span class="subMenuOff">WS frameworks</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">XML</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="xml-link.html"><span class="subMenuOff">XML</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">XML Code Generator</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="srcgen-link.html"><span class="subMenuOff">XML Code Generator</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">JDO</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-introduction.html"><span class="subMenuOff">Introduction</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-starter-tutorial.html"><span class="subMenuOff">First steps</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo.html"><span class="subMenuOff">Using JDO</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-database-conf.html"><span class="subMenuOff">JDO Config</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="types.html"><span class="subMenuOff">Types</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-mapping.html"><span class="subMenuOff">JDO Mapping</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-faq.html"><span class="subMenuOff">JDO FAQ</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-examples.html"><span class="subMenuOff">JDO Examples</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-howto.html"><span class="subMenuOffHighlighted">JDO HOW-TOs</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-tips-tricks.html"><span class="subMenuOffHighlighted">Tips &amp; Tricks</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-other-features.html"><span class="subMenuOff">Other Features</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-self-executable-examples.html"><span class="subMenuOff">JDO sample JAR</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Tools</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="schemaGen-anttask.html"><span class="subMenuOff">Schema generator</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Advanced JDO</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-caching-detail.html"><span class="subMenuOff">Caching</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="oql.html"><span class="subMenuOff">OQL</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="locking.html"><span class="subMenuOff">Trans. &amp; Locks</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="design-persist.html"><span class="subMenuOff">Design</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="key-generator.html"><span class="subMenuOff">KeyGen</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="long-transact.html"><span class="subMenuOff">Long Trans.</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="nested-attr.html"><span class="subMenuOff">Nested Attrs.</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-pooling.html"><span class="subMenuOff">Pooling Examples</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="postgresql-blobs.html"><span class="subMenuOff">LOBs</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-best-practice.html"><span class="subMenuOff">Best practice</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">DDL Generator</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen.html"><span class="subMenuOff">Using DDL Generator</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen-properties.html"><span class="subMenuOff">Properties</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen-anttask.html"><span class="subMenuOff">Ant task</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen-mapping.html"><span class="subMenuOff">Type Mapping</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">More</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="presentations.html"><span class="subMenuOff">Presentations</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="examples.html"><span class="subMenuOff">The Examples</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="extras.html"><span class="subMenuOff">3rd Party Tools</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="test-framework.html"><span class="subMenuOff">JDO Tests</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ctf.html"><span class="subMenuOff">XML Tests</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="conf-lib.html"><span class="subMenuOff">Configuration</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href=""><span class="subMenuOff"></span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="http://www.java.net/"><span class="subMenuOff"><img src="images/javanet_button_90.gif" border="0"></span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">About</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="license.html"><span class="subMenuOff">License</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="user-experience.html"><span class="subMenuOffHighlighted">User stories</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="contributors.html"><span class="subMenuOff">Contributors</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="marketplace.html"><span class="subMenuOff">Marketplace</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="status.html"><span class="subMenuOff">Status, Todo</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="release-notes.html"><span class="subMenuOff">Changelog</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="library.html"><span class="subMenuOff">Library</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="contacts.html"><span class="subMenuOff">Contact</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="origins.html"><span class="subMenuOff">Project Name</span></a></td></tr></table><br></td><td width="7" bgcolor="#a9a5de" valign="top" align="left">&nbsp;</td><td width="70" valign="top" align="left">&nbsp;</td><td rowspan="4" width="468" valign="top"><table cols="2" rows="2" border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td valign="top" align="left"><br><img border="0" height="34" hspace="0" src="images/castor.gif" vspace="0" width="115"><br><img border="0" height="10" hspace="0" src="images/dotTrans.gif"></td><td width="120" height="5" valign="top" align="right"></td></tr></table><p></p><p></p><br><h2 align="center">How to run Castor JDO's test suite</h2><HR size="1"><span class="bodyGrey"><b><a href="#Overview">Overview</a></b><br></span><span class="bodyGrey"><b><a href="#Intended-Audience">Intended Audience</a></b><br></span><span class="bodyGrey"><b><a href="#Prerequisites">Prerequisites</a></b><br></span><span class="bodyGrey"><b><a href="#2-versions-of-CTF">2 versions of CTF</a></b><br></span><span class="bodyGrey"><b><a href="#Steps-to-setup-environment-for-old-CTF">Steps to setup environment for old CTF</a></b><br></span><span class="bodyGrey"><b><a href="#Steps-to-run-old-CTF-from-commandline">Steps to run old CTF from commandline</a></b><br></span><span class="bodyGrey"><b><a href="#Steps-to-run-old-CTF-out-of-eclipse">Steps to run old CTF out of eclipse</a></b><br></span><span class="bodyGrey"><b><a href="#Short-description-of-the-old-CTF-tests">Short description of the old CTF tests</a></b><br></span><span class="bodyGrey"><b><a href="#Steps-to-setup-environment-for-new-CTF">Steps to setup environment for new CTF</a></b><br></span><span class="bodyGrey"><b><a href="#Steps-to-run-new-CTF-out-of-eclipse">Steps to run new CTF out of eclipse</a></b><br></span><span class="bodyGrey"><b><a href="#Troubleshooting">Troubleshooting</a></b><br></span><span class="bodyGrey"><b><a href="#References">References</a></b><br></span><HR size="1"><br><a name="Overview"><h2>Overview</h2></a>
+      <p><span class="bodyGrey">At the time of this writing Castor JDO has 3 kinds of test suites:</span></p>
+      
+      <table border="0" cellpadding="2" cellspacing="2"><tr><td colspan="2" height="5"></td></tr><span class="bodyGrey">
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">Database independend plan unit tests.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">A JUnit based test suite (CTF) that is used to test various functional areas against different
+          database engines to give developers/committers some reassurance when changing the codebase.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">A Junit based test suite (PTF) to evaluate impact of changes on performance.</span></td></tr>
+      </span></table>
+      
+      <p><span class="bodyGrey">This document provides general information about running Castor JDO's test suite (CTF).</span></p>
+    <a name="Intended-Audience"><h2>Intended Audience</h2></a>
+      <p><span class="bodyGrey">Anyone who wants to run the CTF test suite. This document outlines the basic steps to get people
+        unfamiliar with this area started.</span></p>
+    <a name="Prerequisites"><h2>Prerequisites</h2></a>
+      <p><span class="bodyGrey">Anybody wishing to run the CTF test suite should have access to the source code of Castor. This can
+        be obtained in one of the following ways:</span></p>
+
+      <table border="0" cellpadding="2" cellspacing="2"><tr><td colspan="2" height="5"></td></tr><span class="bodyGrey">
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">Download the sources distribution from the <a href="download.html">download page</a></span></td></tr>
+            
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">Download the latest snapshot from SVN from
+          <a href="http://svn.castor.codehaus.org/viewrep/castor/castor/trunk">Fisheye</a>
+          (see links on the bottom left corner)</span></td></tr>
+          
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">Check out the latest code from SVN into your prefered developement environment. For instructions on
+          this task, take a look at <a href="scm.html#Subversion-access">Subversion access</a>. For eclipse
+          <a href="how-to-setup-castor-project-in-eclipse.html">How to setup Castor project in eclipse</a> provides
+          a detailed description of this task.</span></td></tr>
+      </span></table>
+    <a name="2-versions-of-CTF"><h2>2 versions of CTF</h2></a>
+      <p><span class="bodyGrey">At the moment we are in the middle of replacing the old CTF with a new one. While the old CTF still is our
+        reference for refactorings of Castor does the new CTF contain some tests which could not be added to the old
+        one due to its limitations. On the other hand are not all tests ported to the new CTF yet.</span></p>
+
+      <p><span class="bodyGrey">In the next sections we describe how to setup the environment to execute both CTF versions. While both versions
+        of CTF are designed to be executed against every supported database engine, we will describe things with regard
+        to mysql. Having said that there are only scripts for mysql at the new CTF at the moment. At a later step of the
+        CTF refactoring we will add scripts for other databases as well. In addition we intend to allow its execution
+        with an embedded derby database out of the box, but this have not been implemented yet.</span></p>
+        
+      <p><span class="bodyGrey">For those who might be wondering about the numbering of tests, the numbers of the old tests are just random. The
+        numbers of the new tests are the jira issue numbers.</span></p>
+    <a name="Steps-to-setup-environment-for-old-CTF"><h2>Steps to setup environment for old CTF</h2></a>
+      <p><span class="bodyGrey">To execute tests against mysql database you probably need access to a mysql server. To create a database for CTF,
+        you have to execute the following commands on mysql consol.</span></p>
+        
+      <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+# create database test;
+# grant all on test.* at "localhost" to "test" identified by "test";
+# use test;
+# source [path-to-script];</pre></span></td></tr></table></td></tr></table><p></p>
+
+      <p><span class="bodyGrey">If the server is not installed on your local maschine (the one you execute the tests on) you have to replace
+        "localhost" with the IP of the maschine the tests get executed on. The script to execute can be found in
+        "cpactf/src/old/ddl/" directory. For mysql it's "mysql.sql". If you like to use a different name for the database
+        or use other user credential you can adjust them at "cpactf/src/old/resources/jdo/mysql.xml".</span></p>
+
+      <p><span class="bodyGrey">As we do not include JDBC drivers for every database with Castor you also have to add the driver you like to use
+        to your classpath to execute the tests. The easiest way is to copy the driver to "lib/" directory as all jar's
+        contained therein are added automatically. Another option is to modify "bin/test.sh" or "bin/test.bat" script
+        depended on your operating system.</span></p>
+
+      <p><span class="bodyGrey">For mysql we still use "mysql-connector-java-3.1.13-bin", also for mysql server of version 5. This version has proven
+        to be stable. While other versions of mysql connector may also work, some of them have bugs from our experience.</span></p>
+        
+      <p><span class="bodyGrey">As already explained you will find JDO configurations for every supported database in "cpactf/src/old/resources/jdo".
+        The JDO configurations are named mysql.xml, oracle.xml etc. In the same directory you will also find main mapping file
+        "mapping.xml" that includes all other mappings which are located in the "cpactf/src/old/resources/ctf/jdo/..." directories.
+        There is one more important file for the old tests "cpactf/src/old/resources/tests.xml", it is the main config file which
+        defines which test should be executed against which database engine. As mentioned previously not every test works with
+        every database engine as some missing some features or castor does not support everything of every engine.</span></p>
+    <a name="Steps-to-run-old-CTF-from-commandline"><h2>Steps to run old CTF from commandline</h2></a>
+      <p><span class="bodyGrey">From a command line (e.g a shell), please execute the following commands to run the whole test suite against mysql
+        (where &lt;castor-root&gt; points to the directory where you installed the Castor sources:</span></p>
+           
+      <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+cd &lt;castor-root&gt;/bin
+build clean
+build tests
+test castor.mysql</pre></span></td></tr></table></td></tr></table><p></p>
+
+      <p><span class="bodyGrey">To execute just one of the many tests of the complete test suite, please change this to:</span></p>
+           
+      <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+cd &lt;castor-root&gt;/bin
+build clean
+build tests
+test castor.mysql.TC30</pre></span></td></tr></table></td></tr></table><p></p>
+
+	  <p><span class="bodyGrey">NOTE: You have to execute "build clean" and "build tests" again if you have changed anything within eclipse (e.g. a
+	    configuration file or a class).</span></p>
+    <a name="Steps-to-run-old-CTF-out-of-eclipse"><h2>Steps to run old CTF out of eclipse</h2></a>
+      <p><span class="bodyGrey">Now, let's see how we can run these old CPACTF tests through eclipse.</span></p>
+      
+      <table border="0" cellpadding="2" cellspacing="2"><tr><td colspan="2" height="5"></td></tr><span class="bodyGrey">
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">Go to "/cpacft/src/old/java" and right click</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">Select <b>Run As -&gt; Run...</b></span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">Select <b>"Java Application"</b> from the left side menu and double click on it to create <b>"New_configuration"</b>.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">Select <b>Project</b> -&gt; castor</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">Enter <b>Main class</b> -&gt; MainApp</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">Select Arguments Tab</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">Enter <b>Program Arguments</b> for example: "castor.mysql.TC31" or "castor.mysql"</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">Now "Run"</span></td></tr>
+      </span></table>
+    <a name="Short-description-of-the-old-CTF-tests"><h2>Short description of the old CTF tests</h2></a>
+      <p><span class="bodyGrey">As some features are not supported by all database engines (e.g. sequence keygenerator) or a test have not been
+        verified against a database, only a subset of the following tests will be executed if you run CTF.</span></p>
+        
+      <table border="0" cellpadding="2" cellspacing="2"><tr><td colspan="2" height="5"></td></tr><span class="bodyGrey">
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC01 Duplicate key detection tests.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC02 Concurrent access tests.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC03 Read only tests.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC04 Deadlock detection tests.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC05 Update rollback tests.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC06 Race tests.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC07 Cache leakage tests.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC08 Cache expiry measure.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC09 TxSynchronizable interceptor tests.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC10 Type handling tests.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC11 Type handling of LOB tests.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC12 Type Conversion tests.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC13 Serializable object tests.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC14 Rollback primitive tests.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC15 Multiple columns primary keys tests.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC15a Multiple columns primary keys only tests.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC16 Nested fields tests.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC17 Timestamp tests.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC18 Persistence interface tests.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC19 InstanceFactory interface tests.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC20 Key generators: MAX, HIGH-LOW.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC23 Key generator: IDENTITY.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC24 Key generator: UUID.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC25 Dependent objects tests.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC26 Dependent objects tests.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC27 Dependent update objects tests.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC28 Dependent update objects tests.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC30 OQL-supported syntax.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC31 OQL queries for extends.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC32 Test limit clause.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC33 Test limit clause with offset.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC34 Test limit clause with offset at extended object.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC36 SizeOracle.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC37 Absolute.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC38 CALL SQL with parameters.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC38a Named query support.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC70 Collections.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC71 Test special collections.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC72 Test sorted collections.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC73 ManyToMany.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC74 ManyToManyKeyGen.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC75 Expire Many-To-Many.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC76 Cached OID with db-locked.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC77 Query garbage collected.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC78 JDBC connection.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC79 Test the use of Database.isLocked().</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC79a Test auto-store attribute.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC79aa Test auto-store attribute for 1:M relations.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC79b Test the use of Database.isPersistent().</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC80 self-referential relation test with extend hierarchies.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC81 Dependent relation test.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC82 Dependent relation test (using no key generators).</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC83 Identity definition through identity attribute in field mapping.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC84 Transient attribute.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC85 TestEnum.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC87 TestLazy1to1.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC88 Lazy Loading.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC89 Expire Lazy Employee.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC93 Polymorphism Degenerated tests.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC94 Polymorphism tests.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC95 Polymorphism tests with key generator.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC96 Polymorphism tests for depend relations.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC97 Polymorphism tests.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC98 Polymorphism tests in a threaded environment.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC99 Polymorphism tests (many 2 many).</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC200 Self-referential relation tests.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC201 Self-referential relation tests with extend hierarchy.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC202 ForeignKeyFirst tests.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">TC203 Timezone tests.</span></td></tr>
+      </span></table>
+    <a name="Steps-to-setup-environment-for-new-CTF"><h2>Steps to setup environment for new CTF</h2></a>
+      <p><span class="bodyGrey">To execute tests against mysql database you probably need access to a mysql server. To create a database for CTF,
+        you have to execute the following commands on mysql consol.</span></p>
+        
+      <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+# create database cpactf;
+# grant all on cpactf.* at "localhost" to "test" identified by "test";
+# use cpactf;
+# source &lt;path-to-script&gt;;</pre></span></td></tr></table></td></tr></table><p></p>
+
+      <p><span class="bodyGrey">If the server is not installed on your local maschine (the one you execute the tests on) you have to replace
+        "localhost" with the IP of the maschine the tests get executed on. For mysql execute every "mysql.sql"
+        script found in subdirectories of "cpactf/src/test/ddl/" directory. If you like to use a different name for the
+        database or use other user credential you can adjust them at "cpactf/src/test/resources/cpactf-conf.xml".</span></p>
+
+      <p><span class="bodyGrey">As we do not include JDBC drivers for every database with Castor you also have to add the driver you like to use
+        to your classpath to execute the tests. The easiest way is to copy the driver to "lib/" directory as all jar's
+        contained therein are added automatically. Another option is to modify "bin/test.sh" or "bin/test.bat" script
+        depended on your operating system.</span></p>
+
+      <p><span class="bodyGrey">For mysql we still use "mysql-connector-java-3.1.13-bin", also for mysql server of version 5. This version has proven
+        to be stable. While other versions of mysql connector may also work, some of them have bugs from our experience.</span></p>
+    <a name="Steps-to-run-new-CTF-out-of-eclipse"><h2>Steps to run new CTF out of eclipse</h2></a>
+      <p><span class="bodyGrey">Execution of the new test suite from within eclipse against mysql is very simple.</span></p>
+      
+      <table border="0" cellpadding="2" cellspacing="2"><tr><td colspan="2" height="5"></td></tr><span class="bodyGrey">
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">Select "cpactf/src/test/java" and right click</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">Select "Run as" -&gt; "JUnit tests"</span></td></tr>
+      </span></table>
+
+      <p><span class="bodyGrey">In in the configuration file "cpactf-conf.xml" mysql is configuerd as default database. To execute tests against
+        another database engine or to force execution of tests that have been excluded you can pass VM parameter to the test
+        framework. VM Arguments can also be specified in eclipse.</span></p>
+        
+      <table border="0" cellpadding="2" cellspacing="2"><tr><td colspan="2" height="5"></td></tr><span class="bodyGrey">
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">Select "Run as" -&gt; "Run.." from main menu</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">Select Arguments Tab</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">Enter <b>VM Arguments</b> for example: "-Dname=value"</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">Now "Run"</span></td></tr>
+      </span></table>
+      
+      <p><span class="bodyGrey">The following VM parameters are supported by CTF.</span></p>
+      
+      <dl>
+        <dt>config</dt><dd>Path to an alternate configuration file.</dd>
+        <dt>database</dt><dd>Name of the database configuration.</dd>
+        <dt>transaction</dt><dd>Name of the transaction manager configuration.</dd>
+        <dt>force</dt><dd>Force execution of excluded tests (true/false).</dd>
+      </dl>
+    <a name="Troubleshooting"><h2>Troubleshooting</h2></a>
+      <p><span class="bodyGrey"><b>For those who face the following problem in eclipse while executing the tests</b></span></p>
+      
+      <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+#An unexpected error has been detected by HotSpot Virtual Machine:
+#
+#EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x7c918fea, pid=2460, tid=3712
+#
+#Java VM: Java HotSpot(TM) Client VM (1.5.0-b64 mixed mode)
+#Problematic frame:
+#C [ntdll.dll+0x18fea]
+#
+#An error report file with more information is saved as hs_err_pid2460.log
+#
+#            If you would like to submit a bug report, please visit:
+#              http://java.sun.com/webapps/bugreport/crash.jsp
+#</pre></span></td></tr></table></td></tr></table><p></p>
+
+      <p><span class="bodyGrey">It is a problem with memory configured for eclipse. It can be changed in <b>eclipse.ini</b> file which 
+        can be found in installation directory of Eclipse. By default it is -Xmx256m, just increase it and problem go away.</span></p>
+    <a name="References"><h2>References</h2></a>
+      <table border="0" cellpadding="2" cellspacing="2"><tr><td colspan="2" height="5"></td></tr><span class="bodyGrey">
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey"><a href="how-to-setup-castor-project-in-eclipse.html">How to setup Castor project in eclipse</a></span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey"><a href="scm.html#Subversion-access">Subversion access</a></span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey"><a href="test-framework.html">The testing framework</a></span></td></tr>
+      </span></table>
+    </td></tr><tr height="5"><td width="10" height="5" bgcolor="#7270c2" valign="top" align="left">&nbsp;</td><td height="5" bgcolor="#7270c2" valign="top" width="150"><img src="images/dotTrans.gif" width="1" height="15" border="0"><br><img src="images/line_sm.gif" width="105" height="3" border="0" align="right"></td><td width="7" height="5" bgcolor="#a9a5de" valign="top" align="left">&nbsp;</td><td width="70" height="5" valign="top" align="left">&nbsp;</td><td width="120" height="5" valign="top" align="left">&nbsp;</td></tr><tr><td width="10" height="5" bgcolor="#7270c2" valign="top" align="left">&nbsp;</td><td bgcolor="#7270c2" valign="top" align="left" width="150"></td><td width="7" bgcolor="#a9a5de" valign="top" align="left"><img src="images/dotTrans.gif" width="1" height="25" border="0"></td><td width="70" valign="top" align="left"><img src="images/dotTrans.gif" width="1" height="25" border="0"></td><td width="120" valign="top" align="left">&nbsp;</td></tr><tr height="5"><td width="10" rowspan="2" height="100%" bgcolor="#7270c2" valign="bottom" align="left"><img src="images/stripes1.gif" width="10" height="125" border="0"></td><td rowspan="2" height="100%" bgcolor="#7270c2" valign="bottom" align="left" width="150"><img src="images/stripe105.gif" width="105" height="125" border="0"></td><td width="7" rowspan="2" height="100%" bgcolor="#a9a5de" valign="top" align="left">&nbsp;</td><td width="70" height="100%" valign="top" align="left">&nbsp;</td><td width="120" height="100%" valign="top" align="left">&nbsp;</td></tr><tr height="5"><td width="70" height="25" valign="top" align="left">&nbsp;</td><td width="400" height="25" valign="bottom" align="left"><br><br><img src="images/line_light.gif" border="0" width="400" height="3"><br><p></p><span class="bodyGrey"><small><notice>
+    Copyright &copy; 1999-2005 <a href="http://www.exolab.org">ExoLab Group</a>, Intalio Inc.,
+    and Contributors.  All rights reserved.
+  </notice><br>&nbsp;<br></small><small><notice>
+    Java, EJB, JDBC, JNDI, JTA, Sun, Sun Microsystems are trademarks or registered
+    trademarks of Sun Microsystems, Inc. in the United States and in other
+    countries. XML, XML Schema, XSLT and related standards are trademarks or registered
+    trademarks of MIT, INRIA, Keio or others, and a product of the World Wide Web
+    Consortium. All other product names mentioned herein are trademarks of their respective
+    owners.
+  </notice><br>&nbsp;<br></small></span><p></p>
+          &nbsp;
+        </td><td width="120" height="25" valign="top" align="left">&nbsp;</td></tr></table><script type="text/javascript">
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script><script type="text/javascript">
+        var pageTracker = _gat._getTracker("UA-3544187-1");
+        pageTracker._trackPageview();
+    </script></body></html>

@@ -1,0 +1,220 @@
+<html><head><META http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>How to run Castor JDO's performance tests</title><link rel="stylesheet" href="default.css"></head><body bgcolor="#ffffff" link="#6763a9" vlink="#6763a9" topmargin="0" bottommargin="0" leftmargin="0" marginheight="0" marginwidth="0"><a name="top"></a><table border="0" cellpadding="0" cellspacing="0" height="400"><tr><td width="10" valign="top" align="left" bgcolor="#7270c2"><img src="images/dotTrans.gif" width="1" height="1" border="0"></td><td valign="top" align="left" bgcolor="#7270c2" width="150"><img src="images/dotTrans.gif" width="1" height="1" border="0"></td><td width="7" valign="top" align="left"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td><td width="70" valign="top" align="left"><img src="images/dotTrans.gif" width="70" height="6" border="0"></td><td width="468" valign="top" align="left"><img src="images/top_2.gif" width="468" height="6" border="0"></td><td width="120" valign="top" align="left"><img src="images/line_purple.gif" width="120" height="6" border="0"></td></tr><tr><td width="10" bgcolor="#7270c2" valign="top" align="left"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td><td bgcolor="#7270c2" valign="top" align="left" width="150"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td><td width="7" bgcolor="#ffffff" valign="top" align="left"></td><td width="70" valign="top" align="left"><img src="images/dotTrans.gif" width="1" height="1" border="0"></td><td width="468" valign="middle" align="left"><a href="license.html"><span class="menuTopOff">License</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.codehaus.org"><span class="menuTopOff">Codehaus</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://openejb.org"><span class="menuTopOff">OpenEJB</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://openjms.sf.net"><span class="menuTopOff">OpenJMS</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://openorb.sf.net"><span class="menuTopOn">OpenORB</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://tyrex.sf.net"><span class="menuTopOff">Tyrex</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br><img src="images/dotTrans.gif" width="1" height="2" border="0"></td><td width="120" height="20" valign="top" align="left">&nbsp;</td></tr><tr><td width="10" bgcolor="#7270c2" valign="top" align="left"><img src="images/dotTrans.gif" width="10" height="3" border="0"></td><td bgcolor="#7270c2" valign="top" align="right" width="150"><img src="images/line_sm.gif" width="105" height="3" border="0"></td><td width="7" bgcolor="#a9a5de" valign="top" align="left"><img src="images/line_sm.gif" width="7" height="3" border="0"></td><td width="70" valign="top" align="left"><img src="images/line_light.gif" width="70" height="3" border="0"></td><td width="468" valign="top" align="left"><img src="images/line_light.gif" width="468" height="3" border="0"></td><td width="120" valign="top" align="left"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td></tr><tr><td bgcolor="#7270c2" valign="top" align="left"><img src="images/dotTrans.gif" width="10" height="10" border="0"></td><td bgcolor="#7270c2" valign="top" align="left" width="150"><img src="images/dotTrans.gif" width="1" height="2" border="0"><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Old releases</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="releases-old.html"><span class="subMenuOff">General</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="1.2/index.html"><span class="subMenuOff">Release 1.2</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="1.3cr1/index.html"><span class="subMenuOff">Release 1.3rc1</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Main</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="index.html"><span class="subMenuOff">Home</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="about.html"><span class="subMenuOff">About</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="features.html"><span class="subMenuOff">Features</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="download.html"><span class="subMenuOff">Download</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="dependencies.html"><span class="subMenuOff">Dependencies</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="reference-guide.html"><span class="subMenuOffHighlighted">Reference guide</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="javadoc/overview-summary.html"><span class="subMenuOff">JavaDoc</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="maven-integration.html"><span class="subMenuOff">Maven 2 support</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="maven-archetypes.html"><span class="subMenuOff">Maven 2 archetypes</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="schema.html"><span class="subMenuOff">DTD &amp; Schemas</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="changes.html"><span class="subMenuOff">Recent HTML changes</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="news.html"><span class="subMenuOff">News Archive</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="http://castor.codehaus.org/rss/castor-announce.xml"><span class="subMenuOff">RSS news feed</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Development/Support</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="lists.html"><span class="subMenuOff">Mailing Lists</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="scm.html"><span class="subMenuOff">SVN/JIRA</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="contributing.html"><span class="subMenuOff">Contributing</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="support.html"><span class="subMenuOff">Support</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="http://bamboo.ci.codehaus.org/browse/CASTOR"><span class="subMenuOff">Continuous builds</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="professional-services.html"><span class="subMenuOffHighlighted">Prof. services</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Related projects</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="spring-orm-integration.html"><span class="subMenuOff">Spring ORM support</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="spring-xml-intro.html"><span class="subMenuOff">Spring XML factories</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ws-integration.html"><span class="subMenuOff">WS frameworks</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">XML</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="xml-link.html"><span class="subMenuOff">XML</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">XML Code Generator</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="srcgen-link.html"><span class="subMenuOff">XML Code Generator</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">JDO</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-introduction.html"><span class="subMenuOff">Introduction</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-starter-tutorial.html"><span class="subMenuOff">First steps</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo.html"><span class="subMenuOff">Using JDO</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-database-conf.html"><span class="subMenuOff">JDO Config</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="types.html"><span class="subMenuOff">Types</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-mapping.html"><span class="subMenuOff">JDO Mapping</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-faq.html"><span class="subMenuOff">JDO FAQ</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-examples.html"><span class="subMenuOff">JDO Examples</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-howto.html"><span class="subMenuOffHighlighted">JDO HOW-TOs</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-tips-tricks.html"><span class="subMenuOffHighlighted">Tips &amp; Tricks</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-other-features.html"><span class="subMenuOff">Other Features</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-self-executable-examples.html"><span class="subMenuOff">JDO sample JAR</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Tools</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="schemaGen-anttask.html"><span class="subMenuOff">Schema generator</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Advanced JDO</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-caching-detail.html"><span class="subMenuOff">Caching</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="oql.html"><span class="subMenuOff">OQL</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="locking.html"><span class="subMenuOff">Trans. &amp; Locks</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="design-persist.html"><span class="subMenuOff">Design</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="key-generator.html"><span class="subMenuOff">KeyGen</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="long-transact.html"><span class="subMenuOff">Long Trans.</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="nested-attr.html"><span class="subMenuOff">Nested Attrs.</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-pooling.html"><span class="subMenuOff">Pooling Examples</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="postgresql-blobs.html"><span class="subMenuOff">LOBs</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-best-practice.html"><span class="subMenuOff">Best practice</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">DDL Generator</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen.html"><span class="subMenuOff">Using DDL Generator</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen-properties.html"><span class="subMenuOff">Properties</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen-anttask.html"><span class="subMenuOff">Ant task</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen-mapping.html"><span class="subMenuOff">Type Mapping</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">More</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="presentations.html"><span class="subMenuOff">Presentations</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="examples.html"><span class="subMenuOff">The Examples</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="extras.html"><span class="subMenuOff">3rd Party Tools</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="test-framework.html"><span class="subMenuOff">JDO Tests</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ctf.html"><span class="subMenuOff">XML Tests</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="conf-lib.html"><span class="subMenuOff">Configuration</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href=""><span class="subMenuOff"></span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="http://www.java.net/"><span class="subMenuOff"><img src="images/javanet_button_90.gif" border="0"></span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">About</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="license.html"><span class="subMenuOff">License</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="user-experience.html"><span class="subMenuOffHighlighted">User stories</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="contributors.html"><span class="subMenuOff">Contributors</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="marketplace.html"><span class="subMenuOff">Marketplace</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="status.html"><span class="subMenuOff">Status, Todo</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="release-notes.html"><span class="subMenuOff">Changelog</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="library.html"><span class="subMenuOff">Library</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="contacts.html"><span class="subMenuOff">Contact</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="origins.html"><span class="subMenuOff">Project Name</span></a></td></tr></table><br></td><td width="7" bgcolor="#a9a5de" valign="top" align="left">&nbsp;</td><td width="70" valign="top" align="left">&nbsp;</td><td rowspan="4" width="468" valign="top"><table cols="2" rows="2" border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td valign="top" align="left"><br><img border="0" height="34" hspace="0" src="images/castor.gif" vspace="0" width="115"><br><img border="0" height="10" hspace="0" src="images/dotTrans.gif"></td><td width="120" height="5" valign="top" align="right"></td></tr></table><p></p><p></p><br><h2 align="center">How to run Castor JDO's performance tests</h2><HR size="1"><span class="bodyGrey"><b><a href="#Overview">Overview</a></b><br></span><span class="bodyGrey"><b><a href="#Prerequisites">Prerequisites</a></b><br></span><span class="bodyGrey"><b><a href="#Steps-to-setup-environment-for-old-CTF">Steps to setup environment for old CTF</a></b><br></span><span class="bodyGrey"><b><a href="#Steps-to-execute-performance-tests-in-eclipse">Steps to execute performance tests in eclipse</a></b><br></span><span class="bodyGrey"><b><a href="#References">References</a></b><br></span><HR size="1"><br><a name="Overview"><h2>Overview</h2></a>
+      <p><span class="bodyGrey">At the time of this writing Castor JDO has 3 kinds of test suites:</span></p>
+      
+      <table border="0" cellpadding="2" cellspacing="2"><tr><td colspan="2" height="5"></td></tr><span class="bodyGrey">
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">Database independend plan unit tests.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">A JUnit based test suite that is used to test various functional areas against different
+          database engines to give developers/committers some reassurance when changing the codebase.</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">A Junit based test suite to evaluate impact of changes on performance.</span></td></tr>
+      </span></table>
+      
+      <p><span class="bodyGrey">This document provides general information about running Castor JDO's performance tests.</span></p>
+    <a name="Prerequisites"><h2>Prerequisites</h2></a>
+      <p><span class="bodyGrey">See: <a href="how-to-setup-castor-project-in-eclipse.html">How to setup Castor project in eclipse</a></span></p>
+    <a name="Steps-to-setup-environment-for-old-CTF"><h2>Steps to setup environment for old CTF</h2></a>
+      <p><span class="bodyGrey">To execute performance tests against mysql database you probably need access to a mysql server. To create a
+        database for PTF, you have to execute the following commands on mysql consol.</span></p>
+        
+      <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+# create database cpaptf;
+# grant all on cpaptf.* at "localhost" to "test" identified by "test";
+# use cpaptf;
+# source [path-to-script];</pre></span></td></tr></table></td></tr></table><p></p>
+
+      <p><span class="bodyGrey">If the server is not installed on your local maschine (the one you execute the tests on) you have to replace
+        "localhost" with the IP of the maschine the tests get executed on. The script to execute is
+        "cpaptf/src/test/ddl/mysql.sql".</span></p>
+
+      <p><span class="bodyGrey">As we do not include JDBC drivers for every database with Castor you also have to add the driver you like to use
+        to your classpath to execute the tests. The easiest way is to copy the driver to "lib/" directory as all jar's
+        contained therein are added automatically.</span></p>
+
+      <p><span class="bodyGrey">For mysql we still use "mysql-connector-java-3.1.13-bin", also for mysql server of version 5. This version has proven
+        to be stable. While other versions of mysql connector may also work, some of them have bugs from our experience.</span></p>
+    <a name="Steps-to-execute-performance-tests-in-eclipse"><h2>Steps to execute performance tests in eclipse</h2></a>
+      <p><span class="bodyGrey">Execution of the performance test suite from within eclipse is very simple.</span></p>
+        
+      <table border="0" cellpadding="2" cellspacing="2"><tr><td colspan="2" height="5"></td></tr><span class="bodyGrey">
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">Select "cpaptf/src/test/java" -&gt; "org.castor.cpaptf" -&gt; "TestAll.java" and right click</span></td></tr>
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">Select "Run As" -&gt; "JUnit Test"</span></td></tr>
+      </span></table>
+      
+      <p><span class="bodyGrey">By defeult the test uses 2000 service objects that get created, loaded with various configurations and deleted
+        afterwords. Obviously this will take quite some time. Please be patient for normal termination of the tests as
+        you will need to clean test tables by hand otherwise. To execute tests with a different number of objects you
+        can adjust "FACTOR" constant in "TestCreate.java". For example, if you set "Factor" to 1.0 the tests will be
+        executed with 10000 service objects. When using more test objects be aware that you may need to increase heap size
+        of the virtual maschine for the test to finish.</span></p>
+      
+      <p><span class="bodyGrey">By default you won't see any output of results on the consol as logging level of log4j is set to "warn" by default.
+        But if you change log level of "org.castor.cpaptf" package to "info" you will see detailed execution times for every
+        test on the consol. Be aware that there are quite some log4j.xml configurations in the whole Castor project at the
+        moment of which the one first one on classpath will be used.</span></p>
+        
+      <p><span class="bodyGrey">If you like to review some older test results you will find them under "cpaptf/src/site/resources/results/" but they
+        depend heavy on the machine you are running the tests on.</span></p>
+    <a name="References"><h2>References</h2></a>
+      <table border="0" cellpadding="2" cellspacing="2"><tr><td colspan="2" height="5"></td></tr><span class="bodyGrey">
+        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey"><a href="how-to-setup-castor-project-in-eclipse.html">How to setup Castor project in eclipse</a></span></td></tr>
+      </span></table>
+    </td></tr><tr height="5"><td width="10" height="5" bgcolor="#7270c2" valign="top" align="left">&nbsp;</td><td height="5" bgcolor="#7270c2" valign="top" width="150"><img src="images/dotTrans.gif" width="1" height="15" border="0"><br><img src="images/line_sm.gif" width="105" height="3" border="0" align="right"></td><td width="7" height="5" bgcolor="#a9a5de" valign="top" align="left">&nbsp;</td><td width="70" height="5" valign="top" align="left">&nbsp;</td><td width="120" height="5" valign="top" align="left">&nbsp;</td></tr><tr><td width="10" height="5" bgcolor="#7270c2" valign="top" align="left">&nbsp;</td><td bgcolor="#7270c2" valign="top" align="left" width="150"></td><td width="7" bgcolor="#a9a5de" valign="top" align="left"><img src="images/dotTrans.gif" width="1" height="25" border="0"></td><td width="70" valign="top" align="left"><img src="images/dotTrans.gif" width="1" height="25" border="0"></td><td width="120" valign="top" align="left">&nbsp;</td></tr><tr height="5"><td width="10" rowspan="2" height="100%" bgcolor="#7270c2" valign="bottom" align="left"><img src="images/stripes1.gif" width="10" height="125" border="0"></td><td rowspan="2" height="100%" bgcolor="#7270c2" valign="bottom" align="left" width="150"><img src="images/stripe105.gif" width="105" height="125" border="0"></td><td width="7" rowspan="2" height="100%" bgcolor="#a9a5de" valign="top" align="left">&nbsp;</td><td width="70" height="100%" valign="top" align="left">&nbsp;</td><td width="120" height="100%" valign="top" align="left">&nbsp;</td></tr><tr height="5"><td width="70" height="25" valign="top" align="left">&nbsp;</td><td width="400" height="25" valign="bottom" align="left"><br><br><img src="images/line_light.gif" border="0" width="400" height="3"><br><p></p><span class="bodyGrey"><small><notice>
+    Copyright &copy; 1999-2005 <a href="http://www.exolab.org">ExoLab Group</a>, Intalio Inc.,
+    and Contributors.  All rights reserved.
+  </notice><br>&nbsp;<br></small><small><notice>
+    Java, EJB, JDBC, JNDI, JTA, Sun, Sun Microsystems are trademarks or registered
+    trademarks of Sun Microsystems, Inc. in the United States and in other
+    countries. XML, XML Schema, XSLT and related standards are trademarks or registered
+    trademarks of MIT, INRIA, Keio or others, and a product of the World Wide Web
+    Consortium. All other product names mentioned herein are trademarks of their respective
+    owners.
+  </notice><br>&nbsp;<br></small></span><p></p>
+          &nbsp;
+        </td><td width="120" height="25" valign="top" align="left">&nbsp;</td></tr></table><script type="text/javascript">
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script><script type="text/javascript">
+        var pageTracker = _gat._getTracker("UA-3544187-1");
+        pageTracker._trackPageview();
+    </script></body></html>

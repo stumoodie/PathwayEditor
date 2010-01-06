@@ -1,0 +1,1319 @@
+<html><head><META http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>Castor JDO FAQ</title><link rel="stylesheet" href="default.css"></head><body bgcolor="#ffffff" link="#6763a9" vlink="#6763a9" topmargin="0" bottommargin="0" leftmargin="0" marginheight="0" marginwidth="0"><a name="top"></a><table border="0" cellpadding="0" cellspacing="0" height="400"><tr><td width="10" valign="top" align="left" bgcolor="#7270c2"><img src="images/dotTrans.gif" width="1" height="1" border="0"></td><td valign="top" align="left" bgcolor="#7270c2" width="150"><img src="images/dotTrans.gif" width="1" height="1" border="0"></td><td width="7" valign="top" align="left"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td><td width="70" valign="top" align="left"><img src="images/dotTrans.gif" width="70" height="6" border="0"></td><td width="468" valign="top" align="left"><img src="images/top_2.gif" width="468" height="6" border="0"></td><td width="120" valign="top" align="left"><img src="images/line_purple.gif" width="120" height="6" border="0"></td></tr><tr><td width="10" bgcolor="#7270c2" valign="top" align="left"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td><td bgcolor="#7270c2" valign="top" align="left" width="150"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td><td width="7" bgcolor="#ffffff" valign="top" align="left"></td><td width="70" valign="top" align="left"><img src="images/dotTrans.gif" width="1" height="1" border="0"></td><td width="468" valign="middle" align="left"><a href="license.html"><span class="menuTopOff">License</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.codehaus.org"><span class="menuTopOff">Codehaus</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://openejb.org"><span class="menuTopOff">OpenEJB</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://openjms.sf.net"><span class="menuTopOff">OpenJMS</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://openorb.sf.net"><span class="menuTopOn">OpenORB</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://tyrex.sf.net"><span class="menuTopOff">Tyrex</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br><img src="images/dotTrans.gif" width="1" height="2" border="0"></td><td width="120" height="20" valign="top" align="left">&nbsp;</td></tr><tr><td width="10" bgcolor="#7270c2" valign="top" align="left"><img src="images/dotTrans.gif" width="10" height="3" border="0"></td><td bgcolor="#7270c2" valign="top" align="right" width="150"><img src="images/line_sm.gif" width="105" height="3" border="0"></td><td width="7" bgcolor="#a9a5de" valign="top" align="left"><img src="images/line_sm.gif" width="7" height="3" border="0"></td><td width="70" valign="top" align="left"><img src="images/line_light.gif" width="70" height="3" border="0"></td><td width="468" valign="top" align="left"><img src="images/line_light.gif" width="468" height="3" border="0"></td><td width="120" valign="top" align="left"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td></tr><tr><td bgcolor="#7270c2" valign="top" align="left"><img src="images/dotTrans.gif" width="10" height="10" border="0"></td><td bgcolor="#7270c2" valign="top" align="left" width="150"><img src="images/dotTrans.gif" width="1" height="2" border="0"><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Old releases</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="releases-old.html"><span class="subMenuOff">General</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="1.2/index.html"><span class="subMenuOff">Release 1.2</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="1.3cr1/index.html"><span class="subMenuOff">Release 1.3rc1</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Main</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="index.html"><span class="subMenuOff">Home</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="about.html"><span class="subMenuOff">About</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="features.html"><span class="subMenuOff">Features</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="download.html"><span class="subMenuOff">Download</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="dependencies.html"><span class="subMenuOff">Dependencies</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="reference-guide.html"><span class="subMenuOffHighlighted">Reference guide</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="javadoc/overview-summary.html"><span class="subMenuOff">JavaDoc</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="maven-integration.html"><span class="subMenuOff">Maven 2 support</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="maven-archetypes.html"><span class="subMenuOff">Maven 2 archetypes</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="schema.html"><span class="subMenuOff">DTD &amp; Schemas</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="changes.html"><span class="subMenuOff">Recent HTML changes</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="news.html"><span class="subMenuOff">News Archive</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="http://castor.codehaus.org/rss/castor-announce.xml"><span class="subMenuOff">RSS news feed</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Development/Support</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="lists.html"><span class="subMenuOff">Mailing Lists</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="scm.html"><span class="subMenuOff">SVN/JIRA</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="contributing.html"><span class="subMenuOff">Contributing</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="support.html"><span class="subMenuOff">Support</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="http://bamboo.ci.codehaus.org/browse/CASTOR"><span class="subMenuOff">Continuous builds</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="professional-services.html"><span class="subMenuOffHighlighted">Prof. services</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Related projects</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="spring-orm-integration.html"><span class="subMenuOff">Spring ORM support</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="spring-xml-intro.html"><span class="subMenuOff">Spring XML factories</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ws-integration.html"><span class="subMenuOff">WS frameworks</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">XML</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="xml-link.html"><span class="subMenuOff">XML</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">XML Code Generator</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="srcgen-link.html"><span class="subMenuOff">XML Code Generator</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">JDO</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-introduction.html"><span class="subMenuOff">Introduction</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-starter-tutorial.html"><span class="subMenuOff">First steps</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo.html"><span class="subMenuOff">Using JDO</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-database-conf.html"><span class="subMenuOff">JDO Config</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="types.html"><span class="subMenuOff">Types</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-mapping.html"><span class="subMenuOff">JDO Mapping</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-faq.html"><span class="subMenuOff">JDO FAQ</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-examples.html"><span class="subMenuOff">JDO Examples</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-howto.html"><span class="subMenuOffHighlighted">JDO HOW-TOs</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-tips-tricks.html"><span class="subMenuOffHighlighted">Tips &amp; Tricks</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-other-features.html"><span class="subMenuOff">Other Features</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-self-executable-examples.html"><span class="subMenuOff">JDO sample JAR</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Tools</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="schemaGen-anttask.html"><span class="subMenuOff">Schema generator</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Advanced JDO</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-caching-detail.html"><span class="subMenuOff">Caching</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="oql.html"><span class="subMenuOff">OQL</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="locking.html"><span class="subMenuOff">Trans. &amp; Locks</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="design-persist.html"><span class="subMenuOff">Design</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="key-generator.html"><span class="subMenuOff">KeyGen</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="long-transact.html"><span class="subMenuOff">Long Trans.</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="nested-attr.html"><span class="subMenuOff">Nested Attrs.</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-pooling.html"><span class="subMenuOff">Pooling Examples</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="postgresql-blobs.html"><span class="subMenuOff">LOBs</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-best-practice.html"><span class="subMenuOff">Best practice</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">DDL Generator</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen.html"><span class="subMenuOff">Using DDL Generator</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen-properties.html"><span class="subMenuOff">Properties</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen-anttask.html"><span class="subMenuOff">Ant task</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen-mapping.html"><span class="subMenuOff">Type Mapping</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">More</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="presentations.html"><span class="subMenuOff">Presentations</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="examples.html"><span class="subMenuOff">The Examples</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="extras.html"><span class="subMenuOff">3rd Party Tools</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="test-framework.html"><span class="subMenuOff">JDO Tests</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ctf.html"><span class="subMenuOff">XML Tests</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="conf-lib.html"><span class="subMenuOff">Configuration</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href=""><span class="subMenuOff"></span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="http://www.java.net/"><span class="subMenuOff"><img src="images/javanet_button_90.gif" border="0"></span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">About</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="license.html"><span class="subMenuOff">License</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="user-experience.html"><span class="subMenuOffHighlighted">User stories</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="contributors.html"><span class="subMenuOff">Contributors</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="marketplace.html"><span class="subMenuOff">Marketplace</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="status.html"><span class="subMenuOff">Status, Todo</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="release-notes.html"><span class="subMenuOff">Changelog</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="library.html"><span class="subMenuOff">Library</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="contacts.html"><span class="subMenuOff">Contact</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="origins.html"><span class="subMenuOff">Project Name</span></a></td></tr></table><br></td><td width="7" bgcolor="#a9a5de" valign="top" align="left">&nbsp;</td><td width="70" valign="top" align="left">&nbsp;</td><td rowspan="4" width="468" valign="top"><table cols="2" rows="2" border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td valign="top" align="left"><br><img border="0" height="34" hspace="0" src="images/castor.gif" vspace="0" width="115"><br><img border="0" height="10" hspace="0" src="images/dotTrans.gif"></td><td width="120" height="5" valign="top" align="right"></td></tr></table><p></p><p></p><br><h2 align="center">Castor JDO FAQ</h2><HR size="1"><span class="bodyGrey"><b><a href="#Castor's-relation-to-other-specifications">Castor's relation to other specifications</a></b><br></span><span class="bodyGrey"><a href="#Does-Castor-JDO-comply-with-the-SUN-JSR-000012-specification?">&nbsp;&nbsp;&nbsp;&nbsp;Does Castor JDO comply with the SUN JSR-000012 specification?</a><br></span><span class="bodyGrey"><a href="#Is-Castor-JDO-better-than-EJB-CMP?">&nbsp;&nbsp;&nbsp;&nbsp;Is Castor JDO better than EJB CMP?</a><br></span><span class="bodyGrey"><b><a href="#XML-related-questions">XML related questions</a></b><br></span><span class="bodyGrey"><a href="#Is-it-possible-to-make-XML-marshalling-transactionally-using-Castor?">&nbsp;&nbsp;&nbsp;&nbsp;Is it possible to make XML marshalling transactionally using Castor?</a><br></span><span class="bodyGrey"><a href="#Is-it-possible-to-do-queries-on-a-XML-file-using-Castor?">&nbsp;&nbsp;&nbsp;&nbsp;Is it possible to do queries on a XML file using Castor?</a><br></span><span class="bodyGrey"><b><a href="#Technical-questions">Technical questions</a></b><br></span><span class="bodyGrey"><a href="#Where-can-I-find-some-examples-to-start-with?">&nbsp;&nbsp;&nbsp;&nbsp;Where can I find some examples to start with?</a><br></span><span class="bodyGrey"><a href="#I-have-encountered-problems-using-Sun-JDBC-ODBC-bridge-with-Castor...">&nbsp;&nbsp;&nbsp;&nbsp;I have encountered problems using Sun JDBC-ODBC bridge with Castor...</a><br></span><span class="bodyGrey"><a href="#My-get-method-for-the-Collection-of-dependent-objects-returns-null.-Why?">&nbsp;&nbsp;&nbsp;&nbsp;My get-method for the Collection of dependent objects returns null. Why?</a><br></span><span class="bodyGrey"><a href="#Should-my-JDO-classes-implement-some-special-interface?">&nbsp;&nbsp;&nbsp;&nbsp;Should my JDO classes implement some special interface?</a><br></span><span class="bodyGrey"><a href="#Can-Castor-automatically-create/remove-related-objects?">&nbsp;&nbsp;&nbsp;&nbsp;Can Castor automatically create/remove related objects?</a><br></span><span class="bodyGrey"><a href="#Is-Castor-JDO-using-any-connection-pooling-mechanism-to-improve-the-overall-performance?">&nbsp;&nbsp;&nbsp;&nbsp;Is Castor JDO using any connection pooling mechanism to improve the overall performance?</a><br></span><span class="bodyGrey"><a href="#I-am-getting-ClassNotFoundException-for-my-JDO-class,-but-it-is-in-the-class-path.-Why?">&nbsp;&nbsp;&nbsp;&nbsp;I am getting ClassNotFoundException for my JDO class, but it is in the class path. Why?</a><br></span><span class="bodyGrey"><a href="#I-am-getting-exception-'the-class-...-is-not-persistence-capable...'.-Why?">&nbsp;&nbsp;&nbsp;&nbsp;I am getting exception 'the class ... is not persistence capable...'. Why?</a><br></span><span class="bodyGrey"><a href="#I-call-db.remove()-on-the-dependent-object-and-commit,-but-this-doesn't-work...">&nbsp;&nbsp;&nbsp;&nbsp;I call db.remove() on the dependent object and commit, but this doesn't work...</a><br></span><span class="bodyGrey"><a href="#How-should-I-represent-string/date/boolean-literals-in-OQL-query?">&nbsp;&nbsp;&nbsp;&nbsp;How should I represent string/date/boolean literals in OQL query?</a><br></span><span class="bodyGrey"><a href="#I-get-'java.lang.AbstractMethodError:-getBigDecimal'-for-numeric-fields.-Why?">&nbsp;&nbsp;&nbsp;&nbsp;I get 'java.lang.AbstractMethodError: getBigDecimal' for numeric fields. Why?</a><br></span><span class="bodyGrey"><a href="#Does-Castor-support-both-one-way-and-two-way-relationships?">&nbsp;&nbsp;&nbsp;&nbsp;Does Castor support both one-way and two-way relationships?</a><br></span><span class="bodyGrey"><a href="#I-have-an-object-that-holds-a-relation-to-itself.-Does-Castor-support-this?">&nbsp;&nbsp;&nbsp;&nbsp;I have an object that holds a relation to itself. Does Castor support this?</a><br></span><span class="bodyGrey"><a href="#Why-do-I-get-an-ObjectModifiedException-when-trying-to-commit-a-transaction?">&nbsp;&nbsp;&nbsp;&nbsp;Why do I get an ObjectModifiedException when trying to commit a transaction?</a><br></span><span class="bodyGrey"><a href="#I'm-receiving-a-java.sql.SQLException:-ORA-01461">&nbsp;&nbsp;&nbsp;&nbsp;I'm receiving a java.sql.SQLException: ORA-01461</a><br></span><span class="bodyGrey"><b><a href="#Castor-and-performance-caches">Castor and performance caches</a></b><br></span><span class="bodyGrey"><a href="#Sometimes-long-transaction-fails:-on-update()-it-is-thrown-ObjectModifiedException.-Why?">&nbsp;&nbsp;&nbsp;&nbsp;Sometimes long transaction fails: on update() it is thrown ObjectModifiedException. Why?</a><br></span><span class="bodyGrey"><a href="#Can-I-use-the-cache-type='none'-with-long-transactions?">&nbsp;&nbsp;&nbsp;&nbsp;Can I use the cache-type='none' with long transactions?</a><br></span><span class="bodyGrey"><a href="#What-is-causing-a-PersistenceException-with-long-transactions-and-how-do-I-fix-it?">&nbsp;&nbsp;&nbsp;&nbsp;What is causing a PersistenceException with long transactions and how do I fix it?</a><br></span><span class="bodyGrey"><b><a href="#OQL">OQL</a></b><br></span><span class="bodyGrey"><a href="#Is-there-any-document-available-for-Castor-OQL?">&nbsp;&nbsp;&nbsp;&nbsp;Is there any document available for Castor OQL?</a><br></span><span class="bodyGrey"><a href="#The-OQL-document-describes-several-phases-of-development.-Which-is-the-current-phase?">&nbsp;&nbsp;&nbsp;&nbsp;The OQL document describes several phases of development. Which is the current phase?</a><br></span><span class="bodyGrey"><a href="#Does-Castor-OQL-support-sub-queries?">&nbsp;&nbsp;&nbsp;&nbsp;Does Castor OQL support sub-queries?</a><br></span><span class="bodyGrey"><a href="#I-cannot-get-Castor-OQL-to-join-two-objects-for-me.-Is-it-supported?">&nbsp;&nbsp;&nbsp;&nbsp;I cannot get Castor OQL to join two objects for me. Is it supported?</a><br></span><span class="bodyGrey"><a href="#Can-I-write-a-pass-thru-OQL?">&nbsp;&nbsp;&nbsp;&nbsp;Can I write a pass-thru OQL?</a><br></span><span class="bodyGrey"><a href="#Does-Castor-OQL-support-struct?">&nbsp;&nbsp;&nbsp;&nbsp;Does Castor OQL support struct?</a><br></span><span class="bodyGrey"><a href="#How-do-I-structure-a-query-using-the-'LIKE'-expression?">&nbsp;&nbsp;&nbsp;&nbsp;How do I structure a query using the 'LIKE' expression?</a><br></span><span class="bodyGrey"><a href="#Does-Castor-support-the-SQL-'IN'-expression?">&nbsp;&nbsp;&nbsp;&nbsp;Does Castor support the SQL 'IN' expression?</a><br></span><span class="bodyGrey"><b><a href="#Features-requests">Features requests</a></b><br></span><span class="bodyGrey"><a href="#Can-a-foreign-key-be-part-of-multiple-primary-keys?">&nbsp;&nbsp;&nbsp;&nbsp;Can a foreign key be part of multiple primary keys?</a><br></span><span class="bodyGrey"><a href="#Is-polymorphic-collection-supported?">&nbsp;&nbsp;&nbsp;&nbsp;Is polymorphic collection supported?</a><br></span><span class="bodyGrey"><b><a href="#Data-model-issues">Data model issues</a></b><br></span><span class="bodyGrey"><a href="#Is-it-possible-to-map-an-object-to-more-than-one-tables?">&nbsp;&nbsp;&nbsp;&nbsp;Is it possible to map an object to more than one tables?</a><br></span><span class="bodyGrey"><a href="#Can-an-object-with-the-same-identity-be-re-created-after-being-removed-in-the-same-transaction?">&nbsp;&nbsp;&nbsp;&nbsp;Can an object with the same identity be re-created after being removed in the same transaction?</a><br></span><span class="bodyGrey"><a href="#What-is-a-dependent-object?">&nbsp;&nbsp;&nbsp;&nbsp;What is a dependent object?</a><br></span><span class="bodyGrey"><a href="#Can-a-data-object-involved-in-many-to-many-relationship-be-dependent?">&nbsp;&nbsp;&nbsp;&nbsp;Can a data object involved in many-to-many relationship be dependent?</a><br></span><span class="bodyGrey"><b><a href="#Castor-JDO-design">Castor JDO design</a></b><br></span><span class="bodyGrey"><a href="#How-does-Castor-JDO-work-anyway?">&nbsp;&nbsp;&nbsp;&nbsp;How does Castor JDO work anyway?</a><br></span><span class="bodyGrey"><a href="#Does-Castor-support-two-phase-commits?-How-is-this-implemented?">&nbsp;&nbsp;&nbsp;&nbsp;Does Castor support two-phase commits? How is this implemented?</a><br></span><span class="bodyGrey"><a href="#Does-Castor-support-nested-transaction?">&nbsp;&nbsp;&nbsp;&nbsp;Does Castor support nested transaction?</a><br></span><span class="bodyGrey"><b><a href="#Working-with-open-source-databases">Working with open source databases</a></b><br></span><span class="bodyGrey"><a href="#Does-Castor-support-PosgreSQL?">&nbsp;&nbsp;&nbsp;&nbsp;Does Castor support PosgreSQL?</a><br></span><span class="bodyGrey"><a href="#Does-Castor-support-MySQL?">&nbsp;&nbsp;&nbsp;&nbsp;Does Castor support MySQL?</a><br></span><span class="bodyGrey"><a href="#Which-Open-Source-database-is-supported-better?">&nbsp;&nbsp;&nbsp;&nbsp;Which Open Source database is supported better?</a><br></span><span class="bodyGrey"><b><a href="#RDBMS-specific-issues">RDBMS-specific issues</a></b><br></span><span class="bodyGrey"><a href="#MySQL">&nbsp;&nbsp;&nbsp;&nbsp;MySQL</a><br></span><span class="bodyGrey">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#Use-of-DATETIME-fields-in-general">Use of DATETIME fields in general</a><br></span><span class="bodyGrey">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#Use-of-TIMESTAMP-fields-&-NULLs-in-long-transactions">Use of TIMESTAMP fields &amp; NULLs in long transactions</a><br></span><span class="bodyGrey">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MySQL-4.1.x-and-upgrade-issues">MySQL 4.1.x and upgrade issues</a><br></span><span class="bodyGrey"><a href="#Oracle">&nbsp;&nbsp;&nbsp;&nbsp;Oracle</a><br></span><span class="bodyGrey">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#Oracle-&-(C|B)LOB-fields">Oracle &amp; (C|B)LOB fields</a><br></span><span class="bodyGrey"><b><a href="#Castor-&-Logging">Castor &amp; Logging</a></b><br></span><span class="bodyGrey"><a href="#How-can-I-integrate-Castor's-logging-with-a-logging-infrastructure-using-Log4J?">&nbsp;&nbsp;&nbsp;&nbsp;How can I integrate Castor's logging with a logging infrastructure using Log4J?</a><br></span><span class="bodyGrey"><a href="#Can-I-see-what-SQL-statement-Castor-issues-to-the-database-as-a-result-of-an-operation?">&nbsp;&nbsp;&nbsp;&nbsp;Can I see what SQL statement Castor issues to the database as a result of an operation?</a><br></span><span class="bodyGrey"><a href="#How-can-I-disable-the-use-of-JDBC-proxy-classes?">&nbsp;&nbsp;&nbsp;&nbsp;How can I disable the use of JDBC proxy classes?</a><br></span><span class="bodyGrey"><b><a href="#Lazy-Loading-related-questions">Lazy Loading related questions</a></b><br></span><span class="bodyGrey"><a href="#How-do-I-configure-the-JDO-mapping-to-use-the-lazy-loading-feature-for-1:1-relations?">&nbsp;&nbsp;&nbsp;&nbsp;How do I configure the JDO mapping to use the lazy loading feature for 1:1 relations?</a><br></span><span class="bodyGrey"><a href="#Lazy-loading-for-1:1-relations-and-serialization">&nbsp;&nbsp;&nbsp;&nbsp;Lazy loading for 1:1 relations and serialization</a><br></span><span class="bodyGrey"><a href="#How-do-I-configure-the-JDO-mapping-to-use-the-lazy-loading-feature-for-1:m-and-M:N-relations?">&nbsp;&nbsp;&nbsp;&nbsp;How do I configure the JDO mapping to use the lazy loading feature for 1:m and M:N relations?</a><br></span><span class="bodyGrey"><a href="#I-have-modified-my-mapping-to-use-lazy-loading.-Now-I---------get-the-error-'no-method-to-set-value-for-field:-com.xyz.ClassB-in-class:---------ClassMolder-com.xyz.ClassA'-or-'org.exolab.castor.jdo.DataObjectAccessException:---------no-method-to-set-value-for-field:-com.xyz.ClassB-in-class:-ClassMolder---------com.xyz.ClassA'.-What-am-I-doing-wrong?">&nbsp;&nbsp;&nbsp;&nbsp;I have modified my mapping to use lazy loading. Now I         get the error 'no method to set value for field: com.xyz.ClassB in class:         ClassMolder com.xyz.ClassA' or 'org.exolab.castor.jdo.DataObjectAccessException:         no method to set value for field: com.xyz.ClassB in class: ClassMolder         com.xyz.ClassA'. What am I doing wrong?</a><br></span><span class="bodyGrey"><b><a href="#Tuning-for-LOBs">Tuning for LOBs</a></b><br></span><span class="bodyGrey"><b><a href="#Database-specific-issues">Database-specific issues</a></b><br></span><span class="bodyGrey"><a href="#HSQL-and-identity-key-generators">&nbsp;&nbsp;&nbsp;&nbsp;HSQL and identity key generators</a><br></span><span class="bodyGrey"><b><a href="#Changing-database-configurations">Changing database configurations</a></b><br></span><HR size="1"><br><a name="Castor's-relation-to-other-specifications"><h2>Castor's relation to other specifications</h2></a>
+
+        <a name="Does-Castor-JDO-comply-with-the-SUN-JSR-000012-specification?"><h3>Does Castor JDO comply with the SUN JSR-000012 specification?</h3></a>
+            <p><span class="bodyGrey">
+            No, Castor JDO doesn't comply with the SUN's JDO specification.
+            </span></p>
+
+            <p><span class="bodyGrey">
+            Although Castor JDO carries very similar goals as SUN's JDO, it has 
+            been developed independently from the JSR.
+            </span></p>
+
+            <p><span class="bodyGrey">
+            Although it is not impossible to shape (perhaps "hammer" is a more 
+            descriptive verb) Castor JDO into the SUN's JDO specification, there 
+            are several major technical differences which make it unfavorable to 
+            do so. Castor is RDBMS centric. Each persistence object loaded by 
+            Castor is locked. Locks in Castor are observable, meaning that locks 
+            may not be granted because of timeout or deadlock. On the other 
+            hand, the SUN's JDO hides details about locks.
+            </span></p>
+
+            <p><span class="bodyGrey">
+            Internally, Castor JDO maintains a single copy of lock (and cache) 
+            for each active persistence object for all transaction. SUN's JDO 
+            specification implicitly requires a copy of cache per object per 
+            transaction. SUN's JDO also implicitly requires a bytecode modifier 
+            which Castor doesn't require.
+            </span></p>
+
+            <p><span class="bodyGrey">
+            Castor also provides other features, such as key generators, long 
+            transaction support and OQL query which cannot be found in SUN's JSR.
+            </span></p>
+        
+
+        <a name="Is-Castor-JDO-better-than-EJB-CMP?"><h3>Is Castor JDO better than EJB CMP?</h3></a>
+            <p><span class="bodyGrey">
+            The relation between JDO and EJB Container-Managed
+            Persistence is more complicated than simply saying, "one
+            is better than the other".
+            </span></p>
+
+            <p><span class="bodyGrey">
+            An Entity Bean may manage persistence itself - the EJB
+            specification calls this Bean Managed Persistence
+            (BMP). Alternatively, the Entity Bean may rely on an EJB
+            container to manage all peersistence automatically - the
+            EJB specification calls this Container Managed Persistence
+            (CMP). When implementing BMP, an Entity Bean may use
+            Castor JDO as its persistence mechanism, or it may use
+            others methods, such as dealing with JDBC directly.
+            During CMP, an EJB Container vendor may implement their
+            CMP on top of Castor JDO.  In such an implementation,
+            Castor JDO will be used to persist the Entity Bean.
+            </span></p>
+
+            <p><span class="bodyGrey">
+            If a developer would like to take advantage of an EJB's
+            life-cycle management, security, the "write once deploy
+            anywhere" promise and other distributed business
+            application facilities, then EJB will be the right
+            choice. Otherwise, the fact that Castor is simple, is Open
+            Source (you can always include Castor in your application
+            or product), has much less overhead, provides more design
+            freedom, and is integrated with Castor XML may be enough
+            of a reason to choose Castor JDO.
+            </span></p>
+        
+
+    <a name="XML-related-questions"><h2>XML related questions</h2></a>
+
+        <a name="Is-it-possible-to-make-XML-marshalling-transactionally-using-Castor?"><h3>Is it possible to make XML marshalling transactionally using Castor?</h3></a>
+            <p><span class="bodyGrey">
+            No. The decision of putting XML and JDO together is NOT intended to 
+            make XML marshalling transactional. Instead, the integration is done 
+            to help developers of a typical client-server situation whereby an 
+            application server receives incoming XML messages, process the 
+            messages and replies to the client.
+            </span></p>
+
+            <p><span class="bodyGrey">
+            With Castor, incoming XML messages can be unmarshaled into data 
+            objects. Required information can be obtained from a database using 
+            JDO in form of data objects. With this approach, all data 
+            manipulation can be done in an object-oriented way. Changes to JDO 
+            data objects can be committed transactionally, and result data 
+            objects can be marshaled into XML and returned to the client. 
+            </span></p>
+        
+
+        <a name="Is-it-possible-to-do-queries-on-a-XML-file-using-Castor?"><h3>Is it possible to do queries on a XML file using Castor?</h3></a>
+            <p><span class="bodyGrey">
+            No, Castor does not provide an OQL query facility on a XML file. If 
+            querying is important for you, you should consider using a DBMS to store 
+            your data instead of using XML files, especially if querying performance 
+            is a concern.
+            </span></p>
+            <p><span class="bodyGrey">
+            Another alternative is parse an XML Document directly and use XPath to
+            retrieve Nodes and/or NodeSets from an XML Document.  Other open source
+            tools which provide this functionality are:
+            <table border="0" cellpadding="2" cellspacing="2"><tr><td colspan="2" height="5"></td></tr><span class="bodyGrey">
+             <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">
+              <a href="http://sourceforge.net/projects/saxpath/">SAXPath</a>
+             </span></td></tr>
+             <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">
+              <a href="http://jakarta.apache.org/commons/jxpath/index.html">Jakarta Commons JXPath</a>
+             </span></td></tr>
+            </span></table>
+            </span></p>
+        
+
+    <a name="Technical-questions"><h2>Technical questions</h2></a>
+
+        <a name="Where-can-I-find-some-examples-to-start-with?"><h3>Where can I find some examples to start with?</h3></a>
+            <p><span class="bodyGrey">
+            Download the full SVN snapshot and look into the src/tests/jdo 
+            directory.
+            </span></p>
+        
+
+        <a name="I-have-encountered-problems-using-Sun-JDBC-ODBC-bridge-with-Castor..."><h3>I have encountered problems using Sun JDBC-ODBC bridge with Castor...</h3></a>
+            <p><span class="bodyGrey">
+            It cannot be used with Castor, because it doesn't allow more than one
+            open <tt>ResultSet</tt> at the same time. Either use JDBC driver of type &gt; 1, 
+            or use some other JDBC-ODBC bridge without such a restriction
+            (for example, from <a href="http://www.easysoft.com">Easysoft</a>).
+            </span></p>
+        
+
+        <a name="My-get-method-for-the-Collection-of-dependent-objects-returns-null.-Why?"><h3>My get-method for the Collection of dependent objects returns null. Why?</h3></a>
+
+            <p><span class="bodyGrey">You should initialize the Collection yourself:
+            <span class="bodyBlack"><pre>
+private Collection _children = new ArrayList();
+
+public Collection getChildren() {
+    return _children;
+}
+            </pre></span>
+            </span></p>
+        
+
+        <a name="Should-my-JDO-classes-implement-some-special-interface?"><h3>Should my JDO classes implement some special interface?</h3></a>
+            <p><span class="bodyGrey">
+            In general, no. If you need some behavior that is not directly 
+            supported by Castor, you can implement interface 
+            <tt>org.exolab.castor.jdo.Persistent</tt>. In order to use dirty 
+            checking for long transaction you should implement interface 
+            <tt>org.exolab.castor.jdo.TimeStampable</tt>. If you need an example 
+            of use of these interfaces, see Persistent.java and 
+            TestPersistent.java among Castor JDO tests.
+            </span></p>
+        
+
+        <a name="Can-Castor-automatically-create/remove-related-objects?"><h3>Can Castor automatically create/remove related objects?</h3></a>
+            <p><span class="bodyGrey">
+            First of all, let's agree upon terminology. We distinguish dependent 
+            and independent objects:
+
+            <table border="0" cellpadding="2" cellspacing="2"><tr><td colspan="2" height="5"></td></tr><span class="bodyGrey">
+                <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey"><b>dependent</b> objects are bounded to the parent object's lifecycle</span></td></tr>
+                <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey"><b>independent</b> objects have independent lifecycle</span></td></tr>
+            </span></table>
+
+            Thus, dependent objects are created/removed automatically, when 
+            their parent object is created/removed, while all operations on 
+            independent objects should be performed explicitly.
+            </span></p>
+
+            <p><span class="bodyGrey">
+            However, with Castor 0.8.x you cannot describe explicitly the kind 
+            of object. Instead, the following rule applies: if you have 
+            one-to-many relation, and each side of the relation refers to 
+            another (Collection attribute on "one" side, simple attribute on 
+            "many" side), then "many" side is a dependent object. All other 
+            objects are independent. In particular, related objects via 
+            one-to-one relation are not created/removed automatically.
+            </span></p>
+
+            <p><span class="bodyGrey">
+            With Castor 0.9 dependent objects should be described via "depends" 
+            attribute of "class" element in mapping configuration file.
+            </span></p>
+
+            <p><span class="bodyGrey">
+            If you wish some independent object was created and/or removed 
+            automatically on operations on other independent object, you may 
+            use interface Persistent to code the desired behavior.
+            </span></p>
+        
+
+        <a name="Is-Castor-JDO-using-any-connection-pooling-mechanism-to-improve-the-overall-performance?"><h3>Is Castor JDO using any connection pooling mechanism to improve the overall performance?</h3></a>
+            <p><span class="bodyGrey">
+            No, Castor JDO doesn't have any built-in JDBC resource pooling. 
+            However the framework can transparently use any resource pooling 
+            facilities provided through DataSource implementation or 
+            -even better- through JDNI. In fact we even recommend people to use 
+            some Connection and PreparedStatement pool with Castor as this can
+            increase Castor's performance 3-5 fold.
+            </span></p>
+
+            <p><span class="bodyGrey">
+            For example the following set of statements:
+            <span class="bodyBlack"><pre>
+db.begin();
+db.execute(...)
+db.commit()
+            </pre></span>
+            will be executed in much less time with the resource pooling because it 
+            will avoid creating a new physical JDBC connection at every execution.
+            </span></p>
+
+            <p><span class="bodyGrey">
+            With Oracle, instead of specifying the usual JDBC driver you can use a
+            DataSource that specifically provides some Connection caching/pooling.
+            </span></p>
+
+        <p><span class="bodyGrey">Thus if your jdo config file looks like :
+        <span class="bodyBlack"><pre>
+        &lt;database name="..." engine="oracle" &gt;
+            &lt;driver class-name="oracle.jdbc.driver.OracleDriver"
+                    URL="jdbc:oracle:thin:@localhost:1521:TEST" &gt;
+                &lt;param name="user" value="SYSTEM"/&gt;
+                &lt;param name="password" value="manager"/&gt;
+            &lt;/driver&gt;
+            ...
+        &lt;/database&gt;
+        </pre></span>
+        then it can be changed into (for example):
+        <span class="bodyBlack"><pre>
+        &lt;database name="..." engine="oracle" &gt;
+            &lt;data-source class-name="oracle.jdbc.pool.OracleConnectionCacheImpl"&gt;
+                &lt;params URL="jdbc:oracle:thin:@localhost:1521:TEST"
+                        user="scott" 
+                        password="tiger"
+                /&gt;
+            &lt;/data-source&gt;
+            ...
+        &lt;/database&gt;
+        </pre></span>
+        </span></p>
+
+            <p><span class="bodyGrey">
+            When Castor is used inside a Container such as an EJB container 
+            (within BMP or Session Bean), then the Container usually provides 
+            the JDBC resource through the JNDI ENC, which implicitely includes 
+            pooling facilities.
+            </span></p>
+        
+
+        <a name="I-am-getting-ClassNotFoundException-for-my-JDO-class,-but-it-is-in-the-class-path.-Why?"><h3>I am getting ClassNotFoundException for my JDO class, but it is in the class path. Why?</h3></a>
+            <p><span class="bodyGrey">
+            Probably castor.jar file is in jre/lib/ext directory. In this case 
+            you should call:
+             <span class="bodyBlack"><pre>
+      jdo.setClassLoader(getClass().getClassLoader());
+             </pre></span>
+           before jdo.getDatabase().
+           </span></p>
+        
+
+        <a name="I-am-getting-exception-'the-class-...-is-not-persistence-capable...'.-Why?"><h3>I am getting exception 'the class ... is not persistence capable...'. Why?</h3></a>
+            <p><span class="bodyGrey">
+            In this case as well as in many others you can get more information 
+            with the help of logging. Call:
+            </span></p>
+        <span class="bodyBlack"><pre>
+  jdo.setLogWriter(Logger.getSystemLogger());
+        </pre></span>
+            <p><span class="bodyGrey">
+            and seek in the output for warnings and errors.
+            </span></p>
+        
+
+        <a name="I-call-db.remove()-on-the-dependent-object-and-commit,-but-this-doesn't-work..."><h3>I call db.remove() on the dependent object and commit, but this doesn't work...</h3></a>
+            <p><span class="bodyGrey">
+            You should not add/remove dependent objects directly. In order to 
+            add/remove the dependent object you should just add/remove it from the 
+            collection in the master object and call db.commit()
+            </span></p>
+
+            <p><span class="bodyGrey">
+            Dependent objects cannot be created/removed explicitly. It's created 
+            automatically when it is added to a master object, and removed 
+            automatically when it de-linked/dereferenced from a master object.
+            </span></p>
+
+            <p><span class="bodyGrey">
+            Otherwise, we will be encounter into problem where a dependent object 
+            created explicitly but removed implicitly (delinked from a master object), 
+            or vice versa. It can also lead to other problems that are harder to 
+            detect.
+            </span></p> 
+        
+
+        <a name="How-should-I-represent-string/date/boolean-literals-in-OQL-query?"><h3>How should I represent string/date/boolean literals in OQL query?</h3></a>
+            <p><span class="bodyGrey">
+            It is recommended to replace literals with parameters and to set them 
+            via <tt>OQLQuery.bind()</tt>, for example:
+            </span></p>
+            <span class="bodyBlack"><pre>
+OQLQuery query = db.getOQLQuery("SELECT p FROM Person p "
+      +"WHERE name LIKE $1 AND dob&gt;$2 AND married=$3");
+query.bind("John %");
+query.bind((new SimpleDateFormat("yyyy-MM-dd"))
+       .parse("1960-01-01"));
+query.bind(false);
+         </pre></span>
+        
+
+        <a name="I-get-'java.lang.AbstractMethodError:-getBigDecimal'-for-numeric-fields.-Why?"><h3>I get 'java.lang.AbstractMethodError: getBigDecimal' for numeric fields. Why?</h3></a>
+            <p><span class="bodyGrey">
+            Your JDBC driver is not JDBC 2.0 compliant, upgrade it or find another one.
+            </span></p>
+        
+
+        <a name="bi-directional"></a>
+        <a name="Does-Castor-support-both-one-way-and-two-way-relationships?"><h3>Does Castor support both one-way and two-way relationships?</h3></a>
+            <p><span class="bodyGrey">
+            Typcially a relationship between two objects is either one-way (aka 
+            uni-directional) or two-way (aka bi-directional). Officially, Castor 
+            currently only supports bi-directional relationships. For example, 
+            if an <tt>Order</tt> object contains a reference to a <tt>LineItem</tt> 
+            object, the <tt>LineItem</tt> object must contain a reference to the 
+            Order object. However, this requirement is not enforced in all situations. 
+            </span></p>
+            
+            <p><span class="bodyGrey">
+            This is a very complex problem to solve. So until Castor is expanded 
+            the support uni-directional relationships, the best policy is to 
+            implement the bi-directionalality for all relationships. This will 
+            ensure proper functionality.
+            </span></p>
+        
+
+        <a name="I-have-an-object-that-holds-a-relation-to-itself.-Does-Castor-support-this?"><h3>I have an object that holds a relation to itself. Does Castor support this?</h3></a>
+            <p><span class="bodyGrey">
+            This is a very common occurrence in an object model and is known as 
+            a self-referenential relationship. Unfortunately, Castor does not 
+            currently support self-referential relationships. An example of such 
+            a relationship occurs when a <tt>Folder</tt> object contains a 
+            reference to another <tt>Folder</tt> object. Castor does not 
+            currently support this. However, there are ways around this 
+            limitation. 
+            </span></p>
+            
+            <p><span class="bodyGrey">
+            One way is to manage this type of relationship manually. For example, 
+            let's say that a parent object <tt>FolderA</tt> needs to hold 
+            references to child objects <tt>FolderB</tt>, <tt>FolderC</tt> and 
+            <tt>FolderD</tt>. The <tt>Folder</tt> object contains not only a 
+            property to hold its own id, but also a property to hold its parent 
+            id (we'll call this <tt>parentId</tt>).  The <tt>parentId</tt> 
+            property is used to determine if there is a relationship to another 
+            <tt>Folder</tt> object. If <tt>parentId</tt> is null, there is no 
+            relationship.  If <tt>parentId</tt> is populated, there is a 
+            relationship and the object tree can be walked by comparing the 
+            object id to the <tt>parentId</tt>. When the two properties are 
+            equal, you're at the top of the tree. 
+            </span></p>
+
+            <p><span class="bodyGrey">
+            Another say to solve this problem is to make use of an intermediary 
+            object. For example, a <tt>Folder</tt> object contains a <tt>Reference</tt> 
+            object in lieu of the actual <tt>Folder</tt> object. The <tt>Reference</tt> 
+            object is somewhat of a proxy object whereby it only contains enough 
+            information to identify the object to which the <tt>Reference</tt> 
+            object refers. Then the <tt>Folder</tt> object can be easily 
+            instantiated via the information contained in the <tt>Reference</tt>
+            object. 
+            </span></p>
+        
+
+        <a name="Why-do-I-get-an-ObjectModifiedException-when-trying-to-commit-a-transaction?"><h3>Why do I get an ObjectModifiedException when trying to commit a transaction?</h3></a>
+            <p><span class="bodyGrey">
+            The dirty checking engine will throw an <tt>ObjectModifiedException</tt> 
+            when the values in the cache and in the database are different. This 
+            can happen when someone else changed the database content, but also 
+            when type mapping is not reversible.
+            </span></p>
+
+            <p><span class="bodyGrey">
+            For example, if a java timestamp (<tt>java.util.Date</tt>) is stored as 
+            a DATE, the time part is lost and the dirty checking will fail. Oracle 
+            cannot tell the difference between an empty String and a null value: 
+            if an attribute value is an empty String, dirty checking will also 
+            fail. Some precision loss sometimes occur with floating point numbers.
+            </span></p>
+
+            <p><span class="bodyGrey">
+            To avoid this, always use reversible mapping conversions. If this 
+            is not possible, mark the fields with <tt>dirty="ignore"</tt> in 
+            the mapping file.
+            </span></p>
+        
+
+        <a name="I'm-receiving-a-java.sql.SQLException:-ORA-01461"><h3>I'm receiving a java.sql.SQLException: ORA-01461</h3></a>
+            <p><span class="bodyGrey">
+            When using Weblogic Portal 4.0 with Oracle I am receiving the following error:
+            <span class="bodyBlack"><pre>
+java.sql.SQLException: ORA-01461: can bind a LONG value only for insert into a LONG column
+            </pre></span>
+            According to 
+            <a href="http://edocs.bea.com/wlp/docs40/relnotes/relnotes.htm#300245">Weblogic Release Notes</a>,
+            this error can remedied by setting a Weblogic environment variable. 
+            </span></p>
+        
+
+    <a name="Castor-and-performance-caches"><h2>Castor and performance caches</h2></a>
+    
+        <a name="Sometimes-long-transaction-fails:-on-update()-it-is-thrown-ObjectModifiedException.-Why?"><h3>Sometimes long transaction fails: on update() it is thrown ObjectModifiedException. Why?</h3></a>
+            <p><span class="bodyGrey">
+            Most probably the object that is being updated has more than 100 related 
+            objects of one class and the cache size for this class is not enough. 
+            You should either increase the size of the cache or change the cache type 
+            to time-limited (the default cache type is count-limited, the default 
+            size is 100), for example:
+        <span class="bodyBlack"><pre>
+&lt;class ...&gt;
+  &lt;cache-type type="count-limited" capacity="1000"/&gt;
+  ...
+&lt;/class&gt;
+        </pre></span>
+            </span></p>
+        
+
+        <a name="Can-I-use-the-cache-type='none'-with-long-transactions?"><h3>Can I use the cache-type='none' with long transactions?</h3></a>
+            <p><span class="bodyGrey">
+            As of release 0.9.5.3, you cannot. When using a cache of type 'none' with your 
+            'Timestampable' objects, a MappingException is thrown when performing long 
+            transactions. Currently, Castor requires a (performance) cache of type other than 
+            'none' to be used with classes  that implement the 'TimeStampable' interface. In 
+            other words, if you want to use long transactions, please make sure that you use 
+            one of these cache types: 'unlimited', 'count-limited' or 'time-limited'. 
+            </span></p>
+            <p><span class="bodyGrey">
+            The next entry has some more information about a potential cause of confusion in the 
+            context of long transactions and a cache type other than 'unlimited'.
+            </span></p>
+        
+        
+        <a name="What-is-causing-a-PersistenceException-with-long-transactions-and-how-do-I-fix-it?"><h3>What is causing a PersistenceException with long transactions and how do I fix it?</h3></a>
+            <p><span class="bodyGrey">
+            With long transactions, sometimes update() throws a PersistenceException. As of 
+            release 0.9.5.3, Castor requires a (performance) cache (of type other than 
+            'none') to be used with classes that implement the 'TimeStampable' interface. 
+            </span></p>
+            <p><span class="bodyGrey">
+            Please note that if you are using a cache type other than 'unlimited', 
+            it is possible that objects expire from the cache. This case will be highlighted 
+            to you by a PersistenceException being thrown.
+            </span></p>
+            <p><span class="bodyGrey">
+            In this cases, please consider switching to cache type 'unlimited' (if possible) or 
+            increase the size of the cache according to your needs when using 'count-limited'
+            (which has a default capacity of 100). 
+            </span></p>
+        
+        
+    <a name="OQL"><h2>OQL</h2></a>
+
+        <a name="Is-there-any-document-available-for-Castor-OQL?"><h3>Is there any document available for Castor OQL?</h3></a>
+
+            <p><span class="bodyGrey">
+            Yes. It is available from the Castor website: <a href="oql.html">Advanced JDO --&gt; OQL</a>
+            </span></p>
+        
+
+        <a name="The-OQL-document-describes-several-phases-of-development.-Which-is-the-current-phase?"><h3>The OQL document describes several phases of development. Which is the current phase?</h3></a>
+            <p><span class="bodyGrey">
+            We are currently working on Phase 3.
+            </span></p>
+        
+
+        <a name="Does-Castor-OQL-support-sub-queries?"><h3>Does Castor OQL support sub-queries?</h3></a>
+            <p><span class="bodyGrey">
+            Not yet
+            </span></p>
+        
+
+        <a name="I-cannot-get-Castor-OQL-to-join-two-objects-for-me.-Is-it-supported?"><h3>I cannot get Castor OQL to join two objects for me. Is it supported?</h3></a>
+
+            <p><span class="bodyGrey">
+            Yes or no. Castor OQL supports implicit joins. And, in most case, 
+            you simply don't need explicit join.
+            </span></p>
+
+            <p><span class="bodyGrey">
+            Consider the following example, 
+            <span class="bodyBlack"><pre>
+SELECT o FROM Order o, LineItem i WHERE o.id = i.id AND i.price &gt; 100
+            </pre></span>
+            </span></p>
+            <p><span class="bodyGrey">
+            It is simply equivalent to the following OQL
+            <span class="bodyBlack"><pre>
+SELECT o FROM Order o WHERE o.lineItem.price &gt; 100
+            </pre></span>
+            </span></p>
+        
+
+        <a name="Can-I-write-a-pass-thru-OQL?"><h3>Can I write a pass-thru OQL?</h3></a>
+            <p><span class="bodyGrey">
+            Yes. Just put "CALL SQL" keywords in front of your SQL statement. For example,
+            <span class="bodyBlack"><pre>
+OQLQuery oql = castorDb.getOQLQuery(
+    "CALL SQL SELECT id, name, date "+
+    "FROM user WHERE upper(name) like $1 AS myapp.Product");
+            </pre></span>
+            </span></p>
+            <p><span class="bodyGrey">
+            <b>
+            But remember that the order of the fields listed must match what is 
+            defined in the mapping file.
+            </b>
+            </span></p>
+        
+
+        <a name="Does-Castor-OQL-support-struct?"><h3>Does Castor OQL support struct?</h3></a>
+            <p><span class="bodyGrey">
+            No, Castor OQL doesn't support struct. For example, the following 
+            query CANNOT be done:
+            <span class="bodyBlack"><pre>
+select c.name, c.age from Client c
+            </pre></span>
+            </span></p>
+        
+
+        <a name="How-do-I-structure-a-query-using-the-'LIKE'-expression?"><h3>How do I structure a query using the 'LIKE' expression?</h3></a>
+            <p><span class="bodyGrey">
+            A query using the 'LIKE' expression includes the use of the SQL 
+            wildcard '%'. The wildcard must be included in the <span class="bodyBlack"><pre>bind()</pre></span> 
+            statement:
+            <span class="bodyBlack"><pre>
+        OQLQuery oql = castorDb.getOQLQuery( "SELECT p FROM Product p WHERE p.name LIKE $1" );
+        oql.bind( "%widget%" );
+            </pre></span>
+            </span></p>
+        
+
+        <a name="Does-Castor-support-the-SQL-'IN'-expression?"><h3>Does Castor support the SQL 'IN' expression?</h3></a>
+            <p><span class="bodyGrey">
+            Yes. However, the full expression is a bit different using the LIST keyword. 
+            The following example provides a demonstration:
+            <span class="bodyBlack"><pre>
+SELECT p FROM Product p WHERE p.id IN LIST ( 123, 456, 789 )
+            </pre></span>
+            </span></p>
+            <p><span class="bodyGrey">
+            If identifiers other than numbers are used, those identifiers must be 
+            quoted:
+            <span class="bodyBlack"><pre>
+SELECT p FROM Product p WHERE p.name IN LIST ( "abc", "jkl", "xyz" )
+            </pre></span>
+            </span></p>
+			<p><span class="bodyGrey">
+            To include NULL values in the 'IN' list, use the 'nil' keyword:
+            <span class="bodyBlack"><pre>
+SELECT p FROM Product p WHERE p.name IN LIST( "ABC", nil )
+            </pre></span>
+            </span></p>
+			<p><span class="bodyGrey">
+            It is even possible to include bind values in the 'IN' lists using the following syntax:
+            <span class="bodyBlack"><pre>
+SELECT p FROM Product p WHERE p.id IN LIST( $(int)1, $2, $3 )
+            </pre></span>
+			</span></p>
+        
+
+    <a name="Features-requests"><h2>Features requests</h2></a>
+
+        <a name="Can-a-foreign-key-be-part-of-multiple-primary-keys?"><h3>Can a foreign key be part of multiple primary keys?</h3></a>
+            <p><span class="bodyGrey">
+            Unfortunately, the answer is no. We're aware that many users need 
+            this feature so it is a very high priority in our todo list.
+            </span></p>
+
+            <p><span class="bodyGrey">
+            If foreign key is the primary key, as a workaround you may consider 
+            using the 'extends' relationship.
+            </span></p>
+        
+
+        <a name="Is-polymorphic-collection-supported?"><h3>Is polymorphic collection supported?</h3></a>
+            <p><span class="bodyGrey">
+            Unfortunately, the answer is no.
+            </span></p>
+        
+            <p><span class="bodyGrey">
+            In version 0.8.11, we tried to enable polymorphic collection by 
+            introducing the notation of Object Reloading. Object Reloading 
+            delegates the determination of the class to a data object. However, 
+            it is proved that reloading can only be done before any instance of 
+            the target object is returned to user, and we have no way to determine 
+            that. As a result, we removed the support in version 0.9.x.
+            </span></p>
+        
+            <p><span class="bodyGrey">
+            In the near future, we are going to use a new mechanism to provide 
+            extends. The new mechanism loads a table with an SQL statement that 
+            outer-joins all of the extending tables with the base. The existence 
+            of an extended table row can be used to determine the class of a data 
+            object. Notice that all extended table rows of the same entity should 
+            always be stored in the same data-store.
+            </span></p>
+
+            <p><span class="bodyGrey">In the further future, we also want to let users to define a 
+            discriminator column (or determinance field). Basing on the value of 
+            discriminator columns in the base table, the bridge layer fetches the 
+            additional information and returns the combined entity with the 
+            appropriate list of entity classes.
+            </span></p>
+        
+
+     <a name="Data-model-issues"><h2>Data model issues</h2></a>
+
+        <a name="Is-it-possible-to-map-an-object-to-more-than-one-tables?"><h3>Is it possible to map an object to more than one tables?</h3></a>
+            <p><span class="bodyGrey">
+            Yes, if the two tables share the same identity, you can specify one 
+            data object to "extends" the other. When the extended data object is 
+            loaded, its table (specified in &lt;map-to/&gt; will be joined 
+            with all the tables of its super classes'.
+            </span></p>
+
+            <p><span class="bodyGrey">Another solution (in my opinion more flexible) is having two set 
+            of methods in the main object. One for Castor JDO and another for 
+            application.
+            </span></p>
+
+            <p><span class="bodyGrey">
+            Consider the following example:
+            <span class="bodyBlack"><pre>
+class Employee {
+   private int _employeeNumber;
+   private Address _address;
+   private Collection _workGroup;
+
+   public int getEmployeeNumber() {
+        return _employeeNumber;
+   }
+   public void setEmployeeNumber( int id ) {
+        _employeeNumber = id;
+   }
+
+   // methods for Castor JDO
+   public Address getAddress() {
+       return _address;
+   }
+   public void setAddress( Address address ) {
+        _address = address;
+   }
+   public Collection getWorkGroup() {
+        return _workGroup;
+   }
+   public Collection setWorkGroup( Collection workGroup ) {
+        _workGroup = workGroup;
+   }
+
+   // methods for application
+   public String getAddressCity() {
+       return _address.getCity();
+   }
+   public String getAddressZip() {
+       return _address.getZip();
+   }
+   // ...
+}
+            </pre></span>
+            </span></p>
+        
+
+        <a name="Can-an-object-with-the-same-identity-be-re-created-after-being-removed-in-the-same-transaction?"><h3>Can an object with the same identity be re-created after being removed in the same transaction?</h3></a>
+            <p><span class="bodyGrey">
+            Yes, as long as the deleted object is the same instance as the one being recreated.
+            </span></p>
+        
+
+        <a name="What-is-a-dependent-object?"><h3>What is a dependent object?</h3></a>
+            <p><span class="bodyGrey">
+            Dependent object is actually a concept from the object-oriented 
+            database world.  A dependent object's lifetime depends on its master 
+            object. So, create/delete/update of the master object will trigger 
+            the proper actions, newly linked dependent object will be 
+            automatically created and de-referenced dependent object will be 
+            removed.
+            </span></p>
+
+            <p><span class="bodyGrey">
+            The concept was also used in the earlier CMP 2.0 draft, although 
+            it is later removed.
+            </span></p>
+        
+
+        <a name="Can-a-data-object-involved-in-many-to-many-relationship-be-dependent?"><h3>Can a data object involved in many-to-many relationship be dependent?</h3></a>
+            <p><span class="bodyGrey">No</span></p>
+        
+
+     <a name="Castor-JDO-design"><h2>Castor JDO design</h2></a>
+
+        <a name="How-does-Castor-JDO-work-anyway?"><h3>How does Castor JDO work anyway?</h3></a>
+            <p><span class="bodyGrey">
+            Let's use object loading as an example.
+            </span></p>
+
+            <p><span class="bodyGrey">
+            When an application invoke db.load, the underneath <tt>TransactionContext</tt> 
+            is invoked. If the object with the requested identity exists in the 
+            <tt>TransactionContext</tt>, previously loaded object in the 
+            <tt>TransactionContext</tt> is returned. Otherwise, <tt>TransactionContext</tt> 
+            creates a new instance of the interested type and invokes LockEngine 
+            to "fill" the object.
+            </span></p>
+
+            <p><span class="bodyGrey">
+            <tt>LockEngine</tt> acquires a lock of the object, and it makes sure 
+            <tt>ClassMolder</tt> has a thread-safe environment when it invokes 
+            <tt>ClassMolder</tt>.  In <tt>ClassMolder</tt>, if the interested 
+            set of fields representing the object is not existed in the cache 
+            yet, <tt>SQLEngine</tt> will be invoked and the set of fields from 
+            the underneath data store will be returned.  <tt>ClassMolder</tt> 
+            binds the loaded or cached fields into the new instance. 
+            <tt>ClassMolder</tt> requests the <tt>TransactionContext</tt> to 
+            load the related and the dependent objects. Eventually, the object 
+            is returned after all of the relationships are resolved.
+            </span></p>
+
+            <p><span class="bodyGrey">
+            The process of commit has several states. The first state is 
+            preStore. In preStore state, objects existing in the <tt>TransactionContext</tt> 
+            are checked for modification one by one, including dependent and 
+            related objects. De-referenced dependent objects are marked as 
+            delete-able, and reachable dependent objects are added into 
+            <tt>TransactionContext</tt>. An object is marked "dirty" if it is 
+            modified. Also, if any modification should cause any related or 
+            dependent to be dirty, the related or dependent object is marked as 
+            dirty as well.
+            </span></p>
+
+            <p><span class="bodyGrey">
+            After the preStore state, all dirty object is properly stored. And, 
+            all marked delete object will be removed. Then, the connection is 
+            committed. If succeed, all cache with be updated. Finally, all lock 
+            is released.
+            </span></p>
+        
+
+        <a name="Does-Castor-support-two-phase-commits?-How-is-this-implemented?"><h3>Does Castor support two-phase commits? How is this implemented?</h3></a>
+            <p><span class="bodyGrey">Yes, via <tt>javax.transaction.Synchronization</tt> interface.</span></p>
+            
+            <p><span class="bodyGrey">
+            For Castor to work with global transactions, Castor must be configured
+            to use global transaction demarcation in its main configuration file:
+            </span></p>
+
+            <span class="bodyBlack"><pre>
+&lt;jdo-conf&gt;
+   ...
+   &lt;transaction-demarcation mode="global" &gt;
+      &lt;transaction-manager name="jndi" /&gt;
+   &lt;/transaction-demarcation&gt;
+&lt;/jdo-conf&gt;
+            </pre></span>
+
+            <p><span class="bodyGrey">When retrieving a Database instance via</span></p>
+
+            <span class="bodyBlack"><pre>
+...
+JDOManager.loadConfiguration("jdo-conf.xml");
+JDOManager jdo = JDOManager.createInstance("mydb");
+...
+Database db = jdo.getDatabase();
+            </pre></span>
+            
+            <p><span class="bodyGrey">
+            the <tt>Database</tt> implementation will authomatically be registered with 
+            the transaction manager, as it implements <tt>javax.jta.Synchronization</tt>
+            interface. Subsequently, the transaction manager communicates with Castor 
+            via the beforeCompletion() and afterCompletion() calls.
+            </span></p>
+        
+
+        <a name="Does-Castor-support-nested-transaction?"><h3>Does Castor support nested transaction?</h3></a>
+            <p><span class="bodyGrey">No</span></p>
+        
+
+     <a name="Working-with-open-source-databases"><h2>Working with open source databases</h2></a>
+
+        <a name="Does-Castor-support-PosgreSQL?"><h3>Does Castor support PosgreSQL?</h3></a>
+            <p><span class="bodyGrey">
+            Yes, starting from PostgreSQL 7.1, where outer joins support has 
+            been added.
+            </span></p>
+        
+
+        <a name="Does-Castor-support-MySQL?"><h3>Does Castor support MySQL?</h3></a>
+            <p><span class="bodyGrey">
+            Yes, starting from MySQL version 3.23, where transaction support has 
+            been added. Note: if you use Mark Matthews MySQL JDBC driver, then 
+            you need version 2.0.3 or higher.
+            </span></p>
+         
+
+        <a name="Which-Open-Source-database-is-supported-better?"><h3>Which Open Source database is supported better?</h3></a>
+            <p><span class="bodyGrey">
+            For now only with <a href="http://www.postgresql.org">PostgreSQL 7.1</a> 
+            and <a href="http://www.sapdb.org">SAP DB</a> you get a full set of 
+            Castor features. Other Open Source databases don't support select 
+            with write lock, so db-locked locking mode doesn't work properly 
+            (it works in the same way as exclusive locking mode).
+            </span></p>
+
+            <p><span class="bodyGrey">
+            All other Castor features are supported with <a href="http:/www.mysql.com">MySQL</a>, 
+            <a href="http://www.interbase2000.org">Interbase</a>, 
+            <a href="http://instantdb.enhydra.org">InstantDB</a> and 
+            <a href="http://www.hypersonicsql.com">Hypersonic SQL</a>.
+            </span></p>
+        
+
+    <a name="RDBMS-specific-issues"><h2>RDBMS-specific issues</h2></a>
+    
+    	<a name="MySQL"><h3>MySQL</h3></a>
+
+    		<a name="Use-of-DATETIME-fields-in-general"><h4>Use of DATETIME fields in general</h4></a>
+    	
+    			<p><span class="bodyGrey">MySQL in it's current releases (4.0.x and 4.1.x) does not store fractions of a 
+    			   second in fields of type DATETIME that are mapped to java.sql.TimeStamp fields.
+    			   As a result, Castor will throw ObjectModifiedExceptions during commits as Castor 
+    			   internally maintains fractions of a seconds. </span></p> 
+    			<p><span class="bodyGrey">Instead, Please use a column type that can be mapped to a long value, as Castor 
+                   internally handles conversion between java.util.Date and long values with 
+                   the required precision.</span></p>
+    		
+    		
+    		<a name="Use-of-TIMESTAMP-fields-&-NULLs-in-long-transactions"><h4>Use of TIMESTAMP fields &amp; NULLs in long transactions</h4></a>
+    		
+    			<p><span class="bodyGrey">In MySQL, fields of type 'Timestamp' exhibit special behaviour wih regards to 
+    			   NULLs. When inserting a "NULL" into such a field, it actually inserts the 
+    			   current date and time. This causes problems for Castor's caching mechanism since 
+    			   Castor internally believes the field is still NULL. If you subsequently perform 
+    			   an update on the entry whilst it is still in the cache, an 
+    			   ObjectModifiedException will be thrown, because Castor believes that the database 
+    			   record has changed in the meantime.</span></p>
+
+                <p><span class="bodyGrey">The workaround is to use a DATETIME field instead of TIMESTAMP.</span></p>
+                
+    		
+
+    		<a name="MySQL-4.1.x-and-upgrade-issues"><h4>MySQL 4.1.x and upgrade issues</h4></a>
+    		
+ 				<p><span class="bodyGrey">As with many other open source products, MySQL seems to be changing slightly from 
+ 				   version to version. There seems to be a problem with concurrency in MySQL 4.1.5
+				   that can be resolved by upgrading to 4.1.7 or higher.</span></p>
+				   
+				<p><span class="bodyGrey">With the 3.1.x releaseo of MySQL's Connector/J , the 'LIMIT $1' syntax of OQL does not 
+				   work. We hence advise you to stay with the Connector/J 3.0.16 release instead until 
+				   further notice.</span></p>
+			
+			
+    		
+
+    	
+
+    	<a name="Oracle"><h3>Oracle</h3></a>
+
+    		<a name="Oracle-&-(C|B)LOB-fields"><h4>Oracle &amp; (C|B)LOB fields</h4></a>
+    			<p><span class="bodyGrey">As of Oracle release 10g, the problem of Castor to handle BLOBs with a 
+    			   size greater than 2kB and CLOBs with a size greater than 4 kB correctly has been resolved. 
+    			   With the 10 release of Oracle's JDBC driver, both driver types (type 2 and type 4) can 
+    			   be used. With earlier releases, only the OCI driver (type 2) seems to work.</span></p>
+    			   
+    			<p><span class="bodyGrey">The 10g release of the Oracle JDBC Driver can be downloaded
+    			   <a href="http://www.oracle.com/technology/software/tech/java/sqlj_jdbc/index.html">here</a>.</span></p>
+    			
+    		
+    		
+    	
+    <a name="Castor-&-Logging"><h2>Castor &amp; Logging</h2></a>
+	
+			
+        <a name="How-can-I-integrate-Castor's-logging-with-a-logging-infrastructure-using-Log4J?"><h3>How can I integrate Castor's logging with a logging infrastructure using Log4J?</h3></a>
+            <p><span class="bodyGrey">
+            Please see <a href="http://www.mail-archive.com/castor-dev@exolab.org/msg02710.html">
+            this message</a> from the mailing list. It includes an adapter class 
+            that will provide this functionality. (Thanks John!)
+            </span></p>
+        
+
+		<a name="Can-I-see-what-SQL-statement-Castor-issues-to-the-database-as-a-result-of-an-operation?"><h3>Can I see what SQL statement Castor issues to the database as a result of an operation?</h3></a>
+			
+			<p><span class="bodyGrey">Yes, you can. By default, Castor uses JDBC proxy classes (wrapping
+			   <tt>java.sql.Connection</tt> and <tt>java.sql.PreparedStatement</tt>) that capture the 
+			   core SQL statements as generated by Castor and the user-supplied parameters at execution time
+			   of the various persistence operations, and outputs them to the standard logger used
+			   by Castor. By default, these output statements are not visible, as the log level is set 
+			   to level 'info'. To see these SQL statements, please increase the log level to level 
+			   'debug' in <tt>log4j.xml</tt>.</span></p>
+			   
+		
+	
+		<a name="How-can-I-disable-the-use-of-JDBC-proxy-classes?"><h3>How can I disable the use of JDBC proxy classes?</h3></a>
+			
+			<p><span class="bodyGrey">As of <b>release 0.9.7</b>, a new property<span class="bodyBlack"><pre>org.exolab.castor.persist.useProxies</pre></span>
+			   has been added to <tt>castor.properties</tt> to allow configuration of the JDBC proxy 
+			   classes mentioned above. If enabled, JDBC proxy classes will be used for logging SQL 
+			   statements. When turned off, no logging statements will be generated at all.</span></p>
+			   
+		
+		
+	<a name="Lazy-Loading-related-questions"><h2>Lazy Loading related questions</h2></a>
+   
+       <a name="How-do-I-configure-the-JDO-mapping-to-use-the-lazy-loading-feature-for-1:1-relations?"><h3>How do I configure the JDO mapping to use the lazy loading feature for 1:1 relations?</h3></a>
+
+           <p><span class="bodyGrey">Let us convert one of the classes from the 
+              <a href="http://castor.org/examples.html">JDO examples</a> to use 
+              lazy-loading.</span></p>
+
+           <p><span class="bodyGrey">In the example model, every Product belongs to one ProductGroup. This is 
+              reflected in the conventional mapping as below. Here's the mapping for 
+              Product:</span></p>
+
+           <span class="bodyBlack"><pre><p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+&lt;!--  Mapping for Product  --&gt;
+&lt;class name="myapp.Product"
+       identity="id"&gt;
+   &lt;description&gt;Product definition&lt;/description&gt;
+   &lt;map-to table="prod" xml="product" /&gt;
+   &lt;field name="id" type="integer"&gt;
+       &lt;sql name="id" type="integer" /&gt;
+       &lt;xml name="id" node="attribute"/&gt;
+   &lt;/field&gt;
+ 
+   &lt;!-- more fields ... --&gt;
+
+    &lt;!--  Product has reference to ProductGroup,
+          many products may reference same group  --&gt;
+    &lt;field name="group" type="myapp.ProductGroup"&gt;
+      &lt;sql name="group_id" /&gt;
+      &lt;bind-xml name="group" node="element" /&gt;
+    &lt;/field&gt;
+    
+&lt;/class&gt;
+</pre></span></td></tr></table></td></tr></table><p></p></pre></span>
+
+           <p><span class="bodyGrey">Let us now make the relationship between Product and ProductGroup use 
+              lazy loading. The relevant field in Product can be re-written like so:</span></p>
+
+           <span class="bodyBlack"><pre>
+               <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+    &lt;field name="group" type="myapp.ProductGroup" <b>lazy="true"</b>&gt;
+      &lt;sql name="group_id" /&gt;
+      &lt;bind-xml name="group" node="element" /&gt;
+    &lt;/field&gt;
+               </pre></span></td></tr></table></td></tr></table><p></p>
+           </pre></span>
+
+           <p><span class="bodyGrey">There have been one change only. We have placed the attribute lazy="true" in 
+              the field element. Note that no change is required in the ProductDetail 
+              mapping.</span></p>
+
+       
+
+       <a name="Lazy-loading-for-1:1-relations-and-serialization"><h3>Lazy loading for 1:1 relations and serialization</h3></a>
+       
+       	   <p><span class="bodyGrey">Please note that Castor does not support full serialization of lazy-loaded objects
+       	      at this time. Rather than serializing just the information required to re-build the 
+       	      underlying proxy implementation during deserialization, Castor will materialize (read: 
+       	      load from the persistence store) all objects before serialization. As this can lead to 
+       	      a lot of database accesses, please use this feature carefully. A full working 
+       	      solution will be provided with the next release.</span></p>
+       	      
+       
+       
+       <a name="How-do-I-configure-the-JDO-mapping-to-use-the-lazy-loading-feature-for-1:m-and-M:N-relations?"><h3>How do I configure the JDO mapping to use the lazy loading feature for 1:m and M:N relations?</h3></a>
+           <p><span class="bodyGrey">
+           Let us convert one of the classes from the <a href="http://castor.org/examples.html">
+           JDO examples</a> to use lazy-loading.
+           </span></p>
+
+           <p><span class="bodyGrey">
+           In the example model, one Product can contain many ProductDetails. This 
+           is reflected in the conventional mapping as below. First, the mapping for 
+           Product:
+           <span class="bodyBlack"><pre>
+&lt;!--  Mapping for Product  --&gt;
+&lt;class name="myapp.Product"
+       identity="id"&gt;
+   &lt;description&gt;Product definition&lt;/description&gt;
+   &lt;map-to table="prod" xml="product" /&gt;
+   &lt;field name="id" type="integer"&gt;
+       &lt;sql name="id" type="integer" /&gt;
+       &lt;xml name="id" node="attribute"/&gt;
+   &lt;/field&gt;
+ 
+   &lt;!-- more fields ... --&gt;
+
+   &lt;!-- Product has reference to ProductDetail
+            many details per product  --&gt;
+   &lt;field name="details" type="myapp.ProductDetail" required="true"
+           collection="vector"&gt;
+       &lt;sql many-key="prod_id"/&gt;
+       &lt;xml name="detail" node="element" /&gt;
+   &lt;/field&gt;
+&lt;/class&gt;
+            </pre></span>
+            </span></p>
+           <p><span class="bodyGrey">
+           Now let us examine ProductDetail. Note, the relationship is mapped 
+           <a href="#bi-directional">bi-directionally</a> as must be all relationships 
+           when using Castor JDO.
+           <span class="bodyBlack"><pre>
+&lt;!--  Mapping for Product Detail --&gt;
+&lt;class name="myapp.ProductDetail" identity="id" depends="myapp.Product" &gt;
+   &lt;description&gt;Product detail&lt;/description&gt;
+    &lt;map-to table="prod_detail" xml="detail" /&gt;
+   &lt;field name="id" type="integer"&gt;
+       &lt;sql name="id" type="integer"/&gt;
+       &lt;xml node="attribute"/&gt;
+    &lt;/field&gt;
+    &lt;field name="product" type="myapp.Product"&gt;
+       &lt;sql name="prod_id" /&gt;
+       &lt;xml name="product" node="element" /&gt;
+    &lt;/field&gt;
+   
+       &lt;!-- more fields ... --&gt;
+   
+&lt;/class&gt;
+           
+           </pre></span>
+           </span></p>
+           <p><span class="bodyGrey">
+           Let us now make the relationship between Product and ProductDetail use 
+           lazy loading. We need only change the way that the relationship to 
+           ProductDetail is specified in the mapping of Product. The relevant field 
+           in Product can be re-written like so: 
+           <span class="bodyBlack"><pre>
+&lt;field name="details" type="myapp.ProductDetail" required="true" lazy="true"
+            collection="collection"&gt;
+   &lt;sql many-key="prod_id"/&gt;
+   &lt;xml name="detail" node="element" /&gt;
+&lt;/field&gt;
+           
+           </pre></span>
+           </span></p>
+           <p><span class="bodyGrey">
+           There have been two changes.
+           <table border="0" cellpadding="2" cellspacing="2"><tr><td colspan="2" height="5"></td></tr><span class="bodyGrey">
+               <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">We have placed the attribute lazy="true" in the field element</span></td></tr>
+               <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">We have changed the type of the underlying collection type to be 
+               a <tt>java.util.Collection</tt> by changing the field element attribute 
+               to collection="collection".</span></td></tr>
+           </span></table>   
+           </span></p>
+           <p><span class="bodyGrey"> 
+           Note that no change is required in the ProductDetail mapping.
+           </span></p>
+       
+
+       
+       <a name="I-have-modified-my-mapping-to-use-lazy-loading.-Now-I---------get-the-error-'no-method-to-set-value-for-field:-com.xyz.ClassB-in-class:---------ClassMolder-com.xyz.ClassA'-or-'org.exolab.castor.jdo.DataObjectAccessException:---------no-method-to-set-value-for-field:-com.xyz.ClassB-in-class:-ClassMolder---------com.xyz.ClassA'.-What-am-I-doing-wrong?"><h3>I have modified my mapping to use lazy loading. Now I         get the error 'no method to set value for field: com.xyz.ClassB in class:         ClassMolder com.xyz.ClassA' or 'org.exolab.castor.jdo.DataObjectAccessException:         no method to set value for field: com.xyz.ClassB in class: ClassMolder         com.xyz.ClassA'. What am I doing wrong?</h3></a>
+           <p><span class="bodyGrey">
+           To use lazy loading you must also change the persistent class that 
+           will hold the related objects. At the very highest level, you need 
+           to provide a set method that accepts a java.util.Collection for the 
+           field in question. This is demonstrated by changing the 
+           <a href="http://castor.org/examples.html">JDO examples</a> below.
+           </span></p>
+
+           <p><span class="bodyGrey">
+           In the original Product class we have the following code:
+           <span class="bodyBlack"><pre>
+import java.util.Vector;
+...
+private Vector       _details = new Vector();
+...
+public Vector getDetails()
+{
+   return _details;
+}
+
+
+public void addDetail( ProductDetail detail )
+{
+   _details.add( detail );
+   detail.setProduct( this );
+}
+           </pre></span>
+           </span></p>
+
+           <p><span class="bodyGrey">
+           Let us now make the necessary changes to set up lazy loading. As stated 
+           above we now require a special set method for the related ProductDetails 
+           (stored originally as a <tt>java.util.Vector</tt>) that accepts a 
+           <tt>java.util.Collection</tt> as an argument. This mandates that we must 
+           also use a <tt>java.util.Collection</tt> to hold our ProductDetails. If 
+           this is not added, you will receive the errors above.
+           <span class="bodyBlack"><pre>
+import java.util.Collection;
+...
+private Collection       _details;
+...
+public Collection getDetails()
+{
+   return _details;
+}
+
+
+public void setDetails( Collection details )
+{
+   _details = details;
+}
+
+           </pre></span>
+           </span></p>
+        
+
+    <a name="Tuning-for-LOBs"><h2>Tuning for LOBs</h2></a>
+        <p><span class="bodyGrey">
+        Castor JDO provides a property in <tt>castor.properties</tt> for adjusting 
+        the size of the JDBC driver's buffer for reading LOBs (BLOBs and CLOBs) from 
+        the database. The propery is named <tt>org.exolab.castor.jdo.lobBufferSize</tt> 
+        and its default is 5120 bytes (5k). The size of this buffer can be tuned
+        for larger LOBs, but is dependent upon the JDBC driver implementation being 
+        used and what it supports. 
+        </span></p>
+    <a name="Database-specific-issues"><h2>Database-specific issues</h2></a>
+    
+        <a name="HSQL-and-identity-key-generators"><h3>HSQL and identity key generators</h3></a>
+            <p><span class="bodyGrey">Due to a product limitation, AUTO_INCREMENT sequences in HSQL begin with 0 rather 1, 
+               as is the case with most other RDBMS. As a result of this, long transactions will 
+               not work for the object with the identity 0, and a ObjectModifiedException will be 
+               thrown.</span></p>
+               
+            <p><span class="bodyGrey">To avoid this issue, we recommend inserting a temp object into the database in 
+               question, and removing thereafter so that no object with identity 0 is stored.</span></p>
+	    
+	    
+    <a name="Changing-database-configurations"><h2>Changing database configurations</h2></a>
+
+        <p><span class="bodyGrey">Some applications need to change the database connection or
+           switch between different mapping files on the fly. Because Castor
+           caches database configurations per name, you would have to register
+           a new JDO configuration using a distinct name for any of the
+           different configurations.</span></p> 
+
+		<p><span class="bodyGrey">Instead you can call <a href="javadoc/org/exolab/castor/jdo/engine/DatabaseRegistry.html#clear()">clear()</a> to 
+		   reset the database registry before registering the new configuration as follows:</span></p>
+
+		<span class="bodyBlack"><pre>
+<span class="bodyGrey"><font color="red">// Reset database registry</font></span>
+org.exolab.castor.jdo.engine.DatabaseRegistry.clear();
+		</pre></span>
+    </td></tr><tr height="5"><td width="10" height="5" bgcolor="#7270c2" valign="top" align="left">&nbsp;</td><td height="5" bgcolor="#7270c2" valign="top" width="150"><img src="images/dotTrans.gif" width="1" height="15" border="0"><br><img src="images/line_sm.gif" width="105" height="3" border="0" align="right"></td><td width="7" height="5" bgcolor="#a9a5de" valign="top" align="left">&nbsp;</td><td width="70" height="5" valign="top" align="left">&nbsp;</td><td width="120" height="5" valign="top" align="left">&nbsp;</td></tr><tr><td width="10" height="5" bgcolor="#7270c2" valign="top" align="left">&nbsp;</td><td bgcolor="#7270c2" valign="top" align="left" width="150"></td><td width="7" bgcolor="#a9a5de" valign="top" align="left"><img src="images/dotTrans.gif" width="1" height="25" border="0"></td><td width="70" valign="top" align="left"><img src="images/dotTrans.gif" width="1" height="25" border="0"></td><td width="120" valign="top" align="left">&nbsp;</td></tr><tr height="5"><td width="10" rowspan="2" height="100%" bgcolor="#7270c2" valign="bottom" align="left"><img src="images/stripes1.gif" width="10" height="125" border="0"></td><td rowspan="2" height="100%" bgcolor="#7270c2" valign="bottom" align="left" width="150"><img src="images/stripe105.gif" width="105" height="125" border="0"></td><td width="7" rowspan="2" height="100%" bgcolor="#a9a5de" valign="top" align="left">&nbsp;</td><td width="70" height="100%" valign="top" align="left">&nbsp;</td><td width="120" height="100%" valign="top" align="left">&nbsp;</td></tr><tr height="5"><td width="70" height="25" valign="top" align="left">&nbsp;</td><td width="400" height="25" valign="bottom" align="left"><br><br><img src="images/line_light.gif" border="0" width="400" height="3"><br><p></p><span class="bodyGrey"><small><notice>
+    Copyright &copy; 1999-2005 <a href="http://www.exolab.org">ExoLab Group</a>, Intalio Inc.,
+    and Contributors.  All rights reserved.
+  </notice><br>&nbsp;<br></small><small><notice>
+    Java, EJB, JDBC, JNDI, JTA, Sun, Sun Microsystems are trademarks or registered
+    trademarks of Sun Microsystems, Inc. in the United States and in other
+    countries. XML, XML Schema, XSLT and related standards are trademarks or registered
+    trademarks of MIT, INRIA, Keio or others, and a product of the World Wide Web
+    Consortium. All other product names mentioned herein are trademarks of their respective
+    owners.
+  </notice><br>&nbsp;<br></small></span><p></p>
+          &nbsp;
+        </td><td width="120" height="25" valign="top" align="left">&nbsp;</td></tr></table><script type="text/javascript">
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script><script type="text/javascript">
+        var pageTracker = _gat._getTracker("UA-3544187-1");
+        pageTracker._trackPageview();
+    </script></body></html>

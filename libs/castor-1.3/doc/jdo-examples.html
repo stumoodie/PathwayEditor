@@ -1,0 +1,713 @@
+<html><head><META http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>Castor JDO code samples</title><link rel="stylesheet" href="default.css"></head><body bgcolor="#ffffff" link="#6763a9" vlink="#6763a9" topmargin="0" bottommargin="0" leftmargin="0" marginheight="0" marginwidth="0"><a name="top"></a><table border="0" cellpadding="0" cellspacing="0" height="400"><tr><td width="10" valign="top" align="left" bgcolor="#7270c2"><img src="images/dotTrans.gif" width="1" height="1" border="0"></td><td valign="top" align="left" bgcolor="#7270c2" width="150"><img src="images/dotTrans.gif" width="1" height="1" border="0"></td><td width="7" valign="top" align="left"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td><td width="70" valign="top" align="left"><img src="images/dotTrans.gif" width="70" height="6" border="0"></td><td width="468" valign="top" align="left"><img src="images/top_2.gif" width="468" height="6" border="0"></td><td width="120" valign="top" align="left"><img src="images/line_purple.gif" width="120" height="6" border="0"></td></tr><tr><td width="10" bgcolor="#7270c2" valign="top" align="left"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td><td bgcolor="#7270c2" valign="top" align="left" width="150"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td><td width="7" bgcolor="#ffffff" valign="top" align="left"></td><td width="70" valign="top" align="left"><img src="images/dotTrans.gif" width="1" height="1" border="0"></td><td width="468" valign="middle" align="left"><a href="license.html"><span class="menuTopOff">License</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.codehaus.org"><span class="menuTopOff">Codehaus</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://openejb.org"><span class="menuTopOff">OpenEJB</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://openjms.sf.net"><span class="menuTopOff">OpenJMS</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://openorb.sf.net"><span class="menuTopOn">OpenORB</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://tyrex.sf.net"><span class="menuTopOff">Tyrex</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br><img src="images/dotTrans.gif" width="1" height="2" border="0"></td><td width="120" height="20" valign="top" align="left">&nbsp;</td></tr><tr><td width="10" bgcolor="#7270c2" valign="top" align="left"><img src="images/dotTrans.gif" width="10" height="3" border="0"></td><td bgcolor="#7270c2" valign="top" align="right" width="150"><img src="images/line_sm.gif" width="105" height="3" border="0"></td><td width="7" bgcolor="#a9a5de" valign="top" align="left"><img src="images/line_sm.gif" width="7" height="3" border="0"></td><td width="70" valign="top" align="left"><img src="images/line_light.gif" width="70" height="3" border="0"></td><td width="468" valign="top" align="left"><img src="images/line_light.gif" width="468" height="3" border="0"></td><td width="120" valign="top" align="left"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td></tr><tr><td bgcolor="#7270c2" valign="top" align="left"><img src="images/dotTrans.gif" width="10" height="10" border="0"></td><td bgcolor="#7270c2" valign="top" align="left" width="150"><img src="images/dotTrans.gif" width="1" height="2" border="0"><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Old releases</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="releases-old.html"><span class="subMenuOff">General</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="1.2/index.html"><span class="subMenuOff">Release 1.2</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="1.3cr1/index.html"><span class="subMenuOff">Release 1.3rc1</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Main</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="index.html"><span class="subMenuOff">Home</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="about.html"><span class="subMenuOff">About</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="features.html"><span class="subMenuOff">Features</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="download.html"><span class="subMenuOff">Download</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="dependencies.html"><span class="subMenuOff">Dependencies</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="reference-guide.html"><span class="subMenuOffHighlighted">Reference guide</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="javadoc/overview-summary.html"><span class="subMenuOff">JavaDoc</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="maven-integration.html"><span class="subMenuOff">Maven 2 support</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="maven-archetypes.html"><span class="subMenuOff">Maven 2 archetypes</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="schema.html"><span class="subMenuOff">DTD &amp; Schemas</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="changes.html"><span class="subMenuOff">Recent HTML changes</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="news.html"><span class="subMenuOff">News Archive</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="http://castor.codehaus.org/rss/castor-announce.xml"><span class="subMenuOff">RSS news feed</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Development/Support</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="lists.html"><span class="subMenuOff">Mailing Lists</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="scm.html"><span class="subMenuOff">SVN/JIRA</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="contributing.html"><span class="subMenuOff">Contributing</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="support.html"><span class="subMenuOff">Support</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="http://bamboo.ci.codehaus.org/browse/CASTOR"><span class="subMenuOff">Continuous builds</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="professional-services.html"><span class="subMenuOffHighlighted">Prof. services</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Related projects</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="spring-orm-integration.html"><span class="subMenuOff">Spring ORM support</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="spring-xml-intro.html"><span class="subMenuOff">Spring XML factories</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ws-integration.html"><span class="subMenuOff">WS frameworks</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">XML</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="xml-link.html"><span class="subMenuOff">XML</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">XML Code Generator</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="srcgen-link.html"><span class="subMenuOff">XML Code Generator</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">JDO</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-introduction.html"><span class="subMenuOff">Introduction</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-starter-tutorial.html"><span class="subMenuOff">First steps</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo.html"><span class="subMenuOff">Using JDO</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-database-conf.html"><span class="subMenuOff">JDO Config</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="types.html"><span class="subMenuOff">Types</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-mapping.html"><span class="subMenuOff">JDO Mapping</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-faq.html"><span class="subMenuOff">JDO FAQ</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-examples.html"><span class="subMenuOff">JDO Examples</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-howto.html"><span class="subMenuOffHighlighted">JDO HOW-TOs</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-tips-tricks.html"><span class="subMenuOffHighlighted">Tips &amp; Tricks</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-other-features.html"><span class="subMenuOff">Other Features</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-self-executable-examples.html"><span class="subMenuOff">JDO sample JAR</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Tools</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="schemaGen-anttask.html"><span class="subMenuOff">Schema generator</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Advanced JDO</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-caching-detail.html"><span class="subMenuOff">Caching</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="oql.html"><span class="subMenuOff">OQL</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="locking.html"><span class="subMenuOff">Trans. &amp; Locks</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="design-persist.html"><span class="subMenuOff">Design</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="key-generator.html"><span class="subMenuOff">KeyGen</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="long-transact.html"><span class="subMenuOff">Long Trans.</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="nested-attr.html"><span class="subMenuOff">Nested Attrs.</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-pooling.html"><span class="subMenuOff">Pooling Examples</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="postgresql-blobs.html"><span class="subMenuOff">LOBs</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-best-practice.html"><span class="subMenuOff">Best practice</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">DDL Generator</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen.html"><span class="subMenuOff">Using DDL Generator</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen-properties.html"><span class="subMenuOff">Properties</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen-anttask.html"><span class="subMenuOff">Ant task</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen-mapping.html"><span class="subMenuOff">Type Mapping</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">More</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="presentations.html"><span class="subMenuOff">Presentations</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="examples.html"><span class="subMenuOff">The Examples</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="extras.html"><span class="subMenuOff">3rd Party Tools</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="test-framework.html"><span class="subMenuOff">JDO Tests</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ctf.html"><span class="subMenuOff">XML Tests</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="conf-lib.html"><span class="subMenuOff">Configuration</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href=""><span class="subMenuOff"></span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="http://www.java.net/"><span class="subMenuOff"><img src="images/javanet_button_90.gif" border="0"></span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">About</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="license.html"><span class="subMenuOff">License</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="user-experience.html"><span class="subMenuOffHighlighted">User stories</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="contributors.html"><span class="subMenuOff">Contributors</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="marketplace.html"><span class="subMenuOff">Marketplace</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="status.html"><span class="subMenuOff">Status, Todo</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="release-notes.html"><span class="subMenuOff">Changelog</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="library.html"><span class="subMenuOff">Library</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="contacts.html"><span class="subMenuOff">Contact</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="origins.html"><span class="subMenuOff">Project Name</span></a></td></tr></table><br></td><td width="7" bgcolor="#a9a5de" valign="top" align="left">&nbsp;</td><td width="70" valign="top" align="left">&nbsp;</td><td rowspan="4" width="468" valign="top"><table cols="2" rows="2" border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td valign="top" align="left"><br><img border="0" height="34" hspace="0" src="images/castor.gif" vspace="0" width="115"><br><img border="0" height="10" hspace="0" src="images/dotTrans.gif"></td><td width="120" height="5" valign="top" align="right"></td></tr></table><p></p><p></p><br><h2 align="center">Castor JDO code samples</h2><p align="center">
+              Documentation Author(s):<br>Werner Guttmann<br></p><HR size="1"><span class="bodyGrey"><b><a href="#Introduction">Introduction</a></b><br></span><span class="bodyGrey"><a href="#Java-class-files">&nbsp;&nbsp;&nbsp;&nbsp;Java class files</a><br></span><span class="bodyGrey"><a href="#DDL">&nbsp;&nbsp;&nbsp;&nbsp;DDL</a><br></span><span class="bodyGrey"><a href="#Object-Mappings">&nbsp;&nbsp;&nbsp;&nbsp;Object Mappings</a><br></span><span class="bodyGrey">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#Read-only-fields">Read-only fields</a><br></span><span class="bodyGrey">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#Transient-fields">Transient fields</a><br></span><span class="bodyGrey"><a href="#Relations">&nbsp;&nbsp;&nbsp;&nbsp;Relations</a><br></span><span class="bodyGrey">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#1:1-relation">1:1 relation</a><br></span><span class="bodyGrey">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#1:M-relation">1:M relation</a><br></span><span class="bodyGrey">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#M:N-relation">M:N relation</a><br></span><span class="bodyGrey"><a href="#Extend-relation-&-polymorphism">&nbsp;&nbsp;&nbsp;&nbsp;Extend relation &amp; polymorphism</a><br></span><span class="bodyGrey"><a href="#OQL-samples">&nbsp;&nbsp;&nbsp;&nbsp;OQL samples</a><br></span><HR size="1"><br><a name="Introduction"><h2>Introduction</h2></a>
+
+       <p><span class="bodyGrey">
+         This document provides object mapping examples and the corresponding
+         Java objects and DDL for the database table.
+       </span></p>
+
+       <a name="Java-class-files"><h3>Java class files</h3></a>
+
+          <p><span class="bodyGrey">
+            The following fragment shows the Java class declaration for the
+            <tt>Product</tt> class:
+          </span></p>
+
+          <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+package myapp;
+
+public class Product {
+
+    private int       _id;
+
+    private String    _name;
+
+    private float     _price;
+
+    private ProductGroup _group;
+
+
+    public int getId() { ... }
+
+    public void setId( int anId ) { ... }
+
+    public String getName() { ... }
+
+    public void setName( String aName ) { ... }
+
+    public float getPrice() { ... }
+
+    public void setPrice( float aPrice ) { ... }
+
+    public ProductGroup getProductGroup() { ... }
+
+    public void setProductGroup( ProductGroup aProductGroup ) { ... }
+}</pre></span></td></tr></table></td></tr></table><p></p>
+
+      <p><span class="bodyGrey">
+        The following fragment shows the Java class declaration for the
+        <tt>ProductGroup</tt> class:
+      </span></p>
+
+      <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+public class ProductGroup {
+
+    private int       _id;
+
+    private String    _name;
+
+    public int getId() { ... }
+
+    public void setId( int id ) { ... }
+
+    public String getName() { ... }
+
+    public void setName( String name ) { ... }
+
+}</pre></span></td></tr></table></td></tr></table><p></p>
+
+      
+
+       <a name="DDL"><h3>DDL</h3></a>
+
+          <p><span class="bodyGrey">
+            The following sections show the DDL for the relational database
+            tables <tt>PROD</tt>, <tt>PROD_GROUP</tt>, and <tt>PROD_DETAIL</tt>:
+          </span></p>
+
+          <p><span class="bodyGrey"><b><tt>PROD</tt></b>:</span></p>
+
+          <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+create table prod (
+  id        int           not null,
+  name      varchar(200)  not null,
+  price     numeric(18,2) not null,
+  group_id  int           not null
+);</pre></span></td></tr></table></td></tr></table><p></p>
+
+          <p><span class="bodyGrey"><b><tt>PROD_GROUP</tt></b>:</span></p>
+
+          <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+create table prod_group (
+  id        int           not null,
+  name      varchar(200)  not null
+);</pre></span></td></tr></table></td></tr></table><p></p>
+
+          <p><span class="bodyGrey"><b><tt>PROD_DETAIL</tt></b>:</span></p>
+
+          <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+create table prod_detail (
+  id        int           not null,
+  prod_id   int           not null,
+  name      varchar(200)  not null
+);</pre></span></td></tr></table></td></tr></table><p></p>
+
+       
+
+       <a name="Object-Mappings"><h3>Object Mappings</h3></a>
+
+        <p><span class="bodyGrey">
+          The following code fragment shows the object mapping for the
+          <tt>ProductGroup</tt> class:
+        </span></p>
+
+        <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+&lt;?xml version="1.0"?&gt;
+&lt;!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Object Mapping DTD Version 1.0//EN"
+                         "http://castor.org/mapping.dtd"&gt;
+&lt;mapping&gt;
+
+  &lt;class name="myapp.ProductGroup" identity="id"&gt;
+
+    &lt;description&gt;Product group&lt;/description&gt;
+
+    &lt;map-to table="prod_group" xml="group" /&gt;
+
+    &lt;field name="id" type="integer" &gt;
+      &lt;sql name="id" type="integer"/&gt;
+    &lt;/field&gt;
+
+    &lt;field name="name" type="string"&gt;
+      &lt;sql name="name" type="char" /&gt;
+    &lt;/field&gt;
+
+  &lt;/class&gt;
+
+&lt;/mapping&gt;</pre></span></td></tr></table></td></tr></table><p></p>
+
+       <p><span class="bodyGrey">
+         As a result of that declaration, Castor JDO will create the following
+         SQL statements for creating, deleting, loading and updating instances
+         of <tt>ProductGroup</tt>:
+       </span></p>
+
+       <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+create: INSERT INTO prod_group (id, name) VALUES (?,?)
+delete: DELETE FROM prod_group WHERE id=?
+load:   SELECT prod_group.id, prod_group.name FROM prod_group WHERE prod_group.id=?;
+update: UPDATE prod_group SET name=? WHERE id=?
+       </pre></span></td></tr></table></td></tr></table><p></p>
+
+       <a name="Read-only-fields"><h4>Read-only fields</h4></a>
+
+          <p><span class="bodyGrey">
+            To declare the <i>name</i> field <b>read-only</b>, the field
+            definition above for the field <i>name</i> needs to be changed to:
+          </span></p>
+
+          <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+  &lt;class name="myapp.ProductGroup" identity="id"&gt;
+
+    ...
+    &lt;field name="name" type="string"&gt;
+      &lt;sql name="name" type="char" <font color="red">read-only="true"</font> /&gt;
+    &lt;/field&gt;
+
+  &lt;/class&gt;</pre></span></td></tr></table></td></tr></table><p></p>
+
+          <p><span class="bodyGrey">
+            As a result of that declaration, Castor JDO creates the following
+            SQL statements for creating, deleting, loading and updating
+            instances of <tt>ProductGroup</tt>:
+          </span></p>
+
+          <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+create: INSERT INTO prod_group (id) VALUES (?)
+delete: DELETE FROM prod_group WHERE id=?
+load:   SELECT prod_group.id, prod_group.name FROM prod_group WHERE prod_group.id=?;
+update: <i>no statement will be generated</i></pre></span></td></tr></table></td></tr></table><p></p>
+
+       
+
+       <a name="Transient-fields"><h4>Transient fields</h4></a>
+
+          <p><span class="bodyGrey">
+            To declare the <i>name</i> field <b>transient</b> with regards to
+            persistence, above field definition for the field <i>name</i> needs
+            to be changed to:
+          </span></p>
+
+          <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+  &lt;class name="myapp.ProductGroup" identity="id"&gt;
+
+    ...
+    &lt;field name="name" type="string" &gt;
+      &lt;sql name="name" type="char" <font color="red">transient="true"</font> /&gt;
+    &lt;/field&gt;
+
+  &lt;/class&gt;</pre></span></td></tr></table></td></tr></table><p></p>
+
+       
+
+    
+
+    <a name="Relations"><h3>Relations</h3></a>
+
+       <a name="1:1-relation"><h4>1:1 relation</h4></a>
+
+          <p><span class="bodyGrey">
+            The following code fragment shows the mapping file for the Product
+            class.  Apart from the simple field declarations, this includes a
+            simple 1:1 relation between <tt>Product</tt> and
+            <tt>ProductGroup</tt>, where every product instance is associated
+            with a <tt>ProductGroup</tt>:
+          </span></p>
+
+          <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+    &lt;class name="myapp.Product" identity="id"&gt;
+
+        &lt;map-to table="prod" /&gt;
+
+        &lt;field name="id" type="integer"&gt;
+            &lt;sql name="id" type="integer" /&gt;
+        &lt;/field&gt;
+
+        &lt;field name="name" type="string"&gt;
+            &lt;sql name="name" type="char" /&gt;
+        &lt;/field&gt;
+
+        &lt;field name="price" type="float"&gt;
+            &lt;sql name="price" type="numeric" /&gt;
+        &lt;/field&gt;
+
+        <font color="red">&lt;field name="group" type="myapp.ProductGroup" &gt;
+            &lt;sql name="group_id" /&gt;
+        &lt;/field&gt;</font>
+
+        &lt;field name="details" type="myapp.ProductDetail"
+               collection="vector"&gt;
+           &lt;sql many-key="prod_id"/&gt;
+        &lt;/field&gt;
+
+        &lt;field name="categories" type="myapp.Category" collection="vector"&gt;
+           &lt;sql name="category_id"
+                many-table="category_prod" many-key="prod_id" /&gt;
+        &lt;/field&gt;
+
+    &lt;/class&gt;</pre></span></td></tr></table></td></tr></table><p></p>
+       
+
+          <a name="1:M-relation"><h4>1:M relation</h4></a>
+             <p><span class="bodyGrey">
+               The following code fragment shows (again) the mapping file for
+               the <tt>Product</tt> class.  The field definition highlighted
+               shows how to declare a 1:M relation between <tt>Product</tt> and
+               <tt>ProductDetail</tt>, where every product instance is made up
+               of many <tt>ProductDetails</tt>:
+             </span></p>
+
+             <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+    &lt;class name="myapp.Product" identity="id"&gt;
+
+        &lt;map-to table="prod" /&gt;
+
+        &lt;field name="id" type="integer"&gt;
+            &lt;sql name="id" type="integer" /&gt;
+        &lt;/field&gt;
+
+        &lt;field name="name" type="string"&gt;
+            &lt;sql name="name" type="char" /&gt;
+        &lt;/field&gt;
+
+        &lt;field name="price" type="float"&gt;
+            &lt;sql name="price" type="numeric" /&gt;
+        &lt;/field&gt;
+
+        &lt;field name="group" type="myapp.ProductGroup" &gt;
+            &lt;sql name="group_id" /&gt;
+        &lt;/field&gt;
+
+        <font color="red">&lt;field name="details" type="myapp.ProductDetail" <font color="red">collection="vector"</font>&gt;
+           &lt;sql many-key="prod_id"/&gt;
+        &lt;/field&gt;</font>
+
+        &lt;field name="categories" type="myapp.Category" collection="vector"&gt;
+           &lt;sql name="category_id"
+                many-table="category_prod" many-key="prod_id" /&gt;
+        &lt;/field&gt;
+    &lt;/class&gt;</pre></span></td></tr></table></td></tr></table><p></p>
+
+             <p><span class="bodyGrey">
+               The following code fragment shows the corresponding mapping
+               entry for the <tt>ProductDetail</tt> class that defines the
+               second leg of the 1:M relation between <tt>Product</tt> and
+               <tt>ProductDetail</tt>.
+             </span></p>
+
+             <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+  &lt;class name="myapp.ProductDetail" identity="id" depends="myapp.Product" &gt;
+
+    &lt;description&gt;Product detail&lt;/description&gt;
+
+    &lt;map-to table="prod_detail" xml="detail" /&gt;
+
+    &lt;field name="id" type="integer"&gt;
+      &lt;sql name="id" type="integer"/&gt;
+    &lt;/field&gt;
+
+    &lt;field name="name" type="string"&gt;
+      &lt;sql name="name" type="char"/&gt;
+    &lt;/field&gt;
+
+    <font color="red">&lt;field name="product" type="myapp.Product"&gt;
+      &lt;sql name="prod_id" /&gt;
+    &lt;/field&gt;</font>
+
+  %lt;/class&gt;</pre></span></td></tr></table></td></tr></table><p></p>
+
+          
+
+          <a name="M:N-relation"><h4>M:N relation</h4></a>
+             <p><span class="bodyGrey">
+               The following code fragment shows (again) the mapping file for
+               the <tt>Product</tt> class.  The field definition highlighted
+               shows how to declare a M:N relation between <tt>Product</tt> and
+               <tt>ProductCategory</tt>, where many products can be mapped to
+               many product categories:
+             </span></p>
+
+             <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+    &lt;class name="myapp.Product" identity="id"&gt;
+
+        &lt;map-to table="prod" /&gt;
+
+        &lt;field name="id" type="integer"&gt;
+            &lt;sql name="id" type="integer" /&gt;
+        &lt;/field&gt;
+
+        &lt;field name="name" type="string"&gt;
+            &lt;sql name="name" type="char" /&gt;
+        &lt;/field&gt;
+
+        &lt;field name="price" type="float"&gt;
+            &lt;sql name="price" type="numeric" /&gt;
+        &lt;/field&gt;
+
+        &lt;field name="group" type="myapp.ProductGroup" &gt;
+            &lt;sql name="group_id" /&gt;
+        &lt;/field&gt;
+
+        &lt;field name="details" type="myapp.ProductDetail" collection="vector"&gt;
+           &lt;sql many-key="prod_id"&gt;/&gt;
+        &lt;/field&gt;
+
+        <font color="red">&lt;field name="categories" type="myapp.Category" collection="vector"&gt;
+           &lt;sql name="category_id"
+                many-table="category_prod" many-key="prod_id" /&gt;
+        &lt;/field&gt;</font>
+
+    &lt;/class&gt;</pre></span></td></tr></table></td></tr></table><p></p>
+
+             <p><span class="bodyGrey">
+               The following code fragment shows the corresponding mapping
+               entry for the <tt>ProductCategory</tt> class that defines the
+               second leg of the M:N relation between <tt>Product</tt> and
+               <tt>Category</tt>.
+             </span></p>
+
+             <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+  &lt;class name="myapp.Category" identity="id"&gt;
+
+    &lt;description&gt;
+        A product category, any number of products can belong to
+        the same category, a product can belong to any number of
+        categories.
+    &lt;/description&gt;
+
+    &lt;map-to table="category" xml="category" /&gt;
+
+    &lt;field name="id" type="integer"&gt;
+      &lt;sql name="id" type="integer"/&gt;
+    &lt;/field&gt;
+
+    &lt;field name="name" type="string"&gt;
+      &lt;sql name="name" type="char"/&gt;
+    &lt;/field&gt;
+
+    <font color="red">&lt;field name="products" type="myapp.Product" collection="vector"&gt;
+      &lt;sql name="prod_id"
+           many-table="category_prod" many-key="category_id" /&gt;
+    &lt;/field&gt;</font>
+
+  &lt;/class&gt;</pre></span></td></tr></table></td></tr></table><p></p>
+          
+
+       
+
+      <a name="Extend-relation-&-polymorphism"><h3>Extend relation &amp; polymorphism</h3></a>
+
+         <p><span class="bodyGrey">
+           As of release 0.9.9, Castor supports polymorphic queries on extend
+           hierarchies.  (That is, hierarchies where some entities "extend"
+           other entities.)  To highlight this new feature, let's add two new
+           classes to what we have currently.
+         </span></p>
+
+         <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+package myapp;
+
+public class <font color="red">Computer extends Product</font> {
+
+    private int       _id;
+
+    private String    _make;
+
+    public int getId() { ... }
+
+    public void setId( int anId ) { ... }
+
+    public String getmake() { ... }
+
+    public void setMake( String aMake ) { ... }
+
+}
+
+public class <font color="red">Car extends Product</font> {
+
+    private int       _id;
+
+    private Date    _registeredIn;
+
+    public int getId() { ... }
+
+    public void setId( int anId ) { ... }
+
+    public Date getRegisteredIn() { ... }
+
+    public void setRegisteredIn( Date aRegisteredIn ) { ... }
+}</pre></span></td></tr></table></td></tr></table><p></p>
+
+          <p><span class="bodyGrey">
+            The corresponding DDL statements for the relational database tables
+            <tt>COMP</tt> and <tt>CAR</tt> would look as follows:
+          </span></p>
+
+          <p><span class="bodyGrey"><b><tt>COMP</tt></b>:</span></p>
+
+          <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+create table prod (
+  id        int           not null,
+  make      varchar(200)  not null
+);</pre></span></td></tr></table></td></tr></table><p></p>
+
+          <p><span class="bodyGrey"><b><tt>CAR</tt></b>:</span></p>
+
+          <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+create table prod_group (
+  id        int           not null,
+  regIn     int           not null
+);</pre></span></td></tr></table></td></tr></table><p></p>
+
+             <p><span class="bodyGrey">
+               Based upon the mapping defined for the <tt>Product</tt> class as
+               shown above, the following code fragment shows the mapping for
+               the <tt>Computer</tt> and <tt>Car</tt> classes.
+             </span></p>
+
+             <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+    &lt;class name="myapp.Computer" <font color="red">extends="myapp.Product"</font> identity="id"&gt;
+
+        &lt;map-to table="COMP" /&gt;
+
+        &lt;field name="id" type="integer"&gt;
+            &lt;sql name="id" type="integer" /&gt;
+        &lt;/field&gt;
+
+        &lt;field name="make" type="string"&gt;
+            &lt;sql name="make" type="char" /&gt;
+        &lt;/field&gt;
+
+    &lt;/class&gt;
+
+    &lt;class name="myapp.Car" <font color="red">extends="myapp.Product"</font> identity="id"&gt;
+
+        &lt;map-to table="CAR" /&gt;
+
+        &lt;field name="id" type="integer"&gt;
+            &lt;sql name="id" type="integer" /&gt;
+        &lt;/field&gt;
+
+        &lt;field name="registeredIn" type="date"&gt;
+            &lt;sql name="regIn" type="long" /&gt;
+        &lt;/field&gt;
+
+    &lt;/class&gt;</pre></span></td></tr></table></td></tr></table><p></p>
+
+        <p><span class="bodyGrey">
+          Based upon this mapping, it is possible to execute the following OQL
+          queries against this class model:
+        </span></p>
+
+        <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+OQLQuery query = d.getOQLQuery("SELECT c FROM <b>myapp.Computer</b> c");
+        </pre></span></td></tr></table></td></tr></table><p></p>
+
+        <p><span class="bodyGrey">To return all computers:</span></p>
+
+        <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+OQLQuery query = d.getOQLQuery("SELECT c FROM myapp.Computer c WHERE c.make = $");
+        </pre></span></td></tr></table></td></tr></table><p></p>
+
+        <p><span class="bodyGrey">To return all computers of a particular make:</span></p>
+
+        <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+OQLQuery query = d.getOQLQuery("SELECT p FROM <b>myapp.Product</b> p");
+        </pre></span></td></tr></table></td></tr></table><p></p>
+
+        <p><span class="bodyGrey">
+          To return all products (where Castor will return the actual object
+          instances, i.e. a <tt>Computer</tt> instance if the object returned
+          by the query is of type <tt>Computer</tt> or a <tt>Car</tt> instance
+          if the object returned by the query is of type <tt>Car</tt>):
+        </span></p>
+
+        <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+OQLQuery query = d.getOQLQuery("SELECT p FROM myapp.Product p WHERE p.group.name = $");
+        </pre></span></td></tr></table></td></tr></table><p></p>
+
+        <p><span class="bodyGrey">
+          To return all products that belong to the specified product group
+          (where Castor will return the actual object instances, i.e. a
+          <tt>Computer</tt> instance if the object returned by the query is of
+          type <tt>Computer</tt> or a <tt>Car</tt> instance if the object
+          returned by the query is of type <tt>Car</tt>):
+        </span></p>
+
+      
+
+      <a name="OQL-samples"><h3>OQL samples</h3></a>
+
+        <p><span class="bodyGrey">
+          Based upon above definitions, here are a few OQL sample queries that
+          highlight various artifacts of the OQL support of Castor JDO.
+        </span></p>
+
+        <p><span class="bodyGrey"><b><i>To Be Written</i></b></span></p>
+      
+
+    </td></tr><tr height="5"><td width="10" height="5" bgcolor="#7270c2" valign="top" align="left">&nbsp;</td><td height="5" bgcolor="#7270c2" valign="top" width="150"><img src="images/dotTrans.gif" width="1" height="15" border="0"><br><img src="images/line_sm.gif" width="105" height="3" border="0" align="right"></td><td width="7" height="5" bgcolor="#a9a5de" valign="top" align="left">&nbsp;</td><td width="70" height="5" valign="top" align="left">&nbsp;</td><td width="120" height="5" valign="top" align="left">&nbsp;</td></tr><tr><td width="10" height="5" bgcolor="#7270c2" valign="top" align="left">&nbsp;</td><td bgcolor="#7270c2" valign="top" align="left" width="150"></td><td width="7" bgcolor="#a9a5de" valign="top" align="left"><img src="images/dotTrans.gif" width="1" height="25" border="0"></td><td width="70" valign="top" align="left"><img src="images/dotTrans.gif" width="1" height="25" border="0"></td><td width="120" valign="top" align="left">&nbsp;</td></tr><tr height="5"><td width="10" rowspan="2" height="100%" bgcolor="#7270c2" valign="bottom" align="left"><img src="images/stripes1.gif" width="10" height="125" border="0"></td><td rowspan="2" height="100%" bgcolor="#7270c2" valign="bottom" align="left" width="150"><img src="images/stripe105.gif" width="105" height="125" border="0"></td><td width="7" rowspan="2" height="100%" bgcolor="#a9a5de" valign="top" align="left">&nbsp;</td><td width="70" height="100%" valign="top" align="left">&nbsp;</td><td width="120" height="100%" valign="top" align="left">&nbsp;</td></tr><tr height="5"><td width="70" height="25" valign="top" align="left">&nbsp;</td><td width="400" height="25" valign="bottom" align="left"><br><br><img src="images/line_light.gif" border="0" width="400" height="3"><br><p></p><span class="bodyGrey"><small><notice>
+    Copyright &copy; 1999-2005 <a href="http://www.exolab.org">ExoLab Group</a>, Intalio Inc.,
+    and Contributors.  All rights reserved.
+  </notice><br>&nbsp;<br></small><small><notice>
+    Java, EJB, JDBC, JNDI, JTA, Sun, Sun Microsystems are trademarks or registered
+    trademarks of Sun Microsystems, Inc. in the United States and in other
+    countries. XML, XML Schema, XSLT and related standards are trademarks or registered
+    trademarks of MIT, INRIA, Keio or others, and a product of the World Wide Web
+    Consortium. All other product names mentioned herein are trademarks of their respective
+    owners.
+  </notice><br>&nbsp;<br></small></span><p></p>
+          &nbsp;
+        </td><td width="120" height="25" valign="top" align="left">&nbsp;</td></tr></table><script type="text/javascript">
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script><script type="text/javascript">
+        var pageTracker = _gat._getTracker("UA-3544187-1");
+        pageTracker._trackPageview();
+    </script></body></html>
