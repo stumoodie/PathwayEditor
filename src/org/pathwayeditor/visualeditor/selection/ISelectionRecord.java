@@ -3,9 +3,9 @@ package org.pathwayeditor.visualeditor.selection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.pathwayeditor.visualeditor.IDrawingPrimitive;
-import org.pathwayeditor.visualeditor.ILinkPrimitive;
-import org.pathwayeditor.visualeditor.INodePrimitive;
+import org.pathwayeditor.visualeditor.controller.IDrawingPrimitive;
+import org.pathwayeditor.visualeditor.controller.ILinkPrimitive;
+import org.pathwayeditor.visualeditor.controller.INodePrimitive;
 
 public interface ISelectionRecord {
 

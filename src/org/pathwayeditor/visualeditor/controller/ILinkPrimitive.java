@@ -1,4 +1,4 @@
-package org.pathwayeditor.visualeditor;
+package org.pathwayeditor.visualeditor.controller;
 
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkEdge;
 import org.pathwayeditor.graphicsengine.ILinkPointDefinition;

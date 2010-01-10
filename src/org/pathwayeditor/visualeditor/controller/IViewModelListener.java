@@ -1,4 +1,4 @@
-package org.pathwayeditor.visualeditor;
+package org.pathwayeditor.visualeditor.controller;
 
 public interface IViewModelListener {
 

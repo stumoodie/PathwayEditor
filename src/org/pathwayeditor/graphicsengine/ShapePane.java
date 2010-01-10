@@ -12,11 +12,11 @@ import org.pathwayeditor.figure.figuredefn.FigureDrawer;
 import org.pathwayeditor.figure.figuredefn.IFigureController;
 import org.pathwayeditor.figure.figuredefn.IGraphicsEngine;
 import org.pathwayeditor.figure.geometry.Envelope;
-import org.pathwayeditor.visualeditor.ILabelPrimitive;
-import org.pathwayeditor.visualeditor.ILinkPrimitive;
-import org.pathwayeditor.visualeditor.INodePrimitive;
-import org.pathwayeditor.visualeditor.IShapePrimitive;
-import org.pathwayeditor.visualeditor.IViewModel;
+import org.pathwayeditor.visualeditor.controller.ILabelPrimitive;
+import org.pathwayeditor.visualeditor.controller.ILinkPrimitive;
+import org.pathwayeditor.visualeditor.controller.INodePrimitive;
+import org.pathwayeditor.visualeditor.controller.IShapePrimitive;
+import org.pathwayeditor.visualeditor.controller.IViewModel;
 import org.pathwayeditor.visualeditor.selection.ISelectionRecord;
 
 public class ShapePane extends Canvas implements IShapePane {

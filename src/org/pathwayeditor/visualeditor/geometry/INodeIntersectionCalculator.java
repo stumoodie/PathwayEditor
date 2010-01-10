@@ -1,13 +1,15 @@
 /**
  * 
  */
-package org.pathwayeditor.visualeditor;
+package org.pathwayeditor.visualeditor.geometry;
 
 import java.util.Comparator;
 import java.util.SortedSet;
 
 import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
+import org.pathwayeditor.visualeditor.controller.INodePrimitive;
+import org.pathwayeditor.visualeditor.controller.IViewModel;
 
 /**
  * @author smoodie

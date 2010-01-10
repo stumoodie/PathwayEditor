@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.pathwayeditor.visualeditor.IDrawingPrimitive;
-import org.pathwayeditor.visualeditor.ILinkPrimitive;
-import org.pathwayeditor.visualeditor.INodePrimitive;
+import org.pathwayeditor.visualeditor.controller.IDrawingPrimitive;
+import org.pathwayeditor.visualeditor.controller.ILinkPrimitive;
+import org.pathwayeditor.visualeditor.controller.INodePrimitive;
 
 public class SelectionRecord implements ISelectionRecord {
 	private Set<IDrawingPrimitive> secondarySelections;

@@ -11,6 +11,10 @@ import org.pathwayeditor.businessobjects.exchange.FileXmlCanvasPersistenceManage
 import org.pathwayeditor.businessobjects.exchange.IXmlPersistenceManager;
 import org.pathwayeditor.businessobjects.management.INotationSubsystemPool;
 import org.pathwayeditor.graphicsengine.ShapePane;
+import org.pathwayeditor.visualeditor.controller.CanvasController;
+import org.pathwayeditor.visualeditor.controller.ICanvasController;
+import org.pathwayeditor.visualeditor.controller.IViewModel;
+import org.pathwayeditor.visualeditor.controller.ViewModel;
 import org.pathwayeditor.visualeditor.selection.ISelectionRecord;
 import org.pathwayeditor.visualeditor.selection.SelectionRecord;
 

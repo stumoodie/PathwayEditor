@@ -1,4 +1,4 @@
-package org.pathwayeditor.visualeditor;
+package org.pathwayeditor.visualeditor.controller;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -20,6 +20,8 @@ import org.pathwayeditor.visualeditor.commands.ICommand;
 import org.pathwayeditor.visualeditor.commands.ICommandStack;
 import org.pathwayeditor.visualeditor.commands.ICompoundCommand;
 import org.pathwayeditor.visualeditor.commands.MoveNodeCommand;
+import org.pathwayeditor.visualeditor.geometry.INodeIntersectionCalculator;
+import org.pathwayeditor.visualeditor.geometry.ShapeIntersectionCalculator;
 import org.pathwayeditor.visualeditor.selection.ISelectionRecord;
 
 public class CanvasController implements ICanvasController {

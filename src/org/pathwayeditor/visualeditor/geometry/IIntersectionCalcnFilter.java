@@ -1,7 +1,9 @@
 /**
  * 
  */
-package org.pathwayeditor.visualeditor;
+package org.pathwayeditor.visualeditor.geometry;
+
+import org.pathwayeditor.visualeditor.controller.INodePrimitive;
 
 
 /**

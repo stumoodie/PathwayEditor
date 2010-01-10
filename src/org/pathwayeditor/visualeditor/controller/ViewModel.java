@@ -1,4 +1,4 @@
-package org.pathwayeditor.visualeditor;
+package org.pathwayeditor.visualeditor.controller;
 
 import java.util.Iterator;
 import java.util.LinkedList;

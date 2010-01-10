@@ -21,7 +21,7 @@ import org.pathwayeditor.businessobjects.drawingprimitives.attributes.RGB;
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.LineSegment;
 import org.pathwayeditor.figure.geometry.Point;
-import org.pathwayeditor.visualeditor.ILinkPrimitive;
+import org.pathwayeditor.visualeditor.controller.ILinkPrimitive;
 
 public class LinkDrawer  {
 	private final Logger logger = Logger.getLogger(this.getClass()); 
