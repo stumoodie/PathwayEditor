@@ -11,7 +11,7 @@ import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.LineSegment;
 import org.pathwayeditor.figure.geometry.Point;
 
-public class LinkPointDefinition {
+public class LinkPointDefinition implements ILinkPointDefinition {
 	private static final int SRC_IDX = 0;
 	private final List<Point> pointList;
 	private final ILinkAttribute link;
@@ -28,14 +28,23 @@ public class LinkPointDefinition {
 		this.pointList.add(link.getTargetTerminus().getLocation());
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.pathwayeditor.graphicsengine.ILinkPointDefinition#setSrcAnchorPosition(org.pathwayeditor.figure.geometry.Point)
+	 */
 	public void setSrcAnchorPosition(Point newPosn){
 		this.pointList.set(SRC_IDX, newPosn);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.pathwayeditor.graphicsengine.ILinkPointDefinition#setTgtAnchorPosition(org.pathwayeditor.figure.geometry.Point)
+	 */
 	public void setTgtAnchorPosition(Point newPosn){
 		this.pointList.set(this.pointList.size()-1, newPosn);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.pathwayeditor.graphicsengine.ILinkPointDefinition#setBendPointPosition(int, org.pathwayeditor.figure.geometry.Point)
+	 */
 	public void setBendPointPosition(int bpIdx, Point newPosn){
 		if(bpIdx >= this.numBendPoints()) throw new IllegalArgumentException("No bendpoint exists with this index: " + bpIdx);
 		
@@ -43,14 +52,23 @@ public class LinkPointDefinition {
 		this.pointList.set(bpIdx+1, newPosn);
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.pathwayeditor.graphicsengine.ILinkPointDefinition#getSrcEndPoint()
+	 */
 	public Point getSrcEndPoint(){
 		return this.pointList.get(SRC_IDX);
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.pathwayeditor.graphicsengine.ILinkPointDefinition#getTgtEndPoint()
+	 */
 	public Point getTgtEndPoint(){
 		return this.pointList.get(this.pointList.size()-1);
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.pathwayeditor.graphicsengine.ILinkPointDefinition#getBendPointPosition(int)
+	 */
 	public Point getBendPointPosition(int bpIdx){
 		if(bpIdx >= this.numBendPoints()) throw new IllegalArgumentException("No bendpoint exists with this index: " + bpIdx);
 		
@@ -58,6 +76,9 @@ public class LinkPointDefinition {
 		return this.pointList.get(bpIdx+1);
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.pathwayeditor.graphicsengine.ILinkPointDefinition#getSourceLineSegment()
+	 */
 	public LineSegment getSourceLineSegment(){
 		return new LineSegment(this.pointList.get(SRC_IDX), this.pointList.get(SRC_IDX+1));
 	}
@@ -70,10 +91,8 @@ public class LinkPointDefinition {
 		return original.getOrigin().translate(x, y);
 	}
 	
-	/**
-	 * Gets the line segment starting at the tgt anchor point and ending at the last bendpoint or the src
-	 * anchor point if there are no bend-points.
-	 * @return
+	/* (non-Javadoc)
+	 * @see org.pathwayeditor.graphicsengine.ILinkPointDefinition#getTargetLineSegment()
 	 */
 	public LineSegment getTargetLineSegment(){
 		int lastIdx = this.pointList.size()-1;
@@ -81,10 +100,16 @@ public class LinkPointDefinition {
 	}
 	
 	
+	/* (non-Javadoc)
+	 * @see org.pathwayeditor.graphicsengine.ILinkPointDefinition#pointIterator()
+	 */
 	public Iterator<Point> pointIterator(){
 		return this.pointList.iterator();
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.pathwayeditor.graphicsengine.ILinkPointDefinition#lineSegIterator()
+	 */
 	public Iterator<LineSegment> lineSegIterator(){
 		List<LineSegment> retVal = new LinkedList<LineSegment>();
 		Point firstP = this.getSrcEndPoint();
@@ -98,6 +123,9 @@ public class LinkPointDefinition {
 	}
 
 	
+	/* (non-Javadoc)
+	 * @see org.pathwayeditor.graphicsengine.ILinkPointDefinition#drawnLineSegIterator()
+	 */
 	public Iterator<LineSegment> drawnLineSegIterator(){
 		List<LineSegment> retVal = new LinkedList<LineSegment>();
 		Point firstP = calcFirstDrawnPoint(this.getSourceLineSegment(), this.link.getSourceTerminus().getEndSize(), this.link.getSourceTerminus().getGap());
@@ -112,33 +140,46 @@ public class LinkPointDefinition {
 		return retVal.iterator();
 	}
 
+	/* (non-Javadoc)
+	 * @see org.pathwayeditor.graphicsengine.ILinkPointDefinition#addNewBendPoint(int, org.pathwayeditor.figure.geometry.Point)
+	 */
 	public void addNewBendPoint(int bpIdx, Point bpPosn) {
 		if(bpIdx > this.numBendPoints()) throw new IllegalArgumentException("Bendpoint index is outseide permitted range: " + bpIdx);
 		this.pointList.add(bpIdx+1, bpPosn);
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.pathwayeditor.graphicsengine.ILinkPointDefinition#addNewBendPoint(org.pathwayeditor.figure.geometry.Point)
+	 */
 	public void addNewBendPoint(Point bpPosn) {
 		this.pointList.add(this.numBendPoints()+1, bpPosn);
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.pathwayeditor.graphicsengine.ILinkPointDefinition#numPoints()
+	 */
 	public int numPoints(){
 		return this.pointList.size();
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.pathwayeditor.graphicsengine.ILinkPointDefinition#numBendPoints()
+	 */
 	public int numBendPoints(){
 		return this.pointList.size()-2;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.pathwayeditor.graphicsengine.ILinkPointDefinition#removeBendPoint(int)
+	 */
 	public void removeBendPoint(int bpIdx) {
 		if(bpIdx >= this.numBendPoints()) throw new IllegalArgumentException("No bendpoint exists with this index: " + bpIdx);
 		
 		this.pointList.remove(bpIdx+1);
 	}
 
-	/**
-	 * Provides the line that defines the direction of the link, going from the src end-point to the
-	 * target end-point. 
-	 * @return the line segment defining the direction of the line from src to tgt.
+	/* (non-Javadoc)
+	 * @see org.pathwayeditor.graphicsengine.ILinkPointDefinition#getLinkDirection()
 	 */
 	public LineSegment getLinkDirection() {
 		return new LineSegment(this.getSrcEndPoint(), this.getTgtEndPoint());

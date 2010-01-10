@@ -8,29 +8,26 @@ import java.awt.RenderingHints;
 import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 
-import org.pathwayeditor.businessobjects.drawingprimitives.ICanvas;
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElement;
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNode;
-import org.pathwayeditor.businessobjects.drawingprimitives.ILinkEdge;
-import org.pathwayeditor.businessobjects.drawingprimitives.IShapeNode;
 import org.pathwayeditor.figure.figuredefn.FigureDrawer;
 import org.pathwayeditor.figure.figuredefn.IFigureController;
-import org.pathwayeditor.figure.figuredefn.IFigureGeometryFactory;
 import org.pathwayeditor.figure.figuredefn.IGraphicsEngine;
 import org.pathwayeditor.figure.geometry.Envelope;
+import org.pathwayeditor.visualeditor.ILabelPrimitive;
+import org.pathwayeditor.visualeditor.ILinkPrimitive;
+import org.pathwayeditor.visualeditor.INodePrimitive;
+import org.pathwayeditor.visualeditor.IShapePrimitive;
+import org.pathwayeditor.visualeditor.IViewModel;
 import org.pathwayeditor.visualeditor.selection.ISelectionRecord;
 
-public class ShapePane extends Canvas {
+public class ShapePane extends Canvas implements IShapePane {
 	private static final long serialVersionUID = -7580080598416351849L;
 
-	private final ICanvas boCanvas;
-	private final IFigureGeometryFactory geomFactory;
+	private final IViewModel geomFactory;
 	private final ISelectionRecord selections;
 	
-	public ShapePane(IFigureGeometryFactory geomFactory, ICanvas boCanvas, ISelectionRecord selectionRecord){
+	public ShapePane(IViewModel geomFactory, ISelectionRecord selectionRecord){
 		super();
 		this.geomFactory = geomFactory;
-		this.boCanvas = boCanvas;
 		this.selections = selectionRecord;
 	}
 	
@@ -43,16 +40,23 @@ public class ShapePane extends Canvas {
 		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 //		g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 		IGraphicsEngine graphicsEngine = new Java2DGraphicsEngine((Graphics2D)g);
-		Iterator<IShapeNode> shapeIter = this.boCanvas.getModel().shapeNodeIterator();
+		Iterator<IShapePrimitive> shapeIter = this.geomFactory.shapePrimitiveIterator();
 		while(shapeIter.hasNext()){
-			IShapeNode shapeNode = shapeIter.next();
-			IFigureController controller = geomFactory.getFigureController(shapeNode);
+			IShapePrimitive shapeNode = shapeIter.next();
+			IFigureController controller = shapeNode.getFigureController();
 			FigureDrawer drawer = new FigureDrawer(controller.getFigureDefinition());
 			drawer.drawFigure(graphicsEngine);
 		}
-		Iterator<ILinkEdge> linkEdgeIter = this.boCanvas.getModel().linkEdgeIterator();
+		Iterator<ILabelPrimitive> labelIter = this.geomFactory.labelPrimitiveIterator();
+		while(labelIter.hasNext()){
+			ILabelPrimitive labelNode = labelIter.next();
+			IFigureController controller = labelNode.getFigureController();
+			FigureDrawer drawer = new FigureDrawer(controller.getFigureDefinition());
+			drawer.drawFigure(graphicsEngine);
+		}
+		Iterator<ILinkPrimitive> linkEdgeIter = this.geomFactory.linkPrimitiveIterator();
 		while(linkEdgeIter.hasNext()){
-			ILinkEdge edge = linkEdgeIter.next();
+			ILinkPrimitive edge = linkEdgeIter.next();
 			LinkDrawer linkDrawer = new LinkDrawer(edge);
 			linkDrawer.paint(g2d);
 		}
@@ -62,13 +66,27 @@ public class ShapePane extends Canvas {
 
 
 	private void paintSelections(Graphics2D g2d) {
-		Iterator<IDrawingElement> selectionIter = this.selections.selectionIterator();
+		Iterator<INodePrimitive> selectionIter = this.selections.selectedNodesIterator();
 		while(selectionIter.hasNext()){
-			IDrawingNode node = (IDrawingNode)selectionIter.next();
-			Envelope bounds = node.getAttribute().getBounds();
+			INodePrimitive node = selectionIter.next();
+			Envelope bounds = node.getConvexHull().getEnvelope();
 			Rectangle2D rect = new Rectangle2D.Double(bounds.getOrigin().getX(), bounds.getOrigin().getY(), bounds.getDimension().getWidth(), bounds.getDimension().getHeight());
 			g2d.setColor(Color.red);
 			g2d.draw(rect);
 		}
+	}
+
+
+
+	@Override
+	public ISelectionRecord getSelectionRecord() {
+		return this.selections;
+	}
+
+
+
+	@Override
+	public IViewModel getViewModel() {
+		return this.geomFactory;
 	}
 }

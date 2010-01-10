@@ -3,19 +3,25 @@ package org.pathwayeditor.visualeditor.selection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElement;
+import org.pathwayeditor.visualeditor.IDrawingPrimitive;
+import org.pathwayeditor.visualeditor.ILinkPrimitive;
+import org.pathwayeditor.visualeditor.INodePrimitive;
 
 public interface ISelectionRecord {
 
-	void setPrimarySelection(IDrawingElement drawingElement);
+	void setPrimarySelection(IDrawingPrimitive drawingElement);
 	
-	void addSecondarySelection(IDrawingElement drawingElement);
+	void addSecondarySelection(IDrawingPrimitive drawingElement);
 	
-	IDrawingElement getPrimarySelection();
+	IDrawingPrimitive getPrimarySelection();
 	
-	Iterator<IDrawingElement> secondarySelectionIterator();
+	Iterator<IDrawingPrimitive> secondarySelectionIterator();
 	
-	Iterator<IDrawingElement> selectionIterator();
+	Iterator<IDrawingPrimitive> selectionIterator();
+	
+	Iterator<INodePrimitive> selectedNodesIterator();
+	
+	Iterator<ILinkPrimitive> selectedLinksIterator();
 	
 	int numSelected();
 	
@@ -27,5 +33,5 @@ public interface ISelectionRecord {
 	
 	List<ISelectionChangeListener> getSelectionChangeListeners();
 
-	boolean isNodeSelected(IDrawingElement testElement);
+	boolean isNodeSelected(IDrawingPrimitive testElement);
 }

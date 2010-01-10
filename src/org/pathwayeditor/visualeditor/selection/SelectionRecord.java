@@ -7,21 +7,22 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElement;
-import org.pathwayeditor.businessobjects.drawingprimitives.IModel;
+import org.pathwayeditor.visualeditor.IDrawingPrimitive;
+import org.pathwayeditor.visualeditor.ILinkPrimitive;
+import org.pathwayeditor.visualeditor.INodePrimitive;
 
 public class SelectionRecord implements ISelectionRecord {
-	private Set<IDrawingElement> secondarySelections;
-	private IDrawingElement primarySelection;
+	private Set<IDrawingPrimitive> secondarySelections;
+	private IDrawingPrimitive primarySelection;
 	private final List<ISelectionChangeListener> listeners;
 	
-	public SelectionRecord(IModel model){
+	public SelectionRecord(){
 		this.primarySelection = null;
-		this.secondarySelections = new TreeSet<IDrawingElement>();
+		this.secondarySelections = new TreeSet<IDrawingPrimitive>();
 		this.listeners = new LinkedList<ISelectionChangeListener>();
 	}
 	
-	public void addSecondarySelection(IDrawingElement drawingElement) {
+	public void addSecondarySelection(IDrawingPrimitive drawingElement) {
 		if(this.primarySelection == null) throw new IllegalStateException("Cannot add a secondary selection before a primary selection");
 
 		if(this.secondarySelections.add(drawingElement)){
@@ -40,7 +41,7 @@ public class SelectionRecord implements ISelectionRecord {
 		notifySelectionChange();
 	}
 
-	public IDrawingElement getPrimarySelection() {
+	public IDrawingPrimitive getPrimarySelection() {
 		return this.primarySelection;
 	}
 
@@ -60,19 +61,19 @@ public class SelectionRecord implements ISelectionRecord {
 		this.listeners.remove(listeners);
 	}
 
-	public Iterator<IDrawingElement> secondarySelectionIterator() {
+	public Iterator<IDrawingPrimitive> secondarySelectionIterator() {
 		return this.secondarySelections.iterator();
 	}
 
-	public Iterator<IDrawingElement> selectionIterator() {
-		LinkedList<IDrawingElement> retVal = new LinkedList<IDrawingElement>(this.secondarySelections);
+	public Iterator<IDrawingPrimitive> selectionIterator() {
+		LinkedList<IDrawingPrimitive> retVal = new LinkedList<IDrawingPrimitive>(this.secondarySelections);
 		if(this.primarySelection != null){
 			retVal.addFirst(this.primarySelection);
 		}
 		return retVal.iterator();
 	}
 
-	public void setPrimarySelection(IDrawingElement drawingElement) {
+	public void setPrimarySelection(IDrawingPrimitive drawingElement) {
 		if(this.primarySelection == null || !this.primarySelection.equals(drawingElement)){
 			// a change in primary selection clears the secondary selection
 			this.primarySelection = drawingElement;
@@ -99,9 +100,35 @@ public class SelectionRecord implements ISelectionRecord {
 		}
 	}
 
-	public boolean isNodeSelected(IDrawingElement testElement) {
+	public boolean isNodeSelected(IDrawingPrimitive testElement) {
 		return this.primarySelection != null && testElement != null
 			&& (this.primarySelection.equals(testElement) || this.secondarySelections.contains(testElement));
+	}
+
+	@Override
+	public Iterator<ILinkPrimitive> selectedLinksIterator() {
+		List<ILinkPrimitive> retVal = new LinkedList<ILinkPrimitive>();
+		Iterator<IDrawingPrimitive> iter = this.selectionIterator();
+		while(iter.hasNext()){
+			IDrawingPrimitive prim = iter.next();
+			if(prim instanceof ILinkPrimitive){
+				retVal.add((ILinkPrimitive)prim);
+			}
+		}
+		return retVal.iterator();
+	}
+
+	@Override
+	public Iterator<INodePrimitive> selectedNodesIterator() {
+		List<INodePrimitive> retVal = new LinkedList<INodePrimitive>();
+		Iterator<IDrawingPrimitive> iter = this.selectionIterator();
+		while(iter.hasNext()){
+			IDrawingPrimitive prim = iter.next();
+			if(prim instanceof INodePrimitive){
+				retVal.add((INodePrimitive)prim);
+			}
+		}
+		return retVal.iterator();
 	}
 
 }
