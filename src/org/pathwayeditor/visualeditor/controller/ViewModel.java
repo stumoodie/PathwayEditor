@@ -171,4 +171,12 @@ public class ViewModel implements IViewModel {
 		return this.domainToViewMap.containsKey(testPrimitive);
 	}
 
+	@Override
+	public void activate() {
+        // now activate all the drawing primitives
+		for(IDrawingPrimitive prim : this.drawingPrimitives){
+        	prim.activate();
+        }
+	}
+
 }

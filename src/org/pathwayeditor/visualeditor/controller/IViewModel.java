@@ -33,5 +33,7 @@ public interface IViewModel {
 	INodePrimitive getNodePrimitive(IDrawingNode testNode);
 	
 	boolean containsDrawingElement(IDrawingElement testPrimitive);
+
+	void activate();
 	
 }

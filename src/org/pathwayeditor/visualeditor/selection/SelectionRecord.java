@@ -7,14 +7,21 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElementSelection;
+import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNode;
+import org.pathwayeditor.businessobjects.drawingprimitives.ILinkEdge;
+import org.pathwayeditor.businessobjects.drawingprimitives.ISelectionFactory;
 import org.pathwayeditor.visualeditor.controller.IDrawingPrimitive;
 import org.pathwayeditor.visualeditor.controller.ILinkPrimitive;
 import org.pathwayeditor.visualeditor.controller.INodePrimitive;
+import org.pathwayeditor.visualeditor.controller.IViewModel;
 
 public class SelectionRecord implements ISelectionRecord {
 	private Set<IDrawingPrimitive> secondarySelections;
 	private IDrawingPrimitive primarySelection;
 	private final List<ISelectionChangeListener> listeners;
+	private IDrawingElementSelection selection;
+	private ISelectionFactory selectionFactory;
 	
 	public SelectionRecord(){
 		this.primarySelection = null;
@@ -26,7 +33,8 @@ public class SelectionRecord implements ISelectionRecord {
 		if(this.primarySelection == null) throw new IllegalStateException("Cannot add a secondary selection before a primary selection");
 
 		if(this.secondarySelections.add(drawingElement)){
-			// only notify if selection is not already recorded
+			// only do something if selection is not already recorded
+			addElementToGraphSelection(drawingElement);
 			notifySelectionChange();
 		}
 	}
@@ -38,6 +46,8 @@ public class SelectionRecord implements ISelectionRecord {
 	public void clear() {
 		this.secondarySelections.clear();
 		this.primarySelection = null;
+		this.selectionFactory = null;
+		this.selection = null;
 		notifySelectionChange();
 	}
 
@@ -77,12 +87,28 @@ public class SelectionRecord implements ISelectionRecord {
 		if(this.primarySelection == null || !this.primarySelection.equals(drawingElement)){
 			// a change in primary selection clears the secondary selection
 			this.primarySelection = drawingElement;
+			this.selectionFactory = drawingElement.getDrawingElement().getModel().newSelectionFactory();
+			this.selection = null;
+			addElementToGraphSelection(drawingElement);
 			this.secondarySelections.clear();
 			notifySelectionChange();
 		}
 	}
 	
 	
+	private void addElementToGraphSelection(IDrawingPrimitive drawingElement) {
+		if(drawingElement.getDrawingElement() instanceof IDrawingNode){
+			this.selectionFactory.addDrawingNode((IDrawingNode)drawingElement.getDrawingElement());
+		}
+		else if(drawingElement.getDrawingElement() instanceof ILinkEdge){
+			this.selectionFactory.addLink((ILinkEdge)drawingElement.getDrawingElement());
+		}
+		else{
+			throw new RuntimeException("Cannot handle drawing element: " + drawingElement);
+		}
+		this.selection = null;
+	}
+
 	private void notifySelectionChange(){
 		ISelectionChangeEvent event = new ISelectionChangeEvent(){
 
@@ -129,6 +155,34 @@ public class SelectionRecord implements ISelectionRecord {
 			}
 		}
 		return retVal.iterator();
+	}
+
+	@Override
+	public Iterator<INodePrimitive> getTopNodeSelection() {
+		if(this.selection == null){
+			this.selection = this.selectionFactory.createEdgeExcludedSelection();
+		}
+		final IViewModel viewModel = this.primarySelection.getViewModel();
+		final Iterator<IDrawingNode> iter = this.selection.topDrawingNodeIterator();
+		Iterator<INodePrimitive> retVal = new Iterator<INodePrimitive>(){
+
+			@Override
+			public boolean hasNext() {
+				return iter.hasNext();
+			}
+
+			@Override
+			public INodePrimitive next() {
+				return viewModel.getNodePrimitive(iter.next());
+			}
+
+			@Override
+			public void remove() {
+				throw new UnsupportedOperationException("Removal not supported");
+			}
+			
+		};
+		return retVal;
 	}
 
 }

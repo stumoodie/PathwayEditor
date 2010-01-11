@@ -23,6 +23,8 @@ public interface ISelectionRecord {
 	
 	Iterator<ILinkPrimitive> selectedLinksIterator();
 	
+	Iterator<INodePrimitive> getTopNodeSelection();
+	
 	int numSelected();
 	
 	void clear();
