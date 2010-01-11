@@ -14,18 +14,18 @@ import org.pathwayeditor.businessobjects.exchange.IXmlPersistenceManager;
 import org.pathwayeditor.businessobjects.management.INotationSubsystemPool;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.graphicsengine.ShapePane;
+import org.pathwayeditor.visualeditor.behaviour.IEditingOperation;
+import org.pathwayeditor.visualeditor.behaviour.IMouseBehaviourController;
+import org.pathwayeditor.visualeditor.behaviour.MouseBehaviourController;
 import org.pathwayeditor.visualeditor.commands.CommandStack;
 import org.pathwayeditor.visualeditor.commands.CompoundCommand;
 import org.pathwayeditor.visualeditor.commands.ICommand;
 import org.pathwayeditor.visualeditor.commands.ICommandStack;
 import org.pathwayeditor.visualeditor.commands.ICompoundCommand;
 import org.pathwayeditor.visualeditor.commands.MoveNodeCommand;
-import org.pathwayeditor.visualeditor.controller.IEditingOperation;
-import org.pathwayeditor.visualeditor.controller.IMouseBehaviourController;
-import org.pathwayeditor.visualeditor.controller.INodePrimitive;
-import org.pathwayeditor.visualeditor.controller.IViewModel;
-import org.pathwayeditor.visualeditor.controller.MouseBehaviourController;
-import org.pathwayeditor.visualeditor.controller.ViewModel;
+import org.pathwayeditor.visualeditor.controller.INodeController;
+import org.pathwayeditor.visualeditor.controller.IViewControllerStore;
+import org.pathwayeditor.visualeditor.controller.ViewControllerStore;
 import org.pathwayeditor.visualeditor.selection.ISelectionRecord;
 import org.pathwayeditor.visualeditor.selection.SelectionRecord;
 
@@ -42,7 +42,7 @@ public class VisualEditor {
 	private static final String TEST_FILE = "test/org/pathwayeditor/graphicsengine/za.pwe";
 	private final JFrame frame;
 	private final ShapePane shapePane;
-	private IViewModel viewModel;
+	private IViewControllerStore viewModel;
 	private ISelectionRecord selectionRecord;
 	private ICommandStack commandStack;
 	private IMouseBehaviourController editBehaviourController;
@@ -53,7 +53,7 @@ public class VisualEditor {
 		this.selectionRecord = new SelectionRecord();
         this.commandStack = new CommandStack();
 		frame = new JFrame("NotationInspector");
-		viewModel = new ViewModel(boCanvas.getModel());
+		viewModel = new ViewControllerStore(boCanvas.getModel());
 		this.shapePane = new ShapePane(viewModel, this.selectionRecord);
 		this.shapePane.setSize(new java.awt.Dimension((int)Math.round(boCanvas.getCanvasSize().getWidth()),
 								(int)Math.round(boCanvas.getCanvasSize().getHeight())));
@@ -62,7 +62,7 @@ public class VisualEditor {
         this.editBehaviourController = new MouseBehaviourController(shapePane, new IEditingOperation(){
 
 			@Override
-			public void addSecondarySelection(INodePrimitive nodeController) {
+			public void addSecondarySelection(INodeController nodeController) {
 				selectionRecord.addSecondarySelection(nodeController);
 				shapePane.repaint();
 			}
@@ -74,7 +74,7 @@ public class VisualEditor {
 			}
 
 			@Override
-			public boolean isNodeSelected(INodePrimitive nodeController) {
+			public boolean isNodeSelected(INodeController nodeController) {
 				return selectionRecord.isNodeSelected(nodeController);
 			}
 
@@ -103,7 +103,7 @@ public class VisualEditor {
 			}
 
 			@Override
-			public void nodePrimarySelection(INodePrimitive nodeController) {
+			public void nodePrimarySelection(INodeController nodeController) {
 				selectionRecord.setPrimarySelection(nodeController);
 				shapePane.repaint();
 			}
@@ -121,10 +121,10 @@ public class VisualEditor {
 //			selectionFactory.addDrawingNode(nodePrimitive.getDrawingElement());
 //		}
 //		IDrawingElementSelection selection = selectionFactory.createEdgeExcludedSelection();
-		Iterator<INodePrimitive> moveNodeIterator = this.selectionRecord.getTopNodeSelection();
+		Iterator<INodeController> moveNodeIterator = this.selectionRecord.getTopNodeSelection();
 		ICompoundCommand cmpCommand = new CompoundCommand();
 		while(moveNodeIterator.hasNext()){
-			INodePrimitive nodePrimitive = moveNodeIterator.next();
+			INodeController nodePrimitive = moveNodeIterator.next();
 			nodePrimitive.translatePrimitive(delta);
 			ICommand cmd = new MoveNodeCommand(nodePrimitive.getDrawingElement(), nodePrimitive.getBounds().getOrigin());
 			cmpCommand.addCommand(cmd);
@@ -141,10 +141,10 @@ public class VisualEditor {
 //			selectionFactory.addDrawingNode(nodePrimitive.getDrawingElement());
 //		}
 //		IDrawingElementSelection selection = selectionFactory.createEdgeExcludedSelection();
-		Iterator<INodePrimitive> moveNodeIterator = this.selectionRecord.getTopNodeSelection();
+		Iterator<INodeController> moveNodeIterator = this.selectionRecord.getTopNodeSelection();
 //		ICompoundCommand cmpCommand = new CompoundCommand();
 		while(moveNodeIterator.hasNext()){
-			INodePrimitive nodePrimitive = moveNodeIterator.next();
+			INodeController nodePrimitive = moveNodeIterator.next();
 			nodePrimitive.translatePrimitive(delta);
 //			ICommand cmd = new MoveNodeCommand(draggedNode, nodePrimitive.getBounds().getOrigin());
 //			cmpCommand.addCommand(cmd);

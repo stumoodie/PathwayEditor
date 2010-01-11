@@ -2,9 +2,9 @@ package org.pathwayeditor.visualeditor.controller;
 
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElement;
 
-public interface IDrawingPrimitive extends Comparable<IDrawingPrimitive> {
+public interface IDrawingPrimitiveController extends Comparable<IDrawingPrimitiveController> {
 
-	IViewModel getViewModel();
+	IViewControllerStore getViewModel();
 	
 	/**
 	 * Gets the drawing element that is the domain model for this primitive.
@@ -22,14 +22,8 @@ public interface IDrawingPrimitive extends Comparable<IDrawingPrimitive> {
 	 */
 	void activate();
 	
-	/**
+	/*
 	 * Turns off listeners and finalises resources on the assumption that this primitive is to be discarded.
 	 */
 	void dispose();
-	
-//	void addDrawingPrimitiveListener(IDrawingPrimitiveListener listener);
-//	
-//	void removeDrawingPrimitiveListener(IDrawingPrimitiveListener listener);
-//	
-//	List<IDrawingPrimitiveListener> getDrawingPrimitiveListeners();
 }

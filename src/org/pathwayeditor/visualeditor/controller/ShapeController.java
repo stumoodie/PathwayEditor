@@ -28,18 +28,18 @@ import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.figurevm.FigureDefinitionCompiler;
 
-public class ShapePrimitive implements IShapePrimitive {
+public class ShapeController implements IShapeController {
 	private final Logger logger = Logger.getLogger(this.getClass());
 	private IShapeNode domainNode;
 	private final ICanvasAttributePropertyChangeListener shapePropertyChangeListener;
 	private final IAnnotationPropertyChangeListener annotPropChangeListener;
 	private IFigureController figureController;
 	private final List<INodePrimitiveChangeListener> listeners;
-	private IViewModel viewModel;
+	private IViewControllerStore viewModel;
 	private final INodePrimitiveChangeListener nodePrimitivateChangeListener;
 	private ICanvasAttributePropertyChangeListener parentDrawingNodePropertyChangeListener;
 	
-	public ShapePrimitive(IViewModel viewModel, IShapeNode node) {
+	public ShapeController(IViewControllerStore viewModel, IShapeNode node) {
 		if(node.isRemoved()) throw new IllegalArgumentException("Node cannot be removed when creating a new drawing primitive");
 		this.viewModel = viewModel;
 		this.domainNode = node;
@@ -83,7 +83,7 @@ public class ShapePrimitive implements IShapePrimitive {
 		nodePrimitivateChangeListener = new INodePrimitiveChangeListener(){
 
 			@Override
-			public void nodeTranslated(INodePrimitiveTranslationEvent e) {
+			public void nodeTranslated(INodeTranslationEvent e) {
 				translatePrimitive(e.getTranslationDelta());
 			}
 			
@@ -166,7 +166,7 @@ public class ShapePrimitive implements IShapePrimitive {
 			prop.addChangeListener(annotPropChangeListener);
 		}
 		this.domainNode.getParentNode().getAttribute().addChangeListener(parentDrawingNodePropertyChangeListener);
-		INodePrimitive parentNode = this.viewModel.getNodePrimitive(this.domainNode.getParentNode());
+		INodeController parentNode = this.viewModel.getNodePrimitive(this.domainNode.getParentNode());
 		parentNode.addNodePrimitiveChangeListener(this.nodePrimitivateChangeListener);
 	}
 	
@@ -180,7 +180,7 @@ public class ShapePrimitive implements IShapePrimitive {
 		}
 		this.domainNode.getParentNode().getAttribute().removeChangeListener(parentDrawingNodePropertyChangeListener);
 		if(this.viewModel.containsDrawingElement(this.domainNode.getParentNode())){
-			INodePrimitive parentNode = this.viewModel.getNodePrimitive(this.domainNode.getParentNode());
+			INodeController parentNode = this.viewModel.getNodePrimitive(this.domainNode.getParentNode());
 			parentNode.removeNodePrimitiveChangeListener(this.nodePrimitivateChangeListener);
 		}
 	}
@@ -226,7 +226,7 @@ public class ShapePrimitive implements IShapePrimitive {
 	}
 
 	@Override
-	public int compareTo(IDrawingPrimitive o) {
+	public int compareTo(IDrawingPrimitiveController o) {
 		Integer otherIndex = o.getDrawingElement().getAttribute().getCreationSerial();
 		return Integer.valueOf(this.domainNode.getAttribute().getCreationSerial()).compareTo(otherIndex);
 	}
@@ -242,11 +242,11 @@ public class ShapePrimitive implements IShapePrimitive {
 	}
 
 	private void notifyTranslation(final Point delta){
-		INodePrimitiveTranslationEvent e = new INodePrimitiveTranslationEvent(){
+		INodeTranslationEvent e = new INodeTranslationEvent(){
 
 			@Override
-			public INodePrimitive getChangedNode() {
-				return ShapePrimitive.this;
+			public INodeController getChangedNode() {
+				return ShapeController.this;
 			}
 
 			@Override
@@ -277,7 +277,7 @@ public class ShapePrimitive implements IShapePrimitive {
 	}
 
 	@Override
-	public IViewModel getViewModel() {
+	public IViewControllerStore getViewModel() {
 		return this.viewModel;
 	}
 }

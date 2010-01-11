@@ -7,7 +7,7 @@ import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
 
-public interface INodePrimitive extends IDrawingPrimitive {
+public interface INodeController extends IDrawingPrimitiveController {
 
 	/**
 	 * Returns the bounds of the drawn node, which may be different from that of the underlying model.

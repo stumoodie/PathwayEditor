@@ -2,6 +2,6 @@ package org.pathwayeditor.visualeditor.controller;
 
 public interface INodePrimitiveChangeListener {
 
-	void nodeTranslated(INodePrimitiveTranslationEvent e);
+	void nodeTranslated(INodeTranslationEvent e);
 	
 }

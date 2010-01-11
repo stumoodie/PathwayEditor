@@ -12,20 +12,20 @@ import org.pathwayeditor.figure.figuredefn.FigureDrawer;
 import org.pathwayeditor.figure.figuredefn.IFigureController;
 import org.pathwayeditor.figure.figuredefn.IGraphicsEngine;
 import org.pathwayeditor.figure.geometry.Envelope;
-import org.pathwayeditor.visualeditor.controller.ILabelPrimitive;
-import org.pathwayeditor.visualeditor.controller.ILinkPrimitive;
-import org.pathwayeditor.visualeditor.controller.INodePrimitive;
-import org.pathwayeditor.visualeditor.controller.IShapePrimitive;
-import org.pathwayeditor.visualeditor.controller.IViewModel;
+import org.pathwayeditor.visualeditor.controller.ILabelController;
+import org.pathwayeditor.visualeditor.controller.ILinkController;
+import org.pathwayeditor.visualeditor.controller.INodeController;
+import org.pathwayeditor.visualeditor.controller.IShapeController;
+import org.pathwayeditor.visualeditor.controller.IViewControllerStore;
 import org.pathwayeditor.visualeditor.selection.ISelectionRecord;
 
 public class ShapePane extends Canvas implements IShapePane {
 	private static final long serialVersionUID = -7580080598416351849L;
 
-	private final IViewModel geomFactory;
+	private final IViewControllerStore geomFactory;
 	private final ISelectionRecord selections;
 	
-	public ShapePane(IViewModel geomFactory, ISelectionRecord selectionRecord){
+	public ShapePane(IViewControllerStore geomFactory, ISelectionRecord selectionRecord){
 		super();
 		this.geomFactory = geomFactory;
 		this.selections = selectionRecord;
@@ -40,23 +40,23 @@ public class ShapePane extends Canvas implements IShapePane {
 		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 //		g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 		IGraphicsEngine graphicsEngine = new Java2DGraphicsEngine((Graphics2D)g);
-		Iterator<IShapePrimitive> shapeIter = this.geomFactory.shapePrimitiveIterator();
+		Iterator<IShapeController> shapeIter = this.geomFactory.shapePrimitiveIterator();
 		while(shapeIter.hasNext()){
-			IShapePrimitive shapeNode = shapeIter.next();
+			IShapeController shapeNode = shapeIter.next();
 			IFigureController controller = shapeNode.getFigureController();
 			FigureDrawer drawer = new FigureDrawer(controller.getFigureDefinition());
 			drawer.drawFigure(graphicsEngine);
 		}
-		Iterator<ILabelPrimitive> labelIter = this.geomFactory.labelPrimitiveIterator();
+		Iterator<ILabelController> labelIter = this.geomFactory.labelPrimitiveIterator();
 		while(labelIter.hasNext()){
-			ILabelPrimitive labelNode = labelIter.next();
+			ILabelController labelNode = labelIter.next();
 			IFigureController controller = labelNode.getFigureController();
 			FigureDrawer drawer = new FigureDrawer(controller.getFigureDefinition());
 			drawer.drawFigure(graphicsEngine);
 		}
-		Iterator<ILinkPrimitive> linkEdgeIter = this.geomFactory.linkPrimitiveIterator();
+		Iterator<ILinkController> linkEdgeIter = this.geomFactory.linkPrimitiveIterator();
 		while(linkEdgeIter.hasNext()){
-			ILinkPrimitive edge = linkEdgeIter.next();
+			ILinkController edge = linkEdgeIter.next();
 			LinkDrawer linkDrawer = new LinkDrawer(edge);
 			linkDrawer.paint(g2d);
 		}
@@ -66,9 +66,9 @@ public class ShapePane extends Canvas implements IShapePane {
 
 
 	private void paintSelections(Graphics2D g2d) {
-		Iterator<INodePrimitive> selectionIter = this.selections.selectedNodesIterator();
+		Iterator<INodeController> selectionIter = this.selections.selectedNodesIterator();
 		while(selectionIter.hasNext()){
-			INodePrimitive node = selectionIter.next();
+			INodeController node = selectionIter.next();
 			Envelope bounds = node.getConvexHull().getEnvelope();
 			Rectangle2D rect = new Rectangle2D.Double(bounds.getOrigin().getX(), bounds.getOrigin().getY(), bounds.getDimension().getWidth(), bounds.getDimension().getHeight());
 			g2d.setColor(Color.red);
@@ -86,7 +86,7 @@ public class ShapePane extends Canvas implements IShapePane {
 
 
 	@Override
-	public IViewModel getViewModel() {
+	public IViewControllerStore getViewModel() {
 		return this.geomFactory;
 	}
 }

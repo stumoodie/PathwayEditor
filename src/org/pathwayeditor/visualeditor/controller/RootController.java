@@ -9,13 +9,13 @@ import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.figure.geometry.RectangleHull;
 
-public class RootPrimitive implements IRootPrimitive {
+public class RootController implements IRootController {
 	private final IRootNode domainNode;
 	private final IConvexHull hull;
-	private IViewModel viewModel;
+	private IViewControllerStore viewModel;
 	
 	
-	public RootPrimitive(IViewModel viewModel, IRootNode node) {
+	public RootController(IViewControllerStore viewModel, IRootNode node) {
 		this.viewModel = viewModel;
 		this.domainNode = node;
 		this.hull = new RectangleHull(domainNode.getAttribute().getBounds());
@@ -47,7 +47,7 @@ public class RootPrimitive implements IRootPrimitive {
 	}
 
 	@Override
-	public int compareTo(IDrawingPrimitive o) {
+	public int compareTo(IDrawingPrimitiveController o) {
 		Integer otherIndex = o.getDrawingElement().getAttribute().getCreationSerial();
 		return Integer.valueOf(this.domainNode.getAttribute().getCreationSerial()).compareTo(otherIndex);
 	}
@@ -74,7 +74,7 @@ public class RootPrimitive implements IRootPrimitive {
 	}
 
 	@Override
-	public IViewModel getViewModel() {
+	public IViewControllerStore getViewModel() {
 		return this.viewModel;
 	}
 

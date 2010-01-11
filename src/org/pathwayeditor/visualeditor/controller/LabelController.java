@@ -17,7 +17,7 @@ import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.figurevm.FigureDefinitionCompiler;
 
-public class LabelPrimitive implements ILabelPrimitive {
+public class LabelController implements ILabelController {
 	private final String LABEL_DEFINITION =
 		"curbounds /h exch def /w exch def /y exch def /x exch def\n" +
 		"/xoffset { w mul x add } def /yoffset { h mul y add } def\n" +
@@ -38,11 +38,11 @@ public class LabelPrimitive implements ILabelPrimitive {
 	private final ICanvasAttributePropertyChangeListener drawingNodePropertyChangeListener;
 	private ICanvasAttributePropertyChangeListener parentDrawingNodePropertyChangeListener;
 	private final List<INodePrimitiveChangeListener> listeners;
-	private IViewModel viewModel;
+	private IViewControllerStore viewModel;
 	private INodePrimitiveChangeListener nodePrimitiveChangeListener;
 	private IFigureController controller;
 	
-	public LabelPrimitive(IViewModel viewModel, ILabelNode node) {
+	public LabelController(IViewControllerStore viewModel, ILabelNode node) {
 		this.viewModel = viewModel;
 		this.domainNode = node;
 		this.listeners = new LinkedList<INodePrimitiveChangeListener>();
@@ -58,7 +58,7 @@ public class LabelPrimitive implements ILabelPrimitive {
 		this.nodePrimitiveChangeListener = new INodePrimitiveChangeListener(){
 
 			@Override
-			public void nodeTranslated(INodePrimitiveTranslationEvent e) {
+			public void nodeTranslated(INodeTranslationEvent e) {
 				translatePrimitive(e.getTranslationDelta());
 			}
 			
@@ -124,7 +124,7 @@ public class LabelPrimitive implements ILabelPrimitive {
 	}
 
 	@Override
-	public int compareTo(IDrawingPrimitive o) {
+	public int compareTo(IDrawingPrimitiveController o) {
 		Integer otherIndex = o.getDrawingElement().getAttribute().getCreationSerial();
 		return Integer.valueOf(this.domainNode.getAttribute().getCreationSerial()).compareTo(otherIndex);
 	}
@@ -134,7 +134,7 @@ public class LabelPrimitive implements ILabelPrimitive {
 		this.domainNode.getAttribute().removeChangeListener(drawingNodePropertyChangeListener);
 		this.domainNode.getParentNode().getAttribute().removeChangeListener(parentDrawingNodePropertyChangeListener);
 		if(this.viewModel.containsDrawingElement(this.domainNode.getParentNode())){
-			INodePrimitive parentNode = this.viewModel.getNodePrimitive(this.domainNode.getParentNode());
+			INodeController parentNode = this.viewModel.getNodePrimitive(this.domainNode.getParentNode());
 			parentNode.removeNodePrimitiveChangeListener(this.nodePrimitiveChangeListener);
 		}
 		this.listeners.clear();
@@ -142,11 +142,11 @@ public class LabelPrimitive implements ILabelPrimitive {
 	}
 
 	private void notifyTranslation(final Point delta){
-		INodePrimitiveTranslationEvent e = new INodePrimitiveTranslationEvent(){
+		INodeTranslationEvent e = new INodeTranslationEvent(){
 
 			@Override
-			public INodePrimitive getChangedNode() {
-				return LabelPrimitive.this;
+			public INodeController getChangedNode() {
+				return LabelController.this;
 			}
 
 			@Override
@@ -177,7 +177,7 @@ public class LabelPrimitive implements ILabelPrimitive {
 	}
 
 	@Override
-	public IViewModel getViewModel() {
+	public IViewControllerStore getViewModel() {
 		return this.viewModel;
 	}
 
@@ -185,7 +185,7 @@ public class LabelPrimitive implements ILabelPrimitive {
 	public void activate() {
 		this.domainNode.getAttribute().addChangeListener(this.drawingNodePropertyChangeListener);
 		this.domainNode.getParentNode().getAttribute().addChangeListener(parentDrawingNodePropertyChangeListener);
-		INodePrimitive parentNode = this.viewModel.getNodePrimitive(this.domainNode.getParentNode());
+		INodeController parentNode = this.viewModel.getNodePrimitive(this.domainNode.getParentNode());
 		parentNode.addNodePrimitiveChangeListener(this.nodePrimitiveChangeListener);
 	}
 

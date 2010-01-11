@@ -21,15 +21,15 @@ import org.pathwayeditor.businessobjects.drawingprimitives.attributes.RGB;
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.LineSegment;
 import org.pathwayeditor.figure.geometry.Point;
-import org.pathwayeditor.visualeditor.controller.ILinkPrimitive;
+import org.pathwayeditor.visualeditor.controller.ILinkController;
 
 public class LinkDrawer  {
 	private final Logger logger = Logger.getLogger(this.getClass()); 
-	private ILinkPrimitive linkEdge;
+	private ILinkController linkEdge;
 	private Point startPosition = Point.ORIGIN;
 	private Point endPosition = Point.ORIGIN;
 	
-	public LinkDrawer(ILinkPrimitive linkEdge){
+	public LinkDrawer(ILinkController linkEdge){
 		this.linkEdge = linkEdge;
 	}
 	

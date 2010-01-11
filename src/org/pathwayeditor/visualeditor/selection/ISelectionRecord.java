@@ -3,27 +3,27 @@ package org.pathwayeditor.visualeditor.selection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.pathwayeditor.visualeditor.controller.IDrawingPrimitive;
-import org.pathwayeditor.visualeditor.controller.ILinkPrimitive;
-import org.pathwayeditor.visualeditor.controller.INodePrimitive;
+import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveController;
+import org.pathwayeditor.visualeditor.controller.ILinkController;
+import org.pathwayeditor.visualeditor.controller.INodeController;
 
 public interface ISelectionRecord {
 
-	void setPrimarySelection(IDrawingPrimitive drawingElement);
+	void setPrimarySelection(IDrawingPrimitiveController drawingElement);
 	
-	void addSecondarySelection(IDrawingPrimitive drawingElement);
+	void addSecondarySelection(IDrawingPrimitiveController drawingElement);
 	
-	IDrawingPrimitive getPrimarySelection();
+	IDrawingPrimitiveController getPrimarySelection();
 	
-	Iterator<IDrawingPrimitive> secondarySelectionIterator();
+	Iterator<IDrawingPrimitiveController> secondarySelectionIterator();
 	
-	Iterator<IDrawingPrimitive> selectionIterator();
+	Iterator<IDrawingPrimitiveController> selectionIterator();
 	
-	Iterator<INodePrimitive> selectedNodesIterator();
+	Iterator<INodeController> selectedNodesIterator();
 	
-	Iterator<ILinkPrimitive> selectedLinksIterator();
+	Iterator<ILinkController> selectedLinksIterator();
 	
-	Iterator<INodePrimitive> getTopNodeSelection();
+	Iterator<INodeController> getTopNodeSelection();
 	
 	int numSelected();
 	
@@ -35,5 +35,5 @@ public interface ISelectionRecord {
 	
 	List<ISelectionChangeListener> getSelectionChangeListeners();
 
-	boolean isNodeSelected(IDrawingPrimitive testElement);
+	boolean isNodeSelected(IDrawingPrimitiveController testElement);
 }

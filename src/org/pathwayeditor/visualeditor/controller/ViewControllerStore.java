@@ -19,17 +19,17 @@ import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IModelEdgeC
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IModelNodeChangeEvent;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ModelStructureChangeType;
 
-public class ViewModel implements IViewModel {
+public class ViewControllerStore implements IViewControllerStore {
 	private final IModel domainModel;
-	private final SortedMap<IDrawingElement, IDrawingPrimitive> domainToViewMap;
-	private final SortedSet<IDrawingPrimitive> drawingPrimitives;
+	private final SortedMap<IDrawingElement, IDrawingPrimitiveController> domainToViewMap;
+	private final SortedSet<IDrawingPrimitiveController> drawingPrimitives;
 	private IModelChangeListener modelListener;
-	private IRootPrimitive rootPrimitive;
+	private IRootController rootPrimitive;
 	
-	public ViewModel(IModel domainModel){
+	public ViewControllerStore(IModel domainModel){
 		this.domainModel = domainModel;
-		this.domainToViewMap = new TreeMap<IDrawingElement, IDrawingPrimitive>();
-		this.drawingPrimitives = new TreeSet<IDrawingPrimitive>();
+		this.domainToViewMap = new TreeMap<IDrawingElement, IDrawingPrimitiveController>();
+		this.drawingPrimitives = new TreeSet<IDrawingPrimitiveController>();
 		buildFromDomainModel();
 		initialiseDomainListeners();
 	}
@@ -45,7 +45,7 @@ public class ViewModel implements IViewModel {
 				if(event.getChangeType().equals(ModelStructureChangeType.DELETED)){
 					if(domainToViewMap.containsKey(event.getChangedItem())){
 						IDrawingNode shapeNode = event.getChangedItem();
-						INodePrimitive nodePrimitive = (INodePrimitive)domainToViewMap.get(shapeNode);
+						INodeController nodePrimitive = (INodeController)domainToViewMap.get(shapeNode);
 						nodePrimitive.dispose();
 						domainToViewMap.remove(shapeNode);
 						drawingPrimitives.remove(nodePrimitive);
@@ -70,15 +70,15 @@ public class ViewModel implements IViewModel {
 	}
 	
 	private void createNodePrimitive(IDrawingNode node){
-		INodePrimitive viewNode = null;
+		INodeController viewNode = null;
 		if(node instanceof IShapeNode){
-			viewNode = new ShapePrimitive(this, (IShapeNode)node);
+			viewNode = new ShapeController(this, (IShapeNode)node);
 		}
 		else if(node instanceof ILabelNode){
-			viewNode = new LabelPrimitive(this, (ILabelNode)node);
+			viewNode = new LabelController(this, (ILabelNode)node);
 		}
 		else if(node instanceof IRootNode){
-			this.rootPrimitive = new RootPrimitive(this, (IRootNode)node);
+			this.rootPrimitive = new RootController(this, (IRootNode)node);
 			viewNode = this.rootPrimitive;
 		}
 		else{
@@ -92,7 +92,7 @@ public class ViewModel implements IViewModel {
 	
 	
 	@Override
-	public Iterator<IDrawingPrimitive> drawingPrimitiveIterator() {
+	public Iterator<IDrawingPrimitiveController> drawingPrimitiveIterator() {
 		return this.drawingPrimitives.iterator();
 	}
 
@@ -102,58 +102,58 @@ public class ViewModel implements IViewModel {
 	}
 
 	@Override
-	public INodePrimitive getNodePrimitive(IDrawingNode draggedNode) {
-		IDrawingPrimitive retVal = this.domainToViewMap.get(draggedNode);
+	public INodeController getNodePrimitive(IDrawingNode draggedNode) {
+		IDrawingPrimitiveController retVal = this.domainToViewMap.get(draggedNode);
 		if(retVal == null){
 			throw new IllegalArgumentException("domain node is not present in this view model");
 		}
-		return (INodePrimitive)retVal;
+		return (INodeController)retVal;
 	}
 
 	@Override
-	public IRootPrimitive getRootNode() {
+	public IRootController getRootNode() {
 		return this.rootPrimitive;
 	}
 
 	@Override
-	public Iterator<ILabelPrimitive> labelPrimitiveIterator() {
-		List<ILabelPrimitive> retList = new LinkedList<ILabelPrimitive>();
-		for(IDrawingPrimitive primitive : this.drawingPrimitives){
-			if(primitive instanceof ILabelPrimitive){
-				retList.add((ILabelPrimitive)primitive);
+	public Iterator<ILabelController> labelPrimitiveIterator() {
+		List<ILabelController> retList = new LinkedList<ILabelController>();
+		for(IDrawingPrimitiveController primitive : this.drawingPrimitives){
+			if(primitive instanceof ILabelController){
+				retList.add((ILabelController)primitive);
 			}
 		}
 		return retList.iterator();
 	}
 
 	@Override
-	public Iterator<ILinkPrimitive> linkPrimitiveIterator() {
-		List<ILinkPrimitive> retList = new LinkedList<ILinkPrimitive>();
-		for(IDrawingPrimitive primitive : this.drawingPrimitives){
-			if(primitive instanceof ILinkPrimitive){
-				retList.add((ILinkPrimitive)primitive);
+	public Iterator<ILinkController> linkPrimitiveIterator() {
+		List<ILinkController> retList = new LinkedList<ILinkController>();
+		for(IDrawingPrimitiveController primitive : this.drawingPrimitives){
+			if(primitive instanceof ILinkController){
+				retList.add((ILinkController)primitive);
 			}
 		}
 		return retList.iterator();
 	}
 
 	@Override
-	public Iterator<INodePrimitive> nodePrimitiveIterator() {
-		List<INodePrimitive> retList = new LinkedList<INodePrimitive>();
-		for(IDrawingPrimitive primitive : this.drawingPrimitives){
-			if(primitive instanceof INodePrimitive){
-				retList.add((INodePrimitive)primitive);
+	public Iterator<INodeController> nodePrimitiveIterator() {
+		List<INodeController> retList = new LinkedList<INodeController>();
+		for(IDrawingPrimitiveController primitive : this.drawingPrimitives){
+			if(primitive instanceof INodeController){
+				retList.add((INodeController)primitive);
 			}
 		}
 		return retList.iterator();
 	}
 
 	@Override
-	public Iterator<IShapePrimitive> shapePrimitiveIterator() {
-		List<IShapePrimitive> retList = new LinkedList<IShapePrimitive>();
-		for(IDrawingPrimitive primitive : this.drawingPrimitives){
-			if(primitive instanceof IShapePrimitive){
-				retList.add((IShapePrimitive)primitive);
+	public Iterator<IShapeController> shapePrimitiveIterator() {
+		List<IShapeController> retList = new LinkedList<IShapeController>();
+		for(IDrawingPrimitiveController primitive : this.drawingPrimitives){
+			if(primitive instanceof IShapeController){
+				retList.add((IShapeController)primitive);
 			}
 		}
 		return retList.iterator();
@@ -161,7 +161,7 @@ public class ViewModel implements IViewModel {
 
 	@Override
 	public void synchroniseWithDomainModel() {
-		for(IDrawingPrimitive primitive : this.drawingPrimitives){
+		for(IDrawingPrimitiveController primitive : this.drawingPrimitives){
 			primitive.resyncToModel();
 		}
 	}
@@ -174,7 +174,7 @@ public class ViewModel implements IViewModel {
 	@Override
 	public void activate() {
         // now activate all the drawing primitives
-		for(IDrawingPrimitive prim : this.drawingPrimitives){
+		for(IDrawingPrimitiveController prim : this.drawingPrimitives){
         	prim.activate();
         }
 	}

@@ -1,13 +1,13 @@
 package org.pathwayeditor.visualeditor.controller;
 
-import org.pathwayeditor.businessobjects.drawingprimitives.IShapeNode;
+import org.pathwayeditor.businessobjects.drawingprimitives.ILabelNode;
 import org.pathwayeditor.figure.figuredefn.IFigureController;
 
-public interface IShapePrimitive extends INodePrimitive {
+public interface ILabelController extends INodeController {
 
 	IFigureController getFigureController();
 	
 	@Override
-	IShapeNode getDrawingElement();
+	ILabelNode getDrawingElement();
 	
 }

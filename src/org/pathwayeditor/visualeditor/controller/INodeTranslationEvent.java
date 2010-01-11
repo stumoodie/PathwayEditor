@@ -2,9 +2,9 @@ package org.pathwayeditor.visualeditor.controller;
 
 import org.pathwayeditor.figure.geometry.Point;
 
-public interface INodePrimitiveTranslationEvent {
+public interface INodeTranslationEvent {
 
-	INodePrimitive getChangedNode();
+	INodeController getChangedNode();
 	
 	Point getTranslationDelta();
 	

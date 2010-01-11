@@ -11,9 +11,9 @@ import java.util.TreeSet;
 import org.apache.log4j.Logger;
 import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
-import org.pathwayeditor.visualeditor.controller.INodePrimitive;
-import org.pathwayeditor.visualeditor.controller.IRootPrimitive;
-import org.pathwayeditor.visualeditor.controller.IViewModel;
+import org.pathwayeditor.visualeditor.controller.INodeController;
+import org.pathwayeditor.visualeditor.controller.IRootController;
+import org.pathwayeditor.visualeditor.controller.IViewControllerStore;
 
 /**
  * @author smoodie
@@ -23,14 +23,14 @@ public class ShapeIntersectionCalculator implements INodeIntersectionCalculator 
 	private final Logger logger = Logger.getLogger(this.getClass());
 	
 	private static final IIntersectionCalcnFilter DEFAULT_FILTER = new IIntersectionCalcnFilter(){
-		public boolean accept(INodePrimitive node) {
+		public boolean accept(INodeController node) {
 			return true;
 		}
 	};
 	
-	private static final Comparator<INodePrimitive> DEFAULT_COMPARATOR = new Comparator<INodePrimitive>(){
+	private static final Comparator<INodeController> DEFAULT_COMPARATOR = new Comparator<INodeController>(){
 
-		public int compare(INodePrimitive o1, INodePrimitive o2) {
+		public int compare(INodeController o1, INodeController o2) {
 			int retVal = 0;
 			if(o1.getDrawingElement().getLevel() < o2.getDrawingElement().getLevel()){
 				retVal = 1;
@@ -48,21 +48,21 @@ public class ShapeIntersectionCalculator implements INodeIntersectionCalculator 
 		
 	};
 	
-	private final IViewModel model;
+	private final IViewControllerStore model;
 	private IIntersectionCalcnFilter filter;
-	private Comparator<INodePrimitive> comparator = DEFAULT_COMPARATOR;
+	private Comparator<INodeController> comparator = DEFAULT_COMPARATOR;
 	
-	public ShapeIntersectionCalculator(IViewModel model){
+	public ShapeIntersectionCalculator(IViewControllerStore model){
 		this.model = model;
 		this.filter = DEFAULT_FILTER;
 	}
 	
-	public void setComparator(Comparator<INodePrimitive> comparator){
+	public void setComparator(Comparator<INodeController> comparator){
 		this.comparator = comparator;
 	}
 	
 	
-	public IViewModel getModel(){
+	public IViewControllerStore getModel(){
 		return this.model;
 	}
 	
@@ -75,15 +75,15 @@ public class ShapeIntersectionCalculator implements INodeIntersectionCalculator 
 		}
 	}
 	
-	public SortedSet<INodePrimitive> findIntersectingNodes(IConvexHull queryHull, INodePrimitive queryNode){
-		Iterator<INodePrimitive> iter = model.nodePrimitiveIterator();
-		SortedSet<INodePrimitive> retVal = new TreeSet<INodePrimitive>(this.comparator);
+	public SortedSet<INodeController> findIntersectingNodes(IConvexHull queryHull, INodeController queryNode){
+		Iterator<INodeController> iter = model.nodePrimitiveIterator();
+		SortedSet<INodeController> retVal = new TreeSet<INodeController>(this.comparator);
 		// the root node will always intersect - that's a give so add it in and exclude it from
 		// intersection tests
-		IRootPrimitive rootNode = model.getRootNode();
+		IRootController rootNode = model.getRootNode();
 		retVal.add(rootNode);
 		while(iter.hasNext()){
-			INodePrimitive node = iter.next();
+			INodeController node = iter.next();
 			IConvexHull attributeHull = node.getConvexHull();
 			// ignore matches to self
 			if(!node.equals(queryNode) && !node.equals(rootNode) && filter.accept(node) && queryHull.hullsIntersect(attributeHull)){
@@ -93,11 +93,11 @@ public class ShapeIntersectionCalculator implements INodeIntersectionCalculator 
 		return retVal;
 	}
 
-	public SortedSet<INodePrimitive> findNodesAt(Point p) {
-		Iterator<INodePrimitive> iter = model.nodePrimitiveIterator();
-		SortedSet<INodePrimitive> retVal = new TreeSet<INodePrimitive>(this.comparator);
+	public SortedSet<INodeController> findNodesAt(Point p) {
+		Iterator<INodeController> iter = model.nodePrimitiveIterator();
+		SortedSet<INodeController> retVal = new TreeSet<INodeController>(this.comparator);
 		while(iter.hasNext()){
-			INodePrimitive node = iter.next();
+			INodeController node = iter.next();
 			IConvexHull attributeHull = node.getConvexHull();
 			logger.trace("Testing contains node:" + node + ", hull=" + attributeHull + ", point=" + p);
 			if(filter.accept(node) && attributeHull.containsPoint(p)){

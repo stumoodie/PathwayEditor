@@ -1,4 +1,4 @@
-package org.pathwayeditor.visualeditor.controller;
+package org.pathwayeditor.visualeditor.behaviour;
 
 import java.awt.Cursor;
 import java.awt.event.KeyEvent;
@@ -11,6 +11,8 @@ import java.util.SortedSet;
 import org.apache.log4j.Logger;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.graphicsengine.IShapePane;
+import org.pathwayeditor.visualeditor.controller.INodeController;
+import org.pathwayeditor.visualeditor.controller.IRootController;
 import org.pathwayeditor.visualeditor.geometry.INodeIntersectionCalculator;
 import org.pathwayeditor.visualeditor.geometry.ShapeIntersectionCalculator;
 
@@ -39,7 +41,7 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 				if(e.getButton() == MouseEvent.BUTTON1){
 					if(!e.isShiftDown() && !e.isAltDown()){
 						Point location = new Point(e.getPoint().getX(), e.getPoint().getY());
-						INodePrimitive nodeController = findDrawingNodeAt(location);
+						INodeController nodeController = findDrawingNodeAt(location);
 						if(nodeController != null){
 							moveOperation.nodePrimarySelection(nodeController);
 						}
@@ -49,7 +51,7 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 					}
 					else if(e.isShiftDown() && !e.isAltDown()){
 						Point location = new Point(e.getPoint().getX(), e.getPoint().getY());
-						INodePrimitive nodeController = findDrawingNodeAt(location);
+						INodeController nodeController = findDrawingNodeAt(location);
 						if(nodeController != null){
 							moveOperation.addSecondarySelection(nodeController);
 						}
@@ -84,7 +86,7 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 				if(e.getButton() == MouseEvent.BUTTON1){
 					Point location = new Point(e.getPoint().getX(), e.getPoint().getY());
 					if(dragStatus == DragStatus.FINISHED){
-						INodePrimitive nodeController = findDrawingNodeAt(location);
+						INodeController nodeController = findDrawingNodeAt(location);
 						if(moveOperation.isNodeSelected(nodeController)){
 							dragStatus = DragStatus.STARTED;
 							moveOperation.moveStarted();
@@ -101,8 +103,8 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 
 			public void mouseMoved(MouseEvent e) {
 				Point location = new Point(e.getPoint().getX(), e.getPoint().getY());
-				INodePrimitive nodeController = findDrawingNodeAt(location);
-				if(!(nodeController instanceof IRootPrimitive)){
+				INodeController nodeController = findDrawingNodeAt(location);
+				if(!(nodeController instanceof IRootController)){
 					e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
 					logger.trace("Setting move cursor at position: " + location);
 				}
@@ -168,9 +170,9 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 		lastDelta = delta;
 	}
 	
-	private INodePrimitive findDrawingNodeAt(Point location) {
-		SortedSet<INodePrimitive> hits = intCalc.findNodesAt(new Point(location.getX(), location.getY()));
-		INodePrimitive retVal = hits.first();
+	private INodeController findDrawingNodeAt(Point location) {
+		SortedSet<INodeController> hits = intCalc.findNodesAt(new Point(location.getX(), location.getY()));
+		INodeController retVal = hits.first();
 		logger.info("Found hit at: " + retVal);
 		return retVal;
 	}

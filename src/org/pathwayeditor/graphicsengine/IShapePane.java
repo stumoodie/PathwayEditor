@@ -4,14 +4,14 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
-import org.pathwayeditor.visualeditor.controller.IViewModel;
+import org.pathwayeditor.visualeditor.controller.IViewControllerStore;
 import org.pathwayeditor.visualeditor.selection.ISelectionRecord;
 
 public interface IShapePane {
 
 	void repaint();
 	
-	IViewModel getViewModel();
+	IViewControllerStore getViewModel();
 	
 	ISelectionRecord getSelectionRecord();
 

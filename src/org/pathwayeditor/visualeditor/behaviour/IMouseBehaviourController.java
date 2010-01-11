@@ -1,4 +1,4 @@
-package org.pathwayeditor.visualeditor.controller;
+package org.pathwayeditor.visualeditor.behaviour;
 
 public interface IMouseBehaviourController {
 
