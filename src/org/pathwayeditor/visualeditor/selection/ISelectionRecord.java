@@ -3,27 +3,29 @@ package org.pathwayeditor.visualeditor.selection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveController;
 import org.pathwayeditor.visualeditor.controller.ILinkController;
-import org.pathwayeditor.visualeditor.controller.INodeController;
 
 public interface ISelectionRecord {
 
+	ISelectionHandle findSelectionModelAt(Point point);
+	
 	void setPrimarySelection(IDrawingPrimitiveController drawingElement);
 	
 	void addSecondarySelection(IDrawingPrimitiveController drawingElement);
 	
-	IDrawingPrimitiveController getPrimarySelection();
+	ISelection getPrimarySelection();
 	
-	Iterator<IDrawingPrimitiveController> secondarySelectionIterator();
+	Iterator<ISelection> secondarySelectionIterator();
 	
-	Iterator<IDrawingPrimitiveController> selectionIterator();
+	Iterator<ISelection> selectionIterator();
 	
-	Iterator<INodeController> selectedNodesIterator();
+	Iterator<ISelection> selectedNodesIterator();
 	
 	Iterator<ILinkController> selectedLinksIterator();
 	
-	Iterator<INodeController> getTopNodeSelection();
+	Iterator<ISelection> getTopNodeSelection();
 	
 	int numSelected();
 	

@@ -28,7 +28,7 @@ import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.figurevm.FigureDefinitionCompiler;
 
-public class ShapeController implements IShapeController {
+public class ShapeController extends DrawingPrimitiveController implements IShapeController {
 	private final Logger logger = Logger.getLogger(this.getClass());
 	private IShapeNode domainNode;
 	private final ICanvasAttributePropertyChangeListener shapePropertyChangeListener;
@@ -213,17 +213,17 @@ public class ShapeController implements IShapeController {
 		notifyTranslation(translation);
 	}
 
-	@Override
-	public void resyncToModel() {
-		IShapeAttribute attribute = this.domainNode.getAttribute();
-		figureController.setRequestedEnvelope(attribute.getBounds());
-		figureController.setFillColour(attribute.getFillColour());
-		figureController.setLineColour(attribute.getLineColour());
-		figureController.setLineStyle(attribute.getLineStyle());
-		figureController.setLineWidth(attribute.getLineWidth());
-		assignBindVariablesToProperties(attribute, figureController);
-		figureController.generateFigureDefinition();
-	}
+//	@Override
+//	public void redefinedSyncroniseToModel() {
+//		IShapeAttribute attribute = this.domainNode.getAttribute();
+//		figureController.setRequestedEnvelope(attribute.getBounds());
+//		figureController.setFillColour(attribute.getFillColour());
+//		figureController.setLineColour(attribute.getLineColour());
+//		figureController.setLineStyle(attribute.getLineStyle());
+//		figureController.setLineWidth(attribute.getLineWidth());
+//		assignBindVariablesToProperties(attribute, figureController);
+//		figureController.generateFigureDefinition();
+//	}
 
 	@Override
 	public int compareTo(IDrawingPrimitiveController o) {
@@ -232,7 +232,7 @@ public class ShapeController implements IShapeController {
 	}
 
 	@Override
-	public void dispose() {
+	protected void disposeRedefinition() {
 		removeListeners();
 		// clear all listeners to this instance too.
 		this.listeners.clear();

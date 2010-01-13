@@ -13,7 +13,6 @@ import org.pathwayeditor.businessobjects.exchange.FileXmlCanvasPersistenceManage
 import org.pathwayeditor.businessobjects.exchange.IXmlPersistenceManager;
 import org.pathwayeditor.businessobjects.management.INotationSubsystemPool;
 import org.pathwayeditor.figure.geometry.Point;
-import org.pathwayeditor.graphicsengine.ShapePane;
 import org.pathwayeditor.visualeditor.behaviour.IEditingOperation;
 import org.pathwayeditor.visualeditor.behaviour.IMouseBehaviourController;
 import org.pathwayeditor.visualeditor.behaviour.MouseBehaviourController;
@@ -26,6 +25,7 @@ import org.pathwayeditor.visualeditor.commands.MoveNodeCommand;
 import org.pathwayeditor.visualeditor.controller.INodeController;
 import org.pathwayeditor.visualeditor.controller.IViewControllerStore;
 import org.pathwayeditor.visualeditor.controller.ViewControllerStore;
+import org.pathwayeditor.visualeditor.selection.ISelection;
 import org.pathwayeditor.visualeditor.selection.ISelectionRecord;
 import org.pathwayeditor.visualeditor.selection.SelectionRecord;
 
@@ -114,17 +114,10 @@ public class VisualEditor {
 	}
 	
 	private void createMoveCommand(Point delta){
-//		ISelectionFactory selectionFactory = this.selectionRecord.getPrimarySelection().getDrawingElement().getModel().newSelectionFactory();
-//		Iterator<INodePrimitive> iter = this.selectionRecord.selectedNodesIterator();
-//		while(iter.hasNext()){
-//			INodePrimitive nodePrimitive = iter.next();
-//			selectionFactory.addDrawingNode(nodePrimitive.getDrawingElement());
-//		}
-//		IDrawingElementSelection selection = selectionFactory.createEdgeExcludedSelection();
-		Iterator<INodeController> moveNodeIterator = this.selectionRecord.getTopNodeSelection();
+		Iterator<ISelection> moveNodeIterator = this.selectionRecord.getTopNodeSelection();
 		ICompoundCommand cmpCommand = new CompoundCommand();
 		while(moveNodeIterator.hasNext()){
-			INodeController nodePrimitive = moveNodeIterator.next();
+			INodeController nodePrimitive = (INodeController)moveNodeIterator.next().getPrimitiveController();
 			nodePrimitive.translatePrimitive(delta);
 			ICommand cmd = new MoveNodeCommand(nodePrimitive.getDrawingElement(), nodePrimitive.getBounds().getOrigin());
 			cmpCommand.addCommand(cmd);
@@ -134,20 +127,10 @@ public class VisualEditor {
 	}
 	
 	private void moveSelection(Point delta) {
-//		ISelectionFactory selectionFactory = this.selectionRecord.getPrimarySelection().getDrawingElement().getModel().newSelectionFactory();
-//		Iterator<INodePrimitive> iter = this.selectionRecord.selectedNodesIterator();
-//		while(iter.hasNext()){
-//			INodePrimitive nodePrimitive = iter.next();
-//			selectionFactory.addDrawingNode(nodePrimitive.getDrawingElement());
-//		}
-//		IDrawingElementSelection selection = selectionFactory.createEdgeExcludedSelection();
-		Iterator<INodeController> moveNodeIterator = this.selectionRecord.getTopNodeSelection();
-//		ICompoundCommand cmpCommand = new CompoundCommand();
+		Iterator<ISelection> moveNodeIterator = this.selectionRecord.getTopNodeSelection();
 		while(moveNodeIterator.hasNext()){
-			INodeController nodePrimitive = moveNodeIterator.next();
+			INodeController nodePrimitive = (INodeController)moveNodeIterator.next().getPrimitiveController();
 			nodePrimitive.translatePrimitive(delta);
-//			ICommand cmd = new MoveNodeCommand(draggedNode, nodePrimitive.getBounds().getOrigin());
-//			cmpCommand.addCommand(cmd);
 			logger.trace("Dragged shape to location: " + nodePrimitive.getBounds().getOrigin());
 		}
 //		this.currentCommand = cmpCommand;

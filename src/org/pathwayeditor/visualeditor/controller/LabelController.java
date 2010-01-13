@@ -17,7 +17,7 @@ import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.figurevm.FigureDefinitionCompiler;
 
-public class LabelController implements ILabelController {
+public class LabelController extends DrawingPrimitiveController implements ILabelController {
 	private final String LABEL_DEFINITION =
 		"curbounds /h exch def /w exch def /y exch def /x exch def\n" +
 		"/xoffset { w mul x add } def /yoffset { h mul y add } def\n" +
@@ -118,10 +118,10 @@ public class LabelController implements ILabelController {
 		this.notifyTranslation(translation);
 	}
 
-	@Override
-	public void resyncToModel() {
-		this.controller.setRequestedEnvelope(domainNode.getAttribute().getBounds());
-	}
+//	@Override
+//	public void redefinedSyncroniseToModel() {
+//		this.controller.setRequestedEnvelope(domainNode.getAttribute().getBounds());
+//	}
 
 	@Override
 	public int compareTo(IDrawingPrimitiveController o) {
@@ -130,7 +130,7 @@ public class LabelController implements ILabelController {
 	}
 
 	@Override
-	public void dispose() {
+	protected void disposeRedefinition() {
 		this.domainNode.getAttribute().removeChangeListener(drawingNodePropertyChangeListener);
 		this.domainNode.getParentNode().getAttribute().removeChangeListener(parentDrawingNodePropertyChangeListener);
 		if(this.viewModel.containsDrawingElement(this.domainNode.getParentNode())){

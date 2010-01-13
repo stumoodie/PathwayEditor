@@ -1,25 +1,26 @@
 package org.pathwayeditor.visualeditor.commands;
 
-import java.util.Stack;
+import java.util.Deque;
+import java.util.LinkedList;
 
 public class CommandStack implements ICommandStack {
-	private final Stack<ICommand> undoStack;
-	private final Stack<ICommand> redoStack;
+	private final Deque<ICommand> undoStack;
+	private final Deque<ICommand> redoStack;
 	
 	public CommandStack(){
-		this.undoStack = new Stack<ICommand>();
-		this.redoStack = new Stack<ICommand>();
+		this.undoStack = new LinkedList<ICommand>();
+		this.redoStack = new LinkedList<ICommand>();
 	}
 	
 	
 	@Override
 	public boolean canRedo() {
-		return !this.redoStack.empty();
+		return !this.redoStack.isEmpty();
 	}
 
 	@Override
 	public boolean canUndo() {
-		return !this.undoStack.empty();
+		return !this.undoStack.isEmpty();
 	}
 
 	@Override

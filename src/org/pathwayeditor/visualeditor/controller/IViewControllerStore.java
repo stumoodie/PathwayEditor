@@ -10,7 +10,7 @@ public interface IViewControllerStore {
 
 	IModel getDomainModel();
 	
-	void synchroniseWithDomainModel();
+//	void synchroniseWithDomainModel();
 	
 	Iterator<IDrawingPrimitiveController> drawingPrimitiveIterator();
 	

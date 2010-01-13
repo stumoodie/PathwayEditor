@@ -9,7 +9,7 @@ import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.figure.geometry.RectangleHull;
 
-public class RootController implements IRootController {
+public class RootController extends DrawingPrimitiveController implements IRootController {
 	private final IRootNode domainNode;
 	private final IConvexHull hull;
 	private IViewControllerStore viewModel;
@@ -41,10 +41,10 @@ public class RootController implements IRootController {
 		// do nothing
 	}
 
-	@Override
-	public void resyncToModel() {
-		// do nothing
-	}
+//	@Override
+//	public void redefinedSyncroniseToModel() {
+//		// do nothing
+//	}
 
 	@Override
 	public int compareTo(IDrawingPrimitiveController o) {
@@ -53,7 +53,7 @@ public class RootController implements IRootController {
 	}
 
 	@Override
-	public void dispose() {
+	protected void disposeRedefinition() {
 		// do nothing
 	}
 

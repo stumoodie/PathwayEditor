@@ -1,7 +1,7 @@
 package org.pathwayeditor.visualeditor.controller;
 
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkEdge;
-import org.pathwayeditor.graphicsengine.ILinkPointDefinition;
+import org.pathwayeditor.visualeditor.geometry.ILinkPointDefinition;
 
 public interface ILinkController extends IDrawingPrimitiveController {
 

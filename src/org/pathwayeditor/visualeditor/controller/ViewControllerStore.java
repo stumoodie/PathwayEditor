@@ -159,12 +159,12 @@ public class ViewControllerStore implements IViewControllerStore {
 		return retList.iterator();
 	}
 
-	@Override
-	public void synchroniseWithDomainModel() {
-		for(IDrawingPrimitiveController primitive : this.drawingPrimitives){
-			primitive.resyncToModel();
-		}
-	}
+//	@Override
+//	public void synchroniseWithDomainModel() {
+//		for(IDrawingPrimitiveController primitive : this.drawingPrimitives){
+//			primitive.resyncToModel();
+//		}
+//	}
 
 	@Override
 	public boolean containsDrawingElement(IDrawingElement testPrimitive) {

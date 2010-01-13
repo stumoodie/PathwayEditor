@@ -1,4 +1,4 @@
-package org.pathwayeditor.graphicsengine;
+package org.pathwayeditor.visualeditor.geometry;
 
 import java.util.Iterator;
 

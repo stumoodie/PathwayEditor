@@ -10,11 +10,12 @@ import java.util.SortedSet;
 
 import org.apache.log4j.Logger;
 import org.pathwayeditor.figure.geometry.Point;
-import org.pathwayeditor.graphicsengine.IShapePane;
+import org.pathwayeditor.visualeditor.IShapePane;
 import org.pathwayeditor.visualeditor.controller.INodeController;
-import org.pathwayeditor.visualeditor.controller.IRootController;
 import org.pathwayeditor.visualeditor.geometry.INodeIntersectionCalculator;
 import org.pathwayeditor.visualeditor.geometry.ShapeIntersectionCalculator;
+import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
+import org.pathwayeditor.visualeditor.selection.ISelectionHandle.SelectionRegion;
 
 public class MouseBehaviourController implements IMouseBehaviourController {
 	private enum DragStatus { STARTED, FINISHED };
@@ -103,12 +104,55 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 
 			public void mouseMoved(MouseEvent e) {
 				Point location = new Point(e.getPoint().getX(), e.getPoint().getY());
-				INodeController nodeController = findDrawingNodeAt(location);
-				if(!(nodeController instanceof IRootController)){
-					e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
-					logger.trace("Setting move cursor at position: " + location);
-				}
-				else{
+				ISelectionHandle selectionModel = shapePane.getSelectionRecord().findSelectionModelAt(location);
+				if (selectionModel != null) {
+					if (SelectionRegion.Central.equals(selectionModel.getRegion())) {
+						e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
+						if (logger.isTraceEnabled()) {
+							logger.trace("Setting move cursor at position: " + location);
+						}
+					} else if (SelectionRegion.N.equals(selectionModel.getRegion())) {
+						e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.N_RESIZE_CURSOR));
+						if (logger.isTraceEnabled()) {
+							logger.trace("Setting N resize cursor at position: " + location);
+						}
+					} else if (SelectionRegion.NE.equals(selectionModel.getRegion())) {
+						e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.NE_RESIZE_CURSOR));
+						if (logger.isTraceEnabled()) {
+							logger.trace("Setting NE resize cursor at position: " + location);
+						}
+					} else if (SelectionRegion.E.equals(selectionModel.getRegion())) {
+						e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR));
+						if (logger.isTraceEnabled()) {
+							logger.trace("Setting E resize cursor at position: " + location);
+						}
+					} else if (SelectionRegion.SE.equals(selectionModel.getRegion())) {
+						e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.SE_RESIZE_CURSOR));
+						if (logger.isTraceEnabled()) {
+							logger.trace("Setting SE resize cursor at position: " + location);
+						}
+					} else if (SelectionRegion.S.equals(selectionModel.getRegion())) {
+						e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.S_RESIZE_CURSOR));
+						if (logger.isTraceEnabled()) {
+							logger.trace("Setting S resize cursor at position: " + location);
+						}
+					} else if (SelectionRegion.SW.equals(selectionModel.getRegion())) {
+						e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.SW_RESIZE_CURSOR));
+						if (logger.isTraceEnabled()) {
+							logger.trace("Setting SW resize cursor at position: " + location);
+						}
+					} else if (SelectionRegion.W.equals(selectionModel.getRegion())) {
+						e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.W_RESIZE_CURSOR));
+						if (logger.isTraceEnabled()) {
+							logger.trace("Setting W resize cursor at position: " + location);
+						}
+					} else if (SelectionRegion.NW.equals(selectionModel.getRegion())) {
+						e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.NW_RESIZE_CURSOR));
+						if (logger.isTraceEnabled()) {
+							logger.trace("Setting NW resize cursor at position: " + location);
+						}
+					}
+				} else {
 					e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 					logger.trace("Setting default cursor at position: " + location);
 				}

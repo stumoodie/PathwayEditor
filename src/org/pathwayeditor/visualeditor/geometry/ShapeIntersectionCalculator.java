@@ -99,7 +99,9 @@ public class ShapeIntersectionCalculator implements INodeIntersectionCalculator 
 		while(iter.hasNext()){
 			INodeController node = iter.next();
 			IConvexHull attributeHull = node.getConvexHull();
-			logger.trace("Testing contains node:" + node + ", hull=" + attributeHull + ", point=" + p);
+			if(logger.isTraceEnabled()){
+				logger.trace("Testing contains node:" + node + ", hull=" + attributeHull + ", point=" + p);
+			}
 			if(filter.accept(node) && attributeHull.containsPoint(p)){
 				logger.trace("Found containing node");
 				retVal.add(node);
