@@ -5,28 +5,26 @@ import org.pathwayeditor.figure.geometry.Point;
 
 public class MoveNodeCommand implements ICommand {
 	private final IDrawingNode node;
-	private final Point newLocation;
-	private Point oldLocation;
+	private final Point locationDelta;
 	
-	public MoveNodeCommand(IDrawingNode node, Point newLocation) {
+	public MoveNodeCommand(IDrawingNode node, Point locationDelta) {
 		this.node = node;
-		this.newLocation = newLocation;
+		this.locationDelta = locationDelta;
 	}
 
 	@Override
 	public void execute() {
-		this.oldLocation = this.node.getAttribute().getLocation(); 
 		this.redo();
 	}
 
 	@Override
 	public void redo() {
-		this.node.getAttribute().setLocation(this.newLocation);
+		this.node.getAttribute().translate(this.locationDelta);
 	}
 
 	@Override
 	public void undo() {
-		this.node.getAttribute().setLocation(oldLocation);
+		this.node.getAttribute().translate(this.locationDelta.negate());
 	}
 
 }

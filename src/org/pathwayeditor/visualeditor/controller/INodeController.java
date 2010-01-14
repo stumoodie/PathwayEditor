@@ -3,6 +3,7 @@ package org.pathwayeditor.visualeditor.controller;
 import java.util.List;
 
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNode;
+import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
@@ -35,5 +36,7 @@ public interface INodeController extends IDrawingPrimitiveController {
 	void removeNodePrimitiveChangeListener(INodePrimitiveChangeListener listener);
 	
 	List<INodePrimitiveChangeListener> getNodePrimitiveChangeListeners();
+
+	void resizePrimitive(Point originDelta, Dimension resizeDelta);
 	
 }

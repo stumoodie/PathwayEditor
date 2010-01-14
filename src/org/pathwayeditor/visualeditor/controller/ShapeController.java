@@ -1,9 +1,6 @@
 package org.pathwayeditor.visualeditor.controller;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.drawingprimitives.IShapeAttribute;
@@ -14,6 +11,9 @@ import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IAnnotation
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IAnnotationPropertyChangeListener;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributePropertyChangeEvent;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributePropertyChangeListener;
+import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IDrawingNodeAttributeListener;
+import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IDrawingNodeAttributeResizedEvent;
+import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IDrawingNodeAttributeTranslationEvent;
 import org.pathwayeditor.businessobjects.drawingprimitives.properties.IAnnotationProperty;
 import org.pathwayeditor.businessobjects.drawingprimitives.properties.IAnnotationPropertyVisitor;
 import org.pathwayeditor.businessobjects.drawingprimitives.properties.IBooleanAnnotationProperty;
@@ -23,27 +23,26 @@ import org.pathwayeditor.businessobjects.drawingprimitives.properties.INumberAnn
 import org.pathwayeditor.businessobjects.drawingprimitives.properties.IPlainTextAnnotationProperty;
 import org.pathwayeditor.figure.figuredefn.FigureController;
 import org.pathwayeditor.figure.figuredefn.IFigureController;
+import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.figurevm.FigureDefinitionCompiler;
 
-public class ShapeController extends DrawingPrimitiveController implements IShapeController {
+public class ShapeController extends NodeController implements IShapeController {
 	private final Logger logger = Logger.getLogger(this.getClass());
 	private IShapeNode domainNode;
 	private final ICanvasAttributePropertyChangeListener shapePropertyChangeListener;
 	private final IAnnotationPropertyChangeListener annotPropChangeListener;
 	private IFigureController figureController;
-	private final List<INodePrimitiveChangeListener> listeners;
-	private IViewControllerStore viewModel;
-	private final INodePrimitiveChangeListener nodePrimitivateChangeListener;
-	private ICanvasAttributePropertyChangeListener parentDrawingNodePropertyChangeListener;
+	private final INodePrimitiveChangeListener parentNodePrimitivateChangeListener;
+	private final IDrawingNodeAttributeListener parentDrawingNodePropertyChangeListener;
 	
 	public ShapeController(IViewControllerStore viewModel, IShapeNode node) {
+		super(viewModel);
 		if(node.isRemoved()) throw new IllegalArgumentException("Node cannot be removed when creating a new drawing primitive");
-		this.viewModel = viewModel;
+		
 		this.domainNode = node;
-		this.listeners = new LinkedList<INodePrimitiveChangeListener>();
 		shapePropertyChangeListener = new ICanvasAttributePropertyChangeListener() {
 			public void propertyChange(ICanvasAttributePropertyChangeEvent e) {
 				if(e.getPropertyChange().equals(CanvasAttributePropertyChange.LINE_COLOUR)){
@@ -80,24 +79,27 @@ public class ShapeController extends DrawingPrimitiveController implements IShap
 				figureController.generateFigureDefinition();
 			}	
 		};
-		nodePrimitivateChangeListener = new INodePrimitiveChangeListener(){
+		parentNodePrimitivateChangeListener = new INodePrimitiveChangeListener(){
 
 			@Override
 			public void nodeTranslated(INodeTranslationEvent e) {
 				translatePrimitive(e.getTranslationDelta());
 			}
-			
+
+			@Override
+			public void nodeResized(INodeResizeEvent e) {
+			}
+
 		};
-		parentDrawingNodePropertyChangeListener = new ICanvasAttributePropertyChangeListener() {
-			public void propertyChange(ICanvasAttributePropertyChangeEvent e) {
-				// if parent moves then move by the same amount
-				if(e.getPropertyChange().equals(CanvasAttributePropertyChange.LOCATION)){
-					Point oldPosition = (Point)e.getOldValue();
-					Point newPosition = (Point)e.getNewValue();
-					Point delta = oldPosition.difference(newPosition);
-					Point currShapeLocation = domainNode.getAttribute().getLocation();
-					domainNode.getAttribute().setLocation(currShapeLocation.translate(delta));
-				}
+		parentDrawingNodePropertyChangeListener = new IDrawingNodeAttributeListener() {
+			
+			@Override
+			public void nodeTranslated(IDrawingNodeAttributeTranslationEvent e) {
+				domainNode.getAttribute().translate(e.getTranslationDelta());
+			}
+			
+			@Override
+			public void nodeResized(IDrawingNodeAttributeResizedEvent e) {
 			}
 		};
 		this.figureController = createController(domainNode);
@@ -165,9 +167,9 @@ public class ShapeController extends DrawingPrimitiveController implements IShap
 			IAnnotationProperty prop = iter.next();
 			prop.addChangeListener(annotPropChangeListener);
 		}
-		this.domainNode.getParentNode().getAttribute().addChangeListener(parentDrawingNodePropertyChangeListener);
-		INodeController parentNode = this.viewModel.getNodePrimitive(this.domainNode.getParentNode());
-		parentNode.addNodePrimitiveChangeListener(this.nodePrimitivateChangeListener);
+		this.domainNode.getParentNode().getAttribute().addDrawingNodeAttributeListener(parentDrawingNodePropertyChangeListener);
+		INodeController parentNode = this.getViewModel().getNodePrimitive(this.domainNode.getParentNode());
+		parentNode.addNodePrimitiveChangeListener(this.parentNodePrimitivateChangeListener);
 	}
 	
 	private void removeListeners() {
@@ -178,10 +180,10 @@ public class ShapeController extends DrawingPrimitiveController implements IShap
 			IAnnotationProperty prop = iter.next();
 			prop.removeChangeListener(annotPropChangeListener);
 		}
-		this.domainNode.getParentNode().getAttribute().removeChangeListener(parentDrawingNodePropertyChangeListener);
-		if(this.viewModel.containsDrawingElement(this.domainNode.getParentNode())){
-			INodeController parentNode = this.viewModel.getNodePrimitive(this.domainNode.getParentNode());
-			parentNode.removeNodePrimitiveChangeListener(this.nodePrimitivateChangeListener);
+		this.domainNode.getParentNode().getAttribute().removeDrawingNodeAttributeListener(parentDrawingNodePropertyChangeListener);
+		if(this.getViewModel().containsDrawingElement(this.domainNode.getParentNode())){
+			INodeController parentNode = this.getViewModel().getNodePrimitive(this.domainNode.getParentNode());
+			parentNode.removeNodePrimitiveChangeListener(this.parentNodePrimitivateChangeListener);
 		}
 	}
 		
@@ -232,52 +234,19 @@ public class ShapeController extends DrawingPrimitiveController implements IShap
 	}
 
 	@Override
-	protected void disposeRedefinition() {
+	protected void nodeDisposalHook() {
 		removeListeners();
 		// clear all listeners to this instance too.
-		this.listeners.clear();
-		this.viewModel = null;
 		this.figureController = null;
 		this.domainNode = null;
 	}
 
-	private void notifyTranslation(final Point delta){
-		INodeTranslationEvent e = new INodeTranslationEvent(){
-
-			@Override
-			public INodeController getChangedNode() {
-				return ShapeController.this;
-			}
-
-			@Override
-			public Point getTranslationDelta() {
-				return delta;
-			}
-			
-		};
-		for(INodePrimitiveChangeListener listener : this.listeners){
-			listener.nodeTranslated(e);
-		}
-	}
-	
 	@Override
-	public void addNodePrimitiveChangeListener(INodePrimitiveChangeListener listener) {
-		this.listeners.add(listener);
-		
+	public void resizePrimitive(Point originDelta, Dimension resizeDelta) {
+		Envelope currBounds = this.domainNode.getAttribute().getBounds();
+		figureController.setRequestedEnvelope(currBounds.resize(originDelta, resizeDelta));
+		figureController.generateFigureDefinition();
+		this.notifyResize(originDelta, resizeDelta);
 	}
 
-	@Override
-	public List<INodePrimitiveChangeListener> getNodePrimitiveChangeListeners() {
-		return new ArrayList<INodePrimitiveChangeListener>(this.listeners);
-	}
-
-	@Override
-	public void removeNodePrimitiveChangeListener(INodePrimitiveChangeListener listener) {
-		this.listeners.remove(listener);
-	}
-
-	@Override
-	public IViewControllerStore getViewModel() {
-		return this.viewModel;
-	}
 }

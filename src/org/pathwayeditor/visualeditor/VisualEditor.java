@@ -12,9 +12,11 @@ import org.pathwayeditor.businessobjects.drawingprimitives.ICanvas;
 import org.pathwayeditor.businessobjects.exchange.FileXmlCanvasPersistenceManager;
 import org.pathwayeditor.businessobjects.exchange.IXmlPersistenceManager;
 import org.pathwayeditor.businessobjects.management.INotationSubsystemPool;
+import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.behaviour.IEditingOperation;
 import org.pathwayeditor.visualeditor.behaviour.IMouseBehaviourController;
+import org.pathwayeditor.visualeditor.behaviour.IResizeOperation;
 import org.pathwayeditor.visualeditor.behaviour.MouseBehaviourController;
 import org.pathwayeditor.visualeditor.commands.CommandStack;
 import org.pathwayeditor.visualeditor.commands.CompoundCommand;
@@ -22,10 +24,13 @@ import org.pathwayeditor.visualeditor.commands.ICommand;
 import org.pathwayeditor.visualeditor.commands.ICommandStack;
 import org.pathwayeditor.visualeditor.commands.ICompoundCommand;
 import org.pathwayeditor.visualeditor.commands.MoveNodeCommand;
+import org.pathwayeditor.visualeditor.commands.ResizeNodeCommand;
 import org.pathwayeditor.visualeditor.controller.INodeController;
 import org.pathwayeditor.visualeditor.controller.IViewControllerStore;
 import org.pathwayeditor.visualeditor.controller.ViewControllerStore;
 import org.pathwayeditor.visualeditor.selection.ISelection;
+import org.pathwayeditor.visualeditor.selection.ISelectionChangeEvent;
+import org.pathwayeditor.visualeditor.selection.ISelectionChangeListener;
 import org.pathwayeditor.visualeditor.selection.ISelectionRecord;
 import org.pathwayeditor.visualeditor.selection.SelectionRecord;
 
@@ -47,6 +52,8 @@ public class VisualEditor {
 	private ICommandStack commandStack;
 	private IMouseBehaviourController editBehaviourController;
 
+	private ISelectionChangeListener selectionChangeListener;
+
 //	private ICompoundCommand currentCommand;
 	
 	public VisualEditor(ICanvas boCanvas){
@@ -59,24 +66,7 @@ public class VisualEditor {
 								(int)Math.round(boCanvas.getCanvasSize().getHeight())));
 		frame.getContentPane().add(this.shapePane);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.editBehaviourController = new MouseBehaviourController(shapePane, new IEditingOperation(){
-
-			@Override
-			public void addSecondarySelection(INodeController nodeController) {
-				selectionRecord.addSecondarySelection(nodeController);
-				shapePane.repaint();
-			}
-
-			@Override
-			public void clearSelection() {
-				selectionRecord.clear();
-				shapePane.repaint();
-			}
-
-			@Override
-			public boolean isNodeSelected(INodeController nodeController) {
-				return selectionRecord.isNodeSelected(nodeController);
-			}
+        IEditingOperation editOperation = new IEditingOperation(){
 
 			@Override
 			public void moveFinished(Point delta) {
@@ -102,24 +92,73 @@ public class VisualEditor {
 				logger.trace("Move started.");
 			}
 
+        };
+        IResizeOperation resizeOperation = new IResizeOperation() {
+			
 			@Override
-			public void nodePrimarySelection(INodeController nodeController) {
-				selectionRecord.setPrimarySelection(nodeController);
+			public void resizeStarted() {
+				logger.trace("Resize started");
+			}
+			
+			@Override
+			public void resizeFinished(Point originDelta, Dimension resizeDelta) {
+				if(logger.isTraceEnabled()){
+					logger.trace("Resize finished. originDelta=" + originDelta + ", dimDelta=" + resizeDelta);
+				}
+				createResizeCommand(originDelta, resizeDelta);
+//				commandStack.execute(currentCommand);
 				shapePane.repaint();
 			}
-        	
-        });		
+			
+			@Override
+			public void resizeContinuing(Point originDelta, Dimension resizeDelta) {
+				resizeSelection(originDelta, resizeDelta);
+				shapePane.repaint();
+			}
+		};
+        this.editBehaviourController = new MouseBehaviourController(shapePane, editOperation, resizeOperation);
+        this.selectionChangeListener = new ISelectionChangeListener() {
+			
+			@Override
+			public void selectionChanged(ISelectionChangeEvent event) {
+				shapePane.repaint();
+			}
+		}; 
         frame.pack();
         frame.setVisible(true);
 	}
 	
+	private void resizeSelection(Point originDelta, Dimension resizeDelta) {
+		Iterator<ISelection> moveNodeIterator = this.selectionRecord.selectionIterator();
+		while(moveNodeIterator.hasNext()){
+			INodeController nodePrimitive = (INodeController)moveNodeIterator.next().getPrimitiveController();
+			nodePrimitive.resizePrimitive(originDelta, resizeDelta);
+			if(logger.isTraceEnabled()){
+				logger.trace("Resizing shape to bounds: " + nodePrimitive.getBounds());
+			}
+		}
+	}
+
+	private void createResizeCommand(Point originDelta, Dimension resizeDelta) {
+		Iterator<ISelection> moveNodeIterator = this.selectionRecord.selectionIterator();
+		ICompoundCommand cmpCommand = new CompoundCommand();
+		while(moveNodeIterator.hasNext()){
+			INodeController nodePrimitive = (INodeController)moveNodeIterator.next().getPrimitiveController();
+			nodePrimitive.resizePrimitive(originDelta, resizeDelta);
+			ICommand cmd = new ResizeNodeCommand(nodePrimitive.getDrawingElement(), originDelta, resizeDelta);
+			cmpCommand.addCommand(cmd);
+			logger.trace("Dragged shape to location: " + nodePrimitive.getBounds().getOrigin());
+		}
+		this.commandStack.execute(cmpCommand);
+	}
+
 	private void createMoveCommand(Point delta){
 		Iterator<ISelection> moveNodeIterator = this.selectionRecord.getTopNodeSelection();
 		ICompoundCommand cmpCommand = new CompoundCommand();
 		while(moveNodeIterator.hasNext()){
 			INodeController nodePrimitive = (INodeController)moveNodeIterator.next().getPrimitiveController();
 			nodePrimitive.translatePrimitive(delta);
-			ICommand cmd = new MoveNodeCommand(nodePrimitive.getDrawingElement(), nodePrimitive.getBounds().getOrigin());
+			ICommand cmd = new MoveNodeCommand(nodePrimitive.getDrawingElement(), delta);
 			cmpCommand.addCommand(cmd);
 			logger.trace("Dragged shape to location: " + nodePrimitive.getBounds().getOrigin());
 		}
@@ -139,6 +178,7 @@ public class VisualEditor {
 	public void initialise(){
 		this.editBehaviourController.initialise();
 		this.viewModel.activate();
+		this.selectionRecord.addSelectionChangeListener(selectionChangeListener);
 		this.shapePane.repaint();
 	}
 	

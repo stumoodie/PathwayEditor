@@ -9,6 +9,7 @@ import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveController;
 import org.pathwayeditor.visualeditor.controller.INodeController;
 import org.pathwayeditor.visualeditor.controller.INodePrimitiveChangeListener;
+import org.pathwayeditor.visualeditor.controller.INodeResizeEvent;
 import org.pathwayeditor.visualeditor.controller.INodeTranslationEvent;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle.SelectionRegion;
 
@@ -19,7 +20,6 @@ public class Selection implements ISelection {
 	private final boolean isPrimary;
 	private Envelope selectionBounds;
 	private INodePrimitiveChangeListener nodeControllerListener;
-//	private IDrawingPrimitiveControllerListener drawingPrimitiveListener;
 	
 	public Selection(boolean isPrimary, INodeController controller){
 		this.isPrimary = isPrimary;
@@ -30,23 +30,16 @@ public class Selection implements ISelection {
 
 			@Override
 			public void nodeTranslated(INodeTranslationEvent e) {
-//				Point delta = e.getTranslationDelta();
-//				for(ISelectionHandle handle : selectionModels){
-//					handle.translate(delta);
-//				}
+				buildHandles();
+			}
+
+			@Override
+			public void nodeResized(INodeResizeEvent e) {
 				buildHandles();
 			}
 			
 		};
 		this.nodeController.addNodePrimitiveChangeListener(this.nodeControllerListener);
-//		this.drawingPrimitiveListener = new IDrawingPrimitiveControllerListener() {
-//			
-//			@Override
-//			public void resyncronised(IDrawingPrimitiveControllerEvent e) {
-//				buildHandles();
-//			}
-//		};
-//		this.nodeController.addDrawingPrimitiveControllerListener(drawingPrimitiveListener);
 	}
 	
 	private void buildHandles() {

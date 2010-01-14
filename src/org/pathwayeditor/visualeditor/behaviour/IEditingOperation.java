@@ -1,15 +1,14 @@
 package org.pathwayeditor.visualeditor.behaviour;
 
 import org.pathwayeditor.figure.geometry.Point;
-import org.pathwayeditor.visualeditor.controller.INodeController;
 
 public interface IEditingOperation {
 
-	void nodePrimarySelection(INodeController nodeController);
+//	void nodePrimarySelection(INodeController nodeController);
+//
+//	void addSecondarySelection(INodeController nodeController);
 
-	void addSecondarySelection(INodeController nodeController);
-
-	void clearSelection();
+//	void clearSelection();
 
 	void moveFinished(Point delta);
 
@@ -17,6 +16,6 @@ public interface IEditingOperation {
 
 	void moveOngoing(Point delta);
 
-	boolean isNodeSelected(INodeController nodeController);
+//	boolean isNodeSelected(INodeController nodeController);
 
 }

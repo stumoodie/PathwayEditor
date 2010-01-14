@@ -6,6 +6,8 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.SortedSet;
 
 import org.apache.log4j.Logger;
@@ -28,13 +30,17 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 	private DragStatus keyDragStatus = DragStatus.FINISHED;
 	private final INodeIntersectionCalculator intCalc;
 	private IShapePane shapePane;
-	private IEditingOperation moveOperation;
+//	private IEditingOperation moveOperation;
 	private Point startPosition;
 	private Point lastDelta = new Point(0,0);
+	private Map<SelectionRegion, IDragResponse> dragResponseMap;
+	private IDragResponse currDragResponse;
 
-	public MouseBehaviourController(IShapePane pane, IEditingOperation moveOp){
+	public MouseBehaviourController(IShapePane pane, IEditingOperation moveOp, IResizeOperation resizeOp){
 		this.shapePane = pane;
-		this.moveOperation = moveOp;
+//		this.moveOperation = moveOp;
+		this.dragResponseMap = new HashMap<SelectionRegion, IDragResponse>();
+		initialiseDragResponses(moveOp, resizeOp);
         intCalc = new ShapeIntersectionCalculator(shapePane.getViewModel());
         this.mouseSelectionListener = new MouseListener(){
 
@@ -44,17 +50,17 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 						Point location = new Point(e.getPoint().getX(), e.getPoint().getY());
 						INodeController nodeController = findDrawingNodeAt(location);
 						if(nodeController != null){
-							moveOperation.nodePrimarySelection(nodeController);
+							shapePane.getSelectionRecord().setPrimarySelection(nodeController);
 						}
 						else{
-							moveOperation.clearSelection();
+							shapePane.getSelectionRecord().clear();
 						}
 					}
 					else if(e.isShiftDown() && !e.isAltDown()){
 						Point location = new Point(e.getPoint().getX(), e.getPoint().getY());
 						INodeController nodeController = findDrawingNodeAt(location);
 						if(nodeController != null){
-							moveOperation.addSecondarySelection(nodeController);
+							shapePane.getSelectionRecord().addSecondarySelection(nodeController);
 						}
 					}
 				}
@@ -74,9 +80,12 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 			public void mouseReleased(MouseEvent e) {
 				if(dragStatus == DragStatus.STARTED){
 					dragStatus = DragStatus.FINISHED;
-					Point location = new Point(e.getPoint().getX(), e.getPoint().getY());
-					Point delta = startPosition.difference(location);
-					moveOperation.moveFinished(delta);
+					if(currDragResponse != null){
+						Point location = new Point(e.getPoint().getX(), e.getPoint().getY());
+						Point delta = startPosition.difference(location);
+						currDragResponse.dragFinished(delta);
+						currDragResponse = null;
+					}
 				}
 			}
         	
@@ -87,17 +96,18 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 				if(e.getButton() == MouseEvent.BUTTON1){
 					Point location = new Point(e.getPoint().getX(), e.getPoint().getY());
 					if(dragStatus == DragStatus.FINISHED){
-						INodeController nodeController = findDrawingNodeAt(location);
-						if(moveOperation.isNodeSelected(nodeController)){
+						ISelectionHandle selectionModel = shapePane.getSelectionRecord().findSelectionModelAt(location);
+						if(selectionModel != null){
 							dragStatus = DragStatus.STARTED;
-							moveOperation.moveStarted();
-							logger.info("Starting dragging on: " + nodeController);
 							startPosition = location;
+							currDragResponse = dragResponseMap.get(selectionModel.getRegion());
 						}
 					}
 					else {
-						Point delta = startPosition.difference(location);
-						moveOperation.moveOngoing(delta);
+						if(currDragResponse != null){
+							Point delta = startPosition.difference(location);
+							currDragResponse.dragContinuing(delta);
+						}
 					}
 				}
 			}
@@ -195,10 +205,25 @@ public class MouseBehaviourController implements IMouseBehaviourController {
         };
 	}
 	
+	private void initialiseDragResponses(IEditingOperation moveOp, IResizeOperation resizeOp) {
+		this.dragResponseMap.put(SelectionRegion.Central, new CentralHandleResponse(moveOp));
+		this.dragResponseMap.put(SelectionRegion.N, new NorthHandleResponse(resizeOp));
+		this.dragResponseMap.put(SelectionRegion.E, new EastHandleResponse(resizeOp));
+		this.dragResponseMap.put(SelectionRegion.S, new SouthHandleResponse(resizeOp));
+		this.dragResponseMap.put(SelectionRegion.W, new WestHandleResponse(resizeOp));
+		this.dragResponseMap.put(SelectionRegion.NE, new NorthEastHandleResponse(resizeOp));
+		this.dragResponseMap.put(SelectionRegion.SE, new SouthEastHandleResponse(resizeOp));
+		this.dragResponseMap.put(SelectionRegion.SW, new SouthWestHandleResponse(resizeOp));
+		this.dragResponseMap.put(SelectionRegion.NW, new NorthWestHandleResponse(resizeOp));
+	}
+
 	private void handleKeyRelease(){
 		if(keyDragStatus.equals(DragStatus.STARTED)){
 			keyDragStatus = DragStatus.FINISHED;
-			moveOperation.moveFinished(lastDelta);
+			if(currDragResponse != null){
+				currDragResponse.dragFinished(lastDelta);
+				currDragResponse = null;
+			}
 			lastDelta = null;
 		}
 	}
@@ -206,11 +231,12 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 	private void handleKeyPress(double x, double y){
 		if(keyDragStatus.equals(DragStatus.FINISHED)){
 			keyDragStatus = DragStatus.STARTED;
-			moveOperation.moveStarted();
+			currDragResponse = dragResponseMap.get(SelectionRegion.Central);
+			currDragResponse.dragStarted();
 			lastDelta = new Point(0,0);
 		}
 		Point delta = lastDelta.translate(x, y);
-		moveOperation.moveOngoing(delta);
+		currDragResponse.dragContinuing(delta);
 		lastDelta = delta;
 	}
 	

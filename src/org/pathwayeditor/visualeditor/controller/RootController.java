@@ -1,22 +1,20 @@
 package org.pathwayeditor.visualeditor.controller;
 
-import java.util.List;
-
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNode;
 import org.pathwayeditor.businessobjects.drawingprimitives.IRootNode;
+import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.figure.geometry.RectangleHull;
 
-public class RootController extends DrawingPrimitiveController implements IRootController {
+public class RootController extends NodeController implements IRootController {
 	private final IRootNode domainNode;
 	private final IConvexHull hull;
-	private IViewControllerStore viewModel;
 	
 	
 	public RootController(IViewControllerStore viewModel, IRootNode node) {
-		this.viewModel = viewModel;
+		super(viewModel);
 		this.domainNode = node;
 		this.hull = new RectangleHull(domainNode.getAttribute().getBounds());
 	}
@@ -53,34 +51,17 @@ public class RootController extends DrawingPrimitiveController implements IRootC
 	}
 
 	@Override
-	protected void disposeRedefinition() {
+	protected void nodeDisposalHook() {
 		// do nothing
-	}
-
-	@Override
-	public void addNodePrimitiveChangeListener(
-			INodePrimitiveChangeListener listener) {
-	}
-
-	@Override
-	public List<INodePrimitiveChangeListener> getNodePrimitiveChangeListeners() {
-		return null;
-	}
-
-	@Override
-	public void removeNodePrimitiveChangeListener(
-			INodePrimitiveChangeListener listener) {
-		
-	}
-
-	@Override
-	public IViewControllerStore getViewModel() {
-		return this.viewModel;
 	}
 
 	@Override
 	public void activate() {
 		
+	}
+
+	@Override
+	public void resizePrimitive(Point originDelta, Dimension resizeDelta) {
 	}
 
 }
