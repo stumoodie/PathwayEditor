@@ -11,8 +11,11 @@ import java.util.Map;
 import java.util.SortedSet;
 
 import org.apache.log4j.Logger;
+import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Point;
+import org.pathwayeditor.visualeditor.CommonParentCalculator;
 import org.pathwayeditor.visualeditor.IShapePane;
+import org.pathwayeditor.visualeditor.behaviour.IKeyboardResponse.CursorType;
 import org.pathwayeditor.visualeditor.controller.INodeController;
 import org.pathwayeditor.visualeditor.geometry.INodeIntersectionCalculator;
 import org.pathwayeditor.visualeditor.geometry.ShapeIntersectionCalculator;
@@ -20,27 +23,24 @@ import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle.SelectionRegion;
 
 public class MouseBehaviourController implements IMouseBehaviourController {
-	private enum DragStatus { STARTED, FINISHED };
-
 	private final Logger logger = Logger.getLogger(this.getClass());
 	private MouseListener mouseSelectionListener;
 	private MouseMotionListener mouseMotionListener;
 	private KeyListener keyListener;
-	private DragStatus dragStatus = DragStatus.FINISHED;
-	private DragStatus keyDragStatus = DragStatus.FINISHED;
 	private final INodeIntersectionCalculator intCalc;
 	private IShapePane shapePane;
-//	private IEditingOperation moveOperation;
-	private Point startPosition;
-	private Point lastDelta = new Point(0,0);
 	private Map<SelectionRegion, IDragResponse> dragResponseMap;
+	private IKeyboardResponse keyboardResponseMap;
+	private Map<SelectionRegion, IMouseFeedbackResponse> mouseResponseMap;
 	private IDragResponse currDragResponse;
 
 	public MouseBehaviourController(IShapePane pane, IEditingOperation moveOp, IResizeOperation resizeOp){
 		this.shapePane = pane;
-//		this.moveOperation = moveOp;
 		this.dragResponseMap = new HashMap<SelectionRegion, IDragResponse>();
+		this.mouseResponseMap = new HashMap<SelectionRegion, IMouseFeedbackResponse>();
+		this.keyboardResponseMap = new KeyboardResponse(moveOp);
 		initialiseDragResponses(moveOp, resizeOp);
+		initialiseMouseResponse();
         intCalc = new ShapeIntersectionCalculator(shapePane.getViewModel());
         this.mouseSelectionListener = new MouseListener(){
 
@@ -78,15 +78,12 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 			}
 
 			public void mouseReleased(MouseEvent e) {
-				if(dragStatus == DragStatus.STARTED){
-					dragStatus = DragStatus.FINISHED;
-					if(currDragResponse != null){
-						Point location = new Point(e.getPoint().getX(), e.getPoint().getY());
-						Point delta = startPosition.difference(location);
-						currDragResponse.dragFinished(delta);
-						currDragResponse = null;
-					}
+				if(currDragResponse != null){
+					currDragResponse.dragFinished();
+					currDragResponse = null;
 				}
+				Point location = new Point(e.getPoint().getX(), e.getPoint().getY());
+				e.getComponent().setCursor(getCurrentCursorResponse(location));
 			}
         	
         };
@@ -95,18 +92,26 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 			public void mouseDragged(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1){
 					Point location = new Point(e.getPoint().getX(), e.getPoint().getY());
-					if(dragStatus == DragStatus.FINISHED){
+					if(currDragResponse == null){
 						ISelectionHandle selectionModel = shapePane.getSelectionRecord().findSelectionModelAt(location);
 						if(selectionModel != null){
-							dragStatus = DragStatus.STARTED;
-							startPosition = location;
 							currDragResponse = dragResponseMap.get(selectionModel.getRegion());
 						}
 					}
-					else {
-						if(currDragResponse != null){
-							Point delta = startPosition.difference(location);
-							currDragResponse.dragContinuing(delta);
+					if(currDragResponse != null){
+						if(currDragResponse.isDragOngoing()){
+							if(currDragResponse.canContinueDrag(location)){
+								currDragResponse.dragContinuing(location);
+								if(canReparent()){
+									e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+								}
+								else{
+									e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
+								}
+							}
+						}
+						else{
+							currDragResponse.dragStarted(location);
 						}
 					}
 				}
@@ -114,58 +119,7 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 
 			public void mouseMoved(MouseEvent e) {
 				Point location = new Point(e.getPoint().getX(), e.getPoint().getY());
-				ISelectionHandle selectionModel = shapePane.getSelectionRecord().findSelectionModelAt(location);
-				if (selectionModel != null) {
-					if (SelectionRegion.Central.equals(selectionModel.getRegion())) {
-						e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
-						if (logger.isTraceEnabled()) {
-							logger.trace("Setting move cursor at position: " + location);
-						}
-					} else if (SelectionRegion.N.equals(selectionModel.getRegion())) {
-						e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.N_RESIZE_CURSOR));
-						if (logger.isTraceEnabled()) {
-							logger.trace("Setting N resize cursor at position: " + location);
-						}
-					} else if (SelectionRegion.NE.equals(selectionModel.getRegion())) {
-						e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.NE_RESIZE_CURSOR));
-						if (logger.isTraceEnabled()) {
-							logger.trace("Setting NE resize cursor at position: " + location);
-						}
-					} else if (SelectionRegion.E.equals(selectionModel.getRegion())) {
-						e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR));
-						if (logger.isTraceEnabled()) {
-							logger.trace("Setting E resize cursor at position: " + location);
-						}
-					} else if (SelectionRegion.SE.equals(selectionModel.getRegion())) {
-						e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.SE_RESIZE_CURSOR));
-						if (logger.isTraceEnabled()) {
-							logger.trace("Setting SE resize cursor at position: " + location);
-						}
-					} else if (SelectionRegion.S.equals(selectionModel.getRegion())) {
-						e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.S_RESIZE_CURSOR));
-						if (logger.isTraceEnabled()) {
-							logger.trace("Setting S resize cursor at position: " + location);
-						}
-					} else if (SelectionRegion.SW.equals(selectionModel.getRegion())) {
-						e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.SW_RESIZE_CURSOR));
-						if (logger.isTraceEnabled()) {
-							logger.trace("Setting SW resize cursor at position: " + location);
-						}
-					} else if (SelectionRegion.W.equals(selectionModel.getRegion())) {
-						e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.W_RESIZE_CURSOR));
-						if (logger.isTraceEnabled()) {
-							logger.trace("Setting W resize cursor at position: " + location);
-						}
-					} else if (SelectionRegion.NW.equals(selectionModel.getRegion())) {
-						e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.NW_RESIZE_CURSOR));
-						if (logger.isTraceEnabled()) {
-							logger.trace("Setting NW resize cursor at position: " + location);
-						}
-					}
-				} else {
-					e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-					logger.trace("Setting default cursor at position: " + location);
-				}
+				e.getComponent().setCursor(getCurrentCursorResponse(location));
 			}
         	
         };
@@ -174,16 +128,16 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode() == KeyEvent.VK_RIGHT){
-					handleKeyPress(1.0, 0.0);
+					handleKeyPress(CursorType.Right);
 				}
 				else if(e.getKeyCode() == KeyEvent.VK_LEFT){
-					handleKeyPress(-1.0, 0.0);
+					handleKeyPress(CursorType.Left);
 				}
 				else if(e.getKeyCode() == KeyEvent.VK_UP){
-					handleKeyPress(0.0, -1.0);
+					handleKeyPress(CursorType.Up);
 				}
 				else if(e.getKeyCode() == KeyEvent.VK_DOWN){
-					handleKeyPress(0.0, 1.0);
+					handleKeyPress(CursorType.Down);
 				}
 			}
 
@@ -205,39 +159,248 @@ public class MouseBehaviourController implements IMouseBehaviourController {
         };
 	}
 	
+	private boolean canReparent(){
+		boolean retVal = false;
+		CommonParentCalculator newParentCalc = new CommonParentCalculator(this.shapePane.getViewModel());
+		newParentCalc.findCommonParent(this.shapePane.getSelectionRecord().getGraphSelection());
+        if(newParentCalc.hasFoundCommonParent()) {
+        	if(logger.isTraceEnabled()){
+        		logger.trace("Common parent found. Node=" + newParentCalc.getCommonParent());
+        	}
+        	// parent is consistent - now we need to check if any node already has this parent
+        	// if all do then we move, in one or more doesn't then we fail reparenting
+        	retVal = newParentCalc.canReparentSelection();
+        }
+        else{
+        	logger.trace("No common parent found.");
+        }
+    	if(logger.isTraceEnabled()){
+    		logger.trace("Can reparent=" + retVal);
+    	}
+        return retVal;
+	}
+
+	private Cursor getCurrentCursorResponse(Point location){
+		ISelectionHandle selectionModel = shapePane.getSelectionRecord().findSelectionModelAt(location);
+		SelectionRegion selectionRegion = selectionModel != null ? selectionModel.getRegion() : SelectionRegion.None;
+		IMouseFeedbackResponse mouseFeedbackResponse = mouseResponseMap.get(selectionRegion);
+		return Cursor.getPredefinedCursor(mouseFeedbackResponse.getCursorFeeback(location));
+	}
+	
+	private void initialiseMouseResponse(){
+		this.mouseResponseMap.put(SelectionRegion.Central, new MouseFeedbackResponse(SelectionRegion.Central));
+		this.mouseResponseMap.put(SelectionRegion.N, new MouseFeedbackResponse(SelectionRegion.N));
+		this.mouseResponseMap.put(SelectionRegion.NE, new MouseFeedbackResponse(SelectionRegion.NE));
+		this.mouseResponseMap.put(SelectionRegion.E, new MouseFeedbackResponse(SelectionRegion.E));
+		this.mouseResponseMap.put(SelectionRegion.SE, new MouseFeedbackResponse(SelectionRegion.SE));
+		this.mouseResponseMap.put(SelectionRegion.S, new MouseFeedbackResponse(SelectionRegion.S));
+		this.mouseResponseMap.put(SelectionRegion.SW, new MouseFeedbackResponse(SelectionRegion.SW));
+		this.mouseResponseMap.put(SelectionRegion.W, new MouseFeedbackResponse(SelectionRegion.W));
+		this.mouseResponseMap.put(SelectionRegion.NW, new MouseFeedbackResponse(SelectionRegion.NW));
+		this.mouseResponseMap.put(SelectionRegion.None, new DefaultMouseFeedbackResponse());
+	}
+	
 	private void initialiseDragResponses(IEditingOperation moveOp, IResizeOperation resizeOp) {
 		this.dragResponseMap.put(SelectionRegion.Central, new CentralHandleResponse(moveOp));
-		this.dragResponseMap.put(SelectionRegion.N, new NorthHandleResponse(resizeOp));
-		this.dragResponseMap.put(SelectionRegion.E, new EastHandleResponse(resizeOp));
-		this.dragResponseMap.put(SelectionRegion.S, new SouthHandleResponse(resizeOp));
-		this.dragResponseMap.put(SelectionRegion.W, new WestHandleResponse(resizeOp));
-		this.dragResponseMap.put(SelectionRegion.NE, new NorthEastHandleResponse(resizeOp));
-		this.dragResponseMap.put(SelectionRegion.SE, new SouthEastHandleResponse(resizeOp));
-		this.dragResponseMap.put(SelectionRegion.SW, new SouthWestHandleResponse(resizeOp));
-		this.dragResponseMap.put(SelectionRegion.NW, new NorthWestHandleResponse(resizeOp));
+		this.dragResponseMap.put(SelectionRegion.N, new ResizeHandleResponse(new INewPositionCalculator() {
+			private Point delta;
+			
+			@Override
+			public Point getResizedOrigin() {
+				return new Point(0.0, delta.getY());
+			}
+			
+			@Override
+			public Dimension getResizedDelta() {
+				return new Dimension(0.0, -delta.getY());
+			}
+			
+			@Override
+			public void calculateDeltas(Point newDelta) {
+				this.delta = newDelta;
+			}
+
+			@Override
+			public Point getLastDelta() {
+				return this.delta;
+			}
+		}, resizeOp));
+		this.dragResponseMap.put(SelectionRegion.NE, new ResizeHandleResponse(new INewPositionCalculator() {
+			private Point delta;
+			
+			@Override
+			public Point getResizedOrigin() {
+				return new Point(0.0, delta.getY());
+			}
+			
+			@Override
+			public Dimension getResizedDelta() {
+				return new Dimension(delta.getX(), -delta.getY());
+			}
+			
+			@Override
+			public void calculateDeltas(Point newDelta) {
+				this.delta = newDelta;
+			}
+
+			@Override
+			public Point getLastDelta() {
+				return this.delta;
+			}
+		}, resizeOp));
+		this.dragResponseMap.put(SelectionRegion.E, new ResizeHandleResponse(new INewPositionCalculator() {
+			private Point delta;
+			
+			@Override
+			public Point getResizedOrigin() {
+				return new Point(0.0, 0.0);
+			}
+			
+			@Override
+			public Dimension getResizedDelta() {
+				return new Dimension(delta.getX(), 0.0);
+			}
+			
+			@Override
+			public void calculateDeltas(Point newDelta) {
+				this.delta = newDelta;
+			}
+
+			@Override
+			public Point getLastDelta() {
+				return this.delta;
+			}
+		}, resizeOp));
+		this.dragResponseMap.put(SelectionRegion.SE, new ResizeHandleResponse(new INewPositionCalculator() {
+			private Point delta;
+			
+			@Override
+			public Point getResizedOrigin() {
+				return new Point(0.0, 0.0);
+			}
+			
+			@Override
+			public Dimension getResizedDelta() {
+				return new Dimension(delta.getX(), delta.getY());
+			}
+			
+			@Override
+			public void calculateDeltas(Point newDelta) {
+				this.delta = newDelta;
+			}
+
+			@Override
+			public Point getLastDelta() {
+				return this.delta;
+			}
+		}, resizeOp));
+		this.dragResponseMap.put(SelectionRegion.S, new ResizeHandleResponse(new INewPositionCalculator() {
+			private Point delta;
+			
+			@Override
+			public Point getResizedOrigin() {
+				return new Point(0.0, 0.0);
+			}
+			
+			@Override
+			public Dimension getResizedDelta() {
+				return new Dimension(0.0, delta.getY());
+			}
+			
+			@Override
+			public void calculateDeltas(Point newDelta) {
+				this.delta = newDelta;
+			}
+
+			@Override
+			public Point getLastDelta() {
+				return this.delta;
+			}
+		}, resizeOp));
+		this.dragResponseMap.put(SelectionRegion.SW, new ResizeHandleResponse(new INewPositionCalculator() {
+			private Point delta;
+			
+			@Override
+			public Point getResizedOrigin() {
+				return new Point(delta.getX(), 0.0);
+			}
+			
+			@Override
+			public Dimension getResizedDelta() {
+				return new Dimension(-delta.getX(), delta.getY());
+			}
+			
+			@Override
+			public void calculateDeltas(Point newDelta) {
+				this.delta = newDelta;
+			}
+
+			@Override
+			public Point getLastDelta() {
+				return this.delta;
+			}
+		}, resizeOp));
+		this.dragResponseMap.put(SelectionRegion.W, new ResizeHandleResponse(new INewPositionCalculator() {
+			private Point delta;
+			
+			@Override
+			public Point getResizedOrigin() {
+				return new Point(delta.getX(), 0.0);
+			}
+			
+			@Override
+			public Dimension getResizedDelta() {
+				return new Dimension(-delta.getX(), 0.0);
+			}
+			
+			@Override
+			public void calculateDeltas(Point newDelta) {
+				this.delta = newDelta;
+			}
+
+			@Override
+			public Point getLastDelta() {
+				return this.delta;
+			}
+		}, resizeOp));
+		this.dragResponseMap.put(SelectionRegion.NW, new ResizeHandleResponse(new INewPositionCalculator() {
+			private Point delta;
+			
+			@Override
+			public Point getResizedOrigin() {
+				return new Point(delta.getX(), delta.getY());
+			}
+			
+			@Override
+			public Dimension getResizedDelta() {
+				return new Dimension(-delta.getX(), -delta.getY());
+			}
+			
+			@Override
+			public void calculateDeltas(Point newDelta) {
+				this.delta = newDelta;
+			}
+
+			@Override
+			public Point getLastDelta() {
+				return this.delta;
+			}
+		}, resizeOp));
 	}
 
 	private void handleKeyRelease(){
-		if(keyDragStatus.equals(DragStatus.STARTED)){
-			keyDragStatus = DragStatus.FINISHED;
-			if(currDragResponse != null){
-				currDragResponse.dragFinished(lastDelta);
-				currDragResponse = null;
-			}
-			lastDelta = null;
+		if(this.keyboardResponseMap.isKeyPressed()){
+			this.keyboardResponseMap.cursorsKeyUp();
 		}
 	}
 	
-	private void handleKeyPress(double x, double y){
-		if(keyDragStatus.equals(DragStatus.FINISHED)){
-			keyDragStatus = DragStatus.STARTED;
-			currDragResponse = dragResponseMap.get(SelectionRegion.Central);
-			currDragResponse.dragStarted();
-			lastDelta = new Point(0,0);
+	private void handleKeyPress(CursorType cursorPressed){
+		if(!this.keyboardResponseMap.isKeyPressed()){
+			this.keyboardResponseMap.cursorKeyDown(cursorPressed);
 		}
-		Point delta = lastDelta.translate(x, y);
-		currDragResponse.dragContinuing(delta);
-		lastDelta = delta;
+		else{
+			this.keyboardResponseMap.cursorKeyStillDown(cursorPressed);
+		}
 	}
 	
 	private INodeController findDrawingNodeAt(Point location) {

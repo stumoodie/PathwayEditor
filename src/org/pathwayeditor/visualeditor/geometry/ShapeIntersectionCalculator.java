@@ -57,15 +57,18 @@ public class ShapeIntersectionCalculator implements INodeIntersectionCalculator 
 		this.filter = DEFAULT_FILTER;
 	}
 	
+	@Override
 	public void setComparator(Comparator<INodeController> comparator){
 		this.comparator = comparator;
 	}
 	
 	
+	@Override
 	public IViewControllerStore getModel(){
 		return this.model;
 	}
 	
+	@Override
 	public void setFilter(IIntersectionCalcnFilter filter){
 		if(filter == null){
 			this.filter = DEFAULT_FILTER;
@@ -75,13 +78,16 @@ public class ShapeIntersectionCalculator implements INodeIntersectionCalculator 
 		}
 	}
 	
+	@Override
 	public SortedSet<INodeController> findIntersectingNodes(IConvexHull queryHull, INodeController queryNode){
 		Iterator<INodeController> iter = model.nodePrimitiveIterator();
 		SortedSet<INodeController> retVal = new TreeSet<INodeController>(this.comparator);
 		// the root node will always intersect - that's a give so add it in and exclude it from
 		// intersection tests
 		IRootController rootNode = model.getRootNode();
-		retVal.add(rootNode);
+		if(filter.accept(rootNode)){
+			retVal.add(rootNode);
+		}
 		while(iter.hasNext()){
 			INodeController node = iter.next();
 			IConvexHull attributeHull = node.getConvexHull();
@@ -93,6 +99,7 @@ public class ShapeIntersectionCalculator implements INodeIntersectionCalculator 
 		return retVal;
 	}
 
+	@Override
 	public SortedSet<INodeController> findNodesAt(Point p) {
 		Iterator<INodeController> iter = model.nodePrimitiveIterator();
 		SortedSet<INodeController> retVal = new TreeSet<INodeController>(this.comparator);

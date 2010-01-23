@@ -1,6 +1,7 @@
 package org.pathwayeditor.visualeditor.controller;
 
 import java.util.Iterator;
+import java.util.SortedSet;
 
 import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.drawingprimitives.IShapeAttribute;
@@ -28,6 +29,9 @@ import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.figurevm.FigureDefinitionCompiler;
+import org.pathwayeditor.visualeditor.geometry.IIntersectionCalcnFilter;
+import org.pathwayeditor.visualeditor.geometry.INodeIntersectionCalculator;
+import org.pathwayeditor.visualeditor.geometry.ShapeIntersectionCalculator;
 
 public class ShapeController extends NodeController implements IShapeController {
 	private final Logger logger = Logger.getLogger(this.getClass());
@@ -215,18 +219,6 @@ public class ShapeController extends NodeController implements IShapeController 
 		notifyTranslation(translation);
 	}
 
-//	@Override
-//	public void redefinedSyncroniseToModel() {
-//		IShapeAttribute attribute = this.domainNode.getAttribute();
-//		figureController.setRequestedEnvelope(attribute.getBounds());
-//		figureController.setFillColour(attribute.getFillColour());
-//		figureController.setLineColour(attribute.getLineColour());
-//		figureController.setLineStyle(attribute.getLineStyle());
-//		figureController.setLineWidth(attribute.getLineWidth());
-//		assignBindVariablesToProperties(attribute, figureController);
-//		figureController.generateFigureDefinition();
-//	}
-
 	@Override
 	public int compareTo(IDrawingPrimitiveController o) {
 		Integer otherIndex = o.getDrawingElement().getAttribute().getCreationSerial();
@@ -249,4 +241,47 @@ public class ShapeController extends NodeController implements IShapeController 
 		this.notifyResize(originDelta, resizeDelta);
 	}
 
+	@Override
+	public boolean canResize(Point originDelta, Dimension resizeDelta) {
+		boolean retVal = false;
+		// algorithm is to find the intersecting shapes and then check if the
+		// children and parents are in the intersection list
+		Envelope newBounds = this.domainNode.getAttribute().getBounds().resize(originDelta, resizeDelta);
+		if(logger.isTraceEnabled()){
+			logger.trace("In can resize. New bounds = " + newBounds + ",originDelta=" + originDelta + ",resizeDelta=" + resizeDelta);
+		}
+		if(newBounds.getDimension().getWidth() > 0.0 && newBounds.getDimension().getHeight() > 0.0){
+			INodeController parentNode = this.getViewModel().getNodePrimitive(this.domainNode.getParentNode());
+			INodeIntersectionCalculator intCal = new ShapeIntersectionCalculator(this.getViewModel());
+			intCal.setFilter(new IIntersectionCalcnFilter() {
+
+				@Override
+				public boolean accept(INodeController node) {
+					return !(node instanceof ILabelController);
+				}
+
+			});
+			SortedSet<INodeController> intersectingNodes = intCal.findIntersectingNodes(this.getConvexHull().changeEnvelope(newBounds), this);
+			boolean parentIntersects = intersectingNodes.contains(parentNode);
+			if(logger.isTraceEnabled()){
+				logger.trace("CanResize: intersects with parent" + parentIntersects);
+			}
+			boolean childrenIntersect = childrenIntersect(this, intersectingNodes);
+			if(logger.isTraceEnabled()){
+				logger.trace("CanResize: intersects with children" + childrenIntersect);
+			}
+			retVal = parentIntersects && childrenIntersect;
+		}
+		return retVal;
+	}
+
+	private boolean childrenIntersect(IShapeController parentNode, SortedSet<INodeController> intersectingNodes){
+		Iterator<IShapeNode> iter = parentNode.getDrawingElement().getSubModel().shapeNodeIterator();
+		boolean retVal = true;
+		while(iter.hasNext() && retVal){
+			INodeController child = this.getViewModel().getNodePrimitive(iter.next());
+			retVal = intersectingNodes.contains(child);
+		}
+		return retVal;
+	}
 }

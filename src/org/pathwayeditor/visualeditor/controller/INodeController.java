@@ -38,5 +38,7 @@ public interface INodeController extends IDrawingPrimitiveController {
 	List<INodePrimitiveChangeListener> getNodePrimitiveChangeListeners();
 
 	void resizePrimitive(Point originDelta, Dimension resizeDelta);
+
+	boolean canResize(Point originDelta, Dimension resizeDelta);
 	
 }

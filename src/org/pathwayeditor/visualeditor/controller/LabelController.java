@@ -160,4 +160,10 @@ public class LabelController extends NodeController implements ILabelController 
 		controller.generateFigureDefinition();
 		this.notifyResize(originDelta, resizeDelta);
 	}
+
+	@Override
+	public boolean canResize(Point originDelta, Dimension resizeDelta) {
+		Envelope newBounds = this.getBounds().resize(originDelta, resizeDelta);
+		return (newBounds.getDimension().getWidth() > 0.0 && newBounds.getDimension().getHeight() > 0.0);
+	}
 }

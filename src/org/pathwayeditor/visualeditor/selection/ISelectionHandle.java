@@ -5,7 +5,7 @@ import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.controller.INodeController;
 
 public interface ISelectionHandle extends Comparable<ISelectionHandle> {
-	enum SelectionRegion { Central, N, NE, E, SE, S, SW, W, NW };
+	enum SelectionRegion { Central, N, NE, E, SE, S, SW, W, NW, None };
 	
 	ISelection getSelection();
 	

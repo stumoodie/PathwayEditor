@@ -4,9 +4,19 @@ import org.pathwayeditor.figure.geometry.Point;
 
 public interface IDragResponse {
 
-	void dragStarted();
+	boolean isDragOngoing();
 	
-	void dragContinuing(Point delta);
+	boolean canContinueDrag(Point delta);
+	
+	void dragStarted(Point startLocation);
+	
+	void shiftSelected(boolean isSelected);
+	
+	void cmdSelected(boolean isSelected);
+	
+	void altSelected(boolean isSelected);
+	
+	void dragContinuing(Point newLocation);
 
-	void dragFinished(Point delta);
+	void dragFinished();
 }

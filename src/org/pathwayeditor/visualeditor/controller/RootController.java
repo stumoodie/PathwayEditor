@@ -64,4 +64,9 @@ public class RootController extends NodeController implements IRootController {
 	public void resizePrimitive(Point originDelta, Dimension resizeDelta) {
 	}
 
+	@Override
+	public boolean canResize(Point originDelta, Dimension resizeDelta) {
+		return false;
+	}
+
 }

@@ -11,4 +11,6 @@ public interface IResizeOperation {
 
 	void resizeContinuing(Point originDelta, Dimension resizeDelta);
 
+	boolean canResize(Point originDelta, Dimension resizeDelta);
+
 }

@@ -431,11 +431,11 @@ null setfillcol cpx xoffset cpy yoffset (C) card cvs text
 grestore
 } def
 :cardinality 1 gt {
-0.10 xoffset 0.10 yoffset 0.90 w mul 0.90 w mul oval
-0 xoffset 0 yoffset 0.90 w mul 0.90 w mul oval
+0.10 xoffset 0.10 yoffset 0.90 w mul 0.90 h mul oval
+0 xoffset 0 yoffset 0.90 w mul 0.90 h mul oval
 0.25 0.05 :cardFontSize :cardinality cardinalityBox
 }
-{ x y w w oval } ifelse</FigureDefinition>
+{ x y w h oval } ifelse</FigureDefinition>
                     </ShapeAttribute>
                 </ShapeNode>
                 <LinkEdge linkIdx="0" srcNodeIdx="3" tgtNodeIdx="13">

@@ -31,12 +31,26 @@ public class SelectionRecord implements ISelectionRecord {
 	public void addSecondarySelection(IDrawingPrimitiveController drawingElement) {
 		if(this.selections.isEmpty()) throw new IllegalStateException("Cannot add a secondary selection before a primary selection");
 
-		ISelection newSelection = new Selection(false, (INodeController)drawingElement);
+		ISelection newSelection = createSelection(false, drawingElement);
 		if(this.selections.add(newSelection)){
 			// only do something if selection is not already recorded
 			addElementToGraphSelection(drawingElement);
 			notifySelectionChange();
 		}
+	}
+	
+	private ISelection createSelection(boolean isPrimtive, IDrawingPrimitiveController drawingElement){
+		ISelection retVal = null;
+		if(drawingElement instanceof INodeController){
+			retVal = new NodeSelection(isPrimtive, (INodeController)drawingElement);
+		}
+		else if(drawingElement instanceof ILinkController){
+			retVal = new LinkSelection(isPrimtive, (ILinkController)drawingElement);
+		}
+		else{
+			throw new RuntimeException("Cannot create controller of type: " + retVal);
+		}
+		return retVal;
 	}
 
 	public void addSelectionChangeListener(ISelectionChangeListener listener) {
@@ -81,7 +95,7 @@ public class SelectionRecord implements ISelectionRecord {
 		if(this.selections.isEmpty() || !this.selections.first().equals(drawingElement)){
 			// a change in primary selection clears the secondary selection
 			this.selections.clear();
-			ISelection primSel = new Selection(true, (INodeController)drawingElement);
+			ISelection primSel = createSelection(true, drawingElement);
 			this.selections.add(primSel);
 			this.selectionFactory = drawingElement.getDrawingElement().getModel().newSelectionFactory();
 			this.selection = null;
@@ -143,40 +157,38 @@ public class SelectionRecord implements ISelectionRecord {
 	}
 
 	@Override
-	public Iterator<ILinkController> selectedLinksIterator() {
-		List<ILinkController> retVal = new LinkedList<ILinkController>();
-		//TODO: implement link selection
-//		Iterator<ISelection> iter = this.selectionIterator();
-//		while(iter.hasNext()){
-//			ISelection prim = iter.next();
-//			if(prim.getPrimitiveController() instanceof ILinkController){
-//				retVal.add((ILinkController)prim);
-//			}
-//		}
-		return retVal.iterator();
-	}
-
-	@Override
-	public Iterator<ISelection> selectedNodesIterator() {
-		List<ISelection> retVal = new LinkedList<ISelection>();
+	public Iterator<ILinkSelection> selectedLinksIterator() {
+		List<ILinkSelection> retVal = new LinkedList<ILinkSelection>();
 		Iterator<ISelection> iter = this.selectionIterator();
 		while(iter.hasNext()){
 			ISelection prim = iter.next();
-			if(prim.getPrimitiveController() instanceof INodeController){
-				retVal.add(prim);
+			if(prim instanceof ILinkSelection){
+				retVal.add((ILinkSelection)prim);
 			}
 		}
 		return retVal.iterator();
 	}
 
 	@Override
-	public Iterator<ISelection> getTopNodeSelection() {
-		if(this.selection == null){
-			this.selection = this.selectionFactory.createEdgeExcludedSelection();
+	public Iterator<INodeSelection> selectedNodesIterator() {
+		List<INodeSelection> retVal = new LinkedList<INodeSelection>();
+		Iterator<ISelection> iter = this.selectionIterator();
+		while(iter.hasNext()){
+			ISelection prim = iter.next();
+			if(prim instanceof INodeSelection){
+				retVal.add((INodeSelection)prim);
+			}
 		}
+		return retVal.iterator();
+	}
+
+	@Override
+	public Iterator<INodeSelection> getTopNodeSelection() {
+		// ensure that this graph selection is initialised
+		getGraphSelection();
 		final IViewControllerStore viewModel = this.selections.first().getPrimitiveController().getViewModel();
 		final Iterator<IDrawingNode> iter = this.selection.topDrawingNodeIterator();
-		Iterator<ISelection> retVal = new Iterator<ISelection>(){
+		Iterator<INodeSelection> retVal = new Iterator<INodeSelection>(){
 
 			@Override
 			public boolean hasNext() {
@@ -184,8 +196,8 @@ public class SelectionRecord implements ISelectionRecord {
 			}
 
 			@Override
-			public ISelection next() {
-				return findSelection(viewModel.getNodePrimitive(iter.next()));
+			public INodeSelection next() {
+				return (INodeSelection)findSelection(viewModel.getNodePrimitive(iter.next()));
 			}
 
 			@Override
@@ -211,6 +223,14 @@ public class SelectionRecord implements ISelectionRecord {
 			retVal = matches.first();
 		}
 		return retVal;
+	}
+
+	@Override
+	public IDrawingElementSelection getGraphSelection() {
+		if(this.selection == null){
+			this.selection = this.selectionFactory.createEdgeExcludedSelection();
+		}
+		return this.selection;
 	}
 
 }
