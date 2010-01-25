@@ -41,7 +41,7 @@ public class ShapeController extends NodeController implements IShapeController 
 	private final ICanvasAttributePropertyChangeListener shapePropertyChangeListener;
 	private final IAnnotationPropertyChangeListener annotPropChangeListener;
 	private IFigureController figureController;
-	private final INodeControllerChangeListener parentNodePrimitivateChangeListener;
+//	private final INodeControllerChangeListener parentNodePrimitivateChangeListener;
 	private final IDrawingNodeAttributeListener parentDrawingNodePropertyChangeListener;
 	private boolean isActive;
 	
@@ -68,10 +68,10 @@ public class ShapeController extends NodeController implements IShapeController 
 				else if(e.getPropertyChange().equals(CanvasAttributePropertyChange.SIZE)
 						|| e.getPropertyChange().equals(CanvasAttributePropertyChange.LOCATION)){
 					IShapeAttribute attribute = (IShapeAttribute)e.getAttribute();
-					Envelope originalBounds = getBounds();
+//					Envelope originalBounds = getBounds();
 					figureController.setRequestedEnvelope(attribute.getBounds());
 					figureController.generateFigureDefinition();
-					notifyChangedBounds(originalBounds, getBounds());
+//					notifyChangedBounds(originalBounds, getBounds());
 				}
 				else if(e.getPropertyChange().equals(CanvasAttributePropertyChange.LINE_STYLE)){
 					IShapeAttribute attribute = (IShapeAttribute)e.getAttribute();
@@ -88,23 +88,23 @@ public class ShapeController extends NodeController implements IShapeController 
 				figureController.generateFigureDefinition();
 			}	
 		};
-		parentNodePrimitivateChangeListener = new INodeControllerChangeListener(){
-
-			@Override
-			public void nodeTranslated(INodeTranslationEvent e) {
-				translatePrimitive(e.getTranslationDelta());
-			}
-
-			@Override
-			public void nodeResized(INodeResizeEvent e) {
-			}
-
-			@Override
-			public void changedBounds(INodeBoundsChangeEvent e) {
-				
-			}
-
-		};
+//		parentNodePrimitivateChangeListener = new INodeControllerChangeListener(){
+//
+//			@Override
+//			public void nodeTranslated(INodeTranslationEvent e) {
+//				translatePrimitive(e.getTranslationDelta());
+//			}
+//
+//			@Override
+//			public void nodeResized(INodeResizeEvent e) {
+//			}
+//
+//			@Override
+//			public void changedBounds(INodeBoundsChangeEvent e) {
+//				
+//			}
+//
+//		};
 		parentDrawingNodePropertyChangeListener = new IDrawingNodeAttributeListener() {
 			
 			@Override
@@ -121,7 +121,7 @@ public class ShapeController extends NodeController implements IShapeController 
 
 	public void activate(){
 		addListeners(this.domainNode, figureController);
-		this.resyncToModel();
+//		this.resyncToModel();
 		this.isActive = true;
 	}
 	
@@ -182,8 +182,8 @@ public class ShapeController extends NodeController implements IShapeController 
 			prop.addChangeListener(annotPropChangeListener);
 		}
 		this.parentAttribute.addDrawingNodeAttributeListener(parentDrawingNodePropertyChangeListener);
-		INodeController parentNode = this.getViewModel().getNodePrimitive(parentAttribute);
-		parentNode.addNodePrimitiveChangeListener(this.parentNodePrimitivateChangeListener);
+//		INodeController parentNode = this.getViewModel().getNodePrimitive(parentAttribute);
+//		parentNode.addNodePrimitiveChangeListener(this.parentNodePrimitivateChangeListener);
 	}
 	
 	private void removeListeners() {
@@ -195,10 +195,10 @@ public class ShapeController extends NodeController implements IShapeController 
 			prop.removeChangeListener(annotPropChangeListener);
 		}
 		parentAttribute.removeDrawingNodeAttributeListener(parentDrawingNodePropertyChangeListener);
-		if(this.getViewModel().containsDrawingElement(parentAttribute)){
-			INodeController parentNode = this.getViewModel().getNodePrimitive(parentAttribute);
-			parentNode.removeNodePrimitiveChangeListener(this.parentNodePrimitivateChangeListener);
-		}
+//		if(this.getViewModel().containsDrawingElement(parentAttribute)){
+//			INodeController parentNode = this.getViewModel().getNodePrimitive(parentAttribute);
+//			parentNode.removeNodePrimitiveChangeListener(this.parentNodePrimitivateChangeListener);
+//		}
 	}
 		
 	@Override
@@ -221,13 +221,13 @@ public class ShapeController extends NodeController implements IShapeController 
 		return this.figureController.getConvexHull();
 	}
 
-	@Override
-	public void translatePrimitive(Point translation) {
-		Envelope currBounds = this.domainNode.getBounds();
-		figureController.setRequestedEnvelope(currBounds.translate(translation));
-		figureController.generateFigureDefinition();
-		notifyTranslation(translation);
-	}
+//	@Override
+//	public void translatePrimitive(Point translation) {
+//		Envelope currBounds = this.domainNode.getBounds();
+//		figureController.setRequestedEnvelope(currBounds.translate(translation));
+//		figureController.generateFigureDefinition();
+//		notifyTranslation(translation);
+//	}
 
 	@Override
 	public int compareTo(IDrawingPrimitiveController o) {
@@ -246,13 +246,13 @@ public class ShapeController extends NodeController implements IShapeController 
 		this.parentAttribute = null;
 	}
 
-	@Override
-	public void resizePrimitive(Point originDelta, Dimension resizeDelta) {
-		Envelope currBounds = this.domainNode.getBounds();
-		figureController.setRequestedEnvelope(currBounds.resize(originDelta, resizeDelta));
-		figureController.generateFigureDefinition();
-		this.notifyResize(originDelta, resizeDelta);
-	}
+//	@Override
+//	public void resizePrimitive(Point originDelta, Dimension resizeDelta) {
+//		Envelope currBounds = this.domainNode.getBounds();
+//		figureController.setRequestedEnvelope(currBounds.resize(originDelta, resizeDelta));
+//		figureController.generateFigureDefinition();
+//		this.notifyResize(originDelta, resizeDelta);
+//	}
 
 	@Override
 	public boolean canResize(Point originDelta, Dimension resizeDelta) {
@@ -298,19 +298,19 @@ public class ShapeController extends NodeController implements IShapeController 
 		return retVal;
 	}
 	
-	@Override
-	public void redefinedSyncroniseToModel() {
-		IShapeAttribute attribute = this.domainNode;
-		Envelope originalBounds = this.getBounds();
-		figureController.setRequestedEnvelope(attribute.getBounds());
-		figureController.setFillColour(attribute.getFillColour());
-		figureController.setLineColour(attribute.getLineColour());
-		figureController.setLineStyle(attribute.getLineStyle());
-		figureController.setLineWidth(attribute.getLineWidth());
-		assignBindVariablesToProperties(attribute, figureController);
-		figureController.generateFigureDefinition();
-		notifyChangedBounds(originalBounds, getBounds());
-	}
+//	@Override
+//	public void redefinedSyncroniseToModel() {
+//		IShapeAttribute attribute = this.domainNode;
+//		Envelope originalBounds = this.getBounds();
+//		figureController.setRequestedEnvelope(attribute.getBounds());
+//		figureController.setFillColour(attribute.getFillColour());
+//		figureController.setLineColour(attribute.getLineColour());
+//		figureController.setLineStyle(attribute.getLineStyle());
+//		figureController.setLineWidth(attribute.getLineWidth());
+//		assignBindVariablesToProperties(attribute, figureController);
+//		figureController.generateFigureDefinition();
+//		notifyChangedBounds(originalBounds, getBounds());
+//	}
 
 	@Override
 	public void inactivate() {

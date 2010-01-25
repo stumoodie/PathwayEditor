@@ -25,8 +25,6 @@ public interface IDrawingPrimitiveController extends Comparable<IDrawingPrimitiv
 	 * Turns off listeners and finalises resources on the assumption that this primitive is to be discarded.
 	 */
 	void dispose();
-
-	void resyncToModel();
 	
 //	void addDrawingPrimitiveControllerListener(IDrawingPrimitiveControllerListener listener);
 //

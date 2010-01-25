@@ -35,15 +35,15 @@ public class RootController extends NodeController implements IRootController {
 		return this.domainNode;
 	}
 
-	@Override
-	public void translatePrimitive(Point translation) {
-		// do nothing
-	}
-
-	@Override
-	public void redefinedSyncroniseToModel() {
-		// do nothing
-	}
+//	@Override
+//	public void translatePrimitive(Point translation) {
+//		// do nothing
+//	}
+//
+//	@Override
+//	public void redefinedSyncroniseToModel() {
+//		// do nothing
+//	}
 
 	@Override
 	public int compareTo(IDrawingPrimitiveController o) {
@@ -59,13 +59,13 @@ public class RootController extends NodeController implements IRootController {
 	@Override
 	public void activate() {
 		this.isActive = true;
-		this.resyncToModel();
+//		this.resyncToModel();
 	}
 
-	@Override
-	public void resizePrimitive(Point originDelta, Dimension resizeDelta) {
-	}
-
+//	@Override
+//	public void resizePrimitive(Point originDelta, Dimension resizeDelta) {
+//	}
+//
 	@Override
 	public boolean canResize(Point originDelta, Dimension resizeDelta) {
 		return false;

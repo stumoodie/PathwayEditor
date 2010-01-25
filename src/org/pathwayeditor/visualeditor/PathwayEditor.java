@@ -22,6 +22,8 @@ import org.pathwayeditor.visualeditor.commands.ResizeNodeCommand;
 import org.pathwayeditor.visualeditor.controller.INodeController;
 import org.pathwayeditor.visualeditor.controller.IViewControllerStore;
 import org.pathwayeditor.visualeditor.controller.ViewControllerStore;
+import org.pathwayeditor.visualeditor.feedback.FeedbackModel;
+import org.pathwayeditor.visualeditor.feedback.IFeedbackNode;
 import org.pathwayeditor.visualeditor.selection.INodeSelection;
 import org.pathwayeditor.visualeditor.selection.ISelection;
 import org.pathwayeditor.visualeditor.selection.ISelectionChangeEvent;
@@ -37,14 +39,15 @@ public class PathwayEditor {
 	private ISelectionRecord selectionRecord;
 	private ICommandStack commandStack;
 	private IMouseBehaviourController editBehaviourController;
-
 	private ISelectionChangeListener selectionChangeListener;
+	private final FeedbackModel feedbackModel;
 	
 	public PathwayEditor(ICanvas boCanvas, int width, int height){
         this.commandStack = new CommandStack();
 		viewModel = new ViewControllerStore(boCanvas.getModel());
 		this.selectionRecord = new SelectionRecord(viewModel);
-		this.shapePane = new ShapePane(viewModel, this.selectionRecord);
+		this.feedbackModel = new FeedbackModel(this.selectionRecord);
+		this.shapePane = new ShapePane(viewModel, this.selectionRecord, this.feedbackModel);
 		this.shapePane.setSize(width, height);
         IEditingOperation editOperation = new IEditingOperation(){
 
@@ -59,9 +62,11 @@ public class PathwayEditor {
 				else if(reparentingState.equals(ReparentingStateType.CAN_MOVE)){
 					createMoveCommand(delta, false);
 				}
-				else{
-					viewModel.synchroniseWithDomainModel();
-				}
+//				else{
+//					viewModel.synchroniseWithDomainModel();
+//				}
+				feedbackModel.clear();
+				selectionRecord.clear();
 				shapePane.repaint();
 			}
 
@@ -77,6 +82,7 @@ public class PathwayEditor {
 			@Override
 			public void moveStarted() {
 				logger.trace("Move started.");
+				feedbackModel.rebuild();
 			}
 
 			@Override
@@ -145,9 +151,9 @@ public class PathwayEditor {
 	}
 	
 	private void resizeSelection(Point originDelta, Dimension resizeDelta) {
-		Iterator<ISelection> moveNodeIterator = this.selectionRecord.selectionIterator();
+		Iterator<IFeedbackNode> moveNodeIterator = this.feedbackModel.nodeIterator();
 		while(moveNodeIterator.hasNext()){
-			INodeController nodePrimitive = (INodeController)moveNodeIterator.next().getPrimitiveController();
+			IFeedbackNode nodePrimitive = moveNodeIterator.next();
 			nodePrimitive.resizePrimitive(originDelta, resizeDelta);
 			if(logger.isTraceEnabled()){
 				logger.trace("Resizing shape to bounds: " + nodePrimitive.getBounds());
@@ -160,7 +166,6 @@ public class PathwayEditor {
 		ICompoundCommand cmpCommand = new CompoundCommand();
 		while(moveNodeIterator.hasNext()){
 			INodeController nodePrimitive = (INodeController)moveNodeIterator.next().getPrimitiveController();
-			nodePrimitive.resizePrimitive(originDelta, resizeDelta);
 			ICommand cmd = new ResizeNodeCommand(nodePrimitive.getDrawingElement(), originDelta, resizeDelta);
 			cmpCommand.addCommand(cmd);
 			logger.trace("Dragged shape to location: " + nodePrimitive.getBounds().getOrigin());
@@ -188,7 +193,6 @@ public class PathwayEditor {
 		ICompoundCommand cmpCommand = new CompoundCommand();
 		while(moveNodeIterator.hasNext()){
 			INodeController nodePrimitive = (INodeController)moveNodeIterator.next().getPrimitiveController();
-			nodePrimitive.translatePrimitive(delta);
 			ICommand cmd = new MoveNodeCommand(nodePrimitive.getDrawingElement(), delta);
 			cmpCommand.addCommand(cmd);
 			logger.trace("Dragged shape to location: " + nodePrimitive.getBounds().getOrigin());
@@ -224,9 +228,9 @@ public class PathwayEditor {
 
 	
 	private void moveSelection(Point delta) {
-		Iterator<INodeSelection> moveNodeIterator = this.selectionRecord.getTopNodeSelection();
+		Iterator<IFeedbackNode> moveNodeIterator = this.feedbackModel.nodeIterator();
 		while(moveNodeIterator.hasNext()){
-			INodeController nodePrimitive = (INodeController)moveNodeIterator.next().getPrimitiveController();
+			IFeedbackNode nodePrimitive = moveNodeIterator.next();
 			nodePrimitive.translatePrimitive(delta);
 			logger.trace("Dragged shape to location: " + nodePrimitive.getBounds().getOrigin());
 		}

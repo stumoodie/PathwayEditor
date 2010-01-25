@@ -6,16 +6,12 @@ import java.util.List;
 
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.Point;
-import org.pathwayeditor.visualeditor.controller.INodeBoundsChangeEvent;
 import org.pathwayeditor.visualeditor.controller.INodeController;
-import org.pathwayeditor.visualeditor.controller.INodeControllerChangeListener;
-import org.pathwayeditor.visualeditor.controller.INodeResizeEvent;
-import org.pathwayeditor.visualeditor.controller.INodeTranslationEvent;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle.SelectionRegion;
 
 public class NodeSelection extends Selection implements INodeSelection {
 	private static final int NUM_REGIONS = 9;
-	private INodeControllerChangeListener nodeControllerListener;
+//	private INodeControllerChangeListener nodeControllerListener;
 	private final INodeController nodeController;
 	private final List<ISelectionHandle> selectionModels;
 	private Envelope selectionBounds;
@@ -25,25 +21,25 @@ public class NodeSelection extends Selection implements INodeSelection {
 		this.nodeController = nodeController;
 		this.selectionModels = new ArrayList<ISelectionHandle>(NUM_REGIONS);
 		buildHandles();
-		this.nodeControllerListener = new INodeControllerChangeListener(){
-
-			@Override
-			public void nodeTranslated(INodeTranslationEvent e) {
-				buildHandles();
-			}
-
-			@Override
-			public void nodeResized(INodeResizeEvent e) {
-				buildHandles();
-			}
-
-			@Override
-			public void changedBounds(INodeBoundsChangeEvent e) {
-				buildHandles();
-			}
-			
-		};
-		this.nodeController.addNodePrimitiveChangeListener(this.nodeControllerListener);
+//		this.nodeControllerListener = new INodeControllerChangeListener(){
+//
+//			@Override
+//			public void nodeTranslated(INodeTranslationEvent e) {
+//				buildHandles();
+//			}
+//
+//			@Override
+//			public void nodeResized(INodeResizeEvent e) {
+//				buildHandles();
+//			}
+//
+//			@Override
+//			public void changedBounds(INodeBoundsChangeEvent e) {
+//				buildHandles();
+//			}
+//			
+//		};
+//		this.nodeController.addNodePrimitiveChangeListener(this.nodeControllerListener);
 	}
 	
 	@Override

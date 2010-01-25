@@ -1,6 +1,5 @@
 package org.pathwayeditor.visualeditor.controller;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -279,17 +278,17 @@ public class ViewControllerStore implements IViewControllerStore {
 		this.isActive = true;
 	}
 
-	@Override
-	public void synchroniseWithDomainModel() {
-		for(IDrawingPrimitiveController primitive : this.drawingPrimitives){
-			primitive.resyncToModel();
-		}
-	}
+//	@Override
+//	public void synchroniseWithDomainModel() {
+//		for(IDrawingPrimitiveController primitive : this.drawingPrimitives){
+//			primitive.resyncToModel();
+//		}
+//	}
 
-	@Override
-	public void addViewControllerChangeListener(IViewControllerChangeListener listener) {
-		this.listeners.add(listener);
-	}
+//	@Override
+//	public void addViewControllerChangeListener(IViewControllerChangeListener listener) {
+//		this.listeners.add(listener);
+//	}
 
 	@Override
 	public void deactivate() {
@@ -299,18 +298,18 @@ public class ViewControllerStore implements IViewControllerStore {
 		this.isActive = false;
 	}
 
-	@Override
-	public List<IViewControllerChangeListener> getViewControllerChangeListeners() {
-		return new ArrayList<IViewControllerChangeListener>(this.listeners);
-	}
+//	@Override
+//	public List<IViewControllerChangeListener> getViewControllerChangeListeners() {
+//		return new ArrayList<IViewControllerChangeListener>(this.listeners);
+//	}
 
 	@Override
 	public boolean isActive() {
 		return this.isActive;
 	}
 
-	@Override
-	public void removeViewControllerChangeListener(IViewControllerChangeListener listener) {
-		this.listeners.remove(listener);
-	}
+//	@Override
+//	public void removeViewControllerChangeListener(IViewControllerChangeListener listener) {
+//		this.listeners.remove(listener);
+//	}
 }

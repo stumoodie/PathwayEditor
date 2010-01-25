@@ -26,10 +26,10 @@ public abstract class DrawingPrimitiveController implements IDrawingPrimitiveCon
 		return this.viewModel;
 	}
 
-	protected abstract void redefinedSyncroniseToModel();
+//	protected abstract void redefinedSyncroniseToModel();
 	
-	@Override
-	public final void resyncToModel(){
-		this.redefinedSyncroniseToModel();
-	}
+//	@Override
+//	public final void resyncToModel(){
+//		this.redefinedSyncroniseToModel();
+//	}
 }

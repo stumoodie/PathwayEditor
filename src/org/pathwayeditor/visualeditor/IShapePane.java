@@ -5,6 +5,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 import org.pathwayeditor.visualeditor.controller.IViewControllerStore;
+import org.pathwayeditor.visualeditor.feedback.IFeedbackModel;
 import org.pathwayeditor.visualeditor.selection.ISelectionRecord;
 
 public interface IShapePane {
@@ -14,6 +15,8 @@ public interface IShapePane {
 	IViewControllerStore getViewModel();
 	
 	ISelectionRecord getSelectionRecord();
+	
+	IFeedbackModel getFeedbackModel(); 
 
 	void addKeyListener(KeyListener keyListener);
 

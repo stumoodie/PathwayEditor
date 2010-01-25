@@ -17,10 +17,7 @@ import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveController;
 import org.pathwayeditor.visualeditor.controller.ILinkController;
 import org.pathwayeditor.visualeditor.controller.INodeController;
-import org.pathwayeditor.visualeditor.controller.IViewControllerChangeListener;
-import org.pathwayeditor.visualeditor.controller.IViewControllerNodeStructureChangeEvent;
 import org.pathwayeditor.visualeditor.controller.IViewControllerStore;
-import org.pathwayeditor.visualeditor.controller.IViewControllerNodeStructureChangeEvent.ViewControllerStructureChangeType;
 
 public class SelectionRecord implements ISelectionRecord {
 	private SortedSet<ISelection> selections;
@@ -42,22 +39,22 @@ public class SelectionRecord implements ISelectionRecord {
 		if(this.selections.add(newSelection)){
 			// only do something if selection is not already recorded
 //			addElementToGraphSelection(drawingElement);
-			addViewControllerListener(newSelection);
+//			addViewControllerListener(newSelection);
 			notifySelectionChange();
 		}
 	}
 	
-	private void addViewControllerListener(final ISelection newSelection){
-		viewModel.addViewControllerChangeListener(new IViewControllerChangeListener() {
-			
-			@Override
-			public void nodeStructureChangeEvent(IViewControllerNodeStructureChangeEvent e) {
-				if(e.getChangeType().equals(ViewControllerStructureChangeType.NODES_REMOVED)){
-					selections.remove(newSelection);
-				}
-			}
-		});
-	}
+//	private void addViewControllerListener(final ISelection newSelection){
+//		viewModel.addViewControllerChangeListener(new IViewControllerChangeListener() {
+//			
+//			@Override
+//			public void nodeStructureChangeEvent(IViewControllerNodeStructureChangeEvent e) {
+//				if(e.getChangeType().equals(ViewControllerStructureChangeType.NODES_REMOVED)){
+//					selections.remove(newSelection);
+//				}
+//			}
+//		});
+//	}
 	
 	private ISelection createSelection(boolean isPrimtive, IDrawingPrimitiveController drawingElement){
 		ISelection retVal = null;
@@ -120,7 +117,7 @@ public class SelectionRecord implements ISelectionRecord {
 //			this.selectionFactory = drawingElement.getDrawingElement().getCurrentDrawingElement().getModel().newSelectionFactory();
 //			this.selection = null;
 //			addElementToGraphSelection(drawingElement);
-			addViewControllerListener(primSel);
+//			addViewControllerListener(primSel);
 			notifySelectionChange();
 		}
 	}
