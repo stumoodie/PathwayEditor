@@ -86,8 +86,8 @@ public class LinkDrawer  {
 
 	public void paint(Graphics2D g2d){
 		drawLineSegments(g2d);
-		ILinkTerminus srcTermDefaults = this.linkEdge.getDrawingElement().getAttribute().getSourceTerminus();
-		ILinkTerminus tgtTermDefaults = this.linkEdge.getDrawingElement().getAttribute().getTargetTerminus();
+		ILinkTerminus srcTermDefaults = this.linkEdge.getDrawingElement().getSourceTerminus();
+		ILinkTerminus tgtTermDefaults = this.linkEdge.getDrawingElement().getTargetTerminus();
 		
 		AffineTransform before = g2d.getTransform();
 		ILinkPointDefinition linkDefinition = this.linkEdge.getLinkDefinition();
@@ -98,7 +98,7 @@ public class LinkDrawer  {
 		g2d.translate(srcTermDefaults.getGap(), 0);
 		Dimension srcEndSize = srcTermDefaults.getEndSize();
 		g2d.scale(srcEndSize.getWidth(), srcEndSize.getHeight());
-		ILinkAttribute linkAttribute = this.linkEdge.getDrawingElement().getAttribute();
+		ILinkAttribute linkAttribute = this.linkEdge.getDrawingElement();
 		drawEndDecorator(g2d, linkAttribute.getLineStyle(), linkAttribute.getLineColour(), linkAttribute.getLineWidth(),
 				srcTermDefaults.getEndDecoratorType(), linkDefinition.getSrcEndPoint(), srcTermDefaults.getEndSize());
 		g2d.setTransform(before);
@@ -117,10 +117,10 @@ public class LinkDrawer  {
 	
 	private void drawLineSegments(Graphics2D g2d){
 		ILinkPointDefinition linkDefinition = this.linkEdge.getLinkDefinition();
-		RGB lineCol = this.linkEdge.getDrawingElement().getAttribute().getLineColour();
+		RGB lineCol = this.linkEdge.getDrawingElement().getLineColour();
 		g2d.setColor(new Color(lineCol.getRed(), lineCol.getGreen(), lineCol.getBlue()));
-		double lineWidth = this.linkEdge.getDrawingElement().getAttribute().getLineWidth();
-		LineStyle lineStyle = this.linkEdge.getDrawingElement().getAttribute().getLineStyle();
+		double lineWidth = this.linkEdge.getDrawingElement().getLineWidth();
+		LineStyle lineStyle = this.linkEdge.getDrawingElement().getLineStyle();
 		g2d.setStroke(this.createStroke(lineStyle, lineWidth));
 
 		Iterator<LineSegment> lineIterator = linkDefinition.drawnLineSegIterator();

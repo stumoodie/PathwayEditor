@@ -5,15 +5,16 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.pathwayeditor.figure.geometry.Dimension;
+import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.Point;
 
 
 public abstract class NodeController extends DrawingPrimitiveController implements INodeController {
-	private final List<INodePrimitiveChangeListener> listeners;
+	private final List<INodeControllerChangeListener> listeners;
 
 	protected NodeController(IViewControllerStore viewController){
 		super(viewController);
-		this.listeners = new LinkedList<INodePrimitiveChangeListener>();
+		this.listeners = new LinkedList<INodeControllerChangeListener>();
 	}
 
 	protected final void notifyTranslation(final Point delta){
@@ -30,24 +31,24 @@ public abstract class NodeController extends DrawingPrimitiveController implemen
 			}
 			
 		};
-		for(INodePrimitiveChangeListener listener : this.listeners){
+		for(INodeControllerChangeListener listener : this.listeners){
 			listener.nodeTranslated(e);
 		}
 	}
 	
 	@Override
-	public final void addNodePrimitiveChangeListener(INodePrimitiveChangeListener listener) {
+	public final void addNodePrimitiveChangeListener(INodeControllerChangeListener listener) {
 		this.listeners.add(listener);
 		
 	}
 
 	@Override
-	public final List<INodePrimitiveChangeListener> getNodePrimitiveChangeListeners() {
-		return new ArrayList<INodePrimitiveChangeListener>(this.listeners);
+	public final List<INodeControllerChangeListener> getNodePrimitiveChangeListeners() {
+		return new ArrayList<INodeControllerChangeListener>(this.listeners);
 	}
 
 	@Override
-	public final void removeNodePrimitiveChangeListener(INodePrimitiveChangeListener listener) {
+	public final void removeNodePrimitiveChangeListener(INodeControllerChangeListener listener) {
 		this.listeners.remove(listener);
 	}
 
@@ -71,14 +72,38 @@ public abstract class NodeController extends DrawingPrimitiveController implemen
 			}
 			
 		};
-		for(INodePrimitiveChangeListener listener : this.listeners){
+		for(INodeControllerChangeListener listener : this.listeners){
 			listener.nodeResized(e);
+		}
+	}
+	
+	protected final void notifyChangedBounds(final Envelope originalBounds, final Envelope changedBounds) {
+		INodeBoundsChangeEvent e = new INodeBoundsChangeEvent() {
+			
+			@Override
+			public Envelope getOriginBounds() {
+				return originalBounds;
+			}
+			
+			@Override
+			public Envelope getNewBounds() {
+				return changedBounds;
+			}
+			
+			@Override
+			public INodeController getChangedNode() {
+				return NodeController.this;
+			}
+		};
+		for(INodeControllerChangeListener listener : this.listeners){
+			listener.changedBounds(e);
 		}
 	}
 	
 	@Override
 	protected final void disposeRedefinition(){
 		this.listeners.clear();
+		nodeDisposalHook();
 	}
 	
 	protected abstract void nodeDisposalHook();

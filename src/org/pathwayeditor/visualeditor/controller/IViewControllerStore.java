@@ -1,16 +1,17 @@
 package org.pathwayeditor.visualeditor.controller;
 
 import java.util.Iterator;
+import java.util.List;
 
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElement;
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNode;
+import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNodeAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.IModel;
 
 public interface IViewControllerStore {
 
 	IModel getDomainModel();
 	
-//	void synchroniseWithDomainModel();
+	void synchroniseWithDomainModel();
 	
 	Iterator<IDrawingPrimitiveController> drawingPrimitiveIterator();
 	
@@ -24,10 +25,19 @@ public interface IViewControllerStore {
 
 	IRootController getRootNode();
 
-	INodeController getNodePrimitive(IDrawingNode testNode);
+	INodeController getNodePrimitive(IDrawingNodeAttribute testNode);
 	
-	boolean containsDrawingElement(IDrawingElement testPrimitive);
+	boolean containsDrawingElement(ICanvasAttribute testPrimitive);
 
 	void activate();
 	
+	void deactivate();
+	
+	boolean isActive();
+	
+	void addViewControllerChangeListener(IViewControllerChangeListener listener);
+	
+	void removeViewControllerChangeListener(IViewControllerChangeListener listener);
+	
+	List<IViewControllerChangeListener> getViewControllerChangeListeners();
 }

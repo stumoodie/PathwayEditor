@@ -1,5 +1,7 @@
 package org.pathwayeditor.visualeditor.controller;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -8,28 +10,39 @@ import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElement;
+import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElementSelection;
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNode;
-import org.pathwayeditor.businessobjects.drawingprimitives.ILabelNode;
+import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNodeAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.ILabelAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.IModel;
-import org.pathwayeditor.businessobjects.drawingprimitives.IRootNode;
-import org.pathwayeditor.businessobjects.drawingprimitives.IShapeNode;
+import org.pathwayeditor.businessobjects.drawingprimitives.IRootAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.IShapeAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IModelChangeListener;
-import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IModelEdgeChangeEvent;
-import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IModelNodeChangeEvent;
+import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IModelStructureChangeEvent;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ModelStructureChangeType;
 
 public class ViewControllerStore implements IViewControllerStore {
 	private final IModel domainModel;
-	private final SortedMap<IDrawingElement, IDrawingPrimitiveController> domainToViewMap;
+	private final SortedMap<ICanvasAttribute, IDrawingPrimitiveController> domainToViewMap;
 	private final SortedSet<IDrawingPrimitiveController> drawingPrimitives;
 	private IModelChangeListener modelListener;
 	private IRootController rootPrimitive;
+	private boolean isActive = false;
+	private final List<IViewControllerChangeListener> listeners;
 	
 	public ViewControllerStore(IModel domainModel){
 		this.domainModel = domainModel;
-		this.domainToViewMap = new TreeMap<IDrawingElement, IDrawingPrimitiveController>();
+		this.domainToViewMap = new TreeMap<ICanvasAttribute, IDrawingPrimitiveController>(new Comparator<ICanvasAttribute>(){
+
+			@Override
+			public int compare(ICanvasAttribute o1, ICanvasAttribute o2) {
+				return Integer.valueOf(o1.getCreationSerial()).compareTo(Integer.valueOf(o2.getCreationSerial()));
+			}
+			
+		});
 		this.drawingPrimitives = new TreeSet<IDrawingPrimitiveController>();
+		this.listeners = new LinkedList<IViewControllerChangeListener>();
 		buildFromDomainModel();
 		initialiseDomainListeners();
 	}
@@ -37,48 +50,97 @@ public class ViewControllerStore implements IViewControllerStore {
 	private void initialiseDomainListeners() {
 		modelListener = new IModelChangeListener(){
 
-			public void edgeStructureChange(IModelEdgeChangeEvent event) {
-				// do nothing
-			}
-
-			public void nodeStructureChange(IModelNodeChangeEvent event) {
-				if(event.getChangeType().equals(ModelStructureChangeType.DELETED)){
-					if(domainToViewMap.containsKey(event.getChangedItem())){
-						IDrawingNode shapeNode = event.getChangedItem();
-						INodeController nodePrimitive = (INodeController)domainToViewMap.get(shapeNode);
-						nodePrimitive.dispose();
-						domainToViewMap.remove(shapeNode);
-						drawingPrimitives.remove(nodePrimitive);
-					}
+			@Override
+			public void modelStructureChange(IModelStructureChangeEvent event) {
+				if(event.getChangeType().equals(ModelStructureChangeType.SELECTION_REMOVED)){
+//					rebuildModel();
+					removeSelection(event.getOriginalSelection());
 				}
-				else if(event.getChangeType().equals(ModelStructureChangeType.ADDED)){
-					IDrawingNode shapeNode = event.getChangedItem();
-					createNodePrimitive(shapeNode);
+				else if(event.getChangeType().equals(ModelStructureChangeType.SELECTION_MOVED)){
+//					rebuildModel();
+					// reinitialise the nodes
+//					Iterator<IDrawingNode> nodeIter = event.getChangedSelection().drawingNodeIterator();
+//					while(nodeIter.hasNext()){
+//						IDrawingNodeAttribute att = nodeIter.next().getAttribute();
+//						IDrawingPrimitiveController nodeCont = domainToViewMap.get(att);
+//						nodeCont.inactivate();
+//						nodeCont.activate();
+//					}
+					removeSelection(event.getOriginalSelection());
+					addSelection(event.getChangedSelection());
+				}
+				else if(event.getChangeType().equals(ModelStructureChangeType.SELCTION_COPIED)){
+//					rebuildModel();
+					addSelection(event.getChangedSelection());
 				}
 			}
 			
 		};
 		this.domainModel.addModelChangeListener(modelListener);
+		Iterator<IDrawingNode> nodeIter = this.domainModel.drawingNodeIterator();
+		while(nodeIter.hasNext()){
+			IDrawingNode node = nodeIter.next();
+			node.getSubModel().addModelChangeListener(modelListener);
+		}
+	}
+	
+//	private void rebuildModel(){
+//		for(IDrawingPrimitiveController controller : this.drawingPrimitives){
+//			controller.dispose();
+//		}
+//		this.domainToViewMap.clear();
+//		this.drawingPrimitives.clear();
+//		buildFromDomainModel();
+//	}
+	
+	private void addSelection(IDrawingElementSelection selection){
+		Iterator<IDrawingNode> iter = selection.drawingNodeIterator();
+		while(iter.hasNext()){
+			IDrawingNode node = iter.next();
+			createNodePrimitive(node.getAttribute());
+		}
+	}
+		
+	private void removeSelection(IDrawingElementSelection selection){
+		Iterator<IDrawingNode> iter1 = selection.drawingNodeIterator();
+		while(iter1.hasNext()){
+			IDrawingNode node = iter1.next();
+			INodeController nodePrimitive = getNodePrimitive(node.getAttribute());
+			nodePrimitive.inactivate();
+		}
+		Iterator<IDrawingNode> iter = selection.drawingNodeIterator();
+		while(iter.hasNext()){
+			IDrawingNode node = iter.next();
+			removeNodePrimitive(getNodePrimitive(node.getAttribute()));
+		}
+	}
+	
+	private void removeNodePrimitive(INodeController shapeNode){
+		INodeController nodePrimitive = (INodeController)domainToViewMap.get(shapeNode.getDrawingElement());
+		domainToViewMap.remove(shapeNode.getDrawingElement());
+		drawingPrimitives.remove(nodePrimitive);
+		notifyRemovedNode(shapeNode);
+		nodePrimitive.dispose();
 	}
 
 	private void buildFromDomainModel(){
 		Iterator<IDrawingNode> nodeIter = this.domainModel.drawingNodeIterator();
 		while(nodeIter.hasNext()){
 			IDrawingNode node = nodeIter.next();
-			createNodePrimitive(node);
+			createNodePrimitive(node.getAttribute());
 		}
 	}
 	
-	private void createNodePrimitive(IDrawingNode node){
+	private void createNodePrimitive(IDrawingNodeAttribute node){
 		INodeController viewNode = null;
-		if(node instanceof IShapeNode){
-			viewNode = new ShapeController(this, (IShapeNode)node);
+		if(node instanceof IShapeAttribute){
+			viewNode = new ShapeController(this, (IShapeAttribute)node);
 		}
-		else if(node instanceof ILabelNode){
-			viewNode = new LabelController(this, (ILabelNode)node);
+		else if(node instanceof ILabelAttribute){
+			viewNode = new LabelController(this, (ILabelAttribute)node);
 		}
-		else if(node instanceof IRootNode){
-			this.rootPrimitive = new RootController(this, (IRootNode)node);
+		else if(node instanceof IRootAttribute){
+			this.rootPrimitive = new RootController(this, (IRootAttribute)node);
 			viewNode = this.rootPrimitive;
 		}
 		else{
@@ -87,10 +149,54 @@ public class ViewControllerStore implements IViewControllerStore {
 		if(viewNode != null){
 			this.domainToViewMap.put(node, viewNode);
 			this.drawingPrimitives.add(viewNode);
+			if(this.isActive()){
+				notifyAddedNode(viewNode);
+				viewNode.activate();
+			}
 		}
 	}
 	
 	
+	private void notifyAddedNode(final INodeController viewNode) {
+		IViewControllerNodeStructureChangeEvent e = new IViewControllerNodeStructureChangeEvent(){
+
+			@Override
+			public ViewControllerStructureChangeType getChangeType() {
+				return ViewControllerStructureChangeType.NODE_ADDED;
+			}
+
+			@Override
+			public INodeController getChangedNode() {
+				return viewNode;
+			}
+			
+		};
+		notifyEvent(e);
+	}
+
+	private void notifyRemovedNode(final INodeController viewNode) {
+		IViewControllerNodeStructureChangeEvent e = new IViewControllerNodeStructureChangeEvent(){
+
+			@Override
+			public ViewControllerStructureChangeType getChangeType() {
+				return ViewControllerStructureChangeType.NODES_REMOVED;
+			}
+
+			@Override
+			public INodeController getChangedNode() {
+				return viewNode;
+			}
+			
+		};
+		notifyEvent(e);
+	}
+
+	private void notifyEvent(IViewControllerNodeStructureChangeEvent e) {
+		for(IViewControllerChangeListener listener : this.listeners){
+			listener.nodeStructureChangeEvent(e);
+		}
+	}
+
 	@Override
 	public Iterator<IDrawingPrimitiveController> drawingPrimitiveIterator() {
 		return this.drawingPrimitives.iterator();
@@ -102,7 +208,7 @@ public class ViewControllerStore implements IViewControllerStore {
 	}
 
 	@Override
-	public INodeController getNodePrimitive(IDrawingNode draggedNode) {
+	public INodeController getNodePrimitive(IDrawingNodeAttribute draggedNode) {
 		IDrawingPrimitiveController retVal = this.domainToViewMap.get(draggedNode);
 		if(retVal == null){
 			throw new IllegalArgumentException("domain node is not present in this view model");
@@ -159,15 +265,8 @@ public class ViewControllerStore implements IViewControllerStore {
 		return retList.iterator();
 	}
 
-//	@Override
-//	public void synchroniseWithDomainModel() {
-//		for(IDrawingPrimitiveController primitive : this.drawingPrimitives){
-//			primitive.resyncToModel();
-//		}
-//	}
-
 	@Override
-	public boolean containsDrawingElement(IDrawingElement testPrimitive) {
+	public boolean containsDrawingElement(ICanvasAttribute testPrimitive) {
 		return this.domainToViewMap.containsKey(testPrimitive);
 	}
 
@@ -177,6 +276,41 @@ public class ViewControllerStore implements IViewControllerStore {
 		for(IDrawingPrimitiveController prim : this.drawingPrimitives){
         	prim.activate();
         }
+		this.isActive = true;
 	}
 
+	@Override
+	public void synchroniseWithDomainModel() {
+		for(IDrawingPrimitiveController primitive : this.drawingPrimitives){
+			primitive.resyncToModel();
+		}
+	}
+
+	@Override
+	public void addViewControllerChangeListener(IViewControllerChangeListener listener) {
+		this.listeners.add(listener);
+	}
+
+	@Override
+	public void deactivate() {
+		for(IDrawingPrimitiveController prim : this.drawingPrimitives){
+        	prim.inactivate();
+        }
+		this.isActive = false;
+	}
+
+	@Override
+	public List<IViewControllerChangeListener> getViewControllerChangeListeners() {
+		return new ArrayList<IViewControllerChangeListener>(this.listeners);
+	}
+
+	@Override
+	public boolean isActive() {
+		return this.isActive;
+	}
+
+	@Override
+	public void removeViewControllerChangeListener(IViewControllerChangeListener listener) {
+		this.listeners.remove(listener);
+	}
 }

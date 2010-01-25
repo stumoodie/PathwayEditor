@@ -32,15 +32,15 @@ public class ShapeIntersectionCalculator implements INodeIntersectionCalculator 
 
 		public int compare(INodeController o1, INodeController o2) {
 			int retVal = 0;
-			if(o1.getDrawingElement().getLevel() < o2.getDrawingElement().getLevel()){
+			if(o1.getDrawingElement().getCurrentDrawingElement().getLevel() < o2.getDrawingElement().getCurrentDrawingElement().getLevel()){
 				retVal = 1;
 			}
-			else if(o1.getDrawingElement().getLevel() > o2.getDrawingElement().getLevel()){
+			else if(o1.getDrawingElement().getCurrentDrawingElement().getLevel() > o2.getDrawingElement().getCurrentDrawingElement().getLevel()){
 				retVal = -1;
 			}
 			else{
-				int o1Idx = o1.getDrawingElement().getIndex();
-				int o2Idx = o2.getDrawingElement().getIndex();
+				int o1Idx = o1.getDrawingElement().getCurrentDrawingElement().getIndex();
+				int o2Idx = o2.getDrawingElement().getCurrentDrawingElement().getIndex();
 				retVal = o1Idx < o2Idx ? 1 : (o1Idx > o2Idx ? -1 : 0); 
 			}
 			return retVal;

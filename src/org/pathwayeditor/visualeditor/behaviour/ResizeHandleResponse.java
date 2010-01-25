@@ -64,4 +64,15 @@ public class ResizeHandleResponse extends HandleResponse {
 		this.newPositionCalculator.calculateDeltas(this.getDelta());
 		return retVal;
 	}
+
+	@Override
+	public boolean canReparent() {
+		return false;
+	}
+
+	@Override
+	public boolean canMove() {
+		return true;
+	}
+
 }

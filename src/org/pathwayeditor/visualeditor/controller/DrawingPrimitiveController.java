@@ -25,4 +25,11 @@ public abstract class DrawingPrimitiveController implements IDrawingPrimitiveCon
 	public final IViewControllerStore getViewModel() {
 		return this.viewModel;
 	}
+
+	protected abstract void redefinedSyncroniseToModel();
+	
+	@Override
+	public final void resyncToModel(){
+		this.redefinedSyncroniseToModel();
+	}
 }

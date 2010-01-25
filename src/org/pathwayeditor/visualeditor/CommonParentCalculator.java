@@ -5,6 +5,7 @@ import java.util.SortedSet;
 
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElementSelection;
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNode;
+import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNodeAttribute;
 import org.pathwayeditor.visualeditor.controller.ILabelController;
 import org.pathwayeditor.visualeditor.controller.INodeController;
 import org.pathwayeditor.visualeditor.controller.IShapeController;
@@ -40,7 +41,7 @@ public class CommonParentCalculator {
 		});
 	}
 	
-	private INodeController getNodeController(IDrawingNode node){
+	private INodeController getNodeController(IDrawingNodeAttribute node){
 		return this.calc.getModel().getNodePrimitive(node);
 	}
 	
@@ -49,7 +50,7 @@ public class CommonParentCalculator {
 
 			// we're ignoreing labels
 			public INodeController getLabelParent(ILabelController node) {
-				return getNodeController(node.getDrawingElement().getParentNode());
+				return getNodeController(node.getDrawingElement().getCurrentDrawingElement().getParentNode().getAttribute());
 			}
 			
 		});
@@ -63,11 +64,11 @@ public class CommonParentCalculator {
 			this.selection = testSelection;
 			Iterator<IDrawingNode> selectionIter = selection
 					.topDrawingNodeIterator();
-			parent = this.calc.getModel().getNodePrimitive(selection.getModel().getRootNode());
+			parent = this.calc.getModel().getNodePrimitive(selection.getModel().getRootNode().getAttribute());
 			boolean firstTime = true;
 			numNodesAlreadyHaveParent = 0;
 			while (selectionIter.hasNext() && parent != null) {
-				INodeController node = getNodeController(selectionIter.next());
+				INodeController node = getNodeController(selectionIter.next().getAttribute());
 				INodeController potentialParent = null;
 				if (node instanceof IShapeController) {
 					potentialParent = this.findPotentialParent(node);
@@ -89,7 +90,7 @@ public class CommonParentCalculator {
 					numNodesAlreadyHaveParent = 0;
 				} else {
 					// now check if already has this parent
-					if (parent.equals(getNodeController(node.getDrawingElement().getParentNode()))) {
+					if (parent.equals(getNodeController(node.getDrawingElement().getCurrentDrawingElement().getParentNode().getAttribute()))) {
 						numNodesAlreadyHaveParent++;
 					}
 				}
@@ -126,7 +127,7 @@ public class CommonParentCalculator {
 
 			@Override
 			public boolean accept(INodeController node) {
-				return node.getDrawingElement().canParent(potentialChild.getDrawingElement()); 
+				return node.getDrawingElement().getCurrentDrawingElement().canParent(potentialChild.getDrawingElement().getCurrentDrawingElement()); 
 			}
 			
 		});

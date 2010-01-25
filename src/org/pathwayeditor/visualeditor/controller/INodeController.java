@@ -2,7 +2,7 @@ package org.pathwayeditor.visualeditor.controller;
 
 import java.util.List;
 
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNode;
+import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNodeAttribute;
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.IConvexHull;
@@ -29,13 +29,13 @@ public interface INodeController extends IDrawingPrimitiveController {
 	void translatePrimitive(Point translation);
 	
 	@Override
-	IDrawingNode getDrawingElement();
+	IDrawingNodeAttribute getDrawingElement();
 	
-	void addNodePrimitiveChangeListener(INodePrimitiveChangeListener listener);
+	void addNodePrimitiveChangeListener(INodeControllerChangeListener listener);
 	
-	void removeNodePrimitiveChangeListener(INodePrimitiveChangeListener listener);
+	void removeNodePrimitiveChangeListener(INodeControllerChangeListener listener);
 	
-	List<INodePrimitiveChangeListener> getNodePrimitiveChangeListeners();
+	List<INodeControllerChangeListener> getNodePrimitiveChangeListeners();
 
 	void resizePrimitive(Point originDelta, Dimension resizeDelta);
 

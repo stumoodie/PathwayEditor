@@ -19,4 +19,13 @@ public interface IDragResponse {
 	void dragContinuing(Point newLocation);
 
 	void dragFinished();
+
+	boolean canReparent();
+	
+	boolean canMove();
+	
+//	void reparentEnabled(boolean reparent);
+//	
+//	boolean isReparentEnabled();
+	
 }

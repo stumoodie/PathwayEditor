@@ -1,16 +1,16 @@
 package org.pathwayeditor.visualeditor.commands;
 
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNode;
+import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNodeAttribute;
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Point;
 
 public class ResizeNodeCommand implements ICommand {
-	private final IDrawingNode node;
+	private final IDrawingNodeAttribute node;
 	private Point originDelta;
 	private Dimension sizeDelta;
 	
 	
-	public ResizeNodeCommand(IDrawingNode drawingElement, Point originDelta, Dimension sizeDelta) {
+	public ResizeNodeCommand(IDrawingNodeAttribute drawingElement, Point originDelta, Dimension sizeDelta) {
 		this.node = drawingElement;
 		this.originDelta = originDelta;
 		this.sizeDelta = sizeDelta;
@@ -23,12 +23,12 @@ public class ResizeNodeCommand implements ICommand {
 
 	@Override
 	public void redo() {
-		this.node.getAttribute().resize(this.originDelta, this.sizeDelta);
+		this.node.resize(this.originDelta, this.sizeDelta);
 	}
 
 	@Override
 	public void undo() {
-		this.node.getAttribute().resize(this.originDelta.negate(), this.sizeDelta.negate());
+		this.node.resize(this.originDelta.negate(), this.sizeDelta.negate());
 	}
 
 }

@@ -17,6 +17,7 @@ import org.pathwayeditor.visualeditor.commands.ICommand;
 import org.pathwayeditor.visualeditor.commands.ICommandStack;
 import org.pathwayeditor.visualeditor.commands.ICompoundCommand;
 import org.pathwayeditor.visualeditor.commands.MoveNodeCommand;
+import org.pathwayeditor.visualeditor.commands.ReparentSelectionCommand;
 import org.pathwayeditor.visualeditor.commands.ResizeNodeCommand;
 import org.pathwayeditor.visualeditor.controller.INodeController;
 import org.pathwayeditor.visualeditor.controller.IViewControllerStore;
@@ -40,19 +41,27 @@ public class PathwayEditor {
 	private ISelectionChangeListener selectionChangeListener;
 	
 	public PathwayEditor(ICanvas boCanvas, int width, int height){
-		this.selectionRecord = new SelectionRecord();
         this.commandStack = new CommandStack();
 		viewModel = new ViewControllerStore(boCanvas.getModel());
+		this.selectionRecord = new SelectionRecord(viewModel);
 		this.shapePane = new ShapePane(viewModel, this.selectionRecord);
 		this.shapePane.setSize(width, height);
         IEditingOperation editOperation = new IEditingOperation(){
 
 			@Override
-			public void moveFinished(Point delta) {
+			public void moveFinished(Point delta, ReparentingStateType reparentingState) {
 				if(logger.isTraceEnabled()){
 					logger.trace("Move finished. Delta=" + delta);
 				}
-				createMoveCommand(delta);
+				if(reparentingState.equals(ReparentingStateType.CAN_REPARENT)){
+					createMoveCommand(delta, true);
+				}
+				else if(reparentingState.equals(ReparentingStateType.CAN_MOVE)){
+					createMoveCommand(delta, false);
+				}
+				else{
+					viewModel.synchroniseWithDomainModel();
+				}
 				shapePane.repaint();
 			}
 
@@ -71,15 +80,30 @@ public class PathwayEditor {
 			}
 
 			@Override
-			public void copyFinished(Point delta) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void copyOngoing(Point delta) {
-				// TODO Auto-generated method stub
-				
+			public ReparentingStateType getReparentingState() {
+				ReparentingStateType retVal = ReparentingStateType.FORBIDDEN;
+				CommonParentCalculator newParentCalc = new CommonParentCalculator(viewModel);
+				newParentCalc.findCommonParent(selectionRecord.getGraphSelection());
+		        if(newParentCalc.hasFoundCommonParent()) {
+		        	if(logger.isTraceEnabled()){
+		        		logger.trace("Common parent found. Node=" + newParentCalc.getCommonParent());
+		        	}
+		        	// parent is consistent - now we need to check if any node already has this parent
+		        	// if all do then we move, in one or more doesn't then we fail reparenting
+		        	if(newParentCalc.canReparentSelection()){
+		        		retVal = ReparentingStateType.CAN_REPARENT;
+		        	}
+		        	else if(newParentCalc.canMoveSelection()){
+		        		retVal = ReparentingStateType.CAN_MOVE;
+		        	}
+		        }
+		        else{
+		        	logger.trace("No common parent found.");
+		        }
+		    	if(logger.isTraceEnabled()){
+		    		logger.trace("Reparent state=" + retVal);
+		    	}
+		        return retVal;
 			}
 
         };
@@ -159,7 +183,7 @@ public class PathwayEditor {
 	}
 	
 	
-	private void createMoveCommand(Point delta){
+	private void createMoveCommand(Point delta, boolean reparentingEnabled){
 		Iterator<INodeSelection> moveNodeIterator = this.selectionRecord.getTopNodeSelection();
 		ICompoundCommand cmpCommand = new CompoundCommand();
 		while(moveNodeIterator.hasNext()){
@@ -169,8 +193,35 @@ public class PathwayEditor {
 			cmpCommand.addCommand(cmd);
 			logger.trace("Dragged shape to location: " + nodePrimitive.getBounds().getOrigin());
 		}
+		if(reparentingEnabled){
+			INodeController target = calculateReparentTarget();
+			ICommand cmd = new ReparentSelectionCommand(target.getDrawingElement().getCurrentDrawingElement(), this.selectionRecord.getGraphSelection());
+			cmpCommand.addCommand(cmd);
+		}
 		this.commandStack.execute(cmpCommand);
 	}
+	
+	private INodeController calculateReparentTarget() {
+		INodeController retVal = null;
+		CommonParentCalculator newParentCalc = new CommonParentCalculator(viewModel);
+		newParentCalc.findCommonParent(selectionRecord.getGraphSelection());
+        if(newParentCalc.hasFoundCommonParent()) {
+        	if(logger.isTraceEnabled()){
+        		logger.trace("Common parent found. Node=" + newParentCalc.getCommonParent());
+        	}
+        	// parent is consistent - now we need to check if any node already has this parent
+        	// if all do then we move, in one or more doesn't then we fail reparenting
+        	retVal = newParentCalc.getCommonParent();
+        }
+        else{
+        	logger.trace("No common parent found.");
+        }
+    	if(logger.isTraceEnabled()){
+    		logger.trace("Can reparent=" + retVal);
+    	}
+        return retVal;
+	}
+
 	
 	private void moveSelection(Point delta) {
 		Iterator<INodeSelection> moveNodeIterator = this.selectionRecord.getTopNodeSelection();
@@ -179,7 +230,6 @@ public class PathwayEditor {
 			nodePrimitive.translatePrimitive(delta);
 			logger.trace("Dragged shape to location: " + nodePrimitive.getBounds().getOrigin());
 		}
-//		this.currentCommand = cmpCommand;
 	}
 	
 	public void initialise(){

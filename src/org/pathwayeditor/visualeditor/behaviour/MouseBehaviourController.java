@@ -13,7 +13,6 @@ import java.util.SortedSet;
 import org.apache.log4j.Logger;
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Point;
-import org.pathwayeditor.visualeditor.CommonParentCalculator;
 import org.pathwayeditor.visualeditor.IShapePane;
 import org.pathwayeditor.visualeditor.behaviour.IKeyboardResponse.CursorType;
 import org.pathwayeditor.visualeditor.controller.INodeController;
@@ -81,6 +80,7 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 				if(currDragResponse != null){
 					currDragResponse.dragFinished();
 					currDragResponse = null;
+					shapePane.repaint();
 				}
 				Point location = new Point(e.getPoint().getX(), e.getPoint().getY());
 				e.getComponent().setCursor(getCurrentCursorResponse(location));
@@ -102,11 +102,11 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 						if(currDragResponse.isDragOngoing()){
 							if(currDragResponse.canContinueDrag(location)){
 								currDragResponse.dragContinuing(location);
-								if(canReparent()){
+								if(currDragResponse.canReparent()){
 									e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 								}
 								else{
-									e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
+									getCurrentCursorResponse(location);
 								}
 							}
 						}
@@ -159,26 +159,26 @@ public class MouseBehaviourController implements IMouseBehaviourController {
         };
 	}
 	
-	private boolean canReparent(){
-		boolean retVal = false;
-		CommonParentCalculator newParentCalc = new CommonParentCalculator(this.shapePane.getViewModel());
-		newParentCalc.findCommonParent(this.shapePane.getSelectionRecord().getGraphSelection());
-        if(newParentCalc.hasFoundCommonParent()) {
-        	if(logger.isTraceEnabled()){
-        		logger.trace("Common parent found. Node=" + newParentCalc.getCommonParent());
-        	}
-        	// parent is consistent - now we need to check if any node already has this parent
-        	// if all do then we move, in one or more doesn't then we fail reparenting
-        	retVal = newParentCalc.canReparentSelection();
-        }
-        else{
-        	logger.trace("No common parent found.");
-        }
-    	if(logger.isTraceEnabled()){
-    		logger.trace("Can reparent=" + retVal);
-    	}
-        return retVal;
-	}
+//	private boolean canReparent(){
+//		boolean retVal = false;
+//		CommonParentCalculator newParentCalc = new CommonParentCalculator(this.shapePane.getViewModel());
+//		newParentCalc.findCommonParent(this.shapePane.getSelectionRecord().getGraphSelection());
+//        if(newParentCalc.hasFoundCommonParent()) {
+//        	if(logger.isTraceEnabled()){
+//        		logger.trace("Common parent found. Node=" + newParentCalc.getCommonParent());
+//        	}
+//        	// parent is consistent - now we need to check if any node already has this parent
+//        	// if all do then we move, in one or more doesn't then we fail reparenting
+//        	retVal = newParentCalc.canReparentSelection();
+//        }
+//        else{
+//        	logger.trace("No common parent found.");
+//        }
+//    	if(logger.isTraceEnabled()){
+//    		logger.trace("Can reparent=" + retVal);
+//    	}
+//        return retVal;
+//	}
 
 	private Cursor getCurrentCursorResponse(Point location){
 		ISelectionHandle selectionModel = shapePane.getSelectionRecord().findSelectionModelAt(location);

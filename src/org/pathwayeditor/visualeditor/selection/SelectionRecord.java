@@ -9,34 +9,54 @@ import java.util.TreeSet;
 
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElementSelection;
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNode;
+import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNodeAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkEdge;
 import org.pathwayeditor.businessobjects.drawingprimitives.ISelectionFactory;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveController;
 import org.pathwayeditor.visualeditor.controller.ILinkController;
 import org.pathwayeditor.visualeditor.controller.INodeController;
+import org.pathwayeditor.visualeditor.controller.IViewControllerChangeListener;
+import org.pathwayeditor.visualeditor.controller.IViewControllerNodeStructureChangeEvent;
 import org.pathwayeditor.visualeditor.controller.IViewControllerStore;
+import org.pathwayeditor.visualeditor.controller.IViewControllerNodeStructureChangeEvent.ViewControllerStructureChangeType;
 
 public class SelectionRecord implements ISelectionRecord {
 	private SortedSet<ISelection> selections;
 	private final List<ISelectionChangeListener> listeners;
-	private IDrawingElementSelection selection;
-	private ISelectionFactory selectionFactory;
+//	private IDrawingElementSelection selection;
+//	private ISelectionFactory selectionFactory;
+	private final IViewControllerStore viewModel;
 	
-	public SelectionRecord(){
+	public SelectionRecord(IViewControllerStore viewModel){
 		this.selections = new TreeSet<ISelection>();
 		this.listeners = new LinkedList<ISelectionChangeListener>();
+		this.viewModel = viewModel;
 	}
 	
 	public void addSecondarySelection(IDrawingPrimitiveController drawingElement) {
 		if(this.selections.isEmpty()) throw new IllegalStateException("Cannot add a secondary selection before a primary selection");
 
-		ISelection newSelection = createSelection(false, drawingElement);
+		final ISelection newSelection = createSelection(false, drawingElement);
 		if(this.selections.add(newSelection)){
 			// only do something if selection is not already recorded
-			addElementToGraphSelection(drawingElement);
+//			addElementToGraphSelection(drawingElement);
+			addViewControllerListener(newSelection);
 			notifySelectionChange();
 		}
+	}
+	
+	private void addViewControllerListener(final ISelection newSelection){
+		viewModel.addViewControllerChangeListener(new IViewControllerChangeListener() {
+			
+			@Override
+			public void nodeStructureChangeEvent(IViewControllerNodeStructureChangeEvent e) {
+				if(e.getChangeType().equals(ViewControllerStructureChangeType.NODES_REMOVED)){
+					selections.remove(newSelection);
+				}
+			}
+		});
 	}
 	
 	private ISelection createSelection(boolean isPrimtive, IDrawingPrimitiveController drawingElement){
@@ -59,8 +79,8 @@ public class SelectionRecord implements ISelectionRecord {
 
 	public void clear() {
 		this.selections.clear();
-		this.selectionFactory = null;
-		this.selection = null;
+//		this.selectionFactory = null;
+//		this.selection = null;
 		notifySelectionChange();
 	}
 
@@ -97,24 +117,24 @@ public class SelectionRecord implements ISelectionRecord {
 			this.selections.clear();
 			ISelection primSel = createSelection(true, drawingElement);
 			this.selections.add(primSel);
-			this.selectionFactory = drawingElement.getDrawingElement().getModel().newSelectionFactory();
-			this.selection = null;
-			addElementToGraphSelection(drawingElement);
+//			this.selectionFactory = drawingElement.getDrawingElement().getCurrentDrawingElement().getModel().newSelectionFactory();
+//			this.selection = null;
+//			addElementToGraphSelection(drawingElement);
+			addViewControllerListener(primSel);
 			notifySelectionChange();
 		}
 	}
 	
-	private void addElementToGraphSelection(IDrawingPrimitiveController drawingElement) {
-		if(drawingElement.getDrawingElement() instanceof IDrawingNode){
-			this.selectionFactory.addDrawingNode((IDrawingNode)drawingElement.getDrawingElement());
+	private void addElementToGraphSelection(ISelectionFactory selectionFactory, IDrawingPrimitiveController drawingElement) {
+		if(drawingElement.getDrawingElement() instanceof IDrawingNodeAttribute){
+			selectionFactory.addDrawingNode((IDrawingNode)drawingElement.getDrawingElement().getCurrentDrawingElement());
 		}
-		else if(drawingElement.getDrawingElement() instanceof ILinkEdge){
-			this.selectionFactory.addLink((ILinkEdge)drawingElement.getDrawingElement());
+		else if(drawingElement.getDrawingElement() instanceof ILinkAttribute){
+			selectionFactory.addLink((ILinkEdge)drawingElement.getDrawingElement().getCurrentDrawingElement());
 		}
 		else{
 			throw new RuntimeException("Cannot handle drawing element: " + drawingElement);
 		}
-		this.selection = null;
 	}
 
 	private void notifySelectionChange(){
@@ -187,7 +207,7 @@ public class SelectionRecord implements ISelectionRecord {
 		// ensure that this graph selection is initialised
 		getGraphSelection();
 		final IViewControllerStore viewModel = this.selections.first().getPrimitiveController().getViewModel();
-		final Iterator<IDrawingNode> iter = this.selection.topDrawingNodeIterator();
+		final Iterator<IDrawingNode> iter = this.getGraphSelection().topDrawingNodeIterator();
 		Iterator<INodeSelection> retVal = new Iterator<INodeSelection>(){
 
 			@Override
@@ -197,7 +217,7 @@ public class SelectionRecord implements ISelectionRecord {
 
 			@Override
 			public INodeSelection next() {
-				return (INodeSelection)findSelection(viewModel.getNodePrimitive(iter.next()));
+				return (INodeSelection)findSelection(viewModel.getNodePrimitive(iter.next().getAttribute()));
 			}
 
 			@Override
@@ -227,10 +247,11 @@ public class SelectionRecord implements ISelectionRecord {
 
 	@Override
 	public IDrawingElementSelection getGraphSelection() {
-		if(this.selection == null){
-			this.selection = this.selectionFactory.createEdgeExcludedSelection();
+		ISelectionFactory selectionFactory = this.viewModel.getDomainModel().newSelectionFactory();
+		for(ISelection sel : this.selections){
+			addElementToGraphSelection(selectionFactory, sel.getPrimitiveController());
 		}
-		return this.selection;
+		return selectionFactory.createEdgeExcludedSelection();
 	}
 
 }

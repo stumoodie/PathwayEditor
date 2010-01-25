@@ -1,6 +1,7 @@
 package org.pathwayeditor.visualeditor.behaviour;
 
 import org.pathwayeditor.figure.geometry.Point;
+import org.pathwayeditor.visualeditor.behaviour.IEditingOperation.ReparentingStateType;
 
 public class KeyboardResponse implements IKeyboardResponse {
 	private static final double MIN_DELTA = 1.0;
@@ -52,7 +53,7 @@ public class KeyboardResponse implements IKeyboardResponse {
 	@Override
 	public void cursorsKeyUp() {
 		this.currentCursorKey = CursorType.None;
-		this.editingOperation.moveFinished(lastDelta);
+		this.editingOperation.moveFinished(lastDelta, ReparentingStateType.CAN_MOVE);
 		this.keyDown = false;
 	}
 
