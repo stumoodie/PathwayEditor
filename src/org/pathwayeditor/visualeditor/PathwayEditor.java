@@ -118,6 +118,7 @@ public class PathwayEditor {
 			@Override
 			public void resizeStarted() {
 				logger.trace("Resize started");
+				feedbackModel.rebuild();
 			}
 			
 			@Override
@@ -126,6 +127,8 @@ public class PathwayEditor {
 					logger.trace("Resize finished. originDelta=" + originDelta + ", dimDelta=" + resizeDelta);
 				}
 				createResizeCommand(originDelta, resizeDelta);
+				feedbackModel.clear();
+				selectionRecord.clear();
 				shapePane.repaint();
 			}
 			
