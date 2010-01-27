@@ -4,7 +4,9 @@ import java.util.Iterator;
 
 import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNodeAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.IModel;
+import org.pathwayeditor.businessobjects.drawingprimitives.IShapeAttribute;
 
 public interface IViewControllerStore {
 
@@ -33,6 +35,10 @@ public interface IViewControllerStore {
 	void deactivate();
 	
 	boolean isActive();
+
+	ILinkController getLinkController(ILinkAttribute attribute);
+
+	IShapeController getShapeController(IShapeAttribute attribute);
 	
 //	void addViewControllerChangeListener(IViewControllerChangeListener listener);
 //	

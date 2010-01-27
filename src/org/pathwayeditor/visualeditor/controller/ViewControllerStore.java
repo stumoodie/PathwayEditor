@@ -14,6 +14,8 @@ import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElementSelect
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNode;
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNodeAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILabelAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.ILinkEdge;
 import org.pathwayeditor.businessobjects.drawingprimitives.IModel;
 import org.pathwayeditor.businessobjects.drawingprimitives.IRootAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.IShapeAttribute;
@@ -128,6 +130,11 @@ public class ViewControllerStore implements IViewControllerStore {
 			IDrawingNode node = nodeIter.next();
 			createNodePrimitive(node.getAttribute());
 		}
+		Iterator<ILinkEdge> edgeIter = this.domainModel.linkEdgeIterator();
+		while(edgeIter.hasNext()){
+			ILinkEdge link = edgeIter.next();
+			createLinkPrimitive(link.getAttribute());
+		}
 	}
 	
 	private void createNodePrimitive(IDrawingNodeAttribute node){
@@ -152,6 +159,16 @@ public class ViewControllerStore implements IViewControllerStore {
 				notifyAddedNode(viewNode);
 				viewNode.activate();
 			}
+		}
+	}
+	
+	
+	private void createLinkPrimitive(ILinkAttribute linkAtt){
+		ILinkController linkCtlr = new LinkController(this, linkAtt);
+		this.domainToViewMap.put(linkAtt, linkCtlr);
+		this.drawingPrimitives.add(linkCtlr);
+		if(this.isActive()){
+			linkCtlr.activate();
 		}
 	}
 	
@@ -278,18 +295,6 @@ public class ViewControllerStore implements IViewControllerStore {
 		this.isActive = true;
 	}
 
-//	@Override
-//	public void synchroniseWithDomainModel() {
-//		for(IDrawingPrimitiveController primitive : this.drawingPrimitives){
-//			primitive.resyncToModel();
-//		}
-//	}
-
-//	@Override
-//	public void addViewControllerChangeListener(IViewControllerChangeListener listener) {
-//		this.listeners.add(listener);
-//	}
-
 	@Override
 	public void deactivate() {
 		for(IDrawingPrimitiveController prim : this.drawingPrimitives){
@@ -298,18 +303,18 @@ public class ViewControllerStore implements IViewControllerStore {
 		this.isActive = false;
 	}
 
-//	@Override
-//	public List<IViewControllerChangeListener> getViewControllerChangeListeners() {
-//		return new ArrayList<IViewControllerChangeListener>(this.listeners);
-//	}
-
 	@Override
 	public boolean isActive() {
 		return this.isActive;
 	}
 
-//	@Override
-//	public void removeViewControllerChangeListener(IViewControllerChangeListener listener) {
-//		this.listeners.remove(listener);
-//	}
+	@Override
+	public ILinkController getLinkController(ILinkAttribute attribute) {
+		return (ILinkController)this.domainToViewMap.get(attribute);
+	}
+
+	@Override
+	public IShapeController getShapeController(IShapeAttribute attribute) {
+		return (IShapeController)this.domainToViewMap.get(attribute);
+	}
 }

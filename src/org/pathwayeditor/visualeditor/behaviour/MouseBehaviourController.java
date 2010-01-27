@@ -171,35 +171,7 @@ public class MouseBehaviourController implements IMouseBehaviourController {
         };
 	}
 	
-//	private boolean canReparent(){
-//		boolean retVal = false;
-//		CommonParentCalculator newParentCalc = new CommonParentCalculator(this.shapePane.getViewModel());
-//		newParentCalc.findCommonParent(this.shapePane.getSelectionRecord().getGraphSelection());
-//        if(newParentCalc.hasFoundCommonParent()) {
-//        	if(logger.isTraceEnabled()){
-//        		logger.trace("Common parent found. Node=" + newParentCalc.getCommonParent());
-//        	}
-//        	// parent is consistent - now we need to check if any node already has this parent
-//        	// if all do then we move, in one or more doesn't then we fail reparenting
-//        	retVal = newParentCalc.canReparentSelection();
-//        }
-//        else{
-//        	logger.trace("No common parent found.");
-//        }
-//    	if(logger.isTraceEnabled()){
-//    		logger.trace("Can reparent=" + retVal);
-//    	}
-//        return retVal;
-//	}
 
-//	private Cursor getCurrentCursorResponse(Point location){
-//		ISelectionHandle selectionModel = shapePane.getSelectionRecord().findSelectionModelAt(location);
-//		SelectionRegion selectionRegion = selectionModel != null ? selectionModel.getRegion() : SelectionRegion.None;
-//		IMouseFeedbackResponse mouseFeedbackResponse = mouseResponseMap.get(selectionRegion);
-//		return mouseFeedbackResponse.getCurrentCursor();
-////		return Cursor.getPredefinedCursor(mouseFeedbackResponse.getCursorFeeback(location));
-//	}
-	
 	private void setCurrentCursorResponse(Point location){
 		ISelectionHandle selectionModel = shapePane.getSelectionRecord().findSelectionModelAt(location);
 		SelectionHandleType selectionRegion = selectionModel != null ? selectionModel.getType() : SelectionHandleType.None;

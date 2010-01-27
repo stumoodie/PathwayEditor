@@ -5,6 +5,7 @@ import java.util.SortedSet;
 
 import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNodeAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.ILinkEdge;
 import org.pathwayeditor.businessobjects.drawingprimitives.IShapeAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.IShapeNode;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.RGB;
@@ -24,6 +25,7 @@ import org.pathwayeditor.businessobjects.drawingprimitives.properties.IListAnnot
 import org.pathwayeditor.businessobjects.drawingprimitives.properties.INumberAnnotationProperty;
 import org.pathwayeditor.businessobjects.drawingprimitives.properties.IPlainTextAnnotationProperty;
 import org.pathwayeditor.figure.figuredefn.FigureController;
+import org.pathwayeditor.figure.figuredefn.IAnchorLocator;
 import org.pathwayeditor.figure.figuredefn.IFigureController;
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Envelope;
@@ -41,7 +43,6 @@ public class ShapeController extends NodeController implements IShapeController 
 	private final ICanvasAttributePropertyChangeListener shapePropertyChangeListener;
 	private final IAnnotationPropertyChangeListener annotPropChangeListener;
 	private IFigureController figureController;
-//	private final INodeControllerChangeListener parentNodePrimitivateChangeListener;
 	private final IDrawingNodeAttributeListener parentDrawingNodePropertyChangeListener;
 	private boolean isActive;
 	
@@ -68,10 +69,10 @@ public class ShapeController extends NodeController implements IShapeController 
 				else if(e.getPropertyChange().equals(CanvasAttributePropertyChange.SIZE)
 						|| e.getPropertyChange().equals(CanvasAttributePropertyChange.LOCATION)){
 					IShapeAttribute attribute = (IShapeAttribute)e.getAttribute();
-//					Envelope originalBounds = getBounds();
 					figureController.setRequestedEnvelope(attribute.getBounds());
 					figureController.generateFigureDefinition();
-//					notifyChangedBounds(originalBounds, getBounds());
+					recalculateSrcLinks();
+					recalculateTgtLinks();
 				}
 				else if(e.getPropertyChange().equals(CanvasAttributePropertyChange.LINE_STYLE)){
 					IShapeAttribute attribute = (IShapeAttribute)e.getAttribute();
@@ -88,23 +89,6 @@ public class ShapeController extends NodeController implements IShapeController 
 				figureController.generateFigureDefinition();
 			}	
 		};
-//		parentNodePrimitivateChangeListener = new INodeControllerChangeListener(){
-//
-//			@Override
-//			public void nodeTranslated(INodeTranslationEvent e) {
-//				translatePrimitive(e.getTranslationDelta());
-//			}
-//
-//			@Override
-//			public void nodeResized(INodeResizeEvent e) {
-//			}
-//
-//			@Override
-//			public void changedBounds(INodeBoundsChangeEvent e) {
-//				
-//			}
-//
-//		};
 		parentDrawingNodePropertyChangeListener = new IDrawingNodeAttributeListener() {
 			
 			@Override
@@ -174,6 +158,82 @@ public class ShapeController extends NodeController implements IShapeController 
 		return figureController;
 	}
 
+	private void recalculateSrcLinks(){
+		Iterator<ILinkEdge> edgeIter = this.domainNode.getCurrentDrawingElement().sourceLinkIterator();
+		while(edgeIter.hasNext()){
+			ILinkEdge link = edgeIter.next();
+			ILinkController linkController = this.getViewModel().getLinkController(link.getAttribute());
+			IShapeController srcNode = (IShapeController)this.getViewModel().getNodePrimitive(link.getSourceShape().getAttribute());
+			IShapeController tgtNode = (IShapeController)this.getViewModel().getNodePrimitive(link.getTargetShape().getAttribute());
+			changeSourceAnchor(linkController, srcNode, tgtNode);
+//			changeTargetAnchor(linkController, srcNode, tgtNode);
+		}
+	}
+
+	private void recalculateTgtLinks(){
+		Iterator<ILinkEdge> edgeIter = this.domainNode.getCurrentDrawingElement().targetLinkIterator();
+		while(edgeIter.hasNext()){
+			ILinkEdge link = edgeIter.next();
+			ILinkController linkController = this.getViewModel().getLinkController(link.getAttribute());
+			IShapeController srcNode = (IShapeController)this.getViewModel().getNodePrimitive(link.getSourceShape().getAttribute());
+			IShapeController tgtNode = (IShapeController)this.getViewModel().getNodePrimitive(link.getTargetShape().getAttribute());
+//			changeSourceAnchor(linkController, srcNode, tgtNode);
+			changeTargetAnchor(linkController, srcNode, tgtNode);
+		}
+	}
+
+	public void changeSourceAnchor(ILinkController linkController, IShapeController srcNode, IShapeController tgtNode){
+		if(linkController.getLinkDefinition().numBendPoints() > 0){
+			// there are bend-points so we use the bp as the reference position
+			Point refPoint = linkController.getLinkDefinition().getSourceLineSegment().getTerminus();
+			this.calculateSourceAnchor(linkController, srcNode, tgtNode, refPoint);
+		}
+		else{
+			// otherwise we just use the centre positions of the shapes
+			// as they will be after the move is completed
+			this.calculateSourceAnchor(linkController, srcNode, tgtNode, tgtNode.getConvexHull().getCentre());
+			this.calculateTargetAnchor(linkController, srcNode, tgtNode, srcNode.getConvexHull().getCentre());
+		}
+	}
+
+	public void changeTargetAnchor(ILinkController linkController, IShapeController srcNode, IShapeController tgtNode){
+		if(linkController.getLinkDefinition().numBendPoints() > 0){
+			// there are bend-points so we use the bp as the reference position
+			Point refPoint = linkController.getLinkDefinition().getTargetLineSegment().getTerminus();
+			this.calculateTargetAnchor(linkController, srcNode, tgtNode, refPoint);
+		}
+		else{
+			// otherwise we just use the centre positions of the shapes
+			// as they will be after the move is completed
+			this.calculateTargetAnchor(linkController, srcNode, tgtNode, srcNode.getConvexHull().getCentre());
+			this.calculateSourceAnchor(linkController, srcNode, tgtNode, tgtNode.getConvexHull().getCentre());
+		}
+	}
+	
+	private void calculateSourceAnchor(ILinkController linkController, IShapeController srcNode, IShapeController tgtNode, Point refPosn){
+		Point newAnchorLocn = getRevisedAnchorPosition(srcNode, refPosn);
+		linkController.getDrawingElement().getSourceTerminus().setLocation(newAnchorLocn);
+		if(logger.isTraceEnabled()){
+			logger.trace("Recalculating src anchor. Reference bp = " + refPosn + ",anchor=" + newAnchorLocn);
+		}
+	}
+	
+	private void calculateTargetAnchor(ILinkController linkController, IShapeController srcNode, IShapeController tgtNode, Point refPosn){
+		Point newAnchorLocn = getRevisedAnchorPosition(tgtNode, refPosn);
+		linkController.getDrawingElement().getTargetTerminus().setLocation(newAnchorLocn);
+		if(logger.isTraceEnabled()){
+			logger.trace("Recalculating tgt anchor. Reference bp = " + refPosn + ",anchor=" + newAnchorLocn);
+		}
+	}
+	
+	private Point getRevisedAnchorPosition(IShapeController nodeController, Point refPoint){
+		IFigureController controller = nodeController.getFigureController();
+		IAnchorLocator calc = controller.getAnchorLocatorFactory().createAnchorLocator();
+		calc.setOtherEndPoint(refPoint);
+		return calc.calcAnchorPosition();
+	}
+	
+	
 	private void addListeners(IShapeAttribute attribute, IFigureController figureController) {
 		attribute.addChangeListener(shapePropertyChangeListener);
 		Iterator<IAnnotationProperty> iter = attribute.propertyIterator();
@@ -182,8 +242,6 @@ public class ShapeController extends NodeController implements IShapeController 
 			prop.addChangeListener(annotPropChangeListener);
 		}
 		this.parentAttribute.addDrawingNodeAttributeListener(parentDrawingNodePropertyChangeListener);
-//		INodeController parentNode = this.getViewModel().getNodePrimitive(parentAttribute);
-//		parentNode.addNodePrimitiveChangeListener(this.parentNodePrimitivateChangeListener);
 	}
 	
 	private void removeListeners() {
@@ -195,10 +253,6 @@ public class ShapeController extends NodeController implements IShapeController 
 			prop.removeChangeListener(annotPropChangeListener);
 		}
 		parentAttribute.removeDrawingNodeAttributeListener(parentDrawingNodePropertyChangeListener);
-//		if(this.getViewModel().containsDrawingElement(parentAttribute)){
-//			INodeController parentNode = this.getViewModel().getNodePrimitive(parentAttribute);
-//			parentNode.removeNodePrimitiveChangeListener(this.parentNodePrimitivateChangeListener);
-//		}
 	}
 		
 	@Override
@@ -221,14 +275,6 @@ public class ShapeController extends NodeController implements IShapeController 
 		return this.figureController.getConvexHull();
 	}
 
-//	@Override
-//	public void translatePrimitive(Point translation) {
-//		Envelope currBounds = this.domainNode.getBounds();
-//		figureController.setRequestedEnvelope(currBounds.translate(translation));
-//		figureController.generateFigureDefinition();
-//		notifyTranslation(translation);
-//	}
-
 	@Override
 	public int compareTo(IDrawingPrimitiveController o) {
 		Integer otherIndex = o.getDrawingElement().getCreationSerial();
@@ -245,14 +291,6 @@ public class ShapeController extends NodeController implements IShapeController 
 		this.domainNode = null;
 		this.parentAttribute = null;
 	}
-
-//	@Override
-//	public void resizePrimitive(Point originDelta, Dimension resizeDelta) {
-//		Envelope currBounds = this.domainNode.getBounds();
-//		figureController.setRequestedEnvelope(currBounds.resize(originDelta, resizeDelta));
-//		figureController.generateFigureDefinition();
-//		this.notifyResize(originDelta, resizeDelta);
-//	}
 
 	@Override
 	public boolean canResize(Point originDelta, Dimension resizeDelta) {
@@ -298,20 +336,6 @@ public class ShapeController extends NodeController implements IShapeController 
 		return retVal;
 	}
 	
-//	@Override
-//	public void redefinedSyncroniseToModel() {
-//		IShapeAttribute attribute = this.domainNode;
-//		Envelope originalBounds = this.getBounds();
-//		figureController.setRequestedEnvelope(attribute.getBounds());
-//		figureController.setFillColour(attribute.getFillColour());
-//		figureController.setLineColour(attribute.getLineColour());
-//		figureController.setLineStyle(attribute.getLineStyle());
-//		figureController.setLineWidth(attribute.getLineWidth());
-//		assignBindVariablesToProperties(attribute, figureController);
-//		figureController.generateFigureDefinition();
-//		notifyChangedBounds(originalBounds, getBounds());
-//	}
-
 	@Override
 	public void inactivate() {
 		removeListeners();
