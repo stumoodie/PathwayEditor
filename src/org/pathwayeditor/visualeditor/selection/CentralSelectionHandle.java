@@ -7,7 +7,7 @@ import org.pathwayeditor.visualeditor.controller.INodeController;
 public class CentralSelectionHandle extends SelectionHandle {
 	
 	public CentralSelectionHandle(ISelection selection, INodeController nodeController){
-		super(nodeController, SelectionRegion.Central, selection);
+		super(nodeController, SelectionHandleType.Central, selection);
 	}
 	
 	

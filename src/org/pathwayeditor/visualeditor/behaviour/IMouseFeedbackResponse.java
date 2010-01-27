@@ -1,9 +1,16 @@
 package org.pathwayeditor.visualeditor.behaviour;
 
-import org.pathwayeditor.figure.geometry.Point;
+import java.awt.Cursor;
 
 public interface IMouseFeedbackResponse {
 
-	int getCursorFeeback(Point location);
+	enum StateType { DEFAULT, REPARENTING, FORBIDDEN };
 	
+	void changeState(StateType newState);
+
+	StateType getCurrentState();
+	
+	Cursor getCurrentCursor();
+
+	void reset();
 }

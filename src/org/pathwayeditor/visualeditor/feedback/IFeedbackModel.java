@@ -6,7 +6,9 @@ import org.pathwayeditor.visualeditor.selection.ISelectionRecord;
 
 public interface IFeedbackModel {
 
-	void rebuild();
+	void rebuildIncludingHierarchy();
+	
+	void rebuildWithStrictSelection();
 	
 	void clear();
 	

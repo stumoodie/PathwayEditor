@@ -5,10 +5,10 @@ import org.pathwayeditor.visualeditor.controller.INodeController;
 
 public abstract class SelectionHandle implements ISelectionHandle {
 	private final INodeController controller;
-	private final SelectionRegion region;
+	private final SelectionHandleType region;
 	private final ISelection selection;
 	
-	protected SelectionHandle(INodeController node, SelectionRegion region, ISelection selection){
+	protected SelectionHandle(INodeController node, SelectionHandleType region, ISelection selection){
 		this.controller = node;
 		this.region = region;
 		this.selection = selection;
@@ -21,7 +21,7 @@ public abstract class SelectionHandle implements ISelectionHandle {
 	}
 	
 	@Override
-	public final SelectionRegion getRegion(){
+	public final SelectionHandleType getType(){
 		return this.region;
 	}
 	
@@ -37,37 +37,37 @@ public abstract class SelectionHandle implements ISelectionHandle {
 
 	public static ISelectionHandle createNRegion(ISelection selection, INodeController nodeController) {
 		Envelope bounds = nodeController.getBounds(); 
-		return new MidPointSelectionHandle(selection, nodeController, bounds.getOrigin(), bounds.getHorizontalCorner(), SelectionRegion.N);
+		return new MidPointSelectionHandle(selection, nodeController, bounds.getOrigin(), bounds.getHorizontalCorner(), SelectionHandleType.N);
 	}
 
 	public static ISelectionHandle createNERegion(ISelection selection, INodeController nodeController) {
-		return new CornerSelectionHandle(selection, nodeController, nodeController.getBounds().getHorizontalCorner(), SelectionRegion.NE);
+		return new CornerSelectionHandle(selection, nodeController, nodeController.getBounds().getHorizontalCorner(), SelectionHandleType.NE);
 	}
 
 	public static ISelectionHandle createSERegion(ISelection selection, INodeController nodeController) {
-		return new CornerSelectionHandle(selection, nodeController, nodeController.getBounds().getDiagonalCorner(), SelectionRegion.SE);
+		return new CornerSelectionHandle(selection, nodeController, nodeController.getBounds().getDiagonalCorner(), SelectionHandleType.SE);
 	}
 
 	public static ISelectionHandle createSRegion(ISelection selection, INodeController nodeController) {
 		Envelope bounds = nodeController.getBounds(); 
-		return new MidPointSelectionHandle(selection, nodeController, bounds.getDiagonalCorner(), bounds.getVerticalCorner(), SelectionRegion.S);
+		return new MidPointSelectionHandle(selection, nodeController, bounds.getDiagonalCorner(), bounds.getVerticalCorner(), SelectionHandleType.S);
 	}
 
 	public static ISelectionHandle createSWRegion(ISelection selection, INodeController nodeController) {
-		return new CornerSelectionHandle(selection, nodeController, nodeController.getBounds().getVerticalCorner(), SelectionRegion.SW);
+		return new CornerSelectionHandle(selection, nodeController, nodeController.getBounds().getVerticalCorner(), SelectionHandleType.SW);
 	}
 
 	public static ISelectionHandle createWRegion(ISelection selection, INodeController nodeController) {
 		Envelope bounds = nodeController.getBounds(); 
-		return new MidPointSelectionHandle(selection, nodeController, bounds.getVerticalCorner(), bounds.getOrigin(), SelectionRegion.W);
+		return new MidPointSelectionHandle(selection, nodeController, bounds.getVerticalCorner(), bounds.getOrigin(), SelectionHandleType.W);
 	}
 
 	public static ISelectionHandle createNWRegion(ISelection selection, INodeController nodeController) {
-		return new CornerSelectionHandle(selection, nodeController, nodeController.getBounds().getOrigin(), SelectionRegion.NW);
+		return new CornerSelectionHandle(selection, nodeController, nodeController.getBounds().getOrigin(), SelectionHandleType.NW);
 	}
 
 	public static ISelectionHandle createERegion(ISelection selection, INodeController nodeController) {
 		Envelope bounds = nodeController.getBounds(); 
-		return new MidPointSelectionHandle(selection, nodeController, bounds.getHorizontalCorner(), bounds.getDiagonalCorner(), SelectionRegion.E);
+		return new MidPointSelectionHandle(selection, nodeController, bounds.getHorizontalCorner(), bounds.getDiagonalCorner(), SelectionHandleType.E);
 	}
 }

@@ -7,7 +7,7 @@ import java.util.List;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.controller.INodeController;
-import org.pathwayeditor.visualeditor.selection.ISelectionHandle.SelectionRegion;
+import org.pathwayeditor.visualeditor.selection.ISelectionHandle.SelectionHandleType;
 
 public class NodeSelection extends Selection implements INodeSelection {
 	private static final int NUM_REGIONS = 9;
@@ -48,12 +48,12 @@ public class NodeSelection extends Selection implements INodeSelection {
 	}
 
 	@Override
-	public ISelectionHandle getSelectionModel(SelectionRegion region) {
+	public ISelectionHandle getSelectionModel(SelectionHandleType region) {
 		ISelectionHandle retVal = null;
 		Iterator<ISelectionHandle> iter = this.selectionModels.iterator();
 		while(iter.hasNext() && retVal == null){
 			ISelectionHandle curr = iter.next();
-			if(curr.getRegion().equals(region)){
+			if(curr.getType().equals(region)){
 				retVal = curr;
 			}
 		}
@@ -98,7 +98,7 @@ public class NodeSelection extends Selection implements INodeSelection {
 			Iterator<ISelectionHandle> iter = this.selectionModels.iterator();
 			while(iter.hasNext() && retVal == null){
 				ISelectionHandle model = iter.next();
-				if(!model.getRegion().equals(SelectionRegion.Central)){
+				if(!model.getType().equals(SelectionHandleType.Central)){
 					if(model.containsPoint(point)){
 						retVal = model;
 					}

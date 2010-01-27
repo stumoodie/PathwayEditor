@@ -82,7 +82,7 @@ public class PathwayEditor {
 			@Override
 			public void moveStarted() {
 				logger.trace("Move started.");
-				feedbackModel.rebuild();
+				feedbackModel.rebuildIncludingHierarchy();
 			}
 
 			@Override
@@ -118,7 +118,7 @@ public class PathwayEditor {
 			@Override
 			public void resizeStarted() {
 				logger.trace("Resize started");
-				feedbackModel.rebuild();
+				feedbackModel.rebuildWithStrictSelection();
 			}
 			
 			@Override

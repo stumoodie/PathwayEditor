@@ -9,7 +9,7 @@ public class CornerSelectionHandle extends SelectionHandle {
 	private Point centre;
 	private final Point initialCentre;
 	
-	CornerSelectionHandle(ISelection selection, INodeController node, Point centre, SelectionRegion region){
+	CornerSelectionHandle(ISelection selection, INodeController node, Point centre, SelectionHandleType region){
 		super(node, region, selection);
 		this.centre = centre;
 		this.initialCentre = centre;

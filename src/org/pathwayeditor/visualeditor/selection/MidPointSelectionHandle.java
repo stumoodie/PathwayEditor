@@ -13,7 +13,7 @@ public class MidPointSelectionHandle extends SelectionHandle {
 	private Envelope bounds;
 	private final Point initialOrigin; 
 
-	public MidPointSelectionHandle(ISelection selection, INodeController nodeController, Point corner1, Point corner2, SelectionRegion region){
+	public MidPointSelectionHandle(ISelection selection, INodeController nodeController, Point corner1, Point corner2, SelectionHandleType region){
 		super(nodeController, region, selection);
 		Point bisection = corner1.translate(corner1.difference(corner2).scale(new Scale(0.5, 0.5)));
 		this.bounds = new Envelope(bisection.getX()-HANDLE_OFFSET, bisection.getY()-HANDLE_OFFSET,	HANDLE_WIDTH, HANDLE_HEIGHT);

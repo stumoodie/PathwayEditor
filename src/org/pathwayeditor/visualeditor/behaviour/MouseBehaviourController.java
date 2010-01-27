@@ -1,6 +1,5 @@
 package org.pathwayeditor.visualeditor.behaviour;
 
-import java.awt.Cursor;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -15,11 +14,12 @@ import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.IShapePane;
 import org.pathwayeditor.visualeditor.behaviour.IKeyboardResponse.CursorType;
+import org.pathwayeditor.visualeditor.behaviour.IMouseFeedbackResponse.StateType;
 import org.pathwayeditor.visualeditor.controller.INodeController;
 import org.pathwayeditor.visualeditor.geometry.INodeIntersectionCalculator;
 import org.pathwayeditor.visualeditor.geometry.ShapeIntersectionCalculator;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
-import org.pathwayeditor.visualeditor.selection.ISelectionHandle.SelectionRegion;
+import org.pathwayeditor.visualeditor.selection.ISelectionHandle.SelectionHandleType;
 
 public class MouseBehaviourController implements IMouseBehaviourController {
 	private final Logger logger = Logger.getLogger(this.getClass());
@@ -28,15 +28,16 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 	private KeyListener keyListener;
 	private final INodeIntersectionCalculator intCalc;
 	private IShapePane shapePane;
-	private Map<SelectionRegion, IDragResponse> dragResponseMap;
+	private Map<SelectionHandleType, IDragResponse> dragResponseMap;
 	private IKeyboardResponse keyboardResponseMap;
-	private Map<SelectionRegion, IMouseFeedbackResponse> mouseResponseMap;
+	private Map<SelectionHandleType, IMouseFeedbackResponse> mouseResponseMap;
 	private IDragResponse currDragResponse;
+	private IMouseFeedbackResponse currMouseFeedbackResponse;
 
 	public MouseBehaviourController(IShapePane pane, IEditingOperation moveOp, IResizeOperation resizeOp){
 		this.shapePane = pane;
-		this.dragResponseMap = new HashMap<SelectionRegion, IDragResponse>();
-		this.mouseResponseMap = new HashMap<SelectionRegion, IMouseFeedbackResponse>();
+		this.dragResponseMap = new HashMap<SelectionHandleType, IDragResponse>();
+		this.mouseResponseMap = new HashMap<SelectionHandleType, IMouseFeedbackResponse>();
 		this.keyboardResponseMap = new KeyboardResponse(moveOp);
 		initialiseDragResponses(moveOp, resizeOp);
 		initialiseMouseResponse();
@@ -79,11 +80,13 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 			public void mouseReleased(MouseEvent e) {
 				if(currDragResponse != null){
 					currDragResponse.dragFinished();
+					currMouseFeedbackResponse.reset();
 					currDragResponse = null;
 					shapePane.repaint();
 				}
 				Point location = new Point(e.getPoint().getX(), e.getPoint().getY());
-				e.getComponent().setCursor(getCurrentCursorResponse(location));
+				setCurrentCursorResponse(location);
+				e.getComponent().setCursor(currMouseFeedbackResponse.getCurrentCursor());
 			}
         	
         };
@@ -93,9 +96,10 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 				if(e.getButton() == MouseEvent.BUTTON1){
 					Point location = new Point(e.getPoint().getX(), e.getPoint().getY());
 					if(currDragResponse == null){
-						ISelectionHandle selectionModel = shapePane.getSelectionRecord().findSelectionModelAt(location);
-						if(selectionModel != null){
-							currDragResponse = dragResponseMap.get(selectionModel.getRegion());
+						ISelectionHandle selectionHandle = shapePane.getSelectionRecord().findSelectionModelAt(location);
+						if(selectionHandle != null){
+							currDragResponse = dragResponseMap.get(selectionHandle.getType());
+							currMouseFeedbackResponse = mouseResponseMap.get(selectionHandle.getType());
 						}
 					}
 					if(currDragResponse != null){
@@ -103,10 +107,16 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 							if(currDragResponse.canContinueDrag(location)){
 								currDragResponse.dragContinuing(location);
 								if(currDragResponse.canReparent()){
-									e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+									currMouseFeedbackResponse.changeState(StateType.REPARENTING);
+									logger.trace("Setting hand cursor as reparenting enabled");
+								}
+								else if(currDragResponse.canMove()){
+									logger.trace("Can move, but cannot reparent. Setting to default for current location");
+									currMouseFeedbackResponse.changeState(StateType.DEFAULT);
 								}
 								else{
-									getCurrentCursorResponse(location);
+									currMouseFeedbackResponse.changeState(StateType.FORBIDDEN);
+									logger.trace("Move is forbidden");
 								}
 							}
 						}
@@ -115,11 +125,13 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 						}
 					}
 				}
+				e.getComponent().setCursor(currMouseFeedbackResponse.getCurrentCursor());
 			}
 
 			public void mouseMoved(MouseEvent e) {
 				Point location = new Point(e.getPoint().getX(), e.getPoint().getY());
-				e.getComponent().setCursor(getCurrentCursorResponse(location));
+				setCurrentCursorResponse(location);
+				e.getComponent().setCursor(currMouseFeedbackResponse.getCurrentCursor());
 			}
         	
         };
@@ -180,29 +192,36 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 //        return retVal;
 //	}
 
-	private Cursor getCurrentCursorResponse(Point location){
+//	private Cursor getCurrentCursorResponse(Point location){
+//		ISelectionHandle selectionModel = shapePane.getSelectionRecord().findSelectionModelAt(location);
+//		SelectionRegion selectionRegion = selectionModel != null ? selectionModel.getRegion() : SelectionRegion.None;
+//		IMouseFeedbackResponse mouseFeedbackResponse = mouseResponseMap.get(selectionRegion);
+//		return mouseFeedbackResponse.getCurrentCursor();
+////		return Cursor.getPredefinedCursor(mouseFeedbackResponse.getCursorFeeback(location));
+//	}
+	
+	private void setCurrentCursorResponse(Point location){
 		ISelectionHandle selectionModel = shapePane.getSelectionRecord().findSelectionModelAt(location);
-		SelectionRegion selectionRegion = selectionModel != null ? selectionModel.getRegion() : SelectionRegion.None;
-		IMouseFeedbackResponse mouseFeedbackResponse = mouseResponseMap.get(selectionRegion);
-		return Cursor.getPredefinedCursor(mouseFeedbackResponse.getCursorFeeback(location));
+		SelectionHandleType selectionRegion = selectionModel != null ? selectionModel.getType() : SelectionHandleType.None;
+		currMouseFeedbackResponse = mouseResponseMap.get(selectionRegion);
 	}
 	
 	private void initialiseMouseResponse(){
-		this.mouseResponseMap.put(SelectionRegion.Central, new MouseFeedbackResponse(SelectionRegion.Central));
-		this.mouseResponseMap.put(SelectionRegion.N, new MouseFeedbackResponse(SelectionRegion.N));
-		this.mouseResponseMap.put(SelectionRegion.NE, new MouseFeedbackResponse(SelectionRegion.NE));
-		this.mouseResponseMap.put(SelectionRegion.E, new MouseFeedbackResponse(SelectionRegion.E));
-		this.mouseResponseMap.put(SelectionRegion.SE, new MouseFeedbackResponse(SelectionRegion.SE));
-		this.mouseResponseMap.put(SelectionRegion.S, new MouseFeedbackResponse(SelectionRegion.S));
-		this.mouseResponseMap.put(SelectionRegion.SW, new MouseFeedbackResponse(SelectionRegion.SW));
-		this.mouseResponseMap.put(SelectionRegion.W, new MouseFeedbackResponse(SelectionRegion.W));
-		this.mouseResponseMap.put(SelectionRegion.NW, new MouseFeedbackResponse(SelectionRegion.NW));
-		this.mouseResponseMap.put(SelectionRegion.None, new DefaultMouseFeedbackResponse());
+		this.mouseResponseMap.put(SelectionHandleType.Central, new MouseFeedbackResponse(SelectionHandleType.Central));
+		this.mouseResponseMap.put(SelectionHandleType.N, new MouseFeedbackResponse(SelectionHandleType.N));
+		this.mouseResponseMap.put(SelectionHandleType.NE, new MouseFeedbackResponse(SelectionHandleType.NE));
+		this.mouseResponseMap.put(SelectionHandleType.E, new MouseFeedbackResponse(SelectionHandleType.E));
+		this.mouseResponseMap.put(SelectionHandleType.SE, new MouseFeedbackResponse(SelectionHandleType.SE));
+		this.mouseResponseMap.put(SelectionHandleType.S, new MouseFeedbackResponse(SelectionHandleType.S));
+		this.mouseResponseMap.put(SelectionHandleType.SW, new MouseFeedbackResponse(SelectionHandleType.SW));
+		this.mouseResponseMap.put(SelectionHandleType.W, new MouseFeedbackResponse(SelectionHandleType.W));
+		this.mouseResponseMap.put(SelectionHandleType.NW, new MouseFeedbackResponse(SelectionHandleType.NW));
+		this.mouseResponseMap.put(SelectionHandleType.None, new DefaultMouseFeedbackResponse());
 	}
 	
 	private void initialiseDragResponses(IEditingOperation moveOp, IResizeOperation resizeOp) {
-		this.dragResponseMap.put(SelectionRegion.Central, new CentralHandleResponse(moveOp));
-		this.dragResponseMap.put(SelectionRegion.N, new ResizeHandleResponse(new INewPositionCalculator() {
+		this.dragResponseMap.put(SelectionHandleType.Central, new CentralHandleResponse(moveOp));
+		this.dragResponseMap.put(SelectionHandleType.N, new ResizeHandleResponse(new INewPositionCalculator() {
 			private Point delta;
 			
 			@Override
@@ -225,7 +244,7 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 				return this.delta;
 			}
 		}, resizeOp));
-		this.dragResponseMap.put(SelectionRegion.NE, new ResizeHandleResponse(new INewPositionCalculator() {
+		this.dragResponseMap.put(SelectionHandleType.NE, new ResizeHandleResponse(new INewPositionCalculator() {
 			private Point delta;
 			
 			@Override
@@ -248,7 +267,7 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 				return this.delta;
 			}
 		}, resizeOp));
-		this.dragResponseMap.put(SelectionRegion.E, new ResizeHandleResponse(new INewPositionCalculator() {
+		this.dragResponseMap.put(SelectionHandleType.E, new ResizeHandleResponse(new INewPositionCalculator() {
 			private Point delta;
 			
 			@Override
@@ -271,7 +290,7 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 				return this.delta;
 			}
 		}, resizeOp));
-		this.dragResponseMap.put(SelectionRegion.SE, new ResizeHandleResponse(new INewPositionCalculator() {
+		this.dragResponseMap.put(SelectionHandleType.SE, new ResizeHandleResponse(new INewPositionCalculator() {
 			private Point delta;
 			
 			@Override
@@ -294,7 +313,7 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 				return this.delta;
 			}
 		}, resizeOp));
-		this.dragResponseMap.put(SelectionRegion.S, new ResizeHandleResponse(new INewPositionCalculator() {
+		this.dragResponseMap.put(SelectionHandleType.S, new ResizeHandleResponse(new INewPositionCalculator() {
 			private Point delta;
 			
 			@Override
@@ -317,7 +336,7 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 				return this.delta;
 			}
 		}, resizeOp));
-		this.dragResponseMap.put(SelectionRegion.SW, new ResizeHandleResponse(new INewPositionCalculator() {
+		this.dragResponseMap.put(SelectionHandleType.SW, new ResizeHandleResponse(new INewPositionCalculator() {
 			private Point delta;
 			
 			@Override
@@ -340,7 +359,7 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 				return this.delta;
 			}
 		}, resizeOp));
-		this.dragResponseMap.put(SelectionRegion.W, new ResizeHandleResponse(new INewPositionCalculator() {
+		this.dragResponseMap.put(SelectionHandleType.W, new ResizeHandleResponse(new INewPositionCalculator() {
 			private Point delta;
 			
 			@Override
@@ -363,7 +382,7 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 				return this.delta;
 			}
 		}, resizeOp));
-		this.dragResponseMap.put(SelectionRegion.NW, new ResizeHandleResponse(new INewPositionCalculator() {
+		this.dragResponseMap.put(SelectionHandleType.NW, new ResizeHandleResponse(new INewPositionCalculator() {
 			private Point delta;
 			
 			@Override

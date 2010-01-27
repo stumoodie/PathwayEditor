@@ -2,13 +2,26 @@ package org.pathwayeditor.visualeditor.behaviour;
 
 import java.awt.Cursor;
 
-import org.pathwayeditor.figure.geometry.Point;
-
 public class DefaultMouseFeedbackResponse implements IMouseFeedbackResponse {
+	private StateType currentState = StateType.DEFAULT;
 
 	@Override
-	public int getCursorFeeback(Point location) {
-		return Cursor.DEFAULT_CURSOR;
+	public Cursor getCurrentCursor() {
+		return Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
+	}
+
+	@Override
+	public void changeState(StateType newState) {
+		this.currentState = newState;
+	}
+
+	@Override
+	public StateType getCurrentState() {
+		return this.currentState;
+	}
+
+	@Override
+	public void reset() {
 	}
 
 }

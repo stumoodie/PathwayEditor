@@ -5,6 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNode;
+import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNodeAttribute;
+import org.pathwayeditor.visualeditor.selection.INodeSelection;
 import org.pathwayeditor.visualeditor.selection.ISelectionRecord;
 
 public class FeedbackModel implements IFeedbackModel {
@@ -17,7 +19,7 @@ public class FeedbackModel implements IFeedbackModel {
 	}
 	
 	@Override
-	public void rebuild(){
+	public void rebuildIncludingHierarchy(){
 		this.nodes.clear();
 		Iterator<IDrawingNode> iter = this.selectionRecord.getGraphSelection().drawingNodeIterator();
 		while(iter.hasNext()){
@@ -40,5 +42,16 @@ public class FeedbackModel implements IFeedbackModel {
 	@Override
 	public ISelectionRecord getSelectionRecord(){
 		return this.selectionRecord;
+	}
+
+	@Override
+	public void rebuildWithStrictSelection() {
+		this.nodes.clear();
+		Iterator<INodeSelection> iter = this.selectionRecord.selectedNodesIterator();
+		while(iter.hasNext()){
+			IDrawingNodeAttribute selectedNode = iter.next().getPrimitiveController().getDrawingElement();
+			IFeedbackNode feedbackNode = new FeedbackNode(selectedNode);
+			this.nodes.add(feedbackNode);
+		}
 	}
 }
