@@ -6,6 +6,8 @@ import java.util.SortedSet;
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElementSelection;
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNode;
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNodeAttribute;
+import org.pathwayeditor.figure.geometry.IConvexHull;
+import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.controller.ILabelController;
 import org.pathwayeditor.visualeditor.controller.INodeController;
 import org.pathwayeditor.visualeditor.controller.IShapeController;
@@ -30,8 +32,8 @@ public class CommonParentCalculator {
 		this.calc = new ShapeIntersectionCalculator(model);
 	}
 	
-	public void findCommonParentExcludingLabels(IDrawingElementSelection testSelection){
-		findCommonParentImpl(testSelection, new IHandleLabel(){
+	public void findCommonParentExcludingLabels(IDrawingElementSelection testSelection, Point delta){
+		findCommonParentImpl(testSelection, delta, new IHandleLabel(){
 
 			// we're ignoreing labels
 			public INodeController getLabelParent(ILabelController node) {
@@ -45,8 +47,8 @@ public class CommonParentCalculator {
 		return this.calc.getModel().getNodePrimitive(node);
 	}
 	
-	public void findCommonParent(IDrawingElementSelection testSelection) {
-		findCommonParentImpl(testSelection, new IHandleLabel(){
+	public void findCommonParent(IDrawingElementSelection testSelection, Point delta) {
+		findCommonParentImpl(testSelection, delta, new IHandleLabel(){
 
 			// we're ignoreing labels
 			public INodeController getLabelParent(ILabelController node) {
@@ -56,7 +58,7 @@ public class CommonParentCalculator {
 		});
 	}
 	
-	private void findCommonParentImpl(IDrawingElementSelection testSelection, IHandleLabel labelHandler) {
+	private void findCommonParentImpl(IDrawingElementSelection testSelection, Point delta, IHandleLabel labelHandler) {
 		if (this.selection == null
 				|| (!testSelection.equals(this.selection) ) ) {
 			// if new or different selection to last one then recalculate the
@@ -71,7 +73,9 @@ public class CommonParentCalculator {
 				INodeController node = getNodeController(selectionIter.next().getAttribute());
 				INodeController potentialParent = null;
 				if (node instanceof IShapeController) {
-					potentialParent = this.findPotentialParent(node);
+					IConvexHull hull = node.getConvexHull();
+					IConvexHull newLocation = hull.translate(delta);
+					potentialParent = this.findPotentialParent(node, newLocation);
 				} else if (node instanceof ILabelController) {
 					// labels cannot be reparented
 //					potentialParent = node.getParentNode();
@@ -122,7 +126,7 @@ public class CommonParentCalculator {
 	}
 	
 	
-	public INodeController findPotentialParent(final INodeController potentialChild){
+	public INodeController findPotentialParent(final INodeController potentialChild, IConvexHull testPlacement){
 		calc.setFilter(new IIntersectionCalcnFilter(){
 
 			@Override
@@ -131,7 +135,7 @@ public class CommonParentCalculator {
 			}
 			
 		});
-		SortedSet<INodeController> nodes = calc.findIntersectingNodes(potentialChild.getConvexHull(), potentialChild);
+		SortedSet<INodeController> nodes = calc.findIntersectingNodes(testPlacement, potentialChild);
 		INodeController retVal = null;
 		if(!nodes.isEmpty()){
 			retVal = nodes.first();

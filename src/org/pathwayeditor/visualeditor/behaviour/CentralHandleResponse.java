@@ -15,7 +15,7 @@ public class CentralHandleResponse extends HandleResponse implements IMoveRespon
 	public void dragContinuing(Point newLocation) {
 		this.calculateLocationDelta(newLocation);
 		this.editingOperation.moveOngoing(this.getDelta());
-		this.reparentingState = this.editingOperation.getReparentingState();
+		this.reparentingState = this.editingOperation.getReparentingState(this.getDelta());
 	}
 
 	@Override

@@ -86,10 +86,10 @@ public class PathwayEditor {
 			}
 
 			@Override
-			public ReparentingStateType getReparentingState() {
+			public ReparentingStateType getReparentingState(Point delta) {
 				ReparentingStateType retVal = ReparentingStateType.FORBIDDEN;
 				CommonParentCalculator newParentCalc = new CommonParentCalculator(viewModel);
-				newParentCalc.findCommonParent(selectionRecord.getGraphSelection());
+				newParentCalc.findCommonParent(selectionRecord.getGraphSelection(), delta);
 		        if(newParentCalc.hasFoundCommonParent()) {
 		        	if(logger.isTraceEnabled()){
 		        		logger.trace("Common parent found. Node=" + newParentCalc.getCommonParent());
@@ -201,17 +201,17 @@ public class PathwayEditor {
 			logger.trace("Dragged shape to location: " + nodePrimitive.getBounds().getOrigin());
 		}
 		if(reparentingEnabled){
-			INodeController target = calculateReparentTarget();
+			INodeController target = calculateReparentTarget(delta);
 			ICommand cmd = new ReparentSelectionCommand(target.getDrawingElement().getCurrentDrawingElement(), this.selectionRecord.getGraphSelection());
 			cmpCommand.addCommand(cmd);
 		}
 		this.commandStack.execute(cmpCommand);
 	}
 	
-	private INodeController calculateReparentTarget() {
+	private INodeController calculateReparentTarget(Point delta) {
 		INodeController retVal = null;
 		CommonParentCalculator newParentCalc = new CommonParentCalculator(viewModel);
-		newParentCalc.findCommonParent(selectionRecord.getGraphSelection());
+		newParentCalc.findCommonParent(selectionRecord.getGraphSelection(), delta);
         if(newParentCalc.hasFoundCommonParent()) {
         	if(logger.isTraceEnabled()){
         		logger.trace("Common parent found. Node=" + newParentCalc.getCommonParent());

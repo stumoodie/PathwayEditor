@@ -6,7 +6,7 @@ public interface IEditingOperation {
 	enum ReparentingStateType { CAN_REPARENT, CAN_MOVE, FORBIDDEN }
 	
 	
-	ReparentingStateType getReparentingState();
+	ReparentingStateType getReparentingState(Point delta);
 	
 	void moveStarted();
 

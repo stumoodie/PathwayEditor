@@ -115,11 +115,11 @@ public class ViewControllerStore implements IViewControllerStore {
 	}
 	
 	private void removeNodePrimitive(INodeController shapeNode){
-		INodeController nodePrimitive = (INodeController)domainToViewMap.get(shapeNode.getDrawingElement());
+//		INodeController nodePrimitive = (INodeController)domainToViewMap.get(shapeNode.getDrawingElement());
 		domainToViewMap.remove(shapeNode.getDrawingElement());
-		drawingPrimitives.remove(nodePrimitive);
+		drawingPrimitives.remove(shapeNode);
 		notifyRemovedNode(shapeNode);
-		nodePrimitive.dispose();
+		shapeNode.dispose();
 	}
 
 	private void buildFromDomainModel(){
