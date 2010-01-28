@@ -5,6 +5,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.geom.AffineTransform;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.SortedSet;
@@ -47,7 +48,7 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1){
 					if(!e.isShiftDown() && !e.isAltDown()){
-						Point location = new Point(e.getPoint().getX(), e.getPoint().getY());
+						Point location = getAdjustedMousePosition(e.getPoint().getX(), e.getPoint().getY());
 						INodeController nodeController = findDrawingNodeAt(location);
 						if(nodeController != null){
 							shapePane.getSelectionRecord().setPrimarySelection(nodeController);
@@ -57,7 +58,7 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 						}
 					}
 					else if(e.isShiftDown() && !e.isAltDown()){
-						Point location = new Point(e.getPoint().getX(), e.getPoint().getY());
+						Point location = getAdjustedMousePosition(e.getPoint().getX(), e.getPoint().getY());
 						INodeController nodeController = findDrawingNodeAt(location);
 						if(nodeController != null){
 							shapePane.getSelectionRecord().addSecondarySelection(nodeController);
@@ -82,9 +83,9 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 					currDragResponse.dragFinished();
 					currMouseFeedbackResponse.reset();
 					currDragResponse = null;
-					shapePane.repaint();
+					shapePane.updateView();
 				}
-				Point location = new Point(e.getPoint().getX(), e.getPoint().getY());
+				Point location = getAdjustedMousePosition(e.getPoint().getX(), e.getPoint().getY());
 				setCurrentCursorResponse(location);
 				e.getComponent().setCursor(currMouseFeedbackResponse.getCurrentCursor());
 			}
@@ -94,7 +95,7 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 
 			public void mouseDragged(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1){
-					Point location = new Point(e.getPoint().getX(), e.getPoint().getY());
+					Point location = getAdjustedMousePosition(e.getPoint().getX(), e.getPoint().getY());
 					if(currDragResponse == null){
 						ISelectionHandle selectionHandle = shapePane.getSelectionRecord().findSelectionModelAt(location);
 						if(selectionHandle != null){
@@ -129,7 +130,7 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 			}
 
 			public void mouseMoved(MouseEvent e) {
-				Point location = new Point(e.getPoint().getX(), e.getPoint().getY());
+				Point location = getAdjustedMousePosition(e.getPoint().getX(), e.getPoint().getY());
 				setCurrentCursorResponse(location);
 				e.getComponent().setCursor(currMouseFeedbackResponse.getCurrentCursor());
 			}
@@ -172,6 +173,11 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 	}
 	
 
+	private Point getAdjustedMousePosition(double originalMouseX, double originalMouseY){
+		AffineTransform paneTransform = this.shapePane.getLastUsedTransform();
+		return new Point(originalMouseX-paneTransform.getTranslateX(), originalMouseY-paneTransform.getTranslateY());  
+	}
+	
 	private void setCurrentCursorResponse(Point location){
 		ISelectionHandle selectionModel = shapePane.getSelectionRecord().findSelectionModelAt(location);
 		SelectionHandleType selectionRegion = selectionModel != null ? selectionModel.getType() : SelectionHandleType.None;

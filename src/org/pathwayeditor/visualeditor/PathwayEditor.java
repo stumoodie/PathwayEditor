@@ -1,11 +1,14 @@
 package org.pathwayeditor.visualeditor;
 
-import java.awt.Canvas;
 import java.util.Iterator;
+
+import javax.swing.JComponent;
+import javax.swing.JScrollPane;
 
 import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.drawingprimitives.ICanvas;
 import org.pathwayeditor.figure.geometry.Dimension;
+import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.behaviour.IEditingOperation;
 import org.pathwayeditor.visualeditor.behaviour.IMouseBehaviourController;
@@ -34,7 +37,8 @@ import org.pathwayeditor.visualeditor.selection.SelectionRecord;
 public class PathwayEditor {
 	private final Logger logger = Logger.getLogger(this.getClass());
 	
-	private final ShapePane shapePane;
+	private final IShapePane shapePane;
+	private final JScrollPane scrollPane;
 	private IViewControllerStore viewModel;
 	private ISelectionRecord selectionRecord;
 	private ICommandStack commandStack;
@@ -48,7 +52,11 @@ public class PathwayEditor {
 		this.selectionRecord = new SelectionRecord(viewModel);
 		this.feedbackModel = new FeedbackModel(this.selectionRecord);
 		this.shapePane = new ShapePane(viewModel, this.selectionRecord, this.feedbackModel);
-		this.shapePane.setSize(width, height);
+		scrollPane = new JScrollPane((ShapePane)this.shapePane, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scrollPane.setPreferredSize(new java.awt.Dimension(width, height));
+
+		Envelope canvasBounds = viewModel.getCanvasBounds();
+		((ShapePane)this.shapePane).setSize((int)Math.ceil(canvasBounds.getDimension().getWidth()), (int)Math.ceil(canvasBounds.getDimension().getHeight()));
         IEditingOperation editOperation = new IEditingOperation(){
 
 			@Override
@@ -67,7 +75,8 @@ public class PathwayEditor {
 //				}
 				feedbackModel.clear();
 				selectionRecord.clear();
-				shapePane.repaint();
+				shapePane.updateView();
+				
 			}
 
 			@Override
@@ -76,7 +85,7 @@ public class PathwayEditor {
 					logger.trace("Ongoning move. Delta=" + delta);
 				}
 				moveSelection(delta);
-				shapePane.repaint();
+				shapePane.updateView();
 			}
 
 			@Override
@@ -129,13 +138,13 @@ public class PathwayEditor {
 				createResizeCommand(originDelta, resizeDelta);
 				feedbackModel.clear();
 				selectionRecord.clear();
-				shapePane.repaint();
+				shapePane.updateView();
 			}
 			
 			@Override
 			public void resizeContinuing(Point originDelta, Dimension resizeDelta) {
 				resizeSelection(originDelta, resizeDelta);
-				shapePane.repaint();
+				shapePane.updateView();
 			}
 
 			@Override
@@ -148,7 +157,7 @@ public class PathwayEditor {
 			
 			@Override
 			public void selectionChanged(ISelectionChangeEvent event) {
-				shapePane.repaint();
+				shapePane.updateView();
 			}
 		}; 
 	}
@@ -243,11 +252,11 @@ public class PathwayEditor {
 		this.editBehaviourController.initialise();
 		this.viewModel.activate();
 		this.selectionRecord.addSelectionChangeListener(selectionChangeListener);
-		this.shapePane.repaint();
+		this.shapePane.updateView();
 	}
 
-	public Canvas getCanvas() {
-		return this.shapePane;
+	public JComponent getCanvas() {
+		return this.scrollPane;
 	}
 	
 }

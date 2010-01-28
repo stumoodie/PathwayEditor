@@ -7,6 +7,7 @@ import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNodeAttribute
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.IModel;
 import org.pathwayeditor.businessobjects.drawingprimitives.IShapeAttribute;
+import org.pathwayeditor.figure.geometry.Envelope;
 
 public interface IViewControllerStore {
 
@@ -39,6 +40,8 @@ public interface IViewControllerStore {
 	ILinkController getLinkController(ILinkAttribute attribute);
 
 	IShapeController getShapeController(IShapeAttribute attribute);
+
+	Envelope getCanvasBounds();
 	
 //	void addViewControllerChangeListener(IViewControllerChangeListener listener);
 //	

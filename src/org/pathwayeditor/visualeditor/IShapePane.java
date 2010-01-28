@@ -3,6 +3,7 @@ package org.pathwayeditor.visualeditor;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.geom.AffineTransform;
 
 import org.pathwayeditor.visualeditor.controller.IViewControllerStore;
 import org.pathwayeditor.visualeditor.feedback.IFeedbackModel;
@@ -10,7 +11,7 @@ import org.pathwayeditor.visualeditor.selection.ISelectionRecord;
 
 public interface IShapePane {
 
-	void repaint();
+	void updateView();
 	
 	IViewControllerStore getViewModel();
 	
@@ -23,5 +24,7 @@ public interface IShapePane {
 	void addMouseListener(MouseListener mouseSelectionListener);
 
 	void addMouseMotionListener(MouseMotionListener mouseMotionListener);
+
+	AffineTransform getLastUsedTransform();
 	
 }

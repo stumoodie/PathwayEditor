@@ -1,5 +1,6 @@
 package org.pathwayeditor.visualeditor;
 
+import java.awt.BorderLayout;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -14,7 +15,7 @@ import org.pathwayeditor.businessobjects.management.INotationSubsystemPool;
 public class VisualEditor {
 //	private final Logger logger = Logger.getLogger(this.getClass());
 	
-	private static final int WIDTH = 1000;
+	private static final int WIDTH = 700;
 	private static final int HEIGHT = 600;
 	private static final String TEST_FILE = "test/org/pathwayeditor/graphicsengine/za.pwe";
 
@@ -34,7 +35,8 @@ public class VisualEditor {
 			canvasPersistenceManager.readCanvasFromStream(in);
 			in.close();
 			insp = new PathwayEditor(canvasPersistenceManager.getCurrentCanvas(), WIDTH, HEIGHT);
-			this.frame.add(insp.getCanvas());
+			this.frame.setLayout(new BorderLayout());
+			this.frame.add(insp.getCanvas(), BorderLayout.CENTER);
 			this.frame.pack();
 			this.frame.setVisible(true);
 		}

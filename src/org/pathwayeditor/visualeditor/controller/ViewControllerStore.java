@@ -22,6 +22,9 @@ import org.pathwayeditor.businessobjects.drawingprimitives.IShapeAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IModelChangeListener;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IModelStructureChangeEvent;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ModelStructureChangeType;
+import org.pathwayeditor.figure.geometry.Envelope;
+import org.pathwayeditor.figure.geometry.Point;
+import org.pathwayeditor.visualeditor.geometry.ILinkPointDefinition;
 
 public class ViewControllerStore implements IViewControllerStore {
 	private final IModel domainModel;
@@ -58,20 +61,11 @@ public class ViewControllerStore implements IViewControllerStore {
 					removeSelection(event.getOriginalSelection());
 				}
 				else if(event.getChangeType().equals(ModelStructureChangeType.SELECTION_MOVED)){
-//					rebuildModel();
 					// reinitialise the nodes
-//					Iterator<IDrawingNode> nodeIter = event.getChangedSelection().drawingNodeIterator();
-//					while(nodeIter.hasNext()){
-//						IDrawingNodeAttribute att = nodeIter.next().getAttribute();
-//						IDrawingPrimitiveController nodeCont = domainToViewMap.get(att);
-//						nodeCont.inactivate();
-//						nodeCont.activate();
-//					}
 					removeSelection(event.getOriginalSelection());
 					addSelection(event.getChangedSelection());
 				}
 				else if(event.getChangeType().equals(ModelStructureChangeType.SELCTION_COPIED)){
-//					rebuildModel();
 					addSelection(event.getChangedSelection());
 				}
 			}
@@ -84,15 +78,6 @@ public class ViewControllerStore implements IViewControllerStore {
 			node.getSubModel().addModelChangeListener(modelListener);
 		}
 	}
-	
-//	private void rebuildModel(){
-//		for(IDrawingPrimitiveController controller : this.drawingPrimitives){
-//			controller.dispose();
-//		}
-//		this.domainToViewMap.clear();
-//		this.drawingPrimitives.clear();
-//		buildFromDomainModel();
-//	}
 	
 	private void addSelection(IDrawingElementSelection selection){
 		Iterator<IDrawingNode> iter = selection.drawingNodeIterator();
@@ -137,7 +122,7 @@ public class ViewControllerStore implements IViewControllerStore {
 		}
 	}
 	
-	private void createNodePrimitive(IDrawingNodeAttribute node){
+	private INodeController createNodePrimitive(IDrawingNodeAttribute node){
 		INodeController viewNode = null;
 		if(node instanceof IShapeAttribute){
 			viewNode = new ShapeController(this, (IShapeAttribute)node);
@@ -160,16 +145,18 @@ public class ViewControllerStore implements IViewControllerStore {
 				viewNode.activate();
 			}
 		}
+		return viewNode;
 	}
 	
 	
-	private void createLinkPrimitive(ILinkAttribute linkAtt){
+	private ILinkController createLinkPrimitive(ILinkAttribute linkAtt){
 		ILinkController linkCtlr = new LinkController(this, linkAtt);
 		this.domainToViewMap.put(linkAtt, linkCtlr);
 		this.drawingPrimitives.add(linkCtlr);
 		if(this.isActive()){
 			linkCtlr.activate();
 		}
+		return linkCtlr;
 	}
 	
 	
@@ -316,5 +303,40 @@ public class ViewControllerStore implements IViewControllerStore {
 	@Override
 	public IShapeController getShapeController(IShapeAttribute attribute) {
 		return (IShapeController)this.domainToViewMap.get(attribute);
+	}
+
+	@Override
+	public Envelope getCanvasBounds() {
+		double minX = Double.MAX_VALUE;
+		double maxX = Double.MIN_VALUE;
+		double minY = Double.MAX_VALUE;
+		double maxY = Double.MIN_VALUE;
+		Iterator<INodeController> nodeIter = this.nodePrimitiveIterator();
+		while(nodeIter.hasNext()){
+			INodeController nodeController = nodeIter.next();
+			if(!(nodeController instanceof IRootController)){
+				// ignore the root as this doesn't have real bounds values - we are only intersted in shapes and labels
+				Point nodeOrigin = nodeController.getConvexHull().getEnvelope().getOrigin();
+				minX = Math.min(minX, nodeOrigin.getX());
+				minY = Math.min(minY, nodeOrigin.getY());
+				Point nodeDiagonal = nodeController.getConvexHull().getEnvelope().getDiagonalCorner();
+				maxX = Math.max(maxX, nodeDiagonal.getX());
+				maxY = Math.max(maxY, nodeDiagonal.getY());
+			}
+		}
+		Iterator<ILinkController> edgeIter = this.linkPrimitiveIterator();
+		while(edgeIter.hasNext()){
+			ILinkController linkController = edgeIter.next();
+			ILinkPointDefinition defn = linkController.getLinkDefinition();
+			Iterator<Point> pointIter = defn.pointIterator();
+			while(pointIter.hasNext()){
+				Point linkPoint = pointIter.next();
+				minX = Math.min(minX, linkPoint.getX());
+				minY = Math.min(minY, linkPoint.getY());
+				maxX = Math.max(maxX, linkPoint.getX());
+				maxY = Math.max(maxY, linkPoint.getY());
+			}
+		}
+		return new Envelope(minX, minY, maxX-minX, maxY-minY);
 	}
 }
