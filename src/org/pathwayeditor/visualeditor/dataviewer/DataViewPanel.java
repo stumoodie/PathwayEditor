@@ -89,6 +89,8 @@ public class DataViewPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				int currSelectionIdx = getCurrentSelection()-1;
 				selectionModel.setSelectionInterval(currSelectionIdx, currSelectionIdx);
+				int scrollOffset = dataViewTable.getRowHeight()*getCurrentSelection();
+				dataViewScrollPane.getVerticalScrollBar().setValue(scrollOffset);
 			}
 		});
 		nextButton = new JButton("Next");
@@ -98,6 +100,8 @@ public class DataViewPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				int currSelectionIdx = getCurrentSelection()+1;
 				selectionModel.setSelectionInterval(currSelectionIdx, currSelectionIdx);
+				int scrollOffset = dataViewTable.getRowHeight()*getCurrentSelection();
+				dataViewScrollPane.getVerticalScrollBar().setValue(scrollOffset);
 			}
 		});
 		this.selectionModel.addListSelectionListener(new ListSelectionListener() {
