@@ -2,7 +2,7 @@ package org.pathwayeditor.visualeditor;
 
 import java.util.Iterator;
 
-import javax.swing.JComponent;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import org.apache.log4j.Logger;
@@ -34,27 +34,33 @@ import org.pathwayeditor.visualeditor.selection.ISelectionChangeListener;
 import org.pathwayeditor.visualeditor.selection.ISelectionRecord;
 import org.pathwayeditor.visualeditor.selection.SelectionRecord;
 
-public class PathwayEditor {
+public class PathwayEditor extends JPanel {
+	private static final long serialVersionUID = 1L;
+
 	private final Logger logger = Logger.getLogger(this.getClass());
-	
-	private final IShapePane shapePane;
-	private final JScrollPane scrollPane;
+	private IShapePane shapePane;
+	private JScrollPane scrollPane;
 	private IViewControllerStore viewModel;
 	private ISelectionRecord selectionRecord;
 	private ICommandStack commandStack;
 	private IMouseBehaviourController editBehaviourController;
 	private ISelectionChangeListener selectionChangeListener;
-	private final FeedbackModel feedbackModel;
+	private FeedbackModel feedbackModel;
 	
-	public PathwayEditor(ICanvas boCanvas, int width, int height){
+	public PathwayEditor(){
+		super();
+	}
+	
+	public void loadCanvas(ICanvas canvas){
         this.commandStack = new CommandStack();
-		viewModel = new ViewControllerStore(boCanvas.getModel());
+		viewModel = new ViewControllerStore(canvas.getModel());
 		this.selectionRecord = new SelectionRecord(viewModel);
 		this.feedbackModel = new FeedbackModel(this.selectionRecord);
 		this.shapePane = new ShapePane(viewModel, this.selectionRecord, this.feedbackModel);
 		scrollPane = new JScrollPane((ShapePane)this.shapePane, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		scrollPane.setPreferredSize(new java.awt.Dimension(width, height));
-
+		scrollPane.setPreferredSize(this.getPreferredSize());
+		this.add(scrollPane);
+		
 		Envelope canvasBounds = viewModel.getCanvasBounds();
 		((ShapePane)this.shapePane).setSize((int)Math.ceil(canvasBounds.getDimension().getWidth()), (int)Math.ceil(canvasBounds.getDimension().getHeight()));
         IEditingOperation editOperation = new IEditingOperation(){
@@ -70,9 +76,6 @@ public class PathwayEditor {
 				else if(reparentingState.equals(ReparentingStateType.CAN_MOVE)){
 					createMoveCommand(delta, false);
 				}
-//				else{
-//					viewModel.synchroniseWithDomainModel();
-//				}
 				feedbackModel.clear();
 				selectionRecord.clear();
 				shapePane.updateView();
@@ -159,7 +162,8 @@ public class PathwayEditor {
 			public void selectionChanged(ISelectionChangeEvent event) {
 				shapePane.updateView();
 			}
-		}; 
+		};
+		this.initialise();
 	}
 	
 	private void resizeSelection(Point originDelta, Dimension resizeDelta) {
@@ -191,9 +195,6 @@ public class PathwayEditor {
 		while(iter.hasNext() && retVal){
 			INodeController nodeController = iter.next().getPrimitiveController();
 			retVal = nodeController.canResize(originDelta, resizeDelta);
-//			if(nodeController instanceof IShapeController){
-//				retVal = canContinueToResizeChild((IShapeController)nodeController);
-//			}
 		}
 		
 		return retVal;
@@ -248,15 +249,10 @@ public class PathwayEditor {
 		}
 	}
 	
-	public void initialise(){
+	private void initialise(){
 		this.editBehaviourController.initialise();
 		this.viewModel.activate();
 		this.selectionRecord.addSelectionChangeListener(selectionChangeListener);
 		this.shapePane.updateView();
 	}
-
-	public JComponent getCanvas() {
-		return this.scrollPane;
-	}
-	
 }
