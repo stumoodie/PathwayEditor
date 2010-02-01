@@ -1,0 +1,643 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<epx:canvas xmlns:epx="http://www.pathwayeditor.org/Exchange"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.pathwayeditor.org/Exchange http://www.pathwayeditor.org/Exchange/Canvas.xsd"
+    name="MAP2K1" lastCreationSerial="27">
+    <Grid snapToGrid="false" gridOn="false">
+        <GridSize width="200.0" height="300.0"/>
+    </Grid>
+    <Notation qualifiedName="org.pathwayeditor.notations.annotator"
+        majorVersion="0" minorVersion="1" patchVersion="0" displayName="Annotator">
+        <Description>Annotator Entity Relationship Notation</Description>
+        <ObjectType uniqueId="0" name="ROOT_OBJECT" classification="Root">
+            <description>No descn</description>
+        </ObjectType>
+        <ObjectType uniqueId="123" name="AND" classification="Shape">
+            <description>AndGate</description>
+        </ObjectType>
+        <ObjectType uniqueId="125" name="NOT" classification="Shape">
+            <description>NOT Logical Operator</description>
+        </ObjectType>
+        <ObjectType uniqueId="124" name="OR" classification="Shape">
+            <description>OR Logical Operator</description>
+        </ObjectType>
+        <ObjectType uniqueId="271" name="SInteractionArc" classification="Link">
+            <description>Interaction arc is the arc.</description>
+        </ObjectType>
+        <ObjectType uniqueId="105" name="NonInteraction" classification="Shape">
+            <description>NonInteraction entity</description>
+        </ObjectType>
+        <ObjectType uniqueId="113" name="Perturbing Agent" classification="Shape">
+            <description>Perturbing Agent</description>
+        </ObjectType>
+        <ObjectType uniqueId="114" name="Observable" classification="Shape">
+            <description>Observable</description>
+        </ObjectType>
+        <ObjectType uniqueId="115" name="DelayGate" classification="Shape">
+            <description>DelayGate</description>
+        </ObjectType>
+        <ObjectType uniqueId="116" name="Decision" classification="Shape">
+            <description>agregator for several state assignments</description>
+        </ObjectType>
+        <ObjectType uniqueId="117" name="Acceptor" classification="Shape">
+            <description>acceptor of influence link</description>
+        </ObjectType>
+        <ObjectType uniqueId="118" name="Note" classification="Shape">
+            <description>Annotation</description>
+        </ObjectType>
+        <ObjectType uniqueId="221" name="AbsStimulation" classification="Link">
+            <description>A Absolute Stimulation effect, or absolute stimulation, is a stimulation that is necessary for a process to take place.</description>
+        </ObjectType>
+        <ObjectType uniqueId="26" name="LogicArc" classification="Link">
+            <description>Logic arc is the arc used to represent the fact that an entity influences outcome of logic operator.</description>
+        </ObjectType>
+        <ObjectType uniqueId="27" name="InteractionArc" classification="Link">
+            <description>Interaction arc is the arc.</description>
+        </ObjectType>
+        <ObjectType uniqueId="24" name="AbsInhibition" classification="Link">
+            <description>An absolute inhibition block the flux of a process represented by the target transition.</description>
+        </ObjectType>
+        <ObjectType uniqueId="25" name="NecessaryStimulation" classification="Link">
+            <description>A Necessary Stimulation effect, or absolute stimulation, is a stimulation that is necessary for a process to take place.</description>
+        </ObjectType>
+        <ObjectType uniqueId="28" name="AssignmenArc" classification="Link">
+            <description>Assignment arc is the arc.</description>
+        </ObjectType>
+        <ObjectType uniqueId="29" name="VarArc" classification="Link">
+            <description>Arc is the arc connecting state value to decision point or state variable to outcome or two outcomes or outcome to decision point.</description>
+        </ObjectType>
+        <ObjectType uniqueId="16" name="Outcome" classification="Shape">
+            <description>Interaction outcome</description>
+        </ObjectType>
+        <ObjectType uniqueId="23" name="Inhibition" classification="Link">
+            <description>An inhibition affects negatively the flux of a process represented by the target transition.</description>
+        </ObjectType>
+        <ObjectType uniqueId="21" name="Stimulation" classification="Link">
+            <description>A stimulation affects positively the flux of a process represented by the target transition.</description>
+        </ObjectType>
+        <ObjectType uniqueId="20" name="Modulation" classification="Link">
+            <description>A modulation affects the flux of a process represented by the target transition.</description>
+        </ObjectType>
+        <ObjectType uniqueId="11" name="LocState" classification="Shape">
+            <description>Location State variable</description>
+        </ObjectType>
+        <ObjectType uniqueId="10" name="State" classification="Shape">
+            <description>State variable value</description>
+        </ObjectType>
+        <ObjectType uniqueId="210" name="AnnotationArc" classification="Link">
+            <description>Annotation Arc is the arc used to connetc Annotation ot entity it annotates.</description>
+        </ObjectType>
+        <ObjectType uniqueId="15" name="Interaction" classification="Shape">
+            <description>Interacting entity</description>
+        </ObjectType>
+        <ObjectType uniqueId="14" name="Entity" classification="Shape">
+            <description>Interacting entity</description>
+        </ObjectType>
+        <ObjectType uniqueId="13" name="Unit Of Information" classification="Shape">
+            <description>Auxiliary information box</description>
+        </ObjectType>
+        <ObjectType uniqueId="12" name="ExState" classification="Shape">
+            <description>Existence State variable</description>
+        </ObjectType>
+    </Notation>
+    <CanvasSize width="200.0" height="300.0"/>
+    <Background red="255" green="255" blue="255"/>
+    <Model lastNodeIndex="14" lastEdgeIndex="3">
+        <RootNode nodeId="0">
+            <SubModel>
+                <ShapeNode nodeId="1">
+                    <SubModel>
+                        <LabelNode nodeId="2">
+                            <SubModel/>
+                            <LabelAttribute creationSerial="3"
+                                lineStyle="SOLID" lineWidth="1.0"
+                                noFill="true" noBorder="true">
+                                <Location x="100.0" y="150.0"/>
+                                <Size width="48.0" height="13.798828125"/>
+                                <LineColour red="0" green="0" blue="0"/>
+                                <FillColour red="255" green="255" blue="255"/>
+                                <PropertyRef id="1"/>
+                            </LabelAttribute>
+                        </LabelNode>
+                    </SubModel>
+                    <ShapeAttribute creationSerial="2" objectTypeId="14"
+                        lineWidth="1.0" lineStyle="SOLID">
+                        <Location x="71.0" y="141.0"/>
+                        <Size width="58.0" height="18.798828125"/>
+                        <FillColour red="255" green="255" blue="255"/>
+                        <LineColour red="0" green="0" blue="0"/>
+                        <PropertyRef id="1"/>
+                        <FigureDefinition>curbounds /h exch def /w exch def /y exch def /x exch def
+/xoffset { w mul x add } def /yoffset { h mul y add } def
+ w h gt { x y w h 0.2 h mul 0.20 h mul rrect } {
+ x y w h 0.2 w mul 0.20 w mul rrect } ifelse 
+ [
+0 xoffset 0.00 yoffset
+0 xoffset 0.10 yoffset
+0 xoffset 0.20 yoffset
+0 xoffset 0.30 yoffset
+0 xoffset 0.40 yoffset
+0 xoffset 0.50 yoffset
+0 xoffset 0.60 yoffset
+0 xoffset 0.70 yoffset
+0 xoffset 0.80 yoffset
+0 xoffset 0.90 yoffset
+0 xoffset 1.00 yoffset
+1 xoffset 0.00 yoffset
+1 xoffset 0.10 yoffset
+1 xoffset 0.20 yoffset
+1 xoffset 0.30 yoffset
+1 xoffset 0.40 yoffset
+1 xoffset 0.50 yoffset
+1 xoffset 0.60 yoffset
+1 xoffset 0.70 yoffset
+1 xoffset 0.80 yoffset
+1 xoffset 0.90 yoffset
+1 xoffset 1.00 yoffset
+0.10 xoffset 0 yoffset
+0.20 xoffset 0 yoffset
+0.30 xoffset 0 yoffset
+0.40 xoffset 0 yoffset
+0.50 xoffset 0 yoffset
+0.60 xoffset 0 yoffset
+0.70 xoffset 0 yoffset
+0.80 xoffset 0 yoffset
+0.90 xoffset 0 yoffset
+0.00 xoffset 1 yoffset
+0.10 xoffset 1 yoffset
+0.20 xoffset 1 yoffset
+0.30 xoffset 1 yoffset
+0.40 xoffset 1 yoffset
+0.50 xoffset 1 yoffset
+0.60 xoffset 1 yoffset
+0.70 xoffset 1 yoffset
+0.80 xoffset 1 yoffset
+0.90 xoffset 1 yoffset
+1.00 xoffset 1 yoffset
+] (S) setanchor
+</FigureDefinition>
+                    </ShapeAttribute>
+                </ShapeNode>
+                <ShapeNode nodeId="3">
+                    <SubModel>
+                        <LabelNode nodeId="4">
+                            <SubModel/>
+                            <LabelAttribute creationSerial="5"
+                                lineStyle="SOLID" lineWidth="1.0"
+                                noFill="true" noBorder="true">
+                                <Location x="-400.0" y="150.0"/>
+                                <Size width="57.0" height="13.798828125"/>
+                                <LineColour red="0" green="0" blue="0"/>
+                                <FillColour red="255" green="255" blue="255"/>
+                                <PropertyRef id="2"/>
+                            </LabelAttribute>
+                        </LabelNode>
+                    </SubModel>
+                    <ShapeAttribute creationSerial="4" objectTypeId="14"
+                        lineWidth="1.0" lineStyle="SOLID">
+                        <Location x="-433.0" y="141.0"/>
+                        <Size width="67.0" height="18.798828125"/>
+                        <FillColour red="255" green="255" blue="255"/>
+                        <LineColour red="0" green="0" blue="0"/>
+                        <PropertyRef id="2"/>
+                        <FigureDefinition>curbounds /h exch def /w exch def /y exch def /x exch def
+/xoffset { w mul x add } def /yoffset { h mul y add } def
+ w h gt { x y w h 0.2 h mul 0.20 h mul rrect } {
+ x y w h 0.2 w mul 0.20 w mul rrect } ifelse 
+ [
+0 xoffset 0.00 yoffset
+0 xoffset 0.10 yoffset
+0 xoffset 0.20 yoffset
+0 xoffset 0.30 yoffset
+0 xoffset 0.40 yoffset
+0 xoffset 0.50 yoffset
+0 xoffset 0.60 yoffset
+0 xoffset 0.70 yoffset
+0 xoffset 0.80 yoffset
+0 xoffset 0.90 yoffset
+0 xoffset 1.00 yoffset
+1 xoffset 0.00 yoffset
+1 xoffset 0.10 yoffset
+1 xoffset 0.20 yoffset
+1 xoffset 0.30 yoffset
+1 xoffset 0.40 yoffset
+1 xoffset 0.50 yoffset
+1 xoffset 0.60 yoffset
+1 xoffset 0.70 yoffset
+1 xoffset 0.80 yoffset
+1 xoffset 0.90 yoffset
+1 xoffset 1.00 yoffset
+0.10 xoffset 0 yoffset
+0.20 xoffset 0 yoffset
+0.30 xoffset 0 yoffset
+0.40 xoffset 0 yoffset
+0.50 xoffset 0 yoffset
+0.60 xoffset 0 yoffset
+0.70 xoffset 0 yoffset
+0.80 xoffset 0 yoffset
+0.90 xoffset 0 yoffset
+0.00 xoffset 1 yoffset
+0.10 xoffset 1 yoffset
+0.20 xoffset 1 yoffset
+0.30 xoffset 1 yoffset
+0.40 xoffset 1 yoffset
+0.50 xoffset 1 yoffset
+0.60 xoffset 1 yoffset
+0.70 xoffset 1 yoffset
+0.80 xoffset 1 yoffset
+0.90 xoffset 1 yoffset
+1.00 xoffset 1 yoffset
+] (S) setanchor
+</FigureDefinition>
+                    </ShapeAttribute>
+                </ShapeNode>
+                <ShapeNode nodeId="5">
+                    <SubModel>
+                        <LabelNode nodeId="6">
+                            <SubModel/>
+                            <LabelAttribute creationSerial="7"
+                                lineStyle="SOLID" lineWidth="1.0"
+                                noFill="true" noBorder="true">
+                                <Location x="100.0" y="650.0"/>
+                                <Size width="32.0" height="13.798828125"/>
+                                <LineColour red="0" green="0" blue="0"/>
+                                <FillColour red="255" green="255" blue="255"/>
+                                <PropertyRef id="3"/>
+                            </LabelAttribute>
+                        </LabelNode>
+                    </SubModel>
+                    <ShapeAttribute creationSerial="6" objectTypeId="14"
+                        lineWidth="1.0" lineStyle="SOLID">
+                        <Location x="79.0" y="641.0"/>
+                        <Size width="42.0" height="18.798828125"/>
+                        <FillColour red="255" green="255" blue="255"/>
+                        <LineColour red="0" green="0" blue="0"/>
+                        <PropertyRef id="3"/>
+                        <FigureDefinition>curbounds /h exch def /w exch def /y exch def /x exch def
+/xoffset { w mul x add } def /yoffset { h mul y add } def
+ w h gt { x y w h 0.2 h mul 0.20 h mul rrect } {
+ x y w h 0.2 w mul 0.20 w mul rrect } ifelse 
+ [
+0 xoffset 0.00 yoffset
+0 xoffset 0.10 yoffset
+0 xoffset 0.20 yoffset
+0 xoffset 0.30 yoffset
+0 xoffset 0.40 yoffset
+0 xoffset 0.50 yoffset
+0 xoffset 0.60 yoffset
+0 xoffset 0.70 yoffset
+0 xoffset 0.80 yoffset
+0 xoffset 0.90 yoffset
+0 xoffset 1.00 yoffset
+1 xoffset 0.00 yoffset
+1 xoffset 0.10 yoffset
+1 xoffset 0.20 yoffset
+1 xoffset 0.30 yoffset
+1 xoffset 0.40 yoffset
+1 xoffset 0.50 yoffset
+1 xoffset 0.60 yoffset
+1 xoffset 0.70 yoffset
+1 xoffset 0.80 yoffset
+1 xoffset 0.90 yoffset
+1 xoffset 1.00 yoffset
+0.10 xoffset 0 yoffset
+0.20 xoffset 0 yoffset
+0.30 xoffset 0 yoffset
+0.40 xoffset 0 yoffset
+0.50 xoffset 0 yoffset
+0.60 xoffset 0 yoffset
+0.70 xoffset 0 yoffset
+0.80 xoffset 0 yoffset
+0.90 xoffset 0 yoffset
+0.00 xoffset 1 yoffset
+0.10 xoffset 1 yoffset
+0.20 xoffset 1 yoffset
+0.30 xoffset 1 yoffset
+0.40 xoffset 1 yoffset
+0.50 xoffset 1 yoffset
+0.60 xoffset 1 yoffset
+0.70 xoffset 1 yoffset
+0.80 xoffset 1 yoffset
+0.90 xoffset 1 yoffset
+1.00 xoffset 1 yoffset
+] (S) setanchor
+</FigureDefinition>
+                    </ShapeAttribute>
+                </ShapeNode>
+                <ShapeNode nodeId="7">
+                    <SubModel>
+                        <LabelNode nodeId="8">
+                            <SubModel/>
+                            <LabelAttribute creationSerial="9"
+                                lineStyle="SOLID" lineWidth="1.0"
+                                noFill="true" noBorder="true">
+                                <Location x="600.0" y="150.0"/>
+                                <Size width="50.0" height="13.798828125"/>
+                                <LineColour red="0" green="0" blue="0"/>
+                                <FillColour red="255" green="255" blue="255"/>
+                                <PropertyRef id="4"/>
+                            </LabelAttribute>
+                        </LabelNode>
+                    </SubModel>
+                    <ShapeAttribute creationSerial="8" objectTypeId="14"
+                        lineWidth="1.0" lineStyle="SOLID">
+                        <Location x="570.0" y="141.0"/>
+                        <Size width="60.0" height="18.798828125"/>
+                        <FillColour red="255" green="255" blue="255"/>
+                        <LineColour red="0" green="0" blue="0"/>
+                        <PropertyRef id="4"/>
+                        <FigureDefinition>curbounds /h exch def /w exch def /y exch def /x exch def
+/xoffset { w mul x add } def /yoffset { h mul y add } def
+ w h gt { x y w h 0.2 h mul 0.20 h mul rrect } {
+ x y w h 0.2 w mul 0.20 w mul rrect } ifelse 
+ [
+0 xoffset 0.00 yoffset
+0 xoffset 0.10 yoffset
+0 xoffset 0.20 yoffset
+0 xoffset 0.30 yoffset
+0 xoffset 0.40 yoffset
+0 xoffset 0.50 yoffset
+0 xoffset 0.60 yoffset
+0 xoffset 0.70 yoffset
+0 xoffset 0.80 yoffset
+0 xoffset 0.90 yoffset
+0 xoffset 1.00 yoffset
+1 xoffset 0.00 yoffset
+1 xoffset 0.10 yoffset
+1 xoffset 0.20 yoffset
+1 xoffset 0.30 yoffset
+1 xoffset 0.40 yoffset
+1 xoffset 0.50 yoffset
+1 xoffset 0.60 yoffset
+1 xoffset 0.70 yoffset
+1 xoffset 0.80 yoffset
+1 xoffset 0.90 yoffset
+1 xoffset 1.00 yoffset
+0.10 xoffset 0 yoffset
+0.20 xoffset 0 yoffset
+0.30 xoffset 0 yoffset
+0.40 xoffset 0 yoffset
+0.50 xoffset 0 yoffset
+0.60 xoffset 0 yoffset
+0.70 xoffset 0 yoffset
+0.80 xoffset 0 yoffset
+0.90 xoffset 0 yoffset
+0.00 xoffset 1 yoffset
+0.10 xoffset 1 yoffset
+0.20 xoffset 1 yoffset
+0.30 xoffset 1 yoffset
+0.40 xoffset 1 yoffset
+0.50 xoffset 1 yoffset
+0.60 xoffset 1 yoffset
+0.70 xoffset 1 yoffset
+0.80 xoffset 1 yoffset
+0.90 xoffset 1 yoffset
+1.00 xoffset 1 yoffset
+] (S) setanchor
+</FigureDefinition>
+                    </ShapeAttribute>
+                </ShapeNode>
+                <ShapeNode nodeId="9">
+                    <SubModel>
+                        <LabelNode nodeId="10">
+                            <SubModel/>
+                            <LabelAttribute creationSerial="11"
+                                lineStyle="SOLID" lineWidth="1.0"
+                                noFill="true" noBorder="true">
+                                <Location x="100.0" y="-350.0"/>
+                                <Size width="39.0" height="13.798828125"/>
+                                <LineColour red="0" green="0" blue="0"/>
+                                <FillColour red="255" green="255" blue="255"/>
+                                <PropertyRef id="5"/>
+                            </LabelAttribute>
+                        </LabelNode>
+                    </SubModel>
+                    <ShapeAttribute creationSerial="10"
+                        objectTypeId="14" lineWidth="1.0" lineStyle="SOLID">
+                        <Location x="76.0" y="-359.0"/>
+                        <Size width="49.0" height="18.798828125"/>
+                        <FillColour red="255" green="255" blue="255"/>
+                        <LineColour red="0" green="0" blue="0"/>
+                        <PropertyRef id="5"/>
+                        <FigureDefinition>curbounds /h exch def /w exch def /y exch def /x exch def
+/xoffset { w mul x add } def /yoffset { h mul y add } def
+ w h gt { x y w h 0.2 h mul 0.20 h mul rrect } {
+ x y w h 0.2 w mul 0.20 w mul rrect } ifelse 
+ [
+0 xoffset 0.00 yoffset
+0 xoffset 0.10 yoffset
+0 xoffset 0.20 yoffset
+0 xoffset 0.30 yoffset
+0 xoffset 0.40 yoffset
+0 xoffset 0.50 yoffset
+0 xoffset 0.60 yoffset
+0 xoffset 0.70 yoffset
+0 xoffset 0.80 yoffset
+0 xoffset 0.90 yoffset
+0 xoffset 1.00 yoffset
+1 xoffset 0.00 yoffset
+1 xoffset 0.10 yoffset
+1 xoffset 0.20 yoffset
+1 xoffset 0.30 yoffset
+1 xoffset 0.40 yoffset
+1 xoffset 0.50 yoffset
+1 xoffset 0.60 yoffset
+1 xoffset 0.70 yoffset
+1 xoffset 0.80 yoffset
+1 xoffset 0.90 yoffset
+1 xoffset 1.00 yoffset
+0.10 xoffset 0 yoffset
+0.20 xoffset 0 yoffset
+0.30 xoffset 0 yoffset
+0.40 xoffset 0 yoffset
+0.50 xoffset 0 yoffset
+0.60 xoffset 0 yoffset
+0.70 xoffset 0 yoffset
+0.80 xoffset 0 yoffset
+0.90 xoffset 0 yoffset
+0.00 xoffset 1 yoffset
+0.10 xoffset 1 yoffset
+0.20 xoffset 1 yoffset
+0.30 xoffset 1 yoffset
+0.40 xoffset 1 yoffset
+0.50 xoffset 1 yoffset
+0.60 xoffset 1 yoffset
+0.70 xoffset 1 yoffset
+0.80 xoffset 1 yoffset
+0.90 xoffset 1 yoffset
+1.00 xoffset 1 yoffset
+] (S) setanchor
+</FigureDefinition>
+                    </ShapeAttribute>
+                </ShapeNode>
+                <LabelNode nodeId="11">
+                    <SubModel/>
+                    <LabelAttribute creationSerial="15"
+                        lineStyle="SOLID" lineWidth="1.0" noFill="false" noBorder="false">
+                        <Location x="78.0" y="400.0"/>
+                        <Size width="7.0" height="13.798828125"/>
+                        <LineColour red="0" green="0" blue="0"/>
+                        <FillColour red="255" green="255" blue="255"/>
+                        <PropertyRef id="10"/>
+                    </LabelAttribute>
+                </LabelNode>
+                <LabelNode nodeId="12">
+                    <SubModel/>
+                    <LabelAttribute creationSerial="19"
+                        lineStyle="SOLID" lineWidth="1.0" noFill="false" noBorder="false">
+                        <Location x="350.0" y="141.0"/>
+                        <Size width="7.0" height="13.798828125"/>
+                        <LineColour red="0" green="0" blue="0"/>
+                        <FillColour red="255" green="255" blue="255"/>
+                        <PropertyRef id="13"/>
+                    </LabelAttribute>
+                </LabelNode>
+                <LabelNode nodeId="13">
+                    <SubModel/>
+                    <LabelAttribute creationSerial="23"
+                        lineStyle="SOLID" lineWidth="1.0" noFill="false" noBorder="false">
+                        <Location x="76.0" y="-100.0"/>
+                        <Size width="7.0" height="13.798828125"/>
+                        <LineColour red="0" green="0" blue="0"/>
+                        <FillColour red="255" green="255" blue="255"/>
+                        <PropertyRef id="18"/>
+                    </LabelAttribute>
+                </LabelNode>
+                <LabelNode nodeId="14">
+                    <SubModel/>
+                    <LabelAttribute creationSerial="27"
+                        lineStyle="SOLID" lineWidth="1.0" noFill="false" noBorder="false">
+                        <Location x="-147.0" y="141.0"/>
+                        <Size width="7.0" height="13.798828125"/>
+                        <LineColour red="0" green="0" blue="0"/>
+                        <FillColour red="255" green="255" blue="255"/>
+                        <PropertyRef id="25"/>
+                    </LabelAttribute>
+                </LabelNode>
+                <LinkEdge linkIdx="0" srcNodeIdx="1" tgtNodeIdx="5">
+                    <LinkAttribute creationSerial="12" lineStyle="SOLID"
+                        lineWidth="1.0" objectTypeId="271" lastBendPointIndex="0">
+                        <LineColour red="92" green="92" blue="92"/>
+                        <srcTerminus creationSerial="13" gap="0.0" endDecoratorType="ARROW">
+                            <Location x="76.8" y="159.798828125"/>
+                            <DecoratorSize width="7.0" height="5.0"/>
+                        </srcTerminus>
+                        <tgtTerminus creationSerial="14" gap="0.0" endDecoratorType="ARROW">
+                            <Location x="79.0" y="641.0"/>
+                            <DecoratorSize width="7.0" height="5.0"/>
+                        </tgtTerminus>
+                        <PropertyRef id="6"/>
+                        <PropertyRef id="7"/>
+                        <PropertyRef id="8"/>
+                        <PropertyRef id="9"/>
+                        <PropertyRef id="10"/>
+                    </LinkAttribute>
+                </LinkEdge>
+                <LinkEdge linkIdx="1" srcNodeIdx="1" tgtNodeIdx="7">
+                    <LinkAttribute creationSerial="16" lineStyle="SOLID"
+                        lineWidth="1.0" objectTypeId="271" lastBendPointIndex="0">
+                        <LineColour red="92" green="92" blue="92"/>
+                        <srcTerminus creationSerial="17" gap="0.0" endDecoratorType="ARROW">
+                            <Location x="129.0" y="141.0"/>
+                            <DecoratorSize width="7.0" height="5.0"/>
+                        </srcTerminus>
+                        <tgtTerminus creationSerial="18" gap="0.0" endDecoratorType="ARROW">
+                            <Location x="570.0" y="141.0"/>
+                            <DecoratorSize width="7.0" height="5.0"/>
+                        </tgtTerminus>
+                        <PropertyRef id="11"/>
+                        <PropertyRef id="12"/>
+                        <PropertyRef id="13"/>
+                        <PropertyRef id="14"/>
+                        <PropertyRef id="15"/>
+                    </LinkAttribute>
+                </LinkEdge>
+                <LinkEdge linkIdx="2" srcNodeIdx="1" tgtNodeIdx="9">
+                    <LinkAttribute creationSerial="20" lineStyle="SOLID"
+                        lineWidth="1.0" objectTypeId="271" lastBendPointIndex="0">
+                        <LineColour red="92" green="92" blue="92"/>
+                        <srcTerminus creationSerial="21" gap="0.0" endDecoratorType="ARROW">
+                            <Location x="76.8" y="141.0"/>
+                            <DecoratorSize width="7.0" height="5.0"/>
+                        </srcTerminus>
+                        <tgtTerminus creationSerial="22" gap="0.0" endDecoratorType="ARROW">
+                            <Location x="76.0" y="-340.201171875"/>
+                            <DecoratorSize width="7.0" height="5.0"/>
+                        </tgtTerminus>
+                        <PropertyRef id="16"/>
+                        <PropertyRef id="17"/>
+                        <PropertyRef id="18"/>
+                        <PropertyRef id="19"/>
+                        <PropertyRef id="20"/>
+                    </LinkAttribute>
+                </LinkEdge>
+                <LinkEdge linkIdx="3" srcNodeIdx="1" tgtNodeIdx="3">
+                    <LinkAttribute creationSerial="24" lineStyle="SOLID"
+                        lineWidth="1.0" objectTypeId="271" lastBendPointIndex="0">
+                        <LineColour red="92" green="92" blue="92"/>
+                        <srcTerminus creationSerial="25" gap="0.0" endDecoratorType="ARROW">
+                            <Location x="71.0" y="141.0"/>
+                            <DecoratorSize width="7.0" height="5.0"/>
+                        </srcTerminus>
+                        <tgtTerminus creationSerial="26" gap="0.0" endDecoratorType="ARROW">
+                            <Location x="-366.0" y="141.0"/>
+                            <DecoratorSize width="7.0" height="5.0"/>
+                        </tgtTerminus>
+                        <PropertyRef id="21"/>
+                        <PropertyRef id="22"/>
+                        <PropertyRef id="23"/>
+                        <PropertyRef id="24"/>
+                        <PropertyRef id="25"/>
+                    </LinkAttribute>
+                </LinkEdge>
+            </SubModel>
+            <rootAttribute creationSerial="1" objectTypeId="0">
+                <Location x="-8.988465674311579E307" y="-8.988465674311579E307"/>
+                <Size width="1.7976931348623157E308" height="1.7976931348623157E308"/>
+            </rootAttribute>
+        </RootNode>
+    </Model>
+    <PropertyList>
+        <TextAnnotationProperty id="1" name="name" displayName="Name">MAP2K1</TextAnnotationProperty>
+        <TextAnnotationProperty id="2" name="name" displayName="Name">ADCYAP1</TextAnnotationProperty>
+        <TextAnnotationProperty id="3" name="name" displayName="Name">ACE2</TextAnnotationProperty>
+        <TextAnnotationProperty id="4" name="name" displayName="Name">ADORA1</TextAnnotationProperty>
+        <TextAnnotationProperty id="5" name="name" displayName="Name">ACTA1</TextAnnotationProperty>
+        <TextAnnotationProperty id="6" name="name" displayName="Name">Interaction MAP2K1 - ACE2</TextAnnotationProperty>
+        <TextAnnotationProperty id="9" name="cis/trans" displayName="Cis/Trans">cis</TextAnnotationProperty>
+        <TextAnnotationProperty id="12" name="name" displayName="Name">Interaction MAP2K1 - ADORA1</TextAnnotationProperty>
+        <TextAnnotationProperty id="15" name="cis/trans" displayName="Cis/Trans">cis</TextAnnotationProperty>
+        <TextAnnotationProperty id="16" name="name" displayName="Name">Interaction MAP2K1 - ACTA1</TextAnnotationProperty>
+        <TextAnnotationProperty id="19" name="cis/trans" displayName="Cis/Trans">cis</TextAnnotationProperty>
+        <TextAnnotationProperty id="22" name="name" displayName="Name">Interaction MAP2K1 - ADCYAP1</TextAnnotationProperty>
+        <TextAnnotationProperty id="23" name="cis/trans" displayName="Cis/Trans">cis</TextAnnotationProperty>
+        <IntegerAnnotationProperty id="8" name="stoichiometry"
+            displayName="Stoichiometry" value="1"/>
+        <IntegerAnnotationProperty id="10" name="annotationCardinality"
+            displayName="NumAnnot" value="1"/>
+        <IntegerAnnotationProperty id="11" name="stoichiometry"
+            displayName="Stoichiometry" value="1"/>
+        <IntegerAnnotationProperty id="13" name="annotationCardinality"
+            displayName="NumAnnot" value="1"/>
+        <IntegerAnnotationProperty id="18" name="annotationCardinality"
+            displayName="NumAnnot" value="1"/>
+        <IntegerAnnotationProperty id="20" name="stoichiometry"
+            displayName="Stoichiometry" value="1"/>
+        <IntegerAnnotationProperty id="21" name="stoichiometry"
+            displayName="Stoichiometry" value="1"/>
+        <IntegerAnnotationProperty id="25" name="annotationCardinality"
+            displayName="NumAnnot" value="1"/>
+        <ListAnnotationProperty id="7" name="sentences" displayName="A Property">
+            <ListItem idx="0" value="pmid1_1&#x9;MAP2K1&#x9;ACE2&#x9;activate&#x9;1&#x9;2&#x9;3&#x9;&#xa;The reduction in &lt;b TEXT='ACE2'>ACE2&lt;/b> mRNA by ANG II or ET-1 was blocked by inhibitors of &lt;m TEXT='MAP2K1'>mitogen-activated protein kinase kinase 1&lt;/m>, suggesting that ANG II or ET-1 activates extracellular signal-regulated kinase (ERK) 1/ERK2 to reduce &lt;b TEXT='ACE2'>ACE2&lt;/b>.&#x9;&#x9;"/>
+        </ListAnnotationProperty>
+        <ListAnnotationProperty id="14" name="sentences" displayName="A Property">
+            <ListItem idx="0" value="pmid1_1&#x9;MAP2K1&#x9;ADORA1&#x9;activate&#x9;1&#x9;2&#x9;3&#x9;&#xa;Activation of &lt;b TEXT='ADORA1'>adenosine A1 receptor&lt;/b>-induced neural stem cell proliferation via &lt;m TEXT='MAP2K1'>MEK&lt;/m>/ERK and Akt signaling pathways.&#x9;&#x9;"/>
+        </ListAnnotationProperty>
+        <ListAnnotationProperty id="17" name="sentences" displayName="A Property">
+            <ListItem idx="0" value="pmid2_1&#x9;MAP2K1&#x9;ACTA1&#x9;activate&#x9;1&#x9;2&#x9;3&#x9;&#xa;The treatment of BMMSC with &lt;m TEXT='MAP2K1'>MEK&lt;/m> inhibitor up-regulated the expression of alpha-smooth muscle actin (&lt;b TEXT='ACTA1'>ASMA&lt;/b>), h-caldesmon, and SMMHC in BMMSC in low serum condition.&#x9;&#x9;"/>
+        </ListAnnotationProperty>
+        <ListAnnotationProperty id="24" name="sentences" displayName="A Property">
+            <ListItem idx="0" value="pmid1_3&#x9;MAP2K1&#x9;ADCYAP1&#x9;activate&#x9;1&#x9;2&#x9;3&#x9;&#xa;&lt;b TEXT='ADCYAP1'>PACAP&lt;/b>-induced neuritogenesis was blocked by the &lt;m TEXT='MAP2K1'>MEK1&lt;/m> inhibitor PD98059 and partially by the p38 MAP kinase inhibitor SB203580.&#x9;&#x9;"/>
+        </ListAnnotationProperty>
+    </PropertyList>
+</epx:canvas>
