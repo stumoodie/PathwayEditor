@@ -1,4 +1,4 @@
-package org.pathwayeditor.visualeditor.dataviewer;
+package org.pathwayeditor.curationtool.dataviewer;
 
 /**
  * <p>Title: </p>

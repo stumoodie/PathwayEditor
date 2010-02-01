@@ -1,12 +1,12 @@
-package org.pathwayeditor.visualeditor.sentences;
+package org.pathwayeditor.curationtool.sentences;
 
 import java.awt.BorderLayout;
 
 import javax.swing.JPanel;
 
-import org.pathwayeditor.visualeditor.dataviewer.DataViewPanel;
-import org.pathwayeditor.visualeditor.dataviewer.IRowDefn;
-import org.pathwayeditor.visualeditor.dataviewer.ITableRow;
+import org.pathwayeditor.curationtool.dataviewer.DataViewPanel;
+import org.pathwayeditor.curationtool.dataviewer.IRowDefn;
+import org.pathwayeditor.curationtool.dataviewer.ITableRow;
 
 public class SentencesPanel extends JPanel {
 	private static final long serialVersionUID = 1L;

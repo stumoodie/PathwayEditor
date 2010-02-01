@@ -1,9 +1,9 @@
-package org.pathwayeditor.visualeditor.sentences;
+package org.pathwayeditor.curationtool.sentences;
 
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 
-import org.pathwayeditor.visualeditor.dataviewer.IRowDefn;
+import org.pathwayeditor.curationtool.dataviewer.IRowDefn;
 
 public class SentenceRowDefinition implements IRowDefn {
 	private static final String HEADER_ROW[] = { "Name", "Sentence", "PMID", "Score" }; 

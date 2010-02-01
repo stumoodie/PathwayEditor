@@ -1,4 +1,4 @@
-package org.pathwayeditor.visualeditor;
+package org.pathwayeditor.curationtool;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -25,17 +25,22 @@ import javax.swing.filechooser.FileFilter;
 import org.pathwayeditor.businessobjects.exchange.FileXmlCanvasPersistenceManager;
 import org.pathwayeditor.businessobjects.exchange.IXmlPersistenceManager;
 import org.pathwayeditor.businessobjects.management.INotationSubsystemPool;
+import org.pathwayeditor.curationtool.sentences.SentencesPanel;
+import org.pathwayeditor.visualeditor.NotationSubsystemPool;
+import org.pathwayeditor.visualeditor.PathwayEditor;
 
-public class VisualEditor extends JFrame {
+public class CurationToolUI extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	private static final int WIDTH = 1200;
 	private static final int HEIGHT = 800;
+//	private static final String TEST_FILE = "test/org/pathwayeditor/graphicsengine/za.pwe";
 	private JMenuBar menuBar;
+	private SentencesPanel sentencesPanel;
 
 	private PathwayEditor insp;
 	
-	public VisualEditor(String title){
+	public CurationToolUI(String title){
 		super(title);
 		this.setLayout(new BorderLayout());
 		this.menuBar = new JMenuBar();
@@ -54,7 +59,7 @@ public class VisualEditor extends JFrame {
 
 			@Override
 			public void windowClosing(WindowEvent e) {
-				int reply = JOptionPane.showConfirmDialog(VisualEditor.this, "Are you sure you want to exit?", "Exit Confirmation", JOptionPane.YES_NO_OPTION);
+				int reply = JOptionPane.showConfirmDialog(CurationToolUI.this, "Are you sure you want to exit?", "Exit Confirmation", JOptionPane.YES_NO_OPTION);
 				if(reply == JOptionPane.YES_OPTION){
 					System.exit(0);
 				}
@@ -82,8 +87,12 @@ public class VisualEditor extends JFrame {
 			
 		});
 		this.setJMenuBar(menuBar);
+		this.sentencesPanel = new SentencesPanel();
+		this.sentencesPanel.setPreferredSize(new Dimension(WIDTH, HEIGHT/3));
+		this.add(this.sentencesPanel, BorderLayout.NORTH);
+//		this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		this.insp = new PathwayEditor();
-		this.insp.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+		this.insp.setPreferredSize(new Dimension(WIDTH, 2*HEIGHT/3));
 		this.add(this.insp, BorderLayout.CENTER);
 		this.pack();
 		this.setVisible(true);
@@ -118,9 +127,10 @@ public class VisualEditor extends JFrame {
 					}
 					
 				});
-				int response = chooser.showOpenDialog(VisualEditor.this);
+				int response = chooser.showOpenDialog(CurationToolUI.this);
 				if(response == JFileChooser.APPROVE_OPTION){
 					File openFile = chooser.getSelectedFile();
+					sentencesPanel.loadData();
 					openFile(openFile);
 				}
 			}
@@ -132,7 +142,7 @@ public class VisualEditor extends JFrame {
 		fileMenuExitItem.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				processEvent(new WindowEvent(VisualEditor.this, WindowEvent.WINDOW_CLOSING));
+				processEvent(new WindowEvent(CurationToolUI.this, WindowEvent.WINDOW_CLOSING));
 			}
 		});
 		fileMenu.add(fileMenuExitItem);
@@ -157,18 +167,18 @@ public class VisualEditor extends JFrame {
 	}
 	
 	
-//	public void startup(){
-//		javax.swing.SwingUtilities.invokeLater(new Runnable() {
-//			public void run() {
-////				sentencesPanel.loadData();
-////				openFile(new File(TEST_FILE));
-//			}
-//		});
-//	}
+	public void startup(){
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+//				sentencesPanel.loadData();
+//				openFile(new File(TEST_FILE));
+			}
+		});
+	}
 	
 	public static final void main(String argv[]){
-		VisualEditor visualEditor = new VisualEditor("Pathway Editor");
+		CurationToolUI visualEditor = new CurationToolUI("Pathway Editor");
 //		visualEditor.openFile(new File(TEST_FILE));
-//		visualEditor.startup();
+		visualEditor.startup();
 	}
 }

@@ -1,4 +1,4 @@
-package org.pathwayeditor.visualeditor.dataviewer;
+package org.pathwayeditor.curationtool.dataviewer;
 
 import java.awt.Component;
 import java.text.DateFormat;

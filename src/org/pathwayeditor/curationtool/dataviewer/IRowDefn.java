@@ -1,4 +1,4 @@
-package org.pathwayeditor.visualeditor.dataviewer;
+package org.pathwayeditor.curationtool.dataviewer;
 
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
