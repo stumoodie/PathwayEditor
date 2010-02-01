@@ -1,8 +1,11 @@
 package org.pathwayeditor.curationtool.sentences;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
+import javax.swing.border.BevelBorder;
 
 import org.pathwayeditor.curationtool.dataviewer.DataViewPanel;
 import org.pathwayeditor.curationtool.dataviewer.IRowDefn;
@@ -43,6 +46,7 @@ public class SentencesPanel extends JPanel {
 		this.setLayout(new BorderLayout());
 		this.dataViewPanel = new DataViewPanel(new SentenceRowDefinition());
 	    this.add(this.dataViewPanel, BorderLayout.CENTER);
+	    this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 	}
 	
 	public void loadData(){

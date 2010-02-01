@@ -19,6 +19,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
 
@@ -89,11 +90,15 @@ public class CurationToolUI extends JFrame {
 		this.setJMenuBar(menuBar);
 		this.sentencesPanel = new SentencesPanel();
 		this.sentencesPanel.setPreferredSize(new Dimension(WIDTH, HEIGHT/3));
-		this.add(this.sentencesPanel, BorderLayout.NORTH);
+//		this.add(this.sentencesPanel, BorderLayout.NORTH);
 //		this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		this.insp = new PathwayEditor();
 		this.insp.setPreferredSize(new Dimension(WIDTH, 2*HEIGHT/3));
-		this.add(this.insp, BorderLayout.CENTER);
+		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, this.sentencesPanel, this.insp);
+		splitPane.setDividerLocation(0.33);
+		splitPane.setOneTouchExpandable(true);
+		this.add(splitPane);
+//		this.add(this.insp, BorderLayout.CENTER);
 		this.pack();
 		this.setVisible(true);
 	}

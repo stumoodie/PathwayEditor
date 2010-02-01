@@ -86,6 +86,7 @@ public class VisualEditor extends JFrame {
 		this.insp.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		this.add(this.insp, BorderLayout.CENTER);
 		this.pack();
+		this.setLocationByPlatform(true);
 		this.setVisible(true);
 	}
 

@@ -1,7 +1,10 @@
 package org.pathwayeditor.visualeditor;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.util.Iterator;
 
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -49,6 +52,8 @@ public class PathwayEditor extends JPanel {
 	
 	public PathwayEditor(){
 		super();
+		this.setLayout(new BorderLayout());
+		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 	}
 	
 	public void loadCanvas(ICanvas canvas){
@@ -59,7 +64,7 @@ public class PathwayEditor extends JPanel {
 		this.shapePane = new ShapePane(viewModel, this.selectionRecord, this.feedbackModel);
 		scrollPane = new JScrollPane((ShapePane)this.shapePane, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scrollPane.setPreferredSize(this.getPreferredSize());
-		this.add(scrollPane);
+		this.add(scrollPane, BorderLayout.CENTER);
 		
 		Envelope canvasBounds = viewModel.getCanvasBounds();
 		((ShapePane)this.shapePane).setSize((int)Math.ceil(canvasBounds.getDimension().getWidth()), (int)Math.ceil(canvasBounds.getDimension().getHeight()));
