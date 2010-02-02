@@ -9,68 +9,35 @@
     <Notation qualifiedName="org.pathwayeditor.notations.annotator"
         majorVersion="0" minorVersion="1" patchVersion="0" displayName="Annotator">
         <Description>Annotator Entity Relationship Notation</Description>
-        <ObjectType uniqueId="0" name="ROOT_OBJECT" classification="Root">
-            <description>No descn</description>
-        </ObjectType>
-        <ObjectType uniqueId="123" name="AND" classification="Shape">
-            <description>AndGate</description>
-        </ObjectType>
-        <ObjectType uniqueId="125" name="NOT" classification="Shape">
-            <description>NOT Logical Operator</description>
-        </ObjectType>
-        <ObjectType uniqueId="124" name="OR" classification="Shape">
-            <description>OR Logical Operator</description>
-        </ObjectType>
-        <ObjectType uniqueId="271" name="SInteractionArc" classification="Link">
-            <description>Interaction arc is the arc.</description>
-        </ObjectType>
         <ObjectType uniqueId="105" name="NonInteraction" classification="Shape">
             <description>NonInteraction entity</description>
         </ObjectType>
-        <ObjectType uniqueId="113" name="Perturbing Agent" classification="Shape">
-            <description>Perturbing Agent</description>
-        </ObjectType>
-        <ObjectType uniqueId="114" name="Observable" classification="Shape">
-            <description>Observable</description>
-        </ObjectType>
-        <ObjectType uniqueId="115" name="DelayGate" classification="Shape">
-            <description>DelayGate</description>
-        </ObjectType>
-        <ObjectType uniqueId="116" name="Decision" classification="Shape">
-            <description>agregator for several state assignments</description>
-        </ObjectType>
-        <ObjectType uniqueId="117" name="Acceptor" classification="Shape">
-            <description>acceptor of influence link</description>
-        </ObjectType>
-        <ObjectType uniqueId="118" name="Note" classification="Shape">
-            <description>Annotation</description>
+        <ObjectType uniqueId="0" name="ROOT_OBJECT" classification="Root">
+            <description>No descn</description>
         </ObjectType>
         <ObjectType uniqueId="221" name="AbsStimulation" classification="Link">
             <description>A Absolute Stimulation effect, or absolute stimulation, is a stimulation that is necessary for a process to take place.</description>
         </ObjectType>
-        <ObjectType uniqueId="26" name="LogicArc" classification="Link">
-            <description>Logic arc is the arc used to represent the fact that an entity influences outcome of logic operator.</description>
-        </ObjectType>
-        <ObjectType uniqueId="27" name="InteractionArc" classification="Link">
+        <ObjectType uniqueId="271" name="SInteractionArc" classification="Link">
             <description>Interaction arc is the arc.</description>
         </ObjectType>
-        <ObjectType uniqueId="24" name="AbsInhibition" classification="Link">
-            <description>An absolute inhibition block the flux of a process represented by the target transition.</description>
+        <ObjectType uniqueId="10" name="State" classification="Shape">
+            <description>State variable value</description>
         </ObjectType>
-        <ObjectType uniqueId="25" name="NecessaryStimulation" classification="Link">
-            <description>A Necessary Stimulation effect, or absolute stimulation, is a stimulation that is necessary for a process to take place.</description>
+        <ObjectType uniqueId="11" name="LocState" classification="Shape">
+            <description>Location State variable</description>
         </ObjectType>
-        <ObjectType uniqueId="28" name="AssignmenArc" classification="Link">
-            <description>Assignment arc is the arc.</description>
+        <ObjectType uniqueId="12" name="ExState" classification="Shape">
+            <description>Existence State variable</description>
         </ObjectType>
-        <ObjectType uniqueId="29" name="VarArc" classification="Link">
-            <description>Arc is the arc connecting state value to decision point or state variable to outcome or two outcomes or outcome to decision point.</description>
+        <ObjectType uniqueId="210" name="AnnotationArc" classification="Link">
+            <description>Annotation Arc is the arc used to connetc Annotation ot entity it annotates.</description>
         </ObjectType>
-        <ObjectType uniqueId="16" name="Outcome" classification="Shape">
-            <description>Interaction outcome</description>
+        <ObjectType uniqueId="13" name="Unit Of Information" classification="Shape">
+            <description>Auxiliary information box</description>
         </ObjectType>
-        <ObjectType uniqueId="23" name="Inhibition" classification="Link">
-            <description>An inhibition affects negatively the flux of a process represented by the target transition.</description>
+        <ObjectType uniqueId="14" name="Entity" classification="Shape">
+            <description>Interacting entity</description>
         </ObjectType>
         <ObjectType uniqueId="21" name="Stimulation" classification="Link">
             <description>A stimulation affects positively the flux of a process represented by the target transition.</description>
@@ -78,26 +45,59 @@
         <ObjectType uniqueId="20" name="Modulation" classification="Link">
             <description>A modulation affects the flux of a process represented by the target transition.</description>
         </ObjectType>
-        <ObjectType uniqueId="11" name="LocState" classification="Shape">
-            <description>Location State variable</description>
-        </ObjectType>
-        <ObjectType uniqueId="10" name="State" classification="Shape">
-            <description>State variable value</description>
-        </ObjectType>
-        <ObjectType uniqueId="210" name="AnnotationArc" classification="Link">
-            <description>Annotation Arc is the arc used to connetc Annotation ot entity it annotates.</description>
+        <ObjectType uniqueId="16" name="Outcome" classification="Shape">
+            <description>Interaction outcome</description>
         </ObjectType>
         <ObjectType uniqueId="15" name="Interaction" classification="Shape">
             <description>Interacting entity</description>
         </ObjectType>
-        <ObjectType uniqueId="14" name="Entity" classification="Shape">
-            <description>Interacting entity</description>
+        <ObjectType uniqueId="29" name="VarArc" classification="Link">
+            <description>Arc is the arc connecting state value to decision point or state variable to outcome or two outcomes or outcome to decision point.</description>
         </ObjectType>
-        <ObjectType uniqueId="13" name="Unit Of Information" classification="Shape">
-            <description>Auxiliary information box</description>
+        <ObjectType uniqueId="28" name="AssignmenArc" classification="Link">
+            <description>Assignment arc is the arc.</description>
         </ObjectType>
-        <ObjectType uniqueId="12" name="ExState" classification="Shape">
-            <description>Existence State variable</description>
+        <ObjectType uniqueId="27" name="InteractionArc" classification="Link">
+            <description>Interaction arc is the arc.</description>
+        </ObjectType>
+        <ObjectType uniqueId="26" name="LogicArc" classification="Link">
+            <description>Logic arc is the arc used to represent the fact that an entity influences outcome of logic operator.</description>
+        </ObjectType>
+        <ObjectType uniqueId="25" name="NecessaryStimulation" classification="Link">
+            <description>A Necessary Stimulation effect, or absolute stimulation, is a stimulation that is necessary for a process to take place.</description>
+        </ObjectType>
+        <ObjectType uniqueId="24" name="AbsInhibition" classification="Link">
+            <description>An absolute inhibition block the flux of a process represented by the target transition.</description>
+        </ObjectType>
+        <ObjectType uniqueId="23" name="Inhibition" classification="Link">
+            <description>An inhibition affects negatively the flux of a process represented by the target transition.</description>
+        </ObjectType>
+        <ObjectType uniqueId="117" name="Acceptor" classification="Shape">
+            <description>acceptor of influence link</description>
+        </ObjectType>
+        <ObjectType uniqueId="118" name="Note" classification="Shape">
+            <description>Annotation</description>
+        </ObjectType>
+        <ObjectType uniqueId="115" name="DelayGate" classification="Shape">
+            <description>DelayGate</description>
+        </ObjectType>
+        <ObjectType uniqueId="116" name="Decision" classification="Shape">
+            <description>agregator for several state assignments</description>
+        </ObjectType>
+        <ObjectType uniqueId="113" name="Perturbing Agent" classification="Shape">
+            <description>Perturbing Agent</description>
+        </ObjectType>
+        <ObjectType uniqueId="114" name="Observable" classification="Shape">
+            <description>Observable</description>
+        </ObjectType>
+        <ObjectType uniqueId="125" name="NOT" classification="Shape">
+            <description>NOT Logical Operator</description>
+        </ObjectType>
+        <ObjectType uniqueId="123" name="AND" classification="Shape">
+            <description>AndGate</description>
+        </ObjectType>
+        <ObjectType uniqueId="124" name="OR" classification="Shape">
+            <description>OR Logical Operator</description>
         </ObjectType>
     </Notation>
     <CanvasSize width="200.0" height="300.0"/>
@@ -185,7 +185,7 @@
                             <LabelAttribute creationSerial="5"
                                 lineStyle="SOLID" lineWidth="1.0"
                                 noFill="true" noBorder="true">
-                                <Location x="-400.0" y="150.0"/>
+                                <Location x="600.0" y="150.0"/>
                                 <Size width="57.0" height="13.798828125"/>
                                 <LineColour red="0" green="0" blue="0"/>
                                 <FillColour red="255" green="255" blue="255"/>
@@ -195,7 +195,7 @@
                     </SubModel>
                     <ShapeAttribute creationSerial="4" objectTypeId="14"
                         lineWidth="1.0" lineStyle="SOLID">
-                        <Location x="-433.0" y="141.0"/>
+                        <Location x="567.0" y="141.0"/>
                         <Size width="67.0" height="18.798828125"/>
                         <FillColour red="255" green="255" blue="255"/>
                         <LineColour red="0" green="0" blue="0"/>
@@ -258,7 +258,7 @@
                             <LabelAttribute creationSerial="7"
                                 lineStyle="SOLID" lineWidth="1.0"
                                 noFill="true" noBorder="true">
-                                <Location x="100.0" y="650.0"/>
+                                <Location x="700.0" y="150.0"/>
                                 <Size width="32.0" height="13.798828125"/>
                                 <LineColour red="0" green="0" blue="0"/>
                                 <FillColour red="255" green="255" blue="255"/>
@@ -268,7 +268,7 @@
                     </SubModel>
                     <ShapeAttribute creationSerial="6" objectTypeId="14"
                         lineWidth="1.0" lineStyle="SOLID">
-                        <Location x="79.0" y="641.0"/>
+                        <Location x="679.0" y="141.0"/>
                         <Size width="42.0" height="18.798828125"/>
                         <FillColour red="255" green="255" blue="255"/>
                         <LineColour red="0" green="0" blue="0"/>
@@ -331,7 +331,7 @@
                             <LabelAttribute creationSerial="9"
                                 lineStyle="SOLID" lineWidth="1.0"
                                 noFill="true" noBorder="true">
-                                <Location x="600.0" y="150.0"/>
+                                <Location x="800.0" y="150.0"/>
                                 <Size width="50.0" height="13.798828125"/>
                                 <LineColour red="0" green="0" blue="0"/>
                                 <FillColour red="255" green="255" blue="255"/>
@@ -341,7 +341,7 @@
                     </SubModel>
                     <ShapeAttribute creationSerial="8" objectTypeId="14"
                         lineWidth="1.0" lineStyle="SOLID">
-                        <Location x="570.0" y="141.0"/>
+                        <Location x="770.0" y="141.0"/>
                         <Size width="60.0" height="18.798828125"/>
                         <FillColour red="255" green="255" blue="255"/>
                         <LineColour red="0" green="0" blue="0"/>
@@ -404,7 +404,7 @@
                             <LabelAttribute creationSerial="11"
                                 lineStyle="SOLID" lineWidth="1.0"
                                 noFill="true" noBorder="true">
-                                <Location x="100.0" y="-350.0"/>
+                                <Location x="900.0" y="150.0"/>
                                 <Size width="39.0" height="13.798828125"/>
                                 <LineColour red="0" green="0" blue="0"/>
                                 <FillColour red="255" green="255" blue="255"/>
@@ -414,7 +414,7 @@
                     </SubModel>
                     <ShapeAttribute creationSerial="10"
                         objectTypeId="14" lineWidth="1.0" lineStyle="SOLID">
-                        <Location x="76.0" y="-359.0"/>
+                        <Location x="876.0" y="141.0"/>
                         <Size width="49.0" height="18.798828125"/>
                         <FillColour red="255" green="255" blue="255"/>
                         <LineColour red="0" green="0" blue="0"/>
@@ -474,7 +474,7 @@
                     <SubModel/>
                     <LabelAttribute creationSerial="15"
                         lineStyle="SOLID" lineWidth="1.0" noFill="false" noBorder="false">
-                        <Location x="78.0" y="400.0"/>
+                        <Location x="404.0" y="141.0"/>
                         <Size width="7.0" height="13.798828125"/>
                         <LineColour red="0" green="0" blue="0"/>
                         <FillColour red="255" green="255" blue="255"/>
@@ -485,7 +485,7 @@
                     <SubModel/>
                     <LabelAttribute creationSerial="19"
                         lineStyle="SOLID" lineWidth="1.0" noFill="false" noBorder="false">
-                        <Location x="350.0" y="141.0"/>
+                        <Location x="450.0" y="141.0"/>
                         <Size width="7.0" height="13.798828125"/>
                         <LineColour red="0" green="0" blue="0"/>
                         <FillColour red="255" green="255" blue="255"/>
@@ -496,22 +496,22 @@
                     <SubModel/>
                     <LabelAttribute creationSerial="23"
                         lineStyle="SOLID" lineWidth="1.0" noFill="false" noBorder="false">
-                        <Location x="76.0" y="-100.0"/>
+                        <Location x="503.0" y="141.0"/>
                         <Size width="7.0" height="13.798828125"/>
                         <LineColour red="0" green="0" blue="0"/>
                         <FillColour red="255" green="255" blue="255"/>
-                        <PropertyRef id="18"/>
+                        <PropertyRef id="17"/>
                     </LabelAttribute>
                 </LabelNode>
                 <LabelNode nodeId="14">
                     <SubModel/>
                     <LabelAttribute creationSerial="27"
                         lineStyle="SOLID" lineWidth="1.0" noFill="false" noBorder="false">
-                        <Location x="-147.0" y="141.0"/>
+                        <Location x="348.0" y="141.0"/>
                         <Size width="7.0" height="13.798828125"/>
                         <LineColour red="0" green="0" blue="0"/>
                         <FillColour red="255" green="255" blue="255"/>
-                        <PropertyRef id="25"/>
+                        <PropertyRef id="24"/>
                     </LabelAttribute>
                 </LabelNode>
                 <LinkEdge linkIdx="0" srcNodeIdx="1" tgtNodeIdx="5">
@@ -519,11 +519,11 @@
                         lineWidth="1.0" objectTypeId="271" lastBendPointIndex="0">
                         <LineColour red="92" green="92" blue="92"/>
                         <srcTerminus creationSerial="13" gap="0.0" endDecoratorType="ARROW">
-                            <Location x="76.8" y="159.798828125"/>
+                            <Location x="129.0" y="141.0"/>
                             <DecoratorSize width="7.0" height="5.0"/>
                         </srcTerminus>
                         <tgtTerminus creationSerial="14" gap="0.0" endDecoratorType="ARROW">
-                            <Location x="79.0" y="641.0"/>
+                            <Location x="679.0" y="141.0"/>
                             <DecoratorSize width="7.0" height="5.0"/>
                         </tgtTerminus>
                         <PropertyRef id="6"/>
@@ -542,7 +542,7 @@
                             <DecoratorSize width="7.0" height="5.0"/>
                         </srcTerminus>
                         <tgtTerminus creationSerial="18" gap="0.0" endDecoratorType="ARROW">
-                            <Location x="570.0" y="141.0"/>
+                            <Location x="770.0" y="141.0"/>
                             <DecoratorSize width="7.0" height="5.0"/>
                         </tgtTerminus>
                         <PropertyRef id="11"/>
@@ -557,11 +557,11 @@
                         lineWidth="1.0" objectTypeId="271" lastBendPointIndex="0">
                         <LineColour red="92" green="92" blue="92"/>
                         <srcTerminus creationSerial="21" gap="0.0" endDecoratorType="ARROW">
-                            <Location x="76.8" y="141.0"/>
+                            <Location x="129.0" y="141.0"/>
                             <DecoratorSize width="7.0" height="5.0"/>
                         </srcTerminus>
                         <tgtTerminus creationSerial="22" gap="0.0" endDecoratorType="ARROW">
-                            <Location x="76.0" y="-340.201171875"/>
+                            <Location x="876.0" y="141.0"/>
                             <DecoratorSize width="7.0" height="5.0"/>
                         </tgtTerminus>
                         <PropertyRef id="16"/>
@@ -576,11 +576,11 @@
                         lineWidth="1.0" objectTypeId="271" lastBendPointIndex="0">
                         <LineColour red="92" green="92" blue="92"/>
                         <srcTerminus creationSerial="25" gap="0.0" endDecoratorType="ARROW">
-                            <Location x="71.0" y="141.0"/>
+                            <Location x="129.0" y="141.0"/>
                             <DecoratorSize width="7.0" height="5.0"/>
                         </srcTerminus>
                         <tgtTerminus creationSerial="26" gap="0.0" endDecoratorType="ARROW">
-                            <Location x="-366.0" y="141.0"/>
+                            <Location x="567.0" y="141.0"/>
                             <DecoratorSize width="7.0" height="5.0"/>
                         </tgtTerminus>
                         <PropertyRef id="21"/>
@@ -611,7 +611,7 @@
         <TextAnnotationProperty id="19" name="cis/trans" displayName="Cis/Trans">cis</TextAnnotationProperty>
         <TextAnnotationProperty id="22" name="name" displayName="Name">Interaction MAP2K1 - ADCYAP1</TextAnnotationProperty>
         <TextAnnotationProperty id="23" name="cis/trans" displayName="Cis/Trans">cis</TextAnnotationProperty>
-        <IntegerAnnotationProperty id="8" name="stoichiometry"
+        <IntegerAnnotationProperty id="7" name="stoichiometry"
             displayName="Stoichiometry" value="1"/>
         <IntegerAnnotationProperty id="10" name="annotationCardinality"
             displayName="NumAnnot" value="1"/>
@@ -619,25 +619,25 @@
             displayName="Stoichiometry" value="1"/>
         <IntegerAnnotationProperty id="13" name="annotationCardinality"
             displayName="NumAnnot" value="1"/>
-        <IntegerAnnotationProperty id="18" name="annotationCardinality"
+        <IntegerAnnotationProperty id="17" name="annotationCardinality"
             displayName="NumAnnot" value="1"/>
         <IntegerAnnotationProperty id="20" name="stoichiometry"
             displayName="Stoichiometry" value="1"/>
         <IntegerAnnotationProperty id="21" name="stoichiometry"
             displayName="Stoichiometry" value="1"/>
-        <IntegerAnnotationProperty id="25" name="annotationCardinality"
+        <IntegerAnnotationProperty id="24" name="annotationCardinality"
             displayName="NumAnnot" value="1"/>
-        <ListAnnotationProperty id="7" name="sentences" displayName="A Property">
-            <ListItem idx="0" value="pmid1_1&#x9;MAP2K1&#x9;ACE2&#x9;activate&#x9;1&#x9;2&#x9;3&#x9;&#xa;The reduction in &lt;b TEXT='ACE2'>ACE2&lt;/b> mRNA by ANG II or ET-1 was blocked by inhibitors of &lt;m TEXT='MAP2K1'>mitogen-activated protein kinase kinase 1&lt;/m>, suggesting that ANG II or ET-1 activates extracellular signal-regulated kinase (ERK) 1/ERK2 to reduce &lt;b TEXT='ACE2'>ACE2&lt;/b>.&#x9;&#x9;"/>
+        <ListAnnotationProperty id="8" name="sentences" displayName="A Property">
+            <ListItem idx="0" value="10706854_12&#x9;MAP2K1&#x9;ACE2&#x9;activate&#x9;1&#x9;2&#x9;3&#x9;0.56&#x9;&#xa;The reduction in &lt;b>ACE2&lt;/b> (&lt;span color='blue' font='mname'>ACE2&lt;/span>)  mRNA by ANG II or ET-1 was blocked by inhibitors of &lt;b>mitogen-activated protein kinase kinase 1&lt;/b> (&lt;span color='red' font='mname'>MAP2K1&lt;/span>) , suggesting that ANG II or ET-1 activates extracellular signal-regulated kinase (ERK) 1/ERK2 to reduce &lt;b>ACE2&lt;/b> (&lt;span color='blue' font='mname'>ACE2&lt;/span>) .&#x9;true&#x9;true&#x9;false&#x9; The reduction in ACE2 mRNA by ANG II or ET-1 was blocked by inhibitors of mitogen-activated protein kinase kinase 1 , suggesting that ANG II or ET-1 activates extracellular signal-regulated kinase (ERK) 1/ERK2 to reduce ACE2 ."/>
         </ListAnnotationProperty>
         <ListAnnotationProperty id="14" name="sentences" displayName="A Property">
-            <ListItem idx="0" value="pmid1_1&#x9;MAP2K1&#x9;ADORA1&#x9;activate&#x9;1&#x9;2&#x9;3&#x9;&#xa;Activation of &lt;b TEXT='ADORA1'>adenosine A1 receptor&lt;/b>-induced neural stem cell proliferation via &lt;m TEXT='MAP2K1'>MEK&lt;/m>/ERK and Akt signaling pathways.&#x9;&#x9;"/>
+            <ListItem idx="0" value="10706854_12&#x9;MAP2K1&#x9;ADORA1&#x9;activate&#x9;1&#x9;15&#x9;3&#x9;0.56&#x9;&#xa;Activation of &lt;b>adenosine A1 receptor&lt;/b> (&lt;span color='blue' font='mname'>ADORA1&lt;/span>) -induced neural stem cell proliferation via &lt;b>MEK&lt;/b> (&lt;span color='red' font='mname'>MAP2K1&lt;/span>) /ERK and Akt signaling pathways.&#x9;true&#x9;true&#x9;false&#x9; Activation of adenosine A1 receptor -induced neural stem cell proliferation via MEK /ERK and Akt signaling pathways."/>
         </ListAnnotationProperty>
-        <ListAnnotationProperty id="17" name="sentences" displayName="A Property">
-            <ListItem idx="0" value="pmid2_1&#x9;MAP2K1&#x9;ACTA1&#x9;activate&#x9;1&#x9;2&#x9;3&#x9;&#xa;The treatment of BMMSC with &lt;m TEXT='MAP2K1'>MEK&lt;/m> inhibitor up-regulated the expression of alpha-smooth muscle actin (&lt;b TEXT='ACTA1'>ASMA&lt;/b>), h-caldesmon, and SMMHC in BMMSC in low serum condition.&#x9;&#x9;"/>
+        <ListAnnotationProperty id="18" name="sentences" displayName="A Property">
+            <ListItem idx="0" value="10706854_12&#x9;MAP2K1&#x9;ACTA1&#x9;activate&#x9;1&#x9;2&#x9;3&#x9;0.56&#x9;&#xa;The treatment of BMMSC with &lt;b>MEK&lt;/b> (&lt;span color='red' font='mname'>MAP2K1&lt;/span>)  inhibitor up-regulated the expression of alpha-smooth muscle actin (&lt;b>ASMA&lt;/b> (&lt;span color='blue' font='mname'>ACTA1&lt;/span>) ), h-caldesmon, and SMMHC in BMMSC in low serum condition.&#x9;true&#x9;true&#x9;false&#x9; The treatment of BMMSC with MEK inhibitor up-regulated the expression of alpha-smooth muscle actin (ASMA ), h-caldesmon, and SMMHC in BMMSC in low serum condition."/>
         </ListAnnotationProperty>
-        <ListAnnotationProperty id="24" name="sentences" displayName="A Property">
-            <ListItem idx="0" value="pmid1_3&#x9;MAP2K1&#x9;ADCYAP1&#x9;activate&#x9;1&#x9;2&#x9;3&#x9;&#xa;&lt;b TEXT='ADCYAP1'>PACAP&lt;/b>-induced neuritogenesis was blocked by the &lt;m TEXT='MAP2K1'>MEK1&lt;/m> inhibitor PD98059 and partially by the p38 MAP kinase inhibitor SB203580.&#x9;&#x9;"/>
+        <ListAnnotationProperty id="25" name="sentences" displayName="A Property">
+            <ListItem idx="0" value="10706854_12&#x9;MAP2K1&#x9;ADCYAP1&#x9;activate&#x9;5&#x9;1&#x9;3&#x9;0.56&#x9;&#xa;&lt;b>PACAP&lt;/b> (&lt;span color='blue' font='mname'>ADCYAP1&lt;/span>) -induced neuritogenesis was blocked by the &lt;b>MEK1&lt;/b> (&lt;span color='red' font='mname'>MAP2K1&lt;/span>)  inhibitor PD98059 and partially by the p38 MAP kinase inhibitor SB203580.&#x9;true&#x9;true&#x9;false&#x9; PACAP -induced neuritogenesis was blocked by the MEK1 inhibitor PD98059 and partially by the p38 MAP kinase inhibitor SB203580."/>
         </ListAnnotationProperty>
     </PropertyList>
 </epx:canvas>
