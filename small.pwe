@@ -2,7 +2,7 @@
 <epx:canvas xmlns:epx="http://www.pathwayeditor.org/Exchange"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.pathwayeditor.org/Exchange http://www.pathwayeditor.org/Exchange/Canvas.xsd"
-    name="MAP2K1" lastCreationSerial="27">
+    name="MAP2K1"  lastCreationSerial="27">
     <Grid snapToGrid="false" gridOn="false">
         <GridSize width="200.0" height="300.0"/>
     </Grid>
