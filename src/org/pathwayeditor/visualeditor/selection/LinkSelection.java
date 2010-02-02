@@ -5,46 +5,26 @@ import org.pathwayeditor.visualeditor.controller.ILinkController;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle.SelectionHandleType;
 
 public class LinkSelection extends Selection implements ILinkSelection {
-
-	public LinkSelection(boolean isPrimitive, ILinkController drawingElement) {
-		super(isPrimitive);
-		// TODO Auto-generated constructor stub
+	private final ILinkController controller;
+	
+	
+	public LinkSelection(boolean primaryFlag, ILinkController drawingElement) {
+		super(primaryFlag);
+		this.controller = drawingElement;
 	}
 
 	@Override
 	public ISelectionHandle findSelectionModelAt(Point point) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public ILinkController getPrimitiveController() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.controller;
 	}
 
 	@Override
 	public ISelectionHandle getSelectionModel(SelectionHandleType region) {
-		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
-	public boolean isPrimary() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean isSecondary() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public int compareTo(ISelection o) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 }

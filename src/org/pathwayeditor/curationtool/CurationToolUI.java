@@ -23,10 +23,20 @@ import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
 
+import org.pathwayeditor.businessobjects.drawingprimitives.ICanvas;
 import org.pathwayeditor.businessobjects.exchange.FileXmlCanvasPersistenceManager;
 import org.pathwayeditor.businessobjects.exchange.IXmlPersistenceManager;
 import org.pathwayeditor.businessobjects.management.INotationSubsystemPool;
+import org.pathwayeditor.curationtool.sentences.ISentenceSelectionChangeEvent;
+import org.pathwayeditor.curationtool.sentences.ISentenceSelectionChangeListener;
+import org.pathwayeditor.curationtool.sentences.SentenceFromSInterationIterator;
 import org.pathwayeditor.curationtool.sentences.SentencesPanel;
+import org.pathwayeditor.notations.annotator.ndom.IMapDiagram;
+import org.pathwayeditor.notations.annotator.ndom.ISentence;
+import org.pathwayeditor.notations.annotator.ndom.parser.BoParser;
+import org.pathwayeditor.notations.annotator.ndom.parser.BoTreeLexer;
+import org.pathwayeditor.notations.annotator.ndom.parser.NdomBuilder;
+import org.pathwayeditor.notations.annotator.ndom.parser.TreeParseException;
 import org.pathwayeditor.visualeditor.NotationSubsystemPool;
 import org.pathwayeditor.visualeditor.PathwayEditor;
 
@@ -35,7 +45,6 @@ public class CurationToolUI extends JFrame {
 
 	private static final int WIDTH = 1200;
 	private static final int HEIGHT = 800;
-//	private static final String TEST_FILE = "test/org/pathwayeditor/graphicsengine/za.pwe";
 	private JMenuBar menuBar;
 	private SentencesPanel sentencesPanel;
 
@@ -90,17 +99,25 @@ public class CurationToolUI extends JFrame {
 		this.setJMenuBar(menuBar);
 		this.sentencesPanel = new SentencesPanel();
 		this.sentencesPanel.setPreferredSize(new Dimension(WIDTH, HEIGHT/3));
-//		this.add(this.sentencesPanel, BorderLayout.NORTH);
-//		this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		this.insp = new PathwayEditor();
 		this.insp.setPreferredSize(new Dimension(WIDTH, 2*HEIGHT/3));
 		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, this.sentencesPanel, this.insp);
 		splitPane.setDividerLocation(0.33);
 		splitPane.setOneTouchExpandable(true);
 		this.add(splitPane);
-//		this.add(this.insp, BorderLayout.CENTER);
 		this.pack();
 		this.setVisible(true);
+	}
+
+	private void initComponentLinkage() {
+		this.sentencesPanel.addSentenceSelectionChangeListener(new ISentenceSelectionChangeListener() {
+			
+			@Override
+			public void sentenceSelectionChangeEvent(ISentenceSelectionChangeEvent e) {
+				ISentence selectedSentence = e.getSelectedSentence();
+				insp.selectAndFocusOnElement(selectedSentence.getArc().getLinkEdge());
+			}
+		});
 	}
 
 	private void initFileMenu(){
@@ -117,7 +134,8 @@ public class CurationToolUI extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser chooser = new JFileChooser();
-				chooser.setCurrentDirectory(new File("/Users/smoodie/Documents/workspace351_64/GraphicsEngine/test/org/pathwayeditor/graphicsengine"));
+//				chooser.setCurrentDirectory(new File("/Users/smoodie/Documents/workspace351_64/GraphicsEngine/test/org/pathwayeditor/graphicsengine"));
+				chooser.setCurrentDirectory(new File("/Users/smoodie/Documents/workspace351_64/GraphicsEngine"));
 				chooser.setFileFilter(new FileFilter(){
 					
 					@Override
@@ -135,7 +153,6 @@ public class CurationToolUI extends JFrame {
 				int response = chooser.showOpenDialog(CurationToolUI.this);
 				if(response == JFileChooser.APPROVE_OPTION){
 					File openFile = chooser.getSelectedFile();
-					sentencesPanel.loadData();
 					openFile(openFile);
 				}
 			}
@@ -161,13 +178,22 @@ public class CurationToolUI extends JFrame {
 			InputStream in = new FileInputStream(file);
 			canvasPersistenceManager.readCanvasFromStream(in);
 			in.close();
-			insp.loadCanvas(canvasPersistenceManager.getCurrentCanvas());
+			ICanvas canvas = canvasPersistenceManager.getCurrentCanvas();
+			NdomBuilder builder = new NdomBuilder();
+			BoParser parser = new BoParser(builder);
+			BoTreeLexer lexer = new BoTreeLexer(canvas);
+			parser.parse(lexer);
+			IMapDiagram ndom = builder.getNdom();
+			sentencesPanel.loadData(new SentenceFromSInterationIterator(ndom.sInteractionIterator()));
+			insp.loadCanvas(canvas);
 			this.validate();
-			
+			initComponentLinkage();
+			insp.selectAndFocusOnElement(sentencesPanel.getSelectedSentence().getArc().getLinkEdge());
 		}
 		catch(IOException ex){
-			System.err.println("Error opening file!");
-			System.err.println();
+			JOptionPane.showMessageDialog(this, "Error message: " + ex.getLocalizedMessage(), "Error opening file", JOptionPane.ERROR_MESSAGE);
+		} catch (TreeParseException e) {
+			JOptionPane.showMessageDialog(this, "Error message: " + e.getLocalizedMessage(), "Bug detected loading file", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	

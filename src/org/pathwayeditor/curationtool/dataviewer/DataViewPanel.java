@@ -35,8 +35,10 @@ public class DataViewPanel extends JPanel {
 	private ListSelectionModel selectionModel;
 	private JButton prevButton;
 	private JButton nextButton;
+	private final ISentenceActionDelegate delegate;
 
-	public DataViewPanel(IRowDefn rowDefn) {
+	public DataViewPanel(IRowDefn rowDefn, ISentenceActionDelegate delegate) {
+		this.delegate = delegate;
 		tableModel = new DataViewTableModel(rowDefn);
 		tableColumnModel = new DefaultTableColumnModel();
 		dataViewTable = new JTable(tableModel, tableColumnModel);
@@ -62,6 +64,7 @@ public class DataViewPanel extends JPanel {
 				if(!irrelevantCheckBox.isSelected()){
 					centralCheckBox.setSelected(false);
 					sateliteCheckBox.setSelected(false);
+					delegate.setSentenceIrrelevant(selectionModel.getAnchorSelectionIndex());
 				}
 			}
 			
@@ -71,6 +74,7 @@ public class DataViewPanel extends JPanel {
 			public void stateChanged(ChangeEvent e) {
 				if(centralCheckBox.isSelected()){
 					irrelevantCheckBox.setSelected(true);
+					delegate.setFocusTextIrrelevant(selectionModel.getAnchorSelectionIndex());
 				}
 			}
 		});
@@ -79,6 +83,7 @@ public class DataViewPanel extends JPanel {
 			public void stateChanged(ChangeEvent e) {
 				if(sateliteCheckBox.isSelected()){
 					irrelevantCheckBox.setSelected(true);
+					delegate.setInteractingTextIrrelevant(selectionModel.getAnchorSelectionIndex());
 				}
 			}
 		});
@@ -114,6 +119,7 @@ public class DataViewPanel extends JPanel {
 
 	private void checkNavigatorButtonEnablement(){
 		int currSelectionIdx = getCurrentSelection();
+		delegate.setCurrentRowIdx(currSelectionIdx);
 		prevButton.setEnabled(currSelectionIdx > 0);
 		nextButton.setEnabled(currSelectionIdx < tableModel.getRowCount()-1);
 	}

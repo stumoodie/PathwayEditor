@@ -34,7 +34,7 @@ private List<ITableRow> initialData = new ArrayList<ITableRow>();
   private final IRowDefn rowDefn;
 
 
-  DataViewTableModel(IRowDefn rowDefn) {
+  public DataViewTableModel(IRowDefn rowDefn) {
     super();
     this.rowDefn = rowDefn;
   }

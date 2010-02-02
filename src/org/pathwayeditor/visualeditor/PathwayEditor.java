@@ -10,6 +10,7 @@ import javax.swing.JScrollPane;
 
 import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.drawingprimitives.ICanvas;
+import org.pathwayeditor.businessobjects.drawingprimitives.ILinkEdge;
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.Point;
@@ -25,6 +26,7 @@ import org.pathwayeditor.visualeditor.commands.ICompoundCommand;
 import org.pathwayeditor.visualeditor.commands.MoveNodeCommand;
 import org.pathwayeditor.visualeditor.commands.ReparentSelectionCommand;
 import org.pathwayeditor.visualeditor.commands.ResizeNodeCommand;
+import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveController;
 import org.pathwayeditor.visualeditor.controller.INodeController;
 import org.pathwayeditor.visualeditor.controller.IViewControllerStore;
 import org.pathwayeditor.visualeditor.controller.ViewControllerStore;
@@ -259,5 +261,11 @@ public class PathwayEditor extends JPanel {
 		this.viewModel.activate();
 		this.selectionRecord.addSelectionChangeListener(selectionChangeListener);
 		this.shapePane.updateView();
+	}
+
+	public void selectAndFocusOnElement(ILinkEdge linkEdge) {
+		selectionRecord.clear();
+		IDrawingPrimitiveController linkController = viewModel.getLinkController(linkEdge.getAttribute());
+		selectionRecord.setPrimarySelection(linkController);
 	}
 }

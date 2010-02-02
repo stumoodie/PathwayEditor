@@ -14,6 +14,7 @@ import org.pathwayeditor.graphicsengine.CanvasDrawer;
 import org.pathwayeditor.graphicsengine.ICanvasDrawer;
 import org.pathwayeditor.visualeditor.controller.IViewControllerStore;
 import org.pathwayeditor.visualeditor.feedback.IFeedbackModel;
+import org.pathwayeditor.visualeditor.selection.ILinkSelection;
 import org.pathwayeditor.visualeditor.selection.INodeSelection;
 import org.pathwayeditor.visualeditor.selection.ISelectionRecord;
 
@@ -56,6 +57,12 @@ public class ShapePane extends JPanel implements IShapePane {
 		while(selectionIter.hasNext()){
 			INodeSelection node = selectionIter.next();
 			SelectionShape selection = new SelectionShape(node);
+			selection.paint(g2d);
+		}
+		Iterator<ILinkSelection> linkSelectionIter = this.selections.selectedLinksIterator();
+		while(linkSelectionIter.hasNext()){
+			ILinkSelection link = linkSelectionIter.next();
+			SelectionLinkDrawer selection = new SelectionLinkDrawer(link.getPrimitiveController());
 			selection.paint(g2d);
 		}
 	}
