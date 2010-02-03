@@ -175,7 +175,14 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 
 	private Point getAdjustedMousePosition(double originalMouseX, double originalMouseY){
 		AffineTransform paneTransform = this.shapePane.getLastUsedTransform();
-		return new Point(originalMouseX-paneTransform.getTranslateX(), originalMouseY-paneTransform.getTranslateY());  
+		Point retVal = null;
+		if(paneTransform == null){
+			retVal = new Point(originalMouseX, originalMouseY);
+		}
+		else{
+			retVal = new Point(originalMouseX-paneTransform.getTranslateX(), originalMouseY-paneTransform.getTranslateY()); 
+		}
+		return retVal;  
 	}
 	
 	private void setCurrentCursorResponse(Point location){
@@ -407,9 +414,17 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 		return retVal;
 	}
 
-	public void initialise(){
+	@Override
+	public void activate(){
 		this.shapePane.addKeyListener(this.keyListener);
         this.shapePane.addMouseListener(this.mouseSelectionListener);
         this.shapePane.addMouseMotionListener(this.mouseMotionListener);
+	}
+
+	@Override
+	public void deactivate(){
+		this.shapePane.removeKeyListener(this.keyListener);
+        this.shapePane.removeMouseListener(this.mouseSelectionListener);
+        this.shapePane.removeMouseMotionListener(this.mouseMotionListener);
 	}
 }

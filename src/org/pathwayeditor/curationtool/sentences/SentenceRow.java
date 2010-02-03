@@ -5,10 +5,16 @@ import org.pathwayeditor.curationtool.dataviewer.ITableRow;
 import org.pathwayeditor.notations.annotator.ndom.ISentence;
 
 public class SentenceRow implements ITableRow {
-	private static final int NAME_COL = 0;
-	private static final int DESCN_COL = 1;
-	private static final int PMID_COL = 2;
-	private static final int SCORE_COL = 3;
+	private static final int STATUS_COL = 0;
+	private static final int PMID_COL = 1;
+	private static final int SENT_NUM_COL = 2;
+	private static final int NAME_COL = 3;
+	private static final int DESCN_COL = 5;
+	private static final int SCORE_COL = 4;
+	private static final String VALIDATED_FLAG = "V";
+	private static final String FOCUS_FLAG = "F";
+	private static final String INT_FLAG = "I";
+	private static final String REL_FLAG = "R";
 
 	private final ISentence sentence;
 	private final IRowDefn rowDefn;
@@ -19,17 +25,40 @@ public class SentenceRow implements ITableRow {
 		this.rowDefn = new SentenceRowDefinition();
 	}
 	
+	private String constructStatusString(){
+		StringBuilder builder = new StringBuilder();
+		if(sentence.hasSentenceBeenValidated()){
+			builder.append(VALIDATED_FLAG);
+		}
+		if(sentence.isFocusNodeValid()){
+			builder.append(FOCUS_FLAG);
+		}
+		if(sentence.isInteractingNodeValid()){
+			builder.append(INT_FLAG);
+		}
+		if(sentence.isSentenceRelevant()){
+			builder.append(REL_FLAG);
+		}
+		return builder.toString();
+	}
+	
 	@Override
 	public Object getColumnValue(int col) {
 		Object retVal = null;
-		if(col == NAME_COL ){
-			retVal = sentence.getFocusText();  
-		}
-		else if(col == DESCN_COL){
-			retVal = sentence.getMarkedUpSentence();
+		if(col == STATUS_COL){
+			retVal = constructStatusString();  
 		}
 		else if(col == PMID_COL){
-			retVal = sentence.getPmid();
+			retVal = sentence.getPmid();  
+		}
+		else if(col == SENT_NUM_COL){
+			retVal = sentence.getSentNum();  
+		}
+		else if(col == NAME_COL){
+			retVal = sentence.getInteractionText();  
+		}
+		else if(col == DESCN_COL){
+			retVal = sentence.getRawSentence();
 		}
 		else if(col == SCORE_COL){
 			retVal = sentence.getScore();
@@ -59,14 +88,7 @@ public class SentenceRow implements ITableRow {
 	@Override
 	public int compareTo(Object o) {
 		ISentence sentence = ((SentenceRow)o).sentence;
-		int retVal = this.sentence.getFocusText().compareTo(sentence.getFocusText());
-		if(retVal == 0){
-			retVal = this.sentence.getInteractionText().compareTo(sentence.getInteractionText());
-			if(retVal == 0){
-				retVal = this.sentence.getPmid().compareTo(sentence.getPmid());
-			}
-		}
-		return retVal;
+		return this.sentence.compareTo(sentence);
 	}
 
 	@Override

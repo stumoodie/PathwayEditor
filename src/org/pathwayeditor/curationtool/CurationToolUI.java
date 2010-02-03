@@ -2,6 +2,7 @@ package org.pathwayeditor.curationtool;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -9,8 +10,10 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.regex.Pattern;
 
 import javax.swing.JFileChooser;
@@ -21,6 +24,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.filechooser.FileFilter;
 
 import org.pathwayeditor.businessobjects.drawingprimitives.ICanvas;
@@ -45,10 +50,15 @@ public class CurationToolUI extends JFrame {
 
 	private static final int WIDTH = 1200;
 	private static final int HEIGHT = 800;
+
+	private static final String APP_NAME = "BMCCurator";
 	private JMenuBar menuBar;
 	private SentencesPanel sentencesPanel;
+	private File currentFile = null;
 
 	private PathwayEditor insp;
+
+	private IXmlPersistenceManager canvasPersistenceManager;
 	
 	public CurationToolUI(String title){
 		super(title);
@@ -128,9 +138,10 @@ public class CurationToolUI extends JFrame {
 		menuBar.add(fileMenu);
 		//a group of JMenuItems
 		JMenuItem fileMenuOpenItem = new JMenuItem("Open", KeyEvent.VK_O);
-		fileMenuOpenItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.ALT_MASK));
+		fileMenuOpenItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		fileMenuOpenItem.getAccessibleContext().setAccessibleDescription("This doesn't really do anything");
 		fileMenuOpenItem.addActionListener(new ActionListener() {
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser chooser = new JFileChooser();
@@ -152,14 +163,32 @@ public class CurationToolUI extends JFrame {
 				});
 				int response = chooser.showOpenDialog(CurationToolUI.this);
 				if(response == JFileChooser.APPROVE_OPTION){
-					File openFile = chooser.getSelectedFile();
-					openFile(openFile);
+					currentFile = chooser.getSelectedFile();
+					openFile(currentFile);
 				}
 			}
 		});
 		fileMenu.add(fileMenuOpenItem);
+		JMenuItem fileMenuSaveItem = new JMenuItem("Save", KeyEvent.VK_S);
+		fileMenuSaveItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+		fileMenuSaveItem.getAccessibleContext().setAccessibleDescription("Save");
+		fileMenuSaveItem.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(currentFile != null){
+					try {
+						saveFile(currentFile);
+					} catch (IOException e1) {
+						JOptionPane.showMessageDialog(CurationToolUI.this, "Error message: " + e1.getLocalizedMessage(), "Error saving file", JOptionPane.ERROR_MESSAGE);
+					}
+				}
+			}
+			
+		});
+		fileMenu.add(fileMenuSaveItem);
 		JMenuItem fileMenuExitItem = new JMenuItem("Exit", KeyEvent.VK_X);
-		fileMenuExitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.ALT_MASK));
+		fileMenuExitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		fileMenuExitItem.getAccessibleContext().setAccessibleDescription("This doesn't really do anything");
 		fileMenuExitItem.addActionListener(new ActionListener(){
 			@Override
@@ -171,10 +200,22 @@ public class CurationToolUI extends JFrame {
 	}
 	
 
+	private void saveFile(File currentFile2) throws IOException {
+		InputStream in = canvasPersistenceManager.writeCanvasToStream();
+		OutputStream out = new FileOutputStream(currentFile2);
+		byte buf[] = new byte[1024*1024];
+		int c = -1;
+		while((c = in.read(buf)) != -1){
+			out.write(buf, 0, c);
+		}
+		in.close();
+		out.close();
+	}
+
 	public void openFile(File file){
 		try{
 			INotationSubsystemPool subsystemPool = new NotationSubsystemPool();
-			IXmlPersistenceManager canvasPersistenceManager = new FileXmlCanvasPersistenceManager(subsystemPool);
+			canvasPersistenceManager = new FileXmlCanvasPersistenceManager(subsystemPool);
 			InputStream in = new FileInputStream(file);
 			canvasPersistenceManager.readCanvasFromStream(in);
 			in.close();
@@ -198,18 +239,9 @@ public class CurationToolUI extends JFrame {
 	}
 	
 	
-	public void startup(){
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-//				sentencesPanel.loadData();
-//				openFile(new File(TEST_FILE));
-			}
-		});
-	}
-	
-	public static final void main(String argv[]){
-		CurationToolUI visualEditor = new CurationToolUI("Pathway Editor");
-//		visualEditor.openFile(new File(TEST_FILE));
-		visualEditor.startup();
+	public static final void main(String argv[]) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException{
+		System.setProperty("apple.laf.useScreenMenuBar", "true");
+		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		CurationToolUI visualEditor = new CurationToolUI(APP_NAME);
 	}
 }

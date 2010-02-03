@@ -6,10 +6,10 @@ import javax.swing.table.TableCellRenderer;
 import org.pathwayeditor.curationtool.dataviewer.IRowDefn;
 
 public class SentenceRowDefinition implements IRowDefn {
-	private static final String HEADER_ROW[] = { "Name", "Sentence", "PMID", "Score" }; 
-	private static final TableCellRenderer CUSTOM_RENDERER[] =  { null, null, null, null };
-	private static final Class<?> COLUMN_CLASS[] =  { String.class, String.class, Integer.class, Number.class };
-	private static final int PREF_WIDTH[] =  { 200, 600, 100, 100 };
+	private static final String HEADER_ROW[] = { "Status", "PMID", "Sentence #", "Interacting Node Name", "Score", "Sentence" }; 
+	private static final TableCellRenderer CUSTOM_RENDERER[] =  { new ValidityRenderer(), null, null, null, null, null };
+	private static final Class<?> COLUMN_CLASS[] =  { Boolean.class, String.class, Integer.class, String.class, Number.class, String.class };
+	private static final int PREF_WIDTH[] =  { 40, 90, 70, 130, 80, 600 };
 
 	
 	@Override

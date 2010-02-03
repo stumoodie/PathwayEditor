@@ -2,6 +2,9 @@ package org.pathwayeditor.curationtool.sentences;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,6 +13,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -17,6 +21,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -36,12 +41,13 @@ import org.pathwayeditor.notations.annotator.ndom.impl.ISentenceStateChangeEvent
 
 public class SentencesPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
-	private BorderLayout borderLayout1 = new BorderLayout();
 	private DataViewTableModel tableModel;
 	private JScrollPane dataViewScrollPane = new JScrollPane();
 	private TableColumnModel tableColumnModel;
 	private JTable dataViewTable;
+	private JPanel previewPanel = new JPanel();
 	private javax.swing.JPanel actionPanel = new JPanel();
+	private JTextPane sentencePreviewer = new JTextPane();
 	private transient List<DataViewListener> dataViewListeners = new LinkedList<DataViewListener>();
 	private ListSelectionModel selectionModel;
 	private JButton prevButton;
@@ -52,6 +58,14 @@ public class SentencesPanel extends JPanel {
 	private JCheckBox focusCheckBox;
 	private JCheckBox interactingNodeCheckBox;
 	private ISentenceStateChangeListener sentenceListener;
+	private AbstractButton acceptButton;
+	private ActionListener nextActionListener;
+	private ActionListener prevActionListener;
+	private ChangeListener interactingNodeCheckBoxListener;
+	private ChangeListener focusCheckBoxListener;
+	private ChangeListener irrelevantCheckBoxListener;
+	private ListSelectionListener listSelectionListener;
+	private boolean isOpen = false;
 	
 	public SentencesPanel(){
 		IRowDefn rowDefn = new SentenceRowDefinition();
@@ -59,37 +73,76 @@ public class SentencesPanel extends JPanel {
 		tableColumnModel = new DefaultTableColumnModel();
 		dataViewTable = new JTable(tableModel, tableColumnModel);
 		dataViewTable.setAutoscrolls(true);
+		dataViewTable.setShowHorizontalLines(true);
 		selectionModel = dataViewTable.getSelectionModel();
 		selectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		setColumnDefs();
-		this.setLayout(borderLayout1);
+		this.setLayout(new GridLayout(1, 2));
 		dataViewScrollPane.getViewport().add(dataViewTable);
-		this.add(dataViewScrollPane, BorderLayout.CENTER);
-		this.add(actionPanel, BorderLayout.SOUTH);
+		this.add(dataViewScrollPane);
+		this.previewPanel.setLayout(new BorderLayout());
+		this.previewPanel.add(this.sentencePreviewer, BorderLayout.CENTER);
+		this.previewPanel.add(this.actionPanel, BorderLayout.PAGE_END);
+		this.add(previewPanel);
 		setupActionPanel();
 		dataViewTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		this.listeners = new LinkedList<ISentenceSelectionChangeListener>();
 	    this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 	    this.sentenceListener = new ISentenceStateChangeListener() {
-			
 			@Override
 			public void stateChanged(ISentenceStateChangeEvent e) {
+				dataViewTable.updateUI();
 				updateButtons();
-//				if(e.getStateType() == StateType.FOCUS_VALIDITY_STATE){
-//					disableButtonListeners();
-//					focusCheckBox.setEnabled(e.getCurrentStateValue());
-//					enableButtonListeners();
-//				}
-//				else if(e.getStateType() == StateType.INTERACTING_VALIDITY_STATE){
-//					disableButtonListeners();
-//					interactingNodeCheckBox.setEnabled(e.getCurrentStateValue());
-//					enableButtonListeners();
-//				}
-//				else if(e.getStateType() == StateType.RELEVANT_STATE){
-//					disableButtonListeners();
-//					irrelevantCheckBox.setEnabled(!e.getCurrentStateValue());
-//					enableButtonListeners();
-//				}
+			}
+		};
+		this.nextActionListener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int currSelectionIdx = getCurrentSelection()+1;
+				selectionModel.setSelectionInterval(currSelectionIdx, currSelectionIdx);
+				int scrollOffset = dataViewTable.getRowHeight() * getCurrentSelection();
+				dataViewScrollPane.getVerticalScrollBar().setValue(scrollOffset);
+			}
+		};
+		this.prevActionListener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int currSelectionIdx = getCurrentSelection()-1;
+				selectionModel.setSelectionInterval(currSelectionIdx, currSelectionIdx);
+				int scrollOffset = dataViewTable.getRowHeight() * getCurrentSelection();
+				dataViewScrollPane.getVerticalScrollBar().setValue(scrollOffset);
+			}
+		};
+		this.interactingNodeCheckBoxListener = new ChangeListener(){
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				currentSentence.setInteractingNodeValid(interactingNodeCheckBox.isSelected());
+			}
+		};
+		this.focusCheckBoxListener = new ChangeListener(){
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				currentSentence.setFocusNodeValid(focusCheckBox.isSelected());
+			}
+		};
+		this.irrelevantCheckBoxListener = new ChangeListener(){
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				currentSentence.setSentenceRelevant(!irrelevantCheckBox.isSelected());
+			}
+			
+		};
+		this.listSelectionListener = new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				checkNavigatorButtonEnablement();
+				currentSentence.removeSentenceStateChangeListener(sentenceListener);
+				ISentence oldSentence = currentSentence;
+				currentSentence = ((SentenceRow)tableModel.getRow(getCurrentSelection())).getSentence();
+				notifySentenceSelectionChanged(getCurrentSelection(), oldSentence, currentSentence);
+				updateButtons();
+				sentencePreviewer.setText(currentSentence.getMarkedUpSentence());
+				currentSentence.addSentenceStateChangeListener(sentenceListener);
 			}
 		};
 	}
@@ -123,33 +176,45 @@ public class SentencesPanel extends JPanel {
 	}
 	
 	public void loadData(Iterator<ISentence> sentenceIter){
+		if(isOpen){
+			reset();
+		}
 	    this.tableModel.deleteAllRows();
 	    while(sentenceIter.hasNext()){
-//	    for(final String rowData[] : testData){
 	    	final ISentence sentence = sentenceIter.next();
 	    	this.tableModel.appendRow(new SentenceRow(sentence));
 	    }
 	    this.tableModel.commitChanges();
 	    this.resetSelection();
 	    intialise();
+	    isOpen = true;
 	}
 	
+	public void close(){
+		if(isOpen){
+			reset();
+		}
+		isOpen = false;
+	}
+	
+	private void reset(){
+		this.currentSentence.removeSentenceStateChangeListener(sentenceListener);
+		this.selectionModel.removeListSelectionListener(this.listSelectionListener);
+		this.nextButton.removeActionListener(this.nextActionListener);
+		this.prevButton.removeActionListener(prevActionListener);
+		this.irrelevantCheckBox.removeChangeListener(this.irrelevantCheckBoxListener);
+		this.focusCheckBox.removeChangeListener(this.focusCheckBoxListener);
+		this.interactingNodeCheckBox.removeChangeListener(this.interactingNodeCheckBoxListener);
+	}
 	
 	private void intialise() {
 		updateButtons();
+		this.sentencePreviewer.setContentType("text/html");
+		this.sentencePreviewer.setText("<html>" + this.currentSentence.getMarkedUpSentence() + "</html>");
 		this.currentSentence.addSentenceStateChangeListener(sentenceListener);
-		this.selectionModel.addListSelectionListener(new ListSelectionListener() {
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
-				checkNavigatorButtonEnablement();
-				currentSentence.removeSentenceStateChangeListener(sentenceListener);
-				ISentence oldSentence = currentSentence;
-				currentSentence = ((SentenceRow)tableModel.getRow(getCurrentSelection())).getSentence();
-				notifySentenceSelectionChanged(getCurrentSelection(), oldSentence, currentSentence);
-				updateButtons();
-				currentSentence.addSentenceStateChangeListener(sentenceListener);
-			}
-		});
+		this.selectionModel.addListSelectionListener(this.listSelectionListener);
+		this.nextButton.addActionListener(this.nextActionListener);
+		this.prevButton.addActionListener(prevActionListener);
 	}
 
 	public void addSentenceSelectionChangeListener(ISentenceSelectionChangeListener l){
@@ -169,45 +234,43 @@ public class SentencesPanel extends JPanel {
 	}
 	
 	private void setupActionPanel() {
-		irrelevantCheckBox = addCheckBox("Sentence Irrelevant");
-		focusCheckBox = addCheckBox("Focus Node OK");
-		interactingNodeCheckBox = addCheckBox("Interacting Node OK");
-		irrelevantCheckBox.addChangeListener(new ChangeListener(){
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				currentSentence.setSentenceRelevant(!irrelevantCheckBox.isSelected());
-			}
-			
-		});
-		focusCheckBox.addChangeListener(new ChangeListener(){
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				currentSentence.setFocusNodeValid(focusCheckBox.isSelected());
-			}
-		});
-		interactingNodeCheckBox.addChangeListener(new ChangeListener(){
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				currentSentence.setInteractingNodeValid(interactingNodeCheckBox.isSelected());
-			}
-		});
+		this.actionPanel.setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		this.actionPanel.setPreferredSize(new Dimension(600, 100));
+		c.gridx = 0;
+		c.gridy = 0;
+		irrelevantCheckBox = addCheckBox("Sentence Irrelevant", c);
+		c.gridx = 1;
+		c.gridy = 0;
+		focusCheckBox = addCheckBox("Focus Node OK", c);
+		c.gridx = 0;
+		c.gridy = 1;
+		interactingNodeCheckBox = addCheckBox("Interacting Node OK", c);
+		irrelevantCheckBox.addChangeListener(this.irrelevantCheckBoxListener);
+		focusCheckBox.addChangeListener(this.focusCheckBoxListener);
+		interactingNodeCheckBox.addChangeListener(this.interactingNodeCheckBoxListener);
 		prevButton = new JButton("Previous");
-		this.actionPanel.add(prevButton);
-		prevButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				int currSelectionIdx = getCurrentSelection()-1;
-				selectionModel.setSelectionInterval(currSelectionIdx, currSelectionIdx);
-				int scrollOffset = dataViewTable.getRowHeight() * getCurrentSelection();
-				dataViewScrollPane.getVerticalScrollBar().setValue(scrollOffset);
-			}
-		});
+		c.gridx = 0;
+		c.gridy = 2;
+		this.actionPanel.add(prevButton, c);
+		prevButton.addActionListener(this.prevActionListener);
 		nextButton = new JButton("Next");
-		this.actionPanel.add(nextButton);
-		nextButton.addActionListener(new ActionListener() {
+		c.gridx = 1;
+		c.gridy = 2;
+		this.actionPanel.add(nextButton, c);
+		nextButton.addActionListener(this.nextActionListener);
+		acceptButton = new JButton("Accept");
+		c.gridx = 1;
+		c.gridy = 1;
+		this.actionPanel.add(acceptButton, c);
+		acceptButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int currSelectionIdx = getCurrentSelection()+1;
+				currentSentence.sentenceValidated();
+				int currSelectionIdx = getCurrentSelection();
+				if(getCurrentSelection() < tableModel.getRowCount()-1){
+					currSelectionIdx++;
+				}
 				selectionModel.setSelectionInterval(currSelectionIdx, currSelectionIdx);
 				int scrollOffset = dataViewTable.getRowHeight() * getCurrentSelection();
 				dataViewScrollPane.getVerticalScrollBar().setValue(scrollOffset);
@@ -221,7 +284,7 @@ public class SentencesPanel extends JPanel {
 		nextButton.setEnabled(currSelectionIdx < tableModel.getRowCount()-1);
 	}
 	
-	private JCheckBox addCheckBox(String labelText) {
+	private JCheckBox addCheckBox(String labelText, GridBagConstraints c) {
 		JLabel label = new JLabel(labelText);
 		JCheckBox checkBox = new JCheckBox();
 		checkBox.setSelected(false);
@@ -229,7 +292,7 @@ public class SentencesPanel extends JPanel {
 		buttonPanel.setLayout(new GridLayout(1, 2));
 		buttonPanel.add(label);
 		buttonPanel.add(checkBox);
-		this.actionPanel.add(buttonPanel);
+		this.actionPanel.add(buttonPanel, c);
 		return checkBox;
 	}
 
@@ -298,10 +361,18 @@ public class SentencesPanel extends JPanel {
 	}
 
 	private void updateButtons() {
+		this.irrelevantCheckBox.removeChangeListener(this.irrelevantCheckBoxListener);
+		this.focusCheckBox.removeChangeListener(this.focusCheckBoxListener);
+		this.interactingNodeCheckBox.removeChangeListener(this.interactingNodeCheckBoxListener);
+		
 		this.irrelevantCheckBox.setSelected(!this.currentSentence.isSentenceRelevant());
 		this.focusCheckBox.setSelected(this.currentSentence.isFocusNodeValid());
 		this.interactingNodeCheckBox.setSelected(this.currentSentence.isInteractingNodeValid());
 		irrelevantCheckBox.setEnabled(focusCheckBox.isSelected() && interactingNodeCheckBox.isSelected());
+		
+		this.irrelevantCheckBox.addChangeListener(this.irrelevantCheckBoxListener);
+		this.focusCheckBox.addChangeListener(this.focusCheckBoxListener);
+		this.interactingNodeCheckBox.addChangeListener(this.interactingNodeCheckBoxListener);
 	}
 
 }

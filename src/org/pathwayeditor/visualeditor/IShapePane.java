@@ -26,5 +26,11 @@ public interface IShapePane {
 	void addMouseMotionListener(MouseMotionListener mouseMotionListener);
 
 	AffineTransform getLastUsedTransform();
+
+	void removeMouseMotionListener(MouseMotionListener mouseMotionListener);
+
+	void removeKeyListener(KeyListener keyListener);
+
+	void removeMouseListener(MouseListener mouseSelectionListener);
 	
 }

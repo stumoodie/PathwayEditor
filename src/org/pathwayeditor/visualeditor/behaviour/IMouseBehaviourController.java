@@ -2,6 +2,8 @@ package org.pathwayeditor.visualeditor.behaviour;
 
 public interface IMouseBehaviourController {
 
-	void initialise();
+	void activate();
+
+	void deactivate();
 	
 }

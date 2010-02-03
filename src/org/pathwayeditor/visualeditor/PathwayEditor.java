@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.util.Iterator;
 
 import javax.swing.BorderFactory;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -51,6 +52,7 @@ public class PathwayEditor extends JPanel {
 	private IMouseBehaviourController editBehaviourController;
 	private ISelectionChangeListener selectionChangeListener;
 	private FeedbackModel feedbackModel;
+	private boolean isOpen = false;
 	
 	public PathwayEditor(){
 		super();
@@ -58,7 +60,33 @@ public class PathwayEditor extends JPanel {
 		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 	}
 	
+	private void reset(){
+		this.commandStack = null;
+		this.remove(this.scrollPane);
+		this.scrollPane.remove((JComponent)this.shapePane);
+		this.selectionRecord.removeSelectionChangeListener(selectionChangeListener);
+		this.viewModel.deactivate();
+		this.editBehaviourController.deactivate();
+		this.shapePane = null;
+		this.scrollPane = null;
+		this.selectionRecord = null;
+		this.viewModel = null;
+		this.editBehaviourController = null;
+		this.selectionChangeListener = null;
+		this.feedbackModel = null;
+	}
+	
+	public void close(){
+		if(isOpen){
+			reset();
+		}
+		isOpen = false;
+	}
+	
 	public void loadCanvas(ICanvas canvas){
+		if(isOpen){
+			reset();
+		}
         this.commandStack = new CommandStack();
 		viewModel = new ViewControllerStore(canvas.getModel());
 		this.selectionRecord = new SelectionRecord(viewModel);
@@ -257,10 +285,11 @@ public class PathwayEditor extends JPanel {
 	}
 	
 	private void initialise(){
-		this.editBehaviourController.initialise();
+		this.editBehaviourController.activate();
 		this.viewModel.activate();
 		this.selectionRecord.addSelectionChangeListener(selectionChangeListener);
 		this.shapePane.updateView();
+		this.isOpen = true;
 	}
 
 	public void selectAndFocusOnElement(ILinkEdge linkEdge) {
