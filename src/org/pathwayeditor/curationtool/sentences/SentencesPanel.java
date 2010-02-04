@@ -45,7 +45,6 @@ import org.pathwayeditor.notations.annotator.ndom.impl.ISentenceStateChangeEvent
 public class SentencesPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private static final int NAME_COLUMNS = 20;
-//	private static final int SYNONYM_COLUMNS = 60;
 	private DataViewTableModel tableModel;
 	private JScrollPane dataViewScrollPane = new JScrollPane();
 	private TableColumnModel tableColumnModel;
@@ -74,7 +73,6 @@ public class SentencesPanel extends JPanel {
 	private boolean isOpen = false;
 	private JTextField focusNameField;
 	private final Dialog synonymDialog;
-//	private JTextField focusSynonymsField;
 	private JButton synonymsButton;
 	private JButton intNodeSynonymsButton;
 	private JTextField intNodeNameField;
@@ -138,6 +136,10 @@ public class SentencesPanel extends JPanel {
 //		c.gridwidth = 1;
 //		this.previewPanel.setPreferredSize(new Dimension(400, 300));
 		this.add(previewPanel);
+		focusNodeSynonymJDialog = new SynonymDialog(this.synonymDialog); 
+		focusNodeSynonymJDialog.setPreferredSize(new Dimension(200, 300));
+		intNodeSynonymJDialog = new SynonymDialog(this.synonymDialog); 
+		intNodeSynonymJDialog.setPreferredSize(new Dimension(200, 300));
 	    this.sentenceListener = new ISentenceStateChangeListener() {
 			@Override
 			public void stateChanged(ISentenceStateChangeEvent e) {
@@ -314,15 +316,11 @@ public class SentencesPanel extends JPanel {
 	}
 	
 	private void showFocusSynonymDialog(){
-		focusNodeSynonymJDialog = new SynonymDialog(this.synonymDialog); 
-		focusNodeSynonymJDialog.setPreferredSize(new Dimension(200, 300));
 		focusNodeSynonymJDialog.setSynonyms(currentSentence.getArc().getFocusNode());
 		focusNodeSynonymJDialog.setVisible(true);
 	}
 	
 	private void showIntNodeSynonymDialog(){
-		intNodeSynonymJDialog = new SynonymDialog(this.synonymDialog); 
-		intNodeSynonymJDialog.setPreferredSize(new Dimension(200, 300));
 		intNodeSynonymJDialog.setSynonyms(currentSentence.getArc().getInteractingNode());
 		intNodeSynonymJDialog.setVisible(true);
 	}
