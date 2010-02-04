@@ -2,6 +2,7 @@ package org.pathwayeditor.curationtool.sentences;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -21,6 +22,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ChangeEvent;
@@ -35,16 +37,20 @@ import org.pathwayeditor.curationtool.dataviewer.DataViewEvent;
 import org.pathwayeditor.curationtool.dataviewer.DataViewListener;
 import org.pathwayeditor.curationtool.dataviewer.DataViewTableModel;
 import org.pathwayeditor.curationtool.dataviewer.IRowDefn;
+import org.pathwayeditor.notations.annotator.ndom.IEntityNode;
 import org.pathwayeditor.notations.annotator.ndom.ISentence;
 import org.pathwayeditor.notations.annotator.ndom.ISentenceStateChangeListener;
 import org.pathwayeditor.notations.annotator.ndom.impl.ISentenceStateChangeEvent;
 
 public class SentencesPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
+	private static final int NAME_COLUMNS = 20;
+//	private static final int SYNONYM_COLUMNS = 60;
 	private DataViewTableModel tableModel;
 	private JScrollPane dataViewScrollPane = new JScrollPane();
 	private TableColumnModel tableColumnModel;
 	private JTable dataViewTable;
+	private JPanel focusDetailPanel = new JPanel();
 	private JPanel previewPanel = new JPanel();
 	private javax.swing.JPanel actionPanel = new JPanel();
 	private JTextPane sentencePreviewer = new JTextPane();
@@ -66,28 +72,72 @@ public class SentencesPanel extends JPanel {
 	private ChangeListener irrelevantCheckBoxListener;
 	private ListSelectionListener listSelectionListener;
 	private boolean isOpen = false;
+	private JTextField focusNameField;
+	private final Dialog synonymDialog;
+//	private JTextField focusSynonymsField;
+	private JButton synonymsButton;
+	private JButton intNodeSynonymsButton;
+	private JTextField intNodeNameField;
+	private JPanel intNodeDetailPanel = new JPanel();
+	private SynonymDialog focusNodeSynonymJDialog;
+	private SynonymDialog intNodeSynonymJDialog;
 	
-	public SentencesPanel(){
+	public SentencesPanel(Dialog synonymDialog){
+		this.listeners = new LinkedList<ISentenceSelectionChangeListener>();
+		this.synonymDialog = synonymDialog;
+		
 		IRowDefn rowDefn = new SentenceRowDefinition();
 		tableModel = new DataViewTableModel(rowDefn);
 		tableColumnModel = new DefaultTableColumnModel();
 		dataViewTable = new JTable(tableModel, tableColumnModel);
 		dataViewTable.setAutoscrolls(true);
 		dataViewTable.setShowHorizontalLines(true);
+		dataViewTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+
 		selectionModel = dataViewTable.getSelectionModel();
 		selectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		
 		setColumnDefs();
-		this.setLayout(new GridLayout(1, 2));
+		
 		dataViewScrollPane.getViewport().add(dataViewTable);
-		this.add(dataViewScrollPane);
+		setupActionPanel();
+		setUpFocusPanel();
+		setUpIntNodePanel();
+		JPanel sentenceSectionPanel = new JPanel();
+		sentenceSectionPanel.setLayout(new BorderLayout());
+		sentenceSectionPanel.add(this.focusDetailPanel, BorderLayout.PAGE_START);
+		sentenceSectionPanel.add(dataViewScrollPane, BorderLayout.CENTER);
 		this.previewPanel.setLayout(new BorderLayout());
+		this.previewPanel.add(this.intNodeDetailPanel, BorderLayout.PAGE_START);
 		this.previewPanel.add(this.sentencePreviewer, BorderLayout.CENTER);
 		this.previewPanel.add(this.actionPanel, BorderLayout.PAGE_END);
-		this.add(previewPanel);
-		setupActionPanel();
-		dataViewTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		this.listeners = new LinkedList<ISentenceSelectionChangeListener>();
+		this.sentencePreviewer.setEditable(false);
+		
 	    this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
+		this.setLayout(new GridLayout(1, 2));
+//		GridBagConstraints c = new GridBagConstraints();
+//		c.gridx = 0;
+//		c.gridy = 0;
+//		c.gridwidth = 2;
+//		c.weightx = 1.0;
+//		c.fill = GridBagConstraints.HORIZONTAL;
+//		this.focusDetailPanel.setPreferredSize(new Dimension(800, 50));
+//		this.add(this.focusDetailPanel);
+//		c.gridx = 0;
+//		c.gridy = 1;
+//		c.gridwidth = 1;
+//		c.weightx = 1.0;
+//		c.weighty = 1.0;
+//		c.fill = GridBagConstraints.BOTH;
+//		this.dataViewScrollPane.getViewport().setPreferredSize(new Dimension(600, 300));
+//	    this.add(dataViewScrollPane, c);
+	    this.add(sentenceSectionPanel);
+//		c.gridx = 1;
+//		c.gridy = 1;
+//		c.gridwidth = 1;
+//		this.previewPanel.setPreferredSize(new Dimension(400, 300));
+		this.add(previewPanel);
 	    this.sentenceListener = new ISentenceStateChangeListener() {
 			@Override
 			public void stateChanged(ISentenceStateChangeEvent e) {
@@ -142,11 +192,53 @@ public class SentencesPanel extends JPanel {
 				notifySentenceSelectionChanged(getCurrentSelection(), oldSentence, currentSentence);
 				updateButtons();
 				sentencePreviewer.setText(currentSentence.getMarkedUpSentence());
+				intialiseIntNodeDetailPanel();
+				if(intNodeSynonymJDialog.isVisible()){
+					intNodeSynonymJDialog.setSynonyms(currentSentence.getArc().getInteractingNode());
+				}
 				currentSentence.addSentenceStateChangeListener(sentenceListener);
 			}
 		};
 	}
 
+	private void setUpFocusPanel(){
+		JLabel label = new JLabel("Focus Node:");
+		focusNameField = new JTextField(NAME_COLUMNS);
+		focusNameField.setEditable(false);
+		synonymsButton = new JButton("Synonyms");
+		synonymsButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				showFocusSynonymDialog();
+			}
+		});
+		this.focusDetailPanel.add(label);
+		this.focusDetailPanel.add(focusNameField);
+		this.focusDetailPanel.add(synonymsButton);
+		synonymsButton.setEnabled(false);
+//		this.focusDetailPanel.add(focusSynonymsField);
+	}
+	
+	private void setUpIntNodePanel(){
+		JLabel label = new JLabel("Interacting Node:");
+		intNodeNameField = new JTextField(NAME_COLUMNS);
+		intNodeNameField.setEditable(false);
+		intNodeSynonymsButton = new JButton("Synonyms");
+		intNodeSynonymsButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				showIntNodeSynonymDialog();
+			}
+		});
+		this.intNodeDetailPanel.add(label);
+		this.intNodeDetailPanel.add(intNodeNameField);
+		this.intNodeDetailPanel.add(intNodeSynonymsButton);
+		intNodeSynonymsButton.setEnabled(false);
+//		this.focusDetailPanel.add(focusSynonymsField);
+	}
+	
 	private void notifySentenceSelectionChanged(final int idx, final ISentence oldSentence, final ISentence currentSentence) {
 		ISentenceSelectionChangeEvent e = new ISentenceSelectionChangeEvent(){
 
@@ -207,10 +299,40 @@ public class SentencesPanel extends JPanel {
 		this.interactingNodeCheckBox.removeChangeListener(this.interactingNodeCheckBoxListener);
 	}
 	
+	private void intialiseFocusDetailPanel(){
+		IEntityNode focusNode = this.currentSentence.getArc().getFocusNode();
+		this.focusNameField.setText(focusNode.getName());
+		synonymsButton.setEnabled(true);
+//		this.focusSynonymsField.setText(buf.toString());
+	}
+	
+	private void intialiseIntNodeDetailPanel(){
+		IEntityNode intNode = this.currentSentence.getArc().getInteractingNode();
+		this.intNodeNameField.setText(intNode.getName());
+		intNodeSynonymsButton.setEnabled(true);
+//		this.focusSynonymsField.setText(buf.toString());
+	}
+	
+	private void showFocusSynonymDialog(){
+		focusNodeSynonymJDialog = new SynonymDialog(this.synonymDialog); 
+		focusNodeSynonymJDialog.setPreferredSize(new Dimension(200, 300));
+		focusNodeSynonymJDialog.setSynonyms(currentSentence.getArc().getFocusNode());
+		focusNodeSynonymJDialog.setVisible(true);
+	}
+	
+	private void showIntNodeSynonymDialog(){
+		intNodeSynonymJDialog = new SynonymDialog(this.synonymDialog); 
+		intNodeSynonymJDialog.setPreferredSize(new Dimension(200, 300));
+		intNodeSynonymJDialog.setSynonyms(currentSentence.getArc().getInteractingNode());
+		intNodeSynonymJDialog.setVisible(true);
+	}
+	
 	private void intialise() {
 		updateButtons();
 		this.sentencePreviewer.setContentType("text/html");
 		this.sentencePreviewer.setText("<html>" + this.currentSentence.getMarkedUpSentence() + "</html>");
+		intialiseFocusDetailPanel();
+		intialiseIntNodeDetailPanel();
 		this.currentSentence.addSentenceStateChangeListener(sentenceListener);
 		this.selectionModel.addListSelectionListener(this.listSelectionListener);
 		this.nextButton.addActionListener(this.nextActionListener);

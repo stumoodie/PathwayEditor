@@ -1,7 +1,9 @@
 package org.pathwayeditor.curationtool;
 
 import java.awt.BorderLayout;
+import java.awt.Dialog;
 import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -66,7 +68,7 @@ public class CurationToolUI extends JFrame {
 		this.menuBar = new JMenuBar();
 		initFileMenu();
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		this.addWindowListener(new WindowListener(){
+		WindowListener windowsListener = new WindowListener(){
 
 			@Override
 			public void windowActivated(WindowEvent e) {
@@ -105,9 +107,13 @@ public class CurationToolUI extends JFrame {
 				
 			}
 			
-		});
+		};
+		this.addWindowListener(windowsListener);
 		this.setJMenuBar(menuBar);
-		this.sentencesPanel = new SentencesPanel();
+		Dialog dialog = new Dialog(this, "Synonym Dialog");
+		dialog.setAlwaysOnTop(true);
+		dialog.addWindowListener(windowsListener);
+		this.sentencesPanel = new SentencesPanel(dialog);
 		this.sentencesPanel.setPreferredSize(new Dimension(WIDTH, HEIGHT/3));
 		this.insp = new PathwayEditor();
 		this.insp.setPreferredSize(new Dimension(WIDTH, 2*HEIGHT/3));
