@@ -1,9 +1,9 @@
 package org.pathwayeditor.curationtool;
 
 import java.awt.BorderLayout;
+import java.awt.Cursor;
 import java.awt.Dialog;
 import java.awt.Dimension;
-import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -220,6 +220,7 @@ public class CurationToolUI extends JFrame {
 
 	public void openFile(File file){
 		try{
+			getContentPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 			INotationSubsystemPool subsystemPool = new NotationSubsystemPool();
 			canvasPersistenceManager = new FileXmlCanvasPersistenceManager(subsystemPool);
 			InputStream in = new FileInputStream(file);
@@ -241,6 +242,9 @@ public class CurationToolUI extends JFrame {
 			JOptionPane.showMessageDialog(this, "Error message: " + ex.getLocalizedMessage(), "Error opening file", JOptionPane.ERROR_MESSAGE);
 		} catch (TreeParseException e) {
 			JOptionPane.showMessageDialog(this, "Error message: " + e.getLocalizedMessage(), "Bug detected loading file", JOptionPane.ERROR_MESSAGE);
+		}
+		finally{
+			getContentPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		}
 	}
 	

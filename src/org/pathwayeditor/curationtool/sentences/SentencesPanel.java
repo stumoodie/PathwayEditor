@@ -117,9 +117,9 @@ public class SentencesPanel extends JPanel {
 	    this.add(sentenceSectionPanel);
 		this.add(previewPanel);
 		focusNodeSynonymJDialog = new SynonymDialog(this.synonymDialog); 
-		focusNodeSynonymJDialog.setPreferredSize(new Dimension(200, 300));
+		focusNodeSynonymJDialog.setSize(new Dimension(200, 300));
 		intNodeSynonymJDialog = new SynonymDialog(this.synonymDialog); 
-		intNodeSynonymJDialog.setPreferredSize(new Dimension(200, 300));
+		intNodeSynonymJDialog.setSize(new Dimension(200, 300));
 	    this.sentenceListener = new ISentenceStateChangeListener() {
 			@Override
 			public void stateChanged(ISentenceStateChangeEvent e) {
@@ -189,7 +189,6 @@ public class SentencesPanel extends JPanel {
 		focusNameField.setEditable(false);
 		synonymsButton = new JButton("Synonyms");
 		synonymsButton.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				showFocusSynonymDialog();
@@ -208,7 +207,6 @@ public class SentencesPanel extends JPanel {
 		intNodeNameField.setEditable(false);
 		intNodeSynonymsButton = new JButton("Synonyms");
 		intNodeSynonymsButton.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				showIntNodeSynonymDialog();
