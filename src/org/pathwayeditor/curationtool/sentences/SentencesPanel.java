@@ -114,27 +114,7 @@ public class SentencesPanel extends JPanel {
 	    this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
 		this.setLayout(new GridLayout(1, 2));
-//		GridBagConstraints c = new GridBagConstraints();
-//		c.gridx = 0;
-//		c.gridy = 0;
-//		c.gridwidth = 2;
-//		c.weightx = 1.0;
-//		c.fill = GridBagConstraints.HORIZONTAL;
-//		this.focusDetailPanel.setPreferredSize(new Dimension(800, 50));
-//		this.add(this.focusDetailPanel);
-//		c.gridx = 0;
-//		c.gridy = 1;
-//		c.gridwidth = 1;
-//		c.weightx = 1.0;
-//		c.weighty = 1.0;
-//		c.fill = GridBagConstraints.BOTH;
-//		this.dataViewScrollPane.getViewport().setPreferredSize(new Dimension(600, 300));
-//	    this.add(dataViewScrollPane, c);
 	    this.add(sentenceSectionPanel);
-//		c.gridx = 1;
-//		c.gridy = 1;
-//		c.gridwidth = 1;
-//		this.previewPanel.setPreferredSize(new Dimension(400, 300));
 		this.add(previewPanel);
 		focusNodeSynonymJDialog = new SynonymDialog(this.synonymDialog); 
 		focusNodeSynonymJDialog.setPreferredSize(new Dimension(200, 300));
