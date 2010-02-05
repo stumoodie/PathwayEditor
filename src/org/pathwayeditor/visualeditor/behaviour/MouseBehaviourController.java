@@ -180,7 +180,7 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 			retVal = new Point(originalMouseX, originalMouseY);
 		}
 		else{
-			retVal = new Point(originalMouseX-paneTransform.getTranslateX(), originalMouseY-paneTransform.getTranslateY()); 
+			retVal = new Point((originalMouseX-paneTransform.getTranslateX())/paneTransform.getScaleX(), (originalMouseY-paneTransform.getTranslateY())/paneTransform.getScaleY()); 
 		}
 		return retVal;  
 	}
