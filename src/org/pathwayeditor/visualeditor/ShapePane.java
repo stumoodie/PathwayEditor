@@ -42,6 +42,7 @@ public class ShapePane extends JPanel implements IShapePane {
 		Graphics2D g2d = (Graphics2D)g;
 		Envelope bounds = this.canvasDrawer.getViewControllerStore().getCanvasBounds();
 		AffineTransform originalTransform = g2d.getTransform();
+		g2d.scale(0.65, 0.65);
 		g2d.translate(-bounds.getOrigin().getX()+PANE_BORDER, -bounds.getOrigin().getY()+PANE_BORDER);
 		this.lastTransform = g2d.getTransform();
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);

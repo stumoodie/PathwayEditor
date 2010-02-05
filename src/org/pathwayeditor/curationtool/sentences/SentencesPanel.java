@@ -132,8 +132,8 @@ public class SentencesPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				int currSelectionIdx = getCurrentSelection()+1;
 				selectionModel.setSelectionInterval(currSelectionIdx, currSelectionIdx);
-				int scrollOffset = dataViewTable.getRowHeight() * getCurrentSelection();
-				dataViewScrollPane.getVerticalScrollBar().setValue(scrollOffset);
+//				int scrollOffset = dataViewTable.getRowHeight() * getCurrentSelection();
+//				dataViewScrollPane.getVerticalScrollBar().setValue(scrollOffset);
 			}
 		};
 		this.prevActionListener = new ActionListener() {
@@ -141,8 +141,8 @@ public class SentencesPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				int currSelectionIdx = getCurrentSelection()-1;
 				selectionModel.setSelectionInterval(currSelectionIdx, currSelectionIdx);
-				int scrollOffset = dataViewTable.getRowHeight() * getCurrentSelection();
-				dataViewScrollPane.getVerticalScrollBar().setValue(scrollOffset);
+//				int scrollOffset = dataViewTable.getRowHeight() * getCurrentSelection();
+//				dataViewScrollPane.getVerticalScrollBar().setValue(scrollOffset);
 			}
 		};
 		this.interactingNodeCheckBoxListener = new ChangeListener(){
@@ -370,8 +370,8 @@ public class SentencesPanel extends JPanel {
 					currSelectionIdx++;
 				}
 				selectionModel.setSelectionInterval(currSelectionIdx, currSelectionIdx);
-				int scrollOffset = dataViewTable.getRowHeight() * getCurrentSelection();
-				dataViewScrollPane.getVerticalScrollBar().setValue(scrollOffset);
+//				int scrollOffset = dataViewTable.getRowHeight() * getCurrentSelection();
+//				dataViewScrollPane.getVerticalScrollBar().setValue(scrollOffset);
 			}
 		});
 	}
