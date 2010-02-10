@@ -17,6 +17,7 @@ import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveController;
 import org.pathwayeditor.visualeditor.controller.ILinkController;
 import org.pathwayeditor.visualeditor.controller.INodeController;
+import org.pathwayeditor.visualeditor.controller.IRootController;
 import org.pathwayeditor.visualeditor.controller.IViewControllerStore;
 
 public class SelectionRecord implements ISelectionRecord {
@@ -33,6 +34,7 @@ public class SelectionRecord implements ISelectionRecord {
 	}
 	
 	public void addSecondarySelection(IDrawingPrimitiveController drawingElement) {
+		if(drawingElement == null || drawingElement instanceof IRootController) throw new IllegalArgumentException("drawing element cannot be null or the root node");
 		if(this.selections.isEmpty()) throw new IllegalStateException("Cannot add a secondary selection before a primary selection");
 
 		final ISelection newSelection = createSelection(false, drawingElement);
@@ -109,6 +111,8 @@ public class SelectionRecord implements ISelectionRecord {
 	}
 
 	public void setPrimarySelection(IDrawingPrimitiveController drawingElement) {
+		if(drawingElement == null || drawingElement instanceof IRootController) throw new IllegalArgumentException("drawing element cannot be null or the root node");
+		
 		if(this.selections.isEmpty() || !this.selections.first().equals(drawingElement)){
 			// a change in primary selection clears the secondary selection
 			this.selections.clear();
@@ -214,7 +218,7 @@ public class SelectionRecord implements ISelectionRecord {
 
 			@Override
 			public INodeSelection next() {
-				return (INodeSelection)findSelection(viewModel.getNodePrimitive(iter.next().getAttribute()));
+				return (INodeSelection)findSelection(viewModel.getNodeController(iter.next().getAttribute()));
 			}
 
 			@Override

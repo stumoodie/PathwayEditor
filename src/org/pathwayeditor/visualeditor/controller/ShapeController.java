@@ -33,8 +33,7 @@ import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.figurevm.FigureDefinitionCompiler;
 import org.pathwayeditor.visualeditor.geometry.IIntersectionCalcnFilter;
-import org.pathwayeditor.visualeditor.geometry.INodeIntersectionCalculator;
-import org.pathwayeditor.visualeditor.geometry.ShapeIntersectionCalculator;
+import org.pathwayeditor.visualeditor.geometry.IIntersectionCalculator;
 
 public class ShapeController extends NodeController implements IShapeController {
 	private final Logger logger = Logger.getLogger(this.getClass());
@@ -45,9 +44,10 @@ public class ShapeController extends NodeController implements IShapeController 
 	private IFigureController figureController;
 	private final IDrawingNodeAttributeListener parentDrawingNodePropertyChangeListener;
 	private boolean isActive;
+	private IIntersectionCalculator intCal = null;
 	
-	public ShapeController(IViewControllerStore viewModel, IShapeAttribute node) {
-		super(viewModel);
+	public ShapeController(IViewControllerStore viewModel, IShapeAttribute node, int index) {
+		super(viewModel, index);
 		
 		this.domainNode = node;
 		this.parentAttribute = this.domainNode.getCurrentDrawingElement().getParentNode().getAttribute();
@@ -69,10 +69,12 @@ public class ShapeController extends NodeController implements IShapeController 
 				else if(e.getPropertyChange().equals(CanvasAttributePropertyChange.SIZE)
 						|| e.getPropertyChange().equals(CanvasAttributePropertyChange.LOCATION)){
 					IShapeAttribute attribute = (IShapeAttribute)e.getAttribute();
+					Envelope oldDrawnBounds = figureController.getConvexHull().getEnvelope();
 					figureController.setRequestedEnvelope(attribute.getBounds());
 					figureController.generateFigureDefinition();
 					recalculateSrcLinks();
 					recalculateTgtLinks();
+					notifyDrawnBoundsChanged(oldDrawnBounds, figureController.getConvexHull().getEnvelope());
 				}
 				else if(e.getPropertyChange().equals(CanvasAttributePropertyChange.LINE_STYLE)){
 					IShapeAttribute attribute = (IShapeAttribute)e.getAttribute();
@@ -90,7 +92,6 @@ public class ShapeController extends NodeController implements IShapeController 
 			}	
 		};
 		parentDrawingNodePropertyChangeListener = new IDrawingNodeAttributeListener() {
-			
 			@Override
 			public void nodeTranslated(IDrawingNodeAttributeTranslationEvent e) {
 				domainNode.translate(e.getTranslationDelta());
@@ -105,7 +106,6 @@ public class ShapeController extends NodeController implements IShapeController 
 
 	public void activate(){
 		addListeners(this.domainNode, figureController);
-//		this.resyncToModel();
 		this.isActive = true;
 	}
 	
@@ -163,8 +163,8 @@ public class ShapeController extends NodeController implements IShapeController 
 		while(edgeIter.hasNext()){
 			ILinkEdge link = edgeIter.next();
 			ILinkController linkController = this.getViewModel().getLinkController(link.getAttribute());
-			IShapeController srcNode = (IShapeController)this.getViewModel().getNodePrimitive(link.getSourceShape().getAttribute());
-			IShapeController tgtNode = (IShapeController)this.getViewModel().getNodePrimitive(link.getTargetShape().getAttribute());
+			IShapeController srcNode = (IShapeController)this.getViewModel().getNodeController(link.getSourceShape().getAttribute());
+			IShapeController tgtNode = (IShapeController)this.getViewModel().getNodeController(link.getTargetShape().getAttribute());
 			changeSourceAnchor(linkController, srcNode, tgtNode);
 //			changeTargetAnchor(linkController, srcNode, tgtNode);
 		}
@@ -175,8 +175,8 @@ public class ShapeController extends NodeController implements IShapeController 
 		while(edgeIter.hasNext()){
 			ILinkEdge link = edgeIter.next();
 			ILinkController linkController = this.getViewModel().getLinkController(link.getAttribute());
-			IShapeController srcNode = (IShapeController)this.getViewModel().getNodePrimitive(link.getSourceShape().getAttribute());
-			IShapeController tgtNode = (IShapeController)this.getViewModel().getNodePrimitive(link.getTargetShape().getAttribute());
+			IShapeController srcNode = (IShapeController)this.getViewModel().getNodeController(link.getSourceShape().getAttribute());
+			IShapeController tgtNode = (IShapeController)this.getViewModel().getNodeController(link.getTargetShape().getAttribute());
 //			changeSourceAnchor(linkController, srcNode, tgtNode);
 			changeTargetAnchor(linkController, srcNode, tgtNode);
 		}
@@ -276,23 +276,6 @@ public class ShapeController extends NodeController implements IShapeController 
 	}
 
 	@Override
-	public int compareTo(IDrawingPrimitiveController o) {
-		Integer otherIndex = o.getDrawingElement().getCreationSerial();
-		return Integer.valueOf(this.domainNode.getCreationSerial()).compareTo(otherIndex);
-	}
-
-	@Override
-	protected void nodeDisposalHook() {
-		if(this.isActive()){
-			inactivate();
-		}
-		// clear all listeners to this instance too.
-		this.figureController = null;
-		this.domainNode = null;
-		this.parentAttribute = null;
-	}
-
-	@Override
 	public boolean canResize(Point originDelta, Dimension resizeDelta) {
 		boolean retVal = false;
 		// algorithm is to find the intersecting shapes and then check if the
@@ -302,17 +285,14 @@ public class ShapeController extends NodeController implements IShapeController 
 			logger.trace("In can resize. New bounds = " + newBounds + ",originDelta=" + originDelta + ",resizeDelta=" + resizeDelta);
 		}
 		if(newBounds.getDimension().getWidth() > 0.0 && newBounds.getDimension().getHeight() > 0.0){
-			INodeController parentNode = this.getViewModel().getNodePrimitive(this.domainNode.getCurrentDrawingElement().getParentNode().getAttribute());
-			INodeIntersectionCalculator intCal = new ShapeIntersectionCalculator(this.getViewModel());
+			INodeController parentNode = this.getViewModel().getNodeController(this.domainNode.getCurrentDrawingElement().getParentNode().getAttribute());
 			intCal.setFilter(new IIntersectionCalcnFilter() {
-
 				@Override
-				public boolean accept(INodeController node) {
+				public boolean accept(IDrawingPrimitiveController node) {
 					return !(node instanceof ILabelController);
 				}
-
 			});
-			SortedSet<INodeController> intersectingNodes = intCal.findIntersectingNodes(this.getConvexHull().changeEnvelope(newBounds), this);
+			SortedSet<IDrawingPrimitiveController> intersectingNodes = intCal.findIntersectingNodes(this.getConvexHull().changeEnvelope(newBounds), this);
 			boolean parentIntersects = intersectingNodes.contains(parentNode);
 			if(logger.isTraceEnabled()){
 				logger.trace("CanResize: intersects with parent" + parentIntersects);
@@ -326,11 +306,11 @@ public class ShapeController extends NodeController implements IShapeController 
 		return retVal;
 	}
 
-	private boolean childrenIntersect(IShapeController parentNode, SortedSet<INodeController> intersectingNodes){
+	private boolean childrenIntersect(IShapeController parentNode, SortedSet<IDrawingPrimitiveController> intersectingNodes){
 		Iterator<IShapeNode> iter = parentNode.getDrawingElement().getCurrentDrawingElement().getSubModel().shapeNodeIterator();
 		boolean retVal = true;
 		while(iter.hasNext() && retVal){
-			INodeController child = this.getViewModel().getNodePrimitive(iter.next().getAttribute());
+			INodeController child = this.getViewModel().getNodeController(iter.next().getAttribute());
 			retVal = intersectingNodes.contains(child);
 		}
 		return retVal;
@@ -345,5 +325,35 @@ public class ShapeController extends NodeController implements IShapeController 
 	@Override
 	public boolean isActive() {
 		return this.isActive;
+	}
+
+	@Override
+	public Envelope getDrawnBounds() {
+		return this.figureController.getEnvelope();
+	}
+
+	@Override
+	public boolean containsPoint(Point p) {
+		IConvexHull attributeHull = this.getConvexHull();
+		boolean retVal = attributeHull.containsPoint(p); 
+		if(logger.isTraceEnabled()){
+			logger.trace("Testing contains node:" + this + ",retVal=" + retVal + ", hull=" + attributeHull + ", point=" + p);
+		}
+		return retVal;
+	}
+
+	@Override
+	public IIntersectionCalculator getIntersectionCalculator() {
+		return this.intCal;
+	}
+
+	@Override
+	public void setIntersectionCalculator(IIntersectionCalculator nodeIntersectionCalculator) {
+		this.intCal = nodeIntersectionCalculator;
+	}
+
+	@Override
+	public boolean intersectsHull(IConvexHull queryHull) {
+		return this.figureController.getConvexHull().hullsIntersect(queryHull);
 	}
 }

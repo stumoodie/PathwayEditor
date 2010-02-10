@@ -33,6 +33,8 @@ import org.pathwayeditor.visualeditor.controller.IViewControllerStore;
 import org.pathwayeditor.visualeditor.controller.ViewControllerStore;
 import org.pathwayeditor.visualeditor.feedback.FeedbackModel;
 import org.pathwayeditor.visualeditor.feedback.IFeedbackNode;
+import org.pathwayeditor.visualeditor.geometry.FastShapeIntersectionCalculator;
+import org.pathwayeditor.visualeditor.geometry.IIntersectionCalculator;
 import org.pathwayeditor.visualeditor.selection.INodeSelection;
 import org.pathwayeditor.visualeditor.selection.ISelection;
 import org.pathwayeditor.visualeditor.selection.ISelectionChangeEvent;
@@ -53,6 +55,8 @@ public class PathwayEditor extends JPanel {
 	private ISelectionChangeListener selectionChangeListener;
 	private FeedbackModel feedbackModel;
 	private boolean isOpen = false;
+	private CommonParentCalculator newParentCalc;
+
 	
 	public PathwayEditor(){
 		super();
@@ -89,6 +93,8 @@ public class PathwayEditor extends JPanel {
 		}
         this.commandStack = new CommandStack();
 		viewModel = new ViewControllerStore(canvas.getModel());
+		IIntersectionCalculator intCalc = new FastShapeIntersectionCalculator(viewModel);
+		newParentCalc = new CommonParentCalculator(intCalc);
 		this.selectionRecord = new SelectionRecord(viewModel);
 		this.feedbackModel = new FeedbackModel(this.selectionRecord);
 		this.shapePane = new ShapePane(viewModel, this.selectionRecord, this.feedbackModel);
@@ -135,7 +141,7 @@ public class PathwayEditor extends JPanel {
 			@Override
 			public ReparentingStateType getReparentingState(Point delta) {
 				ReparentingStateType retVal = ReparentingStateType.FORBIDDEN;
-				CommonParentCalculator newParentCalc = new CommonParentCalculator(viewModel);
+//				newParentCalc = new CommonParentCalculator(viewModel);
 				newParentCalc.findCommonParent(selectionRecord.getGraphSelection(), delta);
 		        if(newParentCalc.hasFoundCommonParent()) {
 		        	if(logger.isTraceEnabled()){
@@ -190,7 +196,7 @@ public class PathwayEditor extends JPanel {
 				return canContinueToResize(originDelta, resizeDelta);
 			}
 		};
-        this.editBehaviourController = new MouseBehaviourController(shapePane, editOperation, resizeOperation);
+        this.editBehaviourController = new MouseBehaviourController(shapePane, editOperation, resizeOperation, intCalc);
         this.selectionChangeListener = new ISelectionChangeListener() {
 			
 			@Override
@@ -255,7 +261,7 @@ public class PathwayEditor extends JPanel {
 	
 	private INodeController calculateReparentTarget(Point delta) {
 		INodeController retVal = null;
-		CommonParentCalculator newParentCalc = new CommonParentCalculator(viewModel);
+//		CommonParentCalculator newParentCalc = new CommonParentCalculator(viewModel);
 		newParentCalc.findCommonParent(selectionRecord.getGraphSelection(), delta);
         if(newParentCalc.hasFoundCommonParent()) {
         	if(logger.isTraceEnabled()){

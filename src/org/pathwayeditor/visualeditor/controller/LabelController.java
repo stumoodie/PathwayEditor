@@ -1,5 +1,6 @@
 package org.pathwayeditor.visualeditor.controller;
 
+import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNodeAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILabelAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.CanvasAttributePropertyChange;
@@ -17,6 +18,7 @@ import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.figurevm.FigureDefinitionCompiler;
 
 public class LabelController extends NodeController implements ILabelController {
+	private final Logger logger = Logger.getLogger(this.getClass());
 	private final String LABEL_DEFINITION =
 		"curbounds /h exch def /w exch def /y exch def /x exch def\n" +
 		"/xoffset { w mul x add } def /yoffset { h mul y add } def\n" +
@@ -41,8 +43,8 @@ public class LabelController extends NodeController implements ILabelController 
 	private IFigureController controller;
 	private boolean isActive;
 	
-	public LabelController(IViewControllerStore viewModel, ILabelAttribute node) {
-		super(viewModel);
+	public LabelController(IViewControllerStore viewModel, ILabelAttribute node, int index) {
+		super(viewModel, index);
 		this.domainNode = node;
 		this.parentAttribute = this.domainNode.getCurrentDrawingElement().getParentNode().getAttribute();
 		this.isActive = false;
@@ -50,11 +52,11 @@ public class LabelController extends NodeController implements ILabelController 
 			public void propertyChange(ICanvasAttributePropertyChangeEvent e) {
 				if(e.getPropertyChange().equals(CanvasAttributePropertyChange.SIZE)
 						|| e.getPropertyChange().equals(CanvasAttributePropertyChange.LOCATION)){
-//					Envelope originalBounds = getBounds();
+					Envelope oldDrawnBounds = controller.getConvexHull().getEnvelope();
 					IDrawingNodeAttribute attribute = (IDrawingNodeAttribute)e.getAttribute();
 					controller.setRequestedEnvelope(attribute.getBounds());
 					controller.generateFigureDefinition();
-//					notifyChangedBounds(originalBounds, getBounds());
+					notifyDrawnBoundsChanged(oldDrawnBounds, controller.getConvexHull().getEnvelope());
 				}
 			}
 		};
@@ -129,21 +131,6 @@ public class LabelController extends NodeController implements ILabelController 
 //	}
 
 	@Override
-	public int compareTo(IDrawingPrimitiveController o) {
-		Integer otherIndex = o.getDrawingElement().getCreationSerial();
-		return Integer.valueOf(this.domainNode.getCreationSerial()).compareTo(otherIndex);
-	}
-
-	@Override
-	protected void nodeDisposalHook() {
-		if(this.isActive()){
-			inactivate();
-		}
-		this.domainNode = null;
-		this.parentAttribute = null;
-	}
-
-	@Override
 	public void inactivate() {
 		this.domainNode.removeChangeListener(drawingNodePropertyChangeListener);
 		parentAttribute = this.domainNode.getCurrentDrawingElement().getParentNode().getAttribute(); 
@@ -203,4 +190,23 @@ public class LabelController extends NodeController implements ILabelController 
 		return this.isActive;
 	}
 
+	@Override
+	public Envelope getDrawnBounds() {
+		return this.controller.getEnvelope();
+	}
+
+	@Override
+	public boolean containsPoint(Point p) {
+		IConvexHull attributeHull = this.getConvexHull();
+		boolean retVal = attributeHull.containsPoint(p); 
+		if(logger.isTraceEnabled()){
+			logger.trace("Testing contains node:" + this + ",retVal=" + retVal + ", hull=" + attributeHull + ", point=" + p);
+		}
+		return retVal;
+	}
+
+	@Override
+	public boolean intersectsHull(IConvexHull queryHull) {
+		return this.controller.getConvexHull().hullsIntersect(queryHull);
+	}
 }

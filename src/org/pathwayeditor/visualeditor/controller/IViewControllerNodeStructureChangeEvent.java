@@ -1,10 +1,10 @@
 package org.pathwayeditor.visualeditor.controller;
 
 public interface IViewControllerNodeStructureChangeEvent {
-	enum ViewControllerStructureChangeType { NODE_ADDED, NODES_REMOVED };
+	enum ViewControllerStructureChangeType { NODE_ADDED, NODE_REMOVED, LINK_ADDED, LINK_REMOVED };
 	
 	ViewControllerStructureChangeType getChangeType();
 	
-	INodeController getChangedNode();
+	IDrawingPrimitiveController getChangedElement();
 	
 }

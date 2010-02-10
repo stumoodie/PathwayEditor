@@ -1,9 +1,16 @@
 package org.pathwayeditor.visualeditor.controller;
 
+import java.util.List;
+
 import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasAttribute;
+import org.pathwayeditor.figure.geometry.Envelope;
+import org.pathwayeditor.figure.geometry.IConvexHull;
+import org.pathwayeditor.figure.geometry.Point;
 
 public interface IDrawingPrimitiveController extends Comparable<IDrawingPrimitiveController> {
 
+	int getIndex();
+	
 	IViewControllerStore getViewModel();
 	
 	/**
@@ -12,23 +19,31 @@ public interface IDrawingPrimitiveController extends Comparable<IDrawingPrimitiv
 	 */
 	ICanvasAttribute getDrawingElement();
 	
+	Envelope getDrawnBounds();
+	
 	/**
-	 * Adds listeners and takes other steps which require that the view model has been fully created  
+	 * Enables listeners  
 	 */
 	void activate();
 	
+	/**
+	 * Is this instance in an active state, i.e. with listeners enabled.
+	 * @return
+	 */
 	boolean isActive();
 	
-	void inactivate();
-	
 	/**
-	 * Turns off listeners and finalises resources on the assumption that this primitive is to be discarded.
+	 * Turns off listeners.
 	 */
-	void dispose();
+	void inactivate();
+
+	void addDrawingPrimitiveControllerListener(IDrawingPrimitiveControllerListener listener);
 	
-//	void addDrawingPrimitiveControllerListener(IDrawingPrimitiveControllerListener listener);
-//
-//	void removeDrawingPrimitiveControllerListener(IDrawingPrimitiveControllerListener listener);
-//	
-//	List<IDrawingPrimitiveControllerListener> getDrawingPrimitiveControllerListeners();
+	void removeDrawingPrimitiveControllerListener(IDrawingPrimitiveControllerListener listener);
+		
+	List<IDrawingPrimitiveControllerListener> getDrawingPrimitiveControllerListeners();
+	
+	boolean containsPoint(Point p);
+
+	boolean intersectsHull(IConvexHull queryHull);
 }

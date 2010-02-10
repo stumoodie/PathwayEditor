@@ -8,16 +8,15 @@ import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNode;
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNodeAttribute;
 import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
+import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveController;
 import org.pathwayeditor.visualeditor.controller.ILabelController;
 import org.pathwayeditor.visualeditor.controller.INodeController;
 import org.pathwayeditor.visualeditor.controller.IShapeController;
-import org.pathwayeditor.visualeditor.controller.IViewControllerStore;
 import org.pathwayeditor.visualeditor.geometry.IIntersectionCalcnFilter;
-import org.pathwayeditor.visualeditor.geometry.INodeIntersectionCalculator;
-import org.pathwayeditor.visualeditor.geometry.ShapeIntersectionCalculator;
+import org.pathwayeditor.visualeditor.geometry.IIntersectionCalculator;
 
 public class CommonParentCalculator {
-	private final INodeIntersectionCalculator calc;
+	private final IIntersectionCalculator calc;
 	private INodeController parent = null;
 	private int numNodesAlreadyHaveParent = 0;
 	private IDrawingElementSelection selection = null;
@@ -28,8 +27,8 @@ public class CommonParentCalculator {
 		
 	}
 	
-	public CommonParentCalculator(IViewControllerStore model){
-		this.calc = new ShapeIntersectionCalculator(model);
+	public CommonParentCalculator(IIntersectionCalculator calc){
+		this.calc = calc;
 	}
 	
 	public void findCommonParentExcludingLabels(IDrawingElementSelection testSelection, Point delta){
@@ -44,7 +43,7 @@ public class CommonParentCalculator {
 	}
 	
 	private INodeController getNodeController(IDrawingNodeAttribute node){
-		return this.calc.getModel().getNodePrimitive(node);
+		return this.calc.getModel().getNodeController(node);
 	}
 	
 	public void findCommonParent(IDrawingElementSelection testSelection, Point delta) {
@@ -66,7 +65,7 @@ public class CommonParentCalculator {
 			this.selection = testSelection;
 			Iterator<IDrawingNode> selectionIter = selection
 					.topDrawingNodeIterator();
-			parent = this.calc.getModel().getNodePrimitive(selection.getModel().getRootNode().getAttribute());
+			parent = this.calc.getModel().getNodeController(selection.getModel().getRootNode().getAttribute());
 			boolean firstTime = true;
 			numNodesAlreadyHaveParent = 0;
 			while (selectionIter.hasNext() && parent != null) {
@@ -130,15 +129,20 @@ public class CommonParentCalculator {
 		calc.setFilter(new IIntersectionCalcnFilter(){
 
 			@Override
-			public boolean accept(INodeController node) {
-				return node.getDrawingElement().getCurrentDrawingElement().canParent(potentialChild.getDrawingElement().getCurrentDrawingElement()); 
+			public boolean accept(IDrawingPrimitiveController cont) {
+				boolean retVal = false;
+				if(cont instanceof INodeController){
+					INodeController node = (INodeController)cont;
+					retVal = node.getDrawingElement().getCurrentDrawingElement().canParent(potentialChild.getDrawingElement().getCurrentDrawingElement());
+				}
+				return retVal;
 			}
 			
 		});
-		SortedSet<INodeController> nodes = calc.findIntersectingNodes(testPlacement, potentialChild);
+		SortedSet<IDrawingPrimitiveController> nodes = calc.findIntersectingNodes(testPlacement, potentialChild);
 		INodeController retVal = null;
 		if(!nodes.isEmpty()){
-			retVal = nodes.first();
+			retVal = (INodeController)nodes.first();
 		}
 		return retVal;
 	}

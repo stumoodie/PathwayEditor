@@ -16,9 +16,8 @@ import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.IShapePane;
 import org.pathwayeditor.visualeditor.behaviour.IKeyboardResponse.CursorType;
 import org.pathwayeditor.visualeditor.behaviour.IMouseFeedbackResponse.StateType;
-import org.pathwayeditor.visualeditor.controller.INodeController;
-import org.pathwayeditor.visualeditor.geometry.INodeIntersectionCalculator;
-import org.pathwayeditor.visualeditor.geometry.ShapeIntersectionCalculator;
+import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveController;
+import org.pathwayeditor.visualeditor.geometry.IIntersectionCalculator;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle.SelectionHandleType;
 
@@ -27,7 +26,7 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 	private MouseListener mouseSelectionListener;
 	private MouseMotionListener mouseMotionListener;
 	private KeyListener keyListener;
-	private final INodeIntersectionCalculator intCalc;
+	private final IIntersectionCalculator intCalc;
 	private IShapePane shapePane;
 	private Map<SelectionHandleType, IDragResponse> dragResponseMap;
 	private IKeyboardResponse keyboardResponseMap;
@@ -35,21 +34,22 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 	private IDragResponse currDragResponse;
 	private IMouseFeedbackResponse currMouseFeedbackResponse;
 
-	public MouseBehaviourController(IShapePane pane, IEditingOperation moveOp, IResizeOperation resizeOp){
+	public MouseBehaviourController(IShapePane pane, IEditingOperation moveOp, IResizeOperation resizeOp,
+			IIntersectionCalculator intCalc){
 		this.shapePane = pane;
 		this.dragResponseMap = new HashMap<SelectionHandleType, IDragResponse>();
 		this.mouseResponseMap = new HashMap<SelectionHandleType, IMouseFeedbackResponse>();
 		this.keyboardResponseMap = new KeyboardResponse(moveOp);
 		initialiseDragResponses(moveOp, resizeOp);
 		initialiseMouseResponse();
-        intCalc = new ShapeIntersectionCalculator(shapePane.getViewModel());
+        this.intCalc = intCalc;
         this.mouseSelectionListener = new MouseListener(){
 
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1){
 					if(!e.isShiftDown() && !e.isAltDown()){
 						Point location = getAdjustedMousePosition(e.getPoint().getX(), e.getPoint().getY());
-						INodeController nodeController = findDrawingNodeAt(location);
+						IDrawingPrimitiveController nodeController = findDrawingNodeAt(location);
 						if(nodeController != null){
 							shapePane.getSelectionRecord().setPrimarySelection(nodeController);
 						}
@@ -59,7 +59,7 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 					}
 					else if(e.isShiftDown() && !e.isAltDown()){
 						Point location = getAdjustedMousePosition(e.getPoint().getX(), e.getPoint().getY());
-						INodeController nodeController = findDrawingNodeAt(location);
+						IDrawingPrimitiveController nodeController = findDrawingNodeAt(location);
 						if(nodeController != null){
 							shapePane.getSelectionRecord().addSecondarySelection(nodeController);
 						}
@@ -407,10 +407,14 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 		}
 	}
 	
-	private INodeController findDrawingNodeAt(Point location) {
-		SortedSet<INodeController> hits = intCalc.findNodesAt(new Point(location.getX(), location.getY()));
-		INodeController retVal = hits.first();
-		logger.info("Found hit at: " + retVal);
+	private IDrawingPrimitiveController findDrawingNodeAt(Point location) {
+		intCalc.setFilter(null);
+		SortedSet<IDrawingPrimitiveController> hits = intCalc.findDrawingPrimitivesAt(new Point(location.getX(), location.getY()));
+		IDrawingPrimitiveController retVal = null;
+		if(!hits.isEmpty()){
+			retVal = hits.first();
+			logger.info("Found hit at: " + retVal);
+		}
 		return retVal;
 	}
 

@@ -8,23 +8,23 @@ import java.util.SortedSet;
 
 import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
-import org.pathwayeditor.visualeditor.controller.INodeController;
+import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveController;
 import org.pathwayeditor.visualeditor.controller.IViewControllerStore;
 
 /**
  * @author smoodie
  *
  */
-public interface INodeIntersectionCalculator {
+public interface IIntersectionCalculator {
 
 	IViewControllerStore getModel();
 
 	void setFilter(IIntersectionCalcnFilter filter);
 
-	void setComparator(Comparator<INodeController> comparator);
+	void setComparator(Comparator<IDrawingPrimitiveController> comparator);
 	
-	SortedSet<INodeController> findIntersectingNodes(IConvexHull queryHull, INodeController queryNode);
+	SortedSet<IDrawingPrimitiveController> findIntersectingNodes(IConvexHull queryHull, IDrawingPrimitiveController queryNode);
 
-	SortedSet<INodeController> findNodesAt(Point p);
+	SortedSet<IDrawingPrimitiveController> findDrawingPrimitivesAt(Point p);
 	
 }

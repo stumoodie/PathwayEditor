@@ -3,12 +3,14 @@ package org.pathwayeditor.visualeditor;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.util.Iterator;
 
 import javax.swing.JPanel;
 
+import org.pathwayeditor.businessobjects.drawingprimitives.ILinkEdge;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.graphicsengine.CanvasDrawer;
 import org.pathwayeditor.graphicsengine.ICanvasDrawer;
@@ -42,7 +44,7 @@ public class ShapePane extends JPanel implements IShapePane {
 		Graphics2D g2d = (Graphics2D)g;
 		Envelope bounds = this.canvasDrawer.getViewControllerStore().getCanvasBounds();
 		AffineTransform originalTransform = g2d.getTransform();
-		g2d.scale(0.65, 0.65);
+//		g2d.scale(0.65, 0.65);
 		g2d.translate(-bounds.getOrigin().getX()+PANE_BORDER, -bounds.getOrigin().getY()+PANE_BORDER);
 		this.lastTransform = g2d.getTransform();
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -100,5 +102,10 @@ public class ShapePane extends JPanel implements IShapePane {
 		this.setPreferredSize(prefSize);
 		revalidate();
 		repaint();
+	}
+	
+	
+	public ILinkEdge getLinkAtPoint(Point p){
+		return null;
 	}
 }

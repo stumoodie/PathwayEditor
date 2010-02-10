@@ -5,8 +5,8 @@ package org.pathwayeditor.visualeditor.controller;
 public abstract class NodeController extends DrawingPrimitiveController implements INodeController {
 //	private final List<INodeControllerChangeListener> listeners;
 
-	protected NodeController(IViewControllerStore viewController){
-		super(viewController);
+	protected NodeController(IViewControllerStore viewController, int index){
+		super(viewController, index);
 //		this.listeners = new LinkedList<INodeControllerChangeListener>();
 	}
 
@@ -93,12 +93,4 @@ public abstract class NodeController extends DrawingPrimitiveController implemen
 //		}
 //	}
 	
-	@Override
-	protected final void disposeRedefinition(){
-//		this.listeners.clear();
-		nodeDisposalHook();
-	}
-	
-	protected abstract void nodeDisposalHook();
-
 }

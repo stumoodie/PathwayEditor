@@ -13,8 +13,8 @@ public class RootController extends NodeController implements IRootController {
 	private boolean isActive;
 	
 	
-	public RootController(IViewControllerStore viewModel, IRootAttribute node) {
-		super(viewModel);
+	public RootController(IViewControllerStore viewModel, IRootAttribute node, int index) {
+		super(viewModel, index);
 		this.domainNode = node;
 		this.hull = new RectangleHull(domainNode.getBounds());
 		this.isActive = false;
@@ -35,37 +35,11 @@ public class RootController extends NodeController implements IRootController {
 		return this.domainNode;
 	}
 
-//	@Override
-//	public void translatePrimitive(Point translation) {
-//		// do nothing
-//	}
-//
-//	@Override
-//	public void redefinedSyncroniseToModel() {
-//		// do nothing
-//	}
-
-	@Override
-	public int compareTo(IDrawingPrimitiveController o) {
-		Integer otherIndex = o.getDrawingElement().getCreationSerial();
-		return Integer.valueOf(this.domainNode.getCreationSerial()).compareTo(otherIndex);
-	}
-
-	@Override
-	protected void nodeDisposalHook() {
-		// do nothing
-	}
-
 	@Override
 	public void activate() {
 		this.isActive = true;
-//		this.resyncToModel();
 	}
 
-//	@Override
-//	public void resizePrimitive(Point originDelta, Dimension resizeDelta) {
-//	}
-//
 	@Override
 	public boolean canResize(Point originDelta, Dimension resizeDelta) {
 		return false;
@@ -81,4 +55,18 @@ public class RootController extends NodeController implements IRootController {
 		return this.isActive;
 	}
 
+	@Override
+	public Envelope getDrawnBounds() {
+		return this.getBounds();
+	}
+
+	@Override
+	public boolean containsPoint(Point p) {
+		return true;
+	}
+
+	@Override
+	public boolean intersectsHull(IConvexHull queryHull) {
+		return true;
+	}
 }

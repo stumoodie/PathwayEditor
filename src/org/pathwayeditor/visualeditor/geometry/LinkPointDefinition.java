@@ -8,6 +8,7 @@ import java.util.List;
 import org.pathwayeditor.businessobjects.drawingprimitives.IBendPoint;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
 import org.pathwayeditor.figure.geometry.Dimension;
+import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.LineSegment;
 import org.pathwayeditor.figure.geometry.Point;
 
@@ -183,5 +184,28 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 	 */
 	public LineSegment getLinkDirection() {
 		return new LineSegment(this.getSrcEndPoint(), this.getTgtEndPoint());
+	}
+
+	@Override
+	public boolean containsPoint(Point p) {
+		if(getBounds().containsPoint(p)){
+			
+		}
+		return false;
+	}
+
+	@Override
+	public Envelope getBounds() {
+		double minX = Double.MAX_VALUE;
+		double maxX = Double.MIN_VALUE;
+		double minY = Double.MAX_VALUE;
+		double maxY = Double.MIN_VALUE;
+		for(Point p : this.pointList){
+			minX = Math.min(minX, p.getX());
+			maxX = Math.max(maxX, p.getX());
+			minY = Math.min(minY, p.getY());
+			maxY = Math.max(maxY, p.getY());
+		}
+		return new Envelope(minX, minY, maxX-minX, maxY-minY);
 	}
 }

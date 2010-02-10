@@ -80,7 +80,7 @@ public class ShapeIntersectionCalculator implements INodeIntersectionCalculator 
 	
 	@Override
 	public SortedSet<INodeController> findIntersectingNodes(IConvexHull queryHull, INodeController queryNode){
-		Iterator<INodeController> iter = model.nodePrimitiveIterator();
+		Iterator<INodeController> iter = model.nodeControllerIterator();
 		SortedSet<INodeController> retVal = new TreeSet<INodeController>(this.comparator);
 		// the root node will always intersect - that's a give so add it in and exclude it from
 		// intersection tests
@@ -101,7 +101,7 @@ public class ShapeIntersectionCalculator implements INodeIntersectionCalculator 
 
 	@Override
 	public SortedSet<INodeController> findNodesAt(Point p) {
-		Iterator<INodeController> iter = model.nodePrimitiveIterator();
+		Iterator<INodeController> iter = model.nodeControllerIterator();
 		SortedSet<INodeController> retVal = new TreeSet<INodeController>(this.comparator);
 		while(iter.hasNext()){
 			INodeController node = iter.next();

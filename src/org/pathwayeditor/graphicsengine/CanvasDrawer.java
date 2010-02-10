@@ -31,25 +31,27 @@ public class CanvasDrawer implements ICanvasDrawer {
 	 */
 	public void paint(Graphics2D g2d){
 		IGraphicsEngine graphicsEngine = new Java2DGraphicsEngine(g2d);
-		Iterator<IShapeController> shapeIter = this.viewControllerStore.shapePrimitiveIterator();
+		Iterator<IShapeController> shapeIter = this.viewControllerStore.shapeControllerIterator();
 		while(shapeIter.hasNext()){
 			IShapeController shapeNode = shapeIter.next();
 			IFigureController controller = shapeNode.getFigureController();
 			FigureDrawer drawer = new FigureDrawer(controller.getFigureDefinition());
 			drawer.drawFigure(graphicsEngine);
 		}
-		Iterator<ILabelController> labelIter = this.viewControllerStore.labelPrimitiveIterator();
+		Iterator<ILabelController> labelIter = this.viewControllerStore.labelControllerIterator();
 		while(labelIter.hasNext()){
 			ILabelController labelNode = labelIter.next();
 			IFigureController controller = labelNode.getFigureController();
 			FigureDrawer drawer = new FigureDrawer(controller.getFigureDefinition());
 			drawer.drawFigure(graphicsEngine);
 		}
-		Iterator<ILinkController> linkEdgeIter = this.viewControllerStore.linkPrimitiveIterator();
+		Iterator<ILinkController> linkEdgeIter = this.viewControllerStore.linkControllerIterator();
 		while(linkEdgeIter.hasNext()){
 			ILinkController edge = linkEdgeIter.next();
 			LinkDrawer linkDrawer = new LinkDrawer(edge);
 			linkDrawer.paint(g2d);
 		}
 	}
+	
+	
 }

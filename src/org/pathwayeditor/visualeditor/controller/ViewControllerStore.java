@@ -1,5 +1,6 @@
 package org.pathwayeditor.visualeditor.controller;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -34,6 +35,7 @@ public class ViewControllerStore implements IViewControllerStore {
 	private IRootController rootPrimitive;
 	private boolean isActive = false;
 	private final List<IViewControllerChangeListener> listeners;
+	private int indexCounter = 0;
 	
 	public ViewControllerStore(IModel domainModel){
 		this.domainModel = domainModel;
@@ -58,15 +60,19 @@ public class ViewControllerStore implements IViewControllerStore {
 			public void modelStructureChange(IModelStructureChangeEvent event) {
 				if(event.getChangeType().equals(ModelStructureChangeType.SELECTION_REMOVED)){
 //					rebuildModel();
+					inactivateSelection(event.getOriginalSelection());
 					removeSelection(event.getOriginalSelection());
 				}
 				else if(event.getChangeType().equals(ModelStructureChangeType.SELECTION_MOVED)){
 					// reinitialise the nodes
+					inactivateSelection(event.getOriginalSelection());
 					removeSelection(event.getOriginalSelection());
 					addSelection(event.getChangedSelection());
+					activateSelection(event.getChangedSelection());
 				}
 				else if(event.getChangeType().equals(ModelStructureChangeType.SELCTION_COPIED)){
 					addSelection(event.getChangedSelection());
+					activateSelection(event.getChangedSelection());
 				}
 			}
 			
@@ -80,33 +86,83 @@ public class ViewControllerStore implements IViewControllerStore {
 	}
 	
 	private void addSelection(IDrawingElementSelection selection){
-		Iterator<IDrawingNode> iter = selection.drawingNodeIterator();
-		while(iter.hasNext()){
-			IDrawingNode node = iter.next();
-			createNodePrimitive(node.getAttribute());
+		Iterator<IDrawingNode> nodeIter = selection.drawingNodeIterator();
+		while(nodeIter.hasNext()){
+			IDrawingNode node = nodeIter.next();
+			INodeController newNode = createNodePrimitive(node.getAttribute());
+			notifyAddedNode(newNode);
+		}
+		Iterator<ILinkEdge> linkIter = selection.linkEdgeIterator();
+		while(linkIter.hasNext()){
+			ILinkEdge link = linkIter.next();
+			ILinkController newLinkCont = createLinkPrimitive(link.getAttribute());
+			notifyAddedLink(newLinkCont);
 		}
 	}
 		
 	private void removeSelection(IDrawingElementSelection selection){
-		Iterator<IDrawingNode> iter1 = selection.drawingNodeIterator();
-		while(iter1.hasNext()){
-			IDrawingNode node = iter1.next();
-			INodeController nodePrimitive = getNodePrimitive(node.getAttribute());
+		removeNodeSelection(selection);
+		removeEdgeSelection(selection);
+	}
+	
+	private void activateSelection(IDrawingElementSelection selection) {
+		Iterator<IDrawingNode> nodeIter = selection.drawingNodeIterator();
+		while(nodeIter.hasNext()){
+			IDrawingNode node = nodeIter.next();
+			INodeController nodePrimitive = getNodeController(node.getAttribute());
+			nodePrimitive.activate();
+		}
+		Iterator<ILinkEdge> linkIter = selection.linkEdgeIterator();
+		while(linkIter.hasNext()){
+			ILinkEdge link = linkIter.next();
+			ILinkController linkController = getLinkController(link.getAttribute());
+			linkController.activate();
+		}
+	}
+
+	private void inactivateSelection(IDrawingElementSelection selection) {
+		Iterator<IDrawingNode> nodeIter = selection.drawingNodeIterator();
+		while(nodeIter.hasNext()){
+			IDrawingNode node = nodeIter.next();
+			INodeController nodePrimitive = getNodeController(node.getAttribute());
 			nodePrimitive.inactivate();
 		}
+		Iterator<ILinkEdge> linkIter = selection.linkEdgeIterator();
+		while(linkIter.hasNext()){
+			ILinkEdge link = linkIter.next();
+			ILinkController linkController = getLinkController(link.getAttribute());
+			linkController.inactivate();
+		}
+	}
+
+	private void removeNodeSelection(IDrawingElementSelection selection){
 		Iterator<IDrawingNode> iter = selection.drawingNodeIterator();
 		while(iter.hasNext()){
 			IDrawingNode node = iter.next();
-			removeNodePrimitive(getNodePrimitive(node.getAttribute()));
+			INodeController nodeController = getNodeController(node.getAttribute()); 
+			notifyRemovedNode(nodeController);
+			removeNodeController(nodeController);
 		}
 	}
 	
-	private void removeNodePrimitive(INodeController shapeNode){
-//		INodeController nodePrimitive = (INodeController)domainToViewMap.get(shapeNode.getDrawingElement());
+	private void removeEdgeSelection(IDrawingElementSelection selection){
+		Iterator<ILinkEdge> iter = selection.linkEdgeIterator();
+		while(iter.hasNext()){
+			ILinkEdge link = iter.next();
+			ILinkController linkController = getLinkController(link.getAttribute()); 
+			notifyRemovedLink(linkController);
+			removeLinkController(linkController);
+		}
+	}
+	
+	private void removeLinkController(ILinkController linkController) {
+		domainToViewMap.remove(linkController.getDrawingElement());
+		drawingPrimitives.remove(linkController);
+	}
+
+	private void removeNodeController(INodeController shapeNode){
 		domainToViewMap.remove(shapeNode.getDrawingElement());
 		drawingPrimitives.remove(shapeNode);
-		notifyRemovedNode(shapeNode);
-		shapeNode.dispose();
 	}
 
 	private void buildFromDomainModel(){
@@ -125,13 +181,13 @@ public class ViewControllerStore implements IViewControllerStore {
 	private INodeController createNodePrimitive(IDrawingNodeAttribute node){
 		INodeController viewNode = null;
 		if(node instanceof IShapeAttribute){
-			viewNode = new ShapeController(this, (IShapeAttribute)node);
+			viewNode = new ShapeController(this, (IShapeAttribute)node, indexCounter++);
 		}
 		else if(node instanceof ILabelAttribute){
-			viewNode = new LabelController(this, (ILabelAttribute)node);
+			viewNode = new LabelController(this, (ILabelAttribute)node, indexCounter++);
 		}
 		else if(node instanceof IRootAttribute){
-			this.rootPrimitive = new RootController(this, (IRootAttribute)node);
+			this.rootPrimitive = new RootController(this, (IRootAttribute)node, indexCounter++);
 			viewNode = this.rootPrimitive;
 		}
 		else{
@@ -140,22 +196,15 @@ public class ViewControllerStore implements IViewControllerStore {
 		if(viewNode != null){
 			this.domainToViewMap.put(node, viewNode);
 			this.drawingPrimitives.add(viewNode);
-			if(this.isActive()){
-				notifyAddedNode(viewNode);
-				viewNode.activate();
-			}
 		}
 		return viewNode;
 	}
 	
 	
 	private ILinkController createLinkPrimitive(ILinkAttribute linkAtt){
-		ILinkController linkCtlr = new LinkController(this, linkAtt);
+		ILinkController linkCtlr = new LinkController(this, linkAtt, indexCounter++);
 		this.domainToViewMap.put(linkAtt, linkCtlr);
 		this.drawingPrimitives.add(linkCtlr);
-		if(this.isActive()){
-			linkCtlr.activate();
-		}
 		return linkCtlr;
 	}
 	
@@ -169,7 +218,7 @@ public class ViewControllerStore implements IViewControllerStore {
 			}
 
 			@Override
-			public INodeController getChangedNode() {
+			public INodeController getChangedElement() {
 				return viewNode;
 			}
 			
@@ -182,11 +231,45 @@ public class ViewControllerStore implements IViewControllerStore {
 
 			@Override
 			public ViewControllerStructureChangeType getChangeType() {
-				return ViewControllerStructureChangeType.NODES_REMOVED;
+				return ViewControllerStructureChangeType.NODE_REMOVED;
 			}
 
 			@Override
-			public INodeController getChangedNode() {
+			public INodeController getChangedElement() {
+				return viewNode;
+			}
+			
+		};
+		notifyEvent(e);
+	}
+
+	private void notifyAddedLink(final ILinkController viewNode) {
+		IViewControllerNodeStructureChangeEvent e = new IViewControllerNodeStructureChangeEvent(){
+
+			@Override
+			public ViewControllerStructureChangeType getChangeType() {
+				return ViewControllerStructureChangeType.LINK_ADDED;
+			}
+
+			@Override
+			public ILinkController getChangedElement() {
+				return viewNode;
+			}
+			
+		};
+		notifyEvent(e);
+	}
+
+	private void notifyRemovedLink(final ILinkController viewNode) {
+		IViewControllerNodeStructureChangeEvent e = new IViewControllerNodeStructureChangeEvent(){
+
+			@Override
+			public ViewControllerStructureChangeType getChangeType() {
+				return ViewControllerStructureChangeType.LINK_REMOVED;
+			}
+
+			@Override
+			public ILinkController getChangedElement() {
 				return viewNode;
 			}
 			
@@ -211,7 +294,7 @@ public class ViewControllerStore implements IViewControllerStore {
 	}
 
 	@Override
-	public INodeController getNodePrimitive(IDrawingNodeAttribute draggedNode) {
+	public INodeController getNodeController(IDrawingNodeAttribute draggedNode) {
 		IDrawingPrimitiveController retVal = this.domainToViewMap.get(draggedNode);
 		if(retVal == null){
 			throw new IllegalArgumentException("domain node is not present in this view model");
@@ -225,7 +308,7 @@ public class ViewControllerStore implements IViewControllerStore {
 	}
 
 	@Override
-	public Iterator<ILabelController> labelPrimitiveIterator() {
+	public Iterator<ILabelController> labelControllerIterator() {
 		List<ILabelController> retList = new LinkedList<ILabelController>();
 		for(IDrawingPrimitiveController primitive : this.drawingPrimitives){
 			if(primitive instanceof ILabelController){
@@ -236,7 +319,7 @@ public class ViewControllerStore implements IViewControllerStore {
 	}
 
 	@Override
-	public Iterator<ILinkController> linkPrimitiveIterator() {
+	public Iterator<ILinkController> linkControllerIterator() {
 		List<ILinkController> retList = new LinkedList<ILinkController>();
 		for(IDrawingPrimitiveController primitive : this.drawingPrimitives){
 			if(primitive instanceof ILinkController){
@@ -247,7 +330,7 @@ public class ViewControllerStore implements IViewControllerStore {
 	}
 
 	@Override
-	public Iterator<INodeController> nodePrimitiveIterator() {
+	public Iterator<INodeController> nodeControllerIterator() {
 		List<INodeController> retList = new LinkedList<INodeController>();
 		for(IDrawingPrimitiveController primitive : this.drawingPrimitives){
 			if(primitive instanceof INodeController){
@@ -258,7 +341,7 @@ public class ViewControllerStore implements IViewControllerStore {
 	}
 
 	@Override
-	public Iterator<IShapeController> shapePrimitiveIterator() {
+	public Iterator<IShapeController> shapeControllerIterator() {
 		List<IShapeController> retList = new LinkedList<IShapeController>();
 		for(IDrawingPrimitiveController primitive : this.drawingPrimitives){
 			if(primitive instanceof IShapeController){
@@ -311,7 +394,7 @@ public class ViewControllerStore implements IViewControllerStore {
 		double maxX = Double.MIN_VALUE;
 		double minY = Double.MAX_VALUE;
 		double maxY = Double.MIN_VALUE;
-		Iterator<INodeController> nodeIter = this.nodePrimitiveIterator();
+		Iterator<INodeController> nodeIter = this.nodeControllerIterator();
 		while(nodeIter.hasNext()){
 			INodeController nodeController = nodeIter.next();
 			if(!(nodeController instanceof IRootController)){
@@ -324,7 +407,7 @@ public class ViewControllerStore implements IViewControllerStore {
 				maxY = Math.max(maxY, nodeDiagonal.getY());
 			}
 		}
-		Iterator<ILinkController> edgeIter = this.linkPrimitiveIterator();
+		Iterator<ILinkController> edgeIter = this.linkControllerIterator();
 		while(edgeIter.hasNext()){
 			ILinkController linkController = edgeIter.next();
 			ILinkPointDefinition defn = linkController.getLinkDefinition();
@@ -338,5 +421,20 @@ public class ViewControllerStore implements IViewControllerStore {
 			}
 		}
 		return new Envelope(minX, minY, maxX-minX, maxY-minY);
+	}
+
+	@Override
+	public void addViewControllerChangeListener(IViewControllerChangeListener listener) {
+		this.listeners.add(listener);
+	}
+
+	@Override
+	public List<IViewControllerChangeListener> getViewControllerChangeListeners() {
+		return new ArrayList<IViewControllerChangeListener>(this.listeners);
+	}
+
+	@Override
+	public void removeViewControllerChangeListener(IViewControllerChangeListener listener) {
+		this.listeners.remove(listener);
 	}
 }
