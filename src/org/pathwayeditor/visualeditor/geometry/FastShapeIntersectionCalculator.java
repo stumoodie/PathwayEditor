@@ -115,6 +115,9 @@ public class FastShapeIntersectionCalculator implements IIntersectionCalculator 
 				Point origin = drawnBounds.getOrigin();
 				Point diagonal = drawnBounds.getDiagonalCorner();
 				this.spacialIndex.insert(node, (float)origin.getX(), (float)origin.getY(), (float)diagonal.getX(), (float)diagonal.getY());
+				if(logger.isTraceEnabled()){
+					logger.trace("Inserted element=" + node + " into RTree with extent=" + drawnBounds);
+				}
 				node.addDrawingPrimitiveControllerListener(this.primitiveControllerChangeListener);
 			}
 		}

@@ -97,4 +97,18 @@ public abstract class DrawingPrimitiveController implements IDrawingPrimitiveCon
 			return false;
 		return true;
 	}
+	
+	@Override
+	public String toString(){
+		StringBuilder buf = new StringBuilder(this.getClass().getSimpleName());
+		buf.append("(index=");
+		buf.append(this.index);
+		buf.append(",drawingElement=");
+		buf.append(this.getDrawingElement());
+		buf.append(",drawnBounds=");
+		buf.append(this.getDrawnBounds());
+		buf.append(")");
+		return buf.toString();
+	}
+	
 }

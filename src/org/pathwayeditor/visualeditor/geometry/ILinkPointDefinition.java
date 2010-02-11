@@ -52,7 +52,7 @@ public interface ILinkPointDefinition {
 	 */
 	LineSegment getLinkDirection();
 
-	Envelope getBounds();
+//	Envelope getBounds();
 	
-	boolean containsPoint(Point p);
+	boolean containsPoint(Point p, double lineWidthTolerance);
 }

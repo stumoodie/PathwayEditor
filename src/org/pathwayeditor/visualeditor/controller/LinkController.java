@@ -1,5 +1,7 @@
 package org.pathwayeditor.visualeditor.controller;
 
+import java.util.Iterator;
+
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.CanvasAttributePropertyChange;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributePropertyChangeEvent;
@@ -11,7 +13,8 @@ import org.pathwayeditor.visualeditor.geometry.ILinkPointDefinition;
 import org.pathwayeditor.visualeditor.geometry.LinkPointDefinition;
 
 public class LinkController extends DrawingPrimitiveController implements ILinkController {
-//	private final Logger logger = Logger.getLogger(this.getClass());
+	private static final double LINE_HIT_TOLERENCE = 5.0;
+	//	private final Logger logger = Logger.getLogger(this.getClass());
 	private ILinkAttribute linkAttribute;
 	private ILinkPointDefinition linkDefinition;
 	private boolean isActive;
@@ -103,12 +106,30 @@ public class LinkController extends DrawingPrimitiveController implements ILinkC
 
 	@Override
 	public Envelope getDrawnBounds() {
-		return this.linkDefinition.getBounds();
+		double minX = Double.MAX_VALUE;
+		double maxX = Double.MIN_VALUE;
+		double minY = Double.MAX_VALUE;
+		double maxY = Double.MIN_VALUE;
+		final double halfLineHeight = this.linkAttribute.getLineWidth() + LINE_HIT_TOLERENCE;
+		Iterator<Point> pointIter = this.linkDefinition.pointIterator();
+		while(pointIter.hasNext()){
+			Point p = pointIter.next();
+			minX = Math.min(minX, p.getX()-halfLineHeight);
+			maxX = Math.max(maxX, p.getX()+halfLineHeight);
+			minY = Math.min(minY, p.getY()-halfLineHeight);
+			maxY = Math.max(maxY, p.getY()+halfLineHeight);
+		}
+		return new Envelope(minX, minY, maxX-minX, maxY-minY);
 	}
 
 	@Override
 	public boolean containsPoint(Point p) {
-		return this.linkDefinition.containsPoint(p);
+		boolean retVal = false;
+		if(getDrawnBounds().containsPoint(p)){
+			final double halfLineHeight = this.linkAttribute.getLineWidth() + LINE_HIT_TOLERENCE;
+			retVal = this.linkDefinition.containsPoint(p, halfLineHeight); 
+		}
+		return retVal;
 	}
 
 	@Override
