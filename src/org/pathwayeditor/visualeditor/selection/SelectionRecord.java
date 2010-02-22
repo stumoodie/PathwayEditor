@@ -255,4 +255,10 @@ public class SelectionRecord implements ISelectionRecord {
 		return selectionFactory.createEdgeExcludedSelection();
 	}
 
+	@Override
+	public ILinkSelection getUniqueLinkSelection() {
+		ISelection retVal = this.selections.first();
+		return (ILinkSelection)retVal;
+	}
+
 }

@@ -23,18 +23,18 @@ public class SelectionShape {
 	
 	public void paint(Graphics2D g2d){
 		g2d.setColor(Color.red);
-		Envelope bounds = this.selection.getSelectionModel(SelectionHandleType.Central).getBounds();
+		Envelope bounds = this.selection.getSelectionHandle(SelectionHandleType.Central).get(0).getBounds();
 		Rectangle2D selectionShape = new Rectangle2D.Double(bounds.getOrigin().getX(), bounds.getOrigin().getY(),
 				bounds.getDimension().getWidth(), bounds.getDimension().getHeight());
 		g2d.draw(selectionShape);
-		drawCornerHandle(g2d, this.selection.getSelectionModel(SelectionHandleType.NW));
-		drawCornerHandle(g2d, this.selection.getSelectionModel(SelectionHandleType.NE));
-		drawCornerHandle(g2d, this.selection.getSelectionModel(SelectionHandleType.SE));
-		drawCornerHandle(g2d, this.selection.getSelectionModel(SelectionHandleType.SW));
-		drawMidLineHandle(g2d, this.selection.getSelectionModel(SelectionHandleType.N));
-		drawMidLineHandle(g2d, this.selection.getSelectionModel(SelectionHandleType.E));
-		drawMidLineHandle(g2d, this.selection.getSelectionModel(SelectionHandleType.S));
-		drawMidLineHandle(g2d, this.selection.getSelectionModel(SelectionHandleType.W));
+		drawCornerHandle(g2d, this.selection.getSelectionHandle(SelectionHandleType.NW).get(0));
+		drawCornerHandle(g2d, this.selection.getSelectionHandle(SelectionHandleType.NE).get(0));
+		drawCornerHandle(g2d, this.selection.getSelectionHandle(SelectionHandleType.SE).get(0));
+		drawCornerHandle(g2d, this.selection.getSelectionHandle(SelectionHandleType.SW).get(0));
+		drawMidLineHandle(g2d, this.selection.getSelectionHandle(SelectionHandleType.N).get(0));
+		drawMidLineHandle(g2d, this.selection.getSelectionHandle(SelectionHandleType.E).get(0));
+		drawMidLineHandle(g2d, this.selection.getSelectionHandle(SelectionHandleType.S).get(0));
+		drawMidLineHandle(g2d, this.selection.getSelectionHandle(SelectionHandleType.W).get(0));
 	}
 	
 	/**

@@ -2,7 +2,6 @@ package org.pathwayeditor.visualeditor.geometry;
 
 import java.util.Iterator;
 
-import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.LineSegment;
 import org.pathwayeditor.figure.geometry.Point;
 

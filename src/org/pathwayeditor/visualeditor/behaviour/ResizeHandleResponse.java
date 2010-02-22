@@ -2,6 +2,7 @@ package org.pathwayeditor.visualeditor.behaviour;
 
 import org.apache.log4j.Logger;
 import org.pathwayeditor.figure.geometry.Point;
+import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
 
 public class ResizeHandleResponse extends HandleResponse {
 	private final Logger logger = Logger.getLogger(this.getClass());
@@ -36,7 +37,7 @@ public class ResizeHandleResponse extends HandleResponse {
 	}
 
 	@Override
-	public void dragStarted(Point newLocation) {
+	public void dragStarted(ISelectionHandle selectionHandle, Point newLocation) {
 		this.enterDragOngoingState();
 		this.setStartLocation(newLocation);
 		calculateLocationDelta(newLocation);
@@ -52,7 +53,7 @@ public class ResizeHandleResponse extends HandleResponse {
 	public boolean canContinueDrag(Point newLocation) {
 		// The problem is we don;t want to change the state of the class here. So we must undo
 		// these changes before the method returns.
-		Point originalLocation = this.getLastLocation();
+		Point originalLocation = this.getStartLocation();
 		this.calculateLocationDelta(newLocation);
 		this.newPositionCalculator.calculateDeltas(this.getDelta());
 		boolean retVal = this.operation.canResize(newPositionCalculator.getResizedOrigin(), newPositionCalculator.getResizedDelta());

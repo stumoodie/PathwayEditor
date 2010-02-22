@@ -32,11 +32,17 @@ public class MidPointSelectionHandle extends SelectionHandle {
 
 	@Override
 	public int compareTo(ISelectionHandle o) {
-		return this.getNodeController().compareTo(o.getNodeController());
+		return this.getDrawingPrimitiveController().compareTo(o.getDrawingPrimitiveController());
 	}
 
 	@Override
 	public void translate(Point delta) {
 		this.bounds = this.bounds.changeOrigin(initialOrigin.translate(delta));
+	}
+
+	@Override
+	public void drawShape(IHandleShapeDrawer drawer) {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -40,4 +40,6 @@ public interface ISelectionRecord {
 	boolean isNodeSelected(IDrawingPrimitiveController testElement);
 
 	IDrawingElementSelection getGraphSelection();
+
+	ILinkSelection getUniqueLinkSelection();
 }

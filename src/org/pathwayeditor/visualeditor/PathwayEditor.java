@@ -16,14 +16,17 @@ import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.behaviour.IEditingOperation;
+import org.pathwayeditor.visualeditor.behaviour.ILinkOperation;
 import org.pathwayeditor.visualeditor.behaviour.IMouseBehaviourController;
 import org.pathwayeditor.visualeditor.behaviour.IResizeOperation;
 import org.pathwayeditor.visualeditor.behaviour.MouseBehaviourController;
 import org.pathwayeditor.visualeditor.commands.CommandStack;
 import org.pathwayeditor.visualeditor.commands.CompoundCommand;
+import org.pathwayeditor.visualeditor.commands.CreateBendPointCommand;
 import org.pathwayeditor.visualeditor.commands.ICommand;
 import org.pathwayeditor.visualeditor.commands.ICommandStack;
 import org.pathwayeditor.visualeditor.commands.ICompoundCommand;
+import org.pathwayeditor.visualeditor.commands.MoveBendPointCommand;
 import org.pathwayeditor.visualeditor.commands.MoveNodeCommand;
 import org.pathwayeditor.visualeditor.commands.ReparentSelectionCommand;
 import org.pathwayeditor.visualeditor.commands.ResizeNodeCommand;
@@ -33,8 +36,7 @@ import org.pathwayeditor.visualeditor.controller.IViewControllerStore;
 import org.pathwayeditor.visualeditor.controller.ViewControllerStore;
 import org.pathwayeditor.visualeditor.feedback.FeedbackModel;
 import org.pathwayeditor.visualeditor.feedback.IFeedbackNode;
-import org.pathwayeditor.visualeditor.geometry.FastShapeIntersectionCalculator;
-import org.pathwayeditor.visualeditor.geometry.IIntersectionCalculator;
+import org.pathwayeditor.visualeditor.selection.ILinkSelection;
 import org.pathwayeditor.visualeditor.selection.INodeSelection;
 import org.pathwayeditor.visualeditor.selection.ISelection;
 import org.pathwayeditor.visualeditor.selection.ISelectionChangeEvent;
@@ -93,13 +95,14 @@ public class PathwayEditor extends JPanel {
 		}
         this.commandStack = new CommandStack();
 		viewModel = new ViewControllerStore(canvas.getModel());
-		IIntersectionCalculator intCalc = new FastShapeIntersectionCalculator(viewModel);
-		newParentCalc = new CommonParentCalculator(intCalc);
+		newParentCalc = new CommonParentCalculator(viewModel.getIntersectionCalculator());
 		this.selectionRecord = new SelectionRecord(viewModel);
 		this.feedbackModel = new FeedbackModel(this.selectionRecord);
 		this.shapePane = new ShapePane(viewModel, this.selectionRecord, this.feedbackModel);
 		scrollPane = new JScrollPane((ShapePane)this.shapePane, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scrollPane.setPreferredSize(this.getPreferredSize());
+//		scrollPane.setWheelScrollingEnabled(false);
+		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 		this.add(scrollPane, BorderLayout.CENTER);
 		
 		Envelope canvasBounds = viewModel.getCanvasBounds();
@@ -196,7 +199,55 @@ public class PathwayEditor extends JPanel {
 				return canContinueToResize(originDelta, resizeDelta);
 			}
 		};
-        this.editBehaviourController = new MouseBehaviourController(shapePane, editOperation, resizeOperation, intCalc);
+		ILinkOperation linkOperation = new ILinkOperation(){
+			@Override
+			public void moveBendPointFinished(int bendPointIdx, Point position) {
+				if(logger.isTraceEnabled()){
+					logger.trace("Move bendpoint finished. bpIdx=" + bendPointIdx + ",position=" + position);
+				}
+				createMoveBendPointCommand(bendPointIdx, position);
+				feedbackModel.clear();
+				selectionRecord.clear();
+				shapePane.updateView();
+			}
+
+			@Override
+			public void moveBendPointOngoing(int bendPointIdx, Point delta) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void moveBendPointStated(int bendPointIdx) {
+				logger.trace("Move bendpoint started");
+				feedbackModel.rebuildWithStrictSelection();
+			}
+
+			@Override
+			public void newBendPointFinished(int lineSegmentIdx, Point position) {
+				if(logger.isTraceEnabled()){
+					logger.trace("New bendpoint finished. lineSeg=" + lineSegmentIdx + ",position=" + position);
+				}
+				createNewBendPointCommand(lineSegmentIdx, position);
+				feedbackModel.clear();
+				selectionRecord.clear();
+				shapePane.updateView();
+			}
+
+			@Override
+			public void newBendPointOngoing(int lineSegmentIdx, Point position) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void newBendPointStarted(int lineSegmentIdx) {
+				logger.trace("New bendpoint started");
+				feedbackModel.rebuildWithStrictSelection();
+			}
+			
+		};
+        this.editBehaviourController = new MouseBehaviourController(shapePane, editOperation, resizeOperation, linkOperation);
         this.selectionChangeListener = new ISelectionChangeListener() {
 			
 			@Override
@@ -207,6 +258,18 @@ public class PathwayEditor extends JPanel {
 		this.initialise();
 	}
 	
+	protected void createNewBendPointCommand(int lineSegmentIdx, Point position) {
+		ILinkSelection linkSelection = this.selectionRecord.getUniqueLinkSelection(); 
+		ICommand cmd = new CreateBendPointCommand(linkSelection.getPrimitiveController().getDrawingElement(), lineSegmentIdx, position);
+		this.commandStack.execute(cmd);
+	}
+
+	protected void createMoveBendPointCommand(int bpIdx, Point position) {
+		ILinkSelection linkSelection = this.selectionRecord.getUniqueLinkSelection(); 
+		ICommand cmd = new MoveBendPointCommand(linkSelection.getPrimitiveController().getDrawingElement().getBendPoint(bpIdx), position);
+		this.commandStack.execute(cmd);
+	}
+
 	private void resizeSelection(Point originDelta, Dimension resizeDelta) {
 		Iterator<IFeedbackNode> moveNodeIterator = this.feedbackModel.nodeIterator();
 		while(moveNodeIterator.hasNext()){
@@ -218,6 +281,15 @@ public class PathwayEditor extends JPanel {
 		}
 	}
 
+//	private void newBendPointFeedback(Point location, int lineSegmentIdx){
+//		IFeedbackLink feedback = this.feedbackModel.getUniqueLink();
+//		while(moveNodeIterator.hasNext()){
+//			IFeedbackNode nodePrimitive = moveNodeIterator.next();
+//			nodePrimitive.translatePrimitive(delta);
+//			logger.trace("Dragged shape to location: " + nodePrimitive.getBounds().getOrigin());
+//		}
+//	}
+	
 	private void createResizeCommand(Point originDelta, Dimension resizeDelta) {
 		Iterator<ISelection> moveNodeIterator = this.selectionRecord.selectionIterator();
 		ICompoundCommand cmpCommand = new CompoundCommand();

@@ -65,7 +65,7 @@ public class ShapePane extends JPanel implements IShapePane {
 		Iterator<ILinkSelection> linkSelectionIter = this.selections.selectedLinksIterator();
 		while(linkSelectionIter.hasNext()){
 			ILinkSelection link = linkSelectionIter.next();
-			SelectionLinkDrawer selection = new SelectionLinkDrawer(link.getPrimitiveController());
+			SelectionLinkDrawer selection = new SelectionLinkDrawer(link);
 			selection.paint(g2d);
 		}
 	}

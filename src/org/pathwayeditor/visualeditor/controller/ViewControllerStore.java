@@ -25,6 +25,8 @@ import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IModelStruc
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ModelStructureChangeType;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.Point;
+import org.pathwayeditor.visualeditor.geometry.FastShapeIntersectionCalculator;
+import org.pathwayeditor.visualeditor.geometry.IIntersectionCalculator;
 import org.pathwayeditor.visualeditor.geometry.ILinkPointDefinition;
 
 public class ViewControllerStore implements IViewControllerStore {
@@ -36,6 +38,7 @@ public class ViewControllerStore implements IViewControllerStore {
 	private boolean isActive = false;
 	private final List<IViewControllerChangeListener> listeners;
 	private int indexCounter = 0;
+	private final IIntersectionCalculator intersectionCalculator;
 	
 	public ViewControllerStore(IModel domainModel){
 		this.domainModel = domainModel;
@@ -50,6 +53,7 @@ public class ViewControllerStore implements IViewControllerStore {
 		this.drawingPrimitives = new TreeSet<IDrawingPrimitiveController>();
 		this.listeners = new LinkedList<IViewControllerChangeListener>();
 		buildFromDomainModel();
+		this.intersectionCalculator = new FastShapeIntersectionCalculator(this);
 		initialiseDomainListeners();
 	}
 	
@@ -436,5 +440,10 @@ public class ViewControllerStore implements IViewControllerStore {
 	@Override
 	public void removeViewControllerChangeListener(IViewControllerChangeListener listener) {
 		this.listeners.remove(listener);
+	}
+
+	@Override
+	public IIntersectionCalculator getIntersectionCalculator() {
+		return this.intersectionCalculator;
 	}
 }

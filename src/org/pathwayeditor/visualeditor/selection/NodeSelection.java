@@ -2,6 +2,7 @@ package org.pathwayeditor.visualeditor.selection;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.pathwayeditor.figure.geometry.Envelope;
@@ -48,13 +49,13 @@ public class NodeSelection extends Selection implements INodeSelection {
 	}
 
 	@Override
-	public ISelectionHandle getSelectionModel(SelectionHandleType region) {
-		ISelectionHandle retVal = null;
+	public List<ISelectionHandle> getSelectionHandle(SelectionHandleType region) {
+		List<ISelectionHandle> retVal = new LinkedList<ISelectionHandle>();
 		Iterator<ISelectionHandle> iter = this.selectionModels.iterator();
-		while(iter.hasNext() && retVal == null){
+		while(iter.hasNext() && retVal.isEmpty()){
 			ISelectionHandle curr = iter.next();
 			if(curr.getType().equals(region)){
-				retVal = curr;
+				retVal.add(curr);
 			}
 		}
 		return retVal;

@@ -44,7 +44,6 @@ public class ShapeController extends NodeController implements IShapeController 
 	private IFigureController figureController;
 	private final IDrawingNodeAttributeListener parentDrawingNodePropertyChangeListener;
 	private boolean isActive;
-	private IIntersectionCalculator intCal = null;
 	
 	public ShapeController(IViewControllerStore viewModel, IShapeAttribute node, int index) {
 		super(viewModel, index);
@@ -286,6 +285,7 @@ public class ShapeController extends NodeController implements IShapeController 
 		}
 		if(newBounds.getDimension().getWidth() > 0.0 && newBounds.getDimension().getHeight() > 0.0){
 			INodeController parentNode = this.getViewModel().getNodeController(this.domainNode.getCurrentDrawingElement().getParentNode().getAttribute());
+			IIntersectionCalculator intCal = this.getViewModel().getIntersectionCalculator();
 			intCal.setFilter(new IIntersectionCalcnFilter() {
 				@Override
 				public boolean accept(IDrawingPrimitiveController node) {
@@ -340,16 +340,6 @@ public class ShapeController extends NodeController implements IShapeController 
 			logger.trace("Testing contains node:" + this + ",retVal=" + retVal + ", hull=" + attributeHull + ", point=" + p);
 		}
 		return retVal;
-	}
-
-	@Override
-	public IIntersectionCalculator getIntersectionCalculator() {
-		return this.intCal;
-	}
-
-	@Override
-	public void setIntersectionCalculator(IIntersectionCalculator nodeIntersectionCalculator) {
-		this.intCal = nodeIntersectionCalculator;
 	}
 
 	@Override

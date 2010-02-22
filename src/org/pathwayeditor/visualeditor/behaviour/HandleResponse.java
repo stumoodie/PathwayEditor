@@ -10,18 +10,22 @@ public abstract class HandleResponse implements IDragResponse {
 	private boolean isDragOngoing = false;
 	private Point startLocation;
 	private Point delta; 
-	private Point lastLocation;
+//	private Point lastLocation;
 	
 	protected HandleResponse(){
 	}
 	
-	protected final Point getLastLocation(){
-		return this.lastLocation;
+//	protected final Point getLastLocation(){
+//		return this.lastLocation;
+//	}
+	
+	protected final Point getStartLocation(){
+		return this.startLocation;
 	}
 	
 	protected final void setStartLocation(Point startLocation){
 		this.startLocation  = startLocation;
-		this.lastLocation = startLocation;
+//		this.lastLocation = startLocation;
 		this.delta = Point.ORIGIN;
 	}
 	
@@ -53,22 +57,23 @@ public abstract class HandleResponse implements IDragResponse {
 		this.isDragOngoing = false;
 	}
 	
-	public boolean isDragOngoing(){
+	@Override
+	public final boolean isDragOngoing(){
 		return this.isDragOngoing;
 	}
 
 	@Override
-	public void altSelected(boolean isSelected) {
+	public final void altSelected(boolean isSelected) {
 		this.altSelected = isSelected;
 	}
 
 	@Override
-	public void cmdSelected(boolean isSelected) {
+	public final void cmdSelected(boolean isSelected) {
 		this.cmdSelected = isSelected;
 	}
 
 	@Override
-	public void shiftSelected(boolean isSelected) {
+	public final void shiftSelected(boolean isSelected) {
 		this.shiftSelected = isSelected;
 	}
 }

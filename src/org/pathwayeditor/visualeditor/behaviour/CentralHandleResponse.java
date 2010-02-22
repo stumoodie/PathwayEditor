@@ -2,6 +2,7 @@ package org.pathwayeditor.visualeditor.behaviour;
 
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.behaviour.IEditingOperation.ReparentingStateType;
+import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
 
 public class CentralHandleResponse extends HandleResponse implements IMoveResponse {
 	private final IEditingOperation editingOperation;
@@ -25,7 +26,7 @@ public class CentralHandleResponse extends HandleResponse implements IMoveRespon
 	}
 
 	@Override
-	public void dragStarted(Point newLocation) {
+	public void dragStarted(ISelectionHandle selectionHandle, Point newLocation) {
 		this.enterDragOngoingState();
 		this.setStartLocation(newLocation);
 		this.calculateLocationDelta(newLocation);

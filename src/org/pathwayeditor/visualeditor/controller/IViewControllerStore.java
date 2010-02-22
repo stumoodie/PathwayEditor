@@ -9,6 +9,7 @@ import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.IModel;
 import org.pathwayeditor.businessobjects.drawingprimitives.IShapeAttribute;
 import org.pathwayeditor.figure.geometry.Envelope;
+import org.pathwayeditor.visualeditor.geometry.IIntersectionCalculator;
 
 public interface IViewControllerStore {
 
@@ -47,4 +48,6 @@ public interface IViewControllerStore {
 	void removeViewControllerChangeListener(IViewControllerChangeListener listener);
 	
 	List<IViewControllerChangeListener> getViewControllerChangeListeners();
+	
+	IIntersectionCalculator getIntersectionCalculator();
 }

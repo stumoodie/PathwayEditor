@@ -26,7 +26,7 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 	private MouseListener mouseSelectionListener;
 	private MouseMotionListener mouseMotionListener;
 	private KeyListener keyListener;
-	private final IIntersectionCalculator intCalc;
+//	private final IIntersectionCalculator intCalc;
 	private IShapePane shapePane;
 	private Map<SelectionHandleType, IDragResponse> dragResponseMap;
 	private IKeyboardResponse keyboardResponseMap;
@@ -34,15 +34,14 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 	private IDragResponse currDragResponse;
 	private IMouseFeedbackResponse currMouseFeedbackResponse;
 
-	public MouseBehaviourController(IShapePane pane, IEditingOperation moveOp, IResizeOperation resizeOp,
-			IIntersectionCalculator intCalc){
+	public MouseBehaviourController(IShapePane pane, IEditingOperation moveOp, IResizeOperation resizeOp, ILinkOperation linkOp){
 		this.shapePane = pane;
 		this.dragResponseMap = new HashMap<SelectionHandleType, IDragResponse>();
 		this.mouseResponseMap = new HashMap<SelectionHandleType, IMouseFeedbackResponse>();
 		this.keyboardResponseMap = new KeyboardResponse(moveOp);
-		initialiseDragResponses(moveOp, resizeOp);
+		initialiseDragResponses(moveOp, resizeOp, linkOp);
 		initialiseMouseResponse();
-        this.intCalc = intCalc;
+//        this.intCalc = intCalc;
         this.mouseSelectionListener = new MouseListener(){
 
 			public void mouseClicked(MouseEvent e) {
@@ -92,15 +91,17 @@ public class MouseBehaviourController implements IMouseBehaviourController {
         	
         };
         this.mouseMotionListener = new MouseMotionListener(){
+			private ISelectionHandle currSelectionHandle;
 
 			public void mouseDragged(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1){
 					Point location = getAdjustedMousePosition(e.getPoint().getX(), e.getPoint().getY());
 					if(currDragResponse == null){
-						ISelectionHandle selectionHandle = shapePane.getSelectionRecord().findSelectionModelAt(location);
-						if(selectionHandle != null){
-							currDragResponse = dragResponseMap.get(selectionHandle.getType());
-							currMouseFeedbackResponse = mouseResponseMap.get(selectionHandle.getType());
+						currSelectionHandle = null;
+						currSelectionHandle = shapePane.getSelectionRecord().findSelectionModelAt(location);
+						if(currSelectionHandle != null){
+							currDragResponse = dragResponseMap.get(currSelectionHandle.getType());
+							currMouseFeedbackResponse = mouseResponseMap.get(currSelectionHandle.getType());
 						}
 					}
 					if(currDragResponse != null){
@@ -122,7 +123,7 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 							}
 						}
 						else{
-							currDragResponse.dragStarted(location);
+							currDragResponse.dragStarted(currSelectionHandle, location);
 						}
 					}
 				}
@@ -201,10 +202,12 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 		this.mouseResponseMap.put(SelectionHandleType.SW, new MouseFeedbackResponse(SelectionHandleType.SW));
 		this.mouseResponseMap.put(SelectionHandleType.W, new MouseFeedbackResponse(SelectionHandleType.W));
 		this.mouseResponseMap.put(SelectionHandleType.NW, new MouseFeedbackResponse(SelectionHandleType.NW));
+		this.mouseResponseMap.put(SelectionHandleType.LinkMidPoint, new MouseFeedbackResponse(SelectionHandleType.LinkMidPoint));
+		this.mouseResponseMap.put(SelectionHandleType.LinkBendPoint, new MouseFeedbackResponse(SelectionHandleType.LinkBendPoint));
 		this.mouseResponseMap.put(SelectionHandleType.None, new DefaultMouseFeedbackResponse());
 	}
 	
-	private void initialiseDragResponses(IEditingOperation moveOp, IResizeOperation resizeOp) {
+	private void initialiseDragResponses(IEditingOperation moveOp, IResizeOperation resizeOp, ILinkOperation linkOp) {
 		this.dragResponseMap.put(SelectionHandleType.Central, new CentralHandleResponse(moveOp));
 		this.dragResponseMap.put(SelectionHandleType.N, new ResizeHandleResponse(new INewPositionCalculator() {
 			private Point delta;
@@ -390,6 +393,8 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 				return this.delta;
 			}
 		}, resizeOp));
+		this.dragResponseMap.put(SelectionHandleType.LinkMidPoint, new LinkMidPointResponse(linkOp));
+		this.dragResponseMap.put(SelectionHandleType.LinkBendPoint, new LinkBendPointResponse(linkOp));
 	}
 
 	private void handleKeyRelease(){
@@ -408,6 +413,7 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 	}
 	
 	private IDrawingPrimitiveController findDrawingNodeAt(Point location) {
+		IIntersectionCalculator intCalc = this.shapePane.getViewModel().getIntersectionCalculator();
 		intCalc.setFilter(null);
 		SortedSet<IDrawingPrimitiveController> hits = intCalc.findDrawingPrimitivesAt(new Point(location.getX(), location.getY()));
 		IDrawingPrimitiveController retVal = null;

@@ -13,21 +13,28 @@ public class CentralSelectionHandle extends SelectionHandle {
 	
 	@Override
 	public boolean containsPoint(Point point) {
-		return this.getNodeController().getBounds().containsPoint(point);
+		return this.getDrawingPrimitiveController().containsPoint(point);
 	}
 
 	@Override
 	public Envelope getBounds() {
-		return this.getNodeController().getBounds();
+		return this.getDrawingPrimitiveController().getDrawnBounds();
 	}
 
 	@Override
 	public int compareTo(ISelectionHandle o) {
-		return this.getNodeController().compareTo(o.getNodeController());
+		return this.getDrawingPrimitiveController().compareTo(o.getDrawingPrimitiveController());
 	}
 
 	@Override
 	public void translate(Point delta) {
 		// do nothing as this uses the node controller which will also be moved
+	}
+
+
+	@Override
+	public void drawShape(IHandleShapeDrawer drawer) {
+		// TODO Auto-generated method stub
+		
 	}
 }

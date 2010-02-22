@@ -69,6 +69,18 @@ public class MouseFeedbackResponse implements IMouseFeedbackResponse {
 				logger.trace("Setting NW resize cursor");
 			}
 		}
+		else if(SelectionHandleType.LinkMidPoint.equals(this.region)){
+			retVal = Cursor.CROSSHAIR_CURSOR;
+			if (logger.isTraceEnabled()) {
+				logger.trace("Setting LinkMidPoint cursor");
+			}
+		}
+		else if(SelectionHandleType.LinkBendPoint.equals(this.region)){
+			retVal = Cursor.CROSSHAIR_CURSOR;
+			if (logger.isTraceEnabled()) {
+				logger.trace("Setting LinkBendPoint cursor");
+			}
+		}
 		return Cursor.getPredefinedCursor(retVal);
 	}
 

@@ -1,6 +1,7 @@
 package org.pathwayeditor.visualeditor.behaviour;
 
 import org.pathwayeditor.figure.geometry.Point;
+import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
 
 public interface IDragResponse {
 
@@ -8,7 +9,7 @@ public interface IDragResponse {
 	
 	boolean canContinueDrag(Point delta);
 	
-	void dragStarted(Point startLocation);
+	void dragStarted(ISelectionHandle selectionHandle, Point startLocation);
 	
 	void shiftSelected(boolean isSelected);
 	
