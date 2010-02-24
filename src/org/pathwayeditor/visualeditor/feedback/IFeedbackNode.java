@@ -1,5 +1,7 @@
 package org.pathwayeditor.visualeditor.feedback;
 
+import java.util.List;
+
 import org.pathwayeditor.figure.figuredefn.IFigureController;
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Envelope;
@@ -28,5 +30,9 @@ public interface IFeedbackNode extends IFeedbackElement {
 
 	void resizePrimitive(Point originDelta, Dimension sizeDelta);
 
-	void translatePrimitive(Point translation);
+	void addFeedbackNodeListener(IFeedbackNodeListener feedbackNodeListener);
+
+	void removeFeedbackNodeListener(IFeedbackNodeListener feedbackNodeListener);
+
+	List<IFeedbackNodeListener> getFeedbackNodeListeners();
 }

@@ -17,8 +17,8 @@ public class NodeSelection extends Selection implements INodeSelection {
 	private final List<ISelectionHandle> selectionModels;
 	private Envelope selectionBounds;
 
-	public NodeSelection(boolean primaryFlag, INodeController nodeController){
-		super(primaryFlag);
+	public NodeSelection(SelectionType selectionType, INodeController nodeController){
+		super(selectionType);
 		this.nodeController = nodeController;
 		this.selectionModels = new ArrayList<ISelectionHandle>(NUM_REGIONS);
 		buildHandles();

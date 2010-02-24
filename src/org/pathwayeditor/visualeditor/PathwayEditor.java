@@ -10,7 +10,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import org.apache.log4j.Logger;
+import org.pathwayeditor.businessobjects.drawingprimitives.IBendPoint;
 import org.pathwayeditor.businessobjects.drawingprimitives.ICanvas;
+import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkEdge;
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Envelope;
@@ -35,12 +37,16 @@ import org.pathwayeditor.visualeditor.controller.INodeController;
 import org.pathwayeditor.visualeditor.controller.IViewControllerStore;
 import org.pathwayeditor.visualeditor.controller.ViewControllerStore;
 import org.pathwayeditor.visualeditor.feedback.FeedbackModel;
+import org.pathwayeditor.visualeditor.feedback.IFeedbackElement;
+import org.pathwayeditor.visualeditor.feedback.IFeedbackLink;
+import org.pathwayeditor.visualeditor.feedback.IFeedbackModel;
 import org.pathwayeditor.visualeditor.feedback.IFeedbackNode;
 import org.pathwayeditor.visualeditor.selection.ILinkSelection;
 import org.pathwayeditor.visualeditor.selection.INodeSelection;
 import org.pathwayeditor.visualeditor.selection.ISelection;
 import org.pathwayeditor.visualeditor.selection.ISelectionChangeEvent;
 import org.pathwayeditor.visualeditor.selection.ISelectionChangeListener;
+import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
 import org.pathwayeditor.visualeditor.selection.ISelectionRecord;
 import org.pathwayeditor.visualeditor.selection.SelectionRecord;
 
@@ -55,7 +61,7 @@ public class PathwayEditor extends JPanel {
 	private ICommandStack commandStack;
 	private IMouseBehaviourController editBehaviourController;
 	private ISelectionChangeListener selectionChangeListener;
-	private FeedbackModel feedbackModel;
+	private IFeedbackModel feedbackModel;
 	private boolean isOpen = false;
 	private CommonParentCalculator newParentCalc;
 
@@ -145,7 +151,7 @@ public class PathwayEditor extends JPanel {
 			public ReparentingStateType getReparentingState(Point delta) {
 				ReparentingStateType retVal = ReparentingStateType.FORBIDDEN;
 //				newParentCalc = new CommonParentCalculator(viewModel);
-				newParentCalc.findCommonParent(selectionRecord.getGraphSelection(), delta);
+				newParentCalc.findCommonParent(selectionRecord.getSubgraphSelection(), delta);
 		        if(newParentCalc.hasFoundCommonParent()) {
 		        	if(logger.isTraceEnabled()){
 		        		logger.trace("Common parent found. Node=" + newParentCalc.getCommonParent());
@@ -201,49 +207,59 @@ public class PathwayEditor extends JPanel {
 		};
 		ILinkOperation linkOperation = new ILinkOperation(){
 			@Override
-			public void moveBendPointFinished(int bendPointIdx, Point position) {
+			public void moveBendPointFinished(ISelectionHandle bendPointHandle, Point position) {
 				if(logger.isTraceEnabled()){
-					logger.trace("Move bendpoint finished. bpIdx=" + bendPointIdx + ",position=" + position);
+					logger.trace("Move bendpoint finished. bpIdx=" + bendPointHandle.getHandleIndex() + ",position=" + position);
 				}
-				createMoveBendPointCommand(bendPointIdx, position);
+				createMoveBendPointCommand(bendPointHandle.getHandleIndex(), position);
 				feedbackModel.clear();
 				selectionRecord.clear();
 				shapePane.updateView();
 			}
 
 			@Override
-			public void moveBendPointOngoing(int bendPointIdx, Point delta) {
-				// TODO Auto-generated method stub
-				
+			public void moveBendPointOngoing(ISelectionHandle handle, Point position) {
+				if(logger.isTraceEnabled()){
+					logger.trace("Move bendpoint ongoing. bpIdx=" + handle.getHandleIndex() + ",position=" + position);
+				}
+				moveBendPoint(handle.getHandleIndex(), position);
+				shapePane.updateView();
 			}
 
 			@Override
-			public void moveBendPointStated(int bendPointIdx) {
+			public void moveBendPointStated(ISelectionHandle selectionHandle) {
 				logger.trace("Move bendpoint started");
-				feedbackModel.rebuildWithStrictSelection();
+				feedbackModel.rebuildOnLinkSelection((ILinkSelection)selectionHandle.getSelection());
 			}
 
 			@Override
-			public void newBendPointFinished(int lineSegmentIdx, Point position) {
+			public void newBendPointFinished(ISelectionHandle selectionHandle, Point position) {
 				if(logger.isTraceEnabled()){
-					logger.trace("New bendpoint finished. lineSeg=" + lineSegmentIdx + ",position=" + position);
+					logger.trace("New bendpoint finished. lineSeg=" + selectionHandle.getHandleIndex() + ",position=" + position);
 				}
-				createNewBendPointCommand(lineSegmentIdx, position);
+				createNewBendPointCommand(selectionHandle.getHandleIndex(), position);
 				feedbackModel.clear();
 				selectionRecord.clear();
 				shapePane.updateView();
 			}
 
 			@Override
-			public void newBendPointOngoing(int lineSegmentIdx, Point position) {
-				// TODO Auto-generated method stub
-				
+			public void newBendPointOngoing(ISelectionHandle handle, Point position) {
+				if(logger.isTraceEnabled()){
+					logger.trace("Moving new bendpoint ongoing. bpIdx=" + handle.getHandleIndex() + ",position=" + position);
+				}
+				moveBendPoint(handle.getHandleIndex(), position);
+				shapePane.updateView();
 			}
 
 			@Override
-			public void newBendPointStarted(int lineSegmentIdx) {
+			public void newBendPointStarted(ISelectionHandle selectionHandle) {
 				logger.trace("New bendpoint started");
-				feedbackModel.rebuildWithStrictSelection();
+				feedbackModel.rebuildOnLinkSelection((ILinkSelection)selectionHandle.getSelection());
+				IFeedbackLink feedbackLink = feedbackModel.uniqueFeedbackLink();
+				Point handleOrigin = selectionHandle.getBounds().getOrigin();
+				Point handleCentre = handleOrigin.translate(selectionHandle.getBounds().getDimension().getWidth()/2.0, selectionHandle.getBounds().getDimension().getHeight()/2.0);
+				feedbackLink.newBendPoint(selectionHandle.getHandleIndex(), handleCentre);
 			}
 			
 		};
@@ -315,17 +331,30 @@ public class PathwayEditor extends JPanel {
 	
 	
 	private void createMoveCommand(Point delta, boolean reparentingEnabled){
-		Iterator<INodeSelection> moveNodeIterator = this.selectionRecord.getTopNodeSelection();
 		ICompoundCommand cmpCommand = new CompoundCommand();
+		Iterator<INodeSelection> moveNodeIterator = this.selectionRecord.getSubgraphSelection().topSelectedNodeIterator();
 		while(moveNodeIterator.hasNext()){
 			INodeController nodePrimitive = (INodeController)moveNodeIterator.next().getPrimitiveController();
 			ICommand cmd = new MoveNodeCommand(nodePrimitive.getDrawingElement(), delta);
 			cmpCommand.addCommand(cmd);
-			logger.trace("Dragged shape to location: " + nodePrimitive.getBounds().getOrigin());
+			if(logger.isTraceEnabled()){
+				logger.trace("Dragged shape to location: " + nodePrimitive.getBounds().getOrigin());
+			}
+		}
+		Iterator<ILinkSelection> moveLinkIterator = this.selectionRecord.getSubgraphSelection().selectedLinkIterator();
+		while(moveLinkIterator.hasNext()){
+			ILinkAttribute nodePrimitive = moveLinkIterator.next().getPrimitiveController().getDrawingElement();
+			Iterator<IBendPoint> bpIter = nodePrimitive.bendPointIterator();
+			while(bpIter.hasNext()){
+				IBendPoint bp = bpIter.next();
+				Point newPosn = bp.getLocation().translate(delta);
+				ICommand cmd = new MoveBendPointCommand(bp, newPosn);
+				cmpCommand.addCommand(cmd);
+			}
 		}
 		if(reparentingEnabled){
 			INodeController target = calculateReparentTarget(delta);
-			ICommand cmd = new ReparentSelectionCommand(target.getDrawingElement().getCurrentDrawingElement(), this.selectionRecord.getGraphSelection());
+			ICommand cmd = new ReparentSelectionCommand(target.getDrawingElement().getCurrentDrawingElement(), this.selectionRecord.getSubgraphSelection().getDrawingElementSelection());
 			cmpCommand.addCommand(cmd);
 		}
 		this.commandStack.execute(cmpCommand);
@@ -334,7 +363,7 @@ public class PathwayEditor extends JPanel {
 	private INodeController calculateReparentTarget(Point delta) {
 		INodeController retVal = null;
 //		CommonParentCalculator newParentCalc = new CommonParentCalculator(viewModel);
-		newParentCalc.findCommonParent(selectionRecord.getGraphSelection(), delta);
+		newParentCalc.findCommonParent(selectionRecord.getSubgraphSelection(), delta);
         if(newParentCalc.hasFoundCommonParent()) {
         	if(logger.isTraceEnabled()){
         		logger.trace("Common parent found. Node=" + newParentCalc.getCommonParent());
@@ -354,12 +383,32 @@ public class PathwayEditor extends JPanel {
 
 	
 	private void moveSelection(Point delta) {
-		Iterator<IFeedbackNode> moveNodeIterator = this.feedbackModel.nodeIterator();
+		Iterator<INodeSelection> moveNodeIterator = this.selectionRecord.selectedNodesIterator();
 		while(moveNodeIterator.hasNext()){
-			IFeedbackNode nodePrimitive = moveNodeIterator.next();
-			nodePrimitive.translatePrimitive(delta);
-			logger.trace("Dragged shape to location: " + nodePrimitive.getBounds().getOrigin());
+			ISelection selection = moveNodeIterator.next();
+			IFeedbackElement feedbackElement = this.feedbackModel.getFeedbackElement(selection.getPrimitiveController());
+			feedbackElement.translatePrimitive(delta);
+			if(logger.isTraceEnabled()){
+				logger.trace("Dragged feedback element: " + feedbackElement);
+			}
 		}
+		Iterator<ILinkSelection> moveLinkIterator = this.selectionRecord.selectedLinksIterator();
+		while(moveLinkIterator.hasNext()){
+			ILinkSelection selection = moveLinkIterator.next();
+			IFeedbackLink feedbackLink = (IFeedbackLink)this.feedbackModel.getFeedbackElement(selection.getPrimitiveController());
+			for(int bpIdx = 0; bpIdx < feedbackLink.getLinkDefinition().numBendPoints(); bpIdx++){
+				feedbackLink.translateBendPoint(bpIdx, delta);
+				if(logger.isTraceEnabled()){
+					logger.trace("Moved bendpont=" + bpIdx + " of feedback element: " + feedbackLink);
+				}
+			}
+		}
+	}
+	
+	private void moveBendPoint(int bendPointIdx, Point position) {
+		IFeedbackLink feedbackLink = this.feedbackModel.uniqueFeedbackLink();
+//		ILinkPointDefinition linkDefn = feedbackLink.getLinkDefinition();
+		feedbackLink.moveBendPoint(bendPointIdx, position);
 	}
 	
 	private void initialise(){

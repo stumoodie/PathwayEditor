@@ -7,10 +7,9 @@ import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveController;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle.SelectionHandleType;
 
 public interface ISelection extends Comparable<ISelection> {
+	enum SelectionType { PRIMARY, SECONDARY, SUBGRAPH };
 	
-	boolean isPrimary();
-	
-	boolean isSecondary();
+	SelectionType getSelectionType();
 	
 	List<ISelectionHandle> getSelectionHandle(SelectionHandleType region);
 	

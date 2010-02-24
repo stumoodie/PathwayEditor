@@ -3,9 +3,10 @@ package org.pathwayeditor.visualeditor.selection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElementSelection;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveController;
+import org.pathwayeditor.visualeditor.controller.ILinkController;
+import org.pathwayeditor.visualeditor.controller.INodeController;
 
 public interface ISelectionRecord {
 
@@ -25,7 +26,7 @@ public interface ISelectionRecord {
 	
 	Iterator<ILinkSelection> selectedLinksIterator();
 	
-	Iterator<INodeSelection> getTopNodeSelection();
+//	Iterator<INodeSelection> getTopNodeSelection();
 	
 	int numSelected();
 	
@@ -39,7 +40,15 @@ public interface ISelectionRecord {
 
 	boolean isNodeSelected(IDrawingPrimitiveController testElement);
 
-	IDrawingElementSelection getGraphSelection();
+	ISubgraphSelection getSubgraphSelection();
 
 	ILinkSelection getUniqueLinkSelection();
+
+	ILinkSelection getLinkSelection(ILinkController next);
+
+	INodeSelection getNodeSelection(INodeController next);
+
+	ISelection getSelection(IDrawingPrimitiveController next);
+
+	boolean containsSelection(IDrawingPrimitiveController controller);
 }

@@ -1,19 +1,20 @@
 package org.pathwayeditor.visualeditor.behaviour;
 
 import org.pathwayeditor.figure.geometry.Point;
+import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
 
 public interface ILinkOperation {
 
-	void newBendPointStarted(int lineSegmentIdx);
+	void newBendPointStarted(ISelectionHandle handle);
 	
-	void newBendPointOngoing(int lineSegmentIdx, Point position);
+	void newBendPointOngoing(ISelectionHandle handle, Point position);
 	
-	void newBendPointFinished(int lineSegmentIdx, Point position);
+	void newBendPointFinished(ISelectionHandle handle, Point position);
 	
-	void moveBendPointStated(int bendPointIdx);
+	void moveBendPointStated(ISelectionHandle handle);
 
-	void moveBendPointOngoing(int bendPointIdx, Point delta);
+	void moveBendPointOngoing(ISelectionHandle handle, Point delta);
 	
-	void moveBendPointFinished(int bendPointIdx, Point delta);
+	void moveBendPointFinished(ISelectionHandle handle, Point delta);
 	
 }

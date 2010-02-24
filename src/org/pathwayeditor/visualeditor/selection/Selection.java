@@ -1,28 +1,41 @@
 package org.pathwayeditor.visualeditor.selection;
 
 
+
 public abstract class Selection implements ISelection {
-	private final boolean isPrimary;
+	private final SelectionType selectionType;
 	
-	protected Selection(boolean isPrimary){
-		this.isPrimary = isPrimary;
+	protected Selection(SelectionType selectionType){
+		this.selectionType = selectionType;
 	}
 	
 	@Override
-	public final boolean isPrimary() {
-		return this.isPrimary;
+	public final SelectionType getSelectionType(){
+		return this.selectionType;
 	}
-
-	@Override
-	public final boolean isSecondary() {
-		return !this.isPrimary;
-	}
-
+	
 	@Override
 	public final int compareTo(ISelection o) {
-		int retVal = this.isPrimary() && o.isPrimary() ? 0 : (this.isPrimary() && o.isSecondary() ? -1 : 1); 
+		Integer thisCmpValue = getSelectionTypeValue(this.getSelectionType());
+		Integer otherCmpValue = getSelectionTypeValue(o.getSelectionType());
+		int retVal = thisCmpValue.compareTo(otherCmpValue); 
 		if(retVal == 0){
 			retVal = this.getPrimitiveController().compareTo(o.getPrimitiveController());
+		}
+		return retVal;
+	}
+
+	private Integer getSelectionTypeValue(SelectionType selectionType) {
+		int retVal = 0;
+		if(selectionType.equals(SelectionType.PRIMARY)){
+			retVal = 3;
+		}
+		else if(selectionType.equals(SelectionType.SECONDARY)){
+			retVal = 2;
+			
+		}
+		else if(selectionType.equals(SelectionType.SUBGRAPH)){
+			retVal = 1;
 		}
 		return retVal;
 	}

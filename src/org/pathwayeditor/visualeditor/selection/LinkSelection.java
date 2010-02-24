@@ -14,8 +14,8 @@ public class LinkSelection extends Selection implements ILinkSelection {
 	private final ILinkController controller;
 	private final List<ISelectionHandle> handles;
 	
-	public LinkSelection(boolean primaryFlag, ILinkController drawingElement) {
-		super(primaryFlag);
+	public LinkSelection(SelectionType selectionType, ILinkController drawingElement) {
+		super(selectionType);
 		this.controller = drawingElement;
 		this.handles = new LinkedList<ISelectionHandle>();
 		addHandles();

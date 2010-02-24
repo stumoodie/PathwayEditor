@@ -48,7 +48,7 @@ public class CanvasDrawer implements ICanvasDrawer {
 		Iterator<ILinkController> linkEdgeIter = this.viewControllerStore.linkControllerIterator();
 		while(linkEdgeIter.hasNext()){
 			ILinkController edge = linkEdgeIter.next();
-			LinkDrawer linkDrawer = new LinkDrawer(edge);
+			LinkDrawer linkDrawer = new LinkDrawer(edge.getLinkDefinition());
 			linkDrawer.paint(g2d);
 		}
 	}

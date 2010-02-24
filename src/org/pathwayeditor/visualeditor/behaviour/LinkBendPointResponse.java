@@ -2,11 +2,12 @@ package org.pathwayeditor.visualeditor.behaviour;
 
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
+import org.pathwayeditor.visualeditor.selection.ISelectionHandle.SelectionHandleType;
 
 public class LinkBendPointResponse extends HandleResponse {
-	private static final int DEFAULT_SEGMENT_IDX = 0;
+//	private static final int DEFAULT_SEGMENT_IDX = 0;
 	private final ILinkOperation linkOperation;
-	private int segmentIndex = DEFAULT_SEGMENT_IDX;
+	private ISelectionHandle selectionHandle = null;
 	private Point lastLocation;
 	
 	public LinkBendPointResponse(ILinkOperation linkOperation){
@@ -16,7 +17,7 @@ public class LinkBendPointResponse extends HandleResponse {
 	
 	@Override
 	public boolean canContinueDrag(Point delta) {
-		return false;
+		return true;
 	}
 
 	@Override
@@ -31,18 +32,23 @@ public class LinkBendPointResponse extends HandleResponse {
 
 	@Override
 	public void dragContinuing(Point newLocation) {
-		this.linkOperation.moveBendPointOngoing(segmentIndex, newLocation);
+		this.linkOperation.moveBendPointOngoing(selectionHandle, newLocation);
 		this.lastLocation = newLocation;
 	}
 
 	@Override
 	public void dragFinished() {
-		this.linkOperation.moveBendPointFinished(segmentIndex, this.lastLocation);
+		exitDragOngoingState();
+		this.linkOperation.moveBendPointFinished(selectionHandle, this.lastLocation);
 	}
 
 	@Override
 	public void dragStarted(ISelectionHandle selectionHandle, Point startLocation) {
+		if(!selectionHandle.getType().equals(SelectionHandleType.LinkBendPoint)) throw new IllegalArgumentException("Only expect to respond to link bend point handles");
+		
 		this.lastLocation = startLocation;
-		this.segmentIndex = selectionHandle.getHandleIndex();
+		this.selectionHandle = selectionHandle;
+		this.linkOperation.moveBendPointStated(selectionHandle);
+		this.enterDragOngoingState();
 	}
 }

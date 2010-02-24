@@ -13,24 +13,22 @@ import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
-import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
-import org.pathwayeditor.businessobjects.drawingprimitives.ILinkTerminus;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LineStyle;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LinkEndDecoratorShape;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.RGB;
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.LineSegment;
 import org.pathwayeditor.figure.geometry.Point;
-import org.pathwayeditor.visualeditor.controller.ILinkController;
+import org.pathwayeditor.visualeditor.geometry.IGraphicalLinkTerminusDefinition;
 import org.pathwayeditor.visualeditor.geometry.ILinkPointDefinition;
 
 public class LinkDrawer  {
 	private final Logger logger = Logger.getLogger(this.getClass()); 
-	private ILinkController linkEdge;
+	private ILinkPointDefinition linkEdge;
 	private Point startPosition = Point.ORIGIN;
 	private Point endPosition = Point.ORIGIN;
 	
-	public LinkDrawer(ILinkController linkEdge){
+	public LinkDrawer(ILinkPointDefinition linkEdge){
 		this.linkEdge = linkEdge;
 	}
 	
@@ -86,41 +84,40 @@ public class LinkDrawer  {
 
 	public void paint(Graphics2D g2d){
 		drawLineSegments(g2d);
-		ILinkTerminus srcTermDefaults = this.linkEdge.getDrawingElement().getSourceTerminus();
-		ILinkTerminus tgtTermDefaults = this.linkEdge.getDrawingElement().getTargetTerminus();
+		IGraphicalLinkTerminusDefinition srcTermDefaults = this.linkEdge.getSourceTerminusDefinition();
+		IGraphicalLinkTerminusDefinition tgtTermDefaults = this.linkEdge.getTargetTerminusDefinition();
 		
 		AffineTransform before = g2d.getTransform();
-		ILinkPointDefinition linkDefinition = this.linkEdge.getLinkDefinition();
+		ILinkPointDefinition linkDefinition = this.linkEdge;
 		double srcLineAngle = linkDefinition.getSourceLineSegment().angle();
-		Point srcPosn = srcTermDefaults.getLocation();
+		Point srcPosn = linkDefinition.getSrcEndPoint();
 		g2d.translate(srcPosn.getX(), srcPosn.getY());
 		g2d.rotate(srcLineAngle);
 		g2d.translate(srcTermDefaults.getGap(), 0);
 		Dimension srcEndSize = srcTermDefaults.getEndSize();
 		g2d.scale(srcEndSize.getWidth(), srcEndSize.getHeight());
-		ILinkAttribute linkAttribute = this.linkEdge.getDrawingElement();
-		drawEndDecorator(g2d, linkAttribute.getLineStyle(), linkAttribute.getLineColour(), linkAttribute.getLineWidth(),
+		drawEndDecorator(g2d, linkEdge.getLineStyle(), linkEdge.getLineColour(), linkEdge.getLineWidth(),
 				srcTermDefaults.getEndDecoratorType(), linkDefinition.getSrcEndPoint(), srcTermDefaults.getEndSize());
 		g2d.setTransform(before);
 		double tgtLineAngle = linkDefinition.getTargetLineSegment().angle();
-		Point tgtPosn = tgtTermDefaults.getLocation();
+		Point tgtPosn = linkDefinition.getTgtEndPoint();
 		g2d.translate(tgtPosn.getX(), tgtPosn.getY());
 		g2d.rotate(tgtLineAngle);
 		g2d.translate(tgtTermDefaults.getGap(), 0);
 		Dimension tgtEndSize = tgtTermDefaults.getEndSize();
 		g2d.scale(tgtEndSize.getWidth(), tgtEndSize.getHeight());
-		drawEndDecorator(g2d, linkAttribute.getLineStyle(), linkAttribute.getLineColour(), linkAttribute.getLineWidth(),
+		drawEndDecorator(g2d, linkEdge.getLineStyle(), linkEdge.getLineColour(), linkEdge.getLineWidth(),
 				tgtTermDefaults.getEndDecoratorType(), linkDefinition.getSrcEndPoint(), tgtTermDefaults.getEndSize());
 		g2d.setTransform(before);
 	}
 	
 	
 	private void drawLineSegments(Graphics2D g2d){
-		ILinkPointDefinition linkDefinition = this.linkEdge.getLinkDefinition();
-		RGB lineCol = this.linkEdge.getDrawingElement().getLineColour();
+		ILinkPointDefinition linkDefinition = this.linkEdge;
+		RGB lineCol = this.linkEdge.getLineColour();
 		g2d.setColor(new Color(lineCol.getRed(), lineCol.getGreen(), lineCol.getBlue()));
-		double lineWidth = this.linkEdge.getDrawingElement().getLineWidth();
-		LineStyle lineStyle = this.linkEdge.getDrawingElement().getLineStyle();
+		double lineWidth = this.linkEdge.getLineWidth();
+		LineStyle lineStyle = this.linkEdge.getLineStyle();
 		g2d.setStroke(this.createStroke(lineStyle, lineWidth));
 
 		Iterator<LineSegment> lineIterator = linkDefinition.drawnLineSegIterator();

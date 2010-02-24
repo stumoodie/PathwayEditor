@@ -1,5 +1,9 @@
 package org.pathwayeditor.visualeditor.feedback;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNodeAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILabelAttribute;
@@ -39,8 +43,12 @@ public class FeedbackNode implements IFeedbackNode {
 	private final Logger logger = Logger.getLogger(this.getClass()); 
 	private IFigureController figureController;
 	private final Envelope initialBounds;
+	private final int elementIdentifier;
+	private final List<IFeedbackNodeListener> listeners;
 
 	public FeedbackNode(IDrawingNodeAttribute nodeAttribute){
+		this.listeners = new LinkedList<IFeedbackNodeListener>();
+		this.elementIdentifier = nodeAttribute.getCreationSerial();
 		this.initialBounds = nodeAttribute.getBounds();
 		if(nodeAttribute instanceof IShapeAttribute){
 			this.figureController = createShapeController((IShapeAttribute)nodeAttribute);
@@ -53,6 +61,10 @@ public class FeedbackNode implements IFeedbackNode {
 		}
 	}
 	
+	public int getElementIdentifier() {
+		return elementIdentifier;
+	}
+
 	private IFigureController createLabelController(ILabelAttribute attribute){
 		FigureDefinitionCompiler compiler = new FigureDefinitionCompiler(LABEL_DEFINITION);
 		compiler.compile();
@@ -128,6 +140,34 @@ public class FeedbackNode implements IFeedbackNode {
 	public void translatePrimitive(Point translation) {
 		figureController.setRequestedEnvelope(this.initialBounds.translate(translation));
 		figureController.generateFigureDefinition();
+		notifyTranslation(this.initialBounds, translation);
+	}
+
+	private void notifyTranslation(final Envelope oldBounds, final Point translation) {
+		IFeedbackNodeTranslationEvent e = new IFeedbackNodeTranslationEvent() {
+			
+			@Override
+			public IFeedbackNode getNode() {
+				return FeedbackNode.this;
+			}
+
+			@Override
+			public Point getTranslation() {
+				return translation;
+			}
+
+			@Override
+			public Envelope oldBounds() {
+				return oldBounds;
+			}
+		};
+		notifyEvent(e);
+	}
+
+	private void notifyEvent(IFeedbackNodeTranslationEvent e) {
+		for(IFeedbackNodeListener l : this.listeners){
+			l.nodeTranslationEvent(e);
+		}
 	}
 
 	@Override
@@ -143,6 +183,43 @@ public class FeedbackNode implements IFeedbackNode {
 	@Override
 	public IFigureController getFigureController() {
 		return this.figureController;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + elementIdentifier;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof FeedbackNode))
+			return false;
+		FeedbackNode other = (FeedbackNode) obj;
+		if (elementIdentifier != other.elementIdentifier)
+			return false;
+		return true;
+	}
+
+	@Override
+	public void addFeedbackNodeListener(IFeedbackNodeListener srcFeedbackNodeListener) {
+		this.listeners.add(srcFeedbackNodeListener);
+	}
+
+	@Override
+	public void removeFeedbackNodeListener(IFeedbackNodeListener srcFeedbackNodeListener) {
+		this.listeners.remove(srcFeedbackNodeListener);
+	}
+
+	@Override
+	public List<IFeedbackNodeListener> getFeedbackNodeListeners() {
+		return new ArrayList<IFeedbackNodeListener>(this.listeners);
 	}
 
 }

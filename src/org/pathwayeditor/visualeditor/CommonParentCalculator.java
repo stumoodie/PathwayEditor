@@ -3,8 +3,6 @@ package org.pathwayeditor.visualeditor;
 import java.util.Iterator;
 import java.util.SortedSet;
 
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElementSelection;
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNode;
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNodeAttribute;
 import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
@@ -14,12 +12,14 @@ import org.pathwayeditor.visualeditor.controller.INodeController;
 import org.pathwayeditor.visualeditor.controller.IShapeController;
 import org.pathwayeditor.visualeditor.geometry.IIntersectionCalcnFilter;
 import org.pathwayeditor.visualeditor.geometry.IIntersectionCalculator;
+import org.pathwayeditor.visualeditor.selection.INodeSelection;
+import org.pathwayeditor.visualeditor.selection.ISubgraphSelection;
 
 public class CommonParentCalculator {
 	private final IIntersectionCalculator calc;
 	private INodeController parent = null;
 	private int numNodesAlreadyHaveParent = 0;
-	private IDrawingElementSelection selection = null;
+	private ISubgraphSelection selection = null;
 	
 	private interface IHandleLabel {
 		
@@ -31,7 +31,7 @@ public class CommonParentCalculator {
 		this.calc = calc;
 	}
 	
-	public void findCommonParentExcludingLabels(IDrawingElementSelection testSelection, Point delta){
+	public void findCommonParentExcludingLabels(ISubgraphSelection testSelection, Point delta){
 		findCommonParentImpl(testSelection, delta, new IHandleLabel(){
 
 			// we're ignoreing labels
@@ -46,7 +46,7 @@ public class CommonParentCalculator {
 		return this.calc.getModel().getNodeController(node);
 	}
 	
-	public void findCommonParent(IDrawingElementSelection testSelection, Point delta) {
+	public void findCommonParent(ISubgraphSelection testSelection, Point delta) {
 		findCommonParentImpl(testSelection, delta, new IHandleLabel(){
 
 			// we're ignoreing labels
@@ -57,19 +57,19 @@ public class CommonParentCalculator {
 		});
 	}
 	
-	private void findCommonParentImpl(IDrawingElementSelection testSelection, Point delta, IHandleLabel labelHandler) {
+	private void findCommonParentImpl(ISubgraphSelection testSelection, Point delta, IHandleLabel labelHandler) {
 		if (this.selection == null
 				|| (!testSelection.equals(this.selection) ) ) {
 			// if new or different selection to last one then recalculate the
 			// common parent
 			this.selection = testSelection;
-			Iterator<IDrawingNode> selectionIter = selection
-					.topDrawingNodeIterator();
-			parent = this.calc.getModel().getNodeController(selection.getModel().getRootNode().getAttribute());
+			Iterator<INodeSelection> selectionIter = selection.topSelectedNodeIterator();
+			parent = selection.getSelectionRecord().getPrimarySelection().getPrimitiveController().getViewModel().getRootNode();
 			boolean firstTime = true;
 			numNodesAlreadyHaveParent = 0;
 			while (selectionIter.hasNext() && parent != null) {
-				INodeController node = getNodeController(selectionIter.next().getAttribute());
+//				INodeController node = getNodeController(selectionIter.next().getAttribute());
+				INodeController node = selectionIter.next().getPrimitiveController();
 				INodeController potentialParent = null;
 				if (node instanceof IShapeController) {
 					IConvexHull hull = node.getConvexHull();
@@ -104,7 +104,7 @@ public class CommonParentCalculator {
 		}
 	}
 
-	public IDrawingElementSelection getSelectionToReparent(){
+	public ISubgraphSelection getSelectionToReparent(){
 		return this.selection;
 	}
 	
