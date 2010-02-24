@@ -31,8 +31,10 @@ public class FeedbackLink implements IFeedbackLink {
 			
 			@Override
 			public void nodeResizeEvent(IFeedbackNodeResizeEvent e) {
-				// TODO Auto-generated method stub
-				
+				IFeedbackNode srcNode = e.getNode();
+				srcAnchorCalc = srcNode.getFigureController().getAnchorLocatorFactory().createAnchorLocator();
+				updateSrcAnchor(originalLinkDefinition.getSourceLineSegment().getTerminus());
+				updateTgtAnchor(originalLinkDefinition.getTargetLineSegment().getTerminus());
 			}
 		};
 		this.tgtFeedbackNodeListener = new IFeedbackNodeListener() {
@@ -47,8 +49,10 @@ public class FeedbackLink implements IFeedbackLink {
 			
 			@Override
 			public void nodeResizeEvent(IFeedbackNodeResizeEvent e) {
-				// TODO Auto-generated method stub
-				
+				IFeedbackNode tgtNode = e.getNode();
+				tgtAnchorCalc = tgtNode.getFigureController().getAnchorLocatorFactory().createAnchorLocator();
+				updateTgtAnchor(originalLinkDefinition.getTargetLineSegment().getTerminus());
+				updateSrcAnchor(originalLinkDefinition.getSourceLineSegment().getTerminus());
 			}
 		};
 		if(srcNode != null){

@@ -134,6 +134,33 @@ public class FeedbackNode implements IFeedbackNode {
 	public void resizePrimitive(Point originDelta, Dimension resizeDelta) {
 		figureController.setRequestedEnvelope(this.initialBounds.resize(originDelta, resizeDelta));
 		figureController.generateFigureDefinition();
+		notifyResize(this.initialBounds, originDelta, resizeDelta);
+	}
+
+	private void notifyResize(final Envelope initialBounds, final Point originDelta, final Dimension resizeDelta) {
+		IFeedbackNodeResizeEvent e = new IFeedbackNodeResizeEvent() {
+			
+			@Override
+			public Dimension getSizeDelta() {
+				return resizeDelta;
+			}
+			
+			@Override
+			public Envelope getOriginalBounds() {
+				return initialBounds;
+			}
+			
+			@Override
+			public Point getOriginDelta() {
+				return originDelta;
+			}
+			
+			@Override
+			public IFeedbackNode getNode() {
+				return FeedbackNode.this;
+			}
+		};
+		notifyResizeEvent(e);
 	}
 
 	@Override
@@ -161,12 +188,18 @@ public class FeedbackNode implements IFeedbackNode {
 				return oldBounds;
 			}
 		};
-		notifyEvent(e);
+		notifyTranslationEvent(e);
 	}
 
-	private void notifyEvent(IFeedbackNodeTranslationEvent e) {
+	private void notifyTranslationEvent(IFeedbackNodeTranslationEvent e) {
 		for(IFeedbackNodeListener l : this.listeners){
 			l.nodeTranslationEvent(e);
+		}
+	}
+
+	private void notifyResizeEvent(IFeedbackNodeResizeEvent e) {
+		for(IFeedbackNodeListener l : this.listeners){
+			l.nodeResizeEvent(e);
 		}
 	}
 
