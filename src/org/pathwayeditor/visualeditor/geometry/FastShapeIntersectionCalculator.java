@@ -164,7 +164,7 @@ public class FastShapeIntersectionCalculator implements IIntersectionCalculator 
 		if(filter.accept(rootNode)){
 			retVal.add(rootNode);
 		}
-		Envelope drawnBounds = queryNode.getDrawnBounds();
+		Envelope drawnBounds = queryHull.getEnvelope();
 		Point origin = drawnBounds.getOrigin();
 		Point diagonal = drawnBounds.getDiagonalCorner();
 		ISpacialEntry2DEnumerator< IDrawingPrimitiveController> iter = this.spacialIndex.queryOverlap((float)origin.getX(), (float)origin.getY(), (float)diagonal.getX(), (float)diagonal.getY(), null, 0, false);
