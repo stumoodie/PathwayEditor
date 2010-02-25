@@ -3,14 +3,12 @@ package org.pathwayeditor.visualeditor;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.util.Iterator;
 
 import javax.swing.JPanel;
 
-import org.pathwayeditor.businessobjects.drawingprimitives.ILinkEdge;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.graphicsengine.CanvasDrawer;
 import org.pathwayeditor.graphicsengine.ICanvasDrawer;
@@ -70,7 +68,6 @@ public class ShapePane extends JPanel implements IShapePane {
 		}
 	}
 
-
 	@Override
 	public ISelectionRecord getSelectionRecord() {
 		return this.selections;
@@ -81,13 +78,10 @@ public class ShapePane extends JPanel implements IShapePane {
 		return this.lastTransform;
 	}
 
-
 	@Override
 	public IViewControllerStore getViewModel() {
 		return this.canvasDrawer.getViewControllerStore();
 	}
-
-
 
 	@Override
 	public IFeedbackModel getFeedbackModel() {
@@ -102,10 +96,5 @@ public class ShapePane extends JPanel implements IShapePane {
 		this.setPreferredSize(prefSize);
 		revalidate();
 		repaint();
-	}
-	
-	
-	public ILinkEdge getLinkAtPoint(Point p){
-		return null;
 	}
 }

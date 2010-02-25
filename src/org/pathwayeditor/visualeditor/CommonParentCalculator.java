@@ -3,6 +3,7 @@ package org.pathwayeditor.visualeditor;
 import java.util.Iterator;
 import java.util.SortedSet;
 
+import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNodeAttribute;
 import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
@@ -16,6 +17,7 @@ import org.pathwayeditor.visualeditor.selection.INodeSelection;
 import org.pathwayeditor.visualeditor.selection.ISubgraphSelection;
 
 public class CommonParentCalculator {
+	private final Logger logger = Logger.getLogger(this.getClass());
 	private final IIntersectionCalculator calc;
 	private INodeController parent = null;
 	private int numNodesAlreadyHaveParent = 0;
@@ -58,8 +60,7 @@ public class CommonParentCalculator {
 	}
 	
 	private void findCommonParentImpl(ISubgraphSelection testSelection, Point delta, IHandleLabel labelHandler) {
-		if (this.selection == null
-				|| (!testSelection.equals(this.selection) ) ) {
+		if (this.selection == null || (!testSelection.equals(this.selection) ) ) {
 			// if new or different selection to last one then recalculate the
 			// common parent
 			this.selection = testSelection;
@@ -68,7 +69,6 @@ public class CommonParentCalculator {
 			boolean firstTime = true;
 			numNodesAlreadyHaveParent = 0;
 			while (selectionIter.hasNext() && parent != null) {
-//				INodeController node = getNodeController(selectionIter.next().getAttribute());
 				INodeController node = selectionIter.next().getPrimitiveController();
 				INodeController potentialParent = null;
 				if (node instanceof IShapeController) {
@@ -77,7 +77,6 @@ public class CommonParentCalculator {
 					potentialParent = this.findPotentialParent(node, newLocation);
 				} else if (node instanceof ILabelController) {
 					// labels cannot be reparented
-//					potentialParent = node.getParentNode();
 					potentialParent = labelHandler.getLabelParent((ILabelController)node);
 				}
 				if (firstTime) {
@@ -134,6 +133,9 @@ public class CommonParentCalculator {
 				if(cont instanceof INodeController){
 					INodeController node = (INodeController)cont;
 					retVal = node.getDrawingElement().getCurrentDrawingElement().canParent(potentialChild.getDrawingElement().getCurrentDrawingElement());
+					if(logger.isTraceEnabled()){
+						logger.trace("Node=" + node +" canParent=" + retVal + ", potentialChild=" + potentialChild);
+					}
 				}
 				return retVal;
 			}
@@ -141,6 +143,9 @@ public class CommonParentCalculator {
 		});
 		SortedSet<IDrawingPrimitiveController> nodes = calc.findIntersectingNodes(testPlacement, potentialChild);
 		INodeController retVal = null;
+		if(logger.isTraceEnabled()){
+			logger.trace("Potential parents = " + nodes);
+		}
 		if(!nodes.isEmpty()){
 			retVal = (INodeController)nodes.first();
 		}
