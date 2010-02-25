@@ -28,14 +28,14 @@ public abstract class Selection implements ISelection {
 	private Integer getSelectionTypeValue(SelectionType selectionType) {
 		int retVal = 0;
 		if(selectionType.equals(SelectionType.PRIMARY)){
-			retVal = 3;
+			retVal = 1;
 		}
 		else if(selectionType.equals(SelectionType.SECONDARY)){
 			retVal = 2;
 			
 		}
 		else if(selectionType.equals(SelectionType.SUBGRAPH)){
-			retVal = 1;
+			retVal = 3;
 		}
 		return retVal;
 	}

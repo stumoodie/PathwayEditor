@@ -446,4 +446,16 @@ public class ViewControllerStore implements IViewControllerStore {
 	public IIntersectionCalculator getIntersectionCalculator() {
 		return this.intersectionCalculator;
 	}
+
+	@Override
+	public IViewControllerCollection getLastOperationResult() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Not implemented yet!");
+		
+	}
+
+	@Override
+	public IDrawingPrimitiveController getDrawingPrimitiveController(ICanvasAttribute testAttribute) {
+		return this.domainToViewMap.get(testAttribute);
+	}
 }

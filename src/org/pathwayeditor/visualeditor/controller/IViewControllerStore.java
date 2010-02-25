@@ -1,35 +1,16 @@
 package org.pathwayeditor.visualeditor.controller;
 
-import java.util.Iterator;
 import java.util.List;
 
-import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasAttribute;
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNodeAttribute;
-import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.IModel;
-import org.pathwayeditor.businessobjects.drawingprimitives.IShapeAttribute;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.visualeditor.geometry.IIntersectionCalculator;
 
-public interface IViewControllerStore {
+public interface IViewControllerStore extends IViewControllerCollection {
 
 	IModel getDomainModel();
 	
-	Iterator<IDrawingPrimitiveController> drawingPrimitiveIterator();
-	
-	Iterator<IShapeController> shapeControllerIterator();
-	
-	Iterator<ILabelController> labelControllerIterator();
-	
-	Iterator<ILinkController> linkControllerIterator();
-
-	Iterator<INodeController> nodeControllerIterator();
-
 	IRootController getRootNode();
-
-	INodeController getNodeController(IDrawingNodeAttribute testNode);
-	
-	boolean containsDrawingElement(ICanvasAttribute testPrimitive);
 
 	void activate();
 	
@@ -37,17 +18,20 @@ public interface IViewControllerStore {
 	
 	boolean isActive();
 
-	ILinkController getLinkController(ILinkAttribute attribute);
-
-	IShapeController getShapeController(IShapeAttribute attribute);
-
 	Envelope getCanvasBounds();
 	
+	IIntersectionCalculator getIntersectionCalculator();
+	
+	/**
+	 * Returns the collection of controllers that were the result of the last operation performed that changed the structure of the
+	 * domain model compound graph.
+	 * @return the view controller collection, which cannot be null.
+	 */
+	IViewControllerCollection getLastOperationResult();
+
 	void addViewControllerChangeListener(IViewControllerChangeListener listener);
 	
 	void removeViewControllerChangeListener(IViewControllerChangeListener listener);
 	
 	List<IViewControllerChangeListener> getViewControllerChangeListeners();
-	
-	IIntersectionCalculator getIntersectionCalculator();
 }

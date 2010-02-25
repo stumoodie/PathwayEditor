@@ -3,6 +3,8 @@ package org.pathwayeditor.visualeditor;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.util.Iterator;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
@@ -12,6 +14,7 @@ import javax.swing.JScrollPane;
 import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.drawingprimitives.IBendPoint;
 import org.pathwayeditor.businessobjects.drawingprimitives.ICanvas;
+import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkEdge;
 import org.pathwayeditor.figure.geometry.Dimension;
@@ -50,6 +53,7 @@ import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
 import org.pathwayeditor.visualeditor.selection.ISelectionRecord;
 import org.pathwayeditor.visualeditor.selection.ISubgraphSelection;
 import org.pathwayeditor.visualeditor.selection.SelectionRecord;
+import org.pathwayeditor.visualeditor.selection.ISelection.SelectionType;
 
 public class PathwayEditor extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -123,12 +127,13 @@ public class PathwayEditor extends JPanel {
 				}
 				if(reparentingState.equals(ReparentingStateType.CAN_REPARENT)){
 					createMoveCommand(delta, true);
+					restoreSelection();
 				}
 				else if(reparentingState.equals(ReparentingStateType.CAN_MOVE)){
 					createMoveCommand(delta, false);
+					restoreSelection();
 				}
 				feedbackModel.clear();
-				selectionRecord.clear();
 				shapePane.updateView();
 				
 			}
@@ -191,7 +196,7 @@ public class PathwayEditor extends JPanel {
 				}
 				createResizeCommand(originDelta, resizeDelta);
 				feedbackModel.clear();
-				selectionRecord.clear();
+				restoreSelection();
 				shapePane.updateView();
 			}
 			
@@ -214,7 +219,7 @@ public class PathwayEditor extends JPanel {
 				}
 				createMoveBendPointCommand(bendPointHandle.getHandleIndex(), position);
 				feedbackModel.clear();
-				selectionRecord.clear();
+				restoreSelection();
 				shapePane.updateView();
 			}
 
@@ -240,7 +245,7 @@ public class PathwayEditor extends JPanel {
 				}
 				createNewBendPointCommand(selectionHandle.getHandleIndex(), position);
 				feedbackModel.clear();
-				selectionRecord.clear();
+				restoreSelection();
 				shapePane.updateView();
 			}
 
@@ -275,6 +280,26 @@ public class PathwayEditor extends JPanel {
 		this.initialise();
 	}
 	
+	protected void restoreSelection() {
+		Iterator<ISelection> selectionIter = this.selectionRecord.selectionIterator();
+		SortedSet<ISelection> selectedSet = new TreeSet<ISelection>();
+		while(selectionIter.hasNext()){
+			ISelection selection = selectionIter.next();
+			selectedSet.add(selection);
+		}
+		this.selectionRecord.clear();
+		for(ISelection selection : selectedSet){
+			ICanvasAttribute att = selection.getPrimitiveController().getDrawingElement();
+			IDrawingPrimitiveController newController = this.viewModel.getDrawingPrimitiveController(att);
+			if(selection.getSelectionType().equals(SelectionType.PRIMARY)){
+				this.selectionRecord.setPrimarySelection(newController);
+			}
+			else{
+				this.selectionRecord.addSecondarySelection(newController);
+			}
+		}
+	}
+
 	protected void createNewBendPointCommand(int lineSegmentIdx, Point position) {
 		ILinkSelection linkSelection = this.selectionRecord.getUniqueLinkSelection(); 
 		ICommand cmd = new CreateBendPointCommand(linkSelection.getPrimitiveController().getDrawingElement(), lineSegmentIdx, position);
