@@ -9,10 +9,7 @@ import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNode;
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNodeAttribute;
-import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
-import org.pathwayeditor.businessobjects.drawingprimitives.ILinkEdge;
+import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElementSelection;
 import org.pathwayeditor.businessobjects.drawingprimitives.ISelectionFactory;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveController;
@@ -39,27 +36,12 @@ public class SelectionRecord implements ISelectionRecord {
 		if(drawingElement == null || drawingElement instanceof IRootController) throw new IllegalArgumentException("drawing element cannot be null or the root node");
 		if(this.selections.isEmpty()) throw new IllegalStateException("Cannot add a secondary selection before a primary selection");
 
-		final ISelection newSelection = createSelection(SelectionType.SECONDARY, drawingElement);
-		if(this.selections.add(newSelection)){
+		if(!this.controllerMapping.containsKey(drawingElement)){
 			// only do something if selection is not already recorded
-//			addElementToGraphSelection(drawingElement);
-//			addViewControllerListener(newSelection);
-			this.controllerMapping.put(drawingElement, newSelection);
+			createSelection(SelectionType.SECONDARY, drawingElement);
 			notifySelectionChange();
 		}
 	}
-	
-//	private void addViewControllerListener(final ISelection newSelection){
-//		viewModel.addViewControllerChangeListener(new IViewControllerChangeListener() {
-//			
-//			@Override
-//			public void nodeStructureChangeEvent(IViewControllerNodeStructureChangeEvent e) {
-//				if(e.getChangeType().equals(ViewControllerStructureChangeType.NODES_REMOVED)){
-//					selections.remove(newSelection);
-//				}
-//			}
-//		});
-//	}
 	
 	private ISelection createSelection(SelectionType selectionType, IDrawingPrimitiveController drawingElement){
 		ISelection retVal = null;
@@ -72,6 +54,8 @@ public class SelectionRecord implements ISelectionRecord {
 		else{
 			throw new RuntimeException("Cannot create controller of type: " + retVal);
 		}
+		this.selections.add(retVal);
+		this.controllerMapping.put(drawingElement, retVal);
 		return retVal;
 	}
 
@@ -82,8 +66,6 @@ public class SelectionRecord implements ISelectionRecord {
 	public void clear() {
 		this.selections.clear();
 		this.controllerMapping.clear();
-//		this.selectionFactory = null;
-//		this.selection = null;
 		notifySelectionChange();
 	}
 
@@ -120,26 +102,22 @@ public class SelectionRecord implements ISelectionRecord {
 		if(this.selections.isEmpty() || !this.selections.first().equals(drawingElement)){
 			// a change in primary selection clears the secondary selection
 			this.selections.clear();
-			ISelection primSel = createSelection(SelectionType.PRIMARY, drawingElement);
-			this.selections.add(primSel);
-			this.controllerMapping.put(drawingElement, primSel);
-//			this.selectionFactory = drawingElement.getDrawingElement().getCurrentDrawingElement().getModel().newSelectionFactory();
-//			this.selection = null;
-//			addElementToGraphSelection(drawingElement);
-//			addViewControllerListener(primSel);
+			createSelection(SelectionType.PRIMARY, drawingElement);
 			notifySelectionChange();
 		}
 	}
 	
-	private void addElementToGraphSelection(ISelectionFactory selectionFactory, IDrawingPrimitiveController drawingElement) {
-		if(drawingElement.getDrawingElement() instanceof IDrawingNodeAttribute){
-			selectionFactory.addDrawingNode((IDrawingNode)drawingElement.getDrawingElement().getCurrentDrawingElement());
+	private void updateSubgraphSelection(ISelectionFactory selectionFactory, ISelection newSelection) {
+		if(newSelection instanceof INodeSelection){
+			INodeSelection nodeSelection = (INodeSelection)newSelection;
+			selectionFactory.addDrawingNode(nodeSelection.getPrimitiveController().getDrawingElement().getCurrentDrawingElement());
 		}
-		else if(drawingElement.getDrawingElement() instanceof ILinkAttribute){
-			selectionFactory.addLink((ILinkEdge)drawingElement.getDrawingElement().getCurrentDrawingElement());
+		else if(newSelection instanceof ILinkSelection){
+			ILinkSelection linkSelection = (ILinkSelection)newSelection;
+			selectionFactory.addLink(linkSelection.getPrimitiveController().getDrawingElement().getCurrentDrawingElement());
 		}
 		else{
-			throw new RuntimeException("Cannot handle drawing element: " + drawingElement);
+			throw new RuntimeException("Unknown selection type");
 		}
 	}
 
@@ -170,18 +148,6 @@ public class SelectionRecord implements ISelectionRecord {
 		return retVal;
 	}
 
-//	private ISelection findSelection(IDrawingPrimitiveController testElement) {
-//		Iterator<ISelection> iter = this.selections.iterator();
-//		ISelection retVal = null;
-//		while(retVal == null && iter.hasNext()){
-//			ISelection sel = iter.next();
-//			if(sel.getPrimitiveController().equals(testElement)){
-//				retVal = sel;
-//			}
-//		}
-//		return retVal;
-//	}
-
 	@Override
 	public Iterator<ILinkSelection> selectedLinksIterator() {
 		List<ILinkSelection> retVal = new LinkedList<ILinkSelection>();
@@ -208,33 +174,6 @@ public class SelectionRecord implements ISelectionRecord {
 		return retVal.iterator();
 	}
 
-//	@Override
-//	public Iterator<INodeSelection> getTopNodeSelection() {
-//		// ensure that this graph selection is initialised
-//		getSubgraphSelection();
-//		final IViewControllerStore viewModel = this.selections.first().getPrimitiveController().getViewModel();
-//		final Iterator<IDrawingNode> iter = this.getSubgraphSelection().topDrawingNodeIterator();
-//		Iterator<INodeSelection> retVal = new Iterator<INodeSelection>(){
-//
-//			@Override
-//			public boolean hasNext() {
-//				return iter.hasNext();
-//			}
-//
-//			@Override
-//			public INodeSelection next() {
-//				return (INodeSelection)findSelection(viewModel.getNodeController(iter.next().getAttribute()));
-//			}
-//
-//			@Override
-//			public void remove() {
-//				throw new UnsupportedOperationException("Removal not supported");
-//			}
-//			
-//		};
-//		return retVal;
-//	}
-
 	@Override
 	public ISelectionHandle findSelectionModelAt(Point point) {
 		SortedSet<ISelectionHandle> matches = new TreeSet<ISelectionHandle>();
@@ -254,10 +193,13 @@ public class SelectionRecord implements ISelectionRecord {
 	@Override
 	public ISubgraphSelection getSubgraphSelection() {
 		ISelectionFactory selectionFactory = this.viewModel.getDomainModel().newSelectionFactory();
-		for(ISelection sel : this.selections){
-			addElementToGraphSelection(selectionFactory, sel.getPrimitiveController());
+		for(ISelection selection : this.selections){
+			updateSubgraphSelection(selectionFactory, selection);
 		}
-		return new SubgraphSelection(this, this.viewModel, selectionFactory.createEdgeExcludedSelection());
+		IDrawingElementSelection currentSelectionSubgraph = selectionFactory.createEdgeExcludedSelection();
+		SubgraphSelection retVal = new SubgraphSelection(this, this.viewModel, currentSelectionSubgraph);
+		
+		return retVal;
 	}
 
 	@Override
@@ -281,17 +223,17 @@ public class SelectionRecord implements ISelectionRecord {
 		return this.controllerMapping.get(next);
 	}
 
-	void createNodeSubgraphSelection(INodeController nodeController) {
-		INodeSelection retVal = new NodeSelection(SelectionType.SUBGRAPH, nodeController);
-		this.selections.add(retVal);
-		this.controllerMapping.put(nodeController, retVal);
-	}
-
-	void createLinkSubgraphSelection(ILinkController linkController) {
-		ILinkSelection retVal = new LinkSelection(SelectionType.SUBGRAPH, linkController);
-		this.selections.add(retVal);
-		this.controllerMapping.put(linkController, retVal);
-	}
+//	void createNodeSubgraphSelection(INodeController nodeController) {
+//		INodeSelection retVal = new NodeSelection(SelectionType.SUBGRAPH, nodeController);
+//		this.selections.add(retVal);
+//		this.controllerMapping.put(nodeController, retVal);
+//	}
+//
+//	void createLinkSubgraphSelection(ILinkController linkController) {
+//		ILinkSelection retVal = new LinkSelection(SelectionType.SUBGRAPH, linkController);
+//		this.selections.add(retVal);
+//		this.controllerMapping.put(linkController, retVal);
+//	}
 
 	@Override
 	public boolean containsSelection(IDrawingPrimitiveController controller) {

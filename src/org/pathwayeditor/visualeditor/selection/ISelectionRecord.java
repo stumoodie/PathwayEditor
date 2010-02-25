@@ -26,8 +26,6 @@ public interface ISelectionRecord {
 	
 	Iterator<ILinkSelection> selectedLinksIterator();
 	
-//	Iterator<INodeSelection> getTopNodeSelection();
-	
 	int numSelected();
 	
 	void clear();

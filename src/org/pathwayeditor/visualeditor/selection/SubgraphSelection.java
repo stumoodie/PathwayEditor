@@ -1,23 +1,44 @@
 package org.pathwayeditor.visualeditor.selection;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElementSelection;
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNode;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkEdge;
+import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveController;
 import org.pathwayeditor.visualeditor.controller.ILinkController;
 import org.pathwayeditor.visualeditor.controller.INodeController;
 import org.pathwayeditor.visualeditor.controller.IViewControllerStore;
+import org.pathwayeditor.visualeditor.selection.ISelection.SelectionType;
 
 public class SubgraphSelection implements ISubgraphSelection {
 	private final IDrawingElementSelection subgraphSelection;
 	private final SelectionRecord selectionRecord;
 	private final IViewControllerStore viewControllerStore;
+	private final Map<IDrawingPrimitiveController, ISelection> subGraphSelections = new HashMap<IDrawingPrimitiveController, ISelection>();
 	
-	public SubgraphSelection(SelectionRecord selectionRecord, IViewControllerStore viewControllerStore, IDrawingElementSelection createEdgeExcludedSelection) {
-		this.subgraphSelection = createEdgeExcludedSelection;
+	public SubgraphSelection(SelectionRecord selectionRecord, IViewControllerStore viewControllerStore, IDrawingElementSelection currentSelectionSubgraph) {
+		this.subgraphSelection = currentSelectionSubgraph;
 		this.selectionRecord = selectionRecord;
 		this.viewControllerStore = viewControllerStore;
+		Iterator<IDrawingNode> nodeIter = currentSelectionSubgraph.drawingNodeIterator();
+		while(nodeIter.hasNext()){
+			IDrawingNode drawingNode = nodeIter.next();
+			INodeController nodeController = this.viewControllerStore.getNodeController(drawingNode.getAttribute());
+			if(!this.selectionRecord.containsSelection(nodeController)){
+				this.subGraphSelections.put(nodeController, new NodeSelection(SelectionType.SUBGRAPH, nodeController));
+			}
+		}
+		Iterator<ILinkEdge> linkIter = currentSelectionSubgraph.linkEdgeIterator();
+		while(linkIter.hasNext()){
+			ILinkEdge drawingNode = linkIter.next();
+			ILinkController linkController = this.viewControllerStore.getLinkController(drawingNode.getAttribute());
+			if(!this.selectionRecord.containsSelection(linkController)){
+				this.subGraphSelections.put(linkController, new LinkSelection(SelectionType.SUBGRAPH, linkController));
+			}
+		}
 	}
 
 	@Override
@@ -48,11 +69,11 @@ public class SubgraphSelection implements ISubgraphSelection {
 			@Override
 			public ILinkSelection next() {
 				ILinkController linkController = viewControllerStore.getLinkController(iter.next().getAttribute());
-				if(!selectionRecord.containsSelection(linkController)){
-					// no selection so create a new subgraph selection
-					selectionRecord.createLinkSubgraphSelection(linkController);
+				ILinkSelection retVal = selectionRecord.getLinkSelection(linkController);
+				if(retVal == null){
+					retVal = (ILinkSelection)subGraphSelections.get(linkController);
 				}
-				return selectionRecord.getLinkSelection(linkController);
+				return retVal;
 			}
 
 			@Override
@@ -77,11 +98,11 @@ public class SubgraphSelection implements ISubgraphSelection {
 			@Override
 			public INodeSelection next() {
 				INodeController nodeController = viewControllerStore.getNodeController(iter.next().getAttribute());
-				if(!selectionRecord.containsSelection(nodeController)){
-					// no selection so create a new subgraph selection
-					selectionRecord.createNodeSubgraphSelection(nodeController);
+				INodeSelection retVal = selectionRecord.getNodeSelection(nodeController);
+				if(retVal == null){
+					retVal = (INodeSelection)subGraphSelections.get(nodeController);
 				}
-				return selectionRecord.getNodeSelection(nodeController);
+				return retVal;
 			}
 
 			@Override
@@ -107,11 +128,11 @@ public class SubgraphSelection implements ISubgraphSelection {
 			@Override
 			public INodeSelection next() {
 				INodeController nodeController = viewControllerStore.getNodeController(iter.next().getAttribute());
-				if(!selectionRecord.containsSelection(nodeController)){
-					// no selection so create a new subgraph selection
-					selectionRecord.createNodeSubgraphSelection(nodeController);
+				INodeSelection retVal = selectionRecord.getNodeSelection(nodeController);
+				if(retVal == null){
+					retVal = (INodeSelection)subGraphSelections.get(nodeController);
 				}
-				return selectionRecord.getNodeSelection(nodeController);
+				return retVal;
 			}
 
 			@Override
