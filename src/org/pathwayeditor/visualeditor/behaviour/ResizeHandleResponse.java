@@ -17,10 +17,10 @@ public class ResizeHandleResponse extends HandleResponse {
 	
 	@Override
 	public void dragContinuing(Point newLocation) {
-		this.calculateLocationDelta(newLocation);
-		this.newPositionCalculator.calculateDeltas(this.getDelta());
+		Point delta = this.calculateLocationDelta(newLocation);
+		this.newPositionCalculator.calculateDeltas(delta);
 		if(logger.isTraceEnabled()){
-			logger.trace("Drag continuing. newLocation=" + newLocation + ",delta=" + this.getDelta() + ",originDelta="
+			logger.trace("Drag continuing. newLocation=" + newLocation + ",delta=" + delta + ",originDelta="
 					+ newPositionCalculator.getResizedOrigin() + ",resizeDelta=" + this.newPositionCalculator.getResizedDelta());
 		}
 		this.operation.resizeContinuing(newPositionCalculator.getResizedOrigin(), newPositionCalculator.getResizedDelta());
@@ -30,7 +30,7 @@ public class ResizeHandleResponse extends HandleResponse {
 	public void dragFinished() {
 		this.exitDragOngoingState();
 		if(logger.isTraceEnabled()){
-			logger.trace("Drag finished. delta=" + this.getDelta() + ",originDelta="
+			logger.trace("Drag finished. originDelta="
 					+ newPositionCalculator.getResizedOrigin() + ",resizeDelta=" + this.newPositionCalculator.getResizedDelta());
 		}
 		this.operation.resizeFinished(newPositionCalculator.getResizedOrigin(), newPositionCalculator.getResizedDelta());
@@ -40,10 +40,10 @@ public class ResizeHandleResponse extends HandleResponse {
 	public void dragStarted(ISelectionHandle selectionHandle, Point newLocation) {
 		this.enterDragOngoingState();
 		this.setStartLocation(newLocation);
-		calculateLocationDelta(newLocation);
-		this.newPositionCalculator.calculateDeltas(getDelta());
+		Point delta = calculateLocationDelta(newLocation);
+		this.newPositionCalculator.calculateDeltas(delta);
 		if(logger.isTraceEnabled()){
-			logger.trace("Drag started. newLocation=" + newLocation + ",delta=" + this.getDelta() + ",originDelta="
+			logger.trace("Drag started. newLocation=" + newLocation + ",delta=" + delta + ",originDelta="
 					+ newPositionCalculator.getResizedOrigin() + ",resizeDelta=" + this.newPositionCalculator.getResizedDelta());
 		}
 		this.operation.resizeStarted();
@@ -53,16 +53,15 @@ public class ResizeHandleResponse extends HandleResponse {
 	public boolean canContinueDrag(Point newLocation) {
 		// The problem is we don;t want to change the state of the class here. So we must undo
 		// these changes before the method returns.
-		Point originalLocation = this.getStartLocation();
-		this.calculateLocationDelta(newLocation);
-		this.newPositionCalculator.calculateDeltas(this.getDelta());
+		Point lastDelta = this.newPositionCalculator.getLastDelta(); 
+		Point delta = this.calculateLocationDelta(newLocation);
+		this.newPositionCalculator.calculateDeltas(delta);
 		boolean retVal = this.operation.canResize(newPositionCalculator.getResizedOrigin(), newPositionCalculator.getResizedDelta());
 		if(logger.isTraceEnabled()){
-			logger.trace("Can continue drag? retVal=" + retVal + ",newLocation=" + newLocation + ",delta=" + this.getDelta() + ",originDelta="
+			logger.trace("Can continue drag? retVal=" + retVal + ",newLocation=" + newLocation + ",delta=" + delta + ",originDelta="
 					+ newPositionCalculator.getResizedOrigin() + ",resizeDelta=" + this.newPositionCalculator.getResizedDelta());
 		}
-		this.calculateLocationDelta(originalLocation);
-		this.newPositionCalculator.calculateDeltas(this.getDelta());
+		this.newPositionCalculator.calculateDeltas(lastDelta);
 		return retVal;
 	}
 

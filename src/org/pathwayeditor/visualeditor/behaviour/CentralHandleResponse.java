@@ -7,6 +7,7 @@ import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
 public class CentralHandleResponse extends HandleResponse implements IMoveResponse {
 	private final IEditingOperation editingOperation;
 	private ReparentingStateType reparentingState = ReparentingStateType.FORBIDDEN;
+	private Point lastDelta;
 	
 	public CentralHandleResponse(IEditingOperation editingOperation){
 		this.editingOperation = editingOperation;
@@ -14,22 +15,22 @@ public class CentralHandleResponse extends HandleResponse implements IMoveRespon
 	
 	@Override
 	public void dragContinuing(Point newLocation) {
-		this.calculateLocationDelta(newLocation);
-		this.editingOperation.moveOngoing(this.getDelta());
-		this.reparentingState = this.editingOperation.getReparentingState(this.getDelta());
+		this.lastDelta = this.calculateLocationDelta(newLocation);
+		this.editingOperation.moveOngoing(this.lastDelta);
+		this.reparentingState = this.editingOperation.getReparentingState(this.lastDelta);
 	}
 
 	@Override
 	public void dragFinished() {
 		this.exitDragOngoingState();
-		this.editingOperation.moveFinished(this.getDelta(), reparentingState);
+		this.editingOperation.moveFinished(this.lastDelta, reparentingState);
 	}
 
 	@Override
 	public void dragStarted(ISelectionHandle selectionHandle, Point newLocation) {
 		this.enterDragOngoingState();
 		this.setStartLocation(newLocation);
-		this.calculateLocationDelta(newLocation);
+		this.lastDelta = this.calculateLocationDelta(newLocation);
 		this.reparentingState = ReparentingStateType.FORBIDDEN;
 		this.editingOperation.moveStarted();
 	}
