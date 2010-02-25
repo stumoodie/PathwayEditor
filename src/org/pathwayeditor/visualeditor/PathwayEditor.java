@@ -48,6 +48,7 @@ import org.pathwayeditor.visualeditor.selection.ISelectionChangeEvent;
 import org.pathwayeditor.visualeditor.selection.ISelectionChangeListener;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
 import org.pathwayeditor.visualeditor.selection.ISelectionRecord;
+import org.pathwayeditor.visualeditor.selection.ISubgraphSelection;
 import org.pathwayeditor.visualeditor.selection.SelectionRecord;
 
 public class PathwayEditor extends JPanel {
@@ -383,7 +384,8 @@ public class PathwayEditor extends JPanel {
 
 	
 	private void moveSelection(Point delta) {
-		Iterator<INodeSelection> moveNodeIterator = this.selectionRecord.selectedNodesIterator();
+		ISubgraphSelection subgraphSelection = this.selectionRecord.getSubgraphSelection();
+		Iterator<INodeSelection> moveNodeIterator = subgraphSelection.selectedNodeIterator();
 		while(moveNodeIterator.hasNext()){
 			ISelection selection = moveNodeIterator.next();
 			IFeedbackElement feedbackElement = this.feedbackModel.getFeedbackElement(selection.getPrimitiveController());
@@ -392,7 +394,7 @@ public class PathwayEditor extends JPanel {
 				logger.trace("Dragged feedback element: " + feedbackElement);
 			}
 		}
-		Iterator<ILinkSelection> moveLinkIterator = this.selectionRecord.selectedLinksIterator();
+		Iterator<ILinkSelection> moveLinkIterator = subgraphSelection.selectedLinkIterator();
 		while(moveLinkIterator.hasNext()){
 			ILinkSelection selection = moveLinkIterator.next();
 			IFeedbackLink feedbackLink = (IFeedbackLink)this.feedbackModel.getFeedbackElement(selection.getPrimitiveController());
