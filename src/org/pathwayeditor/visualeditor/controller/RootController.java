@@ -69,4 +69,9 @@ public class RootController extends NodeController implements IRootController {
 	public boolean intersectsHull(IConvexHull queryHull) {
 		return true;
 	}
+
+	@Override
+	public boolean intersectsBounds(Envelope drawnBounds) {
+		return true;
+	}
 }

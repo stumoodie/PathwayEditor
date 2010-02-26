@@ -6,6 +6,7 @@ package org.pathwayeditor.visualeditor.geometry;
 import java.util.Comparator;
 import java.util.SortedSet;
 
+import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveController;
@@ -26,5 +27,7 @@ public interface IIntersectionCalculator {
 	SortedSet<IDrawingPrimitiveController> findIntersectingNodes(IConvexHull queryHull, IDrawingPrimitiveController queryNode);
 
 	SortedSet<IDrawingPrimitiveController> findDrawingPrimitivesAt(Point p);
+
+	SortedSet<IDrawingPrimitiveController> findIntersectingController(Envelope bounds);
 	
 }

@@ -14,13 +14,14 @@ import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttr
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributePropertyChangeListener;
 import org.pathwayeditor.figure.figuredefn.IAnchorLocator;
 import org.pathwayeditor.figure.geometry.Envelope;
-import org.pathwayeditor.figure.geometry.IConvexHull;
+import org.pathwayeditor.figure.geometry.LineSegment;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.geometry.ILinkPointDefinition;
 import org.pathwayeditor.visualeditor.geometry.LinkPointDefinition;
 
 public class LinkController extends DrawingPrimitiveController implements ILinkController {
-	private static final double LINE_HIT_TOLERENCE = 5.0;
+//	private static final double LINE_SEGMENT_INTERSECTION_TOLERANCE = 1.0;
+//	private static final double LINE_HIT_TOLERENCE = 5.0;
 	//	private final Logger logger = Logger.getLogger(this.getClass());
 	private ILinkAttribute linkAttribute;
 	private ILinkPointDefinition linkDefinition;
@@ -203,7 +204,7 @@ public class LinkController extends DrawingPrimitiveController implements ILinkC
 		double maxX = Double.MIN_VALUE;
 		double minY = Double.MAX_VALUE;
 		double maxY = Double.MIN_VALUE;
-		final double halfLineHeight = this.linkAttribute.getLineWidth() + LINE_HIT_TOLERENCE;
+		final double halfLineHeight = this.linkAttribute.getLineWidth();// + LINE_HIT_TOLERENCE;
 		Iterator<Point> pointIter = this.linkDefinition.pointIterator();
 		while(pointIter.hasNext()){
 			Point p = pointIter.next();
@@ -219,15 +220,32 @@ public class LinkController extends DrawingPrimitiveController implements ILinkC
 	public boolean containsPoint(Point p) {
 		boolean retVal = false;
 		if(getDrawnBounds().containsPoint(p)){
-			final double halfLineHeight = this.linkAttribute.getLineWidth() + LINE_HIT_TOLERENCE;
+			final double halfLineHeight = this.linkAttribute.getLineWidth();// + LINE_HIT_TOLERENCE;
 			retVal = this.linkDefinition.containsPoint(p, halfLineHeight); 
 		}
 		return retVal;
 	}
 
 	@Override
-	public boolean intersectsHull(IConvexHull queryHull) {
-		return false;
+	public boolean intersectsBounds(Envelope drawnBounds) {
+		boolean retVal = false;
+		Iterator<LineSegment> iter = this.linkDefinition.lineSegIterator();
+		while(iter.hasNext() && !retVal){
+			LineSegment line = iter.next();
+			retVal = isLineIntersectingBounds(line, drawnBounds);
+		}
+		return retVal;
 	}
 
+	private boolean isLineIntersectingBounds(LineSegment line, Envelope drawnBounds) {
+		Point origin = drawnBounds.getOrigin();
+		Point horizontalCorner = drawnBounds.getHorizontalCorner();
+		Point diagonalCorner = drawnBounds.getDiagonalCorner();
+		Point verticalCorner = drawnBounds.getVerticalCorner();
+		return drawnBounds.containsPoint(line.getOrigin()) || drawnBounds.containsPoint(line.getTerminus())
+			|| line.intersect(new LineSegment(origin, horizontalCorner), this.linkAttribute.getLineWidth()) != null
+			|| line.intersect(new LineSegment(horizontalCorner, diagonalCorner), this.linkAttribute.getLineWidth()) != null
+			|| line.intersect(new LineSegment(diagonalCorner, verticalCorner), this.linkAttribute.getLineWidth()) != null
+			|| line.intersect(new LineSegment(verticalCorner, origin), this.linkAttribute.getLineWidth()) != null;
+	}
 }

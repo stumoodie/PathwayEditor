@@ -1,4 +1,4 @@
-package org.pathwayeditor.visualeditor;
+package org.pathwayeditor.visualeditor.geometry;
 
 import java.util.Iterator;
 import java.util.SortedSet;
@@ -11,8 +11,6 @@ import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveController;
 import org.pathwayeditor.visualeditor.controller.ILabelController;
 import org.pathwayeditor.visualeditor.controller.INodeController;
 import org.pathwayeditor.visualeditor.controller.IShapeController;
-import org.pathwayeditor.visualeditor.geometry.IIntersectionCalcnFilter;
-import org.pathwayeditor.visualeditor.geometry.IIntersectionCalculator;
 import org.pathwayeditor.visualeditor.selection.INodeSelection;
 import org.pathwayeditor.visualeditor.selection.ISubgraphSelection;
 

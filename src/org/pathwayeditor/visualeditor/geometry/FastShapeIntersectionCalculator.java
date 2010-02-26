@@ -9,12 +9,15 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
+import org.pathwayeditor.figure.geometry.ConvexHullCalculator;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.IConvexHull;
+import org.pathwayeditor.figure.geometry.IConvexHullCalculator;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveController;
 import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveControllerEvent;
 import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveControllerListener;
+import org.pathwayeditor.visualeditor.controller.INodeController;
 import org.pathwayeditor.visualeditor.controller.IRootController;
 import org.pathwayeditor.visualeditor.controller.IViewControllerChangeListener;
 import org.pathwayeditor.visualeditor.controller.IViewControllerNodeStructureChangeEvent;
@@ -167,12 +170,15 @@ public class FastShapeIntersectionCalculator implements IIntersectionCalculator 
 		Envelope drawnBounds = queryHull.getEnvelope();
 		Point origin = drawnBounds.getOrigin();
 		Point diagonal = drawnBounds.getDiagonalCorner();
-		ISpacialEntry2DEnumerator< IDrawingPrimitiveController> iter = this.spacialIndex.queryOverlap((float)origin.getX(), (float)origin.getY(), (float)diagonal.getX(), (float)diagonal.getY(), null, 0, false);
+		ISpacialEntry2DEnumerator<IDrawingPrimitiveController> iter = this.spacialIndex.queryOverlap((float)origin.getX(), (float)origin.getY(), (float)diagonal.getX(), (float)diagonal.getY(), null, 0, false);
 		while(iter.numRemaining() > 0){
-			IDrawingPrimitiveController node = iter.nextInt();
-			// ignore matches to self
-			if(!node.equals(queryNode) && !node.equals(rootNode) && filter.accept(node) && node.intersectsHull(queryHull)){
-				retVal.add(node);
+			IDrawingPrimitiveController prim = iter.nextInt();
+			if(prim instanceof INodeController){
+				INodeController node = (INodeController)prim;
+				// ignore matches to self
+				if(!node.equals(queryNode) && !node.equals(rootNode) && filter.accept(node) && node.intersectsHull(queryHull)){
+					retVal.add(node);
+				}
 			}
 		}
 		return retVal;
@@ -192,6 +198,37 @@ public class FastShapeIntersectionCalculator implements IIntersectionCalculator 
 			if(filter.accept(node) && node.containsPoint(p)){
 				logger.trace("Found containing node");
 				retVal.add(node);
+			}
+		}
+		return retVal;
+	}
+
+	@Override
+	public SortedSet<IDrawingPrimitiveController> findIntersectingController(Envelope drawnBounds) {
+		if(logger.isDebugEnabled()){
+			logger.debug("Finding elements intersecting with bounds=" + drawnBounds);
+		}
+//		IConvexHullCalculator builder = new ConvexHullCalculator();
+//		builder.addPoint(drawnBounds.getOrigin());
+//		builder.addPoint(drawnBounds.getDiagonalCorner());
+//		builder.addPoint(drawnBounds.getHorizontalCorner());
+//		builder.addPoint(drawnBounds.getVerticalCorner());
+//		builder.calculate();
+//		IConvexHull queryHull = builder.getConvexHull();
+		SortedSet<IDrawingPrimitiveController> retVal = createSortedSet();
+		Point origin = drawnBounds.getOrigin();
+		Point diagonal = drawnBounds.getDiagonalCorner();
+		ISpacialEntry2DEnumerator< IDrawingPrimitiveController> iter = this.spacialIndex.queryOverlap((float)origin.getX(), (float)origin.getY(), (float)diagonal.getX(), (float)diagonal.getY(), null, 0, false);
+		while(iter.numRemaining() > 0){
+			IDrawingPrimitiveController element = iter.nextInt();
+			if(logger.isTraceEnabled()){
+				logger.trace("R-Tree found overlapping node: " + element + ",elementBound=" + element.getDrawnBounds());
+			}
+			if(element.intersectsBounds(drawnBounds)){
+				if(logger.isTraceEnabled()){
+					logger.trace("Element: " + element + " overlaps bounds=" + drawnBounds);
+				}
+				retVal.add(element);
 			}
 		}
 		return retVal;

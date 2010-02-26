@@ -11,6 +11,7 @@ import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkEdge;
 import org.pathwayeditor.businessobjects.drawingprimitives.IShapeNode;
 import org.pathwayeditor.figure.figuredefn.IAnchorLocator;
+import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveController;
 import org.pathwayeditor.visualeditor.controller.ILinkController;
 import org.pathwayeditor.visualeditor.controller.INodeController;
@@ -229,5 +230,18 @@ public class FeedbackModel implements IFeedbackModel {
 	@Override
 	public IFeedbackElement getFeedbackElement(IDrawingPrimitiveController controller) {
 		return this.selectionMapping.get(controller);
+	}
+
+	@Override
+	public IFeedbackNode createSingleNode(Envelope envelope) {
+		this.clear();
+		IFeedbackNode retVal = new FeedbackNode(0, envelope);
+		this.nodes.add(retVal);
+		return retVal;
+	}
+
+	@Override
+	public IFeedbackNode uniqueFeedbackNode() {
+		return this.nodes.iterator().next();
 	}
 }

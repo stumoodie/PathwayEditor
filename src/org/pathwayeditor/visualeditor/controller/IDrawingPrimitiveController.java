@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasAttribute;
 import org.pathwayeditor.figure.geometry.Envelope;
-import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
 
 public interface IDrawingPrimitiveController extends Comparable<IDrawingPrimitiveController> {
@@ -45,5 +44,5 @@ public interface IDrawingPrimitiveController extends Comparable<IDrawingPrimitiv
 	
 	boolean containsPoint(Point p);
 
-	boolean intersectsHull(IConvexHull queryHull);
+	boolean intersectsBounds(Envelope drawnBounds);
 }

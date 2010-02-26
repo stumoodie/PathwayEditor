@@ -20,22 +20,11 @@ public interface INodeController extends IDrawingPrimitiveController {
 	 */
 	IConvexHull getConvexHull();
 	
-//	/**
-//	 * Translates the node primitive only, does not change the underlying domain model
-//	 * @param translation the change from the current domain model location
-//	 */
-//	void translatePrimitive(Point translation);
-	
 	@Override
 	IDrawingNodeAttribute getDrawingElement();
 	
-//	void addNodePrimitiveChangeListener(INodeControllerChangeListener listener);
-//	
-//	void removeNodePrimitiveChangeListener(INodeControllerChangeListener listener);
-//	
-//	List<INodeControllerChangeListener> getNodePrimitiveChangeListeners();
 
-//	void resizePrimitive(Point originDelta, Dimension resizeDelta);
+	boolean intersectsHull(IConvexHull queryHull);
 
 	boolean canResize(Point originDelta, Dimension resizeDelta);
 	

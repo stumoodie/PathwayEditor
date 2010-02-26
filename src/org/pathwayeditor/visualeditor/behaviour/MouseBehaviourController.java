@@ -25,6 +25,7 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 	private final Logger logger = Logger.getLogger(this.getClass());
 	private MouseListener mouseSelectionListener;
 	private MouseMotionListener mouseMotionListener;
+	private MouseListener popupMenuListener;
 	private KeyListener keyListener;
 //	private final IIntersectionCalculator intCalc;
 	private IShapePane shapePane;
@@ -34,12 +35,12 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 	private IDragResponse currDragResponse;
 	private IMouseFeedbackResponse currMouseFeedbackResponse;
 
-	public MouseBehaviourController(IShapePane pane, IEditingOperation moveOp, IResizeOperation resizeOp, ILinkOperation linkOp){
+	public MouseBehaviourController(IShapePane pane, IEditingOperation moveOp, IResizeOperation resizeOp, ILinkOperation linkOp, IMarqueeOperation marqueeOp){
 		this.shapePane = pane;
 		this.dragResponseMap = new HashMap<SelectionHandleType, IDragResponse>();
 		this.mouseResponseMap = new HashMap<SelectionHandleType, IMouseFeedbackResponse>();
 		this.keyboardResponseMap = new KeyboardResponse(moveOp);
-		initialiseDragResponses(moveOp, resizeOp, linkOp);
+		initialiseDragResponses(moveOp, resizeOp, linkOp, marqueeOp);
 		initialiseMouseResponse();
 //        this.intCalc = intCalc;
         this.mouseSelectionListener = new MouseListener(){
@@ -102,6 +103,9 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 						if(currSelectionHandle != null){
 							currDragResponse = dragResponseMap.get(currSelectionHandle.getType());
 							currMouseFeedbackResponse = mouseResponseMap.get(currSelectionHandle.getType());
+						}
+						else{
+							currDragResponse = dragResponseMap.get(SelectionHandleType.None);
 						}
 					}
 					if(currDragResponse != null){
@@ -171,6 +175,35 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 			}
         	
         };
+        this.popupMenuListener = new MouseListener(){
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+//				if(e.isPopupTrigger()){
+//					JPopupMenu popup = currMouseFeedbackResponse.getPopMenu();
+//					if(popup != null){
+//						popup.show((JPanel)shapePane, e.getX(), e.getY());
+//					}
+//				}
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+			}
+        	
+        };
 	}
 	
 
@@ -207,7 +240,7 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 		this.mouseResponseMap.put(SelectionHandleType.None, new DefaultMouseFeedbackResponse());
 	}
 	
-	private void initialiseDragResponses(IEditingOperation moveOp, IResizeOperation resizeOp, ILinkOperation linkOp) {
+	private void initialiseDragResponses(IEditingOperation moveOp, IResizeOperation resizeOp, ILinkOperation linkOp, IMarqueeOperation marqueeOp) {
 		this.dragResponseMap.put(SelectionHandleType.Central, new CentralHandleResponse(moveOp));
 		this.dragResponseMap.put(SelectionHandleType.N, new ResizeHandleResponse(new INewPositionCalculator() {
 			private Point delta;
@@ -395,6 +428,7 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 		}, resizeOp));
 		this.dragResponseMap.put(SelectionHandleType.LinkMidPoint, new LinkMidPointResponse(linkOp));
 		this.dragResponseMap.put(SelectionHandleType.LinkBendPoint, new LinkBendPointResponse(linkOp));
+		this.dragResponseMap.put(SelectionHandleType.None, new MarqueeSelectionHandleResponse(marqueeOp));
 	}
 
 	private void handleKeyRelease(){
@@ -429,6 +463,7 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 		this.shapePane.addKeyListener(this.keyListener);
         this.shapePane.addMouseListener(this.mouseSelectionListener);
         this.shapePane.addMouseMotionListener(this.mouseMotionListener);
+        this.shapePane.addMouseListener(popupMenuListener);
 	}
 
 	@Override

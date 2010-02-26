@@ -31,6 +31,7 @@ import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
+import org.pathwayeditor.figure.geometry.RectangleHull;
 import org.pathwayeditor.figurevm.FigureDefinitionCompiler;
 import org.pathwayeditor.visualeditor.geometry.IIntersectionCalcnFilter;
 import org.pathwayeditor.visualeditor.geometry.IIntersectionCalculator;
@@ -345,5 +346,11 @@ public class ShapeController extends NodeController implements IShapeController 
 	@Override
 	public boolean intersectsHull(IConvexHull queryHull) {
 		return this.figureController.getConvexHull().hullsIntersect(queryHull);
+	}
+
+	@Override
+	public boolean intersectsBounds(Envelope drawnBounds) {
+		IConvexHull otherHull = new RectangleHull(drawnBounds);
+		return intersectsHull(otherHull);
 	}
 }

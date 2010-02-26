@@ -8,6 +8,8 @@ import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNodeAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILabelAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.IShapeAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LineStyle;
+import org.pathwayeditor.businessobjects.drawingprimitives.attributes.RGB;
 import org.pathwayeditor.businessobjects.drawingprimitives.properties.IAnnotationProperty;
 import org.pathwayeditor.businessobjects.drawingprimitives.properties.IAnnotationPropertyVisitor;
 import org.pathwayeditor.businessobjects.drawingprimitives.properties.IBooleanAnnotationProperty;
@@ -24,6 +26,10 @@ import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.figurevm.FigureDefinitionCompiler;
 
 public class FeedbackNode implements IFeedbackNode {
+	private final String DEFAULT_DEFINITION =
+		"curbounds /h exch def /w exch def /y exch def /x exch def\n" +
+		"/xoffset { w mul x add } def /yoffset { h mul y add } def\n" +
+		"0.0 xoffset 0.0 yoffset w h rect\n";
 	private final String LABEL_DEFINITION =
 		"curbounds /h exch def /w exch def /y exch def /x exch def\n" +
 		"/xoffset { w mul x add } def /yoffset { h mul y add } def\n" +
@@ -61,8 +67,24 @@ public class FeedbackNode implements IFeedbackNode {
 		}
 	}
 	
+	public FeedbackNode(int uniqueId, Envelope initialBounds){
+		this.listeners = new LinkedList<IFeedbackNodeListener>();
+		this.elementIdentifier = uniqueId;
+		this.initialBounds = initialBounds;
+		this.figureController = createDefaultController();
+	}
+	
 	public int getElementIdentifier() {
 		return elementIdentifier;
+	}
+
+	private IFigureController createDefaultController(){
+		FigureDefinitionCompiler compiler = new FigureDefinitionCompiler(DEFAULT_DEFINITION);
+		compiler.compile();
+		IFigureController figureController = new FigureController(compiler.getCompiledFigureDefinition());
+		figureController.setRequestedEnvelope(this.initialBounds);
+		figureController.generateFigureDefinition();
+		return figureController;
 	}
 
 	private IFigureController createLabelController(ILabelAttribute attribute){
@@ -253,6 +275,30 @@ public class FeedbackNode implements IFeedbackNode {
 	@Override
 	public List<IFeedbackNodeListener> getFeedbackNodeListeners() {
 		return new ArrayList<IFeedbackNodeListener>(this.listeners);
+	}
+
+	@Override
+	public void setFillColour(RGB colour) {
+		this.figureController.setFillColour(colour);
+		this.figureController.generateFigureDefinition();
+	}
+
+	@Override
+	public void setLineColour(RGB colour) {
+		this.figureController.setLineColour(colour);
+		this.figureController.generateFigureDefinition();
+	}
+
+	@Override
+	public void setLineStyle(LineStyle lineStyle) {
+		this.figureController.setLineStyle(lineStyle);
+		this.figureController.generateFigureDefinition();
+	}
+
+	@Override
+	public void setLineWidth(double lineWidth) {
+		this.figureController.setLineWidth(lineWidth);
+		this.figureController.generateFigureDefinition();
 	}
 
 }

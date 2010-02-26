@@ -17,11 +17,14 @@ import org.pathwayeditor.businessobjects.drawingprimitives.ICanvas;
 import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkEdge;
+import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LineStyle;
+import org.pathwayeditor.businessobjects.drawingprimitives.attributes.RGB;
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.behaviour.IEditingOperation;
 import org.pathwayeditor.visualeditor.behaviour.ILinkOperation;
+import org.pathwayeditor.visualeditor.behaviour.IMarqueeOperation;
 import org.pathwayeditor.visualeditor.behaviour.IMouseBehaviourController;
 import org.pathwayeditor.visualeditor.behaviour.IResizeOperation;
 import org.pathwayeditor.visualeditor.behaviour.MouseBehaviourController;
@@ -44,6 +47,8 @@ import org.pathwayeditor.visualeditor.feedback.IFeedbackElement;
 import org.pathwayeditor.visualeditor.feedback.IFeedbackLink;
 import org.pathwayeditor.visualeditor.feedback.IFeedbackModel;
 import org.pathwayeditor.visualeditor.feedback.IFeedbackNode;
+import org.pathwayeditor.visualeditor.geometry.CommonParentCalculator;
+import org.pathwayeditor.visualeditor.geometry.IIntersectionCalculator;
 import org.pathwayeditor.visualeditor.selection.ILinkSelection;
 import org.pathwayeditor.visualeditor.selection.INodeSelection;
 import org.pathwayeditor.visualeditor.selection.ISelection;
@@ -69,7 +74,6 @@ public class PathwayEditor extends JPanel {
 	private IFeedbackModel feedbackModel;
 	private boolean isOpen = false;
 	private CommonParentCalculator newParentCalc;
-
 	
 	public PathwayEditor(){
 		super();
@@ -112,7 +116,6 @@ public class PathwayEditor extends JPanel {
 		this.shapePane = new ShapePane(viewModel, this.selectionRecord, this.feedbackModel);
 		scrollPane = new JScrollPane((ShapePane)this.shapePane, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scrollPane.setPreferredSize(this.getPreferredSize());
-//		scrollPane.setWheelScrollingEnabled(false);
 		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 		this.add(scrollPane, BorderLayout.CENTER);
 		
@@ -264,12 +267,41 @@ public class PathwayEditor extends JPanel {
 				feedbackModel.rebuildOnLinkSelection((ILinkSelection)selectionHandle.getSelection());
 				IFeedbackLink feedbackLink = feedbackModel.uniqueFeedbackLink();
 				Point handleOrigin = selectionHandle.getBounds().getOrigin();
-				Point handleCentre = handleOrigin.translate(selectionHandle.getBounds().getDimension().getWidth()/2.0, selectionHandle.getBounds().getDimension().getHeight()/2.0);
+				Point handleCentre = handleOrigin.translate(selectionHandle.getBounds().getDimension().getWidth()/2.0,
+						selectionHandle.getBounds().getDimension().getHeight()/2.0);
 				feedbackLink.newBendPoint(selectionHandle.getHandleIndex(), handleCentre);
 			}
 			
 		};
-        this.editBehaviourController = new MouseBehaviourController(shapePane, editOperation, resizeOperation, linkOperation);
+		IMarqueeOperation marqueeOperation = new IMarqueeOperation() {
+			@Override
+			public void selectionStarted(Point initialPosn) {
+				feedbackModel.clear();
+				selectionRecord.clear();
+				IFeedbackNode node = feedbackModel.createSingleNode(new Envelope(initialPosn, new Dimension(0.1, 0.1)));
+				node.setFillColour(RGB.BLUE);
+				node.setLineColour(RGB.RED);
+				node.setLineStyle(LineStyle.SOLID);
+				node.setLineWidth(1.0);
+			}
+
+			@Override
+			public void selectionFinished(Point originDelta, Dimension sizeDelta) {
+				IFeedbackNode node = feedbackModel.uniqueFeedbackNode();
+				node.resizePrimitive(originDelta, sizeDelta);
+				makeSelectionFromMarquee(node.getBounds());
+				feedbackModel.clear();
+				shapePane.updateView();
+			}
+			
+			@Override
+			public void selectionContinuing(Point originDelta, Dimension sizeDelta) {
+				IFeedbackNode node = feedbackModel.uniqueFeedbackNode();
+				node.resizePrimitive(originDelta, sizeDelta);
+				shapePane.updateView();
+			}
+		};
+        this.editBehaviourController = new MouseBehaviourController(shapePane, editOperation, resizeOperation, linkOperation, marqueeOperation);
         this.selectionChangeListener = new ISelectionChangeListener() {
 			
 			@Override
@@ -280,6 +312,21 @@ public class PathwayEditor extends JPanel {
 		this.initialise();
 	}
 	
+	protected void makeSelectionFromMarquee(Envelope bounds) {
+		IIntersectionCalculator intersectionCal = this.viewModel.getIntersectionCalculator();
+		SortedSet<IDrawingPrimitiveController> selectedController = intersectionCal.findIntersectingController(bounds);
+		boolean firstOne = true;
+		for(IDrawingPrimitiveController controller : selectedController){
+			if(firstOne){
+				this.selectionRecord.setPrimarySelection(controller);
+				firstOne = false;
+			}
+			else{
+				this.selectionRecord.addSecondarySelection(controller);
+			}
+		}
+	}
+
 	protected void restoreSelection() {
 		Iterator<ISelection> selectionIter = this.selectionRecord.selectionIterator();
 		SortedSet<ISelection> selectedSet = new TreeSet<ISelection>();
@@ -388,7 +435,6 @@ public class PathwayEditor extends JPanel {
 	
 	private INodeController calculateReparentTarget(Point delta) {
 		INodeController retVal = null;
-//		CommonParentCalculator newParentCalc = new CommonParentCalculator(viewModel);
 		newParentCalc.findCommonParent(selectionRecord.getSubgraphSelection(), delta);
         if(newParentCalc.hasFoundCommonParent()) {
         	if(logger.isTraceEnabled()){
@@ -434,7 +480,6 @@ public class PathwayEditor extends JPanel {
 	
 	private void moveBendPoint(int bendPointIdx, Point position) {
 		IFeedbackLink feedbackLink = this.feedbackModel.uniqueFeedbackLink();
-//		ILinkPointDefinition linkDefn = feedbackLink.getLinkDefinition();
 		feedbackLink.moveBendPoint(bendPointIdx, position);
 	}
 	

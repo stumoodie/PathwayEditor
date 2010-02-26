@@ -15,6 +15,7 @@ import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
+import org.pathwayeditor.figure.geometry.RectangleHull;
 import org.pathwayeditor.figurevm.FigureDefinitionCompiler;
 
 public class LabelController extends NodeController implements ILabelController {
@@ -208,5 +209,11 @@ public class LabelController extends NodeController implements ILabelController 
 	@Override
 	public boolean intersectsHull(IConvexHull queryHull) {
 		return this.controller.getConvexHull().hullsIntersect(queryHull);
+	}
+
+	@Override
+	public boolean intersectsBounds(Envelope drawnBounds) {
+		IConvexHull otherHull = new RectangleHull(drawnBounds);
+		return intersectsHull(otherHull);
 	}
 }
