@@ -4,7 +4,6 @@
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/BusinessObjects"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/util.intr"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/AnnotatorNotationSubsystem"/>
 	<classpathentry kind="lib" path="libs/apache-log4j-1.2.15/log4j-1.2.15.jar"/>
 	<classpathentry kind="lib" path="libs/compoundGraph/CompoundGraph.jar" sourcepath="libs/compoundGraph/CompoundGraph-src.jar">
