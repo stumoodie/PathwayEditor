@@ -1,0 +1,341 @@
+<html><head><META http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>Castor JDO - Tips &amp; Tricks</title><link rel="stylesheet" href="default.css"></head><body bgcolor="#ffffff" link="#6763a9" vlink="#6763a9" topmargin="0" bottommargin="0" leftmargin="0" marginheight="0" marginwidth="0"><a name="top"></a><table border="0" cellpadding="0" cellspacing="0" height="400"><tr><td width="10" valign="top" align="left" bgcolor="#7270c2"><img src="images/dotTrans.gif" width="1" height="1" border="0"></td><td valign="top" align="left" bgcolor="#7270c2" width="150"><img src="images/dotTrans.gif" width="1" height="1" border="0"></td><td width="7" valign="top" align="left"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td><td width="70" valign="top" align="left"><img src="images/dotTrans.gif" width="70" height="6" border="0"></td><td width="468" valign="top" align="left"><img src="images/top_2.gif" width="468" height="6" border="0"></td><td width="120" valign="top" align="left"><img src="images/line_purple.gif" width="120" height="6" border="0"></td></tr><tr><td width="10" bgcolor="#7270c2" valign="top" align="left"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td><td bgcolor="#7270c2" valign="top" align="left" width="150"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td><td width="7" bgcolor="#ffffff" valign="top" align="left"></td><td width="70" valign="top" align="left"><img src="images/dotTrans.gif" width="1" height="1" border="0"></td><td width="468" valign="middle" align="left"><a href="license.html"><span class="menuTopOff">License</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.codehaus.org"><span class="menuTopOff">Codehaus</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://openejb.org"><span class="menuTopOff">OpenEJB</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://openjms.sf.net"><span class="menuTopOff">OpenJMS</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://openorb.sf.net"><span class="menuTopOn">OpenORB</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://tyrex.sf.net"><span class="menuTopOff">Tyrex</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br><img src="images/dotTrans.gif" width="1" height="2" border="0"></td><td width="120" height="20" valign="top" align="left">&nbsp;</td></tr><tr><td width="10" bgcolor="#7270c2" valign="top" align="left"><img src="images/dotTrans.gif" width="10" height="3" border="0"></td><td bgcolor="#7270c2" valign="top" align="right" width="150"><img src="images/line_sm.gif" width="105" height="3" border="0"></td><td width="7" bgcolor="#a9a5de" valign="top" align="left"><img src="images/line_sm.gif" width="7" height="3" border="0"></td><td width="70" valign="top" align="left"><img src="images/line_light.gif" width="70" height="3" border="0"></td><td width="468" valign="top" align="left"><img src="images/line_light.gif" width="468" height="3" border="0"></td><td width="120" valign="top" align="left"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td></tr><tr><td bgcolor="#7270c2" valign="top" align="left"><img src="images/dotTrans.gif" width="10" height="10" border="0"></td><td bgcolor="#7270c2" valign="top" align="left" width="150"><img src="images/dotTrans.gif" width="1" height="2" border="0"><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Old releases</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="releases-old.html"><span class="subMenuOff">General</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="1.2/index.html"><span class="subMenuOff">Release 1.2</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="1.3cr1/index.html"><span class="subMenuOff">Release 1.3rc1</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Main</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="index.html"><span class="subMenuOff">Home</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="about.html"><span class="subMenuOff">About</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="features.html"><span class="subMenuOff">Features</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="download.html"><span class="subMenuOff">Download</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="dependencies.html"><span class="subMenuOff">Dependencies</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="reference-guide.html"><span class="subMenuOffHighlighted">Reference guide</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="javadoc/overview-summary.html"><span class="subMenuOff">JavaDoc</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="maven-integration.html"><span class="subMenuOff">Maven 2 support</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="maven-archetypes.html"><span class="subMenuOff">Maven 2 archetypes</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="schema.html"><span class="subMenuOff">DTD &amp; Schemas</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="changes.html"><span class="subMenuOff">Recent HTML changes</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="news.html"><span class="subMenuOff">News Archive</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="http://castor.codehaus.org/rss/castor-announce.xml"><span class="subMenuOff">RSS news feed</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Development/Support</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="lists.html"><span class="subMenuOff">Mailing Lists</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="scm.html"><span class="subMenuOff">SVN/JIRA</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="contributing.html"><span class="subMenuOff">Contributing</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="support.html"><span class="subMenuOff">Support</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="http://bamboo.ci.codehaus.org/browse/CASTOR"><span class="subMenuOff">Continuous builds</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="professional-services.html"><span class="subMenuOffHighlighted">Prof. services</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Related projects</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="spring-orm-integration.html"><span class="subMenuOff">Spring ORM support</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="spring-xml-intro.html"><span class="subMenuOff">Spring XML factories</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ws-integration.html"><span class="subMenuOff">WS frameworks</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">XML</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="xml-link.html"><span class="subMenuOff">XML</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">XML Code Generator</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="srcgen-link.html"><span class="subMenuOff">XML Code Generator</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">JDO</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-introduction.html"><span class="subMenuOff">Introduction</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-starter-tutorial.html"><span class="subMenuOff">First steps</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo.html"><span class="subMenuOff">Using JDO</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-database-conf.html"><span class="subMenuOff">JDO Config</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="types.html"><span class="subMenuOff">Types</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-mapping.html"><span class="subMenuOff">JDO Mapping</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-faq.html"><span class="subMenuOff">JDO FAQ</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-examples.html"><span class="subMenuOff">JDO Examples</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-howto.html"><span class="subMenuOffHighlighted">JDO HOW-TOs</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-tips-tricks.html"><span class="subMenuOffHighlighted">Tips &amp; Tricks</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-other-features.html"><span class="subMenuOff">Other Features</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-self-executable-examples.html"><span class="subMenuOff">JDO sample JAR</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Tools</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="schemaGen-anttask.html"><span class="subMenuOff">Schema generator</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Advanced JDO</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-caching-detail.html"><span class="subMenuOff">Caching</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="oql.html"><span class="subMenuOff">OQL</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="locking.html"><span class="subMenuOff">Trans. &amp; Locks</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="design-persist.html"><span class="subMenuOff">Design</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="key-generator.html"><span class="subMenuOff">KeyGen</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="long-transact.html"><span class="subMenuOff">Long Trans.</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="nested-attr.html"><span class="subMenuOff">Nested Attrs.</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-pooling.html"><span class="subMenuOff">Pooling Examples</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="postgresql-blobs.html"><span class="subMenuOff">LOBs</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-best-practice.html"><span class="subMenuOff">Best practice</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">DDL Generator</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen.html"><span class="subMenuOff">Using DDL Generator</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen-properties.html"><span class="subMenuOff">Properties</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen-anttask.html"><span class="subMenuOff">Ant task</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen-mapping.html"><span class="subMenuOff">Type Mapping</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">More</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="presentations.html"><span class="subMenuOff">Presentations</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="examples.html"><span class="subMenuOff">The Examples</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="extras.html"><span class="subMenuOff">3rd Party Tools</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="test-framework.html"><span class="subMenuOff">JDO Tests</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ctf.html"><span class="subMenuOff">XML Tests</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="conf-lib.html"><span class="subMenuOff">Configuration</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href=""><span class="subMenuOff"></span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="http://www.java.net/"><span class="subMenuOff"><img src="images/javanet_button_90.gif" border="0"></span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">About</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="license.html"><span class="subMenuOff">License</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="user-experience.html"><span class="subMenuOffHighlighted">User stories</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="contributors.html"><span class="subMenuOff">Contributors</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="marketplace.html"><span class="subMenuOff">Marketplace</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="status.html"><span class="subMenuOff">Status, Todo</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="release-notes.html"><span class="subMenuOff">Changelog</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="library.html"><span class="subMenuOff">Library</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="contacts.html"><span class="subMenuOff">Contact</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="origins.html"><span class="subMenuOff">Project Name</span></a></td></tr></table><br></td><td width="7" bgcolor="#a9a5de" valign="top" align="left">&nbsp;</td><td width="70" valign="top" align="left">&nbsp;</td><td rowspan="4" width="468" valign="top"><table cols="2" rows="2" border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td valign="top" align="left"><br><img border="0" height="34" hspace="0" src="images/castor.gif" vspace="0" width="115"><br><img border="0" height="10" hspace="0" src="images/dotTrans.gif"></td><td width="120" height="5" valign="top" align="right"></td></tr></table><p></p><p></p><br><h2 align="center">Castor JDO - Tips &amp; Tricks</h2><HR size="1"><span class="bodyGrey"><b><a href="#Logging-and-Tracing">Logging and Tracing</a></b><br></span><span class="bodyGrey"><b><a href="#Access-Mode">Access Mode</a></b><br></span><span class="bodyGrey"><b><a href="#Inheritence">Inheritence</a></b><br></span><span class="bodyGrey"><b><a href="#Views-of-Same-Object">Views of Same Object</a></b><br></span><span class="bodyGrey"><b><a href="#Upgrading-Locks">Upgrading Locks</a></b><br></span><span class="bodyGrey"><b><a href="#NoClassDefFoundError">NoClassDefFoundError</a></b><br></span><span class="bodyGrey"><b><a href="#Create-method">Create method</a></b><br></span><HR size="1"><br><a name="Logging-and-Tracing"><h2>Logging and Tracing</h2></a>
+
+      <p><span class="bodyGrey">When developing using Castor, we recommend that you use the various
+         <tt>setLogWriter</tt> methods to get detailed information and error
+         messages.</span></p>
+
+      <p><span class="bodyGrey">Using a logger with <a href="javadoc/org/exolab/castor/mapping/Mapping.html"><api>org.exolab.castor.mapping.Mapping</api></a> will
+         provide detailed information about mapping decisions made by Castor and
+         will show the SQL statements being used.</span></p>
+
+      <p><span class="bodyGrey">Using a logger with <a href="javadoc/org/exolab/castor/jdo/JDO.html"><api>org.exolab.castor.jdo.JDO</api></a> will provide
+         trace messages that show when Castor is loading, storing, creating and
+         deleting objects. All database operations will appear in the log; if an
+         object is retrieved from the cache or is not modified, there will be no
+         trace of load/store operations.</span></p>
+
+      <p><span class="bodyGrey">Using a logger with <a href="javadoc/org/exolab/castor/xml/Unmarshaller.html"><api>org.exolab.castor.xml.Unmarshaller</api></a> will
+         provide trace messages that show conflicts between the XML document and
+         loaded objects.</span></p>
+
+      <p><span class="bodyGrey">A simple trace logger can be obtained from
+         <a href="javadoc/org/exolab/castor/util/Logger.html"><javadoc>org.exolab.castor.util.Logger</javadoc></a>. This logger uses the
+         standard output stream, but prefixes each line with a short message
+         that indicates who generated it. It can also print the time and date of
+         each message. Since logging is used for warning messages and simple
+         tracing, Castor does not require a sophisticated logging mechanism.</span></p>
+
+      <p><span class="bodyGrey">Interested in integratating Castor's logging with Log4J? Then see
+         <a href="jdo-faq.html#How-can-I-integrate-Castor's-logging-with-a-logging-infrastructure-using-Log4J?">this
+         question</a> in the JDO FAQ.</span></p>
+
+    <a name="Access-Mode"><h2>Access Mode</h2></a>
+
+      <p><span class="bodyGrey">If you are using JDO objects with the default access mode ('shared') and too many transactions
+         abort when attempting to commit due to locks, you should consider upgrading to an 'exclusive'
+         mode. When two transactions attempt to modify and store the same object at the same time,
+         lock issues arise. Upgrading to an 'exclusive' mode will prevent concurrent transactions
+         from modifying the same object at once.</span></p>
+
+      <p><span class="bodyGrey">If too many transactions abort when attempting to commit due to dirty checking, you should
+         consider upgrading to a 'locked' mode. When external database access modifies the same objects
+         being managed by Castor, Castor will complain that objects are dirty. Upgrading to a 'locked'
+         mode will prevent concurrent update.</span></p>
+
+      <p><span class="bodyGrey">Be advised that 'exclusive' mode introduces lock contention in the Castor persistence engine,
+         and 'locked' mode adds lock contention in the database. Lock contention has the effect of
+         slowing down the application and consuming more CPU.</span></p>
+
+      <p><span class="bodyGrey">If too many transaction abort due to deadlock detection, consider modifying the application
+         logic. Deadlock occurs when two transactions attempt to access the same objects but not in
+         the same order.</span></p>
+
+    <a name="Inheritence"><h2>Inheritence</h2></a>
+
+      <p><span class="bodyGrey">There are two types of inheritence: Java inheritence and relational inheritence.</span></p>
+
+      <p><span class="bodyGrey">With Java inheritence, two objects extend the same base class and map to two different
+         tables. The mapping file requires two different mappings for each of the objects.
+         For example, if <tt>Employee</tt> and <tt>Customer</tt> both extend <tt>Person</tt>,
+         but <tt>Employee</tt> maps to the table <tt>emp</tt> and <tt>Person</tt> to the table
+         <tt>person</tt>, the mapping file should map both of these objects separately.</span></p>
+
+      <p><span class="bodyGrey">With relation inheritence, one table provides the base information and another table
+         provides additional information using the same primary keys in both. Use the <tt>extends</tt>
+         attribute to specify such inheritence in the mapping file. For example, if <tt>Computer</tt>
+         extends <tt>Product</tt> and the table <tt>comp</tt> provides computer-specific columns
+         in addition to product columns in <tt>prod</tt>, the mapping for <tt>Computer</tt> will
+         specify <tt>Product</tt> as the extended class.</span></p>
+
+      <p><span class="bodyGrey">When a class just extends a generic base class or implements an interface, this form
+         of inheritence is not reflected in the mapping file.</span></p>
+
+    <a name="Views-of-Same-Object"><h2>Views of Same Object</h2></a>
+
+      <p><span class="bodyGrey">It is possible to use different objects and mappings to the same tables. For example,
+         it is possible to define a subset of a table and load only several of the columns,
+         or load an object without its relations.</span></p>
+
+      <p><span class="bodyGrey">To determine the first and last names and e-mail address of an object without loading
+         the entire person object, create a subset class and map that class to a portion of
+         the table. Such a class cannot be used to create a new person, but can be used to
+         delete or modify the person's details.</span></p>
+
+      <p><span class="bodyGrey">Use partial views with care. If you attempt to load the same record using a full
+         object and a subset object, changes to one of these objects are allowed, but
+         changes to both will result in a conflict and roll back the transaction.
+         Locking will not work properly between full and subset objects.
+         Also note, that each of the two objects will have its own cache, so
+         if you update the first object and load the second, you may obtain old values.
+         To avoid this situation you may turn off the cache for both objects:
+         <span class="bodyBlack"><pre>
+             &lt;class ... &gt;
+                &lt;cache-type type="none"&gt;
+                ...
+             &lt;/class&gt;
+         </pre></span>
+         </span></p>
+
+    <a name="Upgrading-Locks"><h2>Upgrading Locks</h2></a>
+
+      <p><span class="bodyGrey">When an object is loaded into memory in the default access mode ('shared'),
+         a read lock is acquired on that object. When the transaction commits, if there
+         are changes to the object a write lock will be required. There is no guarantee
+         that a write lock can be acquired, e.g. if another transaction attempts to
+         change the same object at the same time.</span></p>
+
+      <p><span class="bodyGrey">To assure concurrent access, you may upgrade the object's lock by calling the
+         <a href="javadoc/org/exolab/castor/jdo/Database.html#lock(java.lang.Object)">lock(java.lang.Object)</a> method.
+         This method will either acquire a write lock or return if a timeout elapses and the
+         lock could not be acquired. Once a lock has been acquired, no other transaction
+         can attempt to read the object until the current transaction completes.</span></p>
+
+      <p><span class="bodyGrey">Object locking is recommended only if concurrent access results in conflicts
+         and aborted transactions. Generally locks results in lock contention which has an
+         effect on performance.</span></p>
+
+    <a name="NoClassDefFoundError"><h2>NoClassDefFoundError</h2></a>
+       <p><span class="bodyGrey">
+          Check your CLASSPATH, check it often, there is no reason not to!
+       </span></p>
+    <a name="Create-method"><h2>Create method</h2></a>
+      <p><span class="bodyGrey">
+         Castor requires that classes have a public, no-argument constructor
+         in order to provide the ability to marshal &amp; unmarshal objects of that type.
+      </span></p>
+
+      <p><span class="bodyGrey">
+         create-method is an optional attribute to the <tt>&lt;field&gt;</tt> mapping
+         element that can be used to overcome this restriction in cases where you
+         have an existing object model that consists of, say, singleton classes
+         where public, no-argument constructors must not be present by definition.
+      </span></p>
+
+      <p><span class="bodyGrey">
+         Assume for example that a class "<tt>A</tt>" that you want to be able
+         to unmarshal uses a singleton class as one of its properties. When
+         attempting to unmarshal class "<tt>A</tt>", you should get an exception
+         because the singleton property has no public no-arg constructor.
+         Assuming that a reference to the singleton can be obtained via a static
+         getInstance() method, you can add a "create method" to class <tt>A</tt>
+         like this:
+      </span></p>
+
+      <span class="bodyBlack"><pre>
+         
+            public MySingleton getSingletonProperty()
+            {
+               return MySingleton.getInstance();
+            }
+         
+      </pre></span>
+
+      <p><span class="bodyGrey">
+         and in the mapping file for class A, you can define the singleton
+         property like this:
+      </span></p>
+
+      <span class="bodyBlack"><pre>
+         
+            &lt;field name="mySingletonProperty"
+                  type="com.u2d.MySingleton"
+                  create-method="getSingletonProperty"&gt;
+               &lt;bind-xml name="my-singleton-property" node="element" /&gt;
+            &lt;/field&gt;
+         
+      </pre></span>
+
+      <p><span class="bodyGrey">
+         This illustrates how the create-method attribute is quite a useful
+         mechanism for dealing with exceptional situations where you might
+         want to take advantage of marshaling even when some classes do not
+         have no-argument public constructors.
+      </span></p>
+
+      <p><span class="bodyGrey">
+        <b>Note:</b> As of this writing, the specified create-method must
+        exist as a method in the current class (i.e. the class being described
+        by the current <tt>&lt;class&gt;</tt> element). In the future it may be possible
+        to use external static factory methods.
+      </span></p>
+    </td></tr><tr height="5"><td width="10" height="5" bgcolor="#7270c2" valign="top" align="left">&nbsp;</td><td height="5" bgcolor="#7270c2" valign="top" width="150"><img src="images/dotTrans.gif" width="1" height="15" border="0"><br><img src="images/line_sm.gif" width="105" height="3" border="0" align="right"></td><td width="7" height="5" bgcolor="#a9a5de" valign="top" align="left">&nbsp;</td><td width="70" height="5" valign="top" align="left">&nbsp;</td><td width="120" height="5" valign="top" align="left">&nbsp;</td></tr><tr><td width="10" height="5" bgcolor="#7270c2" valign="top" align="left">&nbsp;</td><td bgcolor="#7270c2" valign="top" align="left" width="150"></td><td width="7" bgcolor="#a9a5de" valign="top" align="left"><img src="images/dotTrans.gif" width="1" height="25" border="0"></td><td width="70" valign="top" align="left"><img src="images/dotTrans.gif" width="1" height="25" border="0"></td><td width="120" valign="top" align="left">&nbsp;</td></tr><tr height="5"><td width="10" rowspan="2" height="100%" bgcolor="#7270c2" valign="bottom" align="left"><img src="images/stripes1.gif" width="10" height="125" border="0"></td><td rowspan="2" height="100%" bgcolor="#7270c2" valign="bottom" align="left" width="150"><img src="images/stripe105.gif" width="105" height="125" border="0"></td><td width="7" rowspan="2" height="100%" bgcolor="#a9a5de" valign="top" align="left">&nbsp;</td><td width="70" height="100%" valign="top" align="left">&nbsp;</td><td width="120" height="100%" valign="top" align="left">&nbsp;</td></tr><tr height="5"><td width="70" height="25" valign="top" align="left">&nbsp;</td><td width="400" height="25" valign="bottom" align="left"><br><br><img src="images/line_light.gif" border="0" width="400" height="3"><br><p></p><span class="bodyGrey"><small><notice>
+    Copyright &copy; 1999-2005 <a href="http://www.exolab.org">ExoLab Group</a>, Intalio Inc.,
+    and Contributors.  All rights reserved.
+  </notice><br>&nbsp;<br></small><small><notice>
+    Java, EJB, JDBC, JNDI, JTA, Sun, Sun Microsystems are trademarks or registered
+    trademarks of Sun Microsystems, Inc. in the United States and in other
+    countries. XML, XML Schema, XSLT and related standards are trademarks or registered
+    trademarks of MIT, INRIA, Keio or others, and a product of the World Wide Web
+    Consortium. All other product names mentioned herein are trademarks of their respective
+    owners.
+  </notice><br>&nbsp;<br></small></span><p></p>
+          &nbsp;
+        </td><td width="120" height="25" valign="top" align="left">&nbsp;</td></tr></table><script type="text/javascript">
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script><script type="text/javascript">
+        var pageTracker = _gat._getTracker("UA-3544187-1");
+        pageTracker._trackPageview();
+    </script></body></html>

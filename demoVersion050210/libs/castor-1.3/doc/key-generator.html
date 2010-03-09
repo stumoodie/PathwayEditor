@@ -1,0 +1,381 @@
+<html><head><META http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>Castor JDO Key Generator Support</title><link rel="stylesheet" href="default.css"></head><body bgcolor="#ffffff" link="#6763a9" vlink="#6763a9" topmargin="0" bottommargin="0" leftmargin="0" marginheight="0" marginwidth="0"><a name="top"></a><table border="0" cellpadding="0" cellspacing="0" height="400"><tr><td width="10" valign="top" align="left" bgcolor="#7270c2"><img src="images/dotTrans.gif" width="1" height="1" border="0"></td><td valign="top" align="left" bgcolor="#7270c2" width="150"><img src="images/dotTrans.gif" width="1" height="1" border="0"></td><td width="7" valign="top" align="left"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td><td width="70" valign="top" align="left"><img src="images/dotTrans.gif" width="70" height="6" border="0"></td><td width="468" valign="top" align="left"><img src="images/top_2.gif" width="468" height="6" border="0"></td><td width="120" valign="top" align="left"><img src="images/line_purple.gif" width="120" height="6" border="0"></td></tr><tr><td width="10" bgcolor="#7270c2" valign="top" align="left"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td><td bgcolor="#7270c2" valign="top" align="left" width="150"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td><td width="7" bgcolor="#ffffff" valign="top" align="left"></td><td width="70" valign="top" align="left"><img src="images/dotTrans.gif" width="1" height="1" border="0"></td><td width="468" valign="middle" align="left"><a href="license.html"><span class="menuTopOff">License</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.codehaus.org"><span class="menuTopOff">Codehaus</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://openejb.org"><span class="menuTopOff">OpenEJB</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://openjms.sf.net"><span class="menuTopOff">OpenJMS</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://openorb.sf.net"><span class="menuTopOn">OpenORB</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://tyrex.sf.net"><span class="menuTopOff">Tyrex</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br><img src="images/dotTrans.gif" width="1" height="2" border="0"></td><td width="120" height="20" valign="top" align="left">&nbsp;</td></tr><tr><td width="10" bgcolor="#7270c2" valign="top" align="left"><img src="images/dotTrans.gif" width="10" height="3" border="0"></td><td bgcolor="#7270c2" valign="top" align="right" width="150"><img src="images/line_sm.gif" width="105" height="3" border="0"></td><td width="7" bgcolor="#a9a5de" valign="top" align="left"><img src="images/line_sm.gif" width="7" height="3" border="0"></td><td width="70" valign="top" align="left"><img src="images/line_light.gif" width="70" height="3" border="0"></td><td width="468" valign="top" align="left"><img src="images/line_light.gif" width="468" height="3" border="0"></td><td width="120" valign="top" align="left"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td></tr><tr><td bgcolor="#7270c2" valign="top" align="left"><img src="images/dotTrans.gif" width="10" height="10" border="0"></td><td bgcolor="#7270c2" valign="top" align="left" width="150"><img src="images/dotTrans.gif" width="1" height="2" border="0"><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Old releases</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="releases-old.html"><span class="subMenuOff">General</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="1.2/index.html"><span class="subMenuOff">Release 1.2</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="1.3cr1/index.html"><span class="subMenuOff">Release 1.3rc1</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Main</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="index.html"><span class="subMenuOff">Home</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="about.html"><span class="subMenuOff">About</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="features.html"><span class="subMenuOff">Features</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="download.html"><span class="subMenuOff">Download</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="dependencies.html"><span class="subMenuOff">Dependencies</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="reference-guide.html"><span class="subMenuOffHighlighted">Reference guide</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="javadoc/overview-summary.html"><span class="subMenuOff">JavaDoc</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="maven-integration.html"><span class="subMenuOff">Maven 2 support</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="maven-archetypes.html"><span class="subMenuOff">Maven 2 archetypes</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="schema.html"><span class="subMenuOff">DTD &amp; Schemas</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="changes.html"><span class="subMenuOff">Recent HTML changes</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="news.html"><span class="subMenuOff">News Archive</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="http://castor.codehaus.org/rss/castor-announce.xml"><span class="subMenuOff">RSS news feed</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Development/Support</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="lists.html"><span class="subMenuOff">Mailing Lists</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="scm.html"><span class="subMenuOff">SVN/JIRA</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="contributing.html"><span class="subMenuOff">Contributing</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="support.html"><span class="subMenuOff">Support</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="http://bamboo.ci.codehaus.org/browse/CASTOR"><span class="subMenuOff">Continuous builds</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="professional-services.html"><span class="subMenuOffHighlighted">Prof. services</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Related projects</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="spring-orm-integration.html"><span class="subMenuOff">Spring ORM support</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="spring-xml-intro.html"><span class="subMenuOff">Spring XML factories</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ws-integration.html"><span class="subMenuOff">WS frameworks</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">XML</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="xml-link.html"><span class="subMenuOff">XML</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">XML Code Generator</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="srcgen-link.html"><span class="subMenuOff">XML Code Generator</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">JDO</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-introduction.html"><span class="subMenuOff">Introduction</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-starter-tutorial.html"><span class="subMenuOff">First steps</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo.html"><span class="subMenuOff">Using JDO</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-database-conf.html"><span class="subMenuOff">JDO Config</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="types.html"><span class="subMenuOff">Types</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-mapping.html"><span class="subMenuOff">JDO Mapping</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-faq.html"><span class="subMenuOff">JDO FAQ</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-examples.html"><span class="subMenuOff">JDO Examples</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-howto.html"><span class="subMenuOffHighlighted">JDO HOW-TOs</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-tips-tricks.html"><span class="subMenuOffHighlighted">Tips &amp; Tricks</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-other-features.html"><span class="subMenuOff">Other Features</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-self-executable-examples.html"><span class="subMenuOff">JDO sample JAR</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Tools</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="schemaGen-anttask.html"><span class="subMenuOff">Schema generator</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Advanced JDO</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-caching-detail.html"><span class="subMenuOff">Caching</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="oql.html"><span class="subMenuOff">OQL</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="locking.html"><span class="subMenuOff">Trans. &amp; Locks</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="design-persist.html"><span class="subMenuOff">Design</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="key-generator.html"><span class="subMenuOff">KeyGen</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="long-transact.html"><span class="subMenuOff">Long Trans.</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="nested-attr.html"><span class="subMenuOff">Nested Attrs.</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-pooling.html"><span class="subMenuOff">Pooling Examples</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="postgresql-blobs.html"><span class="subMenuOff">LOBs</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-best-practice.html"><span class="subMenuOff">Best practice</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">DDL Generator</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen.html"><span class="subMenuOff">Using DDL Generator</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen-properties.html"><span class="subMenuOff">Properties</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen-anttask.html"><span class="subMenuOff">Ant task</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen-mapping.html"><span class="subMenuOff">Type Mapping</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">More</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="presentations.html"><span class="subMenuOff">Presentations</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="examples.html"><span class="subMenuOff">The Examples</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="extras.html"><span class="subMenuOff">3rd Party Tools</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="test-framework.html"><span class="subMenuOff">JDO Tests</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ctf.html"><span class="subMenuOff">XML Tests</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="conf-lib.html"><span class="subMenuOff">Configuration</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href=""><span class="subMenuOff"></span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="http://www.java.net/"><span class="subMenuOff"><img src="images/javanet_button_90.gif" border="0"></span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">About</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="license.html"><span class="subMenuOff">License</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="user-experience.html"><span class="subMenuOffHighlighted">User stories</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="contributors.html"><span class="subMenuOff">Contributors</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="marketplace.html"><span class="subMenuOff">Marketplace</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="status.html"><span class="subMenuOff">Status, Todo</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="release-notes.html"><span class="subMenuOff">Changelog</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="library.html"><span class="subMenuOff">Library</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="contacts.html"><span class="subMenuOff">Contact</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="origins.html"><span class="subMenuOff">Project Name</span></a></td></tr></table><br></td><td width="7" bgcolor="#a9a5de" valign="top" align="left">&nbsp;</td><td width="70" valign="top" align="left">&nbsp;</td><td rowspan="4" width="468" valign="top"><table cols="2" rows="2" border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td valign="top" align="left"><br><img border="0" height="34" hspace="0" src="images/castor.gif" vspace="0" width="115"><br><img border="0" height="10" hspace="0" src="images/dotTrans.gif"></td><td width="120" height="5" valign="top" align="right"></td></tr></table><p></p><p></p><br><h2 align="center">Castor JDO Key Generator Support</h2><HR size="1"><span class="bodyGrey"><b><a href="#Introduction">Introduction</a></b><br></span><span class="bodyGrey"><b><a href="#MAX-key-generator">MAX key generator</a></b><br></span><span class="bodyGrey"><b><a href="#HIGH-LOW-key-generator">HIGH-LOW key generator</a></b><br></span><span class="bodyGrey"><b><a href="#UUID-key-generator">UUID key generator</a></b><br></span><span class="bodyGrey"><b><a href="#IDENTITY-key-generator">IDENTITY key generator</a></b><br></span><span class="bodyGrey"><b><a href="#SEQUENCE-key-generator">SEQUENCE key generator</a></b><br></span><HR size="1"><br><a name="Introduction"><h2>Introduction</h2></a>
+      <p><span class="bodyGrey">The key generator gives a possibility to generate identity field
+         values automatically. During <tt>create</tt> the value of the
+         identity field is set to the value obtained from the key generator.
+         Different algorithms may be used here, both generic and specific
+         for database server.</span></p>
+
+      <p><span class="bodyGrey">The key generator for the given class is set in the mapping
+         specification file (<tt>mapping.xml</tt>), in the
+         <tt>key-generator</tt> attribute of the <tt>class</tt> element,
+         for example:
+         <span class="bodyBlack"><pre>
+  &lt;class name="myapp.ProductGroup"
+         identity="id" key-generator="MAX"&gt;
+    &lt;field name="id"&gt;
+    &lt;/field&gt;
+  &lt;/class&gt;
+         </pre></span></span></p>
+      <p><span class="bodyGrey">The following key generator names are supported in Castor 1.0:
+         <table border="1" cellpadding="4">
+           <tr><td><span class="bodyGrey">MAX</span></td><td><span class="bodyGrey">"MAX( pk ) + 1" generic algorithm</span></td></tr>
+           <tr><td><span class="bodyGrey">HIGH-LOW</span></td><td><span class="bodyGrey">HIGH-LOW generic algorithm</span></td></tr>
+           <tr><td><span class="bodyGrey">UUID</span></td><td><span class="bodyGrey">UUID generic algorithm</span></td></tr>
+           <tr><td><span class="bodyGrey">IDENTITY</span></td><td><span class="bodyGrey">Supports autoincrement identity fields in
+                                  Sybase ASE/ASA, MS SQL Server, MySQL and Hypersonic SQL</span></td></tr>
+           <tr><td><span class="bodyGrey">SEQUENCE</span></td><td><span class="bodyGrey">Supports SEQUENCEs in Oracle, PostgreSQL, Interbase and SAP
+DB</span></td></tr>
+         </table></span></p>
+
+      <p><span class="bodyGrey">Some of these algorithms have parameters, which can be specified 
+         in the <tt>key-generator</tt> element of the mapping
+         specification file, for example:
+         <span class="bodyBlack"><pre>
+  &lt;key-generator name="HIGH-LOW"&gt;
+    &lt;param name="table" value="SEQ"/&gt;
+    &lt;param name="key-column" value="SEQ_TableName"/&gt;
+    &lt;param name="value-column" value="SEQ_MaxPKValue"/&gt;
+    &lt;param name="grab-size" value="1000"/&gt;
+  &lt;/key-generator&gt;
+
+  &lt;class name="myapp.ProductGroup"
+         identity="id" key-generator="HIGH-LOW"&gt;
+    &lt;field name="id"&gt;
+    &lt;/field&gt;
+  &lt;/class&gt;
+         </pre></span></span></p>
+
+      <p><span class="bodyGrey">It is possible to create several key generators with the same
+         algorithms but diffent parameters.
+         In this case you have to specify the <tt>alias</tt> attribute
+         in the <tt>key-generator</tt> element, for example:
+         <span class="bodyBlack"><pre>
+  &lt;key-generator name="SEQUENCE" alias="A"&gt;
+    &lt;param name="sequence" value="a_seq"/&gt;
+  &lt;/key-generator&gt;
+
+  &lt;key-generator name="SEQUENCE" alias="RETURNING"&gt;
+    &lt;param name="sequence" value="b_seq"/&gt;
+    &lt;param name="returning" value="true"/&gt;
+  &lt;/key-generator&gt;
+
+  &lt;class name="myapp.ProductGroup"
+         identity="id" key-generator="RETURNING"&gt;
+    &lt;field name="id"&gt;
+    &lt;/field&gt;
+  &lt;/class&gt;
+         </pre></span></span></p>
+      <p><span class="bodyGrey">Below all supported key generators a described in details.</span></p>
+    <a name="MAX-key-generator"><h2>MAX key generator</h2></a>
+      <p><span class="bodyGrey">MAX key generator fetches the maximum value of the primary key 
+         and lock the record having this value until the end of transaction.
+         Then the generated value is set to (MAX + 1).
+         Due to the lock concurrent transactions which perform insert 
+         to the same table using the same key generator algorithm will wait 
+         until the end of the transaction and then will fetch new MAX value.
+         Thus, duplicate key exception is almost impossible (see below).
+         Note, that it is still possible to perform multiple inserts during
+         the same transaction.</span></p>
+      <p><span class="bodyGrey">There is one "singular" case of this algorithm: the case when
+         the table is empty. 
+         In this case there is nothing to lock, so duplicate key exception
+         is possible.
+         The generated value in this case is 1.</span></p>
+      <p><span class="bodyGrey">This algorithm has no parameters.
+         Primary key must have type <tt>integer</tt>, <tt>bigint</tt> or <tt>numeric</tt>.</span></p>
+    <a name="HIGH-LOW-key-generator"><h2>HIGH-LOW key generator</h2></a>
+      <p><span class="bodyGrey">This key generator uses one of the variants of the generic HIGH-LOW
+         algorithm. It is needed a special auxiliary table ("sequence table")
+         which has the unique column which contains table names (of the type
+         <tt>char</tt> or <tt>varchar</tt>) and the column which is used to
+         reserve values of the primary keys (of the type <tt>integer</tt>,
+         <tt>bigint</tt> or <tt>numeric</tt>).
+         The key generator seeks for the given table name, reads the last
+         reserved value and increases it by some number N, which is called 
+         "grab size". Then the lock on the auxiliary table is released,
+         so that concurrent transactions can perform insert to the same table.
+         The key generator generates the first value from the grabbed 
+         interval.
+         During the next (N - 1) invocations it generates the other grabbed
+         values without database access, and then grabs the next portion.
+         Note, that the auxiliary table must be in the same database as
+         the table for which key is generated. So, if you work with multiple 
+         databases, you must have one auxiliary table in each database.</span></p>
+      <p><span class="bodyGrey">If the grab size is set to 1, the key generator each time stores
+         the true maximum value of the primary key to the auxiliary table.
+         In this case the HIGH-LOW key generator is basically equivalent to
+         the MAX key generator.
+         On you want to have LOW part of the key consisting of 3 decimal
+         digits, set the grab size to 1000. If you want to have 2 LOW bytes in
+         the key, set the grab size to 65536.
+         When you increase the grab size, the speed of 
+         key generation also increases because the average number of 
+         SQL commands that are needed to generate one key is (2 / N).
+         But that average number of key values that will be skipped (N / 2)
+         also increases.</span></p>
+      <p><span class="bodyGrey">The HIGH-LOW key generator has the following parameters:
+         <table border="1" cellpadding="4">
+           <tr><td><span class="bodyGrey">table</span></td><td><span class="bodyGrey">The name of the special sequence
+table.</span></td><td><span class="bodyGrey">Mandatory</span></td></tr>
+           <tr><td><span class="bodyGrey">key-column</span></td><td><span class="bodyGrey">The name of the column which contains
+                   table names</span></td><td><span class="bodyGrey">Mandatory</span></td></tr>
+           <tr><td><span class="bodyGrey">value-column</span></td><td><span class="bodyGrey">The name of the column which is used to
+                   reserve primary key values</span></td><td><span class="bodyGrey">Mandatory</span></td></tr>
+           <tr><td><span class="bodyGrey">grab-size</span></td><td><span class="bodyGrey">The number of new keys the key
+                   generator should grab from the sequence table at a time.</span></td>
+                   <td><span class="bodyGrey">Optional, default="10"</span></td></tr>
+           <tr><td><span class="bodyGrey">same-connection</span></td><td><span class="bodyGrey">To use the same Connection for writing to the sequence
+table, values:
+                                "true"/"false". This is needed when working in EJB environment,
+                                though less efficient.</span></td>
+                   <td><span class="bodyGrey">Optional, default="false"</span></td></tr>
+           <tr><td><span class="bodyGrey">global</span></td><td><span class="bodyGrey">To generate globally unique keys, values:
+                                "true"/"false".</span></td>
+                   <td><span class="bodyGrey">Optional, default="false"</span></td></tr>
+         </table></span></p>
+      <p><span class="bodyGrey">If the parameter "global" is set to "true", the sequence table contains only one row with
+         "&lt;GLOBAL&gt;" instead of the table name. This row serves for all tables.</span></p>
+      <p><span class="bodyGrey">Don't forget to set same-connection="true" if you are working in EJB environment!</span></p>
+      <p><span class="bodyGrey">Note, that the class HighLowKeyGenerator is not final, so you can
+         extend it in order to implement other variants of HIGH-LOW
+         algorithm (for example, HIGH/MID/LOW or char key values).</span></p>
+    <a name="UUID-key-generator"><h2>UUID key generator</h2></a>
+      <p><span class="bodyGrey">This key generator generates global unique primary keys.
+         The generated key is a combination of the IP address, the current
+         time in milliseconds since 1970 and a static counter.
+         The complete key consists of a 30 character fixed length string.</span></p>
+      <p><span class="bodyGrey">This algorithm has no parameters.
+         Primary key must have type <tt>char</tt>, <tt>varchar</tt> or
+         <tt>longvarchar</tt>.</span></p>
+    <a name="IDENTITY-key-generator"><h2>IDENTITY key generator</h2></a>
+      <p><span class="bodyGrey">IDENTITY key generator can be used only with autoincrement primary
+         key columns (identities) with Sybase ASE/ASA, MS SQL Server, MySQL and
+         Hypersonic SQL.
+         After the insert the key generator selects system variable
+         <tt>@@identity</tt> which contains the last identity value for
+         the current database connection.
+         In the case of MySQL and Hypersonic SQL the system functions
+         <tt>LAST_INSERT_ID()</tt> and <tt>IDENTITY()</tt> are called, respectively.
+         </span></p>
+      <p><span class="bodyGrey">This algorithm has no parameters.</span></p>
+    <a name="SEQUENCE-key-generator"><h2>SEQUENCE key generator</h2></a>
+      <p><span class="bodyGrey">SEQUENCE key generator can be used only with Oracle, PostgreSQL,
+         Interbase and SAP DB.
+         It generates keys using sequences.</span></p>
+      <p><span class="bodyGrey">The key generator has the following parameters:
+         <table border="1" cellpadding="4">
+           <tr><td><span class="bodyGrey">sequence</span></td><td><span class="bodyGrey">The name of the sequence</span></td>
+                                <td><span class="bodyGrey">Optional, default="{0}_seq"</span></td></tr>
+           <tr><td><span class="bodyGrey">returning</span></td><td><span class="bodyGrey">RETURNING mode for Oracle8i, values:
+                                "true"/"false"</span></td>
+                                <td><span class="bodyGrey">Optional, default="false"</span></td></tr>
+           <tr><td><span class="bodyGrey">increment</span></td><td><span class="bodyGrey">Increment for Interbase</span></td>
+                                <td><span class="bodyGrey">Optional, default="1"</span></td></tr>
+           <tr><td><span class="bodyGrey">trigger</span></td><td><span class="bodyGrey">Assume that there is a trigger that already 
+                                   generates key. Values: "true"/"false"</span></td>
+                                <td><span class="bodyGrey">Optional, default="false"</span></td></tr>
+         </table></span></p>
+      <p><span class="bodyGrey">Usually one sequence is used for one table, so in general you have to
+         define one key generator per table.
+         But if you use some naming pattern for sequences, you can use one 
+         key generator for all tables.
+         For example, if you always obtain sequence name by adding "_seq" to
+         the name of the correspondent table, you can set "sequence" parameter
+         of the key generator to "{0}_seq" (the default value).
+         In this case the key generator will use sequence "a_seq" for table 
+         "a", "b_seq" for table "b", etc.  Castor also allows for inserting 
+         the primary key into the sequence name as well.  This is accomplished 
+         by including the {1} tag into the "sequence" parameter. Example: 
+         "{0}_{1}_seq"</span></p>
+      <p><span class="bodyGrey">Actually the SEQUENCE key generator is "4 in 1". 
+         With PostgreSQL it performs "SELECT nextval(sequenceName)" before 
+         INSERT and produces identity value that is then used in INSERT.
+         Similarly, with Interbase it performs
+         "select gen_id(sequenceName, increment) from rdb$database" before
+         INSERT.
+         With Oracle by default (returning=false) and with SAP DB it transforms
+         the Castor-generated INSERT statement into the form
+         "INSERT INTO tableName (pkName,...) VALUES 
+         (sequenceName.nextval,...)" and after INSERT it performs "SELECT 
+         seqName.currval FROM tableName" to obtain the identity value. With 
+         Oracle8i it is possible to use more efficient RETURNING mode: to 
+         the above INSERT statement is appened "RETURNING primKeyName INTO 
+         ?" and the identity value is fetched by Castor during INSERT, so 
+         that only one SQL query is needed.</span></p>
+      <p><span class="bodyGrey">In case when your table has an on_Insert trigger which already generates
+         values for your key, like the following Oracle example: 
+         <span class="bodyBlack"><pre>
+   create or replace trigger "trigger_name"
+   before insert on "table_name" for each row 
+   begin 
+      select "seq_name".nextval into :new."pk_name" from dual;
+   end;
+          </pre></span>
+          you may set the "trigger" parameter to "true". This will prevent the 
+          "Sequence_name".nexval from being pulled twice (first time in the insert 
+          statement (see above), then in the trigger). Also usefull in combination 
+          with the "returning" parameter set to "true" for Oracle (in this case you 
+          may not specify the sequence name).
+       </span></p>
+         
+    </td></tr><tr height="5"><td width="10" height="5" bgcolor="#7270c2" valign="top" align="left">&nbsp;</td><td height="5" bgcolor="#7270c2" valign="top" width="150"><img src="images/dotTrans.gif" width="1" height="15" border="0"><br><img src="images/line_sm.gif" width="105" height="3" border="0" align="right"></td><td width="7" height="5" bgcolor="#a9a5de" valign="top" align="left">&nbsp;</td><td width="70" height="5" valign="top" align="left">&nbsp;</td><td width="120" height="5" valign="top" align="left">&nbsp;</td></tr><tr><td width="10" height="5" bgcolor="#7270c2" valign="top" align="left">&nbsp;</td><td bgcolor="#7270c2" valign="top" align="left" width="150"></td><td width="7" bgcolor="#a9a5de" valign="top" align="left"><img src="images/dotTrans.gif" width="1" height="25" border="0"></td><td width="70" valign="top" align="left"><img src="images/dotTrans.gif" width="1" height="25" border="0"></td><td width="120" valign="top" align="left">&nbsp;</td></tr><tr height="5"><td width="10" rowspan="2" height="100%" bgcolor="#7270c2" valign="bottom" align="left"><img src="images/stripes1.gif" width="10" height="125" border="0"></td><td rowspan="2" height="100%" bgcolor="#7270c2" valign="bottom" align="left" width="150"><img src="images/stripe105.gif" width="105" height="125" border="0"></td><td width="7" rowspan="2" height="100%" bgcolor="#a9a5de" valign="top" align="left">&nbsp;</td><td width="70" height="100%" valign="top" align="left">&nbsp;</td><td width="120" height="100%" valign="top" align="left">&nbsp;</td></tr><tr height="5"><td width="70" height="25" valign="top" align="left">&nbsp;</td><td width="400" height="25" valign="bottom" align="left"><br><br><img src="images/line_light.gif" border="0" width="400" height="3"><br><p></p><span class="bodyGrey"><small><notice>
+    Copyright &copy; 1999-2005 <a href="http://www.exolab.org">ExoLab Group</a>, Intalio Inc.,
+    and Contributors.  All rights reserved.
+  </notice><br>&nbsp;<br></small><small><notice>
+    Java, EJB, JDBC, JNDI, JTA, Sun, Sun Microsystems are trademarks or registered
+    trademarks of Sun Microsystems, Inc. in the United States and in other
+    countries. XML, XML Schema, XSLT and related standards are trademarks or registered
+    trademarks of MIT, INRIA, Keio or others, and a product of the World Wide Web
+    Consortium. All other product names mentioned herein are trademarks of their respective
+    owners.
+  </notice><br>&nbsp;<br></small></span><p></p>
+          &nbsp;
+        </td><td width="120" height="25" valign="top" align="left">&nbsp;</td></tr></table><script type="text/javascript">
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script><script type="text/javascript">
+        var pageTracker = _gat._getTracker("UA-3544187-1");
+        pageTracker._trackPageview();
+    </script></body></html>

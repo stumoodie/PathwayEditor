@@ -1,0 +1,614 @@
+<html><head><META http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>Castor JDO Mapping</title><link rel="stylesheet" href="default.css"></head><body bgcolor="#ffffff" link="#6763a9" vlink="#6763a9" topmargin="0" bottommargin="0" leftmargin="0" marginheight="0" marginwidth="0"><a name="top"></a><table border="0" cellpadding="0" cellspacing="0" height="400"><tr><td width="10" valign="top" align="left" bgcolor="#7270c2"><img src="images/dotTrans.gif" width="1" height="1" border="0"></td><td valign="top" align="left" bgcolor="#7270c2" width="150"><img src="images/dotTrans.gif" width="1" height="1" border="0"></td><td width="7" valign="top" align="left"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td><td width="70" valign="top" align="left"><img src="images/dotTrans.gif" width="70" height="6" border="0"></td><td width="468" valign="top" align="left"><img src="images/top_2.gif" width="468" height="6" border="0"></td><td width="120" valign="top" align="left"><img src="images/line_purple.gif" width="120" height="6" border="0"></td></tr><tr><td width="10" bgcolor="#7270c2" valign="top" align="left"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td><td bgcolor="#7270c2" valign="top" align="left" width="150"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td><td width="7" bgcolor="#ffffff" valign="top" align="left"></td><td width="70" valign="top" align="left"><img src="images/dotTrans.gif" width="1" height="1" border="0"></td><td width="468" valign="middle" align="left"><a href="license.html"><span class="menuTopOff">License</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.codehaus.org"><span class="menuTopOff">Codehaus</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://openejb.org"><span class="menuTopOff">OpenEJB</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://openjms.sf.net"><span class="menuTopOff">OpenJMS</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://openorb.sf.net"><span class="menuTopOn">OpenORB</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://tyrex.sf.net"><span class="menuTopOff">Tyrex</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br><img src="images/dotTrans.gif" width="1" height="2" border="0"></td><td width="120" height="20" valign="top" align="left">&nbsp;</td></tr><tr><td width="10" bgcolor="#7270c2" valign="top" align="left"><img src="images/dotTrans.gif" width="10" height="3" border="0"></td><td bgcolor="#7270c2" valign="top" align="right" width="150"><img src="images/line_sm.gif" width="105" height="3" border="0"></td><td width="7" bgcolor="#a9a5de" valign="top" align="left"><img src="images/line_sm.gif" width="7" height="3" border="0"></td><td width="70" valign="top" align="left"><img src="images/line_light.gif" width="70" height="3" border="0"></td><td width="468" valign="top" align="left"><img src="images/line_light.gif" width="468" height="3" border="0"></td><td width="120" valign="top" align="left"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td></tr><tr><td bgcolor="#7270c2" valign="top" align="left"><img src="images/dotTrans.gif" width="10" height="10" border="0"></td><td bgcolor="#7270c2" valign="top" align="left" width="150"><img src="images/dotTrans.gif" width="1" height="2" border="0"><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Old releases</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="releases-old.html"><span class="subMenuOff">General</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="1.2/index.html"><span class="subMenuOff">Release 1.2</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="1.3cr1/index.html"><span class="subMenuOff">Release 1.3rc1</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Main</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="index.html"><span class="subMenuOff">Home</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="about.html"><span class="subMenuOff">About</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="features.html"><span class="subMenuOff">Features</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="download.html"><span class="subMenuOff">Download</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="dependencies.html"><span class="subMenuOff">Dependencies</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="reference-guide.html"><span class="subMenuOffHighlighted">Reference guide</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="javadoc/overview-summary.html"><span class="subMenuOff">JavaDoc</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="maven-integration.html"><span class="subMenuOff">Maven 2 support</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="maven-archetypes.html"><span class="subMenuOff">Maven 2 archetypes</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="schema.html"><span class="subMenuOff">DTD &amp; Schemas</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="changes.html"><span class="subMenuOff">Recent HTML changes</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="news.html"><span class="subMenuOff">News Archive</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="http://castor.codehaus.org/rss/castor-announce.xml"><span class="subMenuOff">RSS news feed</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Development/Support</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="lists.html"><span class="subMenuOff">Mailing Lists</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="scm.html"><span class="subMenuOff">SVN/JIRA</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="contributing.html"><span class="subMenuOff">Contributing</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="support.html"><span class="subMenuOff">Support</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="http://bamboo.ci.codehaus.org/browse/CASTOR"><span class="subMenuOff">Continuous builds</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="professional-services.html"><span class="subMenuOffHighlighted">Prof. services</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Related projects</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="spring-orm-integration.html"><span class="subMenuOff">Spring ORM support</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="spring-xml-intro.html"><span class="subMenuOff">Spring XML factories</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ws-integration.html"><span class="subMenuOff">WS frameworks</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">XML</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="xml-link.html"><span class="subMenuOff">XML</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">XML Code Generator</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="srcgen-link.html"><span class="subMenuOff">XML Code Generator</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">JDO</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-introduction.html"><span class="subMenuOff">Introduction</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-starter-tutorial.html"><span class="subMenuOff">First steps</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo.html"><span class="subMenuOff">Using JDO</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-database-conf.html"><span class="subMenuOff">JDO Config</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="types.html"><span class="subMenuOff">Types</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-mapping.html"><span class="subMenuOff">JDO Mapping</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-faq.html"><span class="subMenuOff">JDO FAQ</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-examples.html"><span class="subMenuOff">JDO Examples</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-howto.html"><span class="subMenuOffHighlighted">JDO HOW-TOs</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-tips-tricks.html"><span class="subMenuOffHighlighted">Tips &amp; Tricks</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-other-features.html"><span class="subMenuOff">Other Features</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-self-executable-examples.html"><span class="subMenuOff">JDO sample JAR</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Tools</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="schemaGen-anttask.html"><span class="subMenuOff">Schema generator</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Advanced JDO</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-caching-detail.html"><span class="subMenuOff">Caching</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="oql.html"><span class="subMenuOff">OQL</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="locking.html"><span class="subMenuOff">Trans. &amp; Locks</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="design-persist.html"><span class="subMenuOff">Design</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="key-generator.html"><span class="subMenuOff">KeyGen</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="long-transact.html"><span class="subMenuOff">Long Trans.</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="nested-attr.html"><span class="subMenuOff">Nested Attrs.</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-pooling.html"><span class="subMenuOff">Pooling Examples</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="postgresql-blobs.html"><span class="subMenuOff">LOBs</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-best-practice.html"><span class="subMenuOff">Best practice</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">DDL Generator</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen.html"><span class="subMenuOff">Using DDL Generator</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen-properties.html"><span class="subMenuOff">Properties</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen-anttask.html"><span class="subMenuOff">Ant task</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen-mapping.html"><span class="subMenuOff">Type Mapping</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">More</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="presentations.html"><span class="subMenuOff">Presentations</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="examples.html"><span class="subMenuOff">The Examples</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="extras.html"><span class="subMenuOff">3rd Party Tools</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="test-framework.html"><span class="subMenuOff">JDO Tests</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ctf.html"><span class="subMenuOff">XML Tests</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="conf-lib.html"><span class="subMenuOff">Configuration</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href=""><span class="subMenuOff"></span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="http://www.java.net/"><span class="subMenuOff"><img src="images/javanet_button_90.gif" border="0"></span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">About</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="license.html"><span class="subMenuOff">License</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="user-experience.html"><span class="subMenuOffHighlighted">User stories</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="contributors.html"><span class="subMenuOff">Contributors</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="marketplace.html"><span class="subMenuOff">Marketplace</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="status.html"><span class="subMenuOff">Status, Todo</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="release-notes.html"><span class="subMenuOff">Changelog</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="library.html"><span class="subMenuOff">Library</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="contacts.html"><span class="subMenuOff">Contact</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="origins.html"><span class="subMenuOff">Project Name</span></a></td></tr></table><br></td><td width="7" bgcolor="#a9a5de" valign="top" align="left">&nbsp;</td><td width="70" valign="top" align="left">&nbsp;</td><td rowspan="4" width="468" valign="top"><table cols="2" rows="2" border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td valign="top" align="left"><br><img border="0" height="34" hspace="0" src="images/castor.gif" vspace="0" width="115"><br><img border="0" height="10" hspace="0" src="images/dotTrans.gif"></td><td width="120" height="5" valign="top" align="right"></td></tr></table><p></p><p></p><br><h2 align="center">Castor JDO Mapping</h2><p align="center">
+              Documentation Author(s):<br>Bruce Snyder<br>Werner Guttmann<br></p><HR size="1"><span class="bodyGrey"><b><a href="#News">News</a></b><br></span><span class="bodyGrey"><b><a href="#Introduction">Introduction</a></b><br></span><span class="bodyGrey"><b><a href="#The-Mapping-File">The Mapping File</a></b><br></span><span class="bodyGrey"><a href="#The-<mapping>-element">&nbsp;&nbsp;&nbsp;&nbsp;The &lt;mapping&gt; element</a><br></span><span class="bodyGrey"><a href="#The-<class>-element">&nbsp;&nbsp;&nbsp;&nbsp;The &lt;class&gt; element</a><br></span><span class="bodyGrey"><a href="#The-<map-to>-element">&nbsp;&nbsp;&nbsp;&nbsp;The &lt;map-to&gt; element</a><br></span><span class="bodyGrey"><a href="#The-<field>-element">&nbsp;&nbsp;&nbsp;&nbsp;The &lt;field&gt; element</a><br></span><span class="bodyGrey"><a href="#The-<sql>-element">&nbsp;&nbsp;&nbsp;&nbsp;The &lt;sql&gt; element</a><br></span><HR size="1"><br><a name="News"><h2>News</h2></a>
+
+       <p><span class="bodyGrey"><b>Release 1.0 M3</b>:<br>
+          <table border="0" cellpadding="2" cellspacing="2"><tr><td colspan="2" height="5"></td></tr><span class="bodyGrey">
+             <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">Added collection type 'iterator'.</span></td></tr>
+             <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">Added collection type 'enumerate'.</span></td></tr>
+             <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">Added additional syntax for specifying the identity of a class.</span></td></tr>
+          </span></table>
+       </span></p>
+    <a name="Introduction"><h2>Introduction</h2></a>
+
+      <p><span class="bodyGrey">The Castor mapping file also provides a mechanism for binding a Java
+         object model to a relational database model. This is usually referred to
+         as object-to-relational mapping (O/R mapping). O/R mapping bridges the gap
+         between an object model and a relational model.</span></p>
+
+      <p><span class="bodyGrey">The mapping file provides a description of the Java object model to
+         Castor JDO. Via Castor XML, Castor JDO uses the information in the mapping
+         file to map Java objects to relational database tables. The
+         following is a high-level example of a mapping file:</span></p>
+
+      <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+  &lt;mapping&gt;
+      &lt;class ... &gt;
+          &lt;map-to ... /&gt;
+          &lt;field ... &gt;
+              &lt;sql ... /&gt;
+          &lt;/field&gt;
+          ...
+      &lt;/class&gt;
+  &lt;/mapping&gt;</pre></span></td></tr></table></td></tr></table><p></p>
+
+      <p><span class="bodyGrey">Each Java object is represented by a &lt;class&gt; element composed of attributes,
+         a &lt;map-to&gt; element and &lt;field&gt; elements. The &lt;map-to&gt; element
+         contains a reference to the relational table to which the Java object maps.
+         Each &lt;field&gt; element represents either a public class variable or the
+         variable's accessor/mutator methods (depending upon the mapping info). Each
+         &lt;field&gt; element is composed of attributes and one &lt;sql&gt; element.
+         The &lt;sql&gt; element represents the field in the relational table to which
+         the &lt;field&gt; element maps.</span></p>
+
+      <p><span class="bodyGrey">It is possible to use the mapping file and Castor's default behavior in
+         conjunction. When Castor handles an object but is unable to locate
+         information about it in the mapping file, it will rely upon its default
+         behavior. Castor makes use of the Java programming language
+         <a href="http://java.sun.com/j2se/1.4.1/docs/api/java/lang/reflect/package-summary.html">
+         Reflection API</a> to introspect the Java objects to determine the methods
+         to use. This is the reason some attributes are not required in the mapping
+         file.</span></p>
+
+    <a name="The-Mapping-File"><h2>The Mapping File</h2></a>
+
+      <a name="The-<mapping>-element"><h3>The &lt;mapping&gt; element</h3></a>
+
+        <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+  &lt;!ELEMENT mapping ( description?, include*, class*, key-generator* )&gt;</pre></span></td></tr></table></td></tr></table><p></p>
+
+        <p><span class="bodyGrey">The &lt;mapping&gt; element is the root element of a mapping file. It contains:</span></p>
+
+        <table border="0" cellpadding="2" cellspacing="2"><tr><td colspan="2" height="5"></td></tr><span class="bodyGrey">
+          <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">an optional description</span></td></tr>
+          <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">zero or more &lt;include&gt; which facilitates reusing mapping files</span></td></tr>
+          <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">zero or more &lt;class&gt; descriptions: one for each class we intend to give
+            mapping information</span></td></tr>
+          <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">zero or more &lt;key-generator&gt;: not used for XML mapping</span></td></tr>
+        </span></table>
+
+        <p><span class="bodyGrey">A mapping file look like this:</span></p>
+
+        <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+  &lt;?xml version="1.0"?&gt;
+  &lt;!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Object Mapping DTD Version 1.0//EN"
+                           "http://castor.org/mapping.dtd"&gt;
+
+  &lt;mapping&gt;
+     &lt;description&gt;Description of the mapping&amp;lt;/description&gt;
+     &lt;include href="other_mapping_file.xml"/&gt;
+
+     &lt;class name="A"&gt;
+         ...
+     &lt;/class&gt;
+
+     &lt;class name="B"&gt;
+        ...
+     &lt;/class&gt;
+  &lt;/mapping&gt;</pre></span></td></tr></table></td></tr></table><p></p>
+
+      
+
+      <a name="The-<class>-element"><h3>The &lt;class&gt; element</h3></a>
+
+        <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+  &lt;!ELEMENT class ( description?, cache-type?, map-to?, field+ )&gt;
+  &lt;!ATTLIST class
+            name            ID       #REQUIRED
+            extends         IDREF    #IMPLIED
+            depends         IDREF    #IMPLIED
+            auto-complete   ( true |false ) "false"
+            identity        CDATA    #IMPLIED
+            access          ( read-only | shared | exclusive | db-locked )  "shared"
+            key-generator   IDREF    #IMPLIED &gt;</pre></span></td></tr></table></td></tr></table><p></p>
+
+
+        <p><span class="bodyGrey">
+        The  &lt;class&gt; element contains all the information used to map a Java object
+        to a relational database. The content of &lt;class&gt; is mainly used to describe
+        the fields that will be mapped.
+        </span></p>
+
+        <p><span class="bodyGrey">
+        Description of the attributes:
+        </span></p>
+
+        <table border="0" cellpadding="2" cellspacing="2"><tr><td colspan="2" height="5"></td></tr><span class="bodyGrey">
+          <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey"><b>name:</b> The fully qualified package name of the Java object to map to.</span></td></tr>
+
+          <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey"><b>extends:</b> Should be used <b>only</b> if this Java object extends another Java
+          object for which mapping information is provided. It should <b>not</b> be used if the
+          extended Java object is not referenced in the mapping file.</span></td></tr>
+
+          <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey"><b>depends:</b> For more information on this field, please see
+          <a href="jdo-other-features.html#Dependent-and-related-relationships">
+          Dependent and related relationships</a>.</span></td></tr>
+
+          <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey"><b>identity:</b> For more information on this field, please see
+          <a href="design-persist.html#Persistence">Design -&gt; Persistence</a>.</span></td></tr>
+
+          <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey"><b>access:</b> For more information on this field, please see
+          <a href="locking.html#Locking-Modes">Locking Modes</a>.</span></td></tr>
+
+          <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey"><b>key-generator</b>: For more information on this field, please see
+          <a href="key-generator.html">KeyGen</a>.</span></td></tr>
+        </span></table>
+
+        <p><span class="bodyGrey">Description of the elements:</span></p>
+
+        <table border="0" cellpadding="2" cellspacing="2"><tr><td colspan="2" height="5"></td></tr><span class="bodyGrey">
+             <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey"><b>&lt;description&gt;</b>: An optional description.</span></td></tr>
+
+             <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey"><b>&lt;cache-type&gt;</b>: For more information on this field please see
+             <a href="long-transact.html#Bounded-dirty-checking">Bounded Dirty Checking</a>
+             and <a href="jdo-other-features.html#Caching">Caching</a>.</span></td></tr>
+
+             <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey"><b>&lt;map-to&gt;</b>: Used to tell Castor the name of the relational
+             table to which to map.</span></td></tr>
+
+             <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey"><b>&lt;field&gt;</b>: Zero or more &lt;field&gt; elements are used to describe properties
+             of each Java object.</span></td></tr>
+        </span></table>
+
+      
+
+      <a name="The-<map-to>-element"><h3>The &lt;map-to&gt; element</h3></a>
+
+        <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+  &lt;!ELEMENT map-to EMPTY&gt;
+  &lt;!ATTLIST map-to
+            table      NMTOKEN  #IMPLIED
+            xml        NMTOKEN  #IMPLIED
+            ns-uri     NMTOKEN  #IMPLIED
+            ns-prefix  NMTOKEN  #IMPLIED
+            ldap-dn    NMTOKEN  #IMPLIED
+            ldap-oc    NMTOKEN  #IMPLIED&gt;</pre></span></td></tr></table></td></tr></table><p></p>
+
+        <p><span class="bodyGrey">&lt;map-to&gt; is used to specify the name of the item that should be associated
+          with the given Java object. The &lt;map-to&gt; element is only used for the root
+          Java object.</span></p>
+
+        <p><span class="bodyGrey">Description of the attributes:</span></p>
+
+        <table border="0" cellpadding="2" cellspacing="2"><tr><td colspan="2" height="5"></td></tr><span class="bodyGrey">
+          <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey"><b>table:</b> The name of the relational database table to which the
+          Java object is associated.</span></td></tr>
+        </span></table>
+
+      
+
+      <a name="The-<field>-element"><h3>The &lt;field&gt; element</h3></a>
+
+        <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+  &lt;!ELEMENT field ( description?, sql?, xml?, ldap? )&gt;
+  &lt;!ATTLIST field
+            name           NMTOKEN  #REQUIRED
+            type           NMTOKEN  #IMPLIED
+            required       ( true | false )  "false"
+            direct         ( true | false )  "false"
+            lazy           ( true | false )  "false"
+            transient      ( true | false )  "false"
+            identity       ( true | false )  "false"
+            get-method     NMTOKEN  #IMPLIED
+            set-method     NMTOKEN  #IMPLIED
+            create-method  NMTOKEN  #IMPLIED
+            collection     ( array | enumerate | collection | set | 
+                             arraylist | vector | map | hashtable | sortedset | iterator )  #IMPLIED
+            comparator     NMTOKEN  #IMPLIED&gt;</pre></span></td></tr></table></td></tr></table><p></p>
+
+        <p><span class="bodyGrey">The &lt;field&gt; element is used to describe a property of a Java object. It provides:</span></p>
+        <table border="0" cellpadding="2" cellspacing="2"><tr><td colspan="2" height="5"></td></tr><span class="bodyGrey">
+          <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">the identity ('name') of the property</span></td></tr>
+          <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">the type of the property (inferred from 'type' and 'collection')</span></td></tr>
+          <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">the access method of the property (inferred from 'direct', 'get-method', 'set-method')</span></td></tr>
+        </span></table>
+
+        <p><span class="bodyGrey">From this information, Castor is able to access a given property in the Java
+          object.</span></p>
+
+        <p><span class="bodyGrey">In order to determine the signature that Castor expects, there are two easy
+          rules to apply.</span></p>
+
+        <p><span class="bodyGrey"><b>1. Determine &lt;type&gt;.</b></span></p>
+
+        <li><p><span class="bodyGrey"><b>If there is no 'collection' attribute</b>, the object type is the value
+           of the 'type' attribute. The value of the type attribute can be a fully qualified Java
+           object like 'java.lang.String' or one of the allowed aliases:</span></p>
+
+         <table border="0" cellspacing="1" cellpadding="2" bgcolor="#7270c2">
+            <tr>
+               <td><span class="bodyGrey">
+                  <table border="0" cellspacing="0" cellpadding="6" bgcolor="#ededed">
+                     <tr bgcolor="#7270c2" style="color:#000000">
+                        <th align="left">short name</th>
+                        <th align="left">Primitive type?</th>
+                        <th align="left">Java Class</th>
+                     </tr>
+                     <tr bgcolor="#DEDEDE"><td><span class="bodyGrey">big-decimal</span></td><td><span class="bodyGrey">N</span></td><td><span class="bodyGrey">java.math.BigDecimal</span></td></tr>
+                     <tr><td><span class="bodyGrey">big-integer</span></td><td><span class="bodyGrey">Y</span></td><td><span class="bodyGrey">java.math.BigInteger</span></td></tr>
+                     <tr bgcolor="#DEDEDE"><td><span class="bodyGrey">boolean</span></td><td><span class="bodyGrey">Y</span></td><td><span class="bodyGrey">java.lang.Boolean.TYPE</span></td></tr>
+                     <tr><td><span class="bodyGrey">byte</span></td><td><span class="bodyGrey">Y</span></td><td><span class="bodyGrey">java.lang.Byte.TYPE</span></td></tr>
+                     <tr bgcolor="#DEDEDE"><td><span class="bodyGrey">bytes</span></td><td><span class="bodyGrey">N</span></td><td><span class="bodyGrey">byte[]</span></td></tr>
+                     <tr><td><span class="bodyGrey">char</span></td><td><span class="bodyGrey">Y</span></td><td><span class="bodyGrey">java.lang.Character.TYPE</span></td></tr>
+                     <tr bgcolor="#DEDEDE"><td><span class="bodyGrey">chars</span></td><td><span class="bodyGrey">N</span></td><td><span class="bodyGrey">char[]</span></td></tr>
+                     <tr><td><span class="bodyGrey">clob</span></td><td><span class="bodyGrey">N</span></td><td><span class="bodyGrey">java.sql.Clob</span></td></tr>
+                     <tr bgcolor="#DEDEDE"><td><span class="bodyGrey">date</span></td><td><span class="bodyGrey">N</span></td><td><span class="bodyGrey">java.util.Date</span></td></tr>
+                     <tr><td><span class="bodyGrey">double</span></td><td><span class="bodyGrey">Y</span></td><td><span class="bodyGrey">java.lang.Double.TYPE</span></td></tr>
+                     <tr bgcolor="#DEDEDE"><td><span class="bodyGrey">float</span></td><td><span class="bodyGrey">Y</span></td><td><span class="bodyGrey">java.lang.Float.TYPE</span></td></tr>
+                     <tr><td><span class="bodyGrey">int</span></td><td><span class="bodyGrey">Y</span></td><td><span class="bodyGrey">java.lang.Integer.TYPE</span></td></tr>
+                     <tr bgcolor="#DEDEDE"><td><span class="bodyGrey">integer</span></td><td><span class="bodyGrey">Y</span></td><td><span class="bodyGrey">java.lang.Integer</span></td></tr>
+                     <tr><td><span class="bodyGrey">locale</span></td><td><span class="bodyGrey">N</span></td><td><span class="bodyGrey">java.util.Locale</span></td></tr>
+                     <tr bgcolor="#DEDEDE"><td><span class="bodyGrey">long</span></td><td><span class="bodyGrey">Y</span></td><td><span class="bodyGrey">java.lang.Long.TYPE</span></td></tr>
+                     <tr><td><span class="bodyGrey">other</span></td><td><span class="bodyGrey">N</span></td><td><span class="bodyGrey">java.lang.Object</span></td></tr>
+                     <tr bgcolor="#DEDEDE"><td><span class="bodyGrey">serializable</span></td><td><span class="bodyGrey">Y</span></td><td><span class="bodyGrey">java.io.Serializable</span></td></tr>
+                     <tr><td><span class="bodyGrey">short</span></td><td><span class="bodyGrey">Y</span></td><td><span class="bodyGrey">java.lang.Short.TYPE</span></td></tr>
+                     <tr bgcolor="#DEDEDE"><td><span class="bodyGrey">sqldate</span></td><td><span class="bodyGrey">Y</span></td><td><span class="bodyGrey">java.sql.Date</span></td></tr>
+                     <tr><td><span class="bodyGrey">sqltime</span></td><td><span class="bodyGrey">Y</span></td><td><span class="bodyGrey">java.sql.Date</span></td></tr>
+                     <tr bgcolor="#DEDEDE"><td><span class="bodyGrey">string</span></td><td><span class="bodyGrey">N</span></td><td><span class="bodyGrey">java.lang.String</span></td></tr>
+                     <tr><td><span class="bodyGrey">strings</span></td><td><span class="bodyGrey">N</span></td><td><span class="bodyGrey">String[]</span></td></tr>                
+                     <tr bgcolor="#DEDEDE"><td><span class="bodyGrey">stream</span></td><td><span class="bodyGrey">N</span></td><td><span class="bodyGrey">java.io.InputStream</span></td></tr>
+                     <tr><td><span class="bodyGrey">timestamp</span></td><td><span class="bodyGrey">N</span></td><td><span class="bodyGrey">java.sql.Timestamp</span></td></tr>
+                  </table>
+               </span></td>
+            </tr>
+         </table>
+
+         <p><span class="bodyGrey">Castor will try to cast the data in the mapping file to the proper Java 
+            type.</span></p></li>
+
+
+      <li><p><span class="bodyGrey"><b>If there is a collection attribute</b>, the items in the following table can be
+         used:</span></p>
+
+         <table border="0" cellspacing="1" cellpadding="2" bgcolor="#7270c2">
+            <tr>
+               <td><span class="bodyGrey">
+                  <table border="0" cellspacing="0" cellpadding="6" bgcolor="#ededed">
+                     <tr bgcolor="#7270c2" style="color:#000000">
+                        <th align="left">name</th>
+                        <th align="left">type</th>
+                        <th align="left">default implementation</th>
+                        <th align="left">added in<br>release</th>
+                     </tr>
+                     <tr bgcolor="#DEDEDE"><td><span class="bodyGrey">array</span></td><td><span class="bodyGrey">&lt;type_attribute&gt;[]</span></td><td><span class="bodyGrey">&lt;type_attribute&gt;[]</span></td><td><span class="bodyGrey"></span></td></tr>
+                     <tr><td><span class="bodyGrey">enumerate</span></td><td><span class="bodyGrey">java.util.Enumeration</span></td><td><span class="bodyGrey">-</span></td><td><span class="bodyGrey"><font color="red">1.0 M3</font></span></td></tr>
+                     <tr bgcolor="#DEDEDE"><td><span class="bodyGrey">collection</span></td><td><span class="bodyGrey">java.util.Collection</span></td><td><span class="bodyGrey">java.util.ArrayList </span></td><td><span class="bodyGrey"></span></td></tr>
+                     <tr><td><span class="bodyGrey">set</span></td><td><span class="bodyGrey">java.util.Set</span></td><td><span class="bodyGrey">java.util.HashSet</span></td><td><span class="bodyGrey"></span></td></tr>
+                     <tr bgcolor="#DEDEDE"><td><span class="bodyGrey">arraylist</span></td><td><span class="bodyGrey">java.util.ArrayList</span></td><td><span class="bodyGrey">java.util.ArrayList </span></td><td><span class="bodyGrey"></span></td></tr>
+                     <tr><td><span class="bodyGrey">vector</span></td><td><span class="bodyGrey">java.util.Vector</span></td><td><span class="bodyGrey">java.util.Vector</span></td><td><span class="bodyGrey"></span></td></tr>
+                     <tr bgcolor="#DEDEDE"><td><span class="bodyGrey">map</span></td><td><span class="bodyGrey">java.util.Map</span></td><td><span class="bodyGrey">java.util.HashMap</span></td><td><span class="bodyGrey"></span></td></tr>
+                     <tr><td><span class="bodyGrey">hashtable</span></td><td><span class="bodyGrey">java.util.Hashtable</span></td><td><span class="bodyGrey">java.util.Hashtable</span></td><td><span class="bodyGrey"></span></td></tr>
+                     <tr bgcolor="#DEDEDE"><td><span class="bodyGrey">sortedset</span></td><td><span class="bodyGrey">java.util.SortedSet</span></td><td><span class="bodyGrey">java.util.TreeSet</span></td><td><span class="bodyGrey">1.0 M2</span></td></tr>
+                     <tr><td><span class="bodyGrey">iterator</span></td><td><span class="bodyGrey">java.util.Iterator</span></td><td><span class="bodyGrey"> n/a </span></td><td><span class="bodyGrey"><font color="red">1.0 M3</font></span></td></tr>
+                  </table>
+               </span></td>
+            </tr>
+         </table>
+
+        <p><span class="bodyGrey">The type of the object inside the collection is the 'type' attribute. The 'default
+           implementation' is the type used if the object holding the collection is found
+           to be null and needs to be instantiated.</span></p>
+
+        <p><span class="bodyGrey">For hashtable and map, Castor will add an object using the put(object, object) 
+           method - the object is both the key and the value. This will be improved in the future.</span></p></li>
+
+        <p><span class="bodyGrey">It is necessary to use a collection when the content model of the element expects more 
+           than one element of the specified type. This is how the 'to-many' portion of a relationship 
+           is described.</span></p>
+           
+        <p><table width="100%" border="0" cellspacing="1" cellpadding="3" bgcolor="#7270c2"><tr><td><span class="noteHeader">Note</span></td></tr><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="noteBody">It is not possible to use a collection of type 'iterator' or 'enumerate' 
+           with lazy loading enabled.</span></td></tr></table></td></tr></table></p>
+
+        <p><span class="bodyGrey"><b>2. Determine the signature of the method</b></span></p>
+
+        <li><p><span class="bodyGrey"><b>If 'direct' is set to true</b>, Castor expects to find a public Java 
+           object variable with the given signature:</span></p>
+
+        <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>  public &lt;type&gt; &lt;name&gt;;</pre></span></td></tr></table></td></tr></table><p></p>
+        </li>
+
+        <li><p><span class="bodyGrey"><b>If 'direct' is set to false or omitted</b>, Castor will access the property
+           though accessor methods. Castor determines the signature of the accessors and mutators 
+           as follows: If the 'get-method' or 'set-method' attributes are supplied, it will
+           try to find a function with the following signature:</span></p>
+
+        <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>  public &lt;type&gt; &lt;get-method&gt;();</pre></span></td></tr></table></td></tr></table><p></p>
+        <p><span class="bodyGrey">or</span></p>
+        <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>  public void &lt;set-method&gt;(&lt;type&gt; value);</pre></span></td></tr></table></td></tr></table><p></p>
+
+        <p><span class="bodyGrey">If 'get-method' or 'set-method' attributes are not provided, Castor will try to
+           find the following functions:</span></p>
+	
+        <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>  public &lt;type&gt; is&lt;capitalized-name&gt;();</pre></span></td></tr></table></td></tr></table><p></p>
+        <p><span class="bodyGrey">or</span></p>
+        <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>  public &lt;type&gt; get&lt;capitalized-name&gt;();</pre></span></td></tr></table></td></tr></table><p></p>
+		
+		<p><span class="bodyGrey">the former for boolean types, the latter for all other types (or if the 
+           'is&lt;capitalized-name&gt;()' method is not defined for a boolean type), and 
+           a standard set method of</span></p>
+        
+        <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>  public void set&lt;capitalized-name&gt;(&lt;type&gt; value);</pre></span></td></tr></table></td></tr></table><p></p>
+	
+	    <p><span class="bodyGrey">If there are more than one set&lt;capitalized-name&gt; method it first tries to find the one
+           that exactly matches &lt;type&gt;. If no such method is available and &lt;type&gt; is a java
+           primitive type it tries to find a method with the corresponing java object type.</span></p>
+	
+        <p><span class="bodyGrey">&lt;capitalized-name&gt; means that Castor uses the &lt;name&gt; attribute by changing its first
+           letter to uppercase without modifying the other letters.</span></p>
+
+        <p><span class="bodyGrey">The content of the &lt;field&gt; element will contain the information about how to map 
+           this field to the relational table.</span></p>
+        </li>
+
+        <p><span class="bodyGrey">Description of the attributes: </span></p>
+
+        <table border="0" cellpadding="2" cellspacing="2"><tr><td colspan="2" height="5"></td></tr><span class="bodyGrey">
+          <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey"><b>name:</b> If 'direct' access is used, 'name' should be the name of a public
+             variable in the object we are mapping (the field must be public, not
+             static and not transient). If no direct access and no 'get-/set-method'
+             is specified, this name will be used to infer the name of the accessor and 
+             mutator methods.</span></td></tr>
+
+          <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey"><b>type:</b> The Java type of the field. This is used to access the
+             field. Castor will use this information to cast the data type(e.g. string 
+             into integer). It is also used to define the signature of the accessor and 
+             mutator methods. If a collection is specified, this is used to specify the 
+             type of the object inside the collection. See description above for more 
+             details.</span></td></tr>
+
+          <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey"><b>required:</b> If true, the field is not optional.</span></td></tr>
+
+          <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey"><b>transient:</b> If true, the field will be ignored during persistence (and 
+             XML un-/marshalling). If you want this field to be ignored during any 
+             persistence-related operations only, please use the 'transient' attribute at the 
+             &lt;sql&gt; level.</span></td></tr>
+
+          <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey"><b>identity:</b> If true, the field is part of the class identity. Please use this
+              as an alternative way of specifying the identity of an object.</span></td></tr>
+
+          <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey"><b>direct:</b> If true, Castor expects a public variable in the object
+             and will modify it directly.</span></td></tr>
+
+          <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey"><b>collection:</b> If a parent object expects more than one occurrence of
+             one of its fields, it is necessary to specify which collection type Castor will 
+             use to handle them. The type specified is used to define the type of the 
+             content inside the collection.</span></td></tr>
+
+          <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey"><b>comparator:</b> If the collection type equals 'sortedset', it is possible
+            to specify a <a href="javadoc/java/util/Comparator.html"><api>java.util.Comparator</api></a> instance that will be used with
+            the <a href="javadoc/java/util/SortedSet.html"><api>java.util.SortedSet</api></a> (implementation) to specify a custom
+            sort order. Please use this attribute to specify the class name of the 
+            Comparator instance to be used. Alternatively, it is possible to not 
+            specify a Comparator instance and have the Java objects stored in the 
+            SortedSet implement <a href="javadoc/java/util/Comparable.html"><api>java.util.Comparable</api></a> to specify the 
+            sort order.</span></td></tr>
+
+          <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey"><b>get-method:</b> An optional name of the accessor method Castor should 
+             use. If this attribute is not set, Castor will try to guess the name with the
+             algorithm described above.</span></td></tr>
+
+
+          <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey"><b>set-method:</b> An optional name of the mutator method Castor should 
+             use. If this attribute is not set, Castor will try to guess the name with the
+             algorithm described above.</span></td></tr>
+
+          <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey"><b>create-method:</b> Factory method for instantiation of the object.</span></td></tr>
+        </span></table>
+
+      
+
+      <a name="The-<sql>-element"><h3>The &lt;sql&gt; element</h3></a>
+
+        <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+  &lt;!ELEMENT sql EMPTY&gt;
+  &lt;!ATTLIST sql
+            name        NMTOKENS  #IMPLIED
+            type        NMTOKENS  #IMPLIED
+            many-key    NMTOKENS  #IMPLIED
+            many-table  NMTOKEN   #IMPLIED
+            transient   ( true | false )    "false"
+            read-only   ( true | false )    "false"
+            dirty       ( check | ignore )  "check"&gt;</pre></span></td></tr></table></td></tr></table><p></p>
+  
+        <p><span class="bodyGrey">The &lt;sql&gt; element is used to denote information about the 
+           database column to which a Java object is mapped. It should be declared 
+           for all &lt;field&gt; elements. Each &lt;field&gt; element contains one &lt;sql&gt; 
+           element. The &lt;sql&gt; element correlates directly to the &lt;map-to&gt; 
+           element for the containing &lt;class&gt; element. The &lt;sql&gt; elements 
+           contains the following attributes:</span></p>
+
+        <table border="0" cellpadding="2" cellspacing="2"><tr><td colspan="2" height="5"></td></tr><span class="bodyGrey">
+           <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey"><b>name:</b> The name of the column in the database table.</span></td></tr>
+  
+           <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey"><b>type:</b> The JDBC type of the column. It is inferred from the object
+              when the type of this field is a persistent Java class that is defined
+              elsewhere in the mapping.  The complete list of automatic type conversions, and
+              which values require manual mapping (e.g, java.util.Date) is listed in the
+              <a href="types.html#SQL-Type-Conversion">SQL Type Conversion section of the 
+              Type Support</a> document.</span></td></tr>
+  
+           <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey"><b>read-only:</b> If true, the column in the relational database
+              table will only be read, not updated or deleted.</span></td></tr>
+  
+           <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey"><b>transient (as of 0.9.9):</b> If true, the field will be ignored during persistence 
+              only. If you want this field to be ignored during XML un-/marshalling as well, 
+              please use the 'transient' attribute at the &lt;field&gt; level.</span></td></tr>
+          
+           <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey"><b>dirty:</b> If the value is 'ignore', the field will not be checked
+              against the database for modification.</span></td></tr>
+        </span></table>
+          
+        <p><span class="bodyGrey">There are two more attributes used <b>only</b> with 'to-many' relations.</span></p>
+             
+        <table border="0" cellpadding="2" cellspacing="2"><tr><td colspan="2" height="5"></td></tr><span class="bodyGrey">
+            <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey"><b>many-key:</b> Specifies the name of the column that holds the 
+            foreign key to this object. That column is in the database table
+            that stores objects of the Java type of this field.</span></td></tr>
+  
+            <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey"><b>many-table:</b> Specifies the name of the bridge table that contains
+            the primary keys of the object on each side of the relationship. This is <em>only</em>
+            used for many-to-many relationships.</span></td></tr>
+        </span></table>
+
+      
+
+    </td></tr><tr height="5"><td width="10" height="5" bgcolor="#7270c2" valign="top" align="left">&nbsp;</td><td height="5" bgcolor="#7270c2" valign="top" width="150"><img src="images/dotTrans.gif" width="1" height="15" border="0"><br><img src="images/line_sm.gif" width="105" height="3" border="0" align="right"></td><td width="7" height="5" bgcolor="#a9a5de" valign="top" align="left">&nbsp;</td><td width="70" height="5" valign="top" align="left">&nbsp;</td><td width="120" height="5" valign="top" align="left">&nbsp;</td></tr><tr><td width="10" height="5" bgcolor="#7270c2" valign="top" align="left">&nbsp;</td><td bgcolor="#7270c2" valign="top" align="left" width="150"></td><td width="7" bgcolor="#a9a5de" valign="top" align="left"><img src="images/dotTrans.gif" width="1" height="25" border="0"></td><td width="70" valign="top" align="left"><img src="images/dotTrans.gif" width="1" height="25" border="0"></td><td width="120" valign="top" align="left">&nbsp;</td></tr><tr height="5"><td width="10" rowspan="2" height="100%" bgcolor="#7270c2" valign="bottom" align="left"><img src="images/stripes1.gif" width="10" height="125" border="0"></td><td rowspan="2" height="100%" bgcolor="#7270c2" valign="bottom" align="left" width="150"><img src="images/stripe105.gif" width="105" height="125" border="0"></td><td width="7" rowspan="2" height="100%" bgcolor="#a9a5de" valign="top" align="left">&nbsp;</td><td width="70" height="100%" valign="top" align="left">&nbsp;</td><td width="120" height="100%" valign="top" align="left">&nbsp;</td></tr><tr height="5"><td width="70" height="25" valign="top" align="left">&nbsp;</td><td width="400" height="25" valign="bottom" align="left"><br><br><img src="images/line_light.gif" border="0" width="400" height="3"><br><p></p><span class="bodyGrey"><small><notice>
+    Copyright &copy; 1999-2005 <a href="http://www.exolab.org">ExoLab Group</a>, Intalio Inc.,
+    and Contributors.  All rights reserved.
+  </notice><br>&nbsp;<br></small><small><notice>
+    Java, EJB, JDBC, JNDI, JTA, Sun, Sun Microsystems are trademarks or registered
+    trademarks of Sun Microsystems, Inc. in the United States and in other
+    countries. XML, XML Schema, XSLT and related standards are trademarks or registered
+    trademarks of MIT, INRIA, Keio or others, and a product of the World Wide Web
+    Consortium. All other product names mentioned herein are trademarks of their respective
+    owners.
+  </notice><br>&nbsp;<br></small></span><p></p>
+          &nbsp;
+        </td><td width="120" height="25" valign="top" align="left">&nbsp;</td></tr></table><script type="text/javascript">
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script><script type="text/javascript">
+        var pageTracker = _gat._getTracker("UA-3544187-1");
+        pageTracker._trackPageview();
+    </script></body></html>

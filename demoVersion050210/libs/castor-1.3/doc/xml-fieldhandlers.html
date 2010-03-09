@@ -1,0 +1,1038 @@
+<html><head><META http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>Castor XML: Writing Custom FieldHandlers</title><link rel="stylesheet" href="default.css"></head><body bgcolor="#ffffff" link="#6763a9" vlink="#6763a9" topmargin="0" bottommargin="0" leftmargin="0" marginheight="0" marginwidth="0"><a name="top"></a><table border="0" cellpadding="0" cellspacing="0" height="400"><tr><td width="10" valign="top" align="left" bgcolor="#7270c2"><img src="images/dotTrans.gif" width="1" height="1" border="0"></td><td valign="top" align="left" bgcolor="#7270c2" width="150"><img src="images/dotTrans.gif" width="1" height="1" border="0"></td><td width="7" valign="top" align="left"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td><td width="70" valign="top" align="left"><img src="images/dotTrans.gif" width="70" height="6" border="0"></td><td width="468" valign="top" align="left"><img src="images/top_2.gif" width="468" height="6" border="0"></td><td width="120" valign="top" align="left"><img src="images/line_purple.gif" width="120" height="6" border="0"></td></tr><tr><td width="10" bgcolor="#7270c2" valign="top" align="left"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td><td bgcolor="#7270c2" valign="top" align="left" width="150"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td><td width="7" bgcolor="#ffffff" valign="top" align="left"></td><td width="70" valign="top" align="left"><img src="images/dotTrans.gif" width="1" height="1" border="0"></td><td width="468" valign="middle" align="left"><a href="license.html"><span class="menuTopOff">License</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.codehaus.org"><span class="menuTopOff">Codehaus</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://openejb.org"><span class="menuTopOff">OpenEJB</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://openjms.sf.net"><span class="menuTopOff">OpenJMS</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://openorb.sf.net"><span class="menuTopOn">OpenORB</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://tyrex.sf.net"><span class="menuTopOff">Tyrex</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br><img src="images/dotTrans.gif" width="1" height="2" border="0"></td><td width="120" height="20" valign="top" align="left">&nbsp;</td></tr><tr><td width="10" bgcolor="#7270c2" valign="top" align="left"><img src="images/dotTrans.gif" width="10" height="3" border="0"></td><td bgcolor="#7270c2" valign="top" align="right" width="150"><img src="images/line_sm.gif" width="105" height="3" border="0"></td><td width="7" bgcolor="#a9a5de" valign="top" align="left"><img src="images/line_sm.gif" width="7" height="3" border="0"></td><td width="70" valign="top" align="left"><img src="images/line_light.gif" width="70" height="3" border="0"></td><td width="468" valign="top" align="left"><img src="images/line_light.gif" width="468" height="3" border="0"></td><td width="120" valign="top" align="left"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td></tr><tr><td bgcolor="#7270c2" valign="top" align="left"><img src="images/dotTrans.gif" width="10" height="10" border="0"></td><td bgcolor="#7270c2" valign="top" align="left" width="150"><img src="images/dotTrans.gif" width="1" height="2" border="0"><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Old releases</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="releases-old.html"><span class="subMenuOff">General</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="1.2/index.html"><span class="subMenuOff">Release 1.2</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="1.3cr1/index.html"><span class="subMenuOff">Release 1.3rc1</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Main</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="index.html"><span class="subMenuOff">Home</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="about.html"><span class="subMenuOff">About</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="features.html"><span class="subMenuOff">Features</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="download.html"><span class="subMenuOff">Download</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="dependencies.html"><span class="subMenuOff">Dependencies</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="reference-guide.html"><span class="subMenuOffHighlighted">Reference guide</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="javadoc/overview-summary.html"><span class="subMenuOff">JavaDoc</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="maven-integration.html"><span class="subMenuOff">Maven 2 support</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="maven-archetypes.html"><span class="subMenuOff">Maven 2 archetypes</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="schema.html"><span class="subMenuOff">DTD &amp; Schemas</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="changes.html"><span class="subMenuOff">Recent HTML changes</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="news.html"><span class="subMenuOff">News Archive</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="http://castor.codehaus.org/rss/castor-announce.xml"><span class="subMenuOff">RSS news feed</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Development/Support</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="lists.html"><span class="subMenuOff">Mailing Lists</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="scm.html"><span class="subMenuOff">SVN/JIRA</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="contributing.html"><span class="subMenuOff">Contributing</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="support.html"><span class="subMenuOff">Support</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="http://bamboo.ci.codehaus.org/browse/CASTOR"><span class="subMenuOff">Continuous builds</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="professional-services.html"><span class="subMenuOffHighlighted">Prof. services</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Related projects</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="spring-orm-integration.html"><span class="subMenuOff">Spring ORM support</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="spring-xml-intro.html"><span class="subMenuOff">Spring XML factories</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ws-integration.html"><span class="subMenuOff">WS frameworks</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">XML</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="xml-link.html"><span class="subMenuOff">XML</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">XML Code Generator</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="srcgen-link.html"><span class="subMenuOff">XML Code Generator</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">JDO</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-introduction.html"><span class="subMenuOff">Introduction</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-starter-tutorial.html"><span class="subMenuOff">First steps</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo.html"><span class="subMenuOff">Using JDO</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-database-conf.html"><span class="subMenuOff">JDO Config</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="types.html"><span class="subMenuOff">Types</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-mapping.html"><span class="subMenuOff">JDO Mapping</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-faq.html"><span class="subMenuOff">JDO FAQ</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-examples.html"><span class="subMenuOff">JDO Examples</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-howto.html"><span class="subMenuOffHighlighted">JDO HOW-TOs</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-tips-tricks.html"><span class="subMenuOffHighlighted">Tips &amp; Tricks</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-other-features.html"><span class="subMenuOff">Other Features</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-self-executable-examples.html"><span class="subMenuOff">JDO sample JAR</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Tools</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="schemaGen-anttask.html"><span class="subMenuOff">Schema generator</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Advanced JDO</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-caching-detail.html"><span class="subMenuOff">Caching</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="oql.html"><span class="subMenuOff">OQL</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="locking.html"><span class="subMenuOff">Trans. &amp; Locks</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="design-persist.html"><span class="subMenuOff">Design</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="key-generator.html"><span class="subMenuOff">KeyGen</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="long-transact.html"><span class="subMenuOff">Long Trans.</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="nested-attr.html"><span class="subMenuOff">Nested Attrs.</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-pooling.html"><span class="subMenuOff">Pooling Examples</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="postgresql-blobs.html"><span class="subMenuOff">LOBs</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-best-practice.html"><span class="subMenuOff">Best practice</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">DDL Generator</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen.html"><span class="subMenuOff">Using DDL Generator</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen-properties.html"><span class="subMenuOff">Properties</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen-anttask.html"><span class="subMenuOff">Ant task</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen-mapping.html"><span class="subMenuOff">Type Mapping</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">More</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="presentations.html"><span class="subMenuOff">Presentations</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="examples.html"><span class="subMenuOff">The Examples</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="extras.html"><span class="subMenuOff">3rd Party Tools</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="test-framework.html"><span class="subMenuOff">JDO Tests</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ctf.html"><span class="subMenuOff">XML Tests</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="conf-lib.html"><span class="subMenuOff">Configuration</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href=""><span class="subMenuOff"></span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="http://www.java.net/"><span class="subMenuOff"><img src="images/javanet_button_90.gif" border="0"></span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">About</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="license.html"><span class="subMenuOff">License</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="user-experience.html"><span class="subMenuOffHighlighted">User stories</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="contributors.html"><span class="subMenuOff">Contributors</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="marketplace.html"><span class="subMenuOff">Marketplace</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="status.html"><span class="subMenuOff">Status, Todo</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="release-notes.html"><span class="subMenuOff">Changelog</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="library.html"><span class="subMenuOff">Library</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="contacts.html"><span class="subMenuOff">Contact</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="origins.html"><span class="subMenuOff">Project Name</span></a></td></tr></table><br></td><td width="7" bgcolor="#a9a5de" valign="top" align="left">&nbsp;</td><td width="70" valign="top" align="left">&nbsp;</td><td rowspan="4" width="468" valign="top"><table cols="2" rows="2" border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td valign="top" align="left"><br><img border="0" height="34" hspace="0" src="images/castor.gif" vspace="0" width="115"><br><img border="0" height="10" hspace="0" src="images/dotTrans.gif"></td><td width="120" height="5" valign="top" align="right"></td></tr></table><p></p><p></p><br><h2 align="center">Castor XML: Writing Custom FieldHandlers</h2><p align="center">
+              Documentation Author(s):<br>Keith Visco<br></p><HR size="1"><span class="bodyGrey"><b><a href="#Introduction">Introduction</a></b><br></span><span class="bodyGrey"><b><a href="#Writing-a-simple-FieldHandler">Writing a simple FieldHandler</a></b><br></span><span class="bodyGrey"><b><a href="#Writing-a-GeneralizedFieldHandler">Writing a GeneralizedFieldHandler</a></b><br></span><span class="bodyGrey"><b><a href="#Use-ConfigurableFieldHandler-for-more-flexibility">Use ConfigurableFieldHandler for more flexibility</a></b><br></span><span class="bodyGrey"><b><a href="#No-Constructor,-No-Problem!">No Constructor, No Problem!</a></b><br></span><span class="bodyGrey"><b><a href="#Collections-and-FieldHandlers">Collections and FieldHandlers</a></b><br></span><HR size="1"><br><a name="Introduction"><h2>Introduction</h2></a>
+
+       <p><span class="bodyGrey">
+          Sometimes we need to deal with a data format that Castor doesn't
+          support out-of-the-box, such as an unsupported Date/Time
+          representation, or we want to wrap and unwrap fields in Wrapper
+          objects to get the desired XML output without changing our object
+          model. To handle these cases Castor allows specifying a custom
+          <a href="javadoc/org/exolab/castor/mapping/FieldHandler.html#FieldHandler">FieldHandler</a>
+          which can do these varying conversions during calls to the fields
+          setter and getter methods.
+       </span></p>
+
+       <p><span class="bodyGrey">
+          <hr size="1" noshadow=""><span class="bodyGrey">
+          The <i>FieldHandler</i> is the basic interface used by the Castor
+          Framework when accessing field values or setting them. By specifying
+          a custom <i>FieldHandler</i> in the mapping file we can basically
+          intercept the calls to retrieve or set a field's value and do
+          whatever conversions are necessary.
+          <hr size="1" noshadow=""></span>
+        </span></p>
+
+
+    <a name="Writing-a-simple-FieldHandler"><h2>Writing a simple FieldHandler</h2></a>
+
+       <p><span class="bodyGrey">
+         When a writing a FieldHandler handler we need to provide implementations
+         of the various methods specified in the FieldHandler interface. The main
+         two methods are the <i>getValue</i> and <i>setValue</i> methods which
+         will basically handle all our conversion code. The other methods provide
+         ways to create a new instance of the field's value or reset the field
+         value.
+       </span></p>
+       <p><span class="bodyGrey">
+         <br><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#5A0F5E"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#E6CFE6"><tr><td><b>Tip:</b></td><td>It's actually even easier to write custom field handlers if we use
+              a GeneralizedFieldHandler. See more details in the next section.
+         </td></tr></table></td></tr></table>
+       </span></p>
+       <p><span class="bodyGrey">
+         Let's take a look at how to convert a date in the format YYYY-MM-DD using
+         a custom FieldHandler. We want to marshal the following XML input file:
+         <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><i><font color="yellow">test.xml</font></i></td></tr><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>&lt;?xml version="1.0"?&gt;
+&lt;root&gt;2004-05-10&lt;/root&gt;</pre></span></td></tr></table></td></tr></table><p></p>
+
+         The class we'll be marshalling from and unmarshalling to looks as follows:
+
+         <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><i><font color="yellow">Root.java</font></i></td></tr><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+import java.util.Date;
+
+public class Root {
+
+    private Date _date = null;
+
+    public Root() {
+        super();
+    }
+
+    public Date getDate() {
+        return _date;
+    }
+
+
+    public void setDate(Date date) {
+        _date = date;
+    }
+         </pre></span></td></tr></table></td></tr></table><p></p>
+
+        So we need to write a custom FieldHandler that takes the input String
+        and converts it into the proper java.util.Date instance:
+
+       <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><i><font color="yellow">MyDateHandler.java</font></i></td></tr><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+import org.exolab.castor.mapping.FieldHandler;
+import org.exolab.castor.mapping.FieldDescriptor;
+import org.exolab.castor.mapping.ValidityException;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+
+
+/**
+ * The FieldHandler for the Date class
+ *
+ */
+public class MyDateHandler implements FieldHandler
+{
+
+    private static final String FORMAT = "yyyy-MM-dd";
+
+    /**
+     * Creates a new MyDateHandler instance
+     */
+    public MyDateHandler() {
+        super();
+    }
+
+    /**
+     * Returns the value of the field from the object.
+     *
+     * @param object The object
+     * @return The value of the field
+     * @throws IllegalStateException The Java object has changed and
+     *  is no longer supported by this handler, or the handler is not
+     *  compatible with the Java object
+     */
+    public Object getValue( Object object )
+        throws IllegalStateException
+    {
+        Root root = (Root)object;
+        Date value = root.getDate();
+        if (value == null) return null;
+        SimpleDateFormat formatter = new SimpleDateFormat(FORMAT);
+        Date date = (Date)value;
+        return formatter.format(date);
+    }
+
+
+    /**
+     * Sets the value of the field on the object.
+     *
+     * @param object The object
+     * @param value The new value
+     * @throws IllegalStateException The Java object has changed and
+     *  is no longer supported by this handler, or the handler is not
+     *  compatible with the Java object
+     * @throws IllegalArgumentException The value passed is not of
+     *  a supported type
+     */
+    public void setValue( Object object, Object value )
+        throws IllegalStateException, IllegalArgumentException
+    {
+        Root root = (Root)object;
+        SimpleDateFormat formatter = new SimpleDateFormat(FORMAT);
+        Date date = null;
+        try {
+            date = formatter.parse((String)value);
+        }
+        catch(ParseException px) {
+            throw new IllegalArgumentException(px.getMessage());
+        }
+        root.setDate(date);
+
+    }
+
+
+    /**
+     * Creates a new instance of the object described by this field.
+     *
+     * @param parent The object for which the field is created
+     * @return A new instance of the field's value
+     * @throws IllegalStateException This field is a simple type and
+     *  cannot be instantiated
+     */
+    public Object newInstance( Object parent )
+        throws IllegalStateException
+    {
+        //-- Since it's marked as a string...just return null,
+        //-- it's not needed.
+        return null;
+    }
+
+
+    /**
+     * Sets the value of the field to a default value.
+     *
+     * Reference fields are set to null, primitive fields are set to
+     * their default value, collection fields are emptied of all
+     * elements.
+     *
+     * @param object The object
+     * @throws IllegalStateException The Java object has changed and
+     *  is no longer supported by this handler, or the handler is not
+     *  compatible with the Java object
+     */
+    public void resetValue( Object object )
+        throws IllegalStateException, IllegalArgumentException
+    {
+        ((Root)object).setDate(null);
+    }
+
+
+
+    /**
+     * @deprecated No longer supported
+     */
+    public void checkValidity( Object object )
+        throws ValidityException, IllegalStateException
+    {
+        // do nothing
+    }
+
+
+}
+       </pre></span></td></tr></table></td></tr></table><p></p>
+
+       <p><span class="bodyGrey">
+         <br><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#5A0F5E"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#E6CFE6"><tr><td><b>Tip:</b></td><td>The <i>newInstance</i> method should return null for immutable types.</td></tr></table></td></tr></table>
+       </span></p>
+
+       <hr size="1" noshadow=""><span class="bodyGrey">
+          There is also an
+          <a href="javadoc/org/exolab/castor/mapping/AbstractFieldHandler.html#AbstractFieldHandler">AbstractFieldHandler</a>
+          that we can extend instead of implementing FieldHandler directly.
+          Not only do we not have to implement deprecated methods, but we can also
+          gain access to the <i>FieldDescriptor</i> used by Castor.
+       <hr size="1" noshadow=""></span>
+
+       In order to tell Castor that we want to use our Custom FieldHandler
+       we must specify it in the mapping file:
+
+        <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><i><font color="yellow">mapping.xml</font></i></td></tr><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+
+&lt;?xml version="1.0"?&gt;
+&lt;mapping&gt;
+  &lt;class name="Root"&gt;
+     &lt;field name="date" type="string" handler="MyDateHandler"&gt;
+        &lt;bind-xml node="text"/&gt;
+     &lt;/field&gt;
+  &lt;/class&gt;
+&lt;/mapping&gt;
+
+        </pre></span></td></tr></table></td></tr></table><p></p>
+
+         We can now use a simple Test class to unmarshal our XML document:
+
+         <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><i><font color="yellow">Test.java</font></i></td></tr><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+import java.io.*;
+import org.exolab.castor.xml.*;
+import org.exolab.castor.mapping.*;
+
+public class Test {
+
+    public static void main(String[] args) {
+	    try {
+
+	        //--load mapping
+	        Mapping mapping = new Mapping();
+	        mapping.loadMapping("mapping.xml");
+
+           System.out.println("unmarshalling root instance:");
+           System.out.println();
+
+           Reader reader = new FileReader("test.xml");
+           Unmarshaller unmarshaller = new Unmarshaller(Root.class);
+           unmarshaller.setMapping(mapping);
+           Root root = (Root) unmarshaller.unmarshal(reader);
+           reader.close();
+
+           System.out.println("Root#getDate : " + root.getDate());
+	    }
+	    catch (Exception e) {
+	        e.printStackTrace();
+	    }
+    }
+}
+
+         </pre></span></td></tr></table></td></tr></table><p></p>
+
+         Now simply compile the code and run!
+
+         <span class="bodyBlack"><pre>
+% java Test
+unmarshalling root instance:
+
+Root#getDate : Mon May 10 00:00:00 CDT 2004
+         </pre></span>
+
+         After running our test program we can see that Castor invoked our
+         custom FieldHandler and we got our properly formatted date in our
+         Root.class.
+
+       </span></p>
+
+    <a name="Writing-a-GeneralizedFieldHandler"><h2>Writing a GeneralizedFieldHandler</h2></a>
+       <p><span class="bodyGrey">
+         A <a href="javadoc/org/exolab/castor/mapping/GeneralizedFieldHandler.html#%0A         GeneralizedFieldHandler">
+         GeneralizedFieldHandler</a> is an extension of FieldHandler interface
+         where we simply write the conversion methods and Castor will automatically
+         handle the underlying get/set operations. This allows us to re-use the
+         same FieldHandler for fields from different classes that require the
+         same conversion.
+       </span></p>
+       <hr size="1" noshadow=""><span class="bodyGrey">
+         <b>Note:</b>
+         Currently the GeneralizedFieldHandler cannot be used from a
+         <i>binding-file</i> for use with the SourceGenerator, an
+         enhancement patch will be checked into SVN for this feature,
+         shortly after 0.9.6 final is released.
+       <hr size="1" noshadow=""></span>
+      <p><span class="bodyGrey">
+        The same FieldHandler we used above can be written as a GeneralizedFieldHandler
+        as such:
+        <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+
+import org.exolab.castor.mapping.GeneralizedFieldHandler;
+import org.exolab.castor.mapping.FieldDescriptor;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+
+
+/**
+ * The FieldHandler for the Date class
+ *
+ */
+public class MyDateHandler
+    extends GeneralizedFieldHandler
+{
+
+    private static final String FORMAT = "yyyy-MM-dd";
+
+    /**
+     * Creates a new MyDateHandler instance
+     */
+    public MyDateHandler() {
+        super();
+    }
+
+    /**
+     * This method is used to convert the value when the
+     * getValue method is called. The getValue method will
+     * obtain the actual field value from given 'parent' object.
+     * This convert method is then invoked with the field's
+     * value. The value returned from this method will be
+     * the actual value returned by getValue method.
+     *
+     * @param value the object value to convert after
+     *  performing a get operation
+     * @return the converted value.
+     */
+    public Object convertUponGet(Object value) {
+        if (value == null) return null;
+        SimpleDateFormat formatter = new SimpleDateFormat(FORMAT);
+        Date date = (Date)value;
+        return formatter.format(date);
+    }
+
+
+    /**
+     * This method is used to convert the value when the
+     * setValue method is called. The setValue method will
+     * call this method to obtain the converted value.
+     * The converted value will then be used as the value to
+     * set for the field.
+     *
+     * @param value the object value to convert before
+     *  performing a set operation
+     * @return the converted value.
+     */
+    public Object convertUponSet(Object value) {
+        SimpleDateFormat formatter = new SimpleDateFormat(FORMAT);
+        Date date = null;
+        try {
+            date = formatter.parse((String)value);
+        }
+        catch(ParseException px) {
+            throw new IllegalArgumentException(px.getMessage());
+        }
+        return date;
+    }
+
+    /**
+     * Returns the class type for the field that this
+     * GeneralizedFieldHandler converts to and from. This
+     * should be the type that is used in the
+     * object model.
+     *
+     * @return the class type of of the field
+     */
+    public Class getFieldType() {
+        return Date.class;
+    }
+
+    /**
+     * Creates a new instance of the object described by
+     * this field.
+     *
+     * @param parent The object for which the field is created
+     * @return A new instance of the field's value
+     * @throws IllegalStateException This field is a simple
+     *  type and cannot be instantiated
+     */
+    public Object newInstance( Object parent )
+        throws IllegalStateException
+    {
+        //-- Since it's marked as a string...just return null,
+        //-- it's not needed.
+        return null;
+    }
+
+}
+
+        </pre></span></td></tr></table></td></tr></table><p></p>
+
+        Everything else is the same. So we can re-run our test case using this
+        GeneralizedFieldHandler and we'll get the same result. The main difference
+        is that we implement the <i>convertUponGet</i> and <i>convertUponSet</i>
+        methods.
+
+        <p><span class="bodyGrey">
+           Notice that we never reference the <i>Root</i> class in our
+           GeneralizedFieldHandler. This allows us to use the same exact
+           FieldHandler for any field that requires this type of conversion.
+        </span></p>
+
+      </span></p>
+    <a name="Use-ConfigurableFieldHandler-for-more-flexibility"><h2>Use ConfigurableFieldHandler for more flexibility</h2></a>
+      <p><span class="bodyGrey">
+		In some situations, the GeneralizedFieldHandler might not provide sufficient flexibility. 
+		Suppose your xml document uses more than one date format. You could solve this by 
+		creating a GeneralizedFieldHandler subclass per date format, but that smells. 
+      </span></p>
+      <p><span class="bodyGrey">
+      	A ConfigurableFieldHandler is a FieldHandler that can be configured in the mapping file
+      	with any kind and any number of parameters. You can simply configure two (or more)
+      	instances of the same ConfigurableFieldHandler class with different date format patterns.
+      	Here's a mapping file that uses a ConfigurableFieldHandler to marshal and unmarshal the
+      	date field, similar to the preceding examples:
+      	
+      	<p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><i><font color="yellow">mapping.xml</font></i></td></tr><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+      	
+&lt;?xml version="1.0"?&gt;
+&lt;mapping&gt;
+   
+   &lt;field-handler name="myHandler" class="FieldHandlerImpl"&gt;
+      &lt;param name="date-format" value="yyyyMMddHHmmss"/&gt;
+   &lt;/field-handler&gt;
+   
+   &lt;class name="Root"&gt;
+      &lt;field name="date" type="string" handler="myHandler"/&gt;
+   &lt;/class&gt;
+
+&lt;/mapping&gt;
+      	
+      	</pre></span></td></tr></table></td></tr></table><p></p>
+      	
+      	The <i>field-handler</i> element defines the ConfigurableFieldHandler. 
+      	The class must be an implementation of the 
+      	<i>org.exolab.castor.mapping.ConfigurableFieldHandler</i> interface. This 
+      	instance is configured with a date format. However, each implementation can decide
+      	which, and how many parameters to use.
+      </span></p>
+      <p><span class="bodyGrey">
+      	The field handler instance is referenced by the <i>field</i> element, using
+      	the <i>handler</i> attribute.
+      </span></p>
+      <p><span class="bodyGrey">
+      	Here's the ConfigurableFieldHandler implementation:
+      	<p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><i><font color="yellow">FieldHandlerImpl.java</font></i></td></tr><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Properties;
+
+import org.exolab.castor.mapping.ConfigurableFieldHandler;
+import org.exolab.castor.mapping.FieldHandler;
+import org.exolab.castor.mapping.GeneralizedFieldHandler;
+import org.exolab.castor.mapping.ValidityException;
+
+public class FieldHandlerImpl implements FieldHandler, ConfigurableFieldHandler {
+
+    private SimpleDateFormat formatter;
+
+    public FieldHandlerImpl() {
+    	//
+    }
+    
+    public void setConfiguration(Properties config) throws ValidityException {
+    	String pattern = config.getProperty("date-format");
+    	if (pattern == null) {
+    		throw new ValidityException("Required parameter \"date-format\" is missing for FieldHandlerImpl.");
+    	}
+    	try {
+    		formatter = new SimpleDateFormat(pattern);
+    	} catch (IllegalArgumentException e) {
+    		throw new ValidityException("Pattern \""+pattern+"\" is not a valid date format.");
+    	}
+    }
+
+    /**
+     * Returns the value of the field from the object.
+     *
+     * @param object The object
+     * @return The value of the field
+     * @throws IllegalStateException The Java object has changed and
+     *  is no longer supported by this handler, or the handler is not
+     *  compatible with the Java object
+     */
+    public Object getValue( Object object )
+        throws IllegalStateException
+    {
+        Root root = (Root)object;
+        Date value = root.getDate();
+        if (value == null) return null;
+        return formatter.format(value);
+    }
+
+    /**
+     * Sets the value of the field on the object.
+     *
+     * @param object The object
+     * @param value The new value
+     * @throws IllegalStateException The Java object has changed and
+     *  is no longer supported by this handler, or the handler is not
+     *  compatible with the Java object
+     * @throws IllegalArgumentException The value passed is not of
+     *  a supported type
+     */
+    public void setValue( Object object, Object value )
+        throws IllegalStateException, IllegalArgumentException
+    {
+        Root root = (Root)object;
+        Date date = null;
+        try {
+            date = formatter.parse((String)value);
+        }
+        catch(ParseException px) {
+            throw new IllegalArgumentException(px.getMessage());
+        }
+        root.setDate(date);
+
+    }
+    
+    /**
+     * Creates a new instance of the object described by this field.
+     *
+     * @param parent The object for which the field is created
+     * @return A new instance of the field's value
+     * @throws IllegalStateException This field is a simple type and
+     *  cannot be instantiated
+     */
+    public Object newInstance( Object parent )
+        throws IllegalStateException
+    {
+        //-- Since it's marked as a string...just return null,
+        //-- it's not needed.
+        return null;
+    }
+
+    /**
+     * Sets the value of the field to a default value.
+     *
+     * Reference fields are set to null, primitive fields are set to
+     * their default value, collection fields are emptied of all
+     * elements.
+     *
+     * @param object The object
+     * @throws IllegalStateException The Java object has changed and
+     *  is no longer supported by this handler, or the handler is not
+     *  compatible with the Java object
+     */
+    public void resetValue( Object object )
+        throws IllegalStateException, IllegalArgumentException
+    {
+        ((Root)object).setDate(null);
+    }
+
+    /**
+     * @deprecated No longer supported
+     */
+    public void checkValidity( Object object )
+        throws ValidityException, IllegalStateException
+    {
+        // do nothing
+    }
+}
+      	
+      	</pre></span></td></tr></table></td></tr></table><p></p>
+      	This implementation is similar to the first <i>MyDateHandler</i> example
+      	on this page, except that is adds a <i>setConfiguration</i> method as
+      	specified by the <i>ConfigurableFieldHandler</i> interface. All parameters 
+      	that are configured	in the mapping file will be passed in as a <i>Properties</i>
+      	object. The implementing method is responsible for processing the configuration data.
+      </span></p>
+      <p><span class="bodyGrey">
+      	As a convenience, <i>org.exolab.castor.mapping.AbstractFieldHandler</i> already 
+      	implements <i>ConfigurableFieldHandler</i>. However, the <i>setConfiguration</i>
+      	method is not doing anything. Any subclass of <i>AbstractFieldHandler</i> only
+      	has to override this method to leverage the configuration capabilities. Since <i>
+      	AbstractFieldHandler</i> and its subclass <i>GeneralizedFieldHandler</i> are
+      	useful abstract classes, you'd probably want to use them anyway. It eliminates the 
+      	need to	implement the <i>ConfigurableFieldHandler</i> interface yourself. 
+      </span></p>
+    <a name="No-Constructor,-No-Problem!"><h2>No Constructor, No Problem!</h2></a>
+      <p><span class="bodyGrey">
+         A number of classes such as type-safe enum style classes have no constructor, but
+         instead have some sort of static factory method used for converting a string value
+         into an instance of the class. With a custom FieldHandler we can allow Castor to
+         work nicely with these types of classes.
+      </span></p>
+     <p><span class="bodyGrey">
+       <br><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#5A0F5E"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#E6CFE6"><tr><td><b>Tip:</b></td><td>
+          Castor XML automatically supports these types of classes if they have a specific
+          method:
+          <span class="bodyBlack"><pre>public static <i>{Type}</i> valueOf(String)</pre></span>
+       </td></tr></table></td></tr></table>
+       <hr size="1" noshadow=""><span class="bodyGrey">Note: We're working on the same support for Castor JDO<hr size="1" noshadow=""></span>
+     </span></p>
+
+     <p><span class="bodyGrey">
+     Even though Castor XML supports the "valueOf" method type-safe enum style classes, we'll
+     show you how to write a custom handler for these classes anyway since it's useful for
+     any type of class regardless of the name of the factory method.
+     </span></p>
+     <p><span class="bodyGrey">
+       Let's look at how to write a handler for the following type-safe enum style class,
+       which was actually generated by Castor XML (javadoc removed for brevity):
+       <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+
+import java.io.Serializable;
+import java.util.Enumeration;
+import java.util.Hashtable;
+
+public class Color implements java.io.Serializable {
+
+
+    public static final int RED_TYPE = 0;
+
+    public static final Color RED = new Color(RED_TYPE, "red");
+
+    public static final int GREEN_TYPE = 1;
+
+    public static final Color GREEN = new Color(GREEN_TYPE, "green");
+
+    public static final int BLUE_TYPE = 2;
+
+    public static final Color BLUE = new Color(BLUE_TYPE, "blue");
+
+    private static java.util.Hashtable _memberTable = init();
+
+    private int type = -1;
+
+    private java.lang.String stringValue = null;
+
+
+    private Color(int type, java.lang.String value) {
+        super();
+        this.type = type;
+        this.stringValue = value;
+    } //-- test.types.Color(int, java.lang.String)
+
+
+    public static java.util.Enumeration enumerate()
+    {
+        return _memberTable.elements();
+    } //-- java.util.Enumeration enumerate()
+
+    public int getType()
+    {
+        return this.type;
+    } //-- int getType()
+
+    private static java.util.Hashtable init()
+    {
+        Hashtable members = new Hashtable();
+        members.put("red", RED);
+        members.put("green", GREEN);
+        members.put("blue", BLUE);
+        return members;
+    } //-- java.util.Hashtable init()
+
+    public java.lang.String toString()
+    {
+        return this.stringValue;
+    } //-- java.lang.String toString()
+
+    public static Color valueOf(java.lang.String string)
+    {
+        Object obj = null;
+        if (string != null) obj = _memberTable.get(string);
+        if (obj == null) {
+            String err = "'" + string + "' is not a valid Color";
+            throw new IllegalArgumentException(err);
+        }
+        return (Color) obj;
+    } //-- test.types.Color valueOf(java.lang.String)
+
+}
+       </pre></span></td></tr></table></td></tr></table><p></p>
+
+      The <i>GeneralizedFieldHandler</i> for the above <i>Color</i> class is as follows
+      (javadoc removed for brevity):
+
+      <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><i><font color="yellow">ColorHandler.java</font></i></td></tr><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+import org.exolab.castor.mapping.GeneralizedFieldHandler;
+import org.exolab.castor.mapping.FieldDescriptor;
+
+/**
+ * The FieldHandler for the Color class
+**/
+public class ColorHandler
+    extends GeneralizedFieldHandler
+{
+
+    public ColorHandler() {
+        super();
+    }
+
+    public Object convertUponGet(Object value) {
+        if (value == null) return null;
+        Color color = (Color)value;
+        return color.toString();
+    }
+
+
+    public Object convertUponSet(Object value) {
+        return Color.valueOf((String)value);
+    }
+
+    public Class getFieldType() {
+        return Color.class;
+    }
+
+    public Object newInstance( Object parent )
+        throws IllegalStateException
+    {
+        //-- Since it's marked as a string...just return null,
+        //-- it's not needed.
+        return null;
+    }
+
+}
+      </pre></span></td></tr></table></td></tr></table><p></p>
+     </span></p>
+     <p><span class="bodyGrey">
+      That's all there really is to it. Now we just need to hook this up to our mapping file
+      and run a sample test.
+     </span></p>
+     <p><span class="bodyGrey">
+       If we have a root class <i>Foo</i> as such:
+       <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><i><font color="yellow">Foo.java</font></i></td></tr><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+public class Foo {
+
+    private Color _color = null;
+    private int _size = 0;
+    private String _name = null;
+
+    public Foo() {
+        super();
+    }
+
+    public Color getColor() {
+        return _color;
+    }
+
+    public String getName() {
+        return _name;
+    }
+
+    public int getSize() {
+        return _size;
+    }
+
+    public void setColor(Color color) {
+        _color = color;
+    }
+
+    public void setName(String name) {
+        _name = name;
+    }
+
+    public void setSize(int size) {
+        _size = size;
+    }
+
+}
+       </pre></span></td></tr></table></td></tr></table><p></p>
+       <br>
+       Our mapping file would be the following:
+       <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><i><font color="yellow">mapping.xml</font></i></td></tr><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+&lt;?xml version="1.0"?&gt;
+&lt;mapping&gt;
+  &lt;class name="Foo"&gt;
+     &lt;field name="size" type="integer"&gt;
+        &lt;bind-xml node="element"/&gt;
+     &lt;/field&gt;
+     &lt;field name="name" type="string"/&gt;
+     &lt;field name="color" type="string" handler="ColorHandler"/&gt;
+  &lt;/class&gt;
+&lt;/mapping&gt;
+       </pre></span></td></tr></table></td></tr></table><p></p>
+
+       We can now use our custom FieldHandler to unmarshal the following xml input:
+       <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><i><font color="yellow">test.xml</font></i></td></tr><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+&lt;?xml version="1.0"?&gt;
+&lt;foo&gt;
+   &lt;name&gt;MyFoo&lt;/name&gt;
+   &lt;size&gt;345&lt;/size&gt;
+   &lt;color&gt;blue&lt;/color&gt;
+&lt;/foo&gt;
+       </pre></span></td></tr></table></td></tr></table><p></p>
+
+       A sample test class is as follows:
+       <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><i><font color="yellow">Test.java</font></i></td></tr><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+
+import java.io.*;
+import org.exolab.castor.xml.*;
+import org.exolab.castor.mapping.*;
+
+public class Test {
+
+    public static void main(String[] args) {
+	    try {
+
+	        //--load mapping
+	        Mapping mapping = new Mapping();
+	        mapping.loadMapping("mapping.xml");
+
+            System.out.println("unmarshalling Foo:");
+            System.out.println();
+
+            Reader reader = new FileReader("test.xml");
+            Unmarshaller unmarshaller = new Unmarshaller(Foo.class);
+            unmarshaller.setMapping(mapping);
+            Foo foo = (Foo) unmarshaller.unmarshal(reader);
+            reader.close();
+
+            System.out.println("Foo#size : " + foo.getSize());
+            System.out.print("Foo#color: ");
+            if (foo.getColor() == null) {
+                System.out.println("null");
+            }
+            else {
+                System.out.println(foo.getColor().toString());
+            }
+
+            PrintWriter pw = new PrintWriter(System.out);
+            Marshaller marshaller = new Marshaller(pw);
+            marshaller.setMapping(mapping);
+            marshaller.marshal(foo);
+            pw.flush();
+	    }
+	    catch (Exception e) {
+	        e.printStackTrace();
+	    }
+    }
+}
+        </pre></span></td></tr></table></td></tr></table><p></p>
+     </span></p>
+    <a name="Collections-and-FieldHandlers"><h2>Collections and FieldHandlers</h2></a>
+       <p><span class="bodyGrey">
+         <hr size="1" noshadow=""><span class="bodyGrey">The <i>GeneralizedFieldHandler</i> checked into the SVN
+         version (main branch / 0.9.6 Final) of Castor automatically supports iterating over
+         the items of a collection and passing them one-by-one to the
+         <i>convertUponGet</i>. For backward compatibility or to handle
+         the collection iteration yourself, simply add the following to
+         the constructor of your GeneralizedFieldHandler implementation:
+         <span class="bodyBlack"><pre>
+            setCollectionIteration(false);
+         </pre></span>
+         <hr size="1" noshadow=""></span>
+      </span></p>
+      <p><span class="bodyGrey">
+         If you're going to be using custom field handlers for collection fields with
+         a GeneralizedFieldHandler using versions of Castor prior to 0.9.6, then
+         you'll need to handle the collection iteration yourself in the
+         <i>convertUponGet</i>  method.
+       </span></p>
+      <p><span class="bodyGrey">
+         If you're not using a GeneralizedFieldHandler then you'll need to handle the
+         collection iteration yourself in the <i>FieldHandler#getValue()</i> method.
+       </span></p>
+       <p><span class="bodyGrey"><br><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#5A0F5E"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#E6CFE6"><tr><td><b>Tip:</b></td><td>Since Castor incrementally adds items to collection fields, there
+          usually is no need to handle collections directly in the
+          <i>convertUponSet</i> method (or the <i>setValue()</i> for those
+          not using GeneralizedFieldHandler).
+          </td></tr></table></td></tr></table>
+       </span></p>
+    </td></tr><tr height="5"><td width="10" height="5" bgcolor="#7270c2" valign="top" align="left">&nbsp;</td><td height="5" bgcolor="#7270c2" valign="top" width="150"><img src="images/dotTrans.gif" width="1" height="15" border="0"><br><img src="images/line_sm.gif" width="105" height="3" border="0" align="right"></td><td width="7" height="5" bgcolor="#a9a5de" valign="top" align="left">&nbsp;</td><td width="70" height="5" valign="top" align="left">&nbsp;</td><td width="120" height="5" valign="top" align="left">&nbsp;</td></tr><tr><td width="10" height="5" bgcolor="#7270c2" valign="top" align="left">&nbsp;</td><td bgcolor="#7270c2" valign="top" align="left" width="150"></td><td width="7" bgcolor="#a9a5de" valign="top" align="left"><img src="images/dotTrans.gif" width="1" height="25" border="0"></td><td width="70" valign="top" align="left"><img src="images/dotTrans.gif" width="1" height="25" border="0"></td><td width="120" valign="top" align="left">&nbsp;</td></tr><tr height="5"><td width="10" rowspan="2" height="100%" bgcolor="#7270c2" valign="bottom" align="left"><img src="images/stripes1.gif" width="10" height="125" border="0"></td><td rowspan="2" height="100%" bgcolor="#7270c2" valign="bottom" align="left" width="150"><img src="images/stripe105.gif" width="105" height="125" border="0"></td><td width="7" rowspan="2" height="100%" bgcolor="#a9a5de" valign="top" align="left">&nbsp;</td><td width="70" height="100%" valign="top" align="left">&nbsp;</td><td width="120" height="100%" valign="top" align="left">&nbsp;</td></tr><tr height="5"><td width="70" height="25" valign="top" align="left">&nbsp;</td><td width="400" height="25" valign="bottom" align="left"><br><br><img src="images/line_light.gif" border="0" width="400" height="3"><br><p></p><span class="bodyGrey"><small><notice>
+    Copyright &copy; 1999-2005 <a href="http://www.exolab.org">ExoLab Group</a>, Intalio Inc.,
+    and Contributors.  All rights reserved.
+  </notice><br>&nbsp;<br></small><small><notice>
+    Java, EJB, JDBC, JNDI, JTA, Sun, Sun Microsystems are trademarks or registered
+    trademarks of Sun Microsystems, Inc. in the United States and in other
+    countries. XML, XML Schema, XSLT and related standards are trademarks or registered
+    trademarks of MIT, INRIA, Keio or others, and a product of the World Wide Web
+    Consortium. All other product names mentioned herein are trademarks of their respective
+    owners.
+  </notice><br>&nbsp;<br></small></span><p></p>
+          &nbsp;
+        </td><td width="120" height="25" valign="top" align="left">&nbsp;</td></tr></table><script type="text/javascript">
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script><script type="text/javascript">
+        var pageTracker = _gat._getTracker("UA-3544187-1");
+        pageTracker._trackPageview();
+    </script></body></html>

@@ -1,0 +1,826 @@
+<html><head><META http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>Castor JDO - Caching concepts</title><link rel="stylesheet" href="default.css"></head><body bgcolor="#ffffff" link="#6763a9" vlink="#6763a9" topmargin="0" bottommargin="0" leftmargin="0" marginheight="0" marginwidth="0"><a name="top"></a><table border="0" cellpadding="0" cellspacing="0" height="400"><tr><td width="10" valign="top" align="left" bgcolor="#7270c2"><img src="images/dotTrans.gif" width="1" height="1" border="0"></td><td valign="top" align="left" bgcolor="#7270c2" width="150"><img src="images/dotTrans.gif" width="1" height="1" border="0"></td><td width="7" valign="top" align="left"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td><td width="70" valign="top" align="left"><img src="images/dotTrans.gif" width="70" height="6" border="0"></td><td width="468" valign="top" align="left"><img src="images/top_2.gif" width="468" height="6" border="0"></td><td width="120" valign="top" align="left"><img src="images/line_purple.gif" width="120" height="6" border="0"></td></tr><tr><td width="10" bgcolor="#7270c2" valign="top" align="left"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td><td bgcolor="#7270c2" valign="top" align="left" width="150"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td><td width="7" bgcolor="#ffffff" valign="top" align="left"></td><td width="70" valign="top" align="left"><img src="images/dotTrans.gif" width="1" height="1" border="0"></td><td width="468" valign="middle" align="left"><a href="license.html"><span class="menuTopOff">License</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.codehaus.org"><span class="menuTopOff">Codehaus</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://openejb.org"><span class="menuTopOff">OpenEJB</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://openjms.sf.net"><span class="menuTopOff">OpenJMS</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://openorb.sf.net"><span class="menuTopOn">OpenORB</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://tyrex.sf.net"><span class="menuTopOff">Tyrex</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br><img src="images/dotTrans.gif" width="1" height="2" border="0"></td><td width="120" height="20" valign="top" align="left">&nbsp;</td></tr><tr><td width="10" bgcolor="#7270c2" valign="top" align="left"><img src="images/dotTrans.gif" width="10" height="3" border="0"></td><td bgcolor="#7270c2" valign="top" align="right" width="150"><img src="images/line_sm.gif" width="105" height="3" border="0"></td><td width="7" bgcolor="#a9a5de" valign="top" align="left"><img src="images/line_sm.gif" width="7" height="3" border="0"></td><td width="70" valign="top" align="left"><img src="images/line_light.gif" width="70" height="3" border="0"></td><td width="468" valign="top" align="left"><img src="images/line_light.gif" width="468" height="3" border="0"></td><td width="120" valign="top" align="left"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td></tr><tr><td bgcolor="#7270c2" valign="top" align="left"><img src="images/dotTrans.gif" width="10" height="10" border="0"></td><td bgcolor="#7270c2" valign="top" align="left" width="150"><img src="images/dotTrans.gif" width="1" height="2" border="0"><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Old releases</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="releases-old.html"><span class="subMenuOff">General</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="1.2/index.html"><span class="subMenuOff">Release 1.2</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="1.3cr1/index.html"><span class="subMenuOff">Release 1.3rc1</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Main</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="index.html"><span class="subMenuOff">Home</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="about.html"><span class="subMenuOff">About</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="features.html"><span class="subMenuOff">Features</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="download.html"><span class="subMenuOff">Download</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="dependencies.html"><span class="subMenuOff">Dependencies</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="reference-guide.html"><span class="subMenuOffHighlighted">Reference guide</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="javadoc/overview-summary.html"><span class="subMenuOff">JavaDoc</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="maven-integration.html"><span class="subMenuOff">Maven 2 support</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="maven-archetypes.html"><span class="subMenuOff">Maven 2 archetypes</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="schema.html"><span class="subMenuOff">DTD &amp; Schemas</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="changes.html"><span class="subMenuOff">Recent HTML changes</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="news.html"><span class="subMenuOff">News Archive</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="http://castor.codehaus.org/rss/castor-announce.xml"><span class="subMenuOff">RSS news feed</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Development/Support</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="lists.html"><span class="subMenuOff">Mailing Lists</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="scm.html"><span class="subMenuOff">SVN/JIRA</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="contributing.html"><span class="subMenuOff">Contributing</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="support.html"><span class="subMenuOff">Support</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="http://bamboo.ci.codehaus.org/browse/CASTOR"><span class="subMenuOff">Continuous builds</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="professional-services.html"><span class="subMenuOffHighlighted">Prof. services</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Related projects</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="spring-orm-integration.html"><span class="subMenuOff">Spring ORM support</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="spring-xml-intro.html"><span class="subMenuOff">Spring XML factories</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ws-integration.html"><span class="subMenuOff">WS frameworks</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">XML</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="xml-link.html"><span class="subMenuOff">XML</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">XML Code Generator</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="srcgen-link.html"><span class="subMenuOff">XML Code Generator</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">JDO</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-introduction.html"><span class="subMenuOff">Introduction</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-starter-tutorial.html"><span class="subMenuOff">First steps</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo.html"><span class="subMenuOff">Using JDO</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-database-conf.html"><span class="subMenuOff">JDO Config</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="types.html"><span class="subMenuOff">Types</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-mapping.html"><span class="subMenuOff">JDO Mapping</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-faq.html"><span class="subMenuOff">JDO FAQ</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-examples.html"><span class="subMenuOff">JDO Examples</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-howto.html"><span class="subMenuOffHighlighted">JDO HOW-TOs</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-tips-tricks.html"><span class="subMenuOffHighlighted">Tips &amp; Tricks</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-other-features.html"><span class="subMenuOff">Other Features</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-self-executable-examples.html"><span class="subMenuOff">JDO sample JAR</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Tools</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="schemaGen-anttask.html"><span class="subMenuOff">Schema generator</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Advanced JDO</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-caching-detail.html"><span class="subMenuOff">Caching</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="oql.html"><span class="subMenuOff">OQL</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="locking.html"><span class="subMenuOff">Trans. &amp; Locks</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="design-persist.html"><span class="subMenuOff">Design</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="key-generator.html"><span class="subMenuOff">KeyGen</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="long-transact.html"><span class="subMenuOff">Long Trans.</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="nested-attr.html"><span class="subMenuOff">Nested Attrs.</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-pooling.html"><span class="subMenuOff">Pooling Examples</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="postgresql-blobs.html"><span class="subMenuOff">LOBs</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-best-practice.html"><span class="subMenuOff">Best practice</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">DDL Generator</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen.html"><span class="subMenuOff">Using DDL Generator</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen-properties.html"><span class="subMenuOff">Properties</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen-anttask.html"><span class="subMenuOff">Ant task</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen-mapping.html"><span class="subMenuOff">Type Mapping</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">More</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="presentations.html"><span class="subMenuOff">Presentations</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="examples.html"><span class="subMenuOff">The Examples</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="extras.html"><span class="subMenuOff">3rd Party Tools</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="test-framework.html"><span class="subMenuOff">JDO Tests</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ctf.html"><span class="subMenuOff">XML Tests</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="conf-lib.html"><span class="subMenuOff">Configuration</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href=""><span class="subMenuOff"></span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="http://www.java.net/"><span class="subMenuOff"><img src="images/javanet_button_90.gif" border="0"></span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">About</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="license.html"><span class="subMenuOff">License</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="user-experience.html"><span class="subMenuOffHighlighted">User stories</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="contributors.html"><span class="subMenuOff">Contributors</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="marketplace.html"><span class="subMenuOff">Marketplace</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="status.html"><span class="subMenuOff">Status, Todo</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="release-notes.html"><span class="subMenuOff">Changelog</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="library.html"><span class="subMenuOff">Library</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="contacts.html"><span class="subMenuOff">Contact</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="origins.html"><span class="subMenuOff">Project Name</span></a></td></tr></table><br></td><td width="7" bgcolor="#a9a5de" valign="top" align="left">&nbsp;</td><td width="70" valign="top" align="left">&nbsp;</td><td rowspan="4" width="468" valign="top"><table cols="2" rows="2" border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td valign="top" align="left"><br><img border="0" height="34" hspace="0" src="images/castor.gif" vspace="0" width="115"><br><img border="0" height="10" hspace="0" src="images/dotTrans.gif"></td><td width="120" height="5" valign="top" align="right"></td></tr></table><p></p><p></p><br><h2 align="center">Castor JDO - Caching concepts</h2><HR size="1"><span class="bodyGrey"><b><a href="#Introduction">Introduction</a></b><br></span><span class="bodyGrey"><b><a href="#Caching-and-long-transactions">Caching and long transactions</a></b><br></span><span class="bodyGrey"><b><a href="#Configuration">Configuration</a></b><br></span><span class="bodyGrey"><a href="#Configuration-sample---count-limited">&nbsp;&nbsp;&nbsp;&nbsp;Configuration sample - count-limited</a><br></span><span class="bodyGrey"><a href="#Configuration-sample---time-limited">&nbsp;&nbsp;&nbsp;&nbsp;Configuration sample - time-limited</a><br></span><span class="bodyGrey"><b><a href="#fifo-and-lru-cache-providers">fifo and lru cache providers</a></b><br></span><span class="bodyGrey"><a href="#Configuration-sample---fifo">&nbsp;&nbsp;&nbsp;&nbsp;Configuration sample - fifo</a><br></span><span class="bodyGrey"><a href="#Configuration-sample---lru">&nbsp;&nbsp;&nbsp;&nbsp;Configuration sample - lru</a><br></span><span class="bodyGrey"><a href="#Configuration-sample---fifo-(custommized)">&nbsp;&nbsp;&nbsp;&nbsp;Configuration sample - fifo (custommized)</a><br></span><span class="bodyGrey"><b><a href="#Caching-and-clustered-environments">Caching and clustered environments</a></b><br></span><span class="bodyGrey"><a href="#Configuration-sample---Coherence">&nbsp;&nbsp;&nbsp;&nbsp;Configuration sample - Coherence</a><br></span><span class="bodyGrey"><a href="#Configuration-sample---Gigaspaces">&nbsp;&nbsp;&nbsp;&nbsp;Configuration sample - Gigaspaces</a><br></span><span class="bodyGrey"><b><a href="#Custom-cache-provider">Custom cache provider</a></b><br></span><span class="bodyGrey"><a href="#Cache-implementation">&nbsp;&nbsp;&nbsp;&nbsp;Cache implementation</a><br></span><span class="bodyGrey"><a href="#CacheFactory-implementation">&nbsp;&nbsp;&nbsp;&nbsp;CacheFactory implementation</a><br></span><span class="bodyGrey"><a href="#Configuration">&nbsp;&nbsp;&nbsp;&nbsp;Configuration</a><br></span><span class="bodyGrey"><b><a href="#CacheManager---monitoring-and-clearing-caches">CacheManager - monitoring and clearing caches</a></b><br></span><HR size="1"><br><a name="Introduction"><h2>Introduction</h2></a>
+        
+        <p><span class="bodyGrey">As explained at <a href="jdo-introduction.html">the introduction to Castor JDO</a>,
+           Castor has support for many advanced features such as caching. The below sections 
+           detail the features related to caching in Castor JDO, as their understanding 
+           is required to use Castor JDO in a performant and secure way.</span></p>
+           
+        <p><span class="bodyGrey">In general, performance caches enhance the application performance 
+           by reducing the number of read operations against the persistence 
+           storage, by storing and reusing the last read or committed values of 
+           the object. Performance caches do not affect the behavior of short 
+           transactions or locking. It only affects persistence objects that have 
+           been released from any transactional context.</span></p>
+           
+        <p><span class="bodyGrey">Starting from Castor 0.8.6, a performance cache implementation has been 
+           added. At a technical level, Castor maintains separate (performance) caches 
+           for each object type specified in the JDO mapping provided, allowing users 
+           to specify - for each object type individually - the type and 
+           capacity of the cache.</span></p>
+           
+        <p><span class="bodyGrey">By default, the following cache types are available:</span></p>
+           
+        <table border="0" width="100%" cellspacing="1" cellpadding="2" bgcolor="#7270c2"><tr><td><table border="0" width="100%" cellspacing="1" cellpadding="8" bgcolor="#ededed"><caption></caption><tr class="cheader"><td class="cheader">name</td><td class="cheader">Vendor</td><td class="cheader">Version</td><td class="cheader">Distributable?</td><td class="cheader">Open source/commercial</td><td class="cheader">high volume/performance</td><td class="cheader">Added inrelease</td></tr><tr bgcolor="#DDDDDD">
+                <td><span class="bodyGrey">none</span></td>
+                <td><span class="bodyGrey">Built-in</span></td>
+                <td><span class="bodyGrey">-</span></td>
+                <td align="center"><span class="bodyGrey" align="center">No</span></td>
+                <td><span class="bodyGrey">Open Source</span></td>
+                <td align="center"><span class="bodyGrey" align="center">No</span></td>
+                <td align="center"><span class="bodyGrey" align="center"></span></td>
+            </tr><tr bgcolor="#FFFFFF">
+                <td><span class="bodyGrey">unlimited</span></td>
+                <td><span class="bodyGrey">Built-in</span></td>
+                <td><span class="bodyGrey">-</span></td>
+                <td align="center"><span class="bodyGrey" align="center">No</span></td>
+                <td><span class="bodyGrey">Open Source</span></td>
+                <td align="center"><span class="bodyGrey" align="center">No</span></td>
+                <td align="center"><span class="bodyGrey" align="center"></span></td>
+            </tr><tr bgcolor="#DDDDDD">
+                <td><span class="bodyGrey">count-limited</span></td>
+                <td><span class="bodyGrey">Built-in</span></td>
+                <td><span class="bodyGrey">-</span></td>
+                <td align="center"><span class="bodyGrey" align="center">No</span></td>
+                <td><span class="bodyGrey">Open Source</span></td>
+                <td align="center"><span class="bodyGrey" align="center">No</span></td>
+                <td align="center"><span class="bodyGrey" align="center"></span></td>
+            </tr><tr bgcolor="#FFFFFF">
+                <td><span class="bodyGrey">time-limited</span></td>
+                <td><span class="bodyGrey">Built-in</span></td>
+                <td><span class="bodyGrey">-</span></td>
+                <td align="center"><span class="bodyGrey" align="center">No</span></td>
+                <td><span class="bodyGrey">Open Source</span></td>
+                <td align="center"><span class="bodyGrey" align="center">No</span></td>
+                <td align="center"><span class="bodyGrey" align="center"></span></td>
+            </tr><tr bgcolor="#DDDDDD">
+                <td><span class="bodyGrey">coherence</span></td>
+                <td><span class="bodyGrey"><a href="Tangosol Coherence"><url href="http://www.tangosol.com/coherence.jsp">Tangosol Coherence</url></a></span></td>
+                <td><span class="bodyGrey">2.5</span></td>
+                <td align="center"><span class="bodyGrey" align="center">Yes</span></td>
+                <td><span class="bodyGrey">Commercial</span></td>
+                <td align="center"><span class="bodyGrey" align="center">Yes</span></td>
+                <td align="center"><span class="bodyGrey" align="center">0.9.9</span></td>
+            </tr><tr bgcolor="#FFFFFF">
+                <td><span class="bodyGrey">jcs</span></td>
+                <td><span class="bodyGrey"><a href="JCS"><url href="http://jakarta.apache.org/jcs">JCS</url></a></span></td>
+                <td><span class="bodyGrey">1.2.5</span></td>
+                <td align="center"><span class="bodyGrey" align="center">Yes</span></td>
+                <td><span class="bodyGrey">Open source</span></td>
+                <td align="center"><span class="bodyGrey" align="center">Yes</span></td>
+                <td align="center"><span class="bodyGrey" align="center">0.9.9</span></td>
+            </tr><tr bgcolor="#DDDDDD">
+                <td><span class="bodyGrey">fkcache</span></td>
+                <td><span class="bodyGrey"><a href="FKCache"><url href="http://jcache.sourceforge.net/">FKCache</url></a></span></td>
+                <td><span class="bodyGrey">1.0-beta6</span></td>
+                <td align="center"><span class="bodyGrey" align="center">No</span></td>
+                <td><span class="bodyGrey">Open Source</span></td>
+                <td align="center"><span class="bodyGrey" align="center">No</span></td>
+                <td align="center"><span class="bodyGrey" align="center">0.9.9</span></td>
+            </tr><tr bgcolor="#FFFFFF">
+                <td><span class="bodyGrey">oscache</span></td>
+                <td><span class="bodyGrey"><a href="OSCache"><url href="http://www.opensymphony.com/oscache/">OSCache</url></a></span></td>
+                <td><span class="bodyGrey">2.5</span></td>
+                <td align="center"><span class="bodyGrey" align="center">Yes</span></td>
+                <td><span class="bodyGrey">Open Source</span></td>
+                <td align="center"><span class="bodyGrey" align="center">No</span></td>
+                <td align="center"><span class="bodyGrey" align="center">1.0</span></td>
+            </tr><tr bgcolor="#DDDDDD">
+                <td><span class="bodyGrey">fifo</span></td>
+                <td><span class="bodyGrey">Built-in</span></td>
+                <td><span class="bodyGrey">-</span></td>
+                <td align="center"><span class="bodyGrey" align="center">No</span></td>
+                <td><span class="bodyGrey">Open Source</span></td>
+                <td align="center"><span class="bodyGrey" align="center">Yes</span></td>
+                <td align="center"><span class="bodyGrey" align="center">1.0</span></td>
+            </tr><tr bgcolor="#FFFFFF">
+                <td><span class="bodyGrey">lru</span></td>
+                <td><span class="bodyGrey">Built-in</span></td>
+                <td><span class="bodyGrey">-</span></td>
+                <td align="center"><span class="bodyGrey" align="center">No</span></td>
+                <td><span class="bodyGrey">Open Source</span></td>
+                <td align="center"><span class="bodyGrey" align="center">Yes</span></td>
+                <td align="center"><span class="bodyGrey" align="center">1.0</span></td>
+            </tr><tr bgcolor="#DDDDDD">
+                <td><span class="bodyGrey">ehcache</span></td>
+                <td><span class="bodyGrey">Built-in</span></td>
+                <td><span class="bodyGrey">-</span></td>
+                <td align="center"><span class="bodyGrey" align="center">Yes</span></td>
+                <td><span class="bodyGrey">Open Source</span></td>
+                <td align="center"><span class="bodyGrey" align="center">?</span></td>
+                <td align="center"><span class="bodyGrey" align="center">1.0.1</span></td>
+            </tr><tr bgcolor="#FFFFFF">
+                <td><span class="bodyGrey">gigaspaces</span></td>
+                <td><span class="bodyGrey"><a href="JCS"><url href="http://jakarta.apache.org/jcs">JCS</url></a></span></td>
+                <td><span class="bodyGrey">5.0</span></td>
+                <td align="center"><span class="bodyGrey" align="center">Yes</span></td>
+                <td><span class="bodyGrey">Commercial</span></td>
+                <td align="center"><span class="bodyGrey" align="center">Yes</span></td>
+                <td align="center"><span class="bodyGrey" align="center">1.0.1</span></td>
+            </tr></table></td></tr></table>
+
+        <p><span class="bodyGrey">As some of these cache providers allow for allow you to use it 
+           in a <b>distributed</b> mode, this allows Castor JDO to be used 
+           in a clustered (multi-JVM) environment. Please see
+           the section <a href="#Caching and clustered environments">below</a> for short summary of this feature.</span></p>
+
+        <p><span class="bodyGrey">Per definition, all build-in performance caches are <b>write-through</b>, because all 
+           changes to objects as part of a transaction should be persisted into the cache
+           at commit time without delay.</span></p>
+
+        <p><span class="bodyGrey">For problems related to the use of performance caches, please consult with the relevant 
+           entries in the <a href="jdo-faq.html#Castor and performance caches">JDO F.A.Q.</a>.</span></p>
+        
+    <a name="Caching-and-long-transactions"><h2>Caching and long transactions</h2></a>
+        
+        <p><span class="bodyGrey">As it stands currently, performance caches also serve a dual purpose 
+           as dirty checking caches for <a href="long-transact.html">long-transactions</a>.
+           This limitation implies that the object's availability in the performance cache 
+           determines the allowed time span of a long transaction.</span></p>
+           
+        <p><span class="bodyGrey">This might become an issue when performance caches of type 'count-limited' or 
+           'time-limited' are being used, where objects will eventually be disposed. 
+           If an application tries to update an object that has been disposed from 
+           the dirty checking cache, an ObjectModifedException will be thrown.</span></p>
+        
+    <a name="Configuration"><h2>Configuration</h2></a>
+        
+        <p><span class="bodyGrey">The DTD declaration is as follows:
+           <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+&lt;!ELEMENT cache-type  ( param* )&gt;
+&lt;!ATTLIST cache-type
+    type           ( none | count-limited | time-limited | unlimited |
+                     coherence | fkcache | jcache | jcs | oscache |
+                     fifo | lru | ehcache | gigaspaces ) "count-limited"
+    debug          (true|false) "false"
+    capacity       NMTOKEN  #IMPLIED&gt;
+
+&lt;!ELEMENT param EMPTY&gt;
+&lt;!ATTLIST param
+          name   NMTOKEN  #REQUIRED
+          value  NMTOKEN  #REQUIRED&gt;</pre></span></td></tr></table></td></tr></table><p></p></span></p>
+          
+        <p><span class="bodyGrey">With release 1.0 of Castor the DTD has changed but it is backward compatible
+           to the old one and allows to enable debugging of cache access for a specific
+           class as well as passing individual configuration parameters to each cache
+           instance. Only <b>count-limited</b> and <b>time-limited</b> of the current
+           build-in cache types support parameters. Parameter names are case sensitive and are
+           silently ignored if they are unknown to a cache type.</span></p>
+                   
+        <p><span class="bodyGrey">It need to be noted that there are 3 parameter names that are reserved for
+           internal use. If you specify a parameter with one of the names: <b>type</b>,
+           <b>name</b> or <b>debug</b> their value will silently be overwritten with
+           another one used internally.</span></p>
+                
+        <a name="Configuration-sample---count-limited"><h3>Configuration sample - count-limited</h3></a>
+            
+            <p><span class="bodyGrey">A <b>count-limited</b> least-recently-used cache (LRU) for 500 objects can be
+               specified by:</span></p>
+               
+            <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+&lt;cache-type type="count-limited" capacity="500"/&gt;</pre></span></td></tr></table></td></tr></table><p></p>
+
+            <p><span class="bodyGrey">or</span></p>
+           
+            <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+&lt;cache-type type="count-limited"/&gt;
+    &lt;param name="capacity" value="500"/&gt;
+&lt;/cache-type&gt;</pre></span></td></tr></table></td></tr></table><p></p>
+
+            <p><span class="bodyGrey">If both, the capacity attribute and parameter with name="capacity" is
+               specified, the parameter value takes precedence over the attribute 
+               value.</span></p>
+
+        
+                
+        <a name="Configuration-sample---time-limited"><h3>Configuration sample - time-limited</h3></a>
+            
+            <p><span class="bodyGrey">A <b>time-limited</b> first-in-first-out cache (FIFO) that expires objects
+               after 15 minutes can be specified by:</span></p>
+               
+            <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+&lt;cache-type type="time-limited" capacity="900"/&gt;</pre></span></td></tr></table></td></tr></table><p></p>
+            
+            <p><span class="bodyGrey">or</span></p>
+            
+            <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+&lt;cache-type type="time-limited"/&gt;
+    &lt;param name="ttl" value="900"/&gt;
+&lt;/cache-type&gt;</pre></span></td></tr></table></td></tr></table><p></p>
+
+           <p><span class="bodyGrey">If both, the capacity attribute and parameter with name="ttl" is specified,
+           the parameter value takes precedence over the attribute value.</span></p>
+        
+        
+                   
+        <p><span class="bodyGrey">The <b>debug</b> attribute can be used to enable debugging for objects
+           of a single class. In addition to setting this attribut to <b>true</b> you
+           also need to set logging level of <b>org.castor.cache.Cache</b> to debug.</span></p>
+
+        <p><table width="100%" border="0" cellspacing="1" cellpadding="3" bgcolor="#7270c2"><tr><td><span class="noteHeader">Note</span></td></tr><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="noteBody">The default cache-type is <tt>count-limited</tt> with a capacity of 30. 
+              This will be used when no cache-type is specified in the mapping for 
+              a class.</span></td></tr></table></td></tr></table></p>
+              
+    <a name="fifo-and-lru-cache-providers"><h2>fifo and lru cache providers</h2></a>
+
+        <p><span class="bodyGrey">The cache types <b>fifo</b> and <b>lru</b> are based on a set of articles in the
+           O'Reilly Network by William Grosso, to implement a simplified and 1.3-compatible
+           implementation of a Hashbelt algorithm.</span></p>
+
+        <p><span class="bodyGrey">Hashbelts are simple, in principle. Instead of walking all objects and finding out
+           when they're supposed to expire, use a "conveyor belt" approach. At any particular
+           point in time, objects going into the cache go into the front of the conveyor belt.
+           After a certain amount of time or when the size limit of a container has been
+           reached, move the conveyor belt - put a new, empty container at the front of the
+           conveyor belt to catch new objects, and the one that drops off of the end of the
+           conveyor belt is, by definition, ready for garbage collection.</span></p>
+
+        <p><span class="bodyGrey">As seen in his system, you can use a set of pluggable strategies to implement the
+           actual hashbelt bits. A container strategy allows you to change out the
+           implementation of the container itself - from simple hashtable-based
+           implementations, up through more complex uses of soft referenced or hashset-based
+           implementations, depending on what you need and what you want it to be used for.
+           A pluggable "expire behavior" handler allows you to determine what action is taken
+           on something which drops off of the bottom of the conveyor belt.</span></p>
+
+        <p><span class="bodyGrey">In difference to all other cache types the <b>fifo</b> and <b>lru</b> cache
+           types offer various configuration options. Both of them have 6 parameters to
+           configure their behaviour.</span></p>
+
+        <table border="0" width="100%" cellspacing="1" cellpadding="2" bgcolor="#7270c2"><tr><td><table border="0" width="100%" cellspacing="1" cellpadding="8" bgcolor="#ededed"><caption></caption><tr class="cheader"><td class="cheader">parameter</td><td class="cheader">description</td></tr><tr bgcolor="#DDDDDD">
+                <td><span class="bodyGrey">containers</span></td>
+                <td><span class="bodyGrey">The number of containers in the conveyor belt. For example: If a box
+                    will drop off of the conveyor belt every 30 seconds, and you want a cache
+                    that lasts for 5 minutes, you want 5 / 30 = 6 containers on the belt. Every
+                    30 seconds, another, clean container goes on the front of the conveyor belt,
+                    and everything in the last belt gets discarded. If not specified 10 containers
+                    are used by default.
+                    <br>
+                    For systems with fine granularity, you are free to use a large number of
+                    containers; but the system is most efficient when the user decides on a
+                    "sweet spot" determining both the number of containers to be managed on the
+                    whole and the optimal number of buckets in those containers for managing. This
+                    is ultimately a performance/accuracy tradeoff with the actual discard-from-cache
+                    time being further from the mark as the rotation time goes up. Also the number
+                    of objects discarded at once when capacity limit is reached depends upon the
+                    number of containers.
+                </span></td>
+            </tr><tr bgcolor="#FFFFFF">
+                <td><span class="bodyGrey">capacity</span></td>
+                <td><span class="bodyGrey">Maximum capacity of the whole cache. If there are, for example, ten
+                    containers on the belt and the capacity has been set to 1000, each container
+                    will hold a maximum of 1000/10 objects. Therefore if the capacity limit is
+                    reached and the last container gets droped from the belt there are up to 100
+                    objects discarted at once. By default the capacity is set to 0 which causes
+                    capacity limit to be ignored so the cache can hold an undefined number of
+                    objects.
+                </span></td>
+            </tr><tr bgcolor="#DDDDDD">
+                <td><span class="bodyGrey">ttl</span></td>
+                <td><span class="bodyGrey">The maximum time an object lifes in cache. If the are, for example, ten
+                    containers and ttl is set to 300 seconds (5 minutes), a new container will be
+                    put in front of the belt every 300/10 = 30 seconds while another is dropped at
+                    the end at the same time. Due to the granularity of 30 seconds, everything just
+                    until 5 minutes 30 seconds will also end up in this box. The default value for
+                    ttl is 60 seconds. If ttl is set to 0 which means that objects life in cache
+                    for unlimited time and may only discarded by a capacity limit.
+                </span></td>
+            </tr><tr bgcolor="#FFFFFF">
+                <td><span class="bodyGrey">monitor</span></td>
+                <td><span class="bodyGrey">The monitor intervall in minutes when hashbelt cache rports the current
+                    number of containers used and objects cached. If set to 0 (default) monitoring
+                    is disabled.
+                </span></td>
+            </tr><tr bgcolor="#DDDDDD">
+                <td><span class="bodyGrey">container-class</span></td>
+                <td><span class="bodyGrey">The implementation of <b>org.castor.cache.hashbelt.container.Container</b>
+                    interface to be used for all containers of the cache. Castor provides the following
+                    3 implementations of the Container interface.
+                    <table border="0" cellpadding="2" cellspacing="2"><tr><td colspan="2" height="5"></td></tr><span class="bodyGrey">
+                        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">org.castor.cache.hashbelt.container.FastIteratingContainer</span></td></tr>
+                        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">org.castor.cache.hashbelt.container.MapContainer</span></td></tr>
+                        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">org.castor.cache.hashbelt.container.WeakReferenceContainer</span></td></tr>
+                    </span></table>
+                    If not specified the MapContainer will be used as default.
+                </span></td>
+            </tr><tr bgcolor="#FFFFFF">
+                <td><span class="bodyGrey">reaper-class</span></td>
+                <td><span class="bodyGrey">Specific reapers yield different behaviors. The GC reaper, the default,
+                    just dumps the contents to the garbage collector. However, custom
+                    implementations may want to actually do something when a bucket drops off the
+                    end; see the javadocs on other available reapers to find a reaper strategy
+                    that meets your behavior requirements. Apart of the default
+                    <a href="javadoc/org/castor/cache/hashbelt/reaper/NullReaper.html"><api>org.castor.cache.hashbelt.reaper.NullReaper</api></a> we provide 3 abstract
+                    implementations of <a href="javadoc/org/castor/cache/hashbelt/reaper/Reaper.html"><api>org.castor.cache.hashbelt.reaper.Reaper</api></a> interface:
+                    <table border="0" cellpadding="2" cellspacing="2"><tr><td colspan="2" height="5"></td></tr><span class="bodyGrey">
+                        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey"><a href="javadoc/org/castor/cache/hashbelt/reaper/NotifyingReaper.html"><api>org.castor.cache.hashbelt.reaper.NotifyingReaper</api></a></span></td></tr>
+                        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey"><a href="javadoc/org/castor/cache/hashbelt/reaper/RefreshingReaper.html"><api>org.castor.cache.hashbelt.reaper.RefreshingReaper</api></a></span></td></tr>
+                        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey"><a href="javadoc/org/castor/cache/hashbelt/reaper/ReinsertingReaper.html"><api>org.castor.cache.hashbelt.reaper.ReinsertingReaper</api></a></span></td></tr>
+                    </span></table>
+                    to be extended by your custom implementation.
+                </span></td>
+            </tr></table></td></tr></table>
+        
+        <a name="Configuration-sample---fifo"><h3>Configuration sample - fifo</h3></a>
+            
+            <p><span class="bodyGrey">A <b>fifo</b> cache with default values explained above is specified by:</span></p>
+            
+           <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+<font color="darkgrey">&lt;mapping&gt;
+    ...
+    &lt;class name="com.xyz.MyOtherObject"&gt;
+       ...</font>
+       &lt;cache-type type="<b>fifo</b>"/&gt;
+<font color="darkgrey">       ...
+    &lt;/class&gt;
+    ...
+&lt;/mapping&gt;</font></pre></span></td></tr></table></td></tr></table><p></p>
+
+        
+
+        <a name="Configuration-sample---lru"><h3>Configuration sample - lru</h3></a>
+
+            <p><span class="bodyGrey">A <b>lru</b> cache with capacity=300 and ttl=300 is defined by:</span></p>
+                
+           <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+<font color="darkgrey">&lt;mapping&gt;
+    ...
+    &lt;class name="com.xyz.MyOtherObject"&gt;
+       ...</font>
+       &lt;cache-type type="<b>lru</b>" capacity="300"/&gt;
+<font color="darkgrey">       ...
+    &lt;/class&gt;
+    ...
+&lt;/mapping&gt;</font></pre></span></td></tr></table></td></tr></table><p></p>
+
+           <p><span class="bodyGrey">or better by:</span></p>
+
+           <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+<font color="darkgrey">&lt;mapping&gt;
+    ...
+    &lt;class name="com.xyz.MyOtherObject"&gt;
+       ...</font>
+       &lt;cache-type type="<b>lru</b>"&gt;
+          &lt;param name="capacity" value="300"/&gt;
+          &lt;param name="ttl" value="300"/&gt;
+       &lt;/cache-type&gt;
+<font color="darkgrey">       ...
+    &lt;/class&gt;
+    ...
+&lt;/mapping&gt;</font></pre></span></td></tr></table></td></tr></table><p></p>
+
+        
+        
+        <a name="Configuration-sample---fifo-(custommized)"><h3>Configuration sample - fifo (custommized)</h3></a>
+
+            <p><span class="bodyGrey">An example of a customized configuration of a <b>fifo</b> cache is:</span></p>
+                
+           <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+<font color="darkgrey">&lt;mapping&gt;
+    ...
+    &lt;class name="com.xyz.MyOtherObject"&gt;
+       ...</font>
+       &lt;cache-type type="<b>fifo</b>"/&gt;
+          <b>&lt;param name="container" value="10"/&gt;
+          &lt;param name="capacity" value="1000"/&gt;
+          &lt;param name="ttl" value="600"/&gt;
+          &lt;param name="monitor" value="5"/&gt;
+          &lt;param name="container-class" value="org.castor.cache.hashbelt.container.WeakReferenceContainer"/&gt;
+          &lt;param name="reaper-class" value="org.castor.cache.hashbelt.reaper.NullReaper"/&gt;</b>
+       &lt;/cache-type&gt;
+<font color="darkgrey">       ...
+    &lt;/class&gt;
+    ...
+&lt;/mapping&gt;</font></pre></span></td></tr></table></td></tr></table><p></p>
+
+        
+        
+    <a name="Caching-and-clustered-environments"><h2>Caching and clustered environments</h2></a>
+    
+        <p><span class="bodyGrey">All of the cache providers added with release 0.9.9 are distributed caches per se or can be 
+        configured to operate in such a mode. This effectively allows Castor JDO to be used in a 
+        clustered J2EE (multi-JVM) environment, where Castor JDO runs on each of the cluster instances,
+        and where cache state is automatically snychronized between these instances.</span></p>
+            
+        <p><span class="bodyGrey">In such an environment, Castor JDO wil make use of the underlying cache provider 
+        to replicate/distribute the content of a specific cache between the various 
+        JDOManager instances. Through the distribution mechanism of the cache provider, a client
+        of a Castor JDO instance on one JVM will see any updates made to domain objects performed 
+        against any other JVM/JDO instance.</span></p>
+    
+        <a name="Configuration-sample---Coherence"><h3>Configuration sample - Coherence</h3></a>
+            
+            <p><span class="bodyGrey">The following class mapping, for example, ... </span></p>
+            
+            <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+<font color="darkgrey">&lt;mapping&gt;
+    ...
+    &lt;class name="com.xyz.MyOtherObject"&gt;
+       ...</font>
+        &lt;cache-type type="<b>coherence</b>" /&gt;
+<font color="darkgrey">       ...
+    &lt;/class&gt;
+    ...
+&lt;/mapping&gt;</font></pre></span></td></tr></table></td></tr></table><p></p>
+    
+            <p><span class="bodyGrey">defines that for all objects of type <tt>com.xyz.MyOtherObject</tt> Tangosol's 
+               <i>Coherence</i> cache provider should be used.</span></p>
+
+        
+
+        <a name="Configuration-sample---Gigaspaces"><h3>Configuration sample - Gigaspaces</h3></a>
+            
+            <p><span class="bodyGrey">The following class mapping, for example, ... </span></p>
+            
+            <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+<font color="darkgrey">&lt;mapping&gt;
+    ...
+    &lt;class name="com.xyz.MyOtherObject"&gt;
+       ...</font>
+        &lt;cache-type type="<b>gigaspaces</b>" /&gt;
+<font color="darkgrey">       ...
+    &lt;/class&gt;
+    ...
+&lt;/mapping&gt;</font></pre></span></td></tr></table></td></tr></table><p></p>
+    
+            <p><span class="bodyGrey">defines that for all objects of type <tt>com.xyz.MyOtherObject</tt> the 
+               <i>Gigaspaces</i> cache provider should be used. As Gigspaces supports various 
+               cache and clsuer modes, this cache provider allows product-specific 
+               configuration as shown below:</span></p>
+
+            <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+<font color="darkgrey">&lt;mapping&gt;
+    ...
+    &lt;class name="com.xyz.MyOtherObject"&gt;
+       ...</font>
+        &lt;cache-type type="<b>gigaspaces</b>" &gt;
+           &lt;param name="spaceURL" value="/./" /&gt;
+           &lt;param name="spaceProperties" value="useLocalCache" /&gt;
+        &lt;/cache-type&gt;
+<font color="darkgrey">       ...
+    &lt;/class&gt;
+    ...
+&lt;/mapping&gt;</font></pre></span></td></tr></table></td></tr></table><p></p>
+
+        
+            
+    <a name="Custom-cache-provider"><h2>Custom cache provider</h2></a>
+     
+       <p><span class="bodyGrey">As of release 0.9.6, Castor allows for the addition of user-defined cache 
+          implementations. Whilst Castor provides a set of pre-built cache providers, 
+          offering a variety of different cache algorithms, special needs still might
+          require the application developer to implement a custom cache 
+          algorithm. Castor facilitates such need by making available standardized
+          interfaces and an easy to understand recipe for integrating a custom 
+          cache provider with Castor.</span></p>
+
+       <p><span class="bodyGrey">As explained in <a href="javadoc/org/exolab/castor/jdo/persist/package-summary.html"><api package="org.exolab.castor.jdo.persist">API docs for 
+          the persists package</api></a>, 
+          <a href="javadoc/org/exolab/castor/persist/LockEngine.html#LockEngine">LockEngine</a> implements 
+          a persistence engine that caches objects in memory for performance reasons 
+          and thus reduces the number of operations against the persistence storage.</span></p>
+    
+       <p><span class="bodyGrey">The main component of this package is the interface 
+          <a href="javadoc/org/castor/cache/Cache.html#Cache">Cache</a>, which declares 
+          the external functionality of a (performance) cache. Existing 
+          (and future) cache implementations (have to) implement this interface, 
+          which is closely modelled after the <tt>java.util.Map</tt> interface.</span></p>
+            
+       <p><span class="bodyGrey">Below is a summary of the steps required to build a custom cache provider 
+          and register it with Castor JDO:</span></p>
+    
+       <p><span class="bodyGrey"><ol>
+            <li>Create a class that implements 
+                <a href="javadoc/org/exolab/castor/persist/cache/Cache.html#Cache">Cache</a>.</li>
+            <li>Create a class that implements 
+                <a href="javadoc/org/exolab/castor/persist/cache/CacheFactory.html#CacheFactory">CacheFactory</a></li>
+            <li>Register your custom cache implementation with Castor JDO in the
+                <tt>castor.properties</tt> file.</li>
+       </ol></span></p>
+
+        <a name="Cache-implementation"><h3>Cache implementation</h3></a>
+
+            <p><span class="bodyGrey">Please create a class that implements the interface
+               <a href="javadoc/org/exolab/castor/persist/cache/Cache.html#Cache">Cache</a>.</span></p>    
+       
+            <p><span class="bodyGrey">To assist users in this task, a 
+               <a href="javadoc/org/castor/cache/AbstractBaseCache.html#AbstractBaseCache">AbstractBaseCache</a> 
+               class has been supplied, which users should derive their custom 
+               <a href="javadoc/org/castor/cache/Cache.html#Cache">Cache</a> instances 
+               from, if they wish so. Please consult existing 
+               <a href="javadoc/org/castor/cache/Cache.html#Cache">Cache</a> implementations 
+               such as <a href="javadoc/org/castor/cache/simple/TimeLimited.html#TimeLimited">TimeLimited</a>} or 
+               <a href="javadoc/org/castor/cache/simple/CountLimited.html#CountLimited">CountLimited</a> 
+               for code samples.</span></p>
+             
+            <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+/**
+ * My own cache implementation
+ */ 
+ public class <b>CustomCache</b> extends <b>AbstractBaseCache</b> {
+ 
+    ...
+    
+ }</pre></span></td></tr></table></td></tr></table><p></p>
+ 
+        
+
+        <a name="CacheFactory-implementation"><h3>CacheFactory implementation</h3></a>
+          
+            <p><span class="bodyGrey">Please add a class that imnplements the 
+               <a href="javadoc/org/castor/cache/CacheFactory.html#CacheFactory">CacheFactory</a> interface 
+               and make sure that you provide valid values for the two 
+               properties <tt>name</tt> and <tt>className</tt>.</span></p>    
+       
+            <p><span class="bodyGrey">To assist users in this task, a 
+               <a href="javadoc/org/castor/cache/AbstractCacheFactory.html#AbstractCacheFactory">AbstractCacheFactory</a> 
+               class has been supplied, which users should derive their custom 
+               <a href="javadoc/org/castor/cache/CacheFactory.html#CacheFactory">CacheFactory</a> instances 
+               from, if they wish so. Please consult existing 
+               <a href="javadoc/org/castor/cache/CacheFactory.html#CacheFactory">CacheFactory</a> implementations 
+               such as <a href="javadoc/org/castor/cache/simple/TimeLimitedFactory.html#TimeLimitedFactory">TimeLimitedFactory</a>} or 
+               <a href="javadoc/org/castor/cache/simple/CountLimitedFactory.html#CountLimitedFactory">CountLimitedFactory</a> 
+               for code samples.</span></p>    
+
+            <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+/**
+ * My own cache factory implementation
+ */ 
+ public class <b>CustomCacheFactory</b> extends <b>AbstractCacheFactory</b> {
+ 
+    /**
+     * The name of the factory
+     */
+    <b>private static final String NAME = "custom"</b>;
+
+    /**
+     * Full class name of the underlying cache implementation.
+     */
+    <b>private static final String CLASS_NAME = "my.company.project.CustomCache"</b>; 
+    
+    /**
+     * Returns the short alias for this factory instance.
+     * @return The short alias name. 
+     */
+    <b>public String getName()</b> {
+        return NAME;
+    }
+    
+    /**
+     * Returns the full class name of the underlying cache implementation.
+     * @return The full cache class name. 
+     */
+    <b>public String getCacheClassName()</b> {
+        return CLASS_NAME;   
+    }
+    
+ }</pre></span></td></tr></table></td></tr></table><p></p>
+                 
+        
+
+        <a name="Configuration"><h3>Configuration</h3></a>
+    
+            <p><span class="bodyGrey">The file <tt>castor.properties</tt> holds a property
+               <tt>org.castor.cache.Factories</tt> that enlists the available
+               cache types through their related CacheFactory instances.</span></p>    
+
+            <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+# 
+# Cache implementations
+# 
+org.castor.cache.Factories=\
+  org.castor.cache.simple.NoCacheFactory,\
+  org.castor.cache.simple.TimeLimitedFactory,\
+  org.castor.cache.simple.CountLimitedFactory,\
+  org.castor.cache.simple.UnlimitedFactory,\
+  org.castor.cache.distributed.FKCacheFactory,\
+  org.castor.cache.distributed.JcsCacheFactory,\
+  org.castor.cache.distributed.JCacheFactory,\
+  org.castor.cache.distributed.CoherenceCacheFactory,\
+  org.castor.cache.distributed.OsCacheFactory,\
+  org.castor.cache.hashbelt.FIFOHashbeltFactory,\
+  org.castor.cache.hashbelt.LRUHashbeltFactory</pre></span></td></tr></table></td></tr></table><p></p>
+
+            <p><span class="bodyGrey">To add your custom cache implementation, please append the fully-qualified
+               class name to this list as shown below:</span></p>
+       
+            <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+# 
+# Cache implementations
+# 
+org.castor.cache.Factories=\
+  org.castor.cache.simple.NoCacheFactory,\
+  org.castor.cache.simple.TimeLimitedFactory,\
+  org.castor.cache.simple.CountLimitedFactory,\
+  org.castor.cache.simple.UnlimitedFactory,\
+  org.castor.cache.distributed.FKCacheFactory,\
+  org.castor.cache.distributed.JcsCacheFactory,\
+  org.castor.cache.distributed.JCacheFactory,\
+  org.castor.cache.distributed.CoherenceCacheFactory,\
+  org.castor.cache.distributed.OsCacheFactory,\
+  org.castor.cache.hashbelt.FIFOHashbeltFactory,\
+  org.castor.cache.hashbelt.LRUHashbeltFactory,\
+  <b>org.whatever.somewhere.nevermind.CustomCache</b></pre></span></td></tr></table></td></tr></table><p></p>
+       
+        
+        
+    <a name="CacheManager---monitoring-and-clearing-caches"><h2>CacheManager - monitoring and clearing caches</h2></a>
+   
+	  <p><span class="bodyGrey">Sometimes it is necessary to interact with Castor's (performance) caches to 
+         e.g.  (selectively) clear a Castor cache of its content, or inquire about 
+         whether a particular object instance (as identified by its identity) is 
+         cached already.</span></p>
+	     
+	  <p><span class="bodyGrey">For this purpose a 
+         <a href="javadoc/org/exolab/castor/jdo/CacheManager.html#CacheManager">CacheManager</a> can 
+	     be obtained from a <a href="javadoc/org/exolab/castor/jdo/Database.html#Database">Database</a> 
+         instance by issuing the following code:</span></p>
+	  
+	  <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+JDO jdo = ....;
+Database db = jdo.getDatabase();
+CacheManager manager = db.getCacheManager();
+	  </pre></span></td></tr></table></td></tr></table><p></p>
+	
+	  <p><span class="bodyGrey">This instance can subsequently be used to selectively clear the 
+         Castor performance cache using one of the following methods:</span></p>
+	     
+	  <p><span class="bodyGrey"><table border="0" cellpadding="2" cellspacing="2"><tr><td colspan="2" height="5"></td></tr><span class="bodyGrey">
+	        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey"><a href="javadoc/org/exolab/castor/jdo/CacheManager.html#expireCache()">expireCache()</a></span></td></tr>
+	        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey"><a href="javadoc/org/exolab/castor/jdo/CacheManager.html#expireCache(Class,Object)">expireCache(Class,Object)</a></span></td></tr>
+	        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey"><a href="javadoc/org/exolab/castor/jdo/CacheManager.html#expireCache(Class,Object[])">expireCache(Class,Object[])</a></span></td></tr>
+	        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey"><a href="javadoc/org/exolab/castor/jdo/CacheManager.html#expireCache(Class[])">expireCache(Class[])</a></span></td></tr>
+	     </span></table></span></p>
+	     
+	  <p><span class="bodyGrey">To inquire whether an object has already been cached, please use the 
+         following method:</span></p>
+
+	  <p><span class="bodyGrey"><table border="0" cellpadding="2" cellspacing="2"><tr><td colspan="2" height="5"></td></tr><span class="bodyGrey">
+	        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey"><a href="javadoc/org/exolab/castor/jdo/CacheManager.html#isCached (Class, Object);">isCached (Class, Object);</a></span></td></tr>
+	     </span></table></span></p>
+	     
+	  <p><span class="bodyGrey">Please note that once you have closed the Database instance from which you 
+         have obtained the CacheManager, the CacheManager cannot be used anymore and 
+         will throw a 
+	     <a href="javadoc/org/exolab/castor/jdo/PersistenceException.html#PersistenceException">PersistenceException</a>.</span></p>
+   
+   </td></tr><tr height="5"><td width="10" height="5" bgcolor="#7270c2" valign="top" align="left">&nbsp;</td><td height="5" bgcolor="#7270c2" valign="top" width="150"><img src="images/dotTrans.gif" width="1" height="15" border="0"><br><img src="images/line_sm.gif" width="105" height="3" border="0" align="right"></td><td width="7" height="5" bgcolor="#a9a5de" valign="top" align="left">&nbsp;</td><td width="70" height="5" valign="top" align="left">&nbsp;</td><td width="120" height="5" valign="top" align="left">&nbsp;</td></tr><tr><td width="10" height="5" bgcolor="#7270c2" valign="top" align="left">&nbsp;</td><td bgcolor="#7270c2" valign="top" align="left" width="150"></td><td width="7" bgcolor="#a9a5de" valign="top" align="left"><img src="images/dotTrans.gif" width="1" height="25" border="0"></td><td width="70" valign="top" align="left"><img src="images/dotTrans.gif" width="1" height="25" border="0"></td><td width="120" valign="top" align="left">&nbsp;</td></tr><tr height="5"><td width="10" rowspan="2" height="100%" bgcolor="#7270c2" valign="bottom" align="left"><img src="images/stripes1.gif" width="10" height="125" border="0"></td><td rowspan="2" height="100%" bgcolor="#7270c2" valign="bottom" align="left" width="150"><img src="images/stripe105.gif" width="105" height="125" border="0"></td><td width="7" rowspan="2" height="100%" bgcolor="#a9a5de" valign="top" align="left">&nbsp;</td><td width="70" height="100%" valign="top" align="left">&nbsp;</td><td width="120" height="100%" valign="top" align="left">&nbsp;</td></tr><tr height="5"><td width="70" height="25" valign="top" align="left">&nbsp;</td><td width="400" height="25" valign="bottom" align="left"><br><br><img src="images/line_light.gif" border="0" width="400" height="3"><br><p></p><span class="bodyGrey"><small><notice>
+    Copyright &copy; 1999-2005 <a href="http://www.exolab.org">ExoLab Group</a>, Intalio Inc.,
+    and Contributors.  All rights reserved.
+  </notice><br>&nbsp;<br></small><small><notice>
+    Java, EJB, JDBC, JNDI, JTA, Sun, Sun Microsystems are trademarks or registered
+    trademarks of Sun Microsystems, Inc. in the United States and in other
+    countries. XML, XML Schema, XSLT and related standards are trademarks or registered
+    trademarks of MIT, INRIA, Keio or others, and a product of the World Wide Web
+    Consortium. All other product names mentioned herein are trademarks of their respective
+    owners.
+  </notice><br>&nbsp;<br></small></span><p></p>
+          &nbsp;
+        </td><td width="120" height="25" valign="top" align="left">&nbsp;</td></tr></table><script type="text/javascript">
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script><script type="text/javascript">
+        var pageTracker = _gat._getTracker("UA-3544187-1");
+        pageTracker._trackPageview();
+    </script></body></html>

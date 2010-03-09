@@ -1,0 +1,576 @@
+<html><head><META http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>Using Castor XML</title><link rel="stylesheet" href="default.css"></head><body bgcolor="#ffffff" link="#6763a9" vlink="#6763a9" topmargin="0" bottommargin="0" leftmargin="0" marginheight="0" marginwidth="0"><a name="top"></a><table border="0" cellpadding="0" cellspacing="0" height="400"><tr><td width="10" valign="top" align="left" bgcolor="#7270c2"><img src="images/dotTrans.gif" width="1" height="1" border="0"></td><td valign="top" align="left" bgcolor="#7270c2" width="150"><img src="images/dotTrans.gif" width="1" height="1" border="0"></td><td width="7" valign="top" align="left"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td><td width="70" valign="top" align="left"><img src="images/dotTrans.gif" width="70" height="6" border="0"></td><td width="468" valign="top" align="left"><img src="images/top_2.gif" width="468" height="6" border="0"></td><td width="120" valign="top" align="left"><img src="images/line_purple.gif" width="120" height="6" border="0"></td></tr><tr><td width="10" bgcolor="#7270c2" valign="top" align="left"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td><td bgcolor="#7270c2" valign="top" align="left" width="150"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td><td width="7" bgcolor="#ffffff" valign="top" align="left"></td><td width="70" valign="top" align="left"><img src="images/dotTrans.gif" width="1" height="1" border="0"></td><td width="468" valign="middle" align="left"><a href="license.html"><span class="menuTopOff">License</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.codehaus.org"><span class="menuTopOff">Codehaus</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://openejb.org"><span class="menuTopOff">OpenEJB</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://openjms.sf.net"><span class="menuTopOff">OpenJMS</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://openorb.sf.net"><span class="menuTopOn">OpenORB</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://tyrex.sf.net"><span class="menuTopOff">Tyrex</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br><img src="images/dotTrans.gif" width="1" height="2" border="0"></td><td width="120" height="20" valign="top" align="left">&nbsp;</td></tr><tr><td width="10" bgcolor="#7270c2" valign="top" align="left"><img src="images/dotTrans.gif" width="10" height="3" border="0"></td><td bgcolor="#7270c2" valign="top" align="right" width="150"><img src="images/line_sm.gif" width="105" height="3" border="0"></td><td width="7" bgcolor="#a9a5de" valign="top" align="left"><img src="images/line_sm.gif" width="7" height="3" border="0"></td><td width="70" valign="top" align="left"><img src="images/line_light.gif" width="70" height="3" border="0"></td><td width="468" valign="top" align="left"><img src="images/line_light.gif" width="468" height="3" border="0"></td><td width="120" valign="top" align="left"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td></tr><tr><td bgcolor="#7270c2" valign="top" align="left"><img src="images/dotTrans.gif" width="10" height="10" border="0"></td><td bgcolor="#7270c2" valign="top" align="left" width="150"><img src="images/dotTrans.gif" width="1" height="2" border="0"><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Old releases</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="releases-old.html"><span class="subMenuOff">General</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="1.2/index.html"><span class="subMenuOff">Release 1.2</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="1.3cr1/index.html"><span class="subMenuOff">Release 1.3rc1</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Main</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="index.html"><span class="subMenuOff">Home</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="about.html"><span class="subMenuOff">About</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="features.html"><span class="subMenuOff">Features</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="download.html"><span class="subMenuOff">Download</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="dependencies.html"><span class="subMenuOff">Dependencies</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="reference-guide.html"><span class="subMenuOffHighlighted">Reference guide</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="javadoc/overview-summary.html"><span class="subMenuOff">JavaDoc</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="maven-integration.html"><span class="subMenuOff">Maven 2 support</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="maven-archetypes.html"><span class="subMenuOff">Maven 2 archetypes</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="schema.html"><span class="subMenuOff">DTD &amp; Schemas</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="changes.html"><span class="subMenuOff">Recent HTML changes</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="news.html"><span class="subMenuOff">News Archive</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="http://castor.codehaus.org/rss/castor-announce.xml"><span class="subMenuOff">RSS news feed</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Development/Support</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="lists.html"><span class="subMenuOff">Mailing Lists</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="scm.html"><span class="subMenuOff">SVN/JIRA</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="contributing.html"><span class="subMenuOff">Contributing</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="support.html"><span class="subMenuOff">Support</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="http://bamboo.ci.codehaus.org/browse/CASTOR"><span class="subMenuOff">Continuous builds</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="professional-services.html"><span class="subMenuOffHighlighted">Prof. services</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Related projects</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="spring-orm-integration.html"><span class="subMenuOff">Spring ORM support</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="spring-xml-intro.html"><span class="subMenuOff">Spring XML factories</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ws-integration.html"><span class="subMenuOff">WS frameworks</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">XML</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="xml-link.html"><span class="subMenuOff">XML</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">XML Code Generator</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="srcgen-link.html"><span class="subMenuOff">XML Code Generator</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">JDO</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-introduction.html"><span class="subMenuOff">Introduction</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-starter-tutorial.html"><span class="subMenuOff">First steps</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo.html"><span class="subMenuOff">Using JDO</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-database-conf.html"><span class="subMenuOff">JDO Config</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="types.html"><span class="subMenuOff">Types</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-mapping.html"><span class="subMenuOff">JDO Mapping</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-faq.html"><span class="subMenuOff">JDO FAQ</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-examples.html"><span class="subMenuOff">JDO Examples</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-howto.html"><span class="subMenuOffHighlighted">JDO HOW-TOs</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-tips-tricks.html"><span class="subMenuOffHighlighted">Tips &amp; Tricks</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-other-features.html"><span class="subMenuOff">Other Features</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-self-executable-examples.html"><span class="subMenuOff">JDO sample JAR</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Tools</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="schemaGen-anttask.html"><span class="subMenuOff">Schema generator</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Advanced JDO</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-caching-detail.html"><span class="subMenuOff">Caching</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="oql.html"><span class="subMenuOff">OQL</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="locking.html"><span class="subMenuOff">Trans. &amp; Locks</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="design-persist.html"><span class="subMenuOff">Design</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="key-generator.html"><span class="subMenuOff">KeyGen</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="long-transact.html"><span class="subMenuOff">Long Trans.</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="nested-attr.html"><span class="subMenuOff">Nested Attrs.</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-pooling.html"><span class="subMenuOff">Pooling Examples</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="postgresql-blobs.html"><span class="subMenuOff">LOBs</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-best-practice.html"><span class="subMenuOff">Best practice</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">DDL Generator</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen.html"><span class="subMenuOff">Using DDL Generator</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen-properties.html"><span class="subMenuOff">Properties</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen-anttask.html"><span class="subMenuOff">Ant task</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen-mapping.html"><span class="subMenuOff">Type Mapping</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">More</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="presentations.html"><span class="subMenuOff">Presentations</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="examples.html"><span class="subMenuOff">The Examples</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="extras.html"><span class="subMenuOff">3rd Party Tools</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="test-framework.html"><span class="subMenuOff">JDO Tests</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ctf.html"><span class="subMenuOff">XML Tests</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="conf-lib.html"><span class="subMenuOff">Configuration</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href=""><span class="subMenuOff"></span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="http://www.java.net/"><span class="subMenuOff"><img src="images/javanet_button_90.gif" border="0"></span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">About</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="license.html"><span class="subMenuOff">License</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="user-experience.html"><span class="subMenuOffHighlighted">User stories</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="contributors.html"><span class="subMenuOff">Contributors</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="marketplace.html"><span class="subMenuOff">Marketplace</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="status.html"><span class="subMenuOff">Status, Todo</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="release-notes.html"><span class="subMenuOff">Changelog</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="library.html"><span class="subMenuOff">Library</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="contacts.html"><span class="subMenuOff">Contact</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="origins.html"><span class="subMenuOff">Project Name</span></a></td></tr></table><br></td><td width="7" bgcolor="#a9a5de" valign="top" align="left">&nbsp;</td><td width="70" valign="top" align="left">&nbsp;</td><td rowspan="4" width="468" valign="top"><table cols="2" rows="2" border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td valign="top" align="left"><br><img border="0" height="34" hspace="0" src="images/castor.gif" vspace="0" width="115"><br><img border="0" height="10" hspace="0" src="images/dotTrans.gif"></td><td width="120" height="5" valign="top" align="right"></td></tr></table><p></p><p></p><br><h2 align="center">Using Castor XML</h2><p><span class="bodyGrey">Reference: <a href="javadoc/org/exolab/castor/xml/package-summary.html"><api package="org.exolab.castor.xml">The XML Framework API</api></a></span></p><p><span class="bodyGrey">Note: This documentation is not yet finished</span></p><HR size="1"><span class="bodyGrey"><b><a href="#Introduction">Introduction</a></b><br></span><span class="bodyGrey"><b><a href="#Castor-XML---The-XML-data-binding-framework">Castor XML - The XML data binding framework</a></b><br></span><span class="bodyGrey"><a href="#Introspection-mode">&nbsp;&nbsp;&nbsp;&nbsp;Introspection mode</a><br></span><span class="bodyGrey"><a href="#Mapping-mode">&nbsp;&nbsp;&nbsp;&nbsp;Mapping mode</a><br></span><span class="bodyGrey"><a href="#Descriptor-mode">&nbsp;&nbsp;&nbsp;&nbsp;Descriptor mode</a><br></span><span class="bodyGrey"><b><a href="#Sources-and-destinations">Sources and destinations</a></b><br></span><span class="bodyGrey"><b><a href="#XMLContext---A-consolidated-way-to-bootstrap-Castor">XMLContext - A consolidated way to bootstrap Castor</a></b><br></span><span class="bodyGrey"><b><a href="#Using-existing-Classes/Objects">Using existing Classes/Objects</a></b><br></span><span class="bodyGrey"><b><a href="#Class-Descriptors">Class Descriptors</a></b><br></span><span class="bodyGrey">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#Compile-Time-Descriptors">Compile-Time Descriptors</a><br></span><span class="bodyGrey">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#Run-Time-Descriptors">Run-Time Descriptors</a><br></span><HR size="1"><br><a name="Introduction"><h2>Introduction</h2></a>
+      <p><span class="bodyGrey">
+        Castor XML is an XML databinding framework. Unlike the two main XML APIs,
+        DOM (Document Object Model) and SAX (Simple API for XML) which deal with the
+        structure of an XML document, Castor enables one to deal with the data defined
+        in an XML document through an object model which represents that data.
+      </span></p>
+      <p><span class="bodyGrey">
+         Castor XML can marshal almost any "bean-like" Java Object to and from XML.
+         In most cases the marshalling framework uses a set of ClassDescriptors and FieldDescriptors
+         to describe how an Object should be marshalled and unmarshalled from XML.
+      </span></p>
+      <p><span class="bodyGrey">
+         For those not familiar with the terms "marshal" and "unmarshal", it's simply
+         the act of converting a stream (sequence of bytes) of data to and from
+         an Object. The act of "marshalling" consists of converting an Object to
+         a stream, and "unmarshalling" from a stream to an Object.
+      </span></p>
+    <a name="Castor-XML---The-XML-data-binding-framework"><h2>Castor XML - The XML data binding framework</h2></a>
+      <p><span class="bodyGrey">
+         The XML data binding framework, as it's name implies, is responsible for doing
+         the conversion between Java and XML. The framework consists of two worker classes,
+         <a href="javadoc/org/exolab/castor/xml/Marshaller.html"><api>org.exolab.castor.xml.Marshaller</api></a> and
+         <a href="javadoc/org/exolab/castor/xml/Unmarshaller.html"><api>org.exolab.castor.xml.Unmarshaller</api></a> respectively, and a bootstrap class
+         <a href="javadoc/org/exolab/castor/xml/XMLContext.html"><api>org.exolab.castor.xml.XMLContext</api></a> used for configuration of
+         the XML data binding framework and instantiation of the 
+         two worker objects.
+      </span></p>
+
+     <p><span class="bodyGrey">
+        Lets walk through a very simple example. Assume we have a simple Person
+        class as follows:
+     </span></p>
+        
+		<p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+import java.util.Date;
+
+<span class="bodyGrey"><font color="#7270c2">/** An simple person class */</font></span>
+public class Person implements java.io.Serializable {
+
+   <span class="bodyGrey"><font color="#7270c2">/** The name of the person */</font></span>
+   private String name = null;
+
+   <span class="bodyGrey"><font color="#7270c2">/** The Date of birth */</font></span>
+   private Date dob = null;
+
+   <span class="bodyGrey"><font color="#7270c2">/** Creates a Person with no name */</font></span>
+   public Person() {
+      super();
+   }
+
+   <span class="bodyGrey"><font color="#7270c2">/** Creates a Person with the given name */</font></span>
+   public Person(String name) {
+      this.name  = name;
+   }
+
+   <span class="bodyGrey"><font color="#7270c2">/**
+     * @return date of birth of the person
+     */</font></span>
+   public Date getDateOfBirth() {
+      return dob;
+   }
+
+   <span class="bodyGrey"><font color="#7270c2">/**
+     * @return name of the person
+     */</font></span>
+   public String getName() {
+      return name;
+   }
+
+   <span class="bodyGrey"><font color="#7270c2">/**
+     * Sets the date of birth of the person
+     * @param name the name of the person
+     */</font></span>
+   public void setDateOfBirth(Date dob) {
+      this.dob = dob;
+   }
+
+   <span class="bodyGrey"><font color="#7270c2">/**
+     * Sets the name of the person
+     * @param name the name of the person
+     */</font></span>
+   public void setName(String name) {
+      this.name = name;
+   }
+}</pre></span></td></tr></table></td></tr></table><p></p>
+
+         <p><span class="bodyGrey">
+            To (un-)marshal data to and from XML, Castor XML can be used in one of
+            three modes:
+         </span></p>
+         
+         <table border="0" cellpadding="2" cellspacing="2"><tr><td colspan="2" height="5"></td></tr><span class="bodyGrey">
+            <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">introspection mode</span></td></tr>
+            <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">mapping mode</span></td></tr>
+            <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">descriptor mode(aka generation mode)</span></td></tr>
+         </span></table>
+         
+         <p><span class="bodyGrey">
+            The following sections discuss each of these modes at a high level.
+         </span></p> 
+
+         <a name="Introspection-mode"><h3>Introspection mode</h3></a>
+         
+            <p><span class="bodyGrey">
+               The <i>introspection mode</i> is the simplest mode to use from 
+               a user perspective, as it does not require any configuration 
+               from the user. As such, the user does not have to provide any mapping file(s),
+               nor point Castor to any generated descriptor classes (as discussed in 
+               the 'descriptor mode' section).
+            </span></p>
+            
+            <p><span class="bodyGrey">
+               In this mode, the user makes use of <b>static</b> methods on the
+               <a href="javadoc/org/exolab/castor/xml/Marshaller.html#Marshaller">Marshaller</a> and
+               <a href="javadoc/org/exolab/castor/xml/Unmarshaller.html#Unmarshaller">Unmarshaller</a> classes, providing all
+               required data as parameters on these method calls.
+            </span></p>
+            
+            <p><span class="bodyGrey">
+               To marshal an instance of the person class you simply call the 
+               <a href="javadoc/org/exolab/castor/xml/Marshaller.html#Marshaller">Marshaller</a>
+               as follows:
+            </span></p>
+
+         <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+<span class="bodyGrey"><font color="#7270c2">// Create a new Person</font></span>
+Person person = new Person("Ryan 'Mad Dog' Madden");
+person.setDateOfBirth(new Date(1955, 8, 15));
+
+<span class="bodyGrey"><font color="#7270c2">// Create a File to marshal to</font></span>
+writer = new FileWriter("test.xml");
+
+<span class="bodyGrey"><font color="#7270c2">// Marshal the person object</font></span>
+Marshaller.marshal(person, writer);</pre></span></td></tr></table></td></tr></table><p></p>
+
+         <p><span class="bodyGrey">
+            To unmarshal an instance of the person class from XML, you simply call 
+            the <a href="javadoc/org/exolab/castor/xml/Unmarshaller.html#Unmarshaller">Unmarshaller</a> 
+            as follows:
+         </span></p>
+
+         <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+<span class="bodyGrey"><font color="#7270c2">// Create a Reader to the file to unmarshal from</font></span>
+reader = new FileReader("test.xml");
+
+<span class="bodyGrey"><font color="#7270c2">// Marshal the person object</font></span>
+Person person = (Person) Unmarshaller.unmarshal(Person.class, reader);</pre></span></td></tr></table></td></tr></table><p></p>
+
+         <p><span class="bodyGrey"><b>Marshalling and unmarshalling is basically that simple.</b></span></p>
+         
+		<p><span class="bodyGrey">
+	       Note: The above example uses the <i><b>static</b></i> methods of the marshalling 
+	       framework, and as such no Marshaller and/or Unmarshaller instances need to 
+	       be created. A common mistake in this context when using a <b>mapping file</b> is 
+	       to call the 
+           <a href="javadoc/org/exolab/castor/xml/Marshaller.html#Marshaller">Marshaller</a> or 
+           <a href="javadoc/org/exolab/castor/xml/Unmarshaller.html#Unmarshaller">Unmarshaller</a> 
+           as in the above example. This won't work, as the mapping will be ignored.
+	    </span></p>
+       
+         <p><span class="bodyGrey">
+            In <i>introspection mode</i>, Castor XML uses Java reflection to establish
+            the binding between the Java classes (and their properties) and the XML, 
+            following a set of (default) naming rules. Whilst it is possible to 
+            change to a different set of naming rules, there's no way to override 
+            this (default) naming for individual artefacts. In such a case, a 
+            <i>mapping file</i> should be used.
+         </span></p>  
+	    
+        
+        
+        <a name="Mapping-mode"><h3>Mapping mode</h3></a>
+        
+            <p><span class="bodyGrey">
+               In <i>mapping mode</i>, the user provides Castor XML with a 
+               user-defined mapping (in form of a mapping file) that allows
+               the (partial) definition of a customized mapping between Java classes
+               (and their properties) and XML.
+            </span></p>
+        
+      	    <p><span class="bodyGrey">
+      	       When you are using a mapping file, create an instance of the
+               <a href="javadoc/org/exolab/castor/xml/XMLContext.html"><api>org.exolab.castor.xml.XMLContext</api></a> class and use the 
+               <a href="javadoc/org/exolab/castor/xml/XMLContext.html#addMapping(Mapping)">addMapping(Mapping)</a>
+               method to provide Castor XML with one of more mapping files.
+            </span></p> 
+                
+                
+            <p><span class="bodyGrey">
+               To start using Castor XML for marshalling and/or unmarshalling based
+               upon your custom mapping, create instances of 
+               <a href="javadoc/org/exolab/castor/xml/Marshaller.html"><api>org.exolab.castor.xml.Marshaller</api></a> and
+               <a href="javadoc/org/exolab/castor/xml/Unmarshaller.html"><api>org.exolab.castor.xml.Unmarshaller</api></a> as needed using one of the 
+               following methods:
+            </span></p>
+            
+            <table border="0" width="100%" cellspacing="1" cellpadding="2" bgcolor="#7270c2"><tr><td><table border="0" width="100%" cellspacing="1" cellpadding="8" bgcolor="#ededed"><caption></caption><tr class="cheader"></tr><tr bgcolor="#DDDDDD">
+                  <td><span class="bodyGrey"><a href="javadoc/org/exolab/castor/xml/XMLContext.html#createMarshaller">createMarshaller</a></span></td>
+                  <td><span class="bodyGrey">Creates a <a href="javadoc/org/exolab/castor/xml/Marshaller.html#Marshaller">Marshaller</a> instance.</span></td>
+               </tr><tr bgcolor="#FFFFFF">
+                  <td><span class="bodyGrey"><a href="javadoc/org/exolab/castor/xml/XMLContext.html#createUnmarshaller">createUnmarshaller</a></span></td>
+                  <td><span class="bodyGrey">Creates a <a href="javadoc/org/exolab/castor/xml/Unmarshaller.html#Unmarshaller">Unmarshaller</a> instance.</span></td>
+               </tr></table></td></tr></table>
+                   
+            <p><span class="bodyGrey">
+               and call any of the <b>non-static</b> (un)marshal methods 
+               to trigger data binding in either way.
+      		</span></p>
+            
+            <p><span class="bodyGrey">
+               Below code shows a full example that demonstrates unmarshalling a 
+               <tt>Person</tt> instance from XML using a 
+               <a href="javadoc/org/exolab/castor/xml/Unmarshaller.html#Unmarshaller">Unmarshaller</a> 
+               instance as obtained from an XMLContext previously configured
+               to your needs.
+            </span></p>
+		
+         <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><i><font color="yellow">Unmarshalling from XML using a mapping</font></i></td></tr><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+import org.exolab.castor.xml.XMLContext;
+import org.exolab.castor.mapping.Mapping;
+import org.exolab.castor.xml.Unmarshaller;
+
+<span class="bodyGrey"><font color="#7270c2">// Load Mapping</font></span>
+Mapping mapping = new Mapping();
+mapping.loadMapping("mapping.xml");
+
+<span class="bodyGrey"><font color="#7270c2">// initialize and configure XMLContext</font></span>
+XMLContext context = new XMLContext();
+context.addMapping(mapping);
+
+<span class="bodyGrey"><font color="#7270c2">// Create a Reader to the file to unmarshal from</font></span>
+reader = new FileReader("test.xml");
+
+<span class="bodyGrey"><font color="#7270c2">// Create a new Unmarshaller</font></span>
+Unmarshaller unmarshaller = context.createUnmarshaller();
+unmarshaller.setClass(Person.class);
+
+<span class="bodyGrey"><font color="#7270c2">// Unmarshal the person object</font></span>
+Person person = (Person) unmarshaller.unmarshal(reader);</pre></span></td></tr></table></td></tr></table><p></p>
+
+            <p><span class="bodyGrey">
+               To marshal the very same <tt>Person</tt> instance to XML using a
+               <a href="javadoc/org/exolab/castor/xml/Marshaller.html#Marshaller">Marshaller</a>
+               obtained from the <b>same</b> 
+               <a href="javadoc/org/exolab/castor/xml/XMLContext.html#XMLContext">XMLContext</a>, use
+               code as follows:
+            </span></p>
+
+         <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><i><font color="yellow">Marshalling to XML using a mapping</font></i></td></tr><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+import org.exolab.castor.xml.Marshaller;
+
+<span class="bodyGrey"><font color="#7270c2">// create a Writer to the file to marshal to</font></span>
+Writer writer = new FileWriter("out.xml");
+
+<span class="bodyGrey"><font color="#7270c2">// create a new Marshaller</font></span>
+Marshaller marshaller = context.createMarshaller();
+marshaller.setWriter(writer);
+
+<span class="bodyGrey"><font color="#7270c2">// marshal the person object</font></span>
+marshaller.marshal(person);</pre></span></td></tr></table></td></tr></table><p></p>
+
+            <p><span class="bodyGrey">
+               Please have a look at <a href="xml-mapping.html">XML Mapping</a> for a detailed
+               discussion of the mapping file and its structure.
+            </span></p>
+
+      		<p><span class="bodyGrey">
+               For more information on how to effectively deal with loading 
+      		   mapping file(s) especially in multi-threaded environments, please 
+      		   check the <a href="xml-best-practice.html">best practice</a> 
+      		   section.
+            </span></p>
+        
+       
+       
+       <a name="Descriptor-mode"><h3>Descriptor mode</h3></a>
+       
+         <p><span class="bodyGrey">
+            TBD
+         </span></p>
+         
+       
+
+    <a name="Sources-and-destinations"><h2>Sources and destinations</h2></a>
+    
+      <p><span class="bodyGrey">
+         TBD
+      </span></p>
+      
+    <a name="XMLContext---A-consolidated-way-to-bootstrap-Castor"><h2>XMLContext - A consolidated way to bootstrap Castor</h2></a>
+
+		<p><span class="bodyGrey">
+		   With Castor 1.1.2, the <a href="javadoc/org/exolab/castor/xml/XMLContext.html#XMLContext">XMLContext</a> 
+		   class has been added to the Castor marshalling framework. This new class provides a 
+		   bootstrap mechanism for Castor XML, and allows easy (and efficient) instantiation of     
+		   <a href="javadoc/org/exolab/castor/xml/Marshaller.html#Marshaller">Marshaller</a> and 
+		   <a href="javadoc/org/exolab/castor/xml/Unmarshaller.html#Unmarshaller">Unmarshaller</a> 
+		   instances as needed.
+		</span></p>
+		
+		<p><span class="bodyGrey">
+		   As shown above, the <a href="javadoc/org/exolab/castor/xml/XMLContext.html#XMLContext">XMLContext</a> 
+		   class offers various factory methods to obtain a new 
+		   <a href="javadoc/org/exolab/castor/xml/Marshaller.html#Marshaller">Marshaller</a>, 
+		   <a href="javadoc/org/exolab/castor/xml/Unmarshaller.html#Unmarshaller">Unmarshaller</a>. 
+		</span></p>
+		
+		<p><span class="bodyGrey">
+		   When you need more than one <a href="javadoc/org/exolab/castor/xml/Unmarshaller.html#Unmarshaller">Unmarshaller</a> 
+		   instance in your application, please call 
+		   <a href="javadoc/org/exolab/castor/xml/XMLContext.html#createUnmarshaller">createUnmarshaller</a> as required. As all 
+		   <tt>Unmarshaller</tt> instances are created from the very same <tt>XMLContext</tt> 
+		   instance, overhead will be minimal. Please note, though, that use of one  
+		   <tt>Unmarshaller</tt> instance is not thread-safe.
+		</span></p>
+		
+    <a name="Using-existing-Classes/Objects"><h2>Using existing Classes/Objects</h2></a>
+      <p><span class="bodyGrey">
+        Castor can marshal "almost" any arbitrary Object to and from XML. When descriptors
+        are not available for a specfic Class, the marshalling framework uses reflection
+        to gain information about the object.
+        <hr size="1" noshadow=""><span class="bodyGrey">
+           Actually an in memory set of descriptors are created for the object
+           and we will soon have a way for saving these descriptors as Java source,
+           so that they may be modified and compiled with little effort.
+        <hr size="1" noshadow=""></span>
+      </span></p>
+      <p><span class="bodyGrey">If a set of descriptors exist for the classes, then Castor will use those
+         to gain information about how to handle the marshalling.
+         See <a href="#Class Descriptors">Class Descriptors</a> for more information.
+      </span></p>
+      <p><span class="bodyGrey">
+         There is one main restrictions to marshalling objects. These classes must
+         have have a public default constructor (ie. a constructor with no arguments)
+         and adequete "getter" and "setter" methods to be properly be marshalled and unmarshalled.
+      </span></p>
+      <p><span class="bodyGrey">
+         The example illustrated in the previous section
+          <a href="#The Marshalling Framework">The Marshalling Framework</a>
+         demonstrates how to use the framework with existing classes.
+      </span></p>
+   <a name="Class-Descriptors"><h2>Class Descriptors</h2></a>
+      <p><span class="bodyGrey">
+         Class descriptors provide the "Castor Framework" with necessary information
+         so that the Class can be marshalled properly.
+         The class descriptors can be shared between the JDO and XML frameworks.
+      </span></p>
+      <p><span class="bodyGrey">
+        Class descriptors contain a set of
+        <a href="#Field Descriptors">Field Descriptors</a>
+      </span></p>
+      <p><span class="bodyGrey">
+        XML Class descriptors provide the marshalling framework with the information it
+        needs about a class in order to be marshalled to and from XML.
+        The XMLClassDescriptor <a href="javadoc/org/exolab/castor/xml/XMLClassDescriptor.html"><api>org.exolab.castor.xml.XMLClassDescriptor</api></a>.
+      </span></p>
+      <p><span class="bodyGrey">
+        XML Class Descriptors are created four main ways. Two of these are basically
+        run-time, and the other two are compile time.
+        <a name="Compile-Time-Descriptors"><h4>Compile-Time Descriptors</h4></a>
+           <p><span class="bodyGrey">
+              To use "compile-time" class descriptors, one can either implement the
+              <a href="javadoc/org/exolab/castor/xml/XMLClassDescriptor.html"><api>org.exolab.castor.xml.XMLClassDescriptor</api></a>
+              interface for each class which needs to be "described", or have
+              the <a href="sourcegen.html">Source Code Generator</a>
+              create the proper descriptors.
+           </span></p>
+           <p><span class="bodyGrey">
+             The main advantage of compile-time descriptors is that they are
+             faster than the run-time approach.
+           </span></p>
+        
+        <a name="Run-Time-Descriptors"><h4>Run-Time Descriptors</h4></a>
+           <p><span class="bodyGrey">
+              To use "run-time" class descriptors, one can either simply let
+              Castor introspect the classes, a mapping file can be provided,
+              or a combination of both "default introspection" and a specified
+              mapping file may be used.
+           </span></p>
+          <p><span class="bodyGrey">
+             For "default introspection" to work the class being introspected must
+             have adequete setter/getter methods for each field of the class
+             that should be marshalled and unmarshalled. If no getter/setter
+             methods exist, Castor can handle direct field access to public
+             fields. It does not do both at the same time.
+             So if the respective class has any getter/setter methods at all, then
+             no direct field access will take place.
+           </span></p>
+           <p><span class="bodyGrey">
+              There is nothing to do to enable "default introspection". If a
+              descriptor cannot be found for a class, introspection occurs
+              automatically.
+          </span></p>
+          <p><span class="bodyGrey">
+              Some behavior of the introspector may be controlled by setting
+              the appropriate properties in the <i>castor.properties</i> file.
+              Such behavior consists of changing the naming conventions, and
+              whether primitive types are treated as attributes or elements.
+              See <i>castor.properties</i> file for more information.
+          </span></p>
+           <p><span class="bodyGrey">
+              A mapping file may also be used to "describe" the classes which
+              are to be marshalled. The mapping is loaded before any
+              marshalling/unmarshalling takes place. See 
+              <a href="javadoc/org/exolab/castor/mapping/Mapping.html"><api>org.exolab.castor.mapping.Mapping</api></a>
+          </span></p>
+           <p><span class="bodyGrey">
+             The main advantage of run-time descriptors is that it takes very
+             little effort to get something working.
+           </span></p>
+        
+      </span></p>
+   </td></tr><tr height="5"><td width="10" height="5" bgcolor="#7270c2" valign="top" align="left">&nbsp;</td><td height="5" bgcolor="#7270c2" valign="top" width="150"><img src="images/dotTrans.gif" width="1" height="15" border="0"><br><img src="images/line_sm.gif" width="105" height="3" border="0" align="right"></td><td width="7" height="5" bgcolor="#a9a5de" valign="top" align="left">&nbsp;</td><td width="70" height="5" valign="top" align="left">&nbsp;</td><td width="120" height="5" valign="top" align="left">&nbsp;</td></tr><tr><td width="10" height="5" bgcolor="#7270c2" valign="top" align="left">&nbsp;</td><td bgcolor="#7270c2" valign="top" align="left" width="150"></td><td width="7" bgcolor="#a9a5de" valign="top" align="left"><img src="images/dotTrans.gif" width="1" height="25" border="0"></td><td width="70" valign="top" align="left"><img src="images/dotTrans.gif" width="1" height="25" border="0"></td><td width="120" valign="top" align="left">&nbsp;</td></tr><tr height="5"><td width="10" rowspan="2" height="100%" bgcolor="#7270c2" valign="bottom" align="left"><img src="images/stripes1.gif" width="10" height="125" border="0"></td><td rowspan="2" height="100%" bgcolor="#7270c2" valign="bottom" align="left" width="150"><img src="images/stripe105.gif" width="105" height="125" border="0"></td><td width="7" rowspan="2" height="100%" bgcolor="#a9a5de" valign="top" align="left">&nbsp;</td><td width="70" height="100%" valign="top" align="left">&nbsp;</td><td width="120" height="100%" valign="top" align="left">&nbsp;</td></tr><tr height="5"><td width="70" height="25" valign="top" align="left">&nbsp;</td><td width="400" height="25" valign="bottom" align="left"><br><br><img src="images/line_light.gif" border="0" width="400" height="3"><br><p></p><span class="bodyGrey"><small><notice>
+    Copyright &copy; 1999-2005 <a href="http://www.exolab.org">ExoLab Group</a>, Intalio Inc.,
+    and Contributors.  All rights reserved.
+  </notice><br>&nbsp;<br></small><small><notice>
+    Java, EJB, JDBC, JNDI, JTA, Sun, Sun Microsystems are trademarks or registered
+    trademarks of Sun Microsystems, Inc. in the United States and in other
+    countries. XML, XML Schema, XSLT and related standards are trademarks or registered
+    trademarks of MIT, INRIA, Keio or others, and a product of the World Wide Web
+    Consortium. All other product names mentioned herein are trademarks of their respective
+    owners.
+  </notice><br>&nbsp;<br></small></span><p></p>
+          &nbsp;
+        </td><td width="120" height="25" valign="top" align="left">&nbsp;</td></tr></table><script type="text/javascript">
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script><script type="text/javascript">
+        var pageTracker = _gat._getTracker("UA-3544187-1");
+        pageTracker._trackPageview();
+    </script></body></html>

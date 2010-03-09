@@ -1,0 +1,424 @@
+<html><head><META http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>Using Pooled Database Connections</title><link rel="stylesheet" href="default.css"></head><body bgcolor="#ffffff" link="#6763a9" vlink="#6763a9" topmargin="0" bottommargin="0" leftmargin="0" marginheight="0" marginwidth="0"><a name="top"></a><table border="0" cellpadding="0" cellspacing="0" height="400"><tr><td width="10" valign="top" align="left" bgcolor="#7270c2"><img src="images/dotTrans.gif" width="1" height="1" border="0"></td><td valign="top" align="left" bgcolor="#7270c2" width="150"><img src="images/dotTrans.gif" width="1" height="1" border="0"></td><td width="7" valign="top" align="left"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td><td width="70" valign="top" align="left"><img src="images/dotTrans.gif" width="70" height="6" border="0"></td><td width="468" valign="top" align="left"><img src="images/top_2.gif" width="468" height="6" border="0"></td><td width="120" valign="top" align="left"><img src="images/line_purple.gif" width="120" height="6" border="0"></td></tr><tr><td width="10" bgcolor="#7270c2" valign="top" align="left"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td><td bgcolor="#7270c2" valign="top" align="left" width="150"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td><td width="7" bgcolor="#ffffff" valign="top" align="left"></td><td width="70" valign="top" align="left"><img src="images/dotTrans.gif" width="1" height="1" border="0"></td><td width="468" valign="middle" align="left"><a href="license.html"><span class="menuTopOff">License</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.codehaus.org"><span class="menuTopOff">Codehaus</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://openejb.org"><span class="menuTopOff">OpenEJB</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://openjms.sf.net"><span class="menuTopOff">OpenJMS</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://openorb.sf.net"><span class="menuTopOn">OpenORB</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://tyrex.sf.net"><span class="menuTopOff">Tyrex</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br><img src="images/dotTrans.gif" width="1" height="2" border="0"></td><td width="120" height="20" valign="top" align="left">&nbsp;</td></tr><tr><td width="10" bgcolor="#7270c2" valign="top" align="left"><img src="images/dotTrans.gif" width="10" height="3" border="0"></td><td bgcolor="#7270c2" valign="top" align="right" width="150"><img src="images/line_sm.gif" width="105" height="3" border="0"></td><td width="7" bgcolor="#a9a5de" valign="top" align="left"><img src="images/line_sm.gif" width="7" height="3" border="0"></td><td width="70" valign="top" align="left"><img src="images/line_light.gif" width="70" height="3" border="0"></td><td width="468" valign="top" align="left"><img src="images/line_light.gif" width="468" height="3" border="0"></td><td width="120" valign="top" align="left"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td></tr><tr><td bgcolor="#7270c2" valign="top" align="left"><img src="images/dotTrans.gif" width="10" height="10" border="0"></td><td bgcolor="#7270c2" valign="top" align="left" width="150"><img src="images/dotTrans.gif" width="1" height="2" border="0"><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Old releases</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="releases-old.html"><span class="subMenuOff">General</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="1.2/index.html"><span class="subMenuOff">Release 1.2</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="1.3cr1/index.html"><span class="subMenuOff">Release 1.3rc1</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Main</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="index.html"><span class="subMenuOff">Home</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="about.html"><span class="subMenuOff">About</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="features.html"><span class="subMenuOff">Features</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="download.html"><span class="subMenuOff">Download</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="dependencies.html"><span class="subMenuOff">Dependencies</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="reference-guide.html"><span class="subMenuOffHighlighted">Reference guide</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="javadoc/overview-summary.html"><span class="subMenuOff">JavaDoc</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="maven-integration.html"><span class="subMenuOff">Maven 2 support</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="maven-archetypes.html"><span class="subMenuOff">Maven 2 archetypes</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="schema.html"><span class="subMenuOff">DTD &amp; Schemas</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="changes.html"><span class="subMenuOff">Recent HTML changes</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="news.html"><span class="subMenuOff">News Archive</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="http://castor.codehaus.org/rss/castor-announce.xml"><span class="subMenuOff">RSS news feed</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Development/Support</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="lists.html"><span class="subMenuOff">Mailing Lists</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="scm.html"><span class="subMenuOff">SVN/JIRA</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="contributing.html"><span class="subMenuOff">Contributing</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="support.html"><span class="subMenuOff">Support</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="http://bamboo.ci.codehaus.org/browse/CASTOR"><span class="subMenuOff">Continuous builds</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="professional-services.html"><span class="subMenuOffHighlighted">Prof. services</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Related projects</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="spring-orm-integration.html"><span class="subMenuOff">Spring ORM support</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="spring-xml-intro.html"><span class="subMenuOff">Spring XML factories</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ws-integration.html"><span class="subMenuOff">WS frameworks</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">XML</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="xml-link.html"><span class="subMenuOff">XML</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">XML Code Generator</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="srcgen-link.html"><span class="subMenuOff">XML Code Generator</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">JDO</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-introduction.html"><span class="subMenuOff">Introduction</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-starter-tutorial.html"><span class="subMenuOff">First steps</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo.html"><span class="subMenuOff">Using JDO</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-database-conf.html"><span class="subMenuOff">JDO Config</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="types.html"><span class="subMenuOff">Types</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-mapping.html"><span class="subMenuOff">JDO Mapping</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-faq.html"><span class="subMenuOff">JDO FAQ</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-examples.html"><span class="subMenuOff">JDO Examples</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-howto.html"><span class="subMenuOffHighlighted">JDO HOW-TOs</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-tips-tricks.html"><span class="subMenuOffHighlighted">Tips &amp; Tricks</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-other-features.html"><span class="subMenuOff">Other Features</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-self-executable-examples.html"><span class="subMenuOff">JDO sample JAR</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Tools</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="schemaGen-anttask.html"><span class="subMenuOff">Schema generator</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Advanced JDO</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-caching-detail.html"><span class="subMenuOff">Caching</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="oql.html"><span class="subMenuOff">OQL</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="locking.html"><span class="subMenuOff">Trans. &amp; Locks</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="design-persist.html"><span class="subMenuOff">Design</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="key-generator.html"><span class="subMenuOff">KeyGen</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="long-transact.html"><span class="subMenuOff">Long Trans.</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="nested-attr.html"><span class="subMenuOff">Nested Attrs.</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-pooling.html"><span class="subMenuOff">Pooling Examples</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="postgresql-blobs.html"><span class="subMenuOff">LOBs</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-best-practice.html"><span class="subMenuOff">Best practice</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">DDL Generator</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen.html"><span class="subMenuOff">Using DDL Generator</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen-properties.html"><span class="subMenuOff">Properties</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen-anttask.html"><span class="subMenuOff">Ant task</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen-mapping.html"><span class="subMenuOff">Type Mapping</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">More</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="presentations.html"><span class="subMenuOff">Presentations</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="examples.html"><span class="subMenuOff">The Examples</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="extras.html"><span class="subMenuOff">3rd Party Tools</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="test-framework.html"><span class="subMenuOff">JDO Tests</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ctf.html"><span class="subMenuOff">XML Tests</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="conf-lib.html"><span class="subMenuOff">Configuration</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href=""><span class="subMenuOff"></span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="http://www.java.net/"><span class="subMenuOff"><img src="images/javanet_button_90.gif" border="0"></span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">About</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="license.html"><span class="subMenuOff">License</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="user-experience.html"><span class="subMenuOffHighlighted">User stories</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="contributors.html"><span class="subMenuOff">Contributors</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="marketplace.html"><span class="subMenuOff">Marketplace</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="status.html"><span class="subMenuOff">Status, Todo</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="release-notes.html"><span class="subMenuOff">Changelog</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="library.html"><span class="subMenuOff">Library</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="contacts.html"><span class="subMenuOff">Contact</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="origins.html"><span class="subMenuOff">Project Name</span></a></td></tr></table><br></td><td width="7" bgcolor="#a9a5de" valign="top" align="left">&nbsp;</td><td width="70" valign="top" align="left">&nbsp;</td><td rowspan="4" width="468" valign="top"><table cols="2" rows="2" border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td valign="top" align="left"><br><img border="0" height="34" hspace="0" src="images/castor.gif" vspace="0" width="115"><br><img border="0" height="10" hspace="0" src="images/dotTrans.gif"></td><td width="120" height="5" valign="top" align="right"></td></tr></table><p></p><p></p><br><h2 align="center">Using Pooled Database Connections</h2><HR size="1"><span class="bodyGrey"><b><a href="#News">News</a></b><br></span><span class="bodyGrey"><b><a href="#Pooling-Agents">Pooling Agents</a></b><br></span><span class="bodyGrey"><b><a href="#Standard-Database-Connections">Standard Database Connections</a></b><br></span><span class="bodyGrey"><b><a href="#Pooling-and-JDBC-DataSources">Pooling and JDBC DataSources</a></b><br></span><span class="bodyGrey"><a href="#PostgreSQL-7.3-and-later">&nbsp;&nbsp;&nbsp;&nbsp;PostgreSQL 7.3 and later</a><br></span><span class="bodyGrey"><a href="#Oracle">&nbsp;&nbsp;&nbsp;&nbsp;Oracle</a><br></span><span class="bodyGrey"><a href="#mySQL">&nbsp;&nbsp;&nbsp;&nbsp;mySQL</a><br></span><span class="bodyGrey"><b><a href="#Configuring-JDBC-DataSources-in-Tomcat-to-be-used-with-Castor">Configuring JDBC DataSources in Tomcat to be used with Castor</a></b><br></span><span class="bodyGrey"><b><a href="#Jakarta-Commons-DBCP---BasicDataSource">Jakarta Commons DBCP - BasicDataSource</a></b><br></span><span class="bodyGrey"><a href="#Prepared-statement-pooling">&nbsp;&nbsp;&nbsp;&nbsp;Prepared statement pooling</a><br></span><HR size="1"><br><a name="News"><h2>News</h2></a>
+       <table border="0" cellpadding="2" cellspacing="2"><tr><td colspan="2" height="5"></td></tr><span class="bodyGrey">
+          <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey"><b>10/22/2004</b>: Added JDBC Datasource configuration for mySQL.</span></td></tr>
+          <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey"><b>9/14/2004</b>: Added section about using Jakarta's DBCP with Castor.</span></td></tr>
+       </span></table>
+    <a name="Pooling-Agents"><h2>Pooling Agents</h2></a>
+
+      <p><span class="bodyGrey">There is no mechanism within Castor JDO to provide pooling of
+         JDBC drivers. Rather, Castor JDO relies on the drivers or
+         external driver wrappers to implement a pooling mechanism.
+         Some drivers, such as Oracle, provides a pooling mechanism in
+         the driver.  For those that do not, there are tools such as
+         <a href="http://sourceforge.net/projects/proxool/">Proxool</a> and 
+         Jakarta's <a href="http://jakarta.apache.org/commons/dbcp.html">DBCP</a>
+         project.</span></p>
+
+      <p><span class="bodyGrey">Here, I'll go over the various usage of the PostgreSQL driver
+         with Castor.  We start with the most basic configurations
+         that do not use any pooling, to those with pooling via
+         DBCP. I'll include how to configure the pooling version of the 
+         PostgreSQL JDBC driver ths will be usable with PostgreSQL 7.3 and 
+         later, how to setup a Tomcat JNDI context that Castor can use to get 
+         a pooled JDBC connection. Finally, I'll explain how to configure a 
+         <tt>BasicDataSource</tt> from the DBCP package using the 
+         &lt;data-source&gt; element.</span></p>
+
+      <a name="Standard-Database-Connections"><h2>Standard Database Connections</h2></a>
+
+        <p><span class="bodyGrey">A standard jdo-conf.xml entry for using PostgreSQL without pooling
+           looks like this:</span></p>
+           
+<p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+<span class="bodyBlack"><pre>
+  &lt;driver class-name="org.postgresql.Driver"
+          url="jdbc:postgresql://localhost/app"&gt;
+    &lt;param name="user" value="smith"/&gt;
+    &lt;param name="password" value="secret" /&gt;
+  &lt;/driver&gt;
+</pre></span>
+</pre></span></td></tr></table></td></tr></table><p></p>
+
+     <p><span class="bodyGrey">On the other hand, if you wanted to use the PostgresqlDataSource, you
+        would use the data-source tag instead, and the connection entry would
+        look like this:</span></p>
+<p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>        
+<span class="bodyBlack"><pre>
+  &lt;data-source class-name="org.postgresql.PostgresqlDataSource"&gt;
+   &lt;param name="server-name" value="localhost" /&gt;
+   &lt;param name="database-name" value="app" /&gt;
+   &lt;param name="user" value="smith" /&gt;
+   &lt;param name="password" value="secret" /&gt;
+  &lt;/data-source&gt;
+</pre></span>
+</pre></span></td></tr></table></td></tr></table><p></p>
+
+      <p><span class="bodyGrey">(Note that only versions before 7.3 of the PostgreSQL JDBC driver
+         include this class)</span></p>
+
+    <a name="Pooling-and-JDBC-DataSources"><h2>Pooling and JDBC DataSources</h2></a>
+     
+        <a name="PostgreSQL-7.3-and-later"><h3>PostgreSQL 7.3 and later</h3></a>
+
+            <p><span class="bodyGrey">In the 7.3 release of PostgreSQL, they will start providing a
+               pooling mechanism with their driver.  The Castor SVN repository
+               includes a beta version of the driver with this functionality.
+               Here is the 'current' configuration needed for the upcoming 7.3
+               release of PostgreSQL. (Unless they change it.) Note that in this
+               pooling mechanism currently lacks some features of standrd pooling 
+               packages such as DBCP, such as timing out idle connections and removing 
+               failed connections from the pool.  In this case, we can create the 
+               following  data-source entry in the jdo-conf.xml file to provide 
+               for our connections with Castor.</span></p>
+
+<p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>        
+<span class="bodyBlack"><pre>
+  &lt;data-source class-name="org.postgresql.jdbc2.optional.PoolingDataSource"&gt;
+   &lt;param name="server-name" value="localhost" /&gt;
+   &lt;param name="database-name" value="app" /&gt;
+   &lt;param name="initial-connections" value="2" /&gt;
+   &lt;param name="max-connections" value="10" /&gt;
+   &lt;param name="user" value="smith" /&gt;
+   &lt;param name="password" value="secret" /&gt;
+  &lt;/data-source&gt;
+</pre></span>
+</pre></span></td></tr></table></td></tr></table><p></p>
+
+         
+
+        <a name="Oracle"><h3>Oracle</h3></a>
+     
+           <p><span class="bodyGrey">Here is the configuration needed for using a connection pool
+              with the Oracle JDBC DataSource implementations.</span></p>
+
+<p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>        
+<span class="bodyBlack"><pre>
+   &lt;data-source class-name="oracle.jdbc.pool.OracleConnectionCacheImpl"&gt;
+      &lt;param name="URL" value="jdbc:oracle:thin:@localhost:1521:TEST" /&gt;
+      &lt;param name="user" value="scott" /&gt;
+      &lt;param name="password" value="tiger" /&gt;
+   &lt;/data-source&gt;
+</pre></span>
+</pre></span></td></tr></table></td></tr></table><p></p>
+
+        
+
+        <a name="mySQL"><h3>mySQL</h3></a>
+     
+           <p><span class="bodyGrey">Here is the configuration needed for using a connection pool
+              with the mySQL JDBC DataSource implementations.</span></p>
+
+<p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>        
+<span class="bodyBlack"><pre>
+   &lt;data-source class-name="com.mysql.jdbc.jdbc2.optional.MysqlConnectionPoolDataSource"&gt;
+      &lt;param name="server-name" value="localhost" /&gt;
+      &lt;param name="port" value="3306" /&gt;
+      &lt;param name="user" value="scott" /&gt;
+      &lt;param name="password" value="tiger" /&gt;
+      &lt;param name="database-name" value="test" /&gt;
+   &lt;/data-source&gt;
+</pre></span>
+</pre></span></td></tr></table></td></tr></table><p></p>
+
+        
+    
+     <a name="Configuring-JDBC-DataSources-in-Tomcat-to-be-used-with-Castor"><h2>Configuring JDBC DataSources in Tomcat to be used with Castor</h2></a>
+
+     <p><span class="bodyGrey">Finally, I want to show the configuration for using a pooling
+        data-source for Castor which is retrieved from a JNDI context
+        that Apache fills.  The first example is using the PostgreSQL
+        pooling data-source, and the second is using Castor.  The
+        information to gain here is that we did not need to change the
+        jdo-conf.xml file or the webapp's web.xml file to achieve
+        this.</span></p>
+
+     <p><span class="bodyGrey">First, we modify the deployment context for the webapp in Tomcat &gt;= 4.0 for our 
+        webapp in the conf/server.xml directory. (With Tomcat/Catalina releases 4.0 and higher 
+        there's more than one way of adding a <tt>&lt;Resource&gt;</tt> entry. Please consult with the 
+        manuals for more and more detailed information).</span></p>
+     
+     <p><span class="bodyGrey">We add the following information (using the PostgreSQL JDBC DataSource 
+        implementations as introduced above.):</span></p>
+     
+     <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+        <span class="bodyBlack"><pre>
+&lt;Context path="/webapp" docBase="test" debug="10"&gt;
+ &lt;Resource name="jdbc/appDb" auth="Container"
+            type="org.postgresql.jdbc2.optional.PoolingDataSource"/&gt;
+   &lt;ResourceParams name="jdbc/appDb"&gt;
+    &lt;parameter&gt;
+      &lt;name&gt;factory&lt;/name&gt;
+      &lt;value&gt;org.postgresql.jdbc2.optional.PGObjectFactory&lt;/value&gt;
+    &lt;/parameter&gt;
+    &lt;parameter&gt;
+     &lt;name&gt;dataSourceName&lt;/name&gt;
+     &lt;value&gt;appDb&lt;/value&gt;
+    &lt;/parameter&gt;
+    &lt;parameter&gt;
+     &lt;name&gt;initialConnections&lt;/name&gt;
+     &lt;value&gt;2&lt;/value&gt;
+    &lt;/parameter&gt;
+    &lt;parameter&gt;
+      &lt;name&gt;maxConnections&lt;/name&gt;
+      &lt;value&gt;5&lt;/value&gt;
+    &lt;/parameter&gt;
+    &lt;parameter&gt;
+      &lt;name&gt;databaseName&lt;/name&gt;
+      &lt;value&gt;app&lt;/value&gt;
+    &lt;/parameter&gt;
+    &lt;parameter&gt;
+      &lt;name&gt;user&lt;/name&gt;
+      &lt;value&gt;smith&lt;/value&gt;
+    &lt;/parameter&gt;
+    &lt;parameter&gt;
+      &lt;name&gt;password&lt;/name&gt;
+      &lt;value&gt;secret&lt;/value&gt;
+    &lt;/parameter&gt;
+    &lt;parameter&gt;
+      &lt;name&gt;serverName&lt;/name&gt;
+      &lt;value&gt;localhost&lt;/value&gt;
+    &lt;/parameter&gt;
+  &lt;/ResourceParams&gt;
+&lt;/Context&gt;
+</pre></span>
+     </pre></span></td></tr></table></td></tr></table><p></p>
+
+     <p><span class="bodyGrey">Here, we are using the PostgreSQL PGObjectFactory which
+        provides the JNDI server (Tomcat) the ability to create the
+        correct data source.  Now, the web.xml file for the webapp
+        needs to be updated too.</span></p>
+
+     <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>        
+        <span class="bodyBlack"><pre>
+&lt;resource-env-ref&gt;
+  &lt;description&gt;PostgreSQL pooling check&lt;/description&gt;
+  &lt;resource-env-ref-name&gt;jdbc/appDb&lt;/resource-env-ref-name&gt;
+  &lt;resource-env-ref-type&gt;javax.sql.DataSource&lt;/resource-env-ref-type&gt;
+&lt;/resource-env-ref&gt;
+</pre></span>
+      </pre></span></td></tr></table></td></tr></table><p></p>
+
+      <p><span class="bodyGrey">Note that we are only calling the ref type a DataSource
+         object, not using the PostgreSQL class name.  This will
+         enable us to make changes easily.  Now, in the jdo-conf.xml
+         file that Castor uses, we no longer list the driver or
+         data-source tag, but use the JNDI one, and it is simply this:</span></p>
+         
+      <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+         <span class="bodyBlack"><pre>
+    &lt;jndi name="java:comp/env/jdbc/appDb"/&gt;
+</pre></span>
+     </pre></span></td></tr></table></td></tr></table><p></p>
+
+     <a name="Jakarta-Commons-DBCP---BasicDataSource"><h2>Jakarta Commons DBCP - BasicDataSource</h2></a>
+
+       <p><span class="bodyGrey">Commons-DBCP provides database connection pooling services, and together 
+          with <a href="http://jakarta.apache.org/commons/pool/">Commons-Pool</a>
+          it is the default JNDI datasource provider for Tomcat.</span></p>
+        
+       <p><span class="bodyGrey">With release 1.1 of the Jakarta Commons DBCP component, one of the major 
+          new features of the JDBC 3.0 API has (finally) been added to 
+          BasicDataSource, support for prepared statement pooling.</span></p>
+                
+       <p><span class="bodyGrey">To configure Castor for the use of DBCP, please provide the following 
+          &lt;data-source&gt; entry in the jdo-conf.xml file.</span></p>
+        
+<p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+  &lt;data-source class-name="org.apache.commons.dbcp.BasicDataSource"&gt;
+    &lt;param name="driver-class-name" value="com.mysql.jdbc.Driver" /&gt;
+    &lt;param name="username" value="test" /&gt;
+    &lt;param name="password" value="test" /&gt;
+    &lt;param name="url" value="jdbc:mysql://localhost/test" /&gt;
+    &lt;param name="max-active" value="10" /&gt;
+  &lt;/data-source&gt;</pre></span></td></tr></table></td></tr></table><p></p>        
+
+		<a name="Prepared-statement-pooling"><h3>Prepared statement pooling</h3></a>
+		
+			<p><span class="bodyGrey">As mentioened above, please note that with DBCP 1.1 and later 
+			   releases, support for prepared statement pooling has been added 
+			   to DBCP. As Castor JDO does <b>not</b> implement prepared statement 
+			   pooling itself, you will to configure DBCP explicitely to enable
+			   this feature.</span></p>
+		   
+	        <p><span class="bodyGrey">To configure Castor for the use of DBCP, and to turn prepared statement
+	           pooling on, please provide the following <tt>&lt;data-source&gt;</tt>
+	           entry in the <tt>jdo-conf.xml</tt> file.</span></p>
+	          
+<p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+  &lt;data-source class-name="org.apache.commons.dbcp.BasicDataSource"&gt;
+    &lt;param name="driver-class-name" value="com.mysql.jdbc.Driver" /&gt;
+    &lt;param name="username" value="test" /&gt;
+    &lt;param name="password" value="test" /&gt;
+    &lt;param name="url" value="jdbc:mysql://localhost/test" /&gt;
+    &lt;param name="max-active" value="10" /&gt;
+    <b><font color="red">&lt;param name="pool-prepared-statements" value="true" /&gt;</font></b>
+  &lt;/data-source&gt;</pre></span></td></tr></table></td></tr></table><p></p>        
+	          
+		
+
+         <p><span class="bodyGrey">There's plenty of information on 
+            <a href="http://jakarta.apache.org/commons/dbcp/configuration.html">configuration </a>
+            of BasicDataSource, and examples are provided 
+            <a href="http://cvs.apache.org/viewcvs/jakarta-commons/dbcp/doc/">here</a>.</span></p>
+
+     </td></tr><tr height="5"><td width="10" height="5" bgcolor="#7270c2" valign="top" align="left">&nbsp;</td><td height="5" bgcolor="#7270c2" valign="top" width="150"><img src="images/dotTrans.gif" width="1" height="15" border="0"><br><img src="images/line_sm.gif" width="105" height="3" border="0" align="right"></td><td width="7" height="5" bgcolor="#a9a5de" valign="top" align="left">&nbsp;</td><td width="70" height="5" valign="top" align="left">&nbsp;</td><td width="120" height="5" valign="top" align="left">&nbsp;</td></tr><tr><td width="10" height="5" bgcolor="#7270c2" valign="top" align="left">&nbsp;</td><td bgcolor="#7270c2" valign="top" align="left" width="150"></td><td width="7" bgcolor="#a9a5de" valign="top" align="left"><img src="images/dotTrans.gif" width="1" height="25" border="0"></td><td width="70" valign="top" align="left"><img src="images/dotTrans.gif" width="1" height="25" border="0"></td><td width="120" valign="top" align="left">&nbsp;</td></tr><tr height="5"><td width="10" rowspan="2" height="100%" bgcolor="#7270c2" valign="bottom" align="left"><img src="images/stripes1.gif" width="10" height="125" border="0"></td><td rowspan="2" height="100%" bgcolor="#7270c2" valign="bottom" align="left" width="150"><img src="images/stripe105.gif" width="105" height="125" border="0"></td><td width="7" rowspan="2" height="100%" bgcolor="#a9a5de" valign="top" align="left">&nbsp;</td><td width="70" height="100%" valign="top" align="left">&nbsp;</td><td width="120" height="100%" valign="top" align="left">&nbsp;</td></tr><tr height="5"><td width="70" height="25" valign="top" align="left">&nbsp;</td><td width="400" height="25" valign="bottom" align="left"><br><br><img src="images/line_light.gif" border="0" width="400" height="3"><br><p></p><span class="bodyGrey"><small><notice>
+    Copyright &copy; 1999-2005 <a href="http://www.exolab.org">ExoLab Group</a>, Intalio Inc.,
+    and Contributors.  All rights reserved.
+  </notice><br>&nbsp;<br></small><small><notice>
+    Java, EJB, JDBC, JNDI, JTA, Sun, Sun Microsystems are trademarks or registered
+    trademarks of Sun Microsystems, Inc. in the United States and in other
+    countries. XML, XML Schema, XSLT and related standards are trademarks or registered
+    trademarks of MIT, INRIA, Keio or others, and a product of the World Wide Web
+    Consortium. All other product names mentioned herein are trademarks of their respective
+    owners.
+  </notice><br>&nbsp;<br></small></span><p></p>
+          &nbsp;
+        </td><td width="120" height="25" valign="top" align="left">&nbsp;</td></tr></table><script type="text/javascript">
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script><script type="text/javascript">
+        var pageTracker = _gat._getTracker("UA-3544187-1");
+        pageTracker._trackPageview();
+    </script></body></html>

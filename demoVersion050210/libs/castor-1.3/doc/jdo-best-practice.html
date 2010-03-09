@@ -1,0 +1,384 @@
+<html><head><META http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>Castor JDO - Best practice</title><link rel="stylesheet" href="default.css"></head><body bgcolor="#ffffff" link="#6763a9" vlink="#6763a9" topmargin="0" bottommargin="0" leftmargin="0" marginheight="0" marginwidth="0"><a name="top"></a><table border="0" cellpadding="0" cellspacing="0" height="400"><tr><td width="10" valign="top" align="left" bgcolor="#7270c2"><img src="images/dotTrans.gif" width="1" height="1" border="0"></td><td valign="top" align="left" bgcolor="#7270c2" width="150"><img src="images/dotTrans.gif" width="1" height="1" border="0"></td><td width="7" valign="top" align="left"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td><td width="70" valign="top" align="left"><img src="images/dotTrans.gif" width="70" height="6" border="0"></td><td width="468" valign="top" align="left"><img src="images/top_2.gif" width="468" height="6" border="0"></td><td width="120" valign="top" align="left"><img src="images/line_purple.gif" width="120" height="6" border="0"></td></tr><tr><td width="10" bgcolor="#7270c2" valign="top" align="left"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td><td bgcolor="#7270c2" valign="top" align="left" width="150"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td><td width="7" bgcolor="#ffffff" valign="top" align="left"></td><td width="70" valign="top" align="left"><img src="images/dotTrans.gif" width="1" height="1" border="0"></td><td width="468" valign="middle" align="left"><a href="license.html"><span class="menuTopOff">License</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.codehaus.org"><span class="menuTopOff">Codehaus</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://openejb.org"><span class="menuTopOff">OpenEJB</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://openjms.sf.net"><span class="menuTopOff">OpenJMS</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://openorb.sf.net"><span class="menuTopOn">OpenORB</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://tyrex.sf.net"><span class="menuTopOff">Tyrex</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br><img src="images/dotTrans.gif" width="1" height="2" border="0"></td><td width="120" height="20" valign="top" align="left">&nbsp;</td></tr><tr><td width="10" bgcolor="#7270c2" valign="top" align="left"><img src="images/dotTrans.gif" width="10" height="3" border="0"></td><td bgcolor="#7270c2" valign="top" align="right" width="150"><img src="images/line_sm.gif" width="105" height="3" border="0"></td><td width="7" bgcolor="#a9a5de" valign="top" align="left"><img src="images/line_sm.gif" width="7" height="3" border="0"></td><td width="70" valign="top" align="left"><img src="images/line_light.gif" width="70" height="3" border="0"></td><td width="468" valign="top" align="left"><img src="images/line_light.gif" width="468" height="3" border="0"></td><td width="120" valign="top" align="left"><img src="images/dotTrans.gif" border="0" width="1" height="1"></td></tr><tr><td bgcolor="#7270c2" valign="top" align="left"><img src="images/dotTrans.gif" width="10" height="10" border="0"></td><td bgcolor="#7270c2" valign="top" align="left" width="150"><img src="images/dotTrans.gif" width="1" height="2" border="0"><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Old releases</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="releases-old.html"><span class="subMenuOff">General</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="1.2/index.html"><span class="subMenuOff">Release 1.2</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="1.3cr1/index.html"><span class="subMenuOff">Release 1.3rc1</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Main</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="index.html"><span class="subMenuOff">Home</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="about.html"><span class="subMenuOff">About</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="features.html"><span class="subMenuOff">Features</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="download.html"><span class="subMenuOff">Download</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="dependencies.html"><span class="subMenuOff">Dependencies</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="reference-guide.html"><span class="subMenuOffHighlighted">Reference guide</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="javadoc/overview-summary.html"><span class="subMenuOff">JavaDoc</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="maven-integration.html"><span class="subMenuOff">Maven 2 support</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="maven-archetypes.html"><span class="subMenuOff">Maven 2 archetypes</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="schema.html"><span class="subMenuOff">DTD &amp; Schemas</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="changes.html"><span class="subMenuOff">Recent HTML changes</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="news.html"><span class="subMenuOff">News Archive</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="http://castor.codehaus.org/rss/castor-announce.xml"><span class="subMenuOff">RSS news feed</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Development/Support</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="lists.html"><span class="subMenuOff">Mailing Lists</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="scm.html"><span class="subMenuOff">SVN/JIRA</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="contributing.html"><span class="subMenuOff">Contributing</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="support.html"><span class="subMenuOff">Support</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="http://bamboo.ci.codehaus.org/browse/CASTOR"><span class="subMenuOff">Continuous builds</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="professional-services.html"><span class="subMenuOffHighlighted">Prof. services</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Related projects</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="spring-orm-integration.html"><span class="subMenuOff">Spring ORM support</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="spring-xml-intro.html"><span class="subMenuOff">Spring XML factories</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ws-integration.html"><span class="subMenuOff">WS frameworks</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">XML</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="xml-link.html"><span class="subMenuOff">XML</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">XML Code Generator</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="srcgen-link.html"><span class="subMenuOff">XML Code Generator</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">JDO</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-introduction.html"><span class="subMenuOff">Introduction</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-starter-tutorial.html"><span class="subMenuOff">First steps</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo.html"><span class="subMenuOff">Using JDO</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-database-conf.html"><span class="subMenuOff">JDO Config</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="types.html"><span class="subMenuOff">Types</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-mapping.html"><span class="subMenuOff">JDO Mapping</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-faq.html"><span class="subMenuOff">JDO FAQ</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-examples.html"><span class="subMenuOff">JDO Examples</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-howto.html"><span class="subMenuOffHighlighted">JDO HOW-TOs</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-tips-tricks.html"><span class="subMenuOffHighlighted">Tips &amp; Tricks</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-other-features.html"><span class="subMenuOff">Other Features</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-self-executable-examples.html"><span class="subMenuOff">JDO sample JAR</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Tools</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="schemaGen-anttask.html"><span class="subMenuOff">Schema generator</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">Advanced JDO</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-caching-detail.html"><span class="subMenuOff">Caching</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="oql.html"><span class="subMenuOff">OQL</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="locking.html"><span class="subMenuOff">Trans. &amp; Locks</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="design-persist.html"><span class="subMenuOff">Design</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="key-generator.html"><span class="subMenuOff">KeyGen</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="long-transact.html"><span class="subMenuOff">Long Trans.</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="nested-attr.html"><span class="subMenuOff">Nested Attrs.</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-pooling.html"><span class="subMenuOff">Pooling Examples</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="postgresql-blobs.html"><span class="subMenuOff">LOBs</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="jdo-best-practice.html"><span class="subMenuOff">Best practice</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">DDL Generator</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen.html"><span class="subMenuOff">Using DDL Generator</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen-properties.html"><span class="subMenuOff">Properties</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen-anttask.html"><span class="subMenuOff">Ant task</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ddlgen-mapping.html"><span class="subMenuOff">Type Mapping</span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">More</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="presentations.html"><span class="subMenuOff">Presentations</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="examples.html"><span class="subMenuOff">The Examples</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="extras.html"><span class="subMenuOff">3rd Party Tools</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="test-framework.html"><span class="subMenuOff">JDO Tests</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="ctf.html"><span class="subMenuOff">XML Tests</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="conf-lib.html"><span class="subMenuOff">Configuration</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href=""><span class="subMenuOff"></span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="http://www.java.net/"><span class="subMenuOff"><img src="images/javanet_button_90.gif" border="0"></span></a></td></tr></table><br><table border="0" cellpadding="0" cellspacing="0"><tr><td valign="top" align="left"><span class="subMenuOn">About</span></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="license.html"><span class="subMenuOff">License</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="user-experience.html"><span class="subMenuOffHighlighted">User stories</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="contributors.html"><span class="subMenuOff">Contributors</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="marketplace.html"><span class="subMenuOff">Marketplace</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="status.html"><span class="subMenuOff">Status, Todo</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="release-notes.html"><span class="subMenuOff">Changelog</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="library.html"><span class="subMenuOff">Library</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="contacts.html"><span class="subMenuOff">Contact</span></a></td></tr><tr><td valign="top" align="left">
+        &nbsp;
+                <a href="origins.html"><span class="subMenuOff">Project Name</span></a></td></tr></table><br></td><td width="7" bgcolor="#a9a5de" valign="top" align="left">&nbsp;</td><td width="70" valign="top" align="left">&nbsp;</td><td rowspan="4" width="468" valign="top"><table cols="2" rows="2" border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td valign="top" align="left"><br><img border="0" height="34" hspace="0" src="images/castor.gif" vspace="0" width="115"><br><img border="0" height="10" hspace="0" src="images/dotTrans.gif"></td><td width="120" height="5" valign="top" align="right"></td></tr></table><p></p><p></p><br><h2 align="center">Castor JDO - Best practice</h2><HR size="1"><span class="bodyGrey"><b><a href="#Introduction">Introduction</a></b><br></span><span class="bodyGrey"><b><a href="#General-suggestions">General suggestions</a></b><br></span><span class="bodyGrey"><b><a href="#Further-optimization">Further optimization</a></b><br></span><HR size="1"><br><a name="Introduction"><h2>Introduction</h2></a>
+
+    <p><span class="bodyGrey">There's many users of Castor JDO out there, who (want to) use Castor JDO in 
+       in high-volume applications. To fine-tune Castor for such environment, it is 
+       necessary to understand many of the product features in detail and to be able to
+       balance their use according to the application needs. Even though many of these
+       features are detailed in various places, people have frequently been asking 
+       for a 'best practise' document, a document that brings together these technical 
+       topics (in one place) and presents them as a set of easy-to-use recipes.</span></p>
+       
+    <p><span class="bodyGrey">Please be aware that this document is <i>under construction</i>, but still we 
+       believe that - even when in its conception phase - it provides valuable
+       information to users of Castor JDO.</span></p>
+
+    <a name="General-suggestions"><h2>General suggestions</h2></a>
+
+        <p><span class="bodyGrey">Let's start with some general suggestions that you should have a look at. Please don't 
+           feel upset if some are really primitive but there may be users reading this document
+		   that are not aware of them.</span></p>
+          
+        <ol>
+            <li><p><span class="bodyGrey">Switch to version 0.9.9 of Castor as we have fixed some 100+ bugs that may cause
+                some of your problems.</span></p>
+
+                <p><span class="bodyGrey">Sidenote: Performance has, generally, improved recently. If you're not seeing 
+                   performance improvements, then it's worth spending some time thinking about why.</span></p></li>
+
+            <li><p><span class="bodyGrey">Initialize your JDOManager instance once and reuse it all over your application.
+				Don't reuse the Database instances. Creating them is inexpensive, and JDBC rules
+				state that one thread &lt;-&gt; one JDBC connection is the rule. Do not multithread inside 
+                of a Database instance; as a corrolary, do not multithread on a single JDBC 
+                connection.</span></p></li>            
+                
+            <li><p><span class="bodyGrey">Use a Datasource instead of a Driver configuration as they enable connection 
+                pooling which gives you a great performance improvement.</span></p>
+
+                <p><span class="bodyGrey">We highly suggest DBCP, here, with the beneficial use of prepared statement caching.</span></p>
+
+                <p><span class="bodyGrey">Should you be running on a system where read performance is critical, feel free 
+                   to take the SQL code generated by castor, and dumped to logs during the DB 
+                   mapping load in debug output, and turn those into stored procedures that you 
+                   then invoke via SQL CALL to perform those loads; however, I find personally that 
+                   stored procedures would be a minimal improvement over the DBCP prepared statement 
+                   cache; your mileage may vary. db.load() has performance benefits that are 
+                   worth keeping, IMO, and the pleasure of having pretty stored procedures in your 
+                   database is far outweighed by the nightmare of change management.</span></p>
+
+                <p><span class="bodyGrey">Have a look at 
+                   <a href="jdo-pooling.html#Jakarta-Commons-DBCP---BasicDataSource">the HTML docs</a>
+                   for Jakarta DBCP, which has details about how to use and configure DBCP 
+                   with Castor and Tomcat.</span></p>
+                   
+                <p><span class="bodyGrey"><b>Note:</b> 'prepared statement caches' refer to the fact that DBCP is a JDBC 
+                   3.0-compliant product, and as such has to support caching of prepared
+                   statements. This basically allows the JDBC driver to maintain a pool 
+                   of prepared statements across all connections, a feature that has been added
+                   to the JDBC specification with release 3.0 only.</span></p>
+
+                <p><span class="bodyGrey">DBCP setup is generally outside of the scope of this list, but basically, here's 
+                   my two cent description:</span></p>
+
+                <p><span class="bodyGrey"><table border="0" cellpadding="2" cellspacing="2"><tr><td colspan="2" height="5"></td></tr><span class="bodyGrey">
+                    <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">Use tomcat 5.5, because mucking about in server.xml sucks. For those of you 
+                        working with Tomcat 4.1.x, there's no need to muck about in server.xml, either. 
+                        Afaik, a web app can be deployed using a web app descriptor copied into 
+                        $TOMCAT_HOME/webapps, which is the place top define anything specific
+                        to a web app context. Details can vary, of course.</span></td></tr>
+                    <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">Create a META-INF directory in your WAR deploy scripts, and put a 
+                        context.xml in it.</span></td></tr>
+                    <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">In that context.xml, describe all of the things you want to be made available 
+                        via JNDI to your application. These include things like UserTransaction and 
+                        TransactionManager (for those of us using JOTM), all your database connection 
+                        pools as datasources, etc. You can also add your JDO factory here, should you 
+                        choose to do so.</span></td></tr>
+                     <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">Configure Castor to load those JNDI names to retrieve connections.</span></td></tr>
+                    </span></table></span></p>
+                    
+                 <p><span class="bodyGrey">Hit the deploy button, and bob's your uncle.</span></p>
+            </li>
+            
+            <li><p><span class="bodyGrey">Always commit or rollback your transactions and close your Database instances 
+                properly; also in fail situations.</span></p>
+			    <p><span class="bodyGrey"><b>Note:</b>Just the obvious general rule on Java objects that hold resources: Don't
+				   wait for the VM to finalize to have something happen to your objects when you 
+                   could have released critical resources at the appropriate point in the codebase.</span></p></li>
+            <li><p><span class="bodyGrey">Keep your transactions as short as possible. If you have an open 
+                transaction that holds a write lock on an object no other transaction can get 
+                a write lock on the same object which will lead to a LockNotGrantedException.</span></p>
+
+            <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+execute() {
+   Database db = jdo.getDatabase();
+   db.begin();
+   // query objects from database with read only
+   db.commit();
+   db.close();
+
+   // do some time consuming processing with the data
+
+   Database db = jdo.getDatabase();
+   db.begin();
+   // use db.load() to load the objects you need to change again
+   // create, update or delete some objects
+   db.commit();
+   db.close();
+}</pre></span></td></tr></table></td></tr></table><p></p>
+
+                <p><span class="bodyGrey">It doesn't make sense to make a own transaction for every change you want to
+                   do to an object as this will slow down your application. On the other hand
+                   if you have transactions with lots of objects involved taking an valuable
+                   amonth of time you may consider to split this transactions to reduce the
+                   time an object is locked.</span></p>
+
+                <p><span class="bodyGrey">Also keep in mind that folks using lockmode of DBLocked do FOR UPDATE calls 
+                   on things they read while the transaction is open; if you're using dblocked 
+                   mode, be aware of how your application does things. If you're in one of the 
+                   other modes, locks happen inside castor, and it's your responsibility to 
+                   always use the right access mode when accessing content.</span></p>
+
+                <p><span class="bodyGrey">If you can, for example, decide at the API layer whether or not an operation 
+                   is going to ever need to modify an object, and know that you will only ever 
+                   use an instance in read only mode, load objects with access mode read only, 
+                   and not shared.</span></p>
+
+                <p><span class="bodyGrey">Limit use of read-write objects to situations in which it is likely you will 
+                   need to perform updates.</span></p>
+
+                <p><span class="bodyGrey">Imagine, for a moment, that these transactions were in DBLocked mode - 
+                   transactions which translate directly into locks on the database.</span></p>
+
+                <p><span class="bodyGrey">If you're opening something up for modification on the DB - marking it as 
+                   select FOR UPDATE - then that row will be locked until you commit. The database 
+                   would prevent any other transaction that wants to touch that row from doing 
+                   anything to it, and it would block on your transaction - deadlock at the 
+                   SQL level.</span></p>
+
+                <p><span class="bodyGrey">Castor does the same things internally for its own access modes - Shared and 
+                   Exclusive. Each has different locking semantics; having good performance 
+                   means understanding those locking semantics.</span></p>
+
+                <p><span class="bodyGrey">For example - read only transactions (should be) cheap. So there's no issue
+				   with holding those transactions open a long time; because they only translate,
+				   for an instant, into a lock. The lock is released the moment the load is completed
+				   and the object is dropped into read-only state within your transaction; read only
+				   operations therefore operate, pretty much, without locking.</span></p>
+
+                <p><span class="bodyGrey">The lock is of course acquired because you might also have it in SHARED or 
+                   EXCLUSIVE mode on another thread - and that read-only operation isn't safe 
+                   until those transactions close.</span></p>
+
+                <p><span class="bodyGrey">Once the lock is released, you're lock-free again, so the transaction basically 
+                   has nothing in it that needs anything doing.</span></p>
+
+                <p><span class="bodyGrey">That's not to say that holding transactions open is good practice - but 
+                   transactions should always be thought of as cheap to create and destroy and 
+                   expensive to hold on to - never do heavy computation inside of one, unless 
+                   you're willing to live with the consequences that arise from holding 
+                   transactions on object sets that others might need to access.</span></p></li>
+                   
+           <li><p><span class="bodyGrey">Query or load your objects <b>read only</b> whenever possible. Even if castor creates 
+                  a lock on them this does not prevent other threads from reading or writing them. 
+                  Read only queries are also about 7 times faster compared with default shared mode.</span></p>
+
+                <p><span class="bodyGrey">for queries:</span></p>
+
+                <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+String oql = "select o from FooBar o";
+Query query = db.getOQLQuery(oql);
+QueryResults results = query.execute(Database.ReadOnly);</pre></span></td></tr></table></td></tr></table><p></p>
+
+                <p><span class="bodyGrey">to load an object by its identity:</span></p>
+
+                <p></p><table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#7270c2"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="4" bgcolor="#ededed"><tr><td><span class="bodyBlack"><pre>
+Integer id = new Integer(7);
+Foo foo = (Foo) db.load(Foo.class, id, Database.ReadOnly);</pre></span></td></tr></table></td></tr></table><p></p>
+
+                <p><span class="bodyGrey">Default accessmode is evaluated as follows:</span></p>
+                
+                <p><span class="bodyGrey">
+                    <table border="0" cellpadding="2" cellspacing="2"><tr><td colspan="2" height="5"></td></tr><span class="bodyGrey">
+                        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">if specified castor uses access mode from db.load() or query.execute(),</span></td></tr>
+                        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">if this is not available it takes access mode specified in class mapping,</span></td></tr>
+                        <tr><td align="left" valign="top" width="10">-</td><td align="left" valign="top"><span class="bodyGrey">if nothing is specified in mapping it defaults to shared.</span></td></tr>
+                    </span></table>
+                </span></p>
+
+                <p><span class="bodyGrey">One cannot stress how important this is: If 99% of your application never writes 
+                   an object, and you as a programmer know it won't, then do something about it. 
+                   If you're in a situation where you want the object to be read-only most of 
+                   the time, and only want a writable every now and then, do so just-in-time 
+                   by performing a load-modify-store operation in a single transaction for the 
+                   shareable you want.</span></p>
+
+                <p><span class="bodyGrey">In other words: Don't use read-write objects unless you know you're likely 
+                   to want to write them.</span></p></li>
+        
+           <li><p><span class="bodyGrey">If there is a possibility you should prefer <tt>Database.load(Class, object)</tt> over 
+                  <tt>Query.execute(String)</tt>. I suggest that as <tt>load()</tt> first tries to load the 
+                  requested object from cache and only retrieves it from database when it is 
+                  not available there. When executing queries with <tt>Query.execute()</tt> the object 
+                  will always be loaded from database without looking at the cache. You may 
+                  gain a improvement by a factor of 10 and more when changing from 
+                  <tt>Query.execute()</tt> to <tt>Database.load()</tt>.</span></p></li>
+        </ol> 
+        
+    <a name="Further-optimization"><h2>Further optimization</h2></a>
+
+        <p><span class="bodyGrey">We hope above suggestions help you to resolve the problems you have. If you still 
+           need more performance there are areas of improvement that are more difficult to 
+           resolve. For further ideas to improve your applications performance you should
+		   take a loock at out performance test suite (PTF) which you can find in Castor's
+		   source distribution under: src/tests/ptf/jdo.</span></p>
+
+        <p><span class="bodyGrey">Now, there's lots left to do - there is still the issue, for example, of dependent 
+           objects being slightly sub-optimal in performance both in terms of the SQL that 
+           gets generated and the way it gets managed - but there will be improvements over 
+           time to the way that this and other operations are performed.</span></p>
+
+        <p><span class="bodyGrey">But performance should be good right now. If it isn't, you'll need to think about 
+           whether you are using the optimal set of operations. No environment can predict 
+           your requirements - hinting to the system when objects can be safely assumed to 
+           be read-only is vital to a high-performance implementation.</span></p>
+
+    </td></tr><tr height="5"><td width="10" height="5" bgcolor="#7270c2" valign="top" align="left">&nbsp;</td><td height="5" bgcolor="#7270c2" valign="top" width="150"><img src="images/dotTrans.gif" width="1" height="15" border="0"><br><img src="images/line_sm.gif" width="105" height="3" border="0" align="right"></td><td width="7" height="5" bgcolor="#a9a5de" valign="top" align="left">&nbsp;</td><td width="70" height="5" valign="top" align="left">&nbsp;</td><td width="120" height="5" valign="top" align="left">&nbsp;</td></tr><tr><td width="10" height="5" bgcolor="#7270c2" valign="top" align="left">&nbsp;</td><td bgcolor="#7270c2" valign="top" align="left" width="150"></td><td width="7" bgcolor="#a9a5de" valign="top" align="left"><img src="images/dotTrans.gif" width="1" height="25" border="0"></td><td width="70" valign="top" align="left"><img src="images/dotTrans.gif" width="1" height="25" border="0"></td><td width="120" valign="top" align="left">&nbsp;</td></tr><tr height="5"><td width="10" rowspan="2" height="100%" bgcolor="#7270c2" valign="bottom" align="left"><img src="images/stripes1.gif" width="10" height="125" border="0"></td><td rowspan="2" height="100%" bgcolor="#7270c2" valign="bottom" align="left" width="150"><img src="images/stripe105.gif" width="105" height="125" border="0"></td><td width="7" rowspan="2" height="100%" bgcolor="#a9a5de" valign="top" align="left">&nbsp;</td><td width="70" height="100%" valign="top" align="left">&nbsp;</td><td width="120" height="100%" valign="top" align="left">&nbsp;</td></tr><tr height="5"><td width="70" height="25" valign="top" align="left">&nbsp;</td><td width="400" height="25" valign="bottom" align="left"><br><br><img src="images/line_light.gif" border="0" width="400" height="3"><br><p></p><span class="bodyGrey"><small><notice>
+    Copyright &copy; 1999-2005 <a href="http://www.exolab.org">ExoLab Group</a>, Intalio Inc.,
+    and Contributors.  All rights reserved.
+  </notice><br>&nbsp;<br></small><small><notice>
+    Java, EJB, JDBC, JNDI, JTA, Sun, Sun Microsystems are trademarks or registered
+    trademarks of Sun Microsystems, Inc. in the United States and in other
+    countries. XML, XML Schema, XSLT and related standards are trademarks or registered
+    trademarks of MIT, INRIA, Keio or others, and a product of the World Wide Web
+    Consortium. All other product names mentioned herein are trademarks of their respective
+    owners.
+  </notice><br>&nbsp;<br></small></span><p></p>
+          &nbsp;
+        </td><td width="120" height="25" valign="top" align="left">&nbsp;</td></tr></table><script type="text/javascript">
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script><script type="text/javascript">
+        var pageTracker = _gat._getTracker("UA-3544187-1");
+        pageTracker._trackPageview();
+    </script></body></html>
