@@ -22,7 +22,6 @@ import java.util.TreeMap;
 import org.pathwayeditor.businessobjects.management.INotationSubsystemPool;
 import org.pathwayeditor.businessobjects.notationsubsystem.INotation;
 import org.pathwayeditor.businessobjects.notationsubsystem.INotationSubsystem;
-import org.pathwayeditor.graphicsengine.stubs.notationsubsystem.StubNotationSubSystem;
 import org.pathwayeditor.notations.annotator.services.AnnotatorNotationSubsystem;
 import org.pathwayeditor.notations.sbgnpd.services.SbgnPdNotationSubsystem;
 
@@ -32,7 +31,7 @@ public class NotationSubsystemPool implements INotationSubsystemPool {
     
     public NotationSubsystemPool(){
         this.lookup = new TreeMap<INotation, INotationSubsystem>();
-        addNotationSubsystem(new StubNotationSubSystem());//FIXME add real code and remove stub
+//        addNotationSubsystem(new StubNotationSubSystem());//FIXME add real code and remove stub
         addNotationSubsystem(new SbgnPdNotationSubsystem());
         addNotationSubsystem(new AnnotatorNotationSubsystem());
     }

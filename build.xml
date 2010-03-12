@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<project name="NotationSubsystemBuild" default="buildAll">
+	<property name="build.dir" value="./antBuild" />
+	<property name="build.dir.src" value="${build.dir}/src"/>
+	<property name="build.dir.tests" value="${build.dir}/test"/>
+	<property name="build.dir.stubs" value="${build.dir}/stubs"/>
+	<property name="docs.build.dir" value="./doc"/>
+	<property name="src.dir" value="./src" />
+	<property name="test.dir" value="./test" />
+	<property name="jar.dir" value="./jars" />
+	<property name="jar.name.bin" value="GraphicsEngine.jar" />
+	<property name="jar.name.src" value="GraphicsEngine-src.jar" />
+	<property name="jar.name.doc" value="GraphicsEngine-docs.jar" />
+	<property name="lib.dir" value="./libs" />
+	<property name="target" value="1.6" />
+	<property name="source" value="1.6" />
+
+	<path id="classpath">
+		<pathelement location="${build.dir.src}" />
+		<pathelement location="${lib.dir}/apache-log4j-1.2.15/log4j-1.2.15.jar" />
+		<pathelement location="${lib.dir}/compoundgraph/CompoundGraph.jar" />
+		<pathelement location="${lib.dir}/antlr-3.2/lib/antlr-2.7.7.jar"/>
+		<pathelement location="${lib.dir}/antlr-3.2/lib/antlr-3.1.2.jar" />
+		<pathelement location="${lib.dir}/antlr-3.2/lib/stringtemplate-3.2.jar" />
+		<pathelement location="${lib.dir}/antlr-3.2/lib/runtime-3.1.2.jar" />
+		<pathelement location="${lib.dir}/castor-1.3/castor-1.3-codegen.jar" />
+		<pathelement location="${lib.dir}/castor-1.3/castor-1.3-xml-schema.jar" />
+		<pathelement location="${lib.dir}/castor-1.3/castor-1.3-core.jar" />
+		<pathelement location="${lib.dir}/castor-1.3/castor-1.3.jar" />
+		<pathelement location="${lib.dir}/castor-1.3/castor-1.3-anttasks.jar" />
+		<!-- pathelement location="${lib.dir}/castor-1.3/lib/cglib-full-2.0.2.jar" />
+		<pathelement location="${lib.dir}/castor-1.3/lib/commons-collections-3.1.jar" />
+		<pathelement location="${lib.dir}/castor-1.3/lib/commons-lang-2.1.jar" />
+		<pathelement location="${lib.dir}/castor-1.3/lib/commons-logging-1.1.jar" / -->
+		<pathelement location="${lib.dir}/commons-logging-1.1.1/commons-logging-1.1.1.jar" />
+		<pathelement location="${lib.dir}/toolkit/toolkit.jar" />
+		<pathelement location="${lib.dir}/sbgnPd/SbgnPdNotation.jar" />
+		<pathelement location="${lib.dir}/compoundGraph/CompoundGraph.jar" />
+		<pathelement location="${lib.dir}/businessObjects/BusinessObjects.jar" />
+		<pathelement location="${lib.dir}/annotator/AnnotatorNotation.jar" />
+	</path>
+
+	<path id="test.classpath">
+		<path refid="classpath" />
+		<pathelement location="${build.dir.src}" />
+		<pathelement location="${build.dir.tests}" />
+		<pathelement location="${build.dir.stubs}" />
+	</path>
+
+
+	<target name="mkdirs" depends="" description="--> Creates the directories used in the build">
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${build.dir.src}" />
+		<mkdir dir="${build.dir.tests}" />
+		<mkdir dir="${build.dir.stubs}" />
+	</target>
+
+	<target name="clean">
+		<delete dir="${build.dir}">
+		</delete>
+	</target>
+
+	<target name="buildAll" description="main build task" depends="buildSrc, api-docs,buildTest, jarAll" />
+
+	<target name="buildTest" description="test build task" depends="buildSrc">
+		<javac source="${source}" target="${target}" classpathref="test.classpath" srcdir="${test.dir}" debug="true" debuglevel="lines,vars,source" destdir="${build.dir.tests}">
+			<exclude name="**"/> <!-- everything is excluded at the moment -->
+		</javac>
+		<copy todir="${build.dir.tests}">
+			<fileset dir="${test.dir}">
+				<exclude name="**/*.java" />
+				<exclude name="**/*.class" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="buildSrc" description="src build task" depends="mkdirs">
+		<!--echo>running with classpath ${toString:classpath}</echo-->
+		<javac classpathref="classpath" srcdir="${src.dir}" source="${source}" target="${target}" debug="true" debuglevel="lines,vars,source" destdir="${build.dir.src}">
+		</javac>
+		<copy todir="${build.dir.src}">
+			<fileset dir="${src.dir}">
+				<exclude name="**/*.java" />
+				<exclude name="**/*.class" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="api-docs" depends="buildSrc">
+		<javadoc access="package" author="true" splitindex="true" use="true" version="true" source="${source}" sourcepath="${src.dir}" destdir="${docs.build.dir}" doctitle="Business Objects API" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false">
+			<classpath refid="classpath" />
+			<fileset dir="${src.dir}">
+				<exclude name="**/*.properties"/>
+			</fileset>
+		</javadoc>
+	</target>
+
+	<target name="tests" depends="buildTest">
+		<delete dir="${build.dir}/test/logs" />
+		<mkdir dir="${build.dir}/test/logs" />
+		<!-- <echo>running with classpath ${toString:test.classpath}</echo>-->
+		<!--
+			run test cases. All test class names should end in 'Test' to avoid
+			inclusion of inner classes.
+		-->
+		<junit printsummary="yes" haltonfailure="no" fork="yes">
+			<classpath>
+				<path refid="test.classpath" />
+			</classpath>
+			<batchtest todir="${build.dir}/test/logs">
+				<formatter type="xml" />
+				<fileset dir="${build.dir.tests}">
+					<include name="**/*Test.class" />
+				</fileset>
+			</batchtest>
+		</junit>
+
+		<!-- clean report directory -->
+		<delete dir="${build.dir}/test/junitReports" />
+		<mkdir dir="${build.dir}/test/junitReports" />
+
+		<!-- generate report -->
+		<junitreport todir="${build.dir}/test/junitReports">
+			<fileset dir="${build.dir}/test/logs" includes="**/*.xml" />
+			<report todir="${build.dir}/test/junitReports" />
+		</junitreport>
+	</target>
+
+	<target name="jarAll" depends="jar-bin, jar-src, jar-docs"/>
+	
+	<target name="init-jardirs">
+		<delete dir="${jar.dir}" />
+		<mkdir dir="${jar.dir}" />
+	</target>
+	
+	<target name="jar-bin" depends="buildSrc, init-jardirs">
+		<jar destfile="${jar.dir}/${jar.name.bin}">
+			<fileset dir="${build.dir.src}" />
+		</jar>
+	</target>
+	
+	<target name="jar-src" depends="init-jardirs">
+		<jar destfile="${jar.dir}/${jar.name.src}">
+			<fileset dir="${src.dir}" />
+		</jar>
+	</target>
+	
+	<target name="jar-docs" depends="api-docs">
+		<mkdir dir="${jar.dir}" />
+		<jar destfile="${jar.dir}/${jar.name.doc}">
+			<fileset dir="${docs.build.dir}" />
+		</jar>
+	</target>
+				
+    <target name="runnable-jar" description="A runnable jar that contains all dependencies" >
+        <jar destfile="${jar.dir}/graphicsEngineUi.jar" filesetmanifest="mergewithoutmain">
+            <manifest>
+                <attribute name="Main-Class" value="org.pathwayeditor.curationtool.CurationToolUI"/>
+                <attribute name="Class-Path" value="."/>
+            </manifest>
+            <fileset dir="${build.dir.src}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${lib.dir}/apache-log4j-1.2.15/log4j-1.2.15.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${lib.dir}/businessObjects/BusinessObjects.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${lib.dir}/compoundGraph/CompoundGraph.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${lib.dir}/antlr-3.2/antlr-3.2.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${lib.dir}/sbgnPd/SbgnPdNotation.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${lib.dir}/toolkit/toolkit.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${lib.dir}/castor-1.3/castor-1.3-core.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${lib.dir}/castor-1.3/castor-1.3-xml-schema.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${lib.dir}/castor-1.3/castor-1.3-xml.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${lib.dir}/castor-1.3/castor-1.3.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${lib.dir}/commons-logging-1.1.1/commons-logging-1.1.1.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${lib.dir}/annotator/AnnotatorNotation.jar"/>
+        </jar>
+    </target>
+
+</project>
