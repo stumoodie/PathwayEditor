@@ -223,18 +223,6 @@ public class SelectionRecord implements ISelectionRecord {
 		return this.controllerMapping.get(next);
 	}
 
-//	void createNodeSubgraphSelection(INodeController nodeController) {
-//		INodeSelection retVal = new NodeSelection(SelectionType.SUBGRAPH, nodeController);
-//		this.selections.add(retVal);
-//		this.controllerMapping.put(nodeController, retVal);
-//	}
-//
-//	void createLinkSubgraphSelection(ILinkController linkController) {
-//		ILinkSelection retVal = new LinkSelection(SelectionType.SUBGRAPH, linkController);
-//		this.selections.add(retVal);
-//		this.controllerMapping.put(linkController, retVal);
-//	}
-
 	@Override
 	public boolean containsSelection(IDrawingPrimitiveController controller) {
 		return this.controllerMapping.containsKey(controller);

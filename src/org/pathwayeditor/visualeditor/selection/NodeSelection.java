@@ -109,7 +109,7 @@ public class NodeSelection extends Selection implements INodeSelection {
 				}
 			}
 			// central model is check last as the other blocks take precedence
-			if(retVal == null && centralModel.containsPoint(point)){
+			if(retVal == null && centralModel != null && centralModel.containsPoint(point)){
 				retVal = centralModel;
 			}
 		}

@@ -21,7 +21,7 @@ import org.pathwayeditor.visualeditor.geometry.LinkPointDefinition;
 
 public class LinkController extends DrawingPrimitiveController implements ILinkController {
 //	private static final double LINE_SEGMENT_INTERSECTION_TOLERANCE = 1.0;
-//	private static final double LINE_HIT_TOLERENCE = 5.0;
+//	private static final double LINE_HIT_TOLERENCE = 50.0;
 	//	private final Logger logger = Logger.getLogger(this.getClass());
 	private ILinkAttribute linkAttribute;
 	private ILinkPointDefinition linkDefinition;
@@ -200,28 +200,29 @@ public class LinkController extends DrawingPrimitiveController implements ILinkC
 
 	@Override
 	public Envelope getDrawnBounds() {
-		double minX = Double.MAX_VALUE;
-		double maxX = Double.MIN_VALUE;
-		double minY = Double.MAX_VALUE;
-		double maxY = Double.MIN_VALUE;
-		final double halfLineHeight = this.linkAttribute.getLineWidth();// + LINE_HIT_TOLERENCE;
-		Iterator<Point> pointIter = this.linkDefinition.pointIterator();
-		while(pointIter.hasNext()){
-			Point p = pointIter.next();
-			minX = Math.min(minX, p.getX()-halfLineHeight);
-			maxX = Math.max(maxX, p.getX()+halfLineHeight);
-			minY = Math.min(minY, p.getY()-halfLineHeight);
-			maxY = Math.max(maxY, p.getY()+halfLineHeight);
-		}
-		return new Envelope(minX, minY, maxX-minX, maxY-minY);
+		return this.linkDefinition.getBounds();
+//		double minX = Double.MAX_VALUE;
+//		double maxX = Double.MIN_VALUE;
+//		double minY = Double.MAX_VALUE;
+//		double maxY = Double.MIN_VALUE;
+//		final double halfLineHeight = this.linkAttribute.getLineWidth();// + LINE_HIT_TOLERENCE;
+//		Iterator<Point> pointIter = this.linkDefinition.pointIterator();
+//		while(pointIter.hasNext()){
+//			Point p = pointIter.next();
+//			minX = Math.min(minX, p.getX()-halfLineHeight);
+//			maxX = Math.max(maxX, p.getX()+halfLineHeight);
+//			minY = Math.min(minY, p.getY()-halfLineHeight);
+//			maxY = Math.max(maxY, p.getY()+halfLineHeight);
+//		}
+//		return new Envelope(minX, minY, maxX-minX, maxY-minY);
 	}
 
 	@Override
 	public boolean containsPoint(Point p) {
 		boolean retVal = false;
 		if(getDrawnBounds().containsPoint(p)){
-			final double halfLineHeight = this.linkAttribute.getLineWidth();// + LINE_HIT_TOLERENCE;
-			retVal = this.linkDefinition.containsPoint(p, halfLineHeight); 
+//			final double halfLineHeight = this.linkAttribute.getLineWidth() + LINE_HIT_TOLERENCE;
+			retVal = this.linkDefinition.containsPoint(p);//, halfLineHeight); 
 		}
 		return retVal;
 	}

@@ -10,10 +10,12 @@ import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LineStyle;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.RGB;
 import org.pathwayeditor.figure.geometry.Dimension;
+import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.LineSegment;
 import org.pathwayeditor.figure.geometry.Point;
 
 public class LinkPointDefinition implements ILinkPointDefinition {
+	private static final double LINE_HIT_TOLERENCE = 5.0;
 	private static final int SRC_TERM_DIM = 2;
 	private static final int SRC_IDX = 0;
 	private static final double DEFAULT_LINE_WIDTH = 1.0;
@@ -60,6 +62,24 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 		tgtTermDefn = new GraphicalLinkTerminusDefinition(other.tgtTermDefn);
 	}
 
+	@Override
+	public Envelope getBounds(){
+		double minX = Double.MAX_VALUE;
+		double maxX = Double.MIN_VALUE;
+		double minY = Double.MAX_VALUE;
+		double maxY = Double.MIN_VALUE;
+		final double halfLineHeight = this.lineWidth + LINE_HIT_TOLERENCE;
+		Iterator<Point> pointIter = this.pointList.iterator();
+		while(pointIter.hasNext()){
+			Point p = pointIter.next();
+			minX = Math.min(minX, p.getX()-halfLineHeight);
+			maxX = Math.max(maxX, p.getX()+halfLineHeight);
+			minY = Math.min(minY, p.getY()-halfLineHeight);
+			maxY = Math.max(maxY, p.getY()+halfLineHeight);
+		}
+		return new Envelope(minX, minY, maxX-minX, maxY-minY);
+	}
+	
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.graphicsengine.ILinkPointDefinition#setSrcAnchorPosition(org.pathwayeditor.figure.geometry.Point)
 	 */
@@ -231,12 +251,13 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 	}
 
 	@Override
-	public boolean containsPoint(Point p, double lineWidthTolerence) {
+	public boolean containsPoint(Point p){//, double lineWidthTolerence) {
 		boolean retVal = false;
+		final double halfLineHeight = this.lineWidth + LINE_HIT_TOLERENCE;
 		Iterator<LineSegment> lineSegIter = this.lineSegIterator();
 		while(lineSegIter.hasNext() && !retVal){
 			LineSegment seg = lineSegIter.next();
-			retVal = seg.containsPoint(p, lineWidthTolerence);
+			retVal = seg.containsPoint(p, halfLineHeight);
 		}
 		return retVal;
 	}

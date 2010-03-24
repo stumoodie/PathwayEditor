@@ -15,22 +15,30 @@ import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.drawingprimitives.IBendPoint;
 import org.pathwayeditor.businessobjects.drawingprimitives.ICanvas;
 import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElementSelection;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkEdge;
+import org.pathwayeditor.businessobjects.drawingprimitives.ISelectionFactory;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LineStyle;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.RGB;
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.Point;
+import org.pathwayeditor.visualeditor.behaviour.IDefaultPopupActions;
 import org.pathwayeditor.visualeditor.behaviour.IEditingOperation;
+import org.pathwayeditor.visualeditor.behaviour.ILinkBendPointPopupActions;
 import org.pathwayeditor.visualeditor.behaviour.ILinkOperation;
+import org.pathwayeditor.visualeditor.behaviour.ILinkPopupActions;
 import org.pathwayeditor.visualeditor.behaviour.IMarqueeOperation;
 import org.pathwayeditor.visualeditor.behaviour.IMouseBehaviourController;
+import org.pathwayeditor.visualeditor.behaviour.IOperationFactory;
 import org.pathwayeditor.visualeditor.behaviour.IResizeOperation;
+import org.pathwayeditor.visualeditor.behaviour.IShapePopupActions;
 import org.pathwayeditor.visualeditor.behaviour.MouseBehaviourController;
 import org.pathwayeditor.visualeditor.commands.CommandStack;
 import org.pathwayeditor.visualeditor.commands.CompoundCommand;
 import org.pathwayeditor.visualeditor.commands.CreateBendPointCommand;
+import org.pathwayeditor.visualeditor.commands.DeleteBendPointCommand;
 import org.pathwayeditor.visualeditor.commands.ICommand;
 import org.pathwayeditor.visualeditor.commands.ICommandStack;
 import org.pathwayeditor.visualeditor.commands.ICompoundCommand;
@@ -40,6 +48,7 @@ import org.pathwayeditor.visualeditor.commands.ReparentSelectionCommand;
 import org.pathwayeditor.visualeditor.commands.ResizeNodeCommand;
 import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveController;
 import org.pathwayeditor.visualeditor.controller.INodeController;
+import org.pathwayeditor.visualeditor.controller.IRootController;
 import org.pathwayeditor.visualeditor.controller.IViewControllerStore;
 import org.pathwayeditor.visualeditor.controller.ViewControllerStore;
 import org.pathwayeditor.visualeditor.feedback.FeedbackModel;
@@ -74,6 +83,10 @@ public class PathwayEditor extends JPanel {
 	private IFeedbackModel feedbackModel;
 	private boolean isOpen = false;
 	private CommonParentCalculator newParentCalc;
+	private IShapePopupActions shapePopupMenuResponse;
+	private ILinkPopupActions linkPopupMenuResponse;
+	private IDefaultPopupActions defaultPopupMenuResponse;
+	private ILinkBendPointPopupActions linkBendpointPopupResponse;
 	
 	public PathwayEditor(){
 		super();
@@ -121,7 +134,7 @@ public class PathwayEditor extends JPanel {
 		
 		Envelope canvasBounds = viewModel.getCanvasBounds();
 		((ShapePane)this.shapePane).setSize((int)Math.ceil(canvasBounds.getDimension().getWidth()), (int)Math.ceil(canvasBounds.getDimension().getHeight()));
-        IEditingOperation editOperation = new IEditingOperation(){
+        final IEditingOperation editOperation = new IEditingOperation(){
 
 			@Override
 			public void moveFinished(Point delta, ReparentingStateType reparentingState) {
@@ -184,7 +197,7 @@ public class PathwayEditor extends JPanel {
 			}
 
         };
-        IResizeOperation resizeOperation = new IResizeOperation() {
+        final IResizeOperation resizeOperation = new IResizeOperation() {
 			
 			@Override
 			public void resizeStarted() {
@@ -214,7 +227,7 @@ public class PathwayEditor extends JPanel {
 				return canContinueToResize(originDelta, resizeDelta);
 			}
 		};
-		ILinkOperation linkOperation = new ILinkOperation(){
+		final ILinkOperation linkOperation = new ILinkOperation(){
 			@Override
 			public void moveBendPointFinished(ISelectionHandle bendPointHandle, Point position) {
 				if(logger.isTraceEnabled()){
@@ -273,7 +286,7 @@ public class PathwayEditor extends JPanel {
 			}
 			
 		};
-		IMarqueeOperation marqueeOperation = new IMarqueeOperation() {
+		final IMarqueeOperation marqueeOperation = new IMarqueeOperation() {
 			@Override
 			public void selectionStarted(Point initialPosn) {
 				feedbackModel.clear();
@@ -301,7 +314,103 @@ public class PathwayEditor extends JPanel {
 				shapePane.updateView();
 			}
 		};
-        this.editBehaviourController = new MouseBehaviourController(shapePane, editOperation, resizeOperation, linkOperation, marqueeOperation);
+		this.shapePopupMenuResponse = new IShapePopupActions() {
+			
+			@Override
+			public void delete() {
+				deleteSelection();
+				shapePane.getSelectionRecord().clear();
+				shapePane.updateView();
+			}
+		};
+		this.linkPopupMenuResponse = new ILinkPopupActions() {
+			
+			@Override
+			public void delete() {
+				deleteSelection();
+				shapePane.getSelectionRecord().clear();
+				shapePane.updateView();
+			}
+		};
+		this.linkBendpointPopupResponse = new ILinkBendPointPopupActions() {
+			
+			@Override
+			public void deleteBendPoint(int bpIdx) {
+				deleteBendpoint(bpIdx);
+				restoreSelection();
+				shapePane.updateView();
+			}
+			
+			@Override
+			public void delete() {
+				deleteSelection();
+				shapePane.getSelectionRecord().clear();
+				shapePane.updateView();
+			}
+
+		};
+		this.defaultPopupMenuResponse = new IDefaultPopupActions() {
+			
+			@Override
+			public void selectAll() {
+				selectAllElements();
+				shapePane.updateView();
+			}
+
+			@Override
+			public void delete() {
+				deleteSelection();
+				shapePane.getSelectionRecord().clear();
+				shapePane.updateView();
+			}
+
+			@Override
+			public boolean isDeleteActionValid() {
+				return selectionRecord.numSelected() > 0;
+			}
+		};
+        this.editBehaviourController = new MouseBehaviourController(shapePane, new IOperationFactory() {
+			
+			@Override
+			public IShapePopupActions getShapePopupMenuResponse() {
+				return shapePopupMenuResponse;
+			}
+			
+			@Override
+			public IResizeOperation getResizeOperation() {
+				return resizeOperation;
+			}
+			
+			@Override
+			public IEditingOperation getMoveOperation() {
+				return editOperation;
+			}
+			
+			@Override
+			public IMarqueeOperation getMarqueeOperation() {
+				return marqueeOperation;
+			}
+			
+			@Override
+			public ILinkPopupActions getLinkPopupMenuResponse() {
+				return linkPopupMenuResponse;
+			}
+			
+			@Override
+			public ILinkOperation getLinkOperation() {
+				return linkOperation;
+			}
+			
+			@Override
+			public IDefaultPopupActions getDefaultPopupMenuResponse() {
+				return defaultPopupMenuResponse;
+			}
+
+			@Override
+			public ILinkBendPointPopupActions getLinkBendpointPopupMenuResponse() {
+				return linkBendpointPopupResponse;
+			}
+		});
         this.selectionChangeListener = new ISelectionChangeListener() {
 			
 			@Override
@@ -311,7 +420,54 @@ public class PathwayEditor extends JPanel {
 		};
 		this.initialise();
 	}
-	
+
+	protected void deleteBendpoint(int bpIdx) {
+		ILinkSelection linkSelection = this.selectionRecord.getUniqueLinkSelection(); 
+		ICommand cmd = new DeleteBendPointCommand(linkSelection.getPrimitiveController().getDrawingElement(), bpIdx);
+		this.commandStack.execute(cmd);
+	}
+
+	protected void selectAllElements() {
+		Iterator<IDrawingPrimitiveController> primIter = this.viewModel.drawingPrimitiveIterator();
+		boolean firstTime = true;
+		while(primIter.hasNext()){
+			IDrawingPrimitiveController controller = primIter.next();
+			if(!(controller instanceof IRootController)){
+				if(firstTime){
+					selectionRecord.setPrimarySelection(controller);
+					firstTime = false;
+				}
+				else{
+					selectionRecord.addSecondarySelection(controller);
+				}
+			}
+		}
+	}
+
+	protected void deleteSelection() {
+		Iterator<INodeSelection> nodeSelectionIter = selectionRecord.selectedNodesIterator();
+		ISelectionFactory selectionFact = null;
+		while(nodeSelectionIter.hasNext()){
+			INodeSelection selectedNode = nodeSelectionIter.next();
+			if(selectionFact == null){
+				selectionFact = selectedNode.getPrimitiveController().getViewModel().getDomainModel().newSelectionFactory();
+			}
+			selectionFact.addDrawingNode(selectedNode.getPrimitiveController().getDrawingElement().getCurrentDrawingElement());
+		}
+		Iterator<ILinkSelection> linkSelectionIter = selectionRecord.selectedLinksIterator();
+		while(linkSelectionIter.hasNext()){
+			ILinkSelection selectedLink = linkSelectionIter.next();
+			if(selectionFact == null){
+				selectionFact = selectedLink.getPrimitiveController().getViewModel().getDomainModel().newSelectionFactory();
+			}
+			selectionFact.addLink(selectedLink.getPrimitiveController().getDrawingElement().getCurrentDrawingElement());
+		}
+		if(selectionFact != null){
+			IDrawingElementSelection seln = selectionFact.createGeneralSelection();
+			seln.getModel().removeSubgraph(seln);
+		}
+	}
+
 	protected void makeSelectionFromMarquee(Envelope bounds) {
 		IIntersectionCalculator intersectionCal = this.viewModel.getIntersectionCalculator();
 		SortedSet<IDrawingPrimitiveController> selectedController = intersectionCal.findIntersectingController(bounds);

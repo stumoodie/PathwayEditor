@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LineStyle;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.RGB;
+import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.LineSegment;
 import org.pathwayeditor.figure.geometry.Point;
 
@@ -53,7 +54,7 @@ public interface ILinkPointDefinition {
 	 */
 	LineSegment getLinkDirection();
 
-	boolean containsPoint(Point p, double lineWidthTolerance);
+	boolean containsPoint(Point p);
 
 	void translate(Point translation);
 
@@ -72,4 +73,6 @@ public interface ILinkPointDefinition {
 	void setLineStyle(LineStyle lineStyle);
 
 	void setLineWidth(double lineWidth);
+
+	Envelope getBounds();
 }

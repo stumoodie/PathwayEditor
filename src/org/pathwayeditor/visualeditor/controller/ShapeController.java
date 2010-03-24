@@ -105,7 +105,7 @@ public class ShapeController extends NodeController implements IShapeController 
 	}
 
 	public void activate(){
-		addListeners(this.domainNode, figureController);
+		addListeners(this.domainNode);
 		this.isActive = true;
 	}
 	
@@ -186,13 +186,13 @@ public class ShapeController extends NodeController implements IShapeController 
 		if(linkController.getLinkDefinition().numBendPoints() > 0){
 			// there are bend-points so we use the bp as the reference position
 			Point refPoint = linkController.getLinkDefinition().getSourceLineSegment().getTerminus();
-			this.calculateSourceAnchor(linkController, srcNode, tgtNode, refPoint);
+			this.calculateSourceAnchor(linkController, srcNode, refPoint);
 		}
 		else{
 			// otherwise we just use the centre positions of the shapes
 			// as they will be after the move is completed
-			this.calculateSourceAnchor(linkController, srcNode, tgtNode, tgtNode.getConvexHull().getCentre());
-			this.calculateTargetAnchor(linkController, srcNode, tgtNode, srcNode.getConvexHull().getCentre());
+			this.calculateSourceAnchor(linkController, srcNode, tgtNode.getConvexHull().getCentre());
+			this.calculateTargetAnchor(linkController, tgtNode, srcNode.getConvexHull().getCentre());
 		}
 	}
 
@@ -200,17 +200,17 @@ public class ShapeController extends NodeController implements IShapeController 
 		if(linkController.getLinkDefinition().numBendPoints() > 0){
 			// there are bend-points so we use the bp as the reference position
 			Point refPoint = linkController.getLinkDefinition().getTargetLineSegment().getTerminus();
-			this.calculateTargetAnchor(linkController, srcNode, tgtNode, refPoint);
+			this.calculateTargetAnchor(linkController, tgtNode, refPoint);
 		}
 		else{
 			// otherwise we just use the centre positions of the shapes
 			// as they will be after the move is completed
-			this.calculateTargetAnchor(linkController, srcNode, tgtNode, srcNode.getConvexHull().getCentre());
-			this.calculateSourceAnchor(linkController, srcNode, tgtNode, tgtNode.getConvexHull().getCentre());
+			this.calculateTargetAnchor(linkController, tgtNode, srcNode.getConvexHull().getCentre());
+			this.calculateSourceAnchor(linkController, srcNode, tgtNode.getConvexHull().getCentre());
 		}
 	}
 	
-	private void calculateSourceAnchor(ILinkController linkController, IShapeController srcNode, IShapeController tgtNode, Point refPosn){
+	private void calculateSourceAnchor(ILinkController linkController, IShapeController srcNode, Point refPosn){
 		Point newAnchorLocn = getRevisedAnchorPosition(srcNode, refPosn);
 		linkController.getDrawingElement().getSourceTerminus().setLocation(newAnchorLocn);
 		if(logger.isTraceEnabled()){
@@ -218,7 +218,7 @@ public class ShapeController extends NodeController implements IShapeController 
 		}
 	}
 	
-	private void calculateTargetAnchor(ILinkController linkController, IShapeController srcNode, IShapeController tgtNode, Point refPosn){
+	private void calculateTargetAnchor(ILinkController linkController, IShapeController tgtNode, Point refPosn){
 		Point newAnchorLocn = getRevisedAnchorPosition(tgtNode, refPosn);
 		linkController.getDrawingElement().getTargetTerminus().setLocation(newAnchorLocn);
 		if(logger.isTraceEnabled()){
@@ -234,7 +234,7 @@ public class ShapeController extends NodeController implements IShapeController 
 	}
 	
 	
-	private void addListeners(IShapeAttribute attribute, IFigureController figureController) {
+	private void addListeners(IShapeAttribute attribute) {
 		attribute.addChangeListener(shapePropertyChangeListener);
 		Iterator<IAnnotationProperty> iter = attribute.propertyIterator();
 		while(iter.hasNext()){

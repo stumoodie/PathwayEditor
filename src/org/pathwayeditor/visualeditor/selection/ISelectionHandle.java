@@ -5,7 +5,7 @@ import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveController;
 
 public interface ISelectionHandle extends Comparable<ISelectionHandle> {
-	enum SelectionHandleType { Central, N, NE, E, SE, S, SW, W, NW, None, LinkMidPoint, LinkBendPoint };
+	enum SelectionHandleType { Central, N, NE, E, SE, S, SW, W, NW, None, LinkMidPoint, LinkBendPoint, Link };
 	
 	void drawShape(IHandleShapeDrawer drawer);
 	

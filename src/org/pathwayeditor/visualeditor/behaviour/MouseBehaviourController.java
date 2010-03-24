@@ -4,143 +4,93 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.awt.geom.AffineTransform;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.SortedSet;
+
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 
 import org.apache.log4j.Logger;
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.IShapePane;
 import org.pathwayeditor.visualeditor.behaviour.IKeyboardResponse.CursorType;
-import org.pathwayeditor.visualeditor.behaviour.IMouseFeedbackResponse.StateType;
 import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveController;
 import org.pathwayeditor.visualeditor.geometry.IIntersectionCalculator;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
+import org.pathwayeditor.visualeditor.selection.ISelectionRecord;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle.SelectionHandleType;
 
 public class MouseBehaviourController implements IMouseBehaviourController {
 	private final Logger logger = Logger.getLogger(this.getClass());
 	private MouseListener mouseSelectionListener;
-	private MouseMotionListener mouseMotionListener;
+//	private MouseMotionListener mouseMotionListener;
 	private MouseListener popupMenuListener;
 	private KeyListener keyListener;
-//	private final IIntersectionCalculator intCalc;
 	private IShapePane shapePane;
 	private Map<SelectionHandleType, IDragResponse> dragResponseMap;
 	private IKeyboardResponse keyboardResponseMap;
 	private Map<SelectionHandleType, IMouseFeedbackResponse> mouseResponseMap;
-	private IDragResponse currDragResponse;
-	private IMouseFeedbackResponse currMouseFeedbackResponse;
+//	private IDragResponse currDragResponse;
+//	private IMouseFeedbackResponse currMouseFeedbackResponse;
+	private Map<SelectionHandleType, IPopupMenuResponse> popupMenuMap;
+	private final DragListener dragListener;
+	private final MouseFeedbackListener mouseFeedbackListener;
+	private final SelectionFeedbackListener selectionFeedbackListener;
 
-	public MouseBehaviourController(IShapePane pane, IEditingOperation moveOp, IResizeOperation resizeOp, ILinkOperation linkOp, IMarqueeOperation marqueeOp){
+	public MouseBehaviourController(IShapePane pane, IOperationFactory opFactory){
 		this.shapePane = pane;
 		this.dragResponseMap = new HashMap<SelectionHandleType, IDragResponse>();
 		this.mouseResponseMap = new HashMap<SelectionHandleType, IMouseFeedbackResponse>();
-		this.keyboardResponseMap = new KeyboardResponse(moveOp);
-		initialiseDragResponses(moveOp, resizeOp, linkOp, marqueeOp);
+		this.keyboardResponseMap = new KeyboardResponse(opFactory.getMoveOperation());
+		this.popupMenuMap = new HashMap<SelectionHandleType, IPopupMenuResponse>(); 
+		initialiseDragResponses(opFactory);
 		initialiseMouseResponse();
-//        this.intCalc = intCalc;
-        this.mouseSelectionListener = new MouseListener(){
-
-			public void mouseClicked(MouseEvent e) {
-				if(e.getButton() == MouseEvent.BUTTON1){
-					if(!e.isShiftDown() && !e.isAltDown()){
-						Point location = getAdjustedMousePosition(e.getPoint().getX(), e.getPoint().getY());
-						IDrawingPrimitiveController nodeController = findDrawingNodeAt(location);
-						if(nodeController != null){
-							shapePane.getSelectionRecord().setPrimarySelection(nodeController);
-						}
-						else{
-							shapePane.getSelectionRecord().clear();
-						}
-					}
-					else if(e.isShiftDown() && !e.isAltDown()){
-						Point location = getAdjustedMousePosition(e.getPoint().getX(), e.getPoint().getY());
-						IDrawingPrimitiveController nodeController = findDrawingNodeAt(location);
-						if(nodeController != null){
-							shapePane.getSelectionRecord().addSecondarySelection(nodeController);
-						}
-					}
-				}
-			}
-
-			public void mouseEntered(MouseEvent e) {
-				
-			}
-
-			public void mouseExited(MouseEvent e) {
-				
-			}
-
-			public void mousePressed(MouseEvent e) {
-			}
-
-			public void mouseReleased(MouseEvent e) {
-				if(currDragResponse != null){
-					currDragResponse.dragFinished();
-					currMouseFeedbackResponse.reset();
-					currDragResponse = null;
-					shapePane.updateView();
-				}
-				Point location = getAdjustedMousePosition(e.getPoint().getX(), e.getPoint().getY());
-				setCurrentCursorResponse(location);
-				e.getComponent().setCursor(currMouseFeedbackResponse.getCurrentCursor());
-			}
-        	
-        };
-        this.mouseMotionListener = new MouseMotionListener(){
-			private ISelectionHandle currSelectionHandle;
-
-			public void mouseDragged(MouseEvent e) {
-				if(e.getButton() == MouseEvent.BUTTON1){
-					Point location = getAdjustedMousePosition(e.getPoint().getX(), e.getPoint().getY());
-					if(currDragResponse == null){
-						currSelectionHandle = null;
-						currSelectionHandle = shapePane.getSelectionRecord().findSelectionModelAt(location);
-						if(currSelectionHandle != null){
-							currDragResponse = dragResponseMap.get(currSelectionHandle.getType());
-							currMouseFeedbackResponse = mouseResponseMap.get(currSelectionHandle.getType());
-						}
-						else{
-							currDragResponse = dragResponseMap.get(SelectionHandleType.None);
-						}
-					}
-					if(currDragResponse != null){
-						if(currDragResponse.isDragOngoing()){
-							if(currDragResponse.canContinueDrag(location)){
-								currDragResponse.dragContinuing(location);
-								if(currDragResponse.canReparent()){
-									currMouseFeedbackResponse.changeState(StateType.REPARENTING);
-									logger.trace("Setting hand cursor as reparenting enabled");
-								}
-								else if(currDragResponse.canMove()){
-									logger.trace("Can move, but cannot reparent. Setting to default for current location");
-									currMouseFeedbackResponse.changeState(StateType.DEFAULT);
-								}
-								else{
-									currMouseFeedbackResponse.changeState(StateType.FORBIDDEN);
-									logger.trace("Move is forbidden");
-								}
-							}
-						}
-						else{
-							currDragResponse.dragStarted(currSelectionHandle, location);
-						}
-					}
-				}
-				e.getComponent().setCursor(currMouseFeedbackResponse.getCurrentCursor());
-			}
-
-			public void mouseMoved(MouseEvent e) {
-				Point location = getAdjustedMousePosition(e.getPoint().getX(), e.getPoint().getY());
-				setCurrentCursorResponse(location);
-				e.getComponent().setCursor(currMouseFeedbackResponse.getCurrentCursor());
-			}
-        	
-        };
+		initialisePopupMenuResponse(opFactory);
+//        this.mouseSelectionListener = new MouseListener(){
+//
+//			public void mouseClicked(MouseEvent e) {
+////				if(e.getButton() == MouseEvent.BUTTON1){
+////					if(!e.isShiftDown() && !e.isAltDown()){
+////						Point location = getAdjustedMousePosition(e.getPoint().getX(), e.getPoint().getY());
+////						IDrawingPrimitiveController nodeController = findDrawingElementAt(location);
+////						if(nodeController != null){
+////							shapePane.getSelectionRecord().setPrimarySelection(nodeController);
+////						}
+////						else{
+////							shapePane.getSelectionRecord().clear();
+////						}
+////					}
+////					else if(e.isShiftDown() && !e.isAltDown()){
+////						Point location = getAdjustedMousePosition(e.getPoint().getX(), e.getPoint().getY());
+////						IDrawingPrimitiveController nodeController = findDrawingElementAt(location);
+////						if(nodeController != null){
+////							shapePane.getSelectionRecord().addSecondarySelection(nodeController);
+////						}
+////					}
+////				}
+//			}
+//
+//			public void mouseEntered(MouseEvent e) {
+//				
+//			}
+//
+//			public void mouseExited(MouseEvent e) {
+//				
+//			}
+//
+//			public void mousePressed(MouseEvent e) {
+//			}
+//
+//			public void mouseReleased(MouseEvent e) {
+//			}
+//        	
+//        };
+        this.dragListener = new DragListener(this);
+        this.mouseFeedbackListener = new MouseFeedbackListener(this);
+        this.selectionFeedbackListener = new SelectionFeedbackListener(this);
         this.keyListener = new KeyListener(){
 
 			@Override
@@ -191,12 +141,26 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
-//				if(e.isPopupTrigger()){
-//					JPopupMenu popup = currMouseFeedbackResponse.getPopMenu();
-//					if(popup != null){
-//						popup.show((JPanel)shapePane, e.getX(), e.getY());
-//					}
-//				}
+				if(e.isPopupTrigger()){
+					SelectionHandleType popupSelectionHandle = SelectionHandleType.None;
+					Point location = getAdjustedMousePosition(e.getPoint().getX(), e.getPoint().getY());
+					IDrawingPrimitiveController nodeController = findDrawingElementAt(location);
+					if(nodeController != null){
+						if(!shapePane.getSelectionRecord().isNodeSelected(nodeController)){
+							// not selected so select first before do anything else
+							shapePane.getSelectionRecord().setPrimarySelection(nodeController);
+						}
+					}
+					ISelectionHandle currSelectionHandle = shapePane.getSelectionRecord().findSelectionModelAt(location);
+					if(currSelectionHandle != null){
+						popupSelectionHandle = currSelectionHandle.getType();
+					}
+					IPopupMenuResponse response = popupMenuMap.get(popupSelectionHandle);
+					JPopupMenu popup = response.getPopupMenu(currSelectionHandle);
+					if(popup != null){
+						popup.show((JPanel)shapePane, e.getX(), e.getY());
+					}
+				}
 			}
 
 			@Override
@@ -207,7 +171,7 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 	}
 	
 
-	private Point getAdjustedMousePosition(double originalMouseX, double originalMouseY){
+	public Point getAdjustedMousePosition(double originalMouseX, double originalMouseY){
 		AffineTransform paneTransform = this.shapePane.getLastUsedTransform();
 		Point retVal = null;
 		if(paneTransform == null){
@@ -217,12 +181,6 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 			retVal = new Point((originalMouseX-paneTransform.getTranslateX())/paneTransform.getScaleX(), (originalMouseY-paneTransform.getTranslateY())/paneTransform.getScaleY()); 
 		}
 		return retVal;  
-	}
-	
-	private void setCurrentCursorResponse(Point location){
-		ISelectionHandle selectionModel = shapePane.getSelectionRecord().findSelectionModelAt(location);
-		SelectionHandleType selectionRegion = selectionModel != null ? selectionModel.getType() : SelectionHandleType.None;
-		currMouseFeedbackResponse = mouseResponseMap.get(selectionRegion);
 	}
 	
 	private void initialiseMouseResponse(){
@@ -238,9 +196,30 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 		this.mouseResponseMap.put(SelectionHandleType.LinkMidPoint, new MouseFeedbackResponse(SelectionHandleType.LinkMidPoint));
 		this.mouseResponseMap.put(SelectionHandleType.LinkBendPoint, new MouseFeedbackResponse(SelectionHandleType.LinkBendPoint));
 		this.mouseResponseMap.put(SelectionHandleType.None, new DefaultMouseFeedbackResponse());
+		this.mouseResponseMap.put(SelectionHandleType.Link, new DefaultMouseFeedbackResponse());
 	}
 	
-	private void initialiseDragResponses(IEditingOperation moveOp, IResizeOperation resizeOp, ILinkOperation linkOp, IMarqueeOperation marqueeOp) {
+	private void initialisePopupMenuResponse(IOperationFactory opFactory){
+		this.popupMenuMap.put(SelectionHandleType.Central, new ShapePopupMenuResponse(opFactory.getShapePopupMenuResponse()));
+		this.popupMenuMap.put(SelectionHandleType.N, new ShapePopupMenuResponse(opFactory.getShapePopupMenuResponse()));
+		this.popupMenuMap.put(SelectionHandleType.NE, new ShapePopupMenuResponse(opFactory.getShapePopupMenuResponse()));
+		this.popupMenuMap.put(SelectionHandleType.E, new ShapePopupMenuResponse(opFactory.getShapePopupMenuResponse()));
+		this.popupMenuMap.put(SelectionHandleType.SE, new ShapePopupMenuResponse(opFactory.getShapePopupMenuResponse()));
+		this.popupMenuMap.put(SelectionHandleType.S, new ShapePopupMenuResponse(opFactory.getShapePopupMenuResponse()));
+		this.popupMenuMap.put(SelectionHandleType.SW, new ShapePopupMenuResponse(opFactory.getShapePopupMenuResponse()));
+		this.popupMenuMap.put(SelectionHandleType.W, new ShapePopupMenuResponse(opFactory.getShapePopupMenuResponse()));
+		this.popupMenuMap.put(SelectionHandleType.NW, new ShapePopupMenuResponse(opFactory.getShapePopupMenuResponse()));
+		this.popupMenuMap.put(SelectionHandleType.Link, new LinkPopupMenuResponse(opFactory.getLinkPopupMenuResponse()));
+		this.popupMenuMap.put(SelectionHandleType.LinkMidPoint, new LinkPopupMenuResponse(opFactory.getLinkPopupMenuResponse()));
+		this.popupMenuMap.put(SelectionHandleType.LinkBendPoint, new LinkBendpointPopupMenuResponse(opFactory.getLinkBendpointPopupMenuResponse()));
+		this.popupMenuMap.put(SelectionHandleType.None, new DefaultPopupMenuResponse(opFactory.getDefaultPopupMenuResponse()));
+	}
+	
+	private void initialiseDragResponses(IOperationFactory opFactory) {
+		IEditingOperation moveOp = opFactory.getMoveOperation();
+		IResizeOperation resizeOp = opFactory.getResizeOperation();
+		ILinkOperation linkOp = opFactory.getLinkOperation();
+		IMarqueeOperation marqueeOp = opFactory.getMarqueeOperation();
 		this.dragResponseMap.put(SelectionHandleType.Central, new CentralHandleResponse(moveOp));
 		this.dragResponseMap.put(SelectionHandleType.N, new ResizeHandleResponse(new INewPositionCalculator() {
 			private Point delta;
@@ -429,6 +408,7 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 		this.dragResponseMap.put(SelectionHandleType.LinkMidPoint, new LinkMidPointResponse(linkOp));
 		this.dragResponseMap.put(SelectionHandleType.LinkBendPoint, new LinkBendPointResponse(linkOp));
 		this.dragResponseMap.put(SelectionHandleType.None, new MarqueeSelectionHandleResponse(marqueeOp));
+		this.dragResponseMap.put(SelectionHandleType.Link, new MarqueeSelectionHandleResponse(marqueeOp));
 	}
 
 	private void handleKeyRelease(){
@@ -446,7 +426,7 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 		}
 	}
 	
-	private IDrawingPrimitiveController findDrawingNodeAt(Point location) {
+	public IDrawingPrimitiveController findDrawingElementAt(Point location) {
 		IIntersectionCalculator intCalc = this.shapePane.getViewModel().getIntersectionCalculator();
 		intCalc.setFilter(null);
 		SortedSet<IDrawingPrimitiveController> hits = intCalc.findDrawingPrimitivesAt(new Point(location.getX(), location.getY()));
@@ -462,14 +442,52 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 	public void activate(){
 		this.shapePane.addKeyListener(this.keyListener);
         this.shapePane.addMouseListener(this.mouseSelectionListener);
-        this.shapePane.addMouseMotionListener(this.mouseMotionListener);
+//        this.shapePane.addMouseMotionListener(this.mouseMotionListener);
+        this.shapePane.addMouseMotionListener(this.dragListener);
+        this.shapePane.addMouseListener(this.dragListener);
+        this.shapePane.addMouseMotionListener(this.mouseFeedbackListener);
         this.shapePane.addMouseListener(popupMenuListener);
+        this.shapePane.addMouseListener(selectionFeedbackListener);
+        for(IPopupMenuResponse popupResponse : this.popupMenuMap.values()){
+        	popupResponse.activate();
+        }
 	}
 
 	@Override
 	public void deactivate(){
 		this.shapePane.removeKeyListener(this.keyListener);
         this.shapePane.removeMouseListener(this.mouseSelectionListener);
-        this.shapePane.removeMouseMotionListener(this.mouseMotionListener);
+        this.shapePane.removeMouseMotionListener(this.mouseFeedbackListener);
+        this.shapePane.removeMouseMotionListener(this.dragListener);
+        this.shapePane.removeMouseListener(this.dragListener);
+        this.shapePane.removeMouseListener(selectionFeedbackListener);
+//        this.shapePane.removeMouseMotionListener(this.mouseMotionListener);
+        for(IPopupMenuResponse popupResponse : this.popupMenuMap.values()){
+        	popupResponse.deactivate();
+        }
+	}
+
+
+	@Override
+	public IDragResponse getDragResponse(SelectionHandleType type) {
+		return this.dragResponseMap.get(type);
+	}
+
+
+	@Override
+	public IMouseFeedbackResponse getMouseFeedbackResponse(SelectionHandleType type) {
+		return this.mouseResponseMap.get(type);
+	}
+
+
+	@Override
+	public ISelectionRecord getSelectionRecord() {
+		return this.shapePane.getSelectionRecord();
+	}
+
+
+	@Override
+	public void updateView() {
+		this.shapePane.updateView();
 	}
 }

@@ -36,6 +36,7 @@ public class LinkSelection extends Selection implements ILinkSelection {
 			this.handles.add(SelectionHandle.createLinkBendpointRegion(this, controller, bp, bpIdx));
 			bpIdx++;
 		}
+		this.handles.add(SelectionHandle.createLinkRegion(this, controller));
 	}
 
 	@Override

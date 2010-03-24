@@ -99,4 +99,9 @@ public abstract class SelectionHandle implements ISelectionHandle {
 	public static ISelectionHandle createLinkBendpointRegion(ISelection linkSelection, ILinkController controller, IBendPoint bp, int bpIdx) {
 		return new LinkBendPointSelectionHandle(linkSelection, controller, bp, bpIdx);
 	}
+
+
+	public static ISelectionHandle createLinkRegion(LinkSelection linkSelection, ILinkController controller) {
+		return new LinkSelectionHandle(linkSelection, controller);
+	}
 }

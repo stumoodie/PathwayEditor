@@ -20,6 +20,7 @@ import org.pathwayeditor.visualeditor.selection.ILinkBendPointHandleShape;
 import org.pathwayeditor.visualeditor.selection.ILinkMidLineHandleShape;
 import org.pathwayeditor.visualeditor.selection.ILinkSelection;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
+import org.pathwayeditor.visualeditor.selection.LinkSelectionHandle;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle.SelectionHandleType;
 
 public class SelectionLinkDrawer  {
@@ -59,7 +60,11 @@ public class SelectionLinkDrawer  {
 
 
 	public void paint(Graphics2D g2d){
-		drawLineSegments(g2d);
+//		drawLineSegments(g2d);
+		IHandleShapeDrawer handleDrawer = new HandleDrawer(g2d);
+		for(ISelectionHandle handle : this.selection.getSelectionHandle(SelectionHandleType.Link)){
+			handle.drawShape(handleDrawer);
+		}
 		ILinkController linkEdge = this.selection.getPrimitiveController();
 		ILinkTerminus srcTermDefaults = linkEdge.getDrawingElement().getSourceTerminus();
 		ILinkTerminus tgtTermDefaults = linkEdge.getDrawingElement().getTargetTerminus();
@@ -82,7 +87,6 @@ public class SelectionLinkDrawer  {
 		g2d.setStroke(this.createStroke(1.0));
 		g2d.draw(tgtSeln);
 		g2d.setTransform(before);
-		IHandleShapeDrawer handleDrawer = new HandleDrawer(g2d);
 		for(ISelectionHandle handle : this.selection.getSelectionHandle(SelectionHandleType.LinkMidPoint)){
 			handle.drawShape(handleDrawer);
 		}
@@ -91,20 +95,20 @@ public class SelectionLinkDrawer  {
 		}
 	}
 	
-	private void drawLineSegments(Graphics2D g2d){
-		ILinkController linkEdge = this.selection.getPrimitiveController();
-		ILinkPointDefinition linkDefinition = linkEdge.getLinkDefinition();
-		g2d.setColor(Color.RED);
-		g2d.setStroke(this.createStroke(1.0));
-
-		Iterator<LineSegment> lineIterator = linkDefinition.drawnLineSegIterator();
-		while(lineIterator.hasNext()){
-			LineSegment lineSegment = lineIterator.next();
-			Line2D.Double line = new Line2D.Double(lineSegment.getOrigin().getX(), lineSegment.getOrigin().getY(),
-					lineSegment.getTerminus().getX(), lineSegment.getTerminus().getY());
-			g2d.draw(line);
-		}
-	}
+//	private void drawLineSegments(Graphics2D g2d){
+//		ILinkController linkEdge = this.selection.getPrimitiveController();
+//		ILinkPointDefinition linkDefinition = linkEdge.getLinkDefinition();
+//		g2d.setColor(Color.RED);
+//		g2d.setStroke(this.createStroke(1.0));
+//
+//		Iterator<LineSegment> lineIterator = linkDefinition.drawnLineSegIterator();
+//		while(lineIterator.hasNext()){
+//			LineSegment lineSegment = lineIterator.next();
+//			Line2D.Double line = new Line2D.Double(lineSegment.getOrigin().getX(), lineSegment.getOrigin().getY(),
+//					lineSegment.getTerminus().getX(), lineSegment.getTerminus().getY());
+//			g2d.draw(line);
+//		}
+//	}
 
 	private Stroke createStroke(double lineWidth){
 		Stroke stroke = new BasicStroke((float)lineWidth, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_ROUND);
@@ -154,6 +158,22 @@ public class SelectionLinkDrawer  {
 			g2d.setColor(lineCol);
 			g2d.setStroke(createStroke(1.0));
 			g2d.draw(pg);
+		}
+
+		@Override
+		public void drawHandle(LinkSelectionHandle linkSelectionHandle) {
+			ILinkController linkEdge = (ILinkController)linkSelectionHandle.getSelection().getPrimitiveController();
+			ILinkPointDefinition linkDefinition = linkEdge.getLinkDefinition();
+			g2d.setColor(Color.RED);
+			g2d.setStroke(createStroke(1.0));
+
+			Iterator<LineSegment> lineIterator = linkDefinition.drawnLineSegIterator();
+			while(lineIterator.hasNext()){
+				LineSegment lineSegment = lineIterator.next();
+				Line2D.Double line = new Line2D.Double(lineSegment.getOrigin().getX(), lineSegment.getOrigin().getY(),
+						lineSegment.getTerminus().getX(), lineSegment.getTerminus().getY());
+				g2d.draw(line);
+			}
 		}
 	}
 }
