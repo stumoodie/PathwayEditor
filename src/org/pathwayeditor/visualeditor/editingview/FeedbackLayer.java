@@ -1,4 +1,4 @@
-package org.pathwayeditor.visualeditor;
+package org.pathwayeditor.visualeditor.editingview;
 
 import java.awt.AlphaComposite;
 import java.awt.Composite;
@@ -9,16 +9,15 @@ import org.pathwayeditor.figure.figuredefn.FigureDrawer;
 import org.pathwayeditor.figure.figuredefn.IFigureController;
 import org.pathwayeditor.figure.figuredefn.IGraphicsEngine;
 import org.pathwayeditor.graphicsengine.Java2DGraphicsEngine;
-import org.pathwayeditor.graphicsengine.LinkDrawer;
 import org.pathwayeditor.visualeditor.feedback.IFeedbackLink;
 import org.pathwayeditor.visualeditor.feedback.IFeedbackModel;
 import org.pathwayeditor.visualeditor.feedback.IFeedbackNode;
 
-public class FeedbackDrawer implements IFeedbackDrawer {
+public class FeedbackLayer implements IFeedbackLayer {
 	private final IFeedbackModel feedbackModel;
 	
 	
-	public FeedbackDrawer(IFeedbackModel viewControllerStore) {
+	public FeedbackLayer(IFeedbackModel viewControllerStore) {
 		this.feedbackModel = viewControllerStore;
 	}
 
@@ -61,5 +60,10 @@ public class FeedbackDrawer implements IFeedbackDrawer {
 	@Override
 	public IFeedbackModel getFeedbackModel() {
 		return this.feedbackModel;
+	}
+
+	@Override
+	public LayerType getLayerType() {
+		return LayerType.FEEDBACK;
 	}
 }

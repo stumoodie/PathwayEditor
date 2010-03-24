@@ -15,9 +15,12 @@ import javax.swing.JPopupMenu;
 import org.apache.log4j.Logger;
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Point;
-import org.pathwayeditor.visualeditor.IShapePane;
 import org.pathwayeditor.visualeditor.behaviour.IKeyboardResponse.CursorType;
 import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveController;
+import org.pathwayeditor.visualeditor.editingview.IDomainModelLayer;
+import org.pathwayeditor.visualeditor.editingview.ISelectionLayer;
+import org.pathwayeditor.visualeditor.editingview.IShapePane;
+import org.pathwayeditor.visualeditor.editingview.LayerType;
 import org.pathwayeditor.visualeditor.geometry.IIntersectionCalculator;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
 import org.pathwayeditor.visualeditor.selection.ISelectionRecord;
@@ -144,14 +147,15 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 				if(e.isPopupTrigger()){
 					SelectionHandleType popupSelectionHandle = SelectionHandleType.None;
 					Point location = getAdjustedMousePosition(e.getPoint().getX(), e.getPoint().getY());
+					ISelectionLayer selectionLayer = shapePane.getLayer(LayerType.SELECTION);
 					IDrawingPrimitiveController nodeController = findDrawingElementAt(location);
 					if(nodeController != null){
-						if(!shapePane.getSelectionRecord().isNodeSelected(nodeController)){
+						if(!selectionLayer.getSelectionRecord().isNodeSelected(nodeController)){
 							// not selected so select first before do anything else
-							shapePane.getSelectionRecord().setPrimarySelection(nodeController);
+							selectionLayer.getSelectionRecord().setPrimarySelection(nodeController);
 						}
 					}
-					ISelectionHandle currSelectionHandle = shapePane.getSelectionRecord().findSelectionModelAt(location);
+					ISelectionHandle currSelectionHandle = selectionLayer.getSelectionRecord().findSelectionModelAt(location);
 					if(currSelectionHandle != null){
 						popupSelectionHandle = currSelectionHandle.getType();
 					}
@@ -427,7 +431,8 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 	}
 	
 	public IDrawingPrimitiveController findDrawingElementAt(Point location) {
-		IIntersectionCalculator intCalc = this.shapePane.getViewModel().getIntersectionCalculator();
+		IDomainModelLayer domainLayer = this.shapePane.getLayer(LayerType.DOMAIN);
+		IIntersectionCalculator intCalc = domainLayer.getViewControllerStore().getIntersectionCalculator();
 		intCalc.setFilter(null);
 		SortedSet<IDrawingPrimitiveController> hits = intCalc.findDrawingPrimitivesAt(new Point(location.getX(), location.getY()));
 		IDrawingPrimitiveController retVal = null;
@@ -482,7 +487,8 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 
 	@Override
 	public ISelectionRecord getSelectionRecord() {
-		return this.shapePane.getSelectionRecord();
+		ISelectionLayer selectionLayer = this.shapePane.getLayer(LayerType.SELECTION);
+		return selectionLayer.getSelectionRecord();
 	}
 
 

@@ -1,4 +1,4 @@
-package org.pathwayeditor.graphicsengine;
+package org.pathwayeditor.visualeditor.editingview;
 
 import java.awt.Graphics2D;
 import java.util.Iterator;
@@ -6,16 +6,17 @@ import java.util.Iterator;
 import org.pathwayeditor.figure.figuredefn.FigureDrawer;
 import org.pathwayeditor.figure.figuredefn.IFigureController;
 import org.pathwayeditor.figure.figuredefn.IGraphicsEngine;
+import org.pathwayeditor.graphicsengine.Java2DGraphicsEngine;
 import org.pathwayeditor.visualeditor.controller.ILabelController;
 import org.pathwayeditor.visualeditor.controller.ILinkController;
 import org.pathwayeditor.visualeditor.controller.IShapeController;
 import org.pathwayeditor.visualeditor.controller.IViewControllerStore;
 
-public class CanvasDrawer implements ICanvasDrawer {
+public class DomainModelLayer implements IDomainModelLayer {
 	private final IViewControllerStore viewControllerStore;
 	
 	
-	public CanvasDrawer(IViewControllerStore viewControllerStore) {
+	public DomainModelLayer(IViewControllerStore viewControllerStore) {
 		this.viewControllerStore = viewControllerStore;
 	}
 
@@ -51,6 +52,11 @@ public class CanvasDrawer implements ICanvasDrawer {
 			LinkDrawer linkDrawer = new LinkDrawer(edge.getLinkDefinition());
 			linkDrawer.paint(g2d);
 		}
+	}
+
+	@Override
+	public LayerType getLayerType() {
+		return LayerType.DOMAIN;
 	}
 	
 	

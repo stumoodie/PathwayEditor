@@ -1,23 +1,34 @@
-package org.pathwayeditor.visualeditor;
+package org.pathwayeditor.visualeditor.editingview;
 
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.AffineTransform;
+import java.util.Iterator;
 
-import org.pathwayeditor.visualeditor.controller.IViewControllerStore;
-import org.pathwayeditor.visualeditor.feedback.IFeedbackModel;
-import org.pathwayeditor.visualeditor.selection.ISelectionRecord;
+import org.pathwayeditor.figure.geometry.Envelope;
 
 public interface IShapePane {
 
 	void updateView();
 	
-	IViewControllerStore getViewModel();
+	void addLayer(IShapePaneLayer layer);
 	
-	ISelectionRecord getSelectionRecord();
+	void removeLayer(IShapePaneLayer layer);
 	
-	IFeedbackModel getFeedbackModel(); 
+	Iterator<IShapePaneLayer> layerIterator();
+
+	<T extends IShapePaneLayer> T getLayer(LayerType layerType);
+
+	void setPaneBounds(Envelope paneBounds);
+	
+	Envelope getPaneBounds();
+	
+//	IViewControllerStore getViewModel();
+//	
+//	ISelectionRecord getSelectionRecord();
+//	
+//	IFeedbackModel getFeedbackModel(); 
 
 	void addKeyListener(KeyListener keyListener);
 

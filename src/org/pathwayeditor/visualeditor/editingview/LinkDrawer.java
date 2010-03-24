@@ -1,4 +1,4 @@
-package org.pathwayeditor.graphicsengine;
+package org.pathwayeditor.visualeditor.editingview;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -96,8 +96,8 @@ public class LinkDrawer  {
 		g2d.translate(srcTermDefaults.getGap(), 0);
 		Dimension srcEndSize = srcTermDefaults.getEndSize();
 		g2d.scale(srcEndSize.getWidth(), srcEndSize.getHeight());
-		drawEndDecorator(g2d, linkEdge.getLineStyle(), linkEdge.getLineColour(), linkEdge.getLineWidth(),
-				srcTermDefaults.getEndDecoratorType(), linkDefinition.getSrcEndPoint(), srcTermDefaults.getEndSize());
+		drawEndDecorator(g2d, linkEdge.getLineColour(), linkEdge.getLineWidth(), srcTermDefaults.getEndDecoratorType(),
+				linkDefinition.getSrcEndPoint(), srcTermDefaults.getEndSize());
 		g2d.setTransform(before);
 		double tgtLineAngle = linkDefinition.getTargetLineSegment().angle();
 		Point tgtPosn = linkDefinition.getTgtEndPoint();
@@ -106,8 +106,8 @@ public class LinkDrawer  {
 		g2d.translate(tgtTermDefaults.getGap(), 0);
 		Dimension tgtEndSize = tgtTermDefaults.getEndSize();
 		g2d.scale(tgtEndSize.getWidth(), tgtEndSize.getHeight());
-		drawEndDecorator(g2d, linkEdge.getLineStyle(), linkEdge.getLineColour(), linkEdge.getLineWidth(),
-				tgtTermDefaults.getEndDecoratorType(), linkDefinition.getSrcEndPoint(), tgtTermDefaults.getEndSize());
+		drawEndDecorator(g2d, linkEdge.getLineColour(), linkEdge.getLineWidth(), tgtTermDefaults.getEndDecoratorType(),
+				linkDefinition.getSrcEndPoint(), tgtTermDefaults.getEndSize());
 		g2d.setTransform(before);
 	}
 	
@@ -130,8 +130,8 @@ public class LinkDrawer  {
 		}
 	}
 	
-	private void drawEndDecorator(Graphics2D g2d, LineStyle lineStyle, RGB lineColour, 
-			double lineWidth, LinkEndDecoratorShape endShape, Point startPos, Dimension size){
+	private void drawEndDecorator(Graphics2D g2d, RGB lineColour, double lineWidth,
+			LinkEndDecoratorShape endShape, Point startPos, Dimension size){
 		logger.debug("Draw End Dec: startPos=" + startPos + ",size=" + size + ",type=" + endShape);
 		if(!endShape.equals(LinkEndDecoratorShape.NONE)){
 			g2d.setColor(new Color(lineColour.getRed(), lineColour.getGreen(), lineColour.getBlue()));

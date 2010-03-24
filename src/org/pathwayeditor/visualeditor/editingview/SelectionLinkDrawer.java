@@ -1,4 +1,4 @@
-package org.pathwayeditor.visualeditor;
+package org.pathwayeditor.visualeditor.editingview;
 
 import java.awt.BasicStroke;
 import java.awt.Color;

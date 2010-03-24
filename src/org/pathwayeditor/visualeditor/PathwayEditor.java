@@ -51,6 +51,11 @@ import org.pathwayeditor.visualeditor.controller.INodeController;
 import org.pathwayeditor.visualeditor.controller.IRootController;
 import org.pathwayeditor.visualeditor.controller.IViewControllerStore;
 import org.pathwayeditor.visualeditor.controller.ViewControllerStore;
+import org.pathwayeditor.visualeditor.editingview.DomainModelLayer;
+import org.pathwayeditor.visualeditor.editingview.FeedbackLayer;
+import org.pathwayeditor.visualeditor.editingview.IShapePane;
+import org.pathwayeditor.visualeditor.editingview.SelectionLayer;
+import org.pathwayeditor.visualeditor.editingview.ShapePane;
 import org.pathwayeditor.visualeditor.feedback.FeedbackModel;
 import org.pathwayeditor.visualeditor.feedback.IFeedbackElement;
 import org.pathwayeditor.visualeditor.feedback.IFeedbackLink;
@@ -126,7 +131,12 @@ public class PathwayEditor extends JPanel {
 		newParentCalc = new CommonParentCalculator(viewModel.getIntersectionCalculator());
 		this.selectionRecord = new SelectionRecord(viewModel);
 		this.feedbackModel = new FeedbackModel(this.selectionRecord);
-		this.shapePane = new ShapePane(viewModel, this.selectionRecord, this.feedbackModel);
+//		this.shapePane = new ShapePane(viewModel, this.selectionRecord, this.feedbackModel);
+		this.shapePane = new ShapePane();
+		this.shapePane.addLayer(new DomainModelLayer(viewModel));
+		this.shapePane.addLayer(new SelectionLayer(this.selectionRecord));
+		this.shapePane.addLayer(new FeedbackLayer(this.feedbackModel));
+		this.shapePane.setPaneBounds(new Envelope(0, 0, 400.0, 400.0));
 		scrollPane = new JScrollPane((ShapePane)this.shapePane, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scrollPane.setPreferredSize(this.getPreferredSize());
 		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
@@ -319,7 +329,7 @@ public class PathwayEditor extends JPanel {
 			@Override
 			public void delete() {
 				deleteSelection();
-				shapePane.getSelectionRecord().clear();
+				selectionRecord.clear();
 				shapePane.updateView();
 			}
 		};
@@ -328,7 +338,7 @@ public class PathwayEditor extends JPanel {
 			@Override
 			public void delete() {
 				deleteSelection();
-				shapePane.getSelectionRecord().clear();
+				selectionRecord.clear();
 				shapePane.updateView();
 			}
 		};
@@ -344,7 +354,7 @@ public class PathwayEditor extends JPanel {
 			@Override
 			public void delete() {
 				deleteSelection();
-				shapePane.getSelectionRecord().clear();
+				selectionRecord.clear();
 				shapePane.updateView();
 			}
 
@@ -360,7 +370,7 @@ public class PathwayEditor extends JPanel {
 			@Override
 			public void delete() {
 				deleteSelection();
-				shapePane.getSelectionRecord().clear();
+				selectionRecord.clear();
 				shapePane.updateView();
 			}
 
