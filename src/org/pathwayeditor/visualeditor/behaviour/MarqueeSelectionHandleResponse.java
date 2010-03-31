@@ -56,7 +56,7 @@ public class MarqueeSelectionHandleResponse extends HandleResponse {
 	public void dragStarted(ISelectionHandle selectionHandle, Point newLocation) {
 		this.enterDragOngoingState();
 		this.setStartLocation(newLocation);
-		calculateLocationDelta(newLocation);
+		calculateBounds(newLocation);
 		if(logger.isTraceEnabled()){
 			logger.trace("Drag started. newLocation=" + newLocation);
 		}

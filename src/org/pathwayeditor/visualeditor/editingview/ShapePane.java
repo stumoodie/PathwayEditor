@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.geom.AffineTransform;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -11,9 +13,11 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import org.apache.log4j.Logger;
 import org.pathwayeditor.figure.geometry.Envelope;
 
 public class ShapePane extends JPanel implements IShapePane {
+	private final Logger logger = Logger.getLogger(this.getClass());
 	private static final long serialVersionUID = -7580080598416351849L;
 
 	private final double PANE_BORDER = 20.0;
@@ -24,6 +28,29 @@ public class ShapePane extends JPanel implements IShapePane {
 	public ShapePane(){
 		super();
 		this.layers = new LinkedList<IShapePaneLayer>();
+		this.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				requestFocusInWindow();
+			}
+		});
 	}
 	
 	@Override
@@ -53,6 +80,10 @@ public class ShapePane extends JPanel implements IShapePane {
 		this.setPreferredSize(prefSize);
 		revalidate();
 		repaint();
+		if(logger.isTraceEnabled()){
+			logger.trace("Pane is focusable? = " + this.isFocusable());
+			logger.trace("Pane has focus? = " + this.hasFocus());
+		}
 	}
 
 	@Override

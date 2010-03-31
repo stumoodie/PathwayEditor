@@ -31,7 +31,8 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 	private MouseListener mouseSelectionListener;
 //	private MouseMotionListener mouseMotionListener;
 	private MouseListener popupMenuListener;
-	private KeyListener keyListener;
+	private final KeyListener keyListener;
+//	private Action upListener;
 	private IShapePane shapePane;
 	private Map<SelectionHandleType, IDragResponse> dragResponseMap;
 	private IKeyboardResponse keyboardResponseMap;
@@ -98,6 +99,7 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 
 			@Override
 			public void keyPressed(KeyEvent e) {
+				logger.trace("Key press detected");
 				if(e.getKeyCode() == KeyEvent.VK_RIGHT){
 					handleKeyPress(CursorType.Right);
 				}
@@ -114,6 +116,7 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 
 			@Override
 			public void keyReleased(KeyEvent e) {
+				logger.trace("Key release detected");
 				if(e.getKeyCode() == KeyEvent.VK_RIGHT ||
 						e.getKeyCode() == KeyEvent.VK_LEFT ||
 						e.getKeyCode() == KeyEvent.VK_UP ||
@@ -124,10 +127,18 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 
 			@Override
 			public void keyTyped(KeyEvent e) {
-				
+				logger.trace("Key type detected");
 			}
         	
         };
+//        this.upListener = new AbstractAction(){
+//
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				logger.trace("Up key detected");
+//			}
+//        	
+//        };
         this.popupMenuListener = new MouseListener(){
 
 			@Override
@@ -418,15 +429,18 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 	private void handleKeyRelease(){
 		if(this.keyboardResponseMap.isKeyPressed()){
 			this.keyboardResponseMap.cursorsKeyUp();
+			logger.trace("Key release detected");
 		}
 	}
 	
 	private void handleKeyPress(CursorType cursorPressed){
 		if(!this.keyboardResponseMap.isKeyPressed()){
 			this.keyboardResponseMap.cursorKeyDown(cursorPressed);
+			logger.trace("Initial key press detected");
 		}
 		else{
 			this.keyboardResponseMap.cursorKeyStillDown(cursorPressed);
+			logger.trace("Key press ongoing");
 		}
 	}
 	
@@ -446,6 +460,10 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 	@Override
 	public void activate(){
 		this.shapePane.addKeyListener(this.keyListener);
+//		JComponent component = (ShapePane)this.shapePane;
+//		component.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "pressed");
+//		component.getInputMap().put(KeyStroke.getKeyStroke("released SPACE"), "released");
+//		component.getActionMap().put("pressed", this.upListener);
         this.shapePane.addMouseListener(this.mouseSelectionListener);
 //        this.shapePane.addMouseMotionListener(this.mouseMotionListener);
         this.shapePane.addMouseMotionListener(this.dragListener);

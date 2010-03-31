@@ -49,4 +49,6 @@ public interface ISelectionRecord {
 	ISelection getSelection(IDrawingPrimitiveController next);
 
 	boolean containsSelection(IDrawingPrimitiveController controller);
+
+	void restoreSelection();
 }

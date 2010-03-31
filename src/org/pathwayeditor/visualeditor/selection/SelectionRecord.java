@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElementSelection;
 import org.pathwayeditor.businessobjects.drawingprimitives.ISelectionFactory;
 import org.pathwayeditor.figure.geometry.Point;
@@ -61,6 +62,27 @@ public class SelectionRecord implements ISelectionRecord {
 
 	public void addSelectionChangeListener(ISelectionChangeListener listener) {
 		this.listeners.add(listener);
+	}
+
+	@Override
+	public void restoreSelection() {
+		Iterator<ISelection> selectionIter = this.selections.iterator();
+		SortedSet<ISelection> selectedSet = new TreeSet<ISelection>();
+		while(selectionIter.hasNext()){
+			ISelection selection = selectionIter.next();
+			selectedSet.add(selection);
+		}
+		this.clear();
+		for(ISelection selection : selectedSet){
+			ICanvasAttribute att = selection.getPrimitiveController().getDrawingElement();
+			IDrawingPrimitiveController newController = this.viewModel.getDrawingPrimitiveController(att);
+			if(selection.getSelectionType().equals(SelectionType.PRIMARY)){
+				this.setPrimarySelection(newController);
+			}
+			else{
+				this.addSecondarySelection(newController);
+			}
+		}
 	}
 
 	public void clear() {

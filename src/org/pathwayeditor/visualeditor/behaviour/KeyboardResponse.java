@@ -1,9 +1,11 @@
 package org.pathwayeditor.visualeditor.behaviour;
 
+import org.apache.log4j.Logger;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.behaviour.IEditingOperation.ReparentingStateType;
 
 public class KeyboardResponse implements IKeyboardResponse {
+	private final Logger logger = Logger.getLogger(this.getClass());
 	private static final double MIN_DELTA = 1.0;
 	private IEditingOperation editingOperation;
 	private Point lastDelta;
@@ -22,15 +24,20 @@ public class KeyboardResponse implements IKeyboardResponse {
 		this.keyDown = true;
 		this.editingOperation.moveStarted();
 		this.cursorKeyStillDown(cursorKeyType);
+		if(logger.isTraceEnabled()){
+			logger.trace("Initial key down. lastDelta = " + this.lastDelta);
+		}
 	}
 
 	@Override
 	public void cursorKeyStillDown(CursorType cursorKeyType) {
+		this.currentCursorKey = cursorKeyType;
 		Point delta = lastDelta.translate(calcDelta());
 		this.editingOperation.moveOngoing(delta);
 		lastDelta = delta;
-		this.currentCursorKey = cursorKeyType;
-		
+		if(logger.isTraceEnabled()){
+			logger.trace("Key still down. lastDelta = " + this.lastDelta);
+		}
 	}
 
 	private Point calcDelta() {
@@ -47,6 +54,9 @@ public class KeyboardResponse implements IKeyboardResponse {
 		else if(this.currentCursorKey == CursorType.Right){
 			retVal = new Point(MIN_DELTA, 0.0);
 		}
+		else{
+			throw new RuntimeException("Unknown cursor key type");
+		}
 		return retVal;
 	}
 
@@ -55,6 +65,9 @@ public class KeyboardResponse implements IKeyboardResponse {
 		this.currentCursorKey = CursorType.None;
 		this.editingOperation.moveFinished(lastDelta, ReparentingStateType.CAN_MOVE);
 		this.keyDown = false;
+		if(logger.isTraceEnabled()){
+			logger.trace("Key up. lastDelta = " + this.lastDelta);
+		}
 	}
 
 	@Override
