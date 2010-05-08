@@ -2,14 +2,22 @@ package org.pathwayeditor.visualeditor;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Iterator;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JToolBar;
 
 import org.pathwayeditor.businessobjects.drawingprimitives.ICanvas;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkEdge;
+import org.pathwayeditor.businessobjects.notationsubsystem.INotationSubsystem;
+import org.pathwayeditor.businessobjects.typedefn.ILinkObjectType;
+import org.pathwayeditor.businessobjects.typedefn.IShapeObjectType;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.visualeditor.behaviour.IMouseBehaviourController;
 import org.pathwayeditor.visualeditor.behaviour.MouseBehaviourController;
@@ -36,7 +44,7 @@ public class PathwayEditor extends JPanel {
 //	private final Logger logger = Logger.getLogger(this.getClass());
 	private IShapePane shapePane;
 	private JScrollPane scrollPane;
-	private JScrollPane palettePane;
+	private JToolBar palettePane;
 	private IViewControllerStore viewModel;
 	private ISelectionRecord selectionRecord;
 	private ICommandStack commandStack;
@@ -44,12 +52,6 @@ public class PathwayEditor extends JPanel {
 	private ISelectionChangeListener selectionChangeListener;
 	private IFeedbackModel feedbackModel;
 	private boolean isOpen = false;
-//	private ICommonParentCalculator newParentCalc;
-//	private IShapePopupActions shapePopupMenuResponse;
-//	private ILinkPopupActions linkPopupMenuResponse;
-//	private IDefaultPopupActions defaultPopupMenuResponse;
-//	private ILinkBendPointPopupActions linkBendpointPopupResponse;
-	
 	
 	public PathwayEditor(){
 		super();
@@ -80,7 +82,55 @@ public class PathwayEditor extends JPanel {
 		isOpen = false;
 	}
 	
-	private void setUpViews(){
+	private void setupPaletteToolbar(INotationSubsystem notationSubsystem){
+		this.palettePane = new JToolBar("Palette");
+		this.palettePane.setOrientation(JToolBar.VERTICAL);
+		JButton selectionButton = new JButton("Selection");
+		selectionButton.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				editBehaviourController.setSelectionMode();
+			}
+			
+		});
+		this.palettePane.add(selectionButton);
+		this.palettePane.addSeparator();
+		Iterator<IShapeObjectType> shapeTypeIterator = notationSubsystem.getSyntaxService().shapeTypeIterator();
+		while(shapeTypeIterator.hasNext()){
+			final IShapeObjectType shapeType = shapeTypeIterator.next();
+			JButton shapeButton = new JButton(shapeType.getName());
+			this.palettePane.add(shapeButton);
+			shapeButton.addActionListener(new ActionListener(){
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					editBehaviourController.setShapeCreationMode(shapeType);
+				}
+				
+			});
+		}
+		this.palettePane.addSeparator();
+		Iterator<ILinkObjectType> linkTypeIterator = notationSubsystem.getSyntaxService().linkTypeIterator();
+		while(linkTypeIterator.hasNext()){
+			final ILinkObjectType linkType = linkTypeIterator.next();
+			JButton shapeButton = new JButton(linkType.getName());
+			this.palettePane.add(shapeButton);
+			shapeButton.addActionListener(new ActionListener(){
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					editBehaviourController.setLinkCreationMode(linkType);
+				}
+				
+			});
+		}
+		this.palettePane.setRollover(true);
+		this.add(this.palettePane, BorderLayout.LINE_START);
+	}
+	
+
+	private void setUpEditorViews(){
 		this.selectionRecord = new SelectionRecord(viewModel);
 		this.feedbackModel = new FeedbackModel(selectionRecord);
 		this.shapePane = new ShapePane();
@@ -95,108 +145,7 @@ public class PathwayEditor extends JPanel {
 		this.add(scrollPane, BorderLayout.CENTER);
 		Envelope canvasBounds = viewModel.getCanvasBounds();
 		((ShapePane)this.shapePane).setSize((int)Math.ceil(canvasBounds.getDimension().getWidth()), (int)Math.ceil(canvasBounds.getDimension().getHeight()));
-//        final IEditingOperation editOperation = new EditingOperation(this.shapePane, this.feedbackModel, this.selectionRecord, this.newParentCalc, this.commandStack);
-//        final IResizeOperation resizeOperation = new ResizeOperation(this.shapePane, this.feedbackModel, this.selectionRecord, this.commandStack);
-//		final ILinkOperation linkOperation = new LinkOperation(this.shapePane, this.feedbackModel, this.selectionRecord, this.commandStack);
-//		final IMarqueeOperation marqueeOperation = new MarqueeOperation(this.shapePane, this.feedbackModel, this.selectionRecord, this.viewModel.getIntersectionCalculator());
-//		this.shapePopupMenuResponse = new IShapePopupActions() {
-//			
-//			@Override
-//			public void delete() {
-//				deleteSelection();
-//				selectionRecord.clear();
-//				shapePane.updateView();
-//			}
-//		};
-//		this.linkPopupMenuResponse = new ILinkPopupActions() {
-//			
-//			@Override
-//			public void delete() {
-//				deleteSelection();
-//				selectionRecord.clear();
-//				shapePane.updateView();
-//			}
-//		};
-//		this.linkBendpointPopupResponse = new ILinkBendPointPopupActions() {
-//			
-//			@Override
-//			public void deleteBendPoint(int bpIdx) {
-//				deleteBendpoint(bpIdx);
-//				selectionRecord.restoreSelection();
-//				shapePane.updateView();
-//			}
-//			
-//			@Override
-//			public void delete() {
-//				deleteSelection();
-//				selectionRecord.clear();
-//				shapePane.updateView();
-//			}
-//
-//		};
-//		this.defaultPopupMenuResponse = new IDefaultPopupActions() {
-//			
-//			@Override
-//			public void selectAll() {
-//				selectAllElements();
-//				shapePane.updateView();
-//			}
-//
-//			@Override
-//			public void delete() {
-//				deleteSelection();
-//				selectionRecord.clear();
-//				shapePane.updateView();
-//			}
-//
-//			@Override
-//			public boolean isDeleteActionValid() {
-//				return selectionRecord.numSelected() > 0;
-//			}
-//		};
         this.editBehaviourController = new MouseBehaviourController(shapePane, new OperationFactory(this.shapePane, this.feedbackModel, this.selectionRecord, viewModel, this.commandStack));
-//        this.editBehaviourController = new MouseBehaviourController(shapePane, new IOperationFactory() {
-//			
-//			@Override
-//			public IShapePopupActions getShapePopupMenuResponse() {
-//				return shapePopupMenuResponse;
-//			}
-//			
-//			@Override
-//			public IResizeOperation getResizeOperation() {
-//				return resizeOperation;
-//			}
-//			
-//			@Override
-//			public IEditingOperation getMoveOperation() {
-//				return editOperation;
-//			}
-//			
-//			@Override
-//			public IMarqueeOperation getMarqueeOperation() {
-//				return marqueeOperation;
-//			}
-//			
-//			@Override
-//			public ILinkPopupActions getLinkPopupMenuResponse() {
-//				return linkPopupMenuResponse;
-//			}
-//			
-//			@Override
-//			public ILinkOperation getLinkOperation() {
-//				return linkOperation;
-//			}
-//			
-//			@Override
-//			public IDefaultPopupActions getDefaultPopupMenuResponse() {
-//				return defaultPopupMenuResponse;
-//			}
-//
-//			@Override
-//			public ILinkBendPointPopupActions getLinkBendpointPopupMenuResponse() {
-//				return linkBendpointPopupResponse;
-//			}
-//		});
         this.selectionChangeListener = new ISelectionChangeListener() {
 			
 			@Override
@@ -213,205 +162,11 @@ public class PathwayEditor extends JPanel {
 		}
         this.commandStack = new CommandStack();
 		this.viewModel = new ViewControllerStore(canvas.getModel());
-//		newParentCalc = new CommonParentCalculator(viewModel.getIntersectionCalculator());
-		setUpViews();
+		setupPaletteToolbar(canvas.getNotationSubsystem());
+		setUpEditorViews();
 		
 	}
 
-//	protected void deleteBendpoint(int bpIdx) {
-//		ILinkSelection linkSelection = this.selectionRecord.getUniqueLinkSelection(); 
-//		ICommand cmd = new DeleteBendPointCommand(linkSelection.getPrimitiveController().getDrawingElement(), bpIdx);
-//		this.commandStack.execute(cmd);
-//	}
-
-//	protected void selectAllElements() {
-//		Iterator<IDrawingPrimitiveController> primIter = this.viewModel.drawingPrimitiveIterator();
-//		boolean firstTime = true;
-//		while(primIter.hasNext()){
-//			IDrawingPrimitiveController controller = primIter.next();
-//			if(!(controller instanceof IRootController)){
-//				if(firstTime){
-//					selectionRecord.setPrimarySelection(controller);
-//					firstTime = false;
-//				}
-//				else{
-//					selectionRecord.addSecondarySelection(controller);
-//				}
-//			}
-//		}
-//	}
-//
-//	private void deleteBendpoint(int bpIdx) {
-//		ILinkSelection linkSelection = this.selectionRecord.getUniqueLinkSelection(); 
-//		ICommand cmd = new DeleteBendPointCommand(linkSelection.getPrimitiveController().getDrawingElement(), bpIdx);
-//		this.commandStack.execute(cmd);
-//	}
-//	
-//	protected void deleteSelection() {
-//		Iterator<INodeSelection> nodeSelectionIter = selectionRecord.selectedNodesIterator();
-//		ISelectionFactory selectionFact = null;
-//		while(nodeSelectionIter.hasNext()){
-//			INodeSelection selectedNode = nodeSelectionIter.next();
-//			if(selectionFact == null){
-//				selectionFact = selectedNode.getPrimitiveController().getViewModel().getDomainModel().newSelectionFactory();
-//			}
-//			selectionFact.addDrawingNode(selectedNode.getPrimitiveController().getDrawingElement().getCurrentDrawingElement());
-//		}
-//		Iterator<ILinkSelection> linkSelectionIter = selectionRecord.selectedLinksIterator();
-//		while(linkSelectionIter.hasNext()){
-//			ILinkSelection selectedLink = linkSelectionIter.next();
-//			if(selectionFact == null){
-//				selectionFact = selectedLink.getPrimitiveController().getViewModel().getDomainModel().newSelectionFactory();
-//			}
-//			selectionFact.addLink(selectedLink.getPrimitiveController().getDrawingElement().getCurrentDrawingElement());
-//		}
-//		if(selectionFact != null){
-//			IDrawingElementSelection seln = selectionFact.createGeneralSelection();
-//			seln.getModel().removeSubgraph(seln);
-//		}
-//	}
-
-//	protected void makeSelectionFromMarquee(Envelope bounds) {
-//		IIntersectionCalculator intersectionCal = this.viewModel.getIntersectionCalculator();
-//		SortedSet<IDrawingPrimitiveController> selectedController = intersectionCal.findIntersectingController(bounds);
-//		boolean firstOne = true;
-//		for(IDrawingPrimitiveController controller : selectedController){
-//			if(firstOne){
-//				this.selectionRecord.setPrimarySelection(controller);
-//				firstOne = false;
-//			}
-//			else{
-//				this.selectionRecord.addSecondarySelection(controller);
-//			}
-//		}
-//	}
-
-//	protected void createNewBendPointCommand(int lineSegmentIdx, Point position) {
-//		ILinkSelection linkSelection = this.selectionRecord.getUniqueLinkSelection(); 
-//		ICommand cmd = new CreateBendPointCommand(linkSelection.getPrimitiveController().getDrawingElement(), lineSegmentIdx, position);
-//		this.commandStack.execute(cmd);
-//	}
-//
-//	protected void createMoveBendPointCommand(int bpIdx, Point position) {
-//		ILinkSelection linkSelection = this.selectionRecord.getUniqueLinkSelection(); 
-//		ICommand cmd = new MoveBendPointCommand(linkSelection.getPrimitiveController().getDrawingElement().getBendPoint(bpIdx), position);
-//		this.commandStack.execute(cmd);
-//	}
-
-//	private void resizeSelection(Point originDelta, Dimension resizeDelta) {
-//		Iterator<IFeedbackNode> moveNodeIterator = this.feedbackModel.nodeIterator();
-//		while(moveNodeIterator.hasNext()){
-//			IFeedbackNode nodePrimitive = moveNodeIterator.next();
-//			nodePrimitive.resizePrimitive(originDelta, resizeDelta);
-//			if(logger.isTraceEnabled()){
-//				logger.trace("Resizing shape to bounds: " + nodePrimitive.getBounds());
-//			}
-//		}
-//	}
-
-//	private void createResizeCommand(Point originDelta, Dimension resizeDelta) {
-//		Iterator<ISelection> moveNodeIterator = this.selectionRecord.selectionIterator();
-//		ICompoundCommand cmpCommand = new CompoundCommand();
-//		while(moveNodeIterator.hasNext()){
-//			INodeController nodePrimitive = (INodeController)moveNodeIterator.next().getPrimitiveController();
-//			ICommand cmd = new ResizeNodeCommand(nodePrimitive.getDrawingElement(), originDelta, resizeDelta);
-//			cmpCommand.addCommand(cmd);
-//			logger.trace("Dragged shape to location: " + nodePrimitive.getBounds().getOrigin());
-//		}
-//		this.commandStack.execute(cmpCommand);
-//	}
-//
-//	private boolean canContinueToResize(Point originDelta, Dimension resizeDelta){
-//		boolean retVal = true;
-//		Iterator<INodeSelection> iter = this.selectionRecord.selectedNodesIterator();
-//		while(iter.hasNext() && retVal){
-//			INodeController nodeController = iter.next().getPrimitiveController();
-//			retVal = nodeController.canResize(originDelta, resizeDelta);
-//		}
-//		
-//		return retVal;
-//	}
-	
-	
-//	private void createMoveCommand(Point delta, boolean reparentingEnabled){
-//		ICompoundCommand cmpCommand = new CompoundCommand();
-//		Iterator<INodeSelection> moveNodeIterator = this.selectionRecord.getSubgraphSelection().topSelectedNodeIterator();
-//		while(moveNodeIterator.hasNext()){
-//			INodeController nodePrimitive = (INodeController)moveNodeIterator.next().getPrimitiveController();
-//			ICommand cmd = new MoveNodeCommand(nodePrimitive.getDrawingElement(), delta);
-//			cmpCommand.addCommand(cmd);
-//			if(logger.isTraceEnabled()){
-//				logger.trace("Dragged shape to location: " + nodePrimitive.getBounds().getOrigin());
-//			}
-//		}
-//		Iterator<ILinkSelection> moveLinkIterator = this.selectionRecord.getSubgraphSelection().selectedLinkIterator();
-//		while(moveLinkIterator.hasNext()){
-//			ILinkAttribute nodePrimitive = moveLinkIterator.next().getPrimitiveController().getDrawingElement();
-//			Iterator<IBendPoint> bpIter = nodePrimitive.bendPointIterator();
-//			while(bpIter.hasNext()){
-//				IBendPoint bp = bpIter.next();
-//				Point newPosn = bp.getLocation().translate(delta);
-//				ICommand cmd = new MoveBendPointCommand(bp, newPosn);
-//				cmpCommand.addCommand(cmd);
-//			}
-//		}
-//		if(reparentingEnabled){
-//			INodeController target = calculateReparentTarget(delta);
-//			ICommand cmd = new ReparentSelectionCommand(target.getDrawingElement().getCurrentDrawingElement(), this.selectionRecord.getSubgraphSelection().getDrawingElementSelection());
-//			cmpCommand.addCommand(cmd);
-//		}
-//		this.commandStack.execute(cmpCommand);
-//	}
-	
-//	private INodeController calculateReparentTarget(Point delta) {
-//		INodeController retVal = null;
-//		newParentCalc.findCommonParent(selectionRecord.getSubgraphSelection(), delta);
-//        if(newParentCalc.hasFoundCommonParent()) {
-//        	if(logger.isTraceEnabled()){
-//        		logger.trace("Common parent found. Node=" + newParentCalc.getCommonParent());
-//        	}
-//        	// parent is consistent - now we need to check if any node already has this parent
-//        	// if all do then we move, in one or more doesn't then we fail reparenting
-//        	retVal = newParentCalc.getCommonParent();
-//        }
-//        else{
-//        	logger.trace("No common parent found.");
-//        }
-//    	if(logger.isTraceEnabled()){
-//    		logger.trace("Can reparent=" + retVal);
-//    	}
-//        return retVal;
-//	}
-
-	
-//	private void moveSelection(Point delta) {
-//		ISubgraphSelection subgraphSelection = this.selectionRecord.getSubgraphSelection();
-//		Iterator<INodeSelection> moveNodeIterator = subgraphSelection.selectedNodeIterator();
-//		while(moveNodeIterator.hasNext()){
-//			ISelection selection = moveNodeIterator.next();
-//			IFeedbackElement feedbackElement = this.feedbackModel.getFeedbackElement(selection.getPrimitiveController());
-//			feedbackElement.translatePrimitive(delta);
-//			if(logger.isTraceEnabled()){
-//				logger.trace("Dragged feedback element: " + feedbackElement);
-//			}
-//		}
-//		Iterator<ILinkSelection> moveLinkIterator = subgraphSelection.selectedLinkIterator();
-//		while(moveLinkIterator.hasNext()){
-//			ILinkSelection selection = moveLinkIterator.next();
-//			IFeedbackLink feedbackLink = (IFeedbackLink)this.feedbackModel.getFeedbackElement(selection.getPrimitiveController());
-//			for(int bpIdx = 0; bpIdx < feedbackLink.getLinkDefinition().numBendPoints(); bpIdx++){
-//				feedbackLink.translateBendPoint(bpIdx, delta);
-//				if(logger.isTraceEnabled()){
-//					logger.trace("Moved bendpont=" + bpIdx + " of feedback element: " + feedbackLink);
-//				}
-//			}
-//		}
-//	}
-	
-//	private void moveBendPoint(int bendPointIdx, Point position) {
-//		IFeedbackLink feedbackLink = this.feedbackModel.uniqueFeedbackLink();
-//		feedbackLink.moveBendPoint(bendPointIdx, position);
-//	}
 	
 	private void initialise(){
 		this.editBehaviourController.activate();

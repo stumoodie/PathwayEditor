@@ -1,26 +1,32 @@
 package org.pathwayeditor.visualeditor.behaviour;
 
-import org.pathwayeditor.figure.geometry.Point;
-import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveController;
-import org.pathwayeditor.visualeditor.selection.ISelectionRecord;
-import org.pathwayeditor.visualeditor.selection.ISelectionHandle.SelectionHandleType;
+import org.pathwayeditor.businessobjects.typedefn.ILinkObjectType;
+import org.pathwayeditor.businessobjects.typedefn.IShapeObjectType;
 
 public interface IMouseBehaviourController {
 
 	void activate();
 
+	boolean isActivated();
+	
 	void deactivate();
 
-	Point getAdjustedMousePosition(double x, double y);
+//	Point getAdjustedMousePosition(double x, double y);
+//
+//	ISelectionRecord getSelectionRecord();
 
-	ISelectionRecord getSelectionRecord();
+//	IDrawingPrimitiveController findDrawingElementAt(Point location);
 
-	IDrawingPrimitiveController findDrawingElementAt(Point location);
+//	IDragResponse getDragResponse(SelectionHandleType type);
 
-	IDragResponse getDragResponse(SelectionHandleType type);
-
-	IMouseFeedbackResponse getMouseFeedbackResponse(SelectionHandleType type);
+//	IMouseFeedbackResponse getMouseFeedbackResponse(SelectionHandleType type);
 
 	void updateView();
+
+	void setShapeCreationMode(IShapeObjectType shapeType);
+
+	void setLinkCreationMode(ILinkObjectType linkType);
+
+	void setSelectionMode();
 	
 }

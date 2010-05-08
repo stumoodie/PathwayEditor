@@ -9,11 +9,11 @@ import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle.SelectionHandleType;
 
-public class MouseFeedbackListener implements MouseMotionListener {
+public class SelectionStateMouseFeedbackListener implements MouseMotionListener {
 	private final Logger logger = Logger.getLogger(this.getClass());
-	private final IMouseBehaviourController mouseBehaviour;
+	private final IMouseStateBehaviourController mouseBehaviour;
 	
-	public MouseFeedbackListener(IMouseBehaviourController mouseBehaviour){
+	public SelectionStateMouseFeedbackListener(IMouseStateBehaviourController mouseBehaviour){
 		this.mouseBehaviour = mouseBehaviour;
 	}
 	

@@ -10,14 +10,14 @@ import org.pathwayeditor.visualeditor.behaviour.IMouseFeedbackResponse.StateType
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle.SelectionHandleType;
 
-public class DragListener implements MouseMotionListener, MouseListener {
+public class SelectionStateDragListener implements MouseMotionListener, MouseListener {
 	private final Logger logger = Logger.getLogger(this.getClass());
 	private ISelectionHandle currSelectionHandle;
 	private IDragResponse currDragResponse;
-	private final IMouseBehaviourController mouseBehaviour;
+	private final IMouseStateBehaviourController mouseBehaviour;
 	private IMouseFeedbackResponse currMouseFeedbackResponse;
 
-	public DragListener(IMouseBehaviourController mouseBehaviour){
+	public SelectionStateDragListener(IMouseStateBehaviourController mouseBehaviour){
 		this.mouseBehaviour = mouseBehaviour;
 	}
 	
@@ -98,7 +98,7 @@ public class DragListener implements MouseMotionListener, MouseListener {
 			currDragResponse.dragFinished();
 			currMouseFeedbackResponse.reset();
 			currDragResponse = null;
-			this.mouseBehaviour.updateView();
+//			this.mouseBehaviour.updateView();
 		}
 		Point location = this.mouseBehaviour.getAdjustedMousePosition(e.getPoint().getX(), e.getPoint().getY());
 		setCurrentCursorResponse(location);

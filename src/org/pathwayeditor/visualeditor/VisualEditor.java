@@ -32,7 +32,6 @@ public class VisualEditor extends JFrame {
 	private static final int WIDTH = 1200;
 	private static final int HEIGHT = 800;
 	private JMenuBar menuBar;
-
 	private PathwayEditor insp;
 	
 	public VisualEditor(String title){
@@ -155,21 +154,5 @@ public class VisualEditor extends JFrame {
 			System.err.println("Error opening file!");
 			System.err.println();
 		}
-	}
-	
-	
-//	public void startup(){
-//		javax.swing.SwingUtilities.invokeLater(new Runnable() {
-//			public void run() {
-////				sentencesPanel.loadData();
-////				openFile(new File(TEST_FILE));
-//			}
-//		});
-//	}
-	
-	public static final void main(String argv[]){
-		VisualEditor visualEditor = new VisualEditor("Pathway Editor");
-//		visualEditor.openFile(new File(TEST_FILE));
-//		visualEditor.startup();
 	}
 }
