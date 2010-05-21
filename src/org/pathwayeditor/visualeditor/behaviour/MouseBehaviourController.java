@@ -9,7 +9,9 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 	private final Logger logger = Logger.getLogger(this.getClass());
 	
 	private IMouseStateBehaviourController currentStateController; 
-	private final IMouseStateBehaviourController selectionStateController;
+	private final ISelectionStateBehaviourController selectionStateController;
+	private final ICreationStateBehaviourController creationStateController;
+	private final IShapeCreationOperation shapeCreationOp;
 	private IShapePane shapePane;
 
 	private boolean activated;
@@ -17,6 +19,8 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 	public MouseBehaviourController(IShapePane pane, IOperationFactory opFactory){
 		this.shapePane = pane;
 		this.selectionStateController = new SelectionStateController(pane, opFactory);
+		this.shapeCreationOp = opFactory.getShapeCreationOperation();
+		this.creationStateController = new ShapeCreationStateController(pane, this.shapeCreationOp);
 		this.currentStateController = this.selectionStateController;
 	}
 
@@ -37,30 +41,6 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 		this.activated = false;
 	}
 
-//	@Override
-//	public IDrawingPrimitiveController findDrawingElementAt(Point location) {
-//		return this.currentStateController.findDrawingElementAt(location);
-//	}
-//
-//	@Override
-//	public Point getAdjustedMousePosition(double x, double y) {
-//		return this.currentStateController.getAdjustedMousePosition(x, y);
-//	}
-//
-//	@Override
-//	public IDragResponse getDragResponse(SelectionHandleType type) {
-//		return this.getDragResponse(type);
-//	}
-//
-//	@Override
-//	public IMouseFeedbackResponse getMouseFeedbackResponse(SelectionHandleType type) {
-//		return this.currentStateController.getMouseFeedbackResponse(type);
-//	}
-//
-//	@Override
-//	public ISelectionRecord getSelectionRecord() {
-//		return this.currentStateController.getSelectionRecord();
-//	}
 
 	@Override
 	public void setLinkCreationMode(ILinkObjectType linkType) {
@@ -85,16 +65,24 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 
 	@Override
 	public void setShapeCreationMode(IShapeObjectType shapeType) {
-		if(logger.isDebugEnabled()){
-			logger.debug("In link creation mode for object type: " + shapeType.getName());
+		if(this.currentStateController.equals(this.shapeCreationOp)){
+			this.shapeCreationOp.setShapeObjectType(shapeType);
+		}
+		else{
+			if(this.isActivated()){
+				this.currentStateController.deactivate();
+			}
+			this.shapeCreationOp.setShapeObjectType(shapeType);
+			this.currentStateController = this.creationStateController;
+			if(this.isActivated()){
+				this.currentStateController.activate();
+			}
 		}
 	}
 
 	@Override
 	public void updateView() {
 		this.shapePane.updateView();
-//		this.currentStateController.updateView();
 	}
-	
 
 }

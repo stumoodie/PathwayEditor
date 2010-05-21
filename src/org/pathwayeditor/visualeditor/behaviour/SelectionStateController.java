@@ -1,5 +1,7 @@
 package org.pathwayeditor.visualeditor.behaviour;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.awt.geom.AffineTransform;
 import java.util.HashMap;
@@ -9,6 +11,7 @@ import java.util.SortedSet;
 import org.apache.log4j.Logger;
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Point;
+import org.pathwayeditor.visualeditor.behaviour.IKeyboardResponse.CursorType;
 import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveController;
 import org.pathwayeditor.visualeditor.editingview.IDomainModelLayer;
 import org.pathwayeditor.visualeditor.editingview.ISelectionLayer;
@@ -18,11 +21,12 @@ import org.pathwayeditor.visualeditor.geometry.IIntersectionCalculator;
 import org.pathwayeditor.visualeditor.selection.ISelectionRecord;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle.SelectionHandleType;
 
-public class SelectionStateController implements IMouseStateBehaviourController {
+public class SelectionStateController implements ISelectionStateBehaviourController {
 	private final Logger logger = Logger.getLogger(this.getClass());
 	private MouseListener mouseSelectionListener;
 	private IShapePane shapePane;
 	private Map<SelectionHandleType, IDragResponse> dragResponseMap;
+	private final KeyListener keyListener;
 	private IKeyboardResponse keyboardResponseMap;
 	private Map<SelectionHandleType, IMouseFeedbackResponse> mouseResponseMap;
 	private Map<SelectionHandleType, IPopupMenuResponse> popupMenuMap;
@@ -43,6 +47,42 @@ public class SelectionStateController implements IMouseStateBehaviourController 
         this.dragListener = new SelectionStateDragListener(this);
         this.mouseFeedbackListener = new SelectionStateMouseFeedbackListener(this);
         this.selectionFeedbackListener = new SelectionFeedbackListener(this);
+        this.keyListener = new KeyListener(){
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				logger.trace("Key press detected");
+				if(e.getKeyCode() == KeyEvent.VK_RIGHT){
+					handleKeyPress(CursorType.Right);
+				}
+				else if(e.getKeyCode() == KeyEvent.VK_LEFT){
+					handleKeyPress(CursorType.Left);
+				}
+				else if(e.getKeyCode() == KeyEvent.VK_UP){
+					handleKeyPress(CursorType.Up);
+				}
+				else if(e.getKeyCode() == KeyEvent.VK_DOWN){
+					handleKeyPress(CursorType.Down);
+				}
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				logger.trace("Key release detected");
+				if(e.getKeyCode() == KeyEvent.VK_RIGHT ||
+						e.getKeyCode() == KeyEvent.VK_LEFT ||
+						e.getKeyCode() == KeyEvent.VK_UP ||
+						e.getKeyCode() == KeyEvent.VK_DOWN){
+					handleKeyRelease();
+				}
+			}
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+				logger.trace("Key type detected");
+			}
+        	
+        };
 	}
 	
 
@@ -301,6 +341,7 @@ public class SelectionStateController implements IMouseStateBehaviourController 
 
 	@Override
 	public void activate(){
+		this.shapePane.addKeyListener(this.keyListener);
         this.shapePane.addMouseListener(this.mouseSelectionListener);
         this.shapePane.addMouseMotionListener(this.dragListener);
         this.shapePane.addMouseListener(this.dragListener);
@@ -314,6 +355,7 @@ public class SelectionStateController implements IMouseStateBehaviourController 
 
 	@Override
 	public void deactivate(){
+		this.shapePane.removeKeyListener(this.keyListener);
         this.shapePane.removeMouseListener(this.mouseSelectionListener);
         this.shapePane.removeMouseMotionListener(this.mouseFeedbackListener);
         this.shapePane.removeMouseMotionListener(this.dragListener);
@@ -326,6 +368,24 @@ public class SelectionStateController implements IMouseStateBehaviourController 
 	}
 
 
+	private void handleKeyRelease(){
+		if(this.keyboardResponseMap.isKeyPressed()){
+			this.keyboardResponseMap.cursorsKeyUp();
+			logger.trace("Key release detected");
+		}
+	}
+	
+	private void handleKeyPress(CursorType cursorPressed){
+		if(!this.keyboardResponseMap.isKeyPressed()){
+			this.keyboardResponseMap.cursorKeyDown(cursorPressed);
+			logger.trace("Initial key press detected");
+		}
+		else{
+			this.keyboardResponseMap.cursorKeyStillDown(cursorPressed);
+			logger.trace("Key press ongoing");
+		}
+	}
+	
 	@Override
 	public IDragResponse getDragResponse(SelectionHandleType type) {
 		return this.dragResponseMap.get(type);

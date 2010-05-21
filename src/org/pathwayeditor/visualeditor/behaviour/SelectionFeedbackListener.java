@@ -7,9 +7,9 @@ import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveController;
 
 public class SelectionFeedbackListener implements MouseListener {
-	private final IMouseStateBehaviourController mouseBehaviourController;
+	private final ISelectionStateBehaviourController mouseBehaviourController;
 	
-	public SelectionFeedbackListener(IMouseStateBehaviourController mouseBehaviourController) {
+	public SelectionFeedbackListener(ISelectionStateBehaviourController mouseBehaviourController) {
 		this.mouseBehaviourController = mouseBehaviourController;
 	}
 

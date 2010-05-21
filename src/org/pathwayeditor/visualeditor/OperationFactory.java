@@ -12,6 +12,7 @@ import org.pathwayeditor.visualeditor.behaviour.ILinkPopupActions;
 import org.pathwayeditor.visualeditor.behaviour.IMarqueeOperation;
 import org.pathwayeditor.visualeditor.behaviour.IOperationFactory;
 import org.pathwayeditor.visualeditor.behaviour.IResizeOperation;
+import org.pathwayeditor.visualeditor.behaviour.IShapeCreationOperation;
 import org.pathwayeditor.visualeditor.behaviour.IShapePopupActions;
 import org.pathwayeditor.visualeditor.commands.DeleteBendPointCommand;
 import org.pathwayeditor.visualeditor.commands.ICommand;
@@ -40,6 +41,7 @@ public class OperationFactory implements IOperationFactory {
 	private final ISelectionRecord selectionRecord;
 	private final ICommandStack commandStack;
 	private final IViewControllerStore viewModel;
+	private final IShapeCreationOperation shapeCreationOperation;
 
 	public OperationFactory(IShapePane shapePane, IFeedbackModel feedbackModel, ISelectionRecord selectionRecord, IViewControllerStore viewModel,
 			ICommandStack commandStack){
@@ -53,6 +55,7 @@ public class OperationFactory implements IOperationFactory {
 		linkOperation = new LinkOperation(shapePane, feedbackModel, selectionRecord, commandStack);
 		marqueeOperation = new MarqueeOperation(shapePane, feedbackModel, selectionRecord, viewModel.getIntersectionCalculator());
 		initResponses();
+		shapeCreationOperation = new ShapeCreationOperation(shapePane, feedbackModel, viewModel.getDomainModel(), commandStack);
 	}
 	
 	private void initResponses(){
@@ -198,5 +201,10 @@ public class OperationFactory implements IOperationFactory {
 			IDrawingElementSelection seln = selectionFact.createGeneralSelection();
 			seln.getModel().removeSubgraph(seln);
 		}
+	}
+
+	@Override
+	public IShapeCreationOperation getShapeCreationOperation() {
+		return this.shapeCreationOperation;
 	}
 }

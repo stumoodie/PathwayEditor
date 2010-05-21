@@ -14,10 +14,10 @@ public class SelectionStateDragListener implements MouseMotionListener, MouseLis
 	private final Logger logger = Logger.getLogger(this.getClass());
 	private ISelectionHandle currSelectionHandle;
 	private IDragResponse currDragResponse;
-	private final IMouseStateBehaviourController mouseBehaviour;
+	private final ISelectionStateBehaviourController mouseBehaviour;
 	private IMouseFeedbackResponse currMouseFeedbackResponse;
 
-	public SelectionStateDragListener(IMouseStateBehaviourController mouseBehaviour){
+	public SelectionStateDragListener(ISelectionStateBehaviourController mouseBehaviour){
 		this.mouseBehaviour = mouseBehaviour;
 	}
 	

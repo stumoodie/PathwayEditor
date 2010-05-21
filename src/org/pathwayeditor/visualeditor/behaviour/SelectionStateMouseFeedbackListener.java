@@ -11,9 +11,9 @@ import org.pathwayeditor.visualeditor.selection.ISelectionHandle.SelectionHandle
 
 public class SelectionStateMouseFeedbackListener implements MouseMotionListener {
 	private final Logger logger = Logger.getLogger(this.getClass());
-	private final IMouseStateBehaviourController mouseBehaviour;
+	private final ISelectionStateBehaviourController mouseBehaviour;
 	
-	public SelectionStateMouseFeedbackListener(IMouseStateBehaviourController mouseBehaviour){
+	public SelectionStateMouseFeedbackListener(ISelectionStateBehaviourController mouseBehaviour){
 		this.mouseBehaviour = mouseBehaviour;
 	}
 	

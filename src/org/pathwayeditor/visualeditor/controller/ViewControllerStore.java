@@ -74,7 +74,11 @@ public class ViewControllerStore implements IViewControllerStore {
 					addSelection(event.getChangedSelection());
 					activateSelection(event.getChangedSelection());
 				}
-				else if(event.getChangeType().equals(ModelStructureChangeType.SELCTION_COPIED)){
+				else if(event.getChangeType().equals(ModelStructureChangeType.SELECTION_COPIED)){
+					addSelection(event.getChangedSelection());
+					activateSelection(event.getChangedSelection());
+				}
+				else if(event.getChangeType().equals(ModelStructureChangeType.DRAWING_NODE_CREATED)){
 					addSelection(event.getChangedSelection());
 					activateSelection(event.getChangedSelection());
 				}

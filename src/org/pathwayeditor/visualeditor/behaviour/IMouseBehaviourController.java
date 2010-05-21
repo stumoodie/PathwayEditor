@@ -11,16 +11,6 @@ public interface IMouseBehaviourController {
 	
 	void deactivate();
 
-//	Point getAdjustedMousePosition(double x, double y);
-//
-//	ISelectionRecord getSelectionRecord();
-
-//	IDrawingPrimitiveController findDrawingElementAt(Point location);
-
-//	IDragResponse getDragResponse(SelectionHandleType type);
-
-//	IMouseFeedbackResponse getMouseFeedbackResponse(SelectionHandleType type);
-
 	void updateView();
 
 	void setShapeCreationMode(IShapeObjectType shapeType);
