@@ -2,7 +2,6 @@ package org.pathwayeditor.visualeditor.feedback;
 
 import java.util.Iterator;
 
-import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveController;
 import org.pathwayeditor.visualeditor.selection.ILinkSelection;
 import org.pathwayeditor.visualeditor.selection.ISelectionRecord;
@@ -29,7 +28,7 @@ public interface IFeedbackModel {
 
 	IFeedbackElement getFeedbackElement(IDrawingPrimitiveController element);
 
-	IFeedbackNode createSingleNode(Envelope envelope);
+	IFeedbackNodeBuilder getFeedbackNodeBuilder();
 
 	IFeedbackNode uniqueFeedbackNode();
 }

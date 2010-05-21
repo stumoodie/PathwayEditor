@@ -41,4 +41,16 @@ public class ShapeCreationCommand implements ICommand {
 		this.parentNode.getModel().restoreToState(this.originalState);
 	}
 
+	@Override
+	public String toString(){
+		StringBuilder buf = new StringBuilder(this.getClass().getSimpleName());
+		buf.append("(");
+		buf.append("parentNodeIdx=");
+		buf.append(parentNode.getIndex());
+		buf.append(",bounds=");
+		buf.append(bounds);
+		buf.append(",objectType=");
+		buf.append(objectType.getName());
+		return buf.toString();
+	}
 }

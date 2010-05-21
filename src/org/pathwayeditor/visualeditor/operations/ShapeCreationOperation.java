@@ -1,4 +1,4 @@
-package org.pathwayeditor.visualeditor;
+package org.pathwayeditor.visualeditor.operations;
 
 import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.drawingprimitives.IModel;
@@ -58,7 +58,8 @@ public class ShapeCreationOperation implements IShapeCreationOperation {
 	@Override
 	public void finishCreationDrag(Point newLocation) {
 		calculateBounds(newLocation);
-		ICommand cmd = new ShapeCreationCommand(viewModel.getRootNode(), this.shapeObjectType, new Envelope(originDelta, sizeDelta));
+		Envelope bounds = new Envelope(this.startLocation, new Dimension(0, 0)).resize(originDelta, sizeDelta);
+		ICommand cmd = new ShapeCreationCommand(viewModel.getRootNode(), this.shapeObjectType, bounds);
 		this.commandStack.execute(cmd);
 		if(logger.isDebugEnabled()){
 			logger.debug("Create a new shape at: " + cmd);
@@ -75,16 +76,17 @@ public class ShapeCreationOperation implements IShapeCreationOperation {
 		node.resizePrimitive(originDelta, sizeDelta);
 		this.shapePane.updateView();
 		if(logger.isTraceEnabled()){
-			logger.trace("Create shape drag. newLocation=" + newLocation + ", feedbackBounds=" + node.getBounds());
+			logger.trace("Ongoing drag. newLocation=" + originDelta + ", sizeDelta=" + sizeDelta);
 		}
 	}
 
 	@Override
 	public void startCreationDrag(Point origin) {
 		this.startLocation = origin;
+		calculateBounds(origin);
 		feedbackModel.clear();
-		IFeedbackNode node = feedbackModel.createSingleNode(new Envelope(origin, new Dimension(0.1, 0.1)));
-		node.setFillColour(RGB.BLUE);
+		IFeedbackNode node = feedbackModel.getFeedbackNodeBuilder().createFromDrawingNodeObjectType(this.shapeObjectType, new Envelope(origin, new Dimension(0.1, 0.1)));
+//		node.setFillColour(RGB.BLUE);
 		node.setLineColour(RGB.RED);
 		node.setLineStyle(LineStyle.SOLID);
 		node.setLineWidth(1.0);

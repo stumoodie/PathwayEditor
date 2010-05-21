@@ -11,7 +11,6 @@ import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkEdge;
 import org.pathwayeditor.businessobjects.drawingprimitives.IShapeNode;
 import org.pathwayeditor.figure.figuredefn.IAnchorLocator;
-import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveController;
 import org.pathwayeditor.visualeditor.controller.ILinkController;
 import org.pathwayeditor.visualeditor.controller.INodeController;
@@ -27,12 +26,14 @@ public class FeedbackModel implements IFeedbackModel {
 	private final Set<IFeedbackLink> links;
 	private final Map<IDrawingPrimitiveController, IFeedbackElement> selectionMapping;
 	private final ISelectionRecord selectionRecord;
+	private final IFeedbackNodeBuilder builder;
 	
 	public FeedbackModel(ISelectionRecord selectionRecord){
 		this.nodes = new HashSet<IFeedbackNode>();
 		this.links = new HashSet<IFeedbackLink>();
 		this.selectionMapping = new HashMap<IDrawingPrimitiveController, IFeedbackElement>();
 		this.selectionRecord = selectionRecord;
+		this.builder = new FeedbackNodeBuilder(this);
 	}
 	
 	@Override
@@ -64,8 +65,8 @@ public class FeedbackModel implements IFeedbackModel {
 					incidentEdgeSet.add(linkController);
 				}
 			}					
-			IFeedbackNode feedbackNode = new FeedbackNode(selectedNode.getDrawingElement());
-			this.nodes.add(feedbackNode);
+			IFeedbackNode feedbackNode = builder.createFromDrawingNodeAttribute(selectedNode.getDrawingElement());
+//			this.nodes.add(feedbackNode);
 			this.selectionMapping.put(selectedNode, feedbackNode);
 		}
 	}
@@ -232,16 +233,24 @@ public class FeedbackModel implements IFeedbackModel {
 		return this.selectionMapping.get(controller);
 	}
 
-	@Override
-	public IFeedbackNode createSingleNode(Envelope envelope) {
-		this.clear();
-		IFeedbackNode retVal = new FeedbackNode(0, envelope);
-		this.nodes.add(retVal);
-		return retVal;
+//	@Override
+//	public IFeedbackNode createSingleNode(Envelope envelope) {
+//		this.clear();
+//		IFeedbackNode retVal = new FeedbackNode(0, envelope);
+//		this.nodes.add(retVal);
+//		return retVal;
+//	}
+	
+	public IFeedbackNodeBuilder getFeedbackNodeBuilder(){
+		return this.builder;
 	}
 
 	@Override
 	public IFeedbackNode uniqueFeedbackNode() {
 		return this.nodes.iterator().next();
+	}
+
+	void addNode(FeedbackNode newNode) {
+		this.nodes.add(newNode);
 	}
 }

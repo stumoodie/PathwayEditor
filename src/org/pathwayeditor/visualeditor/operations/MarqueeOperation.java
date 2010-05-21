@@ -1,4 +1,4 @@
-package org.pathwayeditor.visualeditor;
+package org.pathwayeditor.visualeditor.operations;
 
 import java.util.SortedSet;
 
@@ -33,7 +33,7 @@ public class MarqueeOperation implements IMarqueeOperation {
 	public void selectionStarted(Point initialPosn) {
 		feedbackModel.clear();
 		selectionRecord.clear();
-		IFeedbackNode node = feedbackModel.createSingleNode(new Envelope(initialPosn, new Dimension(0.1, 0.1)));
+		IFeedbackNode node = feedbackModel.getFeedbackNodeBuilder().createDefaultNode(new Envelope(initialPosn, new Dimension(0.1, 0.1)));
 		node.setFillColour(RGB.BLUE);
 		node.setLineColour(RGB.RED);
 		node.setLineStyle(LineStyle.SOLID);

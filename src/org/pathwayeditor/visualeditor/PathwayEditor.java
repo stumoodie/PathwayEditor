@@ -33,6 +33,7 @@ import org.pathwayeditor.visualeditor.editingview.SelectionLayer;
 import org.pathwayeditor.visualeditor.editingview.ShapePane;
 import org.pathwayeditor.visualeditor.feedback.FeedbackModel;
 import org.pathwayeditor.visualeditor.feedback.IFeedbackModel;
+import org.pathwayeditor.visualeditor.operations.OperationFactory;
 import org.pathwayeditor.visualeditor.selection.ISelectionChangeEvent;
 import org.pathwayeditor.visualeditor.selection.ISelectionChangeListener;
 import org.pathwayeditor.visualeditor.selection.ISelectionRecord;

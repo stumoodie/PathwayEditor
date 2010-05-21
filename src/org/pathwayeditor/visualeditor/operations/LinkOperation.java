@@ -1,4 +1,4 @@
-package org.pathwayeditor.visualeditor;
+package org.pathwayeditor.visualeditor.operations;
 
 import org.apache.log4j.Logger;
 import org.pathwayeditor.figure.geometry.Point;
