@@ -2,6 +2,7 @@ package org.pathwayeditor.visualeditor;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Iterator;
@@ -53,6 +54,8 @@ public class PathwayEditor extends JPanel {
 	private ISelectionChangeListener selectionChangeListener;
 	private IFeedbackModel feedbackModel;
 	private boolean isOpen = false;
+
+	private JToolBar linkPalette;
 	
 	public PathwayEditor(){
 		super();
@@ -97,10 +100,17 @@ public class PathwayEditor extends JPanel {
 		});
 		this.palettePane.add(selectionButton);
 		this.palettePane.addSeparator();
+		ShapeIconGenerator iconGenerator = new ShapeIconGenerator();
+		iconGenerator.setBounds(new Envelope(0, 0, 30, 30));
 		Iterator<IShapeObjectType> shapeTypeIterator = notationSubsystem.getSyntaxService().shapeTypeIterator();
 		while(shapeTypeIterator.hasNext()){
 			final IShapeObjectType shapeType = shapeTypeIterator.next();
-			JButton shapeButton = new JButton(shapeType.getName());
+			iconGenerator.setObjectType(shapeType);
+			iconGenerator.generateImage();
+			iconGenerator.generateIcon();
+			JButton shapeButton = new JButton(iconGenerator.getIcon());
+//			shapeButton.setText(shapeType.getName());
+			shapeButton.setToolTipText(shapeType.getDescription());
 			this.palettePane.add(shapeButton);
 			shapeButton.addActionListener(new ActionListener(){
 
@@ -111,12 +121,14 @@ public class PathwayEditor extends JPanel {
 				
 			});
 		}
-		this.palettePane.addSeparator();
+//		this.palettePane.addSeparator();
+		this.linkPalette = new JToolBar("Links");
+		this.linkPalette.setOrientation(JToolBar.VERTICAL);
 		Iterator<ILinkObjectType> linkTypeIterator = notationSubsystem.getSyntaxService().linkTypeIterator();
 		while(linkTypeIterator.hasNext()){
 			final ILinkObjectType linkType = linkTypeIterator.next();
 			JButton shapeButton = new JButton(linkType.getName());
-			this.palettePane.add(shapeButton);
+			this.linkPalette.add(shapeButton);
 			shapeButton.addActionListener(new ActionListener(){
 
 				@Override
@@ -127,7 +139,14 @@ public class PathwayEditor extends JPanel {
 			});
 		}
 		this.palettePane.setRollover(true);
-		this.add(this.palettePane, BorderLayout.LINE_START);
+		this.linkPalette.setRollover(true);
+		JPanel panel = new JPanel();
+		panel.setLayout(new FlowLayout());
+		panel.add(this.palettePane);
+		panel.add(this.linkPalette);
+		this.add(panel, BorderLayout.LINE_START);
+//		this.add(this.palettePane, BorderLayout.LINE_START);
+//		this.add(this.linkPalette);
 	}
 	
 
