@@ -90,28 +90,36 @@ public class Java2DGraphicsEngine implements IGraphicsEngine {
 		this.setLineColour();
 		this.setStroke();
 		this.g.draw(new Arc2D.Double(pos, pos2, widthSize, heightSize, roundedOffset, roundedLength, Arc2D.OPEN));
-		logger.debug("drawArc: x=" + pos + ", y=" + pos2 + ", w=" + widthSize + ", h=" + heightSize + ",cw=" + roundedOffset + ",ch=" + roundedLength);
+		if(logger.isDebugEnabled()){
+			logger.debug("drawArc: x=" + pos + ", y=" + pos2 + ", w=" + widthSize + ", h=" + heightSize + ",cw=" + roundedOffset + ",ch=" + roundedLength);
+		}
 	}
 
 	public void drawLine(double x1, double y1, double x2, double y2) {
 		this.setLineColour();
 		this.setStroke();
 		this.g.draw(new Line2D.Double(x1, y1, x2, y2));
-		logger.debug("drawLine: x1=" + x1 + ", y1=" + y1 + ", x2=" + x2 + ", y2=" + y2);
+		if(logger.isDebugEnabled()){
+			logger.debug("drawLine: x1=" + x1 + ", y1=" + y1 + ", x2=" + x2 + ", y2=" + y2);
+		}
 	}
 
 	public void drawOval(double x, double y, double w,	double h) {
 		this.setLineColour();
 		this.setStroke();
 		g.draw(new Ellipse2D.Double(x, y, w, h));
-		logger.debug("drawOval: x=" + x + ", y=" + y + ", w=" + w + ", h=" + h);
+		if(logger.isDebugEnabled()){
+			logger.debug("drawOval: x=" + x + ", y=" + y + ", w=" + w + ", h=" + h);
+		}
 	}
 
 	public void drawPoint(double x, double y) {
 		this.setLineColour();
 		this.setStroke();
 		g.draw(new Ellipse2D.Double(x, y, POINT_W, POINT_H));
-		logger.debug("drawPoint: x=" + x + ",y=" + y);
+		if(logger.isDebugEnabled()){
+			logger.debug("drawPoint: x=" + x + ",y=" + y);
+		}
 	}
 
 	public void drawPolygon(double[] pointArr) {
@@ -119,7 +127,9 @@ public class Java2DGraphicsEngine implements IGraphicsEngine {
 		this.setLineColour();
 		this.setStroke();
 		g.draw(path);
-		logger.debug("drawPolygon: points=" + Arrays.toString(pointArr));
+		if(logger.isDebugEnabled()){
+			logger.debug("drawPolygon: points=" + Arrays.toString(pointArr));
+		}
 	}
 
 	public void drawPolyline(double[] pointArr) {
@@ -127,7 +137,9 @@ public class Java2DGraphicsEngine implements IGraphicsEngine {
 		this.setLineColour();
 		this.setStroke();
 		g.draw(path);
-		logger.debug("drawPolyline: points=" + Arrays.toString(pointArr));
+		if(logger.isDebugEnabled()){
+			logger.debug("drawPolyline: points=" + Arrays.toString(pointArr));
+		}
 	}
 
 	public void drawRectangle(double pos, double pos2, double widthSize, double heightSize) {
@@ -143,7 +155,9 @@ public class Java2DGraphicsEngine implements IGraphicsEngine {
 		Point2D.Double p = getAlignedTextPosition(align, x, y, textBounds);
 		p.setLocation(p.getX(), p.getY()+ textBounds.getHeight());
 		layout.draw(g, (float)p.getX(), (float)p.getY());
-		logger.debug("drawString: x=" + x + ", y=" + y + ", text=" + text);
+		if(logger.isDebugEnabled()){
+			logger.debug("drawString: x=" + x + ", y=" + y + ", text=" + text);
+		}
 	}
 	
 	private Point2D.Double getAlignedTextPosition(final GraphicalTextAlignment alignment, double x, double y, Rectangle2D textExtents){
@@ -193,13 +207,17 @@ public class Java2DGraphicsEngine implements IGraphicsEngine {
 	public void fillArc(double x, double y, double w, double h, double offset, double length) {
 		this.setFillColour();
 		this.g.fill(new Arc2D.Double(x, y, w, h, offset, length, Arc2D.PIE));
-		logger.debug("fillArc: x=" + x + ", y=" + y + ", w=" + w + ", h=" + h + ",cw=" + offset + ",ch=" + length);
+		if(logger.isDebugEnabled()){
+			logger.debug("fillArc: x=" + x + ", y=" + y + ", w=" + w + ", h=" + h + ",cw=" + offset + ",ch=" + length);
+		}
 	}
 
 	public void fillOval(double x, double y, double w, double h) {
 		this.setFillColour();
 		g.fill(new Ellipse2D.Double(x, y, w, h));
-		logger.debug("fillOval: x=" + x + ", y=" + y + ", w=" + w + ", h=" + h);
+		if(logger.isDebugEnabled()){
+			logger.debug("fillOval: x=" + x + ", y=" + y + ", w=" + w + ", h=" + h);
+		}
 	}
 	
 	private GeneralPath createPolylinePath(double[] pointArr){
@@ -225,7 +243,9 @@ public class Java2DGraphicsEngine implements IGraphicsEngine {
 		GeneralPath path = createPolygonPath(pointArr);
 		this.setFillColour();
 		g.fill(path);
-		logger.debug("fillPolygon: points=" + Arrays.toString(pointArr));
+		if(logger.isDebugEnabled()){
+			logger.debug("fillPolygon: points=" + Arrays.toString(pointArr));
+		}
 	}
 
 	public void handleRectangle(boolean isLine, double x, double y, double w, double h){
@@ -239,7 +259,9 @@ public class Java2DGraphicsEngine implements IGraphicsEngine {
 			this.setFillColour();
 			g.fill(rect);
 		}
-		logger.debug("handleRectangle: fill=" + !isLine + ",x=" + x + ", y=" + y + ", w=" + w + ", h=" + h);
+		if(logger.isDebugEnabled()){
+			logger.debug("handleRectangle: fill=" + !isLine + ",x=" + x + ", y=" + y + ", w=" + w + ", h=" + h);
+		}
 	}
 	
 	public void fillRectangle(double pos, double pos2, double widthSize, double heightSize) {
@@ -250,7 +272,9 @@ public class Java2DGraphicsEngine implements IGraphicsEngine {
 		RoundRectangle2D rect = new RoundRectangle2D.Double(x, y, w, h, cw, ch);
 		this.setFillColour();
 		g.fill(rect);
-		logger.debug("fillRoundedRectangle: x=" + x + ", y=" + y + ", w=" + w + ", h=" + h + ",cw=" + cw + ",ch=" + ch);
+		if(logger.isDebugEnabled()){
+			logger.debug("fillRoundedRectangle: x=" + x + ", y=" + y + ", w=" + w + ", h=" + h + ",cw=" + cw + ",ch=" + ch);
+		}
 	}
 
 	public void drawRoundRectangle(double x, double y, double w, double h, double cw, double ch) {
@@ -258,7 +282,9 @@ public class Java2DGraphicsEngine implements IGraphicsEngine {
 		this.setLineColour();
 		this.setStroke();
 		g.draw(rect);
-		logger.debug("drawRoundedRectangle: x=" + x + ", y=" + y + ", w=" + w + ", h=" + h + ",cw=" + cw + ",ch=" + ch);
+		if(logger.isDebugEnabled()){
+			logger.debug("drawRoundedRectangle: x=" + x + ", y=" + y + ", w=" + w + ", h=" + h + ",cw=" + cw + ",ch=" + ch);
+		}
 	}
 
 	public void fillString(String text, double x, double y, GraphicalTextAlignment align) {
@@ -280,31 +306,41 @@ public class Java2DGraphicsEngine implements IGraphicsEngine {
 		g.fill(textBounds);
 		g.setClip(null);
 		g.setTransform(origTransform);
-		logger.debug("fillString: x=" + x + ", y=" + y + ", text=" + text);
+		if(logger.isDebugEnabled()){
+			logger.debug("fillString: x=" + x + ", y=" + y + ", text=" + text);
+		}
 	}
 
 	public void setFillColor(RGB color) {
 		if(color == null) throw new IllegalArgumentException("Cannot be null");
 		this.fillColour = color;
-		logger.debug("setFillColor: color=" + this.fillColour);
+		if(logger.isDebugEnabled()){
+			logger.debug("setFillColor: color=" + this.fillColour);
+		}
 	}
 
 	public void setLineColor(RGB color) {
 		if(color == null) throw new IllegalArgumentException("Cannot be null");
 		this.lineColour = color;
-		logger.debug("setLineColor: color=" + this.lineColour);
+		if(logger.isDebugEnabled()){
+			logger.debug("setLineColor: color=" + this.lineColour);
+		}
 	}
 
 	public void setLineWidth(double lineWidthVal) {
 		this.lineWidth = lineWidthVal;
-		logger.debug("setLineWidth: width=" + lineWidthVal);
+		if(logger.isDebugEnabled()){
+			logger.debug("setLineWidth: width=" + lineWidthVal);
+		}
 	}
 
 	public void setFont(IFont modifiedFont) {
 		int fontSize = (int)Math.ceil(modifiedFont.getFontSize());
 		Font f = new Font(DEFAULT_FONT, getFontStyle(modifiedFont.getStyle()), fontSize);
 		g.setFont(f);
-		logger.debug("setFont: font=" + g.getFont()); 
+		if(logger.isDebugEnabled()){
+			logger.debug("setFont: font=" + g.getFont());
+		}
 	}
 	
 	int getFontStyle(EnumSet<Style> styles){

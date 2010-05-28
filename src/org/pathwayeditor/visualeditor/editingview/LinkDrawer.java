@@ -94,8 +94,8 @@ public class LinkDrawer  {
 		g2d.translate(srcPosn.getX(), srcPosn.getY());
 		g2d.rotate(srcLineAngle);
 		g2d.translate(srcTermDefaults.getGap(), 0);
-		Dimension srcEndSize = srcTermDefaults.getEndSize();
-		g2d.scale(srcEndSize.getWidth(), srcEndSize.getHeight());
+//		Dimension srcEndSize = srcTermDefaults.getEndSize();
+//		g2d.scale(srcEndSize.getWidth(), srcEndSize.getHeight());
 		drawEndDecorator(g2d, linkEdge.getLineColour(), linkEdge.getLineWidth(), srcTermDefaults.getEndDecoratorType(),
 				linkDefinition.getSrcEndPoint(), srcTermDefaults.getEndSize());
 		g2d.setTransform(before);
@@ -104,8 +104,8 @@ public class LinkDrawer  {
 		g2d.translate(tgtPosn.getX(), tgtPosn.getY());
 		g2d.rotate(tgtLineAngle);
 		g2d.translate(tgtTermDefaults.getGap(), 0);
-		Dimension tgtEndSize = tgtTermDefaults.getEndSize();
-		g2d.scale(tgtEndSize.getWidth(), tgtEndSize.getHeight());
+//		Dimension tgtEndSize = tgtTermDefaults.getEndSize();
+//		g2d.scale(tgtEndSize.getWidth(), tgtEndSize.getHeight());
 		drawEndDecorator(g2d, linkEdge.getLineColour(), linkEdge.getLineWidth(), tgtTermDefaults.getEndDecoratorType(),
 				linkDefinition.getSrcEndPoint(), tgtTermDefaults.getEndSize());
 		g2d.setTransform(before);
@@ -125,7 +125,9 @@ public class LinkDrawer  {
 			LineSegment lineSegment = lineIterator.next();
 			Line2D.Double line = new Line2D.Double(lineSegment.getOrigin().getX(), lineSegment.getOrigin().getY(),
 					lineSegment.getTerminus().getX(), lineSegment.getTerminus().getY());
-			logger.debug("Drawing line: " + lineSegment);
+			if(logger.isDebugEnabled()){
+				logger.debug("Drawing line: " + lineSegment);
+			}
 			g2d.draw(line);
 		}
 	}
@@ -136,125 +138,143 @@ public class LinkDrawer  {
 		if(!endShape.equals(LinkEndDecoratorShape.NONE)){
 			g2d.setColor(new Color(lineColour.getRed(), lineColour.getGreen(), lineColour.getBlue()));
 			if(endShape.equals(LinkEndDecoratorShape.ARROW)){
-				GeneralPath path = createTriangle();
+				GeneralPath path = createTriangle(size);
 				g2d.fill(path);
 			}
 			else if(endShape.equals(LinkEndDecoratorShape.BAR)){
 				g2d.setStroke(this.createStroke(LineStyle.SOLID, lineWidth));
-				GeneralPath path = createBar();
+				GeneralPath path = createBar(size);
 				g2d.draw(path);
 			}
 			else if(endShape.equals(LinkEndDecoratorShape.DIAMOND)){
-				GeneralPath path = createDiamond();
+				GeneralPath path = createDiamond(size);
 				g2d.fill(path);
 			}
 			else if(endShape.equals(LinkEndDecoratorShape.DOUBLE_ARROW)){
-				GeneralPath path = createDoubleTriangle();
+				GeneralPath path = createDoubleTriangle(size);
 				g2d.fill(path);
 			}
 			else if(endShape.equals(LinkEndDecoratorShape.DOUBLE_BAR)){
 				g2d.setStroke(this.createStroke(LineStyle.SOLID, lineWidth));
-				GeneralPath path = createDoubleBar();
+				GeneralPath path = createDoubleBar(size);
 				g2d.draw(path);
 			}
 			else if(endShape.equals(LinkEndDecoratorShape.EMPTY_CIRCLE)){
 				g2d.setStroke(this.createStroke(LineStyle.SOLID, lineWidth));
-				Shape circle = createCircle();
+				Shape circle = createCircle(size);
 				g2d.draw(circle);
 			}
 			else if(endShape.equals(LinkEndDecoratorShape.EMPTY_DIAMOND)){
 				g2d.setStroke(this.createStroke(LineStyle.SOLID, lineWidth));
-				GeneralPath path = createDiamond();
+				GeneralPath path = createDiamond(size);
 				g2d.draw(path);
 			}
 			else if(endShape.equals(LinkEndDecoratorShape.EMPTY_SQUARE)){
 				g2d.setStroke(this.createStroke(LineStyle.SOLID, lineWidth));
-				g2d.draw(new Rectangle2D.Double(0.0, 0.0, 1.0, 1.0));
+				double wid = size.getWidth();
+				double height = size.getHeight();
+				g2d.draw(new Rectangle2D.Double(0.0, 0.0, 1.0*wid, 1.0*height));
 			}
 			else if(endShape.equals(LinkEndDecoratorShape.EMPTY_TRIANGLE)){
 				g2d.setStroke(this.createStroke(LineStyle.SOLID, lineWidth));
-				GeneralPath path = createTriangle();
+				GeneralPath path = createTriangle(size);
 				g2d.draw(path);
 			}
 			else if(endShape.equals(LinkEndDecoratorShape.SQUARE)){
-				g2d.fill(new Rectangle2D.Double(0.0, 0.0, 1.0, 1.0));
+				double wid = size.getWidth();
+				double height = size.getHeight();
+				g2d.fill(new Rectangle2D.Double(0.0, 0.0, 1.0*wid, 1.0*height));
 			
 			}
 			else if(endShape.equals(LinkEndDecoratorShape.TRIANGLE)){
-				GeneralPath path = createTriangle();
+				GeneralPath path = createTriangle(size);
 				g2d.fill(path);
 			}
 			else if(endShape.equals(LinkEndDecoratorShape.TRIANGLE_BAR)){
-				GeneralPath path = createTriangleBar();
+				GeneralPath path = createTriangleBar(size);
 				g2d.draw(path);
 			}
 		}
 	}
 	
-	private Shape createCircle(){
-		double xPos = 0.0;
-		double yPos = 0.5;
-		Ellipse2D circle = new Ellipse2D.Double(xPos, yPos, 1.0, 1.0);
+	private Shape createCircle(Dimension size){
+		double x = size.getWidth();
+		double y = size.getHeight();
+		double xPos = 0.0*x;
+		double yPos = -0.5*y;
+		Ellipse2D circle = new Ellipse2D.Double(xPos, yPos, 1.0*x, 1.0*y);
 		return circle;
 	}
 	
-	private GeneralPath createTriangle(){
+	private GeneralPath createTriangle(Dimension size){
+		double x = size.getWidth();
+		double y = size.getHeight();
 		GeneralPath path = new GeneralPath();
-		path.moveTo(0.0, 0.0);
-		path.lineTo(1.0, 0.5);
-		path.lineTo(1.0, -0.5);
+		path.moveTo(0.0*x, 0.0*y);
+		path.lineTo(1.0*x, 0.5*y);
+		path.lineTo(1.0*x, -0.5*y);
 		path.closePath();
 		return path;
 	}
-	private GeneralPath createTriangleBar(){
+	private GeneralPath createTriangleBar(Dimension size){
+		double x = size.getWidth();
+		double y = size.getHeight();
 		GeneralPath path = new GeneralPath();
-		path.moveTo(0.0, 0.5);
-		path.lineTo(0.0, -0.5);
-		path.moveTo(0.0, 0.0);
-		path.lineTo(1.0, 0.5);
-		path.lineTo(1.0, -0.5);
+		path.moveTo(0.0*x, 0.5*y);
+		path.lineTo(0.0*x, -0.5*y);
+		path.moveTo(0.0*x, 0.0*y);
+		path.lineTo(1.0*x, 0.5*y);
+		path.lineTo(1.0*x, -0.5*y);
 		path.closePath();
 		return path;
 	}
-	private GeneralPath createDoubleTriangle(){
+	private GeneralPath createDoubleTriangle(Dimension size){
+		double x = size.getWidth();
+		double y = size.getHeight();
 		GeneralPath path = new GeneralPath();
-		path.moveTo(0.0, 0.0);
-		path.lineTo(0.5, 0.5);
-		path.lineTo(0.5, -0.5);
+		path.moveTo(0.0*x, 0.0*y);
+		path.lineTo(0.5*x, 0.5*y);
+		path.lineTo(0.5*x, -0.5*y);
 		path.closePath();
-		path.moveTo(0.5, 0.0);
-		path.lineTo(1.0, 0.5);
-		path.lineTo(1.0, -0.5);
+		path.moveTo(0.5*x, 0.0*y);
+		path.lineTo(1.0*x, 0.5*y);
+		path.lineTo(1.0*x, -0.5*y);
 		path.closePath();
 		return path;
 	}
 	
-	private GeneralPath createBar(){
+	private GeneralPath createBar(Dimension size){
+		double wid = size.getWidth();
+		double height = size.getHeight();
 		GeneralPath path = new GeneralPath();
-		path.moveTo(0.0, 0.5);
-		path.lineTo(0.0, -0.5);
-		path.moveTo(0.0, 0.0);
-		path.lineTo(1.0, 0.0);
+		path.moveTo(0.0*wid, 0.5*height);
+		path.lineTo(0.0*wid, -0.5*height);
+		path.moveTo(0.0*wid, 0.0*height);
+		path.lineTo(1.0*wid, 0.0*height);
 		return path;
 	}
 	
-	private GeneralPath createDoubleBar(){
+	private GeneralPath createDoubleBar(Dimension size){
+		double x = size.getWidth();
+		double y = size.getHeight();
 		GeneralPath path = new GeneralPath();
-		path.moveTo(0.0, 0.5);
-		path.lineTo(0.0, -0.5);
-		path.moveTo(0.5, 0.5);
-		path.lineTo(0.5, -0.5);
-		path.moveTo(0.5, 0.0);
-		path.lineTo(1.0, 0.0);
+		path.moveTo(0.0*x, 0.5*y);
+		path.lineTo(0.0*x, -0.5*y);
+		path.moveTo(0.5*x, 0.5*y);
+		path.lineTo(0.5*x, -0.5*y);
+		path.moveTo(0.5*x, 0.0*y);
+		path.lineTo(1.0*x, 0.0*y);
 		return path;
 	}
 	
-	private GeneralPath createDiamond(){
+	private GeneralPath createDiamond(Dimension size){
+		double x = size.getWidth();
+		double y = size.getHeight();
 		GeneralPath path = new GeneralPath();
-		path.moveTo(0, 0);
-		path.lineTo(0.5, 0.5);
-		path.lineTo(1.0, 0.0);
-		path.lineTo(0.5, -0.5);
+		path.moveTo(0*x, 0*y);
+		path.lineTo(0.5*x, 0.5*y);
+		path.lineTo(1.0*x, 0.0*y);
+		path.lineTo(0.5*x, -0.5*y);
 		path.closePath();
 		return path;
 	}

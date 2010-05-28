@@ -16,7 +16,7 @@ import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.figure.geometry.RectangleHull;
-import org.pathwayeditor.figurevm.FigureDefinitionCompiler;
+import org.pathwayeditor.visualeditor.feedback.FigureCompilationCache;
 
 public class LabelController extends NodeController implements ILabelController {
 	private final Logger logger = Logger.getLogger(this.getClass());
@@ -93,9 +93,10 @@ public class LabelController extends NodeController implements ILabelController 
 	}
 
 	private IFigureController createController(ILabelAttribute attribute){
-		FigureDefinitionCompiler compiler = new FigureDefinitionCompiler(LABEL_DEFINITION);
-		compiler.compile();
-		IFigureController figureController = new FigureController(compiler.getCompiledFigureDefinition());
+//		FigureDefinitionCompiler compiler = new FigureDefinitionCompiler(LABEL_DEFINITION);
+//		compiler.compile();
+//		IFigureController figureController = new FigureController(compiler.getCompiledFigureDefinition());
+		IFigureController figureController = new FigureController(FigureCompilationCache.getInstance().lookup(LABEL_DEFINITION));
 		figureController.setRequestedEnvelope(attribute.getBounds());
 		figureController.setFillColour(attribute.getBackgroundColor());
 		figureController.setLineColour(attribute.getForegroundColor());

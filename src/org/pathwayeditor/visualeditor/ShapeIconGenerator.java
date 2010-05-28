@@ -48,8 +48,9 @@ public class ShapeIconGenerator {
 	private Document document;
 	private SVGGraphics2D svgGenerator;
 	private ImageIcon icon;
-	private Envelope bounds;
+	private Envelope requestedBounds;
 	private IShapeObjectType objectType;
+	private Envelope actualBounds;
 
 	public ShapeIconGenerator() {
 
@@ -57,14 +58,14 @@ public class ShapeIconGenerator {
 	
 	
 	
-	public Envelope getBounds() {
-		return bounds;
+	public Envelope getRequestedBounds() {
+		return requestedBounds;
 	}
 
 
 
 	public void setBounds(Envelope bounds) {
-		this.bounds = bounds;
+		this.requestedBounds = bounds;
 	}
 
 
@@ -90,13 +91,13 @@ public class ShapeIconGenerator {
 		// Create an instance of org.w3c.dom.Document.
 		String svgNS = SVGDOMImplementation.SVG_NAMESPACE_URI;
 		document = domImpl.createDocument(svgNS, "svg", null);
-		document.setDocumentURI("http://www.pathwayeditor.org/doc.svg");
 		svgGenerator = new SVGGraphics2D(document);
 		IGraphicsEngine graphicsEngine = new Java2DGraphicsEngine(svgGenerator);
 		FigureDefinitionCompiler compiler = new FigureDefinitionCompiler(objectType.getDefaultAttributes().getShapeDefinition());
 		compiler.compile();
 		IFigureController figureController = new FigureController(compiler.getCompiledFigureDefinition());
-		figureController.setRequestedEnvelope(bounds);
+//		figureController.setRequestedEnvelope(requestedBounds.translate(new Point(20.0, 20.0)));
+		figureController.setRequestedEnvelope(requestedBounds);
 		IShapeAttributeDefaults attribute = objectType.getDefaultAttributes();
 		figureController.setFillColour(attribute.getFillColour());
 		figureController.setLineColour(attribute.getLineColour());
@@ -104,7 +105,7 @@ public class ShapeIconGenerator {
 		figureController.setLineWidth(attribute.getLineWidth());
 		assignBindVariablesToPropertyDefaults(attribute, figureController);
 		figureController.generateFigureDefinition();
-
+		this.actualBounds = figureController.getEnvelope();
 		GraphicsInstructionList graphicsInstList = figureController.getFigureDefinition();
 		FigureDrawer drawer = new FigureDrawer(graphicsInstList);
 		drawer.drawFigure(graphicsEngine);
@@ -130,14 +131,11 @@ public class ShapeIconGenerator {
 	private void writeImageToStream(OutputStream os) throws TranscoderException, IOException{
 		File tmpFile = File.createTempFile("test", ".svg");
 		this.writeSVGToFile(tmpFile);
-//		CharArrayWriter out = new CharArrayWriter();
-//		svgGenerator.stream(out);
-//		out.close();
 		PNGTranscoder t = new PNGTranscoder();
-		Dimension size = this.bounds.getDimension();
+		Dimension size = this.actualBounds.getDimension();
     	t.addTranscodingHint(PNGTranscoder.KEY_WIDTH, new Float(size.getWidth()+2.0));
     	t.addTranscodingHint(PNGTranscoder.KEY_HEIGHT, new Float(size.getHeight()+2.0));
-		Point origin = this.bounds.getOrigin();
+		Point origin = this.actualBounds.getOrigin();
     	t.addTranscodingHint(PNGTranscoder.KEY_AOI, new Rectangle2D.Double(origin.getX()-1.0, origin.getY()-1.0, size.getWidth()+2.0, size.getHeight()+2.0));
     	
 
@@ -152,6 +150,7 @@ public class ShapeIconGenerator {
 
     	// Perform the transcoding.
     	t.transcode(input, output);
+		tmpFile.delete();
 	}
 	
 	public void generateIcon(){

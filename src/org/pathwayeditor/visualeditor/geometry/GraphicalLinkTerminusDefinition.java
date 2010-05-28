@@ -2,6 +2,8 @@ package org.pathwayeditor.visualeditor.geometry;
 
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkTerminus;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LinkEndDecoratorShape;
+import org.pathwayeditor.businessobjects.typedefn.ILinkTerminusDefaults;
+import org.pathwayeditor.businessobjects.typedefn.ILinkTerminusDefinition;
 import org.pathwayeditor.figure.geometry.Dimension;
 
 public class GraphicalLinkTerminusDefinition implements IGraphicalLinkTerminusDefinition {
@@ -16,6 +18,13 @@ public class GraphicalLinkTerminusDefinition implements IGraphicalLinkTerminusDe
 		this.endSize = terminus.getEndSize();
 		this.gap = terminus.getGap();
 		this.endDecoratorType = terminus.getEndDecoratorType();
+	}
+
+	public GraphicalLinkTerminusDefinition(ILinkTerminusDefinition terminusDefn) {
+		ILinkTerminusDefaults terminusDefaults = terminusDefn.getDefaultAttributes();
+		this.endSize = terminusDefaults.getEndSize();
+		this.gap = terminusDefaults.getGap();
+		this.endDecoratorType = terminusDefaults.getEndDecoratorType();
 	}
 
 	public GraphicalLinkTerminusDefinition(){

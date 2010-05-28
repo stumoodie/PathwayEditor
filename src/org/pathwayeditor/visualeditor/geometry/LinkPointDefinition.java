@@ -9,6 +9,8 @@ import org.pathwayeditor.businessobjects.drawingprimitives.IBendPoint;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LineStyle;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.RGB;
+import org.pathwayeditor.businessobjects.typedefn.ILinkAttributeDefaults;
+import org.pathwayeditor.businessobjects.typedefn.ILinkObjectType;
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.LineSegment;
@@ -40,6 +42,18 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 		this.lineWidth = link.getLineWidth();
 		this.srcTermDefn = new GraphicalLinkTerminusDefinition(link.getSourceTerminus());
 		this.tgtTermDefn = new GraphicalLinkTerminusDefinition(link.getTargetTerminus());
+	}
+	
+	public LinkPointDefinition(ILinkObjectType linkObjectType, Point srcPosn, Point tgtPosn){
+		ILinkAttributeDefaults link = linkObjectType.getDefaultAttributes();
+		this.pointList = new ArrayList<Point>(SRC_TERM_DIM);
+		this.pointList.add(srcPosn);
+		this.pointList.add(tgtPosn);
+		this.lineColour = link.getLineColour();
+		this.lineStyle = link.getLineStyle();
+		this.lineWidth = link.getLineWidth();
+		this.srcTermDefn = new GraphicalLinkTerminusDefinition(linkObjectType.getSourceTerminusDefinition());
+		this.tgtTermDefn = new GraphicalLinkTerminusDefinition(linkObjectType.getTargetTerminusDefinition());
 	}
 	
 	public LinkPointDefinition(Point srcAnchor, Point tgtAnchor) {
