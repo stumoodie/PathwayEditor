@@ -12,12 +12,10 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 	private final ISelectionStateBehaviourController selectionStateController;
 	private final ICreationStateBehaviourController creationStateController;
 	private final IShapeCreationOperation shapeCreationOp;
-	private IShapePane shapePane;
 
 	private boolean activated;
 	
 	public MouseBehaviourController(IShapePane pane, IOperationFactory opFactory){
-		this.shapePane = pane;
 		this.selectionStateController = new SelectionStateController(pane, opFactory);
 		this.shapeCreationOp = opFactory.getShapeCreationOperation();
 		this.creationStateController = new ShapeCreationStateController(pane, this.shapeCreationOp);
@@ -78,11 +76,6 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 				this.currentStateController.activate();
 			}
 		}
-	}
-
-	@Override
-	public void updateView() {
-		this.shapePane.updateView();
 	}
 
 }

@@ -1,8 +1,10 @@
 package org.pathwayeditor.visualeditor.editingview;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -65,6 +67,10 @@ public class ShapePane extends JPanel implements IShapePane {
 		for(IShapePaneLayer layer : this.layers){
 			layer.paint(g2d);
 		}
+		g2d.setColor(Color.ORANGE);
+		Rectangle r = g2d.getClipBounds();
+		r.setRect(r.getX()+1.0, r.getY()+1.0, r.getWidth()-2.0, r.getHeight()-2.0);
+		g2d.draw(r);
 		g2d.setTransform(originalTransform);
 	}
 
@@ -78,7 +84,9 @@ public class ShapePane extends JPanel implements IShapePane {
 		Dimension prefSize = new Dimension();
 		prefSize.setSize(canvasBounds.getDimension().getWidth()+2*PANE_BORDER, canvasBounds.getDimension().getHeight() + 2*PANE_BORDER);
 		this.setPreferredSize(prefSize);
-		revalidate();
+//		for(IShapePaneLayer layer : this.layers){
+//			layer.setAllObjectsToUpdate();
+//		}
 		repaint();
 		if(logger.isTraceEnabled()){
 			logger.trace("Pane is focusable? = " + this.isFocusable());
@@ -122,5 +130,40 @@ public class ShapePane extends JPanel implements IShapePane {
 	@Override
 	public void setPaneBounds(Envelope paneBounds) {
 		this.canvasBounds = paneBounds;
+	}
+
+	public Rectangle getAdjustedBounds(Envelope updateBounds){
+		AffineTransform paneTransform = this.getLastUsedTransform();
+		Rectangle bounds = new Rectangle();
+		if(paneTransform == null){
+			bounds.setRect(updateBounds.getOrigin().getX(), updateBounds.getOrigin().getY(), updateBounds.getDimension().getWidth(), updateBounds.getDimension().getHeight());
+		}
+		else{
+			double originalMouseX = updateBounds.getOrigin().getX();
+			double originalMouseY = updateBounds.getOrigin().getY();
+			bounds.setRect((originalMouseX*paneTransform.getScaleX()) + paneTransform.getTranslateX(), (originalMouseY*paneTransform.getScaleY()) + paneTransform.getTranslateY(),
+					updateBounds.getDimension().getWidth()*paneTransform.getScaleX(), updateBounds.getDimension().getHeight()*paneTransform.getScaleY());
+		}
+		return bounds;  
+	}
+
+	@Override
+	public void updateView(Envelope updateBounds) {
+		Dimension prefSize = new Dimension();
+		prefSize.setSize(canvasBounds.getDimension().getWidth()+2*PANE_BORDER, canvasBounds.getDimension().getHeight() + 2*PANE_BORDER);
+		this.setPreferredSize(prefSize);
+//		for(IShapePaneLayer layer : this.layers){
+//			layer.setObjectsToUpdate(updateBounds);
+////			layer.setAllObjectsToUpdate();
+//		}
+		Rectangle bounds = getAdjustedBounds(updateBounds);
+		if(logger.isTraceEnabled()){
+			logger.trace("Update requested. Model bounds=" + updateBounds + ", screen bounds=" + bounds);
+		}
+		repaint(bounds);
+		if(logger.isTraceEnabled()){
+			logger.trace("Pane is focusable? = " + this.isFocusable());
+			logger.trace("Pane has focus? = " + this.hasFocus());
+		}
 	}
 }

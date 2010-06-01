@@ -134,7 +134,9 @@ public class LinkDrawer  {
 	
 	private void drawEndDecorator(Graphics2D g2d, RGB lineColour, double lineWidth,
 			LinkEndDecoratorShape endShape, Point startPos, Dimension size){
-		logger.debug("Draw End Dec: startPos=" + startPos + ",size=" + size + ",type=" + endShape);
+		if(logger.isDebugEnabled()){
+			logger.debug("Draw End Dec: startPos=" + startPos + ",size=" + size + ",type=" + endShape);
+		}
 		if(!endShape.equals(LinkEndDecoratorShape.NONE)){
 			g2d.setColor(new Color(lineColour.getRed(), lineColour.getGreen(), lineColour.getBlue()));
 			if(endShape.equals(LinkEndDecoratorShape.ARROW)){

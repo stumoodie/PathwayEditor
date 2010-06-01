@@ -30,4 +30,5 @@ public interface IIntersectionCalculator {
 
 	SortedSet<IDrawingPrimitiveController> findIntersectingController(Envelope bounds);
 	
+	SortedSet<IDrawingPrimitiveController> findIntersectingControllerBounds(Envelope bounds);
 }

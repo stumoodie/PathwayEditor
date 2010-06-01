@@ -57,6 +57,7 @@ public class EditingOperation implements IEditingOperation {
 			selectionRecord.restoreSelection();
 		}
 		feedbackModel.clear();
+		
 		shapePane.updateView();
 		
 	}

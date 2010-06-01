@@ -11,7 +11,7 @@ public interface IMouseBehaviourController {
 	
 	void deactivate();
 
-	void updateView();
+//	void updateView();
 
 	void setShapeCreationMode(IShapeObjectType shapeType);
 

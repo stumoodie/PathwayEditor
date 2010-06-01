@@ -29,7 +29,8 @@ public class StartupSplashScreen extends JFrame {
             renderSplashFrame(g, i);
             splash.update();
             try {
-                Thread.sleep(90);
+//                Thread.sleep(90);
+                Thread.sleep(1);
             }
             catch(InterruptedException e) {
             }

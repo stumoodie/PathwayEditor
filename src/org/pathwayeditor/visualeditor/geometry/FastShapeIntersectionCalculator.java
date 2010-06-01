@@ -231,4 +231,20 @@ public class FastShapeIntersectionCalculator implements IIntersectionCalculator 
 		}
 		return retVal;
 	}
+
+	@Override
+	public SortedSet<IDrawingPrimitiveController> findIntersectingControllerBounds(Envelope drawnBounds) {
+		if(logger.isDebugEnabled()){
+			logger.debug("Finding elements intersecting with bounds=" + drawnBounds);
+		}
+		SortedSet<IDrawingPrimitiveController> retVal = createSortedSet();
+		Point origin = drawnBounds.getOrigin();
+		Point diagonal = drawnBounds.getDiagonalCorner();
+		ISpacialEntry2DEnumerator< IDrawingPrimitiveController> iter = this.spacialIndex.queryOverlap((float)origin.getX(), (float)origin.getY(), (float)diagonal.getX(), (float)diagonal.getY(), null, 0, false);
+		while(iter.numRemaining() > 0){
+			IDrawingPrimitiveController element = iter.nextInt();
+			retVal.add(element);
+		}
+		return retVal;
+	}
 }

@@ -39,8 +39,9 @@ public class SelectionRecord implements ISelectionRecord {
 
 		if(!this.controllerMapping.containsKey(drawingElement)){
 			// only do something if selection is not already recorded
+			List<ISelection> oldSelection = new ArrayList<ISelection>(this.selections);
 			createSelection(SelectionType.SECONDARY, drawingElement);
-			notifySelectionChange();
+			notifySelectionChange(oldSelection.iterator(), this.selections.iterator());
 		}
 	}
 	
@@ -86,9 +87,10 @@ public class SelectionRecord implements ISelectionRecord {
 	}
 
 	public void clear() {
+		List<ISelection> oldSelection = new ArrayList<ISelection>(this.selections);
 		this.selections.clear();
 		this.controllerMapping.clear();
-		notifySelectionChange();
+		notifySelectionChange(oldSelection.iterator(), this.selections.iterator());
 	}
 
 	public ISelection getPrimarySelection() {
@@ -123,9 +125,10 @@ public class SelectionRecord implements ISelectionRecord {
 		
 		if(this.selections.isEmpty() || !this.selections.first().equals(drawingElement)){
 			// a change in primary selection clears the secondary selection
+			List<ISelection> oldSelection = new ArrayList<ISelection>(this.selections);
 			this.selections.clear();
 			createSelection(SelectionType.PRIMARY, drawingElement);
-			notifySelectionChange();
+			notifySelectionChange(oldSelection.iterator(), this.selections.iterator());
 		}
 	}
 	
@@ -143,11 +146,21 @@ public class SelectionRecord implements ISelectionRecord {
 		}
 	}
 
-	private void notifySelectionChange(){
+	private void notifySelectionChange(final Iterator<ISelection> oldSelectionIter, final Iterator<ISelection> newSelectionIter){
 		ISelectionChangeEvent event = new ISelectionChangeEvent(){
 
 			public ISelectionRecord getSelectionRecord() {
 				return SelectionRecord.this;
+			}
+
+			@Override
+			public Iterator<ISelection> newSelectionIter() {
+				return newSelectionIter;
+			}
+
+			@Override
+			public Iterator<ISelection> oldSelectionIter() {
+				return oldSelectionIter;
 			}
 			
 		};

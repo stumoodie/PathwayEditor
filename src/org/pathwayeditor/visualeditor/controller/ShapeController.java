@@ -350,8 +350,8 @@ public class ShapeController extends NodeController implements IShapeController 
 	}
 
 	@Override
-	public boolean intersectsBounds(Envelope drawnBounds) {
-		IConvexHull otherHull = new RectangleHull(drawnBounds);
+	public boolean intersectsBounds(Envelope otherBounds) {
+		IConvexHull otherHull = new RectangleHull(otherBounds);
 		return intersectsHull(otherHull);
 	}
 }

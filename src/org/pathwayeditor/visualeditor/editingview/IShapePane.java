@@ -10,6 +10,8 @@ import org.pathwayeditor.figure.geometry.Envelope;
 
 public interface IShapePane {
 
+	void updateView(Envelope updateBounds);
+	
 	void updateView();
 	
 	void addLayer(IShapePaneLayer layer);
@@ -24,12 +26,6 @@ public interface IShapePane {
 	
 	Envelope getPaneBounds();
 	
-//	IViewControllerStore getViewModel();
-//	
-//	ISelectionRecord getSelectionRecord();
-//	
-//	IFeedbackModel getFeedbackModel(); 
-
 	void addKeyListener(KeyListener keyListener);
 
 	void addMouseListener(MouseListener mouseSelectionListener);

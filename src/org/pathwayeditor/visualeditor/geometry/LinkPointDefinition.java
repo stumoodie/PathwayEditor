@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.drawingprimitives.IBendPoint;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LineStyle;
@@ -17,6 +18,8 @@ import org.pathwayeditor.figure.geometry.LineSegment;
 import org.pathwayeditor.figure.geometry.Point;
 
 public class LinkPointDefinition implements ILinkPointDefinition {
+	private final Logger logger = Logger.getLogger(this.getClass());
+	
 	private static final double LINE_HIT_TOLERENCE = 5.0;
 	private static final int SRC_TERM_DIM = 2;
 	private static final int SRC_IDX = 0;
@@ -272,6 +275,9 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 		while(lineSegIter.hasNext() && !retVal){
 			LineSegment seg = lineSegIter.next();
 			retVal = seg.containsPoint(p, halfLineHeight);
+			if(logger.isTraceEnabled() && retVal){
+				logger.trace("Segment contains point: p=" + p + ", seg" + seg);
+			}
 		}
 		return retVal;
 	}

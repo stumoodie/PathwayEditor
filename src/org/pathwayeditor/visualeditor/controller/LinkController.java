@@ -2,6 +2,7 @@ package org.pathwayeditor.visualeditor.controller;
 
 import java.util.Iterator;
 
+import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.drawingprimitives.IBendPoint;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.BendPointChange;
@@ -20,6 +21,7 @@ import org.pathwayeditor.visualeditor.geometry.ILinkPointDefinition;
 import org.pathwayeditor.visualeditor.geometry.LinkPointDefinition;
 
 public class LinkController extends DrawingPrimitiveController implements ILinkController {
+	private final Logger logger = Logger.getLogger(this.getClass());
 //	private static final double LINE_SEGMENT_INTERSECTION_TOLERANCE = 1.0;
 //	private static final double LINE_HIT_TOLERENCE = 50.0;
 	//	private final Logger logger = Logger.getLogger(this.getClass());
@@ -220,9 +222,13 @@ public class LinkController extends DrawingPrimitiveController implements ILinkC
 	@Override
 	public boolean containsPoint(Point p) {
 		boolean retVal = false;
-		if(getDrawnBounds().containsPoint(p)){
+		Envelope bounds = getDrawnBounds(); 
+		if(bounds.containsPoint(p)){
 //			final double halfLineHeight = this.linkAttribute.getLineWidth() + LINE_HIT_TOLERENCE;
 			retVal = this.linkDefinition.containsPoint(p);//, halfLineHeight); 
+			if(logger.isTraceEnabled() && retVal){
+				logger.trace("Bounds contains point. bounds=" + bounds + ",point=" + p);
+			}
 		}
 		return retVal;
 	}
@@ -234,6 +240,9 @@ public class LinkController extends DrawingPrimitiveController implements ILinkC
 		while(iter.hasNext() && !retVal){
 			LineSegment line = iter.next();
 			retVal = isLineIntersectingBounds(line, drawnBounds);
+			if(logger.isTraceEnabled() && retVal){
+				logger.trace("Line intersects bounds. Bounds=" + drawnBounds + " lineSeg=" + line);
+			}
 		}
 		return retVal;
 	}

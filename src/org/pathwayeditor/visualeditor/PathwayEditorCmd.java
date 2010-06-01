@@ -16,7 +16,7 @@ public class PathwayEditorCmd {
 	
 	public static final void main(String argv[]){
 		PathwayEditorCmd cmd = new PathwayEditorCmd();
-		cmd.splashScreen();
+//		cmd.splashScreen();
 		cmd.runApplication();
 	}
 

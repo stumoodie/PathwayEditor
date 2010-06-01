@@ -7,12 +7,14 @@ import java.awt.Stroke;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 
+import org.apache.log4j.Logger;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.visualeditor.selection.ISelection;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle.SelectionHandleType;
 
 public class SelectionShape {
+	private final Logger logger = Logger.getLogger(this.getClass());
 	private static final float HANDLE_LINE_WIDTH = 1.0f;
 	private final ISelection selection;
 	
@@ -26,6 +28,9 @@ public class SelectionShape {
 		Envelope bounds = this.selection.getSelectionHandle(SelectionHandleType.Central).get(0).getBounds();
 		Rectangle2D selectionShape = new Rectangle2D.Double(bounds.getOrigin().getX(), bounds.getOrigin().getY(),
 				bounds.getDimension().getWidth(), bounds.getDimension().getHeight());
+		if(logger.isTraceEnabled()){
+			logger.trace("Painting selection at: " + selectionShape);
+		}
 		g2d.draw(selectionShape);
 		drawCornerHandle(g2d, this.selection.getSelectionHandle(SelectionHandleType.NW).get(0));
 		drawCornerHandle(g2d, this.selection.getSelectionHandle(SelectionHandleType.NE).get(0));
