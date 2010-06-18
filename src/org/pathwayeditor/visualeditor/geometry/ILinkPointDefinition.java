@@ -75,4 +75,6 @@ public interface ILinkPointDefinition {
 	void setLineWidth(double lineWidth);
 
 	Envelope getBounds();
+
+	ILinkPointDefinition getCopy();
 }

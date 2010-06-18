@@ -1,6 +1,7 @@
 package org.pathwayeditor.visualeditor.operations;
 
 import org.apache.log4j.Logger;
+import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.behaviour.ILinkOperation;
 import org.pathwayeditor.visualeditor.commands.CreateBendPointCommand;
@@ -35,9 +36,10 @@ public class LinkOperation implements ILinkOperation {
 			logger.trace("Move bendpoint finished. bpIdx=" + bendPointHandle.getHandleIndex() + ",position=" + position);
 		}
 		createMoveBendPointCommand(bendPointHandle.getHandleIndex(), position);
+		Envelope refreshBounds = this.feedbackModel.uniqueFeedbackLink().getLinkDefinition().getBounds();
 		feedbackModel.clear();
 		selectionRecord.restoreSelection();
-		shapePane.updateView();
+		shapePane.updateView(refreshBounds);
 	}
 
 	@Override
@@ -46,7 +48,7 @@ public class LinkOperation implements ILinkOperation {
 			logger.trace("Move bendpoint ongoing. bpIdx=" + handle.getHandleIndex() + ",position=" + position);
 		}
 		moveBendPoint(handle.getHandleIndex(), position);
-		shapePane.updateView();
+		shapePane.updateView(this.feedbackModel.uniqueFeedbackLink().getLinkDefinition().getBounds());
 	}
 
 	@Override
@@ -61,9 +63,10 @@ public class LinkOperation implements ILinkOperation {
 			logger.trace("New bendpoint finished. lineSeg=" + selectionHandle.getHandleIndex() + ",position=" + position);
 		}
 		createNewBendPointCommand(selectionHandle.getHandleIndex(), position);
+		Envelope refreshBounds = this.feedbackModel.uniqueFeedbackLink().getLinkDefinition().getBounds();
 		feedbackModel.clear();
 		selectionRecord.restoreSelection();
-		shapePane.updateView();
+		shapePane.updateView(refreshBounds);
 	}
 
 	@Override
@@ -72,7 +75,7 @@ public class LinkOperation implements ILinkOperation {
 			logger.trace("Moving new bendpoint ongoing. bpIdx=" + handle.getHandleIndex() + ",position=" + position);
 		}
 		moveBendPoint(handle.getHandleIndex(), position);
-		shapePane.updateView();
+		shapePane.updateView(this.feedbackModel.uniqueFeedbackLink().getLinkDefinition().getBounds());
 	}
 
 	@Override

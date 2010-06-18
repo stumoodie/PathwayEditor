@@ -2,6 +2,7 @@ package org.pathwayeditor.visualeditor;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.util.Iterator;
 
 import javax.swing.BorderFactory;
@@ -53,7 +54,7 @@ public class PathwayEditor extends JPanel {
 	private ISelectionChangeListener selectionChangeListener;
 	private IFeedbackModel feedbackModel;
 	private boolean isOpen = false;
-	
+
 	public PathwayEditor(){
 		super();
 		this.setLayout(new BorderLayout());
@@ -90,17 +91,16 @@ public class PathwayEditor extends JPanel {
 		this.shapePane.addLayer(new DomainModelLayer(viewModel));
 		this.shapePane.addLayer(new SelectionLayer(selectionRecord));
 		this.shapePane.addLayer(new FeedbackLayer(feedbackModel));
-		this.shapePane.setPaneBounds(new Envelope(0, 0, 400.0, 400.0));
+		Envelope canvasBounds = this.viewModel.getCanvasBounds();
+		this.shapePane.setPaneBounds(canvasBounds);
 		scrollPane = new JScrollPane((ShapePane)this.shapePane, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		scrollPane.setPreferredSize(this.getPreferredSize());
 		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 		scrollPane.setFocusable(true);
-		this.add(scrollPane, BorderLayout.CENTER);
-		Envelope canvasBounds = viewModel.getCanvasBounds();
-		((ShapePane)this.shapePane).setSize((int)Math.ceil(canvasBounds.getDimension().getWidth()), (int)Math.ceil(canvasBounds.getDimension().getHeight()));
+		scrollPane.setWheelScrollingEnabled(true);
         this.editBehaviourController = new MouseBehaviourController(shapePane, new OperationFactory(this.shapePane, this.feedbackModel, this.selectionRecord, viewModel, this.commandStack));
 		this.palettePane = new PalettePanel(canvas.getNotationSubsystem(), editBehaviourController);
 		this.add(palettePane, BorderLayout.LINE_START);
+		this.add(scrollPane, BorderLayout.CENTER);
         this.selectionChangeListener = new ISelectionChangeListener() {
 			
 			@Override
@@ -159,8 +159,8 @@ public class PathwayEditor extends JPanel {
 				}
 			}
 		};
-		this.initialise();
 		this.revalidate();
+		this.initialise();
 	}
 	
 	public void loadCanvas(ICanvas canvas){
@@ -170,7 +170,8 @@ public class PathwayEditor extends JPanel {
         this.commandStack = new CommandStack();
 		this.viewModel = new ViewControllerStore(canvas.getModel());
 		setUpEditorViews(canvas);
-		
+		((ShapePane)this.shapePane).setPreferredSize(new Dimension(1800, 1800));
+		((ShapePane)this.shapePane).revalidate();
 	}
 
 	

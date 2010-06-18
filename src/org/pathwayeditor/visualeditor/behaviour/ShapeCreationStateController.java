@@ -1,6 +1,5 @@
 package org.pathwayeditor.visualeditor.behaviour;
 
-import java.awt.geom.AffineTransform;
 import java.util.SortedSet;
 
 import org.apache.log4j.Logger;
@@ -24,16 +23,24 @@ public class ShapeCreationStateController implements ICreationStateBehaviourCont
 	
 
 	public Point getAdjustedMousePosition(double originalMouseX, double originalMouseY){
-		AffineTransform paneTransform = this.shapePane.getLastUsedTransform();
-		Point retVal = null;
-		if(paneTransform == null){
-			retVal = new Point(originalMouseX, originalMouseY);
-		}
-		else{
-			retVal = new Point((originalMouseX-paneTransform.getTranslateX())/paneTransform.getScaleX(), (originalMouseY-paneTransform.getTranslateY())/paneTransform.getScaleY()); 
+		Point retVal = this.shapePane.getPaneBounds().getOrigin();
+		retVal = retVal.translate(originalMouseX, originalMouseY);
+		if(logger.isTraceEnabled()){
+			logger.trace("Adjust position. origX=" + originalMouseX + ",origY=" + originalMouseY + " : adjustedPoint=" + retVal + ", paneBounds=" + shapePane.getPaneBounds());
 		}
 		return retVal;  
 	}
+//	public Point getAdjustedMousePosition(double originalMouseX, double originalMouseY){
+//		AffineTransform paneTransform = this.shapePane.getLastUsedTransform();
+//		Point retVal = null;
+//		if(paneTransform == null){
+//			retVal = new Point(originalMouseX, originalMouseY);
+//		}
+//		else{
+//			retVal = new Point((originalMouseX-paneTransform.getTranslateX())/paneTransform.getScaleX(), (originalMouseY-paneTransform.getTranslateY())/paneTransform.getScaleY()); 
+//		}
+//		return retVal;  
+//	}
 
 	@Override
 	public void activate(){
@@ -60,7 +67,9 @@ public class ShapeCreationStateController implements ICreationStateBehaviourCont
 		IDrawingPrimitiveController retVal = null;
 		if(!hits.isEmpty()){
 			retVal = hits.first();
-			logger.info("Found hit at: " + retVal);
+			if(logger.isTraceEnabled()){
+				logger.trace("Found hit at: " + retVal);
+			}
 		}
 		return retVal;
 	}

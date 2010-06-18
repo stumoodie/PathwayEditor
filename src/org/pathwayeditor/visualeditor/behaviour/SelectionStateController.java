@@ -3,7 +3,6 @@ package org.pathwayeditor.visualeditor.behaviour;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
-import java.awt.geom.AffineTransform;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.SortedSet;
@@ -87,13 +86,17 @@ public class SelectionStateController implements ISelectionStateBehaviourControl
 	
 
 	public Point getAdjustedMousePosition(double originalMouseX, double originalMouseY){
-		AffineTransform paneTransform = this.shapePane.getLastUsedTransform();
-		Point retVal = null;
-		if(paneTransform == null){
-			retVal = new Point(originalMouseX, originalMouseY);
-		}
-		else{
-			retVal = new Point((originalMouseX-paneTransform.getTranslateX())/paneTransform.getScaleX(), (originalMouseY-paneTransform.getTranslateY())/paneTransform.getScaleY()); 
+//		AffineTransform paneTransform = this.shapePane.getLastUsedTransform();
+		Point retVal = this.shapePane.getPaneBounds().getOrigin();
+//		if(paneTransform == null){
+			retVal = retVal.translate(originalMouseX, originalMouseY);
+//		}
+//		else{
+//			retVal = new Point((originalMouseX-paneTransform.getTranslateX())/paneTransform.getScaleX(), (originalMouseY-paneTransform.getTranslateY())/paneTransform.getScaleY()); 
+//		}
+		if(logger.isTraceEnabled()){
+//			logger.trace("Adjust position. origX=" + originalMouseX + ",origY=" + originalMouseY + " : adjustedPoint=" + retVal + ", transform=" + paneTransform);
+			logger.trace("Adjust position. origX=" + originalMouseX + ",origY=" + originalMouseY + " : adjustedPoint=" + retVal + ", paneBounds=" + shapePane.getPaneBounds());
 		}
 		return retVal;  
 	}
@@ -334,7 +337,9 @@ public class SelectionStateController implements ISelectionStateBehaviourControl
 		IDrawingPrimitiveController retVal = null;
 		if(!hits.isEmpty()){
 			retVal = hits.first();
-			logger.info("Found hit at: " + retVal);
+			if(logger.isTraceEnabled()){
+				logger.trace("Found hit at: " + retVal);
+			}
 		}
 		return retVal;
 	}

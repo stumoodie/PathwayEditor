@@ -3,7 +3,6 @@ package org.pathwayeditor.visualeditor.editingview;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.geom.AffineTransform;
 import java.util.Iterator;
 
 import org.pathwayeditor.figure.geometry.Envelope;
@@ -32,7 +31,7 @@ public interface IShapePane {
 
 	void addMouseMotionListener(MouseMotionListener mouseMotionListener);
 
-	AffineTransform getLastUsedTransform();
+//	AffineTransform getLastUsedTransform();
 
 	void removeMouseMotionListener(MouseMotionListener mouseMotionListener);
 

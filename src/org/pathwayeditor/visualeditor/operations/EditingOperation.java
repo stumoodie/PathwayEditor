@@ -5,6 +5,7 @@ import java.util.Iterator;
 import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.drawingprimitives.IBendPoint;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
+import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.behaviour.IEditingOperation;
 import org.pathwayeditor.visualeditor.commands.CompoundCommand;
@@ -18,7 +19,14 @@ import org.pathwayeditor.visualeditor.controller.INodeController;
 import org.pathwayeditor.visualeditor.editingview.IShapePane;
 import org.pathwayeditor.visualeditor.feedback.IFeedbackElement;
 import org.pathwayeditor.visualeditor.feedback.IFeedbackLink;
+import org.pathwayeditor.visualeditor.feedback.IFeedbackLinkChangeEvent;
+import org.pathwayeditor.visualeditor.feedback.IFeedbackLinkListener;
 import org.pathwayeditor.visualeditor.feedback.IFeedbackModel;
+import org.pathwayeditor.visualeditor.feedback.IFeedbackNode;
+import org.pathwayeditor.visualeditor.feedback.IFeedbackNodeListener;
+import org.pathwayeditor.visualeditor.feedback.IFeedbackNodeResizeEvent;
+import org.pathwayeditor.visualeditor.feedback.IFeedbackNodeTranslationEvent;
+import org.pathwayeditor.visualeditor.geometry.EnvelopeBuilder;
 import org.pathwayeditor.visualeditor.geometry.ICommonParentCalculator;
 import org.pathwayeditor.visualeditor.selection.ILinkSelection;
 import org.pathwayeditor.visualeditor.selection.INodeSelection;
@@ -33,6 +41,9 @@ public class EditingOperation implements IEditingOperation {
 	private final ISelectionRecord selectionRecord;
 	private final ICommonParentCalculator newParentCalc;
 	private final ICommandStack commandStack;
+	private EnvelopeBuilder refreshBoundsBuilder;
+	private IFeedbackLinkListener feedbackLinkListener;
+	private IFeedbackNodeListener feedbackNodeListener;
 	
 	public EditingOperation(IShapePane shapePane, IFeedbackModel feedbackModel, ISelectionRecord selectionRecord,
 			ICommonParentCalculator newParentCalc, ICommandStack commandStack){
@@ -41,12 +52,39 @@ public class EditingOperation implements IEditingOperation {
 		this.selectionRecord = selectionRecord;
 		this.newParentCalc = newParentCalc;
 		this.commandStack = commandStack;
+		this.feedbackLinkListener = new IFeedbackLinkListener() {
+			@Override
+			public void linkChangeEvent(IFeedbackLinkChangeEvent e) {
+				refreshBoundsBuilder.union(e.getNewLinkDefintion().getBounds());
+			}
+		};
+		this.feedbackNodeListener = new IFeedbackNodeListener() {
+			@Override
+			public void nodeTranslationEvent(IFeedbackNodeTranslationEvent e) {
+				refreshBoundsBuilder.union(e.getNode().getBounds());
+			}
+			@Override
+			public void nodeResizeEvent(IFeedbackNodeResizeEvent e) {
+				refreshBoundsBuilder.union(e.getNode().getBounds());
+			}
+		};
 	}
 	
 	@Override
 	public void moveFinished(Point delta, ReparentingStateType reparentingState) {
+		Envelope refreshBounds = refreshBoundsBuilder.getEnvelope();
 		if(logger.isTraceEnabled()){
-			logger.trace("Move finished. Delta=" + delta);
+			logger.trace("Move finished. Delta=" + delta + ", Refresh Bounds=" + refreshBounds);
+		}
+		Iterator<IFeedbackNode> nodeIter = feedbackModel.nodeIterator();
+		while(nodeIter.hasNext()){
+			IFeedbackNode node = nodeIter.next();
+			node.removeFeedbackNodeListener(feedbackNodeListener);
+		}
+		Iterator<IFeedbackLink> linkIter = feedbackModel.linkIterator();
+		while(linkIter.hasNext()){
+			IFeedbackLink link = linkIter.next();
+			link.removeFeedbackLinkListener(feedbackLinkListener);
 		}
 		if(reparentingState.equals(ReparentingStateType.CAN_REPARENT)){
 			createMoveCommand(delta, true);
@@ -57,30 +95,41 @@ public class EditingOperation implements IEditingOperation {
 			selectionRecord.restoreSelection();
 		}
 		feedbackModel.clear();
-		
-		shapePane.updateView();
+		shapePane.updateView(refreshBounds);
 		
 	}
 
 	@Override
 	public void moveOngoing(Point delta) {
+		Envelope refreshBounds = refreshBoundsBuilder.getEnvelope();
 		if(logger.isTraceEnabled()){
-			logger.trace("Ongoning move. Delta=" + delta);
+			logger.trace("Ongoning move. Delta=" + delta + ", Refresh Bounds=" + refreshBounds);
 		}
 		moveSelection(delta);
-		shapePane.updateView();
+		shapePane.updateView(refreshBounds);
 	}
 
 	@Override
 	public void moveStarted() {
+		Envelope originalBounds = this.selectionRecord.getTotalSelectionBounds();
+		refreshBoundsBuilder = new EnvelopeBuilder(originalBounds);
 		logger.trace("Move started.");
 		feedbackModel.rebuildIncludingHierarchy();
+		Iterator<IFeedbackNode> nodeIter = feedbackModel.nodeIterator();
+		while(nodeIter.hasNext()){
+			IFeedbackNode node = nodeIter.next();
+			node.addFeedbackNodeListener(feedbackNodeListener);
+		}
+		Iterator<IFeedbackLink> linkIter = feedbackModel.linkIterator();
+		while(linkIter.hasNext()){
+			IFeedbackLink link = linkIter.next();
+			link.addFeedbackLinkListener(feedbackLinkListener);
+		}
 	}
 
 	@Override
 	public ReparentingStateType getReparentingState(Point delta) {
 		ReparentingStateType retVal = ReparentingStateType.FORBIDDEN;
-//		newParentCalc = new CommonParentCalculator(viewModel);
 		newParentCalc.findCommonParent(selectionRecord.getSubgraphSelection(), delta);
         if(newParentCalc.hasFoundCommonParent()) {
         	if(logger.isTraceEnabled()){

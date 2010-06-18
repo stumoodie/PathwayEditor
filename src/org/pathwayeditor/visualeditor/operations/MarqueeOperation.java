@@ -46,14 +46,14 @@ public class MarqueeOperation implements IMarqueeOperation {
 		node.resizePrimitive(originDelta, sizeDelta);
 		makeSelectionFromMarquee(node.getBounds());
 		feedbackModel.clear();
-		shapePane.updateView();
+		shapePane.updateView(node.getBounds());
 	}
 	
 	@Override
 	public void selectionContinuing(Point originDelta, Dimension sizeDelta) {
 		IFeedbackNode node = feedbackModel.uniqueFeedbackNode();
 		node.resizePrimitive(originDelta, sizeDelta);
-		shapePane.updateView();
+		shapePane.updateView(node.getBounds());
 	}
 
 	private void makeSelectionFromMarquee(Envelope bounds) {

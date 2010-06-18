@@ -147,7 +147,7 @@ public class VisualEditor extends JFrame {
 			canvasPersistenceManager.readCanvasFromStream(in);
 			in.close();
 			insp.loadCanvas(canvasPersistenceManager.getCurrentCanvas());
-			this.validate();
+//			this.getRootPane().revalidate();
 			
 		}
 		catch(IOException ex){

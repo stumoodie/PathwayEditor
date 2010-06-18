@@ -39,6 +39,8 @@
 		<pathelement location="${lib.dir}/compoundGraph/CompoundGraph.jar" />
 		<pathelement location="${lib.dir}/businessObjects/BusinessObjects.jar" />
 		<pathelement location="${lib.dir}/annotator/AnnotatorNotation.jar" />
+		<pathelement location="${lib.dir}/batik-1.7/batik.jar" />
+		<pathelement location="${lib.dir}/batik-1.7/batik-rasterizer.jar" />
 	</path>
 
 	<path id="test.classpath">

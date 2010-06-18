@@ -1,6 +1,9 @@
 package org.pathwayeditor.visualeditor;
 
 public class PathwayEditorCmd {
+	private VisualEditor visualEditor;
+
+
 	public PathwayEditorCmd(){
 		
 	}
@@ -10,7 +13,7 @@ public class PathwayEditorCmd {
 	}
 	
 	public void runApplication(){
-		new VisualEditor("Pathway Editor");
+		this.visualEditor = new VisualEditor("Pathway Editor");
 	}
 	
 	

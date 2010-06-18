@@ -12,12 +12,14 @@ import java.util.TreeSet;
 import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElementSelection;
 import org.pathwayeditor.businessobjects.drawingprimitives.ISelectionFactory;
+import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveController;
 import org.pathwayeditor.visualeditor.controller.ILinkController;
 import org.pathwayeditor.visualeditor.controller.INodeController;
 import org.pathwayeditor.visualeditor.controller.IRootController;
 import org.pathwayeditor.visualeditor.controller.IViewControllerStore;
+import org.pathwayeditor.visualeditor.geometry.EnvelopeBuilder;
 import org.pathwayeditor.visualeditor.selection.ISelection.SelectionType;
 
 public class SelectionRecord implements ISelectionRecord {
@@ -25,6 +27,7 @@ public class SelectionRecord implements ISelectionRecord {
 	private final List<ISelectionChangeListener> listeners;
 	private final IViewControllerStore viewModel;
 	private final Map<IDrawingPrimitiveController, ISelection> controllerMapping;
+	private EnvelopeBuilder builder;
 	
 	public SelectionRecord(IViewControllerStore viewModel){
 		this.selections = new TreeSet<ISelection>();
@@ -40,7 +43,8 @@ public class SelectionRecord implements ISelectionRecord {
 		if(!this.controllerMapping.containsKey(drawingElement)){
 			// only do something if selection is not already recorded
 			List<ISelection> oldSelection = new ArrayList<ISelection>(this.selections);
-			createSelection(SelectionType.SECONDARY, drawingElement);
+			ISelection seln = createSelection(SelectionType.SECONDARY, drawingElement);
+			this.builder.union(seln.getPrimitiveController().getDrawnBounds());
 			notifySelectionChange(oldSelection.iterator(), this.selections.iterator());
 		}
 	}
@@ -90,6 +94,7 @@ public class SelectionRecord implements ISelectionRecord {
 		List<ISelection> oldSelection = new ArrayList<ISelection>(this.selections);
 		this.selections.clear();
 		this.controllerMapping.clear();
+		this.builder = null;
 		notifySelectionChange(oldSelection.iterator(), this.selections.iterator());
 	}
 
@@ -127,7 +132,8 @@ public class SelectionRecord implements ISelectionRecord {
 			// a change in primary selection clears the secondary selection
 			List<ISelection> oldSelection = new ArrayList<ISelection>(this.selections);
 			this.selections.clear();
-			createSelection(SelectionType.PRIMARY, drawingElement);
+			ISelection newSeln = createSelection(SelectionType.PRIMARY, drawingElement);
+			this.builder = new EnvelopeBuilder(newSeln.getPrimitiveController().getDrawnBounds());
 			notifySelectionChange(oldSelection.iterator(), this.selections.iterator());
 		}
 	}
@@ -261,6 +267,32 @@ public class SelectionRecord implements ISelectionRecord {
 	@Override
 	public boolean containsSelection(IDrawingPrimitiveController controller) {
 		return this.controllerMapping.containsKey(controller);
+	}
+
+	@Override
+	public Envelope getTotalSelectionBounds() {
+		Envelope retVal = Envelope.NULL_ENVELOPE;
+		if(this.builder != null){
+			retVal = this.builder.getEnvelope();
+		}
+		return retVal;
+//		double minX = Double.MAX_VALUE;
+//		double maxX = Double.MIN_VALUE;
+//		double minY = Double.MAX_VALUE;
+//		double maxY = Double.MIN_VALUE;
+//		for(ISelection sel : this.selections){
+//			Point o = sel.getPrimitiveController().getDrawnBounds().getOrigin();
+//			Point d = sel.getPrimitiveController().getDrawnBounds().getDiagonalCorner();
+//			minX = Math.min(minX, o.getX());
+//			maxX = Math.max(maxX, o.getX());
+//			minY = Math.min(minY, o.getY());
+//			maxY = Math.max(maxY, o.getY());
+//			minX = Math.min(minX, d.getX());
+//			maxX = Math.max(maxX, d.getX());
+//			minY = Math.min(minY, d.getY());
+//			maxY = Math.max(maxY, d.getY());
+//		}
+//		return new Envelope(minX, minY, maxX-minX, maxY-minY);
 	}
 
 }

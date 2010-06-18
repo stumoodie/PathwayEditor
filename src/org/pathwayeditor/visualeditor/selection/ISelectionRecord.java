@@ -3,6 +3,7 @@ package org.pathwayeditor.visualeditor.selection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveController;
 import org.pathwayeditor.visualeditor.controller.ILinkController;
@@ -51,4 +52,6 @@ public interface ISelectionRecord {
 	boolean containsSelection(IDrawingPrimitiveController controller);
 
 	void restoreSelection();
+
+	Envelope getTotalSelectionBounds();
 }

@@ -19,13 +19,26 @@ public interface INodeController extends IDrawingPrimitiveController {
 	 * @return the hull of the drawn node primitive.
 	 */
 	IConvexHull getConvexHull();
-	
+
+	/**
+	 * Get the drawing element. 
+	 */
 	@Override
 	IDrawingNodeAttribute getDrawingElement();
 	
-
+	/**
+	 * Tests if the convex hull intersects this shape.
+	 * @param queryHull the queryHull to test/
+	 * @return true if it intersects, false otherwise.
+	 */
 	boolean intersectsHull(IConvexHull queryHull);
 
+	/**
+	 * Tests id this node can resize to the new settings provided. 
+	 * @param originDelta the change to the origin of the shape's bounds. 
+	 * @param resizeDelta the change to the size of the shapes bounds.
+	 * @return true of the resize will succeed, false otherwise.
+	 */
 	boolean canResize(Point originDelta, Dimension resizeDelta);
 	
 }

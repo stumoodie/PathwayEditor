@@ -30,6 +30,8 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 	private double lineWidth = DEFAULT_LINE_WIDTH;
 	private final IGraphicalLinkTerminusDefinition srcTermDefn;
 	private final IGraphicalLinkTerminusDefinition tgtTermDefn;
+	private Point srcListStartPosn;
+	private Point tgtListEndPosn;
 	
 	public LinkPointDefinition(ILinkAttribute link){
 		this.pointList = new ArrayList<Point>(link.numBendPoints()+SRC_TERM_DIM);
@@ -45,6 +47,8 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 		this.lineWidth = link.getLineWidth();
 		this.srcTermDefn = new GraphicalLinkTerminusDefinition(link.getSourceTerminus());
 		this.tgtTermDefn = new GraphicalLinkTerminusDefinition(link.getTargetTerminus());
+		this.srcListStartPosn = calcFirstDrawnPoint(this.getSourceLineSegment(), this.srcTermDefn.getEndSize(), this.srcTermDefn.getGap());
+		this.tgtListEndPosn = calcFirstDrawnPoint(this.getTargetLineSegment(), this.tgtTermDefn.getEndSize(), this.tgtTermDefn.getGap());
 	}
 	
 	public LinkPointDefinition(ILinkObjectType linkObjectType, Point srcPosn, Point tgtPosn){
@@ -57,6 +61,8 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 		this.lineWidth = link.getLineWidth();
 		this.srcTermDefn = new GraphicalLinkTerminusDefinition(linkObjectType.getSourceTerminusDefinition());
 		this.tgtTermDefn = new GraphicalLinkTerminusDefinition(linkObjectType.getTargetTerminusDefinition());
+		this.srcListStartPosn = calcFirstDrawnPoint(this.getSourceLineSegment(), this.srcTermDefn.getEndSize(), this.srcTermDefn.getGap());
+		this.tgtListEndPosn = calcFirstDrawnPoint(this.getTargetLineSegment(), this.tgtTermDefn.getEndSize(), this.tgtTermDefn.getGap());
 	}
 	
 	public LinkPointDefinition(Point srcAnchor, Point tgtAnchor) {
@@ -65,6 +71,8 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 		this.tgtTermDefn = new GraphicalLinkTerminusDefinition();
 		this.pointList.add(srcAnchor);
 		this.pointList.add(tgtAnchor);
+		this.srcListStartPosn = calcFirstDrawnPoint(this.getSourceLineSegment(), this.srcTermDefn.getEndSize(), this.srcTermDefn.getGap());
+		this.tgtListEndPosn = calcFirstDrawnPoint(this.getTargetLineSegment(), this.tgtTermDefn.getEndSize(), this.tgtTermDefn.getGap());
 	}
 	
 	public LinkPointDefinition(LinkPointDefinition other, Point translation){
@@ -77,6 +85,19 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 		lineWidth = other.lineWidth;
 		srcTermDefn = new GraphicalLinkTerminusDefinition(other.srcTermDefn);
 		tgtTermDefn = new GraphicalLinkTerminusDefinition(other.tgtTermDefn);
+		this.srcListStartPosn = other.srcListStartPosn;
+		this.tgtListEndPosn = other.tgtListEndPosn;
+	}
+
+	public LinkPointDefinition(LinkPointDefinition other){
+		this.pointList = new ArrayList<Point>(other.pointList);
+		lineColour = other.lineColour;
+		lineStyle = other.lineStyle;
+		lineWidth = other.lineWidth;
+		srcTermDefn = new GraphicalLinkTerminusDefinition(other.srcTermDefn);
+		tgtTermDefn = new GraphicalLinkTerminusDefinition(other.tgtTermDefn);
+		this.srcListStartPosn = other.srcListStartPosn;
+		this.tgtListEndPosn = other.tgtListEndPosn;
 	}
 
 	@Override
@@ -102,6 +123,7 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 	 */
 	public void setSrcAnchorPosition(Point newPosn){
 		this.pointList.set(SRC_IDX, newPosn);
+		updateLineStart();
 	}
 
 	/* (non-Javadoc)
@@ -109,6 +131,7 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 	 */
 	public void setTgtAnchorPosition(Point newPosn){
 		this.pointList.set(this.pointList.size()-1, newPosn);
+		updateLineStart();
 	}
 
 	/* (non-Javadoc)
@@ -119,6 +142,12 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 		
 		// adjust for fact the src anchor is 1st element
 		this.pointList.set(bpIdx+1, newPosn);
+		updateLineStart();
+	}
+	
+	private void updateLineStart(){
+		this.srcListStartPosn = calcFirstDrawnPoint(this.getSourceLineSegment(), this.srcTermDefn.getEndSize(), this.srcTermDefn.getGap());
+		this.tgtListEndPosn = calcFirstDrawnPoint(this.getTargetLineSegment(), this.tgtTermDefn.getEndSize(), this.tgtTermDefn.getGap());
 	}
 	
 	/* (non-Javadoc)
@@ -197,14 +226,14 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 	 */
 	public Iterator<LineSegment> drawnLineSegIterator(){
 		List<LineSegment> retVal = new LinkedList<LineSegment>();
-		Point firstP = calcFirstDrawnPoint(this.getSourceLineSegment(), this.srcTermDefn.getEndSize(), this.srcTermDefn.getGap());
+		Point firstP = this.srcListStartPosn;
 		Point lastP = null;
 		for(int i = 1; i < this.pointList.size() -1; i++){
 			lastP = this.pointList.get(i);
 			retVal.add(new LineSegment(firstP, lastP));
 			firstP = lastP;
 		}
-		lastP = calcFirstDrawnPoint(this.getTargetLineSegment(), this.tgtTermDefn.getEndSize(), this.tgtTermDefn.getGap());
+		lastP = this.tgtListEndPosn;
 		retVal.add(new LineSegment(firstP, lastP));
 		return retVal.iterator();
 	}
@@ -228,6 +257,7 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 	public void addNewBendPoint(int bpIdx, Point bpPosn) {
 		if(bpIdx > this.numBendPoints()) throw new IllegalArgumentException("Bendpoint index is outseide permitted range: " + bpIdx);
 		this.pointList.add(bpIdx+1, bpPosn);
+		updateLineStart();
 	}
 	
 	/* (non-Javadoc)
@@ -235,6 +265,7 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 	 */
 	public void addNewBendPoint(Point bpPosn) {
 		this.pointList.add(this.numBendPoints()+1, bpPosn);
+		updateLineStart();
 	}
 	
 	/* (non-Javadoc)
@@ -258,6 +289,7 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 		if(bpIdx >= this.numBendPoints()) throw new IllegalArgumentException("No bendpoint exists with this index: " + bpIdx);
 		
 		this.pointList.remove(bpIdx+1);
+		updateLineStart();
 	}
 
 	/* (non-Javadoc)
@@ -313,6 +345,7 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 			Point translatedPoint = this.pointList.get(i).translate(translation);
 			this.pointList.set(i, translatedPoint);
 		}
+		updateLineStart();
 	}
 
 	public void setLineColour(RGB lineColour) {
@@ -325,5 +358,10 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 
 	public void setLineWidth(double lineWidth) {
 		this.lineWidth = lineWidth;
+	}
+
+	@Override
+	public ILinkPointDefinition getCopy() {
+		return new LinkPointDefinition(this);
 	}
 }
