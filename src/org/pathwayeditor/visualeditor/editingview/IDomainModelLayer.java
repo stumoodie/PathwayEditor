@@ -1,9 +1,9 @@
 package org.pathwayeditor.visualeditor.editingview;
 
-import org.pathwayeditor.visualeditor.controller.IViewControllerStore;
+import org.pathwayeditor.visualeditor.controller.IViewControllerModel;
 
 public interface IDomainModelLayer  extends IShapePaneLayer {
 
-	IViewControllerStore getViewControllerStore();
+	IViewControllerModel getViewControllerStore();
 
 }

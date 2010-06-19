@@ -73,11 +73,13 @@ public class ShapePane extends JPanel implements IShapePane {
 		for(IShapePaneLayer layer : this.layers){
 			layer.paint(g2d);
 		}
-		g2d.setColor(Color.ORANGE);
-		g2d.setTransform(originalTransform);
-		Rectangle r = g2d.getClipBounds();
-		r.setRect(r.getX()+1.0, r.getY()+1.0, r.getWidth()-2.0, r.getHeight()-2.0);
-		g2d.draw(r);
+		if(logger.isTraceEnabled()){
+			g2d.setColor(Color.ORANGE);
+			g2d.setTransform(originalTransform);
+			Rectangle r = g2d.getClipBounds();
+			r.setRect(r.getX()+1.0, r.getY()+1.0, r.getWidth()-2.0, r.getHeight()-2.0);
+			g2d.draw(r);
+		}
 	}
 
 //	@Override

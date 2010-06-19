@@ -3,18 +3,18 @@ package org.pathwayeditor.visualeditor.selection;
 import org.pathwayeditor.businessobjects.drawingprimitives.IBendPoint;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.LineSegment;
-import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveController;
+import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
 import org.pathwayeditor.visualeditor.controller.ILinkController;
 import org.pathwayeditor.visualeditor.controller.INodeController;
 
 public abstract class SelectionHandle implements ISelectionHandle {
 	private static final int DEFAULT_HANDLE_IDX = 0;
-	private final IDrawingPrimitiveController controller;
+	private final IDrawingElementController controller;
 	private final SelectionHandleType region;
 	private final ISelection selection;
 	private final int handleIndex;
 	
-	protected SelectionHandle(IDrawingPrimitiveController node, SelectionHandleType region, ISelection selection){
+	protected SelectionHandle(IDrawingElementController node, SelectionHandleType region, ISelection selection){
 		this.controller = node;
 		this.region = region;
 		this.selection = selection;
@@ -22,7 +22,7 @@ public abstract class SelectionHandle implements ISelectionHandle {
 	}
 
 	
-	protected SelectionHandle(IDrawingPrimitiveController node, SelectionHandleType region, ISelection selection, int handleIndex){
+	protected SelectionHandle(IDrawingElementController node, SelectionHandleType region, ISelection selection, int handleIndex){
 		this.controller = node;
 		this.region = region;
 		this.selection = selection;
@@ -31,7 +31,7 @@ public abstract class SelectionHandle implements ISelectionHandle {
 
 	
 	@Override
-	public final IDrawingPrimitiveController getDrawingPrimitiveController(){
+	public final IDrawingElementController getDrawingPrimitiveController(){
 		return this.controller;
 	}
 	

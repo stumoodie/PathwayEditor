@@ -5,6 +5,6 @@ public interface IViewControllerNodeStructureChangeEvent {
 	
 	ViewControllerStructureChangeType getChangeType();
 	
-	IDrawingPrimitiveController getChangedElement();
+	IDrawingElementController getChangedElement();
 	
 }

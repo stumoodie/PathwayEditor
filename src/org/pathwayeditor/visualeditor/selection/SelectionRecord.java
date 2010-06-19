@@ -9,34 +9,34 @@ import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElement;
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElementSelection;
 import org.pathwayeditor.businessobjects.drawingprimitives.ISelectionFactory;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.Point;
-import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveController;
+import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
 import org.pathwayeditor.visualeditor.controller.ILinkController;
 import org.pathwayeditor.visualeditor.controller.INodeController;
 import org.pathwayeditor.visualeditor.controller.IRootController;
-import org.pathwayeditor.visualeditor.controller.IViewControllerStore;
+import org.pathwayeditor.visualeditor.controller.IViewControllerModel;
 import org.pathwayeditor.visualeditor.geometry.EnvelopeBuilder;
 import org.pathwayeditor.visualeditor.selection.ISelection.SelectionType;
 
 public class SelectionRecord implements ISelectionRecord {
 	private SortedSet<ISelection> selections;
 	private final List<ISelectionChangeListener> listeners;
-	private final IViewControllerStore viewModel;
-	private final Map<IDrawingPrimitiveController, ISelection> controllerMapping;
+	private final IViewControllerModel viewModel;
+	private final Map<IDrawingElementController, ISelection> controllerMapping;
 	private EnvelopeBuilder builder;
 	
-	public SelectionRecord(IViewControllerStore viewModel){
+	public SelectionRecord(IViewControllerModel viewModel){
 		this.selections = new TreeSet<ISelection>();
 		this.listeners = new LinkedList<ISelectionChangeListener>();
 		this.viewModel = viewModel;
-		this.controllerMapping = new HashMap<IDrawingPrimitiveController, ISelection>();
+		this.controllerMapping = new HashMap<IDrawingElementController, ISelection>();
 	}
 	
-	public void addSecondarySelection(IDrawingPrimitiveController drawingElement) {
+	public void addSecondarySelection(IDrawingElementController drawingElement) {
 		if(drawingElement == null || drawingElement instanceof IRootController) throw new IllegalArgumentException("drawing element cannot be null or the root node");
 		if(this.selections.isEmpty()) throw new IllegalStateException("Cannot add a secondary selection before a primary selection");
 
@@ -49,7 +49,7 @@ public class SelectionRecord implements ISelectionRecord {
 		}
 	}
 	
-	private ISelection createSelection(SelectionType selectionType, IDrawingPrimitiveController drawingElement){
+	private ISelection createSelection(SelectionType selectionType, IDrawingElementController drawingElement){
 		ISelection retVal = null;
 		if(drawingElement instanceof INodeController){
 			retVal = new NodeSelection(selectionType, (INodeController)drawingElement);
@@ -79,8 +79,8 @@ public class SelectionRecord implements ISelectionRecord {
 		}
 		this.clear();
 		for(ISelection selection : selectedSet){
-			ICanvasAttribute att = selection.getPrimitiveController().getDrawingElement();
-			IDrawingPrimitiveController newController = this.viewModel.getDrawingPrimitiveController(att);
+			IDrawingElement att = selection.getPrimitiveController().getDrawingElement();
+			IDrawingElementController newController = this.viewModel.getDrawingPrimitiveController(att);
 			if(selection.getSelectionType().equals(SelectionType.PRIMARY)){
 				this.setPrimarySelection(newController);
 			}
@@ -125,7 +125,7 @@ public class SelectionRecord implements ISelectionRecord {
 		return this.selections.iterator();
 	}
 
-	public void setPrimarySelection(IDrawingPrimitiveController drawingElement) {
+	public void setPrimarySelection(IDrawingElementController drawingElement) {
 		if(drawingElement == null || drawingElement instanceof IRootController) throw new IllegalArgumentException("drawing element cannot be null or the root node");
 		
 		if(this.selections.isEmpty() || !this.selections.first().equals(drawingElement)){
@@ -141,11 +141,11 @@ public class SelectionRecord implements ISelectionRecord {
 	private void updateSubgraphSelection(ISelectionFactory selectionFactory, ISelection newSelection) {
 		if(newSelection instanceof INodeSelection){
 			INodeSelection nodeSelection = (INodeSelection)newSelection;
-			selectionFactory.addDrawingNode(nodeSelection.getPrimitiveController().getDrawingElement().getCurrentDrawingElement());
+			selectionFactory.addDrawingNode(nodeSelection.getPrimitiveController().getDrawingElement());
 		}
 		else if(newSelection instanceof ILinkSelection){
 			ILinkSelection linkSelection = (ILinkSelection)newSelection;
-			selectionFactory.addLink(linkSelection.getPrimitiveController().getDrawingElement().getCurrentDrawingElement());
+			selectionFactory.addLink(linkSelection.getPrimitiveController().getDrawingElement());
 		}
 		else{
 			throw new RuntimeException("Unknown selection type");
@@ -179,7 +179,7 @@ public class SelectionRecord implements ISelectionRecord {
 		}
 	}
 
-	public boolean isNodeSelected(IDrawingPrimitiveController testElement) {
+	public boolean isNodeSelected(IDrawingElementController testElement) {
 		Iterator<ISelection> iter = this.selections.iterator();
 		boolean retVal = false;
 		while(!retVal && iter.hasNext()){
@@ -260,12 +260,12 @@ public class SelectionRecord implements ISelectionRecord {
 	}
 
 	@Override
-	public ISelection getSelection(IDrawingPrimitiveController next) {
+	public ISelection getSelection(IDrawingElementController next) {
 		return this.controllerMapping.get(next);
 	}
 
 	@Override
-	public boolean containsSelection(IDrawingPrimitiveController controller) {
+	public boolean containsSelection(IDrawingElementController controller) {
 		return this.controllerMapping.containsKey(controller);
 	}
 

@@ -182,7 +182,7 @@ public class EditingOperation implements IEditingOperation {
 		Iterator<INodeSelection> moveNodeIterator = this.selectionRecord.getSubgraphSelection().topSelectedNodeIterator();
 		while(moveNodeIterator.hasNext()){
 			INodeController nodePrimitive = (INodeController)moveNodeIterator.next().getPrimitiveController();
-			ICommand cmd = new MoveNodeCommand(nodePrimitive.getDrawingElement(), delta);
+			ICommand cmd = new MoveNodeCommand(nodePrimitive.getDrawingElement().getAttribute(), delta);
 			cmpCommand.addCommand(cmd);
 			if(logger.isTraceEnabled()){
 				logger.trace("Dragged shape to location: " + nodePrimitive.getBounds().getOrigin());
@@ -190,7 +190,7 @@ public class EditingOperation implements IEditingOperation {
 		}
 		Iterator<ILinkSelection> moveLinkIterator = this.selectionRecord.getSubgraphSelection().selectedLinkIterator();
 		while(moveLinkIterator.hasNext()){
-			ILinkAttribute nodePrimitive = moveLinkIterator.next().getPrimitiveController().getDrawingElement();
+			ILinkAttribute nodePrimitive = moveLinkIterator.next().getPrimitiveController().getDrawingElement().getAttribute();
 			Iterator<IBendPoint> bpIter = nodePrimitive.bendPointIterator();
 			while(bpIter.hasNext()){
 				IBendPoint bp = bpIter.next();
@@ -201,7 +201,7 @@ public class EditingOperation implements IEditingOperation {
 		}
 		if(reparentingEnabled){
 			INodeController target = calculateReparentTarget(delta);
-			ICommand cmd = new ReparentSelectionCommand(target.getDrawingElement().getCurrentDrawingElement(), this.selectionRecord.getSubgraphSelection().getDrawingElementSelection());
+			ICommand cmd = new ReparentSelectionCommand(target.getDrawingElement(), this.selectionRecord.getSubgraphSelection().getDrawingElementSelection());
 			cmpCommand.addCommand(cmd);
 		}
 		this.commandStack.execute(cmpCommand);

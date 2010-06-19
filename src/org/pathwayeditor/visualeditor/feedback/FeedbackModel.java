@@ -11,11 +11,11 @@ import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkEdge;
 import org.pathwayeditor.businessobjects.drawingprimitives.IShapeNode;
 import org.pathwayeditor.figure.figuredefn.IAnchorLocator;
-import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveController;
+import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
 import org.pathwayeditor.visualeditor.controller.ILinkController;
 import org.pathwayeditor.visualeditor.controller.INodeController;
 import org.pathwayeditor.visualeditor.controller.IShapeController;
-import org.pathwayeditor.visualeditor.controller.IViewControllerStore;
+import org.pathwayeditor.visualeditor.controller.IViewControllerModel;
 import org.pathwayeditor.visualeditor.geometry.ILinkPointDefinition;
 import org.pathwayeditor.visualeditor.selection.ILinkSelection;
 import org.pathwayeditor.visualeditor.selection.INodeSelection;
@@ -24,14 +24,14 @@ import org.pathwayeditor.visualeditor.selection.ISelectionRecord;
 public class FeedbackModel implements IFeedbackModel {
 	private final Set<IFeedbackNode> nodes;
 	private final Set<IFeedbackLink> links;
-	private final Map<IDrawingPrimitiveController, IFeedbackElement> selectionMapping;
+	private final Map<IDrawingElementController, IFeedbackElement> selectionMapping;
 	private final ISelectionRecord selectionRecord;
 	private final IFeedbackNodeBuilder builder;
 	
 	public FeedbackModel(ISelectionRecord selectionRecord){
 		this.nodes = new HashSet<IFeedbackNode>();
 		this.links = new HashSet<IFeedbackLink>();
-		this.selectionMapping = new HashMap<IDrawingPrimitiveController, IFeedbackElement>();
+		this.selectionMapping = new HashMap<IDrawingElementController, IFeedbackElement>();
 		this.selectionRecord = selectionRecord;
 		this.builder = new FeedbackNodeBuilder(this);
 	}
@@ -51,21 +51,21 @@ public class FeedbackModel implements IFeedbackModel {
 			INodeSelection nodeSelection = iter.next();
 			INodeController selectedNode = nodeSelection.getPrimitiveController();
 			if(selectedNode instanceof IShapeController){
-				IShapeNode shapeNode = ((IShapeController)selectedNode).getDrawingElement().getCurrentDrawingElement();
+				IShapeNode shapeNode = ((IShapeController)selectedNode).getDrawingElement();
 				Iterator<ILinkEdge> incidentEdgeIterator = shapeNode.sourceLinkIterator();
 				while(incidentEdgeIterator.hasNext()){
-					ILinkAttribute linkAtt = incidentEdgeIterator.next().getAttribute();
+					ILinkEdge linkAtt = incidentEdgeIterator.next();
 					ILinkController linkController = selectedNode.getViewModel().getLinkController(linkAtt); 
 					incidentEdgeSet.add(linkController);
 				}
 				Iterator<ILinkEdge> incidentTgtEdgeIterator = shapeNode.targetLinkIterator();
 				while(incidentTgtEdgeIterator.hasNext()){
-					ILinkAttribute linkAtt = incidentTgtEdgeIterator.next().getAttribute();
+					ILinkEdge linkAtt = incidentTgtEdgeIterator.next();
 					ILinkController linkController= selectedNode.getViewModel().getLinkController(linkAtt); 
 					incidentEdgeSet.add(linkController);
 				}
 			}					
-			IFeedbackNode feedbackNode = builder.createFromDrawingNodeAttribute(selectedNode.getDrawingElement());
+			IFeedbackNode feedbackNode = builder.createFromDrawingNodeAttribute(selectedNode.getDrawingElement().getAttribute());
 //			this.nodes.add(feedbackNode);
 			this.selectionMapping.put(selectedNode, feedbackNode);
 		}
@@ -80,7 +80,7 @@ public class FeedbackModel implements IFeedbackModel {
 			this.links.add(feedbackLink);
 			this.selectionMapping.put(linkController, feedbackLink);
 		}
-		IViewControllerStore viewController = this.selectionRecord.getPrimarySelection().getPrimitiveController().getViewModel();
+		IViewControllerModel viewController = this.selectionRecord.getPrimarySelection().getPrimitiveController().getViewModel();
 		for(ILinkController linkEdge : incidentEdgeSet){
 			IFeedbackLink feedbackLink = createFeedbackLink(linkEdge, viewController);
 			this.links.add(feedbackLink);
@@ -185,13 +185,13 @@ public class FeedbackModel implements IFeedbackModel {
 		
 	}
 
-	private FeedbackLink createFeedbackLink(ILinkController linkEdge, IViewControllerStore viewControllerStore){
-		IShapeNode srcShape = linkEdge.getDrawingElement().getCurrentDrawingElement().getSourceShape();
-		IShapeController srcShapeController = viewControllerStore.getShapeController(srcShape.getAttribute()); 
+	private FeedbackLink createFeedbackLink(ILinkController linkEdge, IViewControllerModel viewControllerStore){
+		IShapeNode srcShape = linkEdge.getDrawingElement().getSourceShape();
+		IShapeController srcShapeController = viewControllerStore.getShapeController(srcShape); 
 		IAnchorLocator srcAnchorLocator = srcShapeController.getFigureController().getAnchorLocatorFactory().createAnchorLocator();
-		ILinkAttribute linkAtt = linkEdge.getDrawingElement();
-		IShapeNode tgtShape = linkEdge.getDrawingElement().getCurrentDrawingElement().getTargetShape();
-		IShapeController tgtShapeController = viewControllerStore.getShapeController(tgtShape.getAttribute()); 
+		ILinkAttribute linkAtt = linkEdge.getDrawingElement().getAttribute();
+		IShapeNode tgtShape = linkEdge.getDrawingElement().getTargetShape();
+		IShapeController tgtShapeController = viewControllerStore.getShapeController(tgtShape); 
 		IAnchorLocator tgtAnchorLocator = tgtShapeController.getFigureController().getAnchorLocatorFactory().createAnchorLocator();
 		FeedbackLink retVal = new FeedbackLink((FeedbackNode)this.selectionMapping.get(srcShapeController),
 				(FeedbackNode)this.selectionMapping.get(tgtShapeController), linkAtt.getCreationSerial(),
@@ -229,7 +229,7 @@ public class FeedbackModel implements IFeedbackModel {
 	}
 
 	@Override
-	public IFeedbackElement getFeedbackElement(IDrawingPrimitiveController controller) {
+	public IFeedbackElement getFeedbackElement(IDrawingElementController controller) {
 		return this.selectionMapping.get(controller);
 	}
 

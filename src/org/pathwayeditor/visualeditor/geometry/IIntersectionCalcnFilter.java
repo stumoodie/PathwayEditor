@@ -3,7 +3,7 @@
  */
 package org.pathwayeditor.visualeditor.geometry;
 
-import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveController;
+import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
 
 
 /**
@@ -12,6 +12,6 @@ import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveController;
  */
 public interface IIntersectionCalcnFilter {
 
-	boolean accept(IDrawingPrimitiveController node);
+	boolean accept(IDrawingElementController node);
 
 }

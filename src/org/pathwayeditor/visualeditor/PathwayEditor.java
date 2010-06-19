@@ -18,8 +18,8 @@ import org.pathwayeditor.visualeditor.behaviour.IMouseBehaviourController;
 import org.pathwayeditor.visualeditor.behaviour.MouseBehaviourController;
 import org.pathwayeditor.visualeditor.commands.CommandStack;
 import org.pathwayeditor.visualeditor.commands.ICommandStack;
-import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveController;
-import org.pathwayeditor.visualeditor.controller.IViewControllerStore;
+import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
+import org.pathwayeditor.visualeditor.controller.IViewControllerModel;
 import org.pathwayeditor.visualeditor.controller.ViewControllerStore;
 import org.pathwayeditor.visualeditor.editingview.DomainModelLayer;
 import org.pathwayeditor.visualeditor.editingview.FeedbackLayer;
@@ -47,13 +47,15 @@ public class PathwayEditor extends JPanel {
 	private IShapePane shapePane;
 	private JScrollPane scrollPane;
 	private PalettePanel palettePane;
-	private IViewControllerStore viewModel;
+	private IViewControllerModel viewModel;
 	private ISelectionRecord selectionRecord;
 	private ICommandStack commandStack;
 	private IMouseBehaviourController editBehaviourController;
 	private ISelectionChangeListener selectionChangeListener;
 	private IFeedbackModel feedbackModel;
 	private boolean isOpen = false;
+
+	private ILayoutCalculator layoutCalculator;
 
 	public PathwayEditor(){
 		super();
@@ -163,6 +165,28 @@ public class PathwayEditor extends JPanel {
 		this.initialise();
 	}
 	
+	/**
+	 * Sets the layout calculator to be used for auto-layout of the canvas.
+	 * @param layoutCalculator the layout calculator 
+	 */
+	public void setLayoutCalculator(ILayoutCalculator layoutCalculator){
+		this.layoutCalculator = layoutCalculator;
+		
+	}
+	
+	/**
+	 * Carry out auto-layout on the canvas. Using the layout calculator set in {@link setLayoutCalculator}.
+	 * @throws IllegalStateException if the layout calculator is not set
+	 */
+	public void layoutCanvas(){
+		if(this.layoutCalculator != null){
+			this.layoutCalculator.calculateLayout();
+		}
+		else{
+			throw new IllegalStateException("No layout calculator was set");
+		}
+	}
+	
 	public void loadCanvas(ICanvas canvas){
 		if(isOpen){
 			reset();
@@ -185,7 +209,7 @@ public class PathwayEditor extends JPanel {
 
 	public void selectAndFocusOnElement(ILinkEdge linkEdge) {
 		selectionRecord.clear();
-		IDrawingPrimitiveController linkController = viewModel.getLinkController(linkEdge.getAttribute());
+		IDrawingElementController linkController = viewModel.getLinkController(linkEdge);
 		selectionRecord.setPrimarySelection(linkController);
 	}
 }

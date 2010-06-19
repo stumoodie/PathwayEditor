@@ -8,7 +8,7 @@ import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.behaviour.IMarqueeOperation;
-import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveController;
+import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
 import org.pathwayeditor.visualeditor.editingview.IShapePane;
 import org.pathwayeditor.visualeditor.feedback.IFeedbackModel;
 import org.pathwayeditor.visualeditor.feedback.IFeedbackNode;
@@ -57,9 +57,9 @@ public class MarqueeOperation implements IMarqueeOperation {
 	}
 
 	private void makeSelectionFromMarquee(Envelope bounds) {
-		SortedSet<IDrawingPrimitiveController> selectedController = intersectionCal.findIntersectingController(bounds);
+		SortedSet<IDrawingElementController> selectedController = intersectionCal.findIntersectingController(bounds);
 		boolean firstOne = true;
-		for(IDrawingPrimitiveController controller : selectedController){
+		for(IDrawingElementController controller : selectedController){
 			if(firstOne){
 				this.selectionRecord.setPrimarySelection(controller);
 				firstOne = false;

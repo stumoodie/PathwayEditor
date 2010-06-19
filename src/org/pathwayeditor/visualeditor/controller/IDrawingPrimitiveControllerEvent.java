@@ -3,7 +3,7 @@ package org.pathwayeditor.visualeditor.controller;
 public interface IDrawingPrimitiveControllerEvent {
 	enum EventType { DRAWN_BOUNDS_CHANGED };
 	
-	IDrawingPrimitiveController getController();
+	IDrawingElementController getController();
 	
 	Object getOldValue();
 	

@@ -3,6 +3,7 @@ package org.pathwayeditor.visualeditor.controller;
 import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNodeAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILabelAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.ILabelNode;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.CanvasAttributePropertyChange;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributePropertyChangeEvent;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributePropertyChangeListener;
@@ -36,7 +37,7 @@ public class LabelController extends NodeController implements ILabelController 
 		"0.0 xoffset 0.0 yoffset w h rect\n" +
 		"grestore\n" +
 		"0.5 0.5 :labelFontSize :labelText cardinalityBox\n";
-	private ILabelAttribute domainNode;
+	private ILabelNode domainNode;
 	private IDrawingNodeAttribute parentAttribute;
 	private final ICanvasAttributePropertyChangeListener drawingNodePropertyChangeListener;
 	private IDrawingNodeAttributeListener parentDrawingNodePropertyChangeListener;
@@ -44,10 +45,10 @@ public class LabelController extends NodeController implements ILabelController 
 	private IFigureController controller;
 	private boolean isActive;
 	
-	public LabelController(IViewControllerStore viewModel, ILabelAttribute node, int index) {
+	public LabelController(IViewControllerModel viewModel, ILabelNode node, int index) {
 		super(viewModel, index);
 		this.domainNode = node;
-		this.parentAttribute = this.domainNode.getCurrentDrawingElement().getParentNode().getAttribute();
+		this.parentAttribute = this.domainNode.getParentNode().getAttribute();
 		this.isActive = false;
 		drawingNodePropertyChangeListener = new ICanvasAttributePropertyChangeListener() {
 			public void propertyChange(ICanvasAttributePropertyChangeEvent e) {
@@ -82,14 +83,14 @@ public class LabelController extends NodeController implements ILabelController 
 			
 			@Override
 			public void nodeTranslated(IDrawingNodeAttributeTranslationEvent e) {
-				domainNode.translate(e.getTranslationDelta());
+				domainNode.getAttribute().translate(e.getTranslationDelta());
 			}
 			
 			@Override
 			public void nodeResized(IDrawingNodeAttributeResizedEvent e) {
 			}
 		};
-		this.controller = createController(node);
+		this.controller = createController(node.getAttribute());
 	}
 
 	private IFigureController createController(ILabelAttribute attribute){
@@ -110,7 +111,7 @@ public class LabelController extends NodeController implements ILabelController 
 	}
 
 	@Override
-	public ILabelAttribute getDrawingElement() {
+	public ILabelNode getDrawingElement() {
 		return this.domainNode;
 	}
 
@@ -134,8 +135,8 @@ public class LabelController extends NodeController implements ILabelController 
 
 	@Override
 	public void inactivate() {
-		this.domainNode.removeChangeListener(drawingNodePropertyChangeListener);
-		parentAttribute = this.domainNode.getCurrentDrawingElement().getParentNode().getAttribute(); 
+		this.domainNode.getAttribute().removeChangeListener(drawingNodePropertyChangeListener);
+		parentAttribute = this.domainNode.getParentNode().getAttribute(); 
 		parentAttribute.removeDrawingNodeAttributeListener(parentDrawingNodePropertyChangeListener);
 //		if(this.getViewModel().containsDrawingElement(parentAttribute)){
 //			INodeController parentNode = this.getViewModel().getNodePrimitive(parentAttribute);
@@ -147,7 +148,7 @@ public class LabelController extends NodeController implements ILabelController 
 
 	@Override
 	public void activate() {
-		this.domainNode.addChangeListener(this.drawingNodePropertyChangeListener);
+		this.domainNode.getAttribute().addChangeListener(this.drawingNodePropertyChangeListener);
 		parentAttribute.addDrawingNodeAttributeListener(parentDrawingNodePropertyChangeListener);
 //		INodeController parentNode = this.getViewModel().getNodePrimitive(this.domainNode.getCurrentDrawingElement().getParentNode().getAttribute());
 //		parentNode.addNodePrimitiveChangeListener(this.parentNodePrimitiveChangeListener);

@@ -2,7 +2,7 @@ package org.pathwayeditor.visualeditor.feedback;
 
 import java.util.Iterator;
 
-import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveController;
+import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
 import org.pathwayeditor.visualeditor.selection.ILinkSelection;
 import org.pathwayeditor.visualeditor.selection.ISelectionRecord;
 
@@ -26,7 +26,7 @@ public interface IFeedbackModel {
 
 	IFeedbackLink uniqueFeedbackLink();
 
-	IFeedbackElement getFeedbackElement(IDrawingPrimitiveController element);
+	IFeedbackElement getFeedbackElement(IDrawingElementController element);
 
 	IFeedbackNodeBuilder getFeedbackNodeBuilder();
 

@@ -1,6 +1,6 @@
 package org.pathwayeditor.visualeditor.controller;
 
-public interface IDrawingPrimitiveControllerListener {
+public interface IDrawingElementControllerListener {
 
 	void drawnBoundsChanged(IDrawingPrimitiveControllerEvent e);
 	

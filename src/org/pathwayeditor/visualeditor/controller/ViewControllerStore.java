@@ -10,16 +10,14 @@ import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElement;
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElementSelection;
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNode;
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNodeAttribute;
-import org.pathwayeditor.businessobjects.drawingprimitives.ILabelAttribute;
-import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.ILabelNode;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkEdge;
 import org.pathwayeditor.businessobjects.drawingprimitives.IModel;
-import org.pathwayeditor.businessobjects.drawingprimitives.IRootAttribute;
-import org.pathwayeditor.businessobjects.drawingprimitives.IShapeAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.IRootNode;
+import org.pathwayeditor.businessobjects.drawingprimitives.IShapeNode;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IModelChangeListener;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IModelStructureChangeEvent;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ModelStructureChangeType;
@@ -29,10 +27,11 @@ import org.pathwayeditor.visualeditor.geometry.FastShapeIntersectionCalculator;
 import org.pathwayeditor.visualeditor.geometry.IIntersectionCalculator;
 import org.pathwayeditor.visualeditor.geometry.ILinkPointDefinition;
 
-public class ViewControllerStore implements IViewControllerStore {
+public class ViewControllerStore implements IViewControllerModel {
+//	private final Logger logger = Logger.getLogger(this.getClass());
 	private final IModel domainModel;
-	private final SortedMap<ICanvasAttribute, IDrawingPrimitiveController> domainToViewMap;
-	private final SortedSet<IDrawingPrimitiveController> drawingPrimitives;
+	private final SortedMap<IDrawingElement, IDrawingElementController> domainToViewMap;
+	private final SortedSet<IDrawingElementController> drawingPrimitives;
 	private IModelChangeListener modelListener;
 	private IRootController rootPrimitive;
 	private boolean isActive = false;
@@ -42,15 +41,38 @@ public class ViewControllerStore implements IViewControllerStore {
 	
 	public ViewControllerStore(IModel domainModel){
 		this.domainModel = domainModel;
-		this.domainToViewMap = new TreeMap<ICanvasAttribute, IDrawingPrimitiveController>(new Comparator<ICanvasAttribute>(){
+		this.domainToViewMap = new TreeMap<IDrawingElement, IDrawingElementController>(new Comparator<IDrawingElement>(){
 
 			@Override
-			public int compare(ICanvasAttribute o1, ICanvasAttribute o2) {
-				return Integer.valueOf(o1.getCreationSerial()).compareTo(Integer.valueOf(o2.getCreationSerial()));
+			public int compare(IDrawingElement o1, IDrawingElement o2) {
+//				return Integer.valueOf(o1.getAttribute().getCreationSerial()).compareTo(Integer.valueOf(o2.getAttribute().getCreationSerial()));
+//				return o1.compareTo(o2);
+				int retVal = o1.getLevel() < o2.getLevel() ? -1 : (o1.getLevel() > o2.getLevel() ? 1 : 0);
+				if(retVal == 0){
+					retVal = o1.getUniqueIndex() < o2.getUniqueIndex() ? -1 : (o1.getUniqueIndex() > o2.getUniqueIndex() ? 1 : 0);
+				}
+//				if(logger.isTraceEnabled()){
+//					StringBuilder buf = new StringBuilder("retVal=");
+//					buf.append(retVal);
+//					buf.append(",o1Lvl=");
+//					buf.append(o1.getLevel());
+//					buf.append(",o1Uid=");
+//					buf.append(o1.getUniqueIndex());
+//					buf.append(",o2Lvl=");
+//					buf.append(o2.getLevel());
+//					buf.append(",o2Uid=");
+//					buf.append(o2.getUniqueIndex());
+//					buf.append(",o1=");
+//					buf.append(o1);
+//					buf.append(",o2=");
+//					buf.append(o2);
+//					logger.trace(buf.toString());
+//				}
+				return retVal;
 			}
 			
 		});
-		this.drawingPrimitives = new TreeSet<IDrawingPrimitiveController>();
+		this.drawingPrimitives = new TreeSet<IDrawingElementController>();
 		this.listeners = new LinkedList<IViewControllerChangeListener>();
 		buildFromDomainModel();
 		this.intersectionCalculator = new FastShapeIntersectionCalculator(this);
@@ -97,13 +119,13 @@ public class ViewControllerStore implements IViewControllerStore {
 		Iterator<IDrawingNode> nodeIter = selection.drawingNodeIterator();
 		while(nodeIter.hasNext()){
 			IDrawingNode node = nodeIter.next();
-			INodeController newNode = createNodePrimitive(node.getAttribute());
+			INodeController newNode = createNodePrimitive(node);
 			notifyAddedNode(newNode);
 		}
 		Iterator<ILinkEdge> linkIter = selection.linkEdgeIterator();
 		while(linkIter.hasNext()){
 			ILinkEdge link = linkIter.next();
-			ILinkController newLinkCont = createLinkPrimitive(link.getAttribute());
+			ILinkController newLinkCont = createLinkPrimitive(link);
 			notifyAddedLink(newLinkCont);
 		}
 	}
@@ -117,13 +139,13 @@ public class ViewControllerStore implements IViewControllerStore {
 		Iterator<IDrawingNode> nodeIter = selection.drawingNodeIterator();
 		while(nodeIter.hasNext()){
 			IDrawingNode node = nodeIter.next();
-			INodeController nodePrimitive = getNodeController(node.getAttribute());
+			INodeController nodePrimitive = getNodeController(node);
 			nodePrimitive.activate();
 		}
 		Iterator<ILinkEdge> linkIter = selection.linkEdgeIterator();
 		while(linkIter.hasNext()){
 			ILinkEdge link = linkIter.next();
-			ILinkController linkController = getLinkController(link.getAttribute());
+			ILinkController linkController = getLinkController(link);
 			linkController.activate();
 		}
 	}
@@ -132,13 +154,13 @@ public class ViewControllerStore implements IViewControllerStore {
 		Iterator<IDrawingNode> nodeIter = selection.drawingNodeIterator();
 		while(nodeIter.hasNext()){
 			IDrawingNode node = nodeIter.next();
-			INodeController nodePrimitive = getNodeController(node.getAttribute());
+			INodeController nodePrimitive = getNodeController(node);
 			nodePrimitive.inactivate();
 		}
 		Iterator<ILinkEdge> linkIter = selection.linkEdgeIterator();
 		while(linkIter.hasNext()){
 			ILinkEdge link = linkIter.next();
-			ILinkController linkController = getLinkController(link.getAttribute());
+			ILinkController linkController = getLinkController(link);
 			linkController.inactivate();
 		}
 	}
@@ -147,7 +169,7 @@ public class ViewControllerStore implements IViewControllerStore {
 		Iterator<IDrawingNode> iter = selection.drawingNodeIterator();
 		while(iter.hasNext()){
 			IDrawingNode node = iter.next();
-			INodeController nodeController = getNodeController(node.getAttribute()); 
+			INodeController nodeController = getNodeController(node); 
 			notifyRemovedNode(nodeController);
 			removeNodeController(nodeController);
 		}
@@ -157,7 +179,7 @@ public class ViewControllerStore implements IViewControllerStore {
 		Iterator<ILinkEdge> iter = selection.linkEdgeIterator();
 		while(iter.hasNext()){
 			ILinkEdge link = iter.next();
-			ILinkController linkController = getLinkController(link.getAttribute()); 
+			ILinkController linkController = getLinkController(link); 
 			notifyRemovedLink(linkController);
 			removeLinkController(linkController);
 		}
@@ -177,25 +199,25 @@ public class ViewControllerStore implements IViewControllerStore {
 		Iterator<IDrawingNode> nodeIter = this.domainModel.drawingNodeIterator();
 		while(nodeIter.hasNext()){
 			IDrawingNode node = nodeIter.next();
-			createNodePrimitive(node.getAttribute());
+			createNodePrimitive(node);
 		}
 		Iterator<ILinkEdge> edgeIter = this.domainModel.linkEdgeIterator();
 		while(edgeIter.hasNext()){
 			ILinkEdge link = edgeIter.next();
-			createLinkPrimitive(link.getAttribute());
+			createLinkPrimitive(link);
 		}
 	}
 	
-	private INodeController createNodePrimitive(IDrawingNodeAttribute node){
+	private INodeController createNodePrimitive(IDrawingNode node){
 		INodeController viewNode = null;
-		if(node instanceof IShapeAttribute){
-			viewNode = new ShapeController(this, (IShapeAttribute)node, indexCounter++);
+		if(node instanceof IShapeNode){
+			viewNode = new ShapeController(this, (IShapeNode)node, indexCounter++);
 		}
-		else if(node instanceof ILabelAttribute){
-			viewNode = new LabelController(this, (ILabelAttribute)node, indexCounter++);
+		else if(node instanceof ILabelNode){
+			viewNode = new LabelController(this, (ILabelNode)node, indexCounter++);
 		}
-		else if(node instanceof IRootAttribute){
-			this.rootPrimitive = new RootController(this, (IRootAttribute)node, indexCounter++);
+		else if(node instanceof IRootNode){
+			this.rootPrimitive = new RootController(this, (IRootNode)node, indexCounter++);
 			viewNode = this.rootPrimitive;
 		}
 		else{
@@ -209,7 +231,7 @@ public class ViewControllerStore implements IViewControllerStore {
 	}
 	
 	
-	private ILinkController createLinkPrimitive(ILinkAttribute linkAtt){
+	private ILinkController createLinkPrimitive(ILinkEdge linkAtt){
 		ILinkController linkCtlr = new LinkController(this, linkAtt, indexCounter++);
 		this.domainToViewMap.put(linkAtt, linkCtlr);
 		this.drawingPrimitives.add(linkCtlr);
@@ -292,7 +314,7 @@ public class ViewControllerStore implements IViewControllerStore {
 	}
 
 	@Override
-	public Iterator<IDrawingPrimitiveController> drawingPrimitiveIterator() {
+	public Iterator<IDrawingElementController> drawingPrimitiveIterator() {
 		return this.drawingPrimitives.iterator();
 	}
 
@@ -302,8 +324,8 @@ public class ViewControllerStore implements IViewControllerStore {
 	}
 
 	@Override
-	public INodeController getNodeController(IDrawingNodeAttribute draggedNode) {
-		IDrawingPrimitiveController retVal = this.domainToViewMap.get(draggedNode);
+	public INodeController getNodeController(IDrawingNode draggedNode) {
+		IDrawingElementController retVal = this.domainToViewMap.get(draggedNode);
 		if(retVal == null){
 			throw new IllegalArgumentException("domain node is not present in this view model");
 		}
@@ -318,7 +340,7 @@ public class ViewControllerStore implements IViewControllerStore {
 	@Override
 	public Iterator<ILabelController> labelControllerIterator() {
 		List<ILabelController> retList = new LinkedList<ILabelController>();
-		for(IDrawingPrimitiveController primitive : this.drawingPrimitives){
+		for(IDrawingElementController primitive : this.drawingPrimitives){
 			if(primitive instanceof ILabelController){
 				retList.add((ILabelController)primitive);
 			}
@@ -329,7 +351,7 @@ public class ViewControllerStore implements IViewControllerStore {
 	@Override
 	public Iterator<ILinkController> linkControllerIterator() {
 		List<ILinkController> retList = new LinkedList<ILinkController>();
-		for(IDrawingPrimitiveController primitive : this.drawingPrimitives){
+		for(IDrawingElementController primitive : this.drawingPrimitives){
 			if(primitive instanceof ILinkController){
 				retList.add((ILinkController)primitive);
 			}
@@ -340,7 +362,7 @@ public class ViewControllerStore implements IViewControllerStore {
 	@Override
 	public Iterator<INodeController> nodeControllerIterator() {
 		List<INodeController> retList = new LinkedList<INodeController>();
-		for(IDrawingPrimitiveController primitive : this.drawingPrimitives){
+		for(IDrawingElementController primitive : this.drawingPrimitives){
 			if(primitive instanceof INodeController){
 				retList.add((INodeController)primitive);
 			}
@@ -351,7 +373,7 @@ public class ViewControllerStore implements IViewControllerStore {
 	@Override
 	public Iterator<IShapeController> shapeControllerIterator() {
 		List<IShapeController> retList = new LinkedList<IShapeController>();
-		for(IDrawingPrimitiveController primitive : this.drawingPrimitives){
+		for(IDrawingElementController primitive : this.drawingPrimitives){
 			if(primitive instanceof IShapeController){
 				retList.add((IShapeController)primitive);
 			}
@@ -360,14 +382,14 @@ public class ViewControllerStore implements IViewControllerStore {
 	}
 
 	@Override
-	public boolean containsDrawingElement(ICanvasAttribute testPrimitive) {
+	public boolean containsDrawingElement(IDrawingElement testPrimitive) {
 		return this.domainToViewMap.containsKey(testPrimitive);
 	}
 
 	@Override
 	public void activate() {
         // now activate all the drawing primitives
-		for(IDrawingPrimitiveController prim : this.drawingPrimitives){
+		for(IDrawingElementController prim : this.drawingPrimitives){
         	prim.activate();
         }
 		this.isActive = true;
@@ -375,7 +397,7 @@ public class ViewControllerStore implements IViewControllerStore {
 
 	@Override
 	public void deactivate() {
-		for(IDrawingPrimitiveController prim : this.drawingPrimitives){
+		for(IDrawingElementController prim : this.drawingPrimitives){
         	prim.inactivate();
         }
 		this.isActive = false;
@@ -387,12 +409,12 @@ public class ViewControllerStore implements IViewControllerStore {
 	}
 
 	@Override
-	public ILinkController getLinkController(ILinkAttribute attribute) {
+	public ILinkController getLinkController(ILinkEdge attribute) {
 		return (ILinkController)this.domainToViewMap.get(attribute);
 	}
 
 	@Override
-	public IShapeController getShapeController(IShapeAttribute attribute) {
+	public IShapeController getShapeController(IShapeNode attribute) {
 		return (IShapeController)this.domainToViewMap.get(attribute);
 	}
 
@@ -451,15 +473,15 @@ public class ViewControllerStore implements IViewControllerStore {
 		return this.intersectionCalculator;
 	}
 
-	@Override
-	public IViewControllerCollection getLastOperationResult() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
-		
-	}
+//	@Override
+//	public IViewControllerCollection getLastOperationResult() {
+//		// TODO Auto-generated method stub
+//		throw new UnsupportedOperationException("Not implemented yet!");
+//		
+//	}
 
 	@Override
-	public IDrawingPrimitiveController getDrawingPrimitiveController(ICanvasAttribute testAttribute) {
+	public IDrawingElementController getDrawingPrimitiveController(IDrawingElement testAttribute) {
 		return this.domainToViewMap.get(testAttribute);
 	}
 }

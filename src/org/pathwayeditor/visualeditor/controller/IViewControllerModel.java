@@ -6,7 +6,7 @@ import org.pathwayeditor.businessobjects.drawingprimitives.IModel;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.visualeditor.geometry.IIntersectionCalculator;
 
-public interface IViewControllerStore extends IViewControllerCollection {
+public interface IViewControllerModel extends IViewControllerCollection {
 
 	IModel getDomainModel();
 	
@@ -22,12 +22,12 @@ public interface IViewControllerStore extends IViewControllerCollection {
 	
 	IIntersectionCalculator getIntersectionCalculator();
 	
-	/**
-	 * Returns the collection of controllers that were the result of the last operation performed that changed the structure of the
-	 * domain model compound graph.
-	 * @return the view controller collection, which cannot be null.
-	 */
-	IViewControllerCollection getLastOperationResult();
+//	/**
+//	 * Returns the collection of controllers that were the result of the last operation performed that changed the structure of the
+//	 * domain model compound graph.
+//	 * @return the view controller collection, which cannot be null.
+//	 */
+//	IViewControllerCollection getLastOperationResult();
 
 	void addViewControllerChangeListener(IViewControllerChangeListener listener);
 	

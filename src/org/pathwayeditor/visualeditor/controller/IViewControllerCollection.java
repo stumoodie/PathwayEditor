@@ -2,14 +2,14 @@ package org.pathwayeditor.visualeditor.controller;
 
 import java.util.Iterator;
 
-import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasAttribute;
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNodeAttribute;
-import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
-import org.pathwayeditor.businessobjects.drawingprimitives.IShapeAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElement;
+import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNode;
+import org.pathwayeditor.businessobjects.drawingprimitives.ILinkEdge;
+import org.pathwayeditor.businessobjects.drawingprimitives.IShapeNode;
 
 public interface IViewControllerCollection {
 
-	Iterator<IDrawingPrimitiveController> drawingPrimitiveIterator();
+	Iterator<IDrawingElementController> drawingPrimitiveIterator();
 	
 	Iterator<IShapeController> shapeControllerIterator();
 	
@@ -19,13 +19,13 @@ public interface IViewControllerCollection {
 
 	Iterator<INodeController> nodeControllerIterator();
 
-	IDrawingPrimitiveController getDrawingPrimitiveController(ICanvasAttribute testAttribute);
+	IDrawingElementController getDrawingPrimitiveController(IDrawingElement testAttribute);
 	
-	INodeController getNodeController(IDrawingNodeAttribute testNode);
+	INodeController getNodeController(IDrawingNode testNode);
 	
-	ILinkController getLinkController(ILinkAttribute attribute);
+	ILinkController getLinkController(ILinkEdge attribute);
 
-	IShapeController getShapeController(IShapeAttribute attribute);
+	IShapeController getShapeController(IShapeNode attribute);
 
-	boolean containsDrawingElement(ICanvasAttribute testPrimitive);
+	boolean containsDrawingElement(IDrawingElement testPrimitive);
 }

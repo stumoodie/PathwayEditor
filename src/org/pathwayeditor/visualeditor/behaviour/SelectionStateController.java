@@ -11,7 +11,7 @@ import org.apache.log4j.Logger;
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.behaviour.IKeyboardResponse.CursorType;
-import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveController;
+import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
 import org.pathwayeditor.visualeditor.editingview.IDomainModelLayer;
 import org.pathwayeditor.visualeditor.editingview.ISelectionLayer;
 import org.pathwayeditor.visualeditor.editingview.IShapePane;
@@ -329,12 +329,12 @@ public class SelectionStateController implements ISelectionStateBehaviourControl
 		this.dragResponseMap.put(SelectionHandleType.Link, new MarqueeSelectionHandleResponse(marqueeOp));
 	}
 
-	public IDrawingPrimitiveController findDrawingElementAt(Point location) {
+	public IDrawingElementController findDrawingElementAt(Point location) {
 		IDomainModelLayer domainLayer = this.shapePane.getLayer(LayerType.DOMAIN);
 		IIntersectionCalculator intCalc = domainLayer.getViewControllerStore().getIntersectionCalculator();
 		intCalc.setFilter(null);
-		SortedSet<IDrawingPrimitiveController> hits = intCalc.findDrawingPrimitivesAt(new Point(location.getX(), location.getY()));
-		IDrawingPrimitiveController retVal = null;
+		SortedSet<IDrawingElementController> hits = intCalc.findDrawingPrimitivesAt(new Point(location.getX(), location.getY()));
+		IDrawingElementController retVal = null;
 		if(!hits.isEmpty()){
 			retVal = hits.first();
 			if(logger.isTraceEnabled()){

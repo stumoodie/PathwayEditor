@@ -1,12 +1,12 @@
 package org.pathwayeditor.visualeditor.controller;
 
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNodeAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNode;
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
 
-public interface INodeController extends IDrawingPrimitiveController {
+public interface INodeController extends IDrawingElementController {
 
 	/**
 	 * Returns the bounds of the drawn node, which may be different from that of the underlying model.
@@ -24,7 +24,7 @@ public interface INodeController extends IDrawingPrimitiveController {
 	 * Get the drawing element. 
 	 */
 	@Override
-	IDrawingNodeAttribute getDrawingElement();
+	IDrawingNode getDrawingElement();
 	
 	/**
 	 * Tests if the convex hull intersects this shape.

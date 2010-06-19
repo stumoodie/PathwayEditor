@@ -4,7 +4,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import org.pathwayeditor.figure.geometry.Point;
-import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveController;
+import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
 
 public class SelectionFeedbackListener implements MouseListener {
 	private final ISelectionStateBehaviourController mouseBehaviourController;
@@ -18,7 +18,7 @@ public class SelectionFeedbackListener implements MouseListener {
 		if(e.getButton() == MouseEvent.BUTTON1){
 			if(!e.isShiftDown() && !e.isAltDown()){
 				Point location = this.mouseBehaviourController.getAdjustedMousePosition(e.getPoint().getX(), e.getPoint().getY());
-				IDrawingPrimitiveController nodeController = this.mouseBehaviourController.findDrawingElementAt(location);
+				IDrawingElementController nodeController = this.mouseBehaviourController.findDrawingElementAt(location);
 				if(nodeController != null){
 					this.mouseBehaviourController.getSelectionRecord().setPrimarySelection(nodeController);
 				}
@@ -28,7 +28,7 @@ public class SelectionFeedbackListener implements MouseListener {
 			}
 			else if(e.isShiftDown() && !e.isAltDown()){
 				Point location = this.mouseBehaviourController.getAdjustedMousePosition(e.getPoint().getX(), e.getPoint().getY());
-				IDrawingPrimitiveController nodeController = this.mouseBehaviourController.findDrawingElementAt(location);
+				IDrawingElementController nodeController = this.mouseBehaviourController.findDrawingElementAt(location);
 				if(nodeController != null){
 					this.mouseBehaviourController.getSelectionRecord().addSecondarySelection(nodeController);
 				}

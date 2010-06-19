@@ -9,8 +9,8 @@ import java.util.SortedSet;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
-import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveController;
-import org.pathwayeditor.visualeditor.controller.IViewControllerStore;
+import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
+import org.pathwayeditor.visualeditor.controller.IViewControllerModel;
 
 /**
  * @author smoodie
@@ -18,17 +18,17 @@ import org.pathwayeditor.visualeditor.controller.IViewControllerStore;
  */
 public interface IIntersectionCalculator {
 
-	IViewControllerStore getModel();
+	IViewControllerModel getModel();
 
 	void setFilter(IIntersectionCalcnFilter filter);
 
-	void setComparator(Comparator<IDrawingPrimitiveController> comparator);
+	void setComparator(Comparator<IDrawingElementController> comparator);
 	
-	SortedSet<IDrawingPrimitiveController> findIntersectingNodes(IConvexHull queryHull, IDrawingPrimitiveController queryNode);
+	SortedSet<IDrawingElementController> findIntersectingNodes(IConvexHull queryHull, IDrawingElementController queryNode);
 
-	SortedSet<IDrawingPrimitiveController> findDrawingPrimitivesAt(Point p);
+	SortedSet<IDrawingElementController> findDrawingPrimitivesAt(Point p);
 
-	SortedSet<IDrawingPrimitiveController> findIntersectingController(Envelope bounds);
+	SortedSet<IDrawingElementController> findIntersectingController(Envelope bounds);
 	
-	SortedSet<IDrawingPrimitiveController> findIntersectingControllerBounds(Envelope bounds);
+	SortedSet<IDrawingElementController> findIntersectingControllerBounds(Envelope bounds);
 }

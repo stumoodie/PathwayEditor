@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.Point;
-import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveController;
+import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
 import org.pathwayeditor.visualeditor.controller.ILinkController;
 import org.pathwayeditor.visualeditor.controller.INodeController;
 
@@ -13,9 +13,9 @@ public interface ISelectionRecord {
 
 	ISelectionHandle findSelectionModelAt(Point point);
 	
-	void setPrimarySelection(IDrawingPrimitiveController drawingElement);
+	void setPrimarySelection(IDrawingElementController drawingElement);
 	
-	void addSecondarySelection(IDrawingPrimitiveController drawingElement);
+	void addSecondarySelection(IDrawingElementController drawingElement);
 	
 	ISelection getPrimarySelection();
 	
@@ -37,7 +37,7 @@ public interface ISelectionRecord {
 	
 	List<ISelectionChangeListener> getSelectionChangeListeners();
 
-	boolean isNodeSelected(IDrawingPrimitiveController testElement);
+	boolean isNodeSelected(IDrawingElementController testElement);
 
 	ISubgraphSelection getSubgraphSelection();
 
@@ -47,9 +47,9 @@ public interface ISelectionRecord {
 
 	INodeSelection getNodeSelection(INodeController next);
 
-	ISelection getSelection(IDrawingPrimitiveController next);
+	ISelection getSelection(IDrawingElementController next);
 
-	boolean containsSelection(IDrawingPrimitiveController controller);
+	boolean containsSelection(IDrawingElementController controller);
 
 	void restoreSelection();
 

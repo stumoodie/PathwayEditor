@@ -17,9 +17,9 @@ import org.pathwayeditor.visualeditor.behaviour.IShapePopupActions;
 import org.pathwayeditor.visualeditor.commands.DeleteBendPointCommand;
 import org.pathwayeditor.visualeditor.commands.ICommand;
 import org.pathwayeditor.visualeditor.commands.ICommandStack;
-import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveController;
+import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
 import org.pathwayeditor.visualeditor.controller.IRootController;
-import org.pathwayeditor.visualeditor.controller.IViewControllerStore;
+import org.pathwayeditor.visualeditor.controller.IViewControllerModel;
 import org.pathwayeditor.visualeditor.editingview.IShapePane;
 import org.pathwayeditor.visualeditor.feedback.IFeedbackModel;
 import org.pathwayeditor.visualeditor.geometry.CommonParentCalculator;
@@ -40,10 +40,10 @@ public class OperationFactory implements IOperationFactory {
 	private final IShapePane shapePane;
 	private final ISelectionRecord selectionRecord;
 	private final ICommandStack commandStack;
-	private final IViewControllerStore viewModel;
+	private final IViewControllerModel viewModel;
 	private final IShapeCreationOperation shapeCreationOperation;
 
-	public OperationFactory(IShapePane shapePane, IFeedbackModel feedbackModel, ISelectionRecord selectionRecord, IViewControllerStore viewModel,
+	public OperationFactory(IShapePane shapePane, IFeedbackModel feedbackModel, ISelectionRecord selectionRecord, IViewControllerModel viewModel,
 			ICommandStack commandStack){
 		ICommonParentCalculator newParentCalc = new CommonParentCalculator(viewModel.getIntersectionCalculator());
 		this.shapePane = shapePane;
@@ -157,10 +157,10 @@ public class OperationFactory implements IOperationFactory {
 	}
 
 	private void selectAllElements() {
-		Iterator<IDrawingPrimitiveController> primIter = this.viewModel.drawingPrimitiveIterator();
+		Iterator<IDrawingElementController> primIter = this.viewModel.drawingPrimitiveIterator();
 		boolean firstTime = true;
 		while(primIter.hasNext()){
-			IDrawingPrimitiveController controller = primIter.next();
+			IDrawingElementController controller = primIter.next();
 			if(!(controller instanceof IRootController)){
 				if(firstTime){
 					selectionRecord.setPrimarySelection(controller);
@@ -175,7 +175,7 @@ public class OperationFactory implements IOperationFactory {
 
 	private void deleteBendpoint(int bpIdx) {
 		ILinkSelection linkSelection = this.selectionRecord.getUniqueLinkSelection(); 
-		ICommand cmd = new DeleteBendPointCommand(linkSelection.getPrimitiveController().getDrawingElement(), bpIdx);
+		ICommand cmd = new DeleteBendPointCommand(linkSelection.getPrimitiveController().getDrawingElement().getAttribute(), bpIdx);
 		this.commandStack.execute(cmd);
 	}
 	
@@ -187,7 +187,7 @@ public class OperationFactory implements IOperationFactory {
 			if(selectionFact == null){
 				selectionFact = selectedNode.getPrimitiveController().getViewModel().getDomainModel().newSelectionFactory();
 			}
-			selectionFact.addDrawingNode(selectedNode.getPrimitiveController().getDrawingElement().getCurrentDrawingElement());
+			selectionFact.addDrawingNode(selectedNode.getPrimitiveController().getDrawingElement());
 		}
 		Iterator<ILinkSelection> linkSelectionIter = selectionRecord.selectedLinksIterator();
 		while(linkSelectionIter.hasNext()){
@@ -195,7 +195,7 @@ public class OperationFactory implements IOperationFactory {
 			if(selectionFact == null){
 				selectionFact = selectedLink.getPrimitiveController().getViewModel().getDomainModel().newSelectionFactory();
 			}
-			selectionFact.addLink(selectedLink.getPrimitiveController().getDrawingElement().getCurrentDrawingElement());
+			selectionFact.addLink(selectedLink.getPrimitiveController().getDrawingElement());
 		}
 		if(selectionFact != null){
 			IDrawingElementSelection seln = selectionFact.createGeneralSelection();

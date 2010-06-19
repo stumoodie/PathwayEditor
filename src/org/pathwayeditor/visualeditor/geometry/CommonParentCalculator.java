@@ -4,10 +4,10 @@ import java.util.Iterator;
 import java.util.SortedSet;
 
 import org.apache.log4j.Logger;
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNodeAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNode;
 import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
-import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveController;
+import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
 import org.pathwayeditor.visualeditor.controller.ILabelController;
 import org.pathwayeditor.visualeditor.controller.INodeController;
 import org.pathwayeditor.visualeditor.controller.IShapeController;
@@ -45,7 +45,7 @@ public class CommonParentCalculator implements ICommonParentCalculator {
 		});
 	}
 	
-	private INodeController getNodeController(IDrawingNodeAttribute node){
+	private INodeController getNodeController(IDrawingNode node){
 		return this.calc.getModel().getNodeController(node);
 	}
 	
@@ -57,7 +57,7 @@ public class CommonParentCalculator implements ICommonParentCalculator {
 
 			// we're ignoreing labels
 			public INodeController getLabelParent(ILabelController node) {
-				return getNodeController(node.getDrawingElement().getCurrentDrawingElement().getParentNode().getAttribute());
+				return getNodeController(node.getDrawingElement().getParentNode());
 			}
 			
 		});
@@ -96,7 +96,7 @@ public class CommonParentCalculator implements ICommonParentCalculator {
 					numNodesAlreadyHaveParent = 0;
 				} else {
 					// now check if already has this parent
-					if (parent.equals(getNodeController(node.getDrawingElement().getCurrentDrawingElement().getParentNode().getAttribute()))) {
+					if (parent.equals(getNodeController(node.getDrawingElement().getParentNode()))) {
 						numNodesAlreadyHaveParent++;
 					}
 				}
@@ -150,11 +150,11 @@ public class CommonParentCalculator implements ICommonParentCalculator {
 		calc.setFilter(new IIntersectionCalcnFilter(){
 
 			@Override
-			public boolean accept(IDrawingPrimitiveController cont) {
+			public boolean accept(IDrawingElementController cont) {
 				boolean retVal = false;
 				if(cont instanceof INodeController){
 					INodeController node = (INodeController)cont;
-					retVal = node.getDrawingElement().getCurrentDrawingElement().canParent(potentialChild.getDrawingElement().getCurrentDrawingElement());
+					retVal = node.getDrawingElement().canParent(potentialChild.getDrawingElement());
 					if(logger.isTraceEnabled()){
 						logger.trace("Node=" + node +" canParent=" + retVal + ", potentialChild=" + potentialChild);
 					}
@@ -163,7 +163,7 @@ public class CommonParentCalculator implements ICommonParentCalculator {
 			}
 			
 		});
-		SortedSet<IDrawingPrimitiveController> nodes = calc.findIntersectingNodes(testPlacement, potentialChild);
+		SortedSet<IDrawingElementController> nodes = calc.findIntersectingNodes(testPlacement, potentialChild);
 		INodeController retVal = null;
 		if(logger.isTraceEnabled()){
 			logger.trace("Potential parents = " + nodes);

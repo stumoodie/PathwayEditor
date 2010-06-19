@@ -2,7 +2,6 @@ package org.pathwayeditor.visualeditor.editingview;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -13,26 +12,26 @@ import org.pathwayeditor.figure.figuredefn.IFigureController;
 import org.pathwayeditor.figure.figuredefn.IGraphicsEngine;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.graphicsengine.Java2DGraphicsEngine;
-import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveController;
+import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
 import org.pathwayeditor.visualeditor.controller.ILabelController;
 import org.pathwayeditor.visualeditor.controller.ILinkController;
 import org.pathwayeditor.visualeditor.controller.IRootController;
 import org.pathwayeditor.visualeditor.controller.IShapeController;
-import org.pathwayeditor.visualeditor.controller.IViewControllerStore;
+import org.pathwayeditor.visualeditor.controller.IViewControllerModel;
 
 public class DomainModelLayer implements IDomainModelLayer {
-	private final IViewControllerStore viewControllerStore;
+	private final IViewControllerModel viewControllerStore;
 	private final Logger logger = Logger.getLogger(this.getClass());
 	
 	
-	public DomainModelLayer(IViewControllerStore viewControllerStore) {
+	public DomainModelLayer(IViewControllerModel viewControllerStore) {
 		this.viewControllerStore = viewControllerStore;
 	}
 
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.graphicsengine.ICanvasDrawer#getVierwControllerStore()
 	 */
-	public IViewControllerStore getViewControllerStore(){
+	public IViewControllerModel getViewControllerStore(){
 		return this.viewControllerStore;
 	}
 	
@@ -63,24 +62,25 @@ public class DomainModelLayer implements IDomainModelLayer {
 //			}
 //		});
 //		SortedSet<IDrawingPrimitiveController> controllers = intersectionCalculator.findIntersectingControllerBounds(updateBound);
-		SortedSet<IDrawingPrimitiveController> controllers = new TreeSet<IDrawingPrimitiveController>(new Comparator<IDrawingPrimitiveController>() {
-			
-			@Override
-			public int compare(IDrawingPrimitiveController o1, IDrawingPrimitiveController o2) {
-				int o1Level = o1.getDrawingElement().getCurrentDrawingElement().getLevel();
-				int o2Level = o2.getDrawingElement().getCurrentDrawingElement().getLevel();
-				int retVal = (o1Level < o2Level) ? -1 : (o1Level > o2Level ? 1 : 0);
-				if(retVal == 0){
-					long o1Idx = o1.getDrawingElement().getCurrentDrawingElement().getUniqueIndex();
-					long o2Idx = o2.getDrawingElement().getCurrentDrawingElement().getUniqueIndex();
-					retVal = o1Idx < o2Idx ? -1 : (o1Idx > o2Idx ? 1 : 0); 
-				}
-				return retVal;
-			}
-		});
-		Iterator<IDrawingPrimitiveController> contIter = this.viewControllerStore.drawingPrimitiveIterator();
+		SortedSet<IDrawingElementController> controllers = new TreeSet<IDrawingElementController>();
+//		SortedSet<IDrawingElementController> controllers = new TreeSet<IDrawingElementController>(new Comparator<IDrawingElementController>() {
+//			
+//			@Override
+//			public int compare(IDrawingElementController o1, IDrawingElementController o2) {
+//				int o1Level = o1.getDrawingElement().getLevel();
+//				int o2Level = o2.getDrawingElement().getLevel();
+//				int retVal = (o1Level < o2Level) ? -1 : (o1Level > o2Level ? 1 : 0);
+//				if(retVal == 0){
+//					long o1Idx = o1.getDrawingElement().getUniqueIndex();
+//					long o2Idx = o2.getDrawingElement().getUniqueIndex();
+//					retVal = o1Idx < o2Idx ? -1 : (o1Idx > o2Idx ? 1 : 0); 
+//				}
+//				return retVal;
+//			}
+//		});
+		Iterator<IDrawingElementController> contIter = this.viewControllerStore.drawingPrimitiveIterator();
 		while(contIter.hasNext()){
-			IDrawingPrimitiveController primCont = contIter.next();
+			IDrawingElementController primCont = contIter.next();
 			if(!(primCont instanceof IRootController) && primCont.getDrawnBounds().intersects(updateBound)){
 				if(logger.isTraceEnabled()){
 					logger.trace("Found intersecting primitive=" + primCont);
@@ -88,7 +88,7 @@ public class DomainModelLayer implements IDomainModelLayer {
 				controllers.add(primCont);
 			}
 		}
-		for(IDrawingPrimitiveController controller : controllers){
+		for(IDrawingElementController controller : controllers){
 			if(logger.isTraceEnabled()){
 				logger.trace("Refreshing controller=" + controller + ", bounds=" + controller.getDrawnBounds());
 			}

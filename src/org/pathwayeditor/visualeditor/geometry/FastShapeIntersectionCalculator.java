@@ -12,14 +12,14 @@ import org.apache.log4j.Logger;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
-import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveController;
+import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
 import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveControllerEvent;
-import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveControllerListener;
+import org.pathwayeditor.visualeditor.controller.IDrawingElementControllerListener;
 import org.pathwayeditor.visualeditor.controller.INodeController;
 import org.pathwayeditor.visualeditor.controller.IRootController;
 import org.pathwayeditor.visualeditor.controller.IViewControllerChangeListener;
 import org.pathwayeditor.visualeditor.controller.IViewControllerNodeStructureChangeEvent;
-import org.pathwayeditor.visualeditor.controller.IViewControllerStore;
+import org.pathwayeditor.visualeditor.controller.IViewControllerModel;
 import org.pathwayeditor.visualeditor.controller.IViewControllerNodeStructureChangeEvent.ViewControllerStructureChangeType;
 
 /**
@@ -30,24 +30,24 @@ public class FastShapeIntersectionCalculator implements IIntersectionCalculator 
 	private final Logger logger = Logger.getLogger(this.getClass());
 	
 	private static final IIntersectionCalcnFilter DEFAULT_FILTER = new IIntersectionCalcnFilter(){
-		public boolean accept(IDrawingPrimitiveController node) {
+		public boolean accept(IDrawingElementController node) {
 			return true;
 		}
 	};
 	
-	private static final Comparator<IDrawingPrimitiveController> DEFAULT_COMPARATOR = new Comparator<IDrawingPrimitiveController>(){
+	private static final Comparator<IDrawingElementController> DEFAULT_COMPARATOR = new Comparator<IDrawingElementController>(){
 
-		public int compare(IDrawingPrimitiveController o1, IDrawingPrimitiveController o2) {
+		public int compare(IDrawingElementController o1, IDrawingElementController o2) {
 			int retVal = 0;
-			if(o1.getDrawingElement().getCurrentDrawingElement().getLevel() < o2.getDrawingElement().getCurrentDrawingElement().getLevel()){
+			if(o1.getDrawingElement().getLevel() < o2.getDrawingElement().getLevel()){
 				retVal = 1;
 			}
-			else if(o1.getDrawingElement().getCurrentDrawingElement().getLevel() > o2.getDrawingElement().getCurrentDrawingElement().getLevel()){
+			else if(o1.getDrawingElement().getLevel() > o2.getDrawingElement().getLevel()){
 				retVal = -1;
 			}
 			else{
-				long o1Idx = o1.getDrawingElement().getCurrentDrawingElement().getUniqueIndex();
-				long o2Idx = o2.getDrawingElement().getCurrentDrawingElement().getUniqueIndex();
+				long o1Idx = o1.getDrawingElement().getUniqueIndex();
+				long o2Idx = o2.getDrawingElement().getUniqueIndex();
 				retVal = o1Idx < o2Idx ? 1 : (o1Idx > o2Idx ? -1 : 0); 
 			}
 			return retVal;
@@ -55,18 +55,18 @@ public class FastShapeIntersectionCalculator implements IIntersectionCalculator 
 		
 	};
 	
-	private final IMutableSpacialIndex2D<IDrawingPrimitiveController> spacialIndex;
-	private final IViewControllerStore model;
+	private final IMutableSpacialIndex2D<IDrawingElementController> spacialIndex;
+	private final IViewControllerModel model;
 	private IIntersectionCalcnFilter filter;
-	private Comparator<IDrawingPrimitiveController> comparator = null;
-	private IDrawingPrimitiveControllerListener primitiveControllerChangeListener;
+	private Comparator<IDrawingElementController> comparator = null;
+	private IDrawingElementControllerListener primitiveControllerChangeListener;
 	private IViewControllerChangeListener viewControllerChangeListener;
 	
-	public FastShapeIntersectionCalculator(IViewControllerStore model){
+	public FastShapeIntersectionCalculator(IViewControllerModel model){
 		this.model = model;
 		this.filter = DEFAULT_FILTER;
-		this.spacialIndex = new RTree<IDrawingPrimitiveController>();
-		this.primitiveControllerChangeListener = new IDrawingPrimitiveControllerListener() {
+		this.spacialIndex = new RTree<IDrawingElementController>();
+		this.primitiveControllerChangeListener = new IDrawingElementControllerListener() {
 			@Override
 			public void drawnBoundsChanged(IDrawingPrimitiveControllerEvent e) {
 				spacialIndex.delete(e.getController());
@@ -83,7 +83,7 @@ public class FastShapeIntersectionCalculator implements IIntersectionCalculator 
 			public void nodeStructureChangeEvent(IViewControllerNodeStructureChangeEvent e) {
 				if(e.getChangeType().equals(ViewControllerStructureChangeType.NODE_ADDED)
 						|| e.getChangeType().equals(ViewControllerStructureChangeType.LINK_ADDED)){
-					IDrawingPrimitiveController cont = e.getChangedElement();
+					IDrawingElementController cont = e.getChangedElement();
 					cont.addDrawingPrimitiveControllerListener(primitiveControllerChangeListener);
 					Envelope drawnBounds = cont.getDrawnBounds();
 					spacialIndex.insert(cont, drawnBounds);
@@ -93,7 +93,7 @@ public class FastShapeIntersectionCalculator implements IIntersectionCalculator 
 				}
 				else if(e.getChangeType().equals(ViewControllerStructureChangeType.NODE_REMOVED)
 						|| e.getChangeType().equals(ViewControllerStructureChangeType.LINK_REMOVED)){
-					IDrawingPrimitiveController cont = e.getChangedElement();
+					IDrawingElementController cont = e.getChangedElement();
 					cont.removeDrawingPrimitiveControllerListener(primitiveControllerChangeListener);
 					spacialIndex.delete(cont);
 					if(logger.isTraceEnabled()){
@@ -107,9 +107,9 @@ public class FastShapeIntersectionCalculator implements IIntersectionCalculator 
 	}
 	
 	private void buildFromViewController() {
-		Iterator<IDrawingPrimitiveController> nodeIter = model.drawingPrimitiveIterator();
+		Iterator<IDrawingElementController> nodeIter = model.drawingPrimitiveIterator();
 		while(nodeIter.hasNext()){
-			IDrawingPrimitiveController node = nodeIter.next();
+			IDrawingElementController node = nodeIter.next();
 			if(!(node instanceof IRootController)){
 				// ignore root
 				Envelope drawnBounds = node.getDrawnBounds();
@@ -125,13 +125,13 @@ public class FastShapeIntersectionCalculator implements IIntersectionCalculator 
 	}
 
 	@Override
-	public void setComparator(Comparator<IDrawingPrimitiveController> comparator){
+	public void setComparator(Comparator<IDrawingElementController> comparator){
 		this.comparator = comparator;
 	}
 	
 	
 	@Override
-	public IViewControllerStore getModel(){
+	public IViewControllerModel getModel(){
 		return this.model;
 	}
 	
@@ -145,20 +145,20 @@ public class FastShapeIntersectionCalculator implements IIntersectionCalculator 
 		}
 	}
 	
-	private SortedSet<IDrawingPrimitiveController> createSortedSet(){
-		SortedSet<IDrawingPrimitiveController> retVal = null;
+	private SortedSet<IDrawingElementController> createSortedSet(){
+		SortedSet<IDrawingElementController> retVal = null;
 		if(this.comparator != null){
-			retVal = new TreeSet<IDrawingPrimitiveController>(this.comparator);
+			retVal = new TreeSet<IDrawingElementController>(this.comparator);
 		}
 		else{
-			retVal = new TreeSet<IDrawingPrimitiveController>(DEFAULT_COMPARATOR);
+			retVal = new TreeSet<IDrawingElementController>(DEFAULT_COMPARATOR);
 		}
 		return retVal;
 	}
 	
 	@Override
-	public SortedSet<IDrawingPrimitiveController> findIntersectingNodes(IConvexHull queryHull, IDrawingPrimitiveController queryNode){
-		SortedSet<IDrawingPrimitiveController> retVal = createSortedSet();
+	public SortedSet<IDrawingElementController> findIntersectingNodes(IConvexHull queryHull, IDrawingElementController queryNode){
+		SortedSet<IDrawingElementController> retVal = createSortedSet();
 		// the root node will always intersect - that's a give so add it in and exclude it from
 		// intersection tests
 		IRootController rootNode = model.getRootNode();
@@ -168,9 +168,9 @@ public class FastShapeIntersectionCalculator implements IIntersectionCalculator 
 		Envelope drawnBounds = queryHull.getEnvelope();
 		Point origin = drawnBounds.getOrigin();
 		Point diagonal = drawnBounds.getDiagonalCorner();
-		ISpacialEntry2DEnumerator<IDrawingPrimitiveController> iter = this.spacialIndex.queryOverlap((float)origin.getX(), (float)origin.getY(), (float)diagonal.getX(), (float)diagonal.getY(), null, 0, false);
+		ISpacialEntry2DEnumerator<IDrawingElementController> iter = this.spacialIndex.queryOverlap((float)origin.getX(), (float)origin.getY(), (float)diagonal.getX(), (float)diagonal.getY(), null, 0, false);
 		while(iter.numRemaining() > 0){
-			IDrawingPrimitiveController prim = iter.nextInt();
+			IDrawingElementController prim = iter.nextInt();
 			if(prim instanceof INodeController){
 				INodeController node = (INodeController)prim;
 				// ignore matches to self
@@ -183,13 +183,13 @@ public class FastShapeIntersectionCalculator implements IIntersectionCalculator 
 	}
 
 	@Override
-	public SortedSet<IDrawingPrimitiveController> findDrawingPrimitivesAt(Point p) {
-		SortedSet<IDrawingPrimitiveController> retVal = createSortedSet();
+	public SortedSet<IDrawingElementController> findDrawingPrimitivesAt(Point p) {
+		SortedSet<IDrawingElementController> retVal = createSortedSet();
 		Point origin = p;
 		Point diagonal = p;
-		ISpacialEntry2DEnumerator<IDrawingPrimitiveController> iter = this.spacialIndex.queryOverlap((float)origin.getX(), (float)origin.getY(), (float)diagonal.getX(), (float)diagonal.getY(), null, 0, false);
+		ISpacialEntry2DEnumerator<IDrawingElementController> iter = this.spacialIndex.queryOverlap((float)origin.getX(), (float)origin.getY(), (float)diagonal.getX(), (float)diagonal.getY(), null, 0, false);
 		while(iter.numRemaining() > 0){
-			IDrawingPrimitiveController node = iter.nextInt();
+			IDrawingElementController node = iter.nextInt();
 			if(logger.isTraceEnabled()){
 				logger.trace("RTree found overlapping node: " + node +",bound=" + node.getDrawnBounds());
 			}
@@ -202,7 +202,7 @@ public class FastShapeIntersectionCalculator implements IIntersectionCalculator 
 	}
 
 	@Override
-	public SortedSet<IDrawingPrimitiveController> findIntersectingController(Envelope drawnBounds) {
+	public SortedSet<IDrawingElementController> findIntersectingController(Envelope drawnBounds) {
 		if(logger.isDebugEnabled()){
 			logger.debug("Finding elements intersecting with bounds=" + drawnBounds);
 		}
@@ -213,12 +213,12 @@ public class FastShapeIntersectionCalculator implements IIntersectionCalculator 
 //		builder.addPoint(drawnBounds.getVerticalCorner());
 //		builder.calculate();
 //		IConvexHull queryHull = builder.getConvexHull();
-		SortedSet<IDrawingPrimitiveController> retVal = createSortedSet();
+		SortedSet<IDrawingElementController> retVal = createSortedSet();
 		Point origin = drawnBounds.getOrigin();
 		Point diagonal = drawnBounds.getDiagonalCorner();
-		ISpacialEntry2DEnumerator< IDrawingPrimitiveController> iter = this.spacialIndex.queryOverlap((float)origin.getX(), (float)origin.getY(), (float)diagonal.getX(), (float)diagonal.getY(), null, 0, false);
+		ISpacialEntry2DEnumerator< IDrawingElementController> iter = this.spacialIndex.queryOverlap((float)origin.getX(), (float)origin.getY(), (float)diagonal.getX(), (float)diagonal.getY(), null, 0, false);
 		while(iter.numRemaining() > 0){
-			IDrawingPrimitiveController element = iter.nextInt();
+			IDrawingElementController element = iter.nextInt();
 			if(logger.isTraceEnabled()){
 				logger.trace("R-Tree found overlapping node: " + element + ",elementBound=" + element.getDrawnBounds());
 			}
@@ -233,16 +233,16 @@ public class FastShapeIntersectionCalculator implements IIntersectionCalculator 
 	}
 
 	@Override
-	public SortedSet<IDrawingPrimitiveController> findIntersectingControllerBounds(Envelope drawnBounds) {
+	public SortedSet<IDrawingElementController> findIntersectingControllerBounds(Envelope drawnBounds) {
 		if(logger.isDebugEnabled()){
 			logger.debug("Finding elements intersecting with bounds=" + drawnBounds);
 		}
-		SortedSet<IDrawingPrimitiveController> retVal = createSortedSet();
+		SortedSet<IDrawingElementController> retVal = createSortedSet();
 		Point origin = drawnBounds.getOrigin();
 		Point diagonal = drawnBounds.getDiagonalCorner();
-		ISpacialEntry2DEnumerator< IDrawingPrimitiveController> iter = this.spacialIndex.queryOverlap((float)origin.getX(), (float)origin.getY(), (float)diagonal.getX(), (float)diagonal.getY(), null, 0, false);
+		ISpacialEntry2DEnumerator< IDrawingElementController> iter = this.spacialIndex.queryOverlap((float)origin.getX(), (float)origin.getY(), (float)diagonal.getX(), (float)diagonal.getY(), null, 0, false);
 		while(iter.numRemaining() > 0){
-			IDrawingPrimitiveController element = iter.nextInt();
+			IDrawingElementController element = iter.nextInt();
 			retVal.add(element);
 		}
 		return retVal;
