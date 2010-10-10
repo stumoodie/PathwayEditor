@@ -20,6 +20,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
+import javax.swing.WindowConstants;
 import javax.swing.filechooser.FileFilter;
 
 import org.pathwayeditor.businessobjects.exchange.FileXmlCanvasPersistenceManager;
@@ -39,7 +40,7 @@ public class VisualEditor extends JFrame {
 		this.setLayout(new BorderLayout());
 		this.menuBar = new JMenuBar();
 		initFileMenu();
-		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		this.addWindowListener(new WindowListener(){
 
 			@Override

@@ -44,6 +44,7 @@ public class StubNotationValidationService implements INotationValidationService
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotationValidationService#getMapBeingValidated()
 	 */
+	@Override
 	public ICanvas getCanvasBeingValidated() {
 		throw new UnsupportedOperationException("Not implemented");
 	}
@@ -51,6 +52,7 @@ public class StubNotationValidationService implements INotationValidationService
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotationValidationService#getRules()
 	 */
+	@Override
 	public Set<IValidationRuleDefinition> getRules() {
 		throw new UnsupportedOperationException("Not implemented");
 	}
@@ -58,6 +60,7 @@ public class StubNotationValidationService implements INotationValidationService
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotationValidationService#getValidationReport()
 	 */
+	@Override
 	public IValidationReport getValidationReport() {
 		throw new UnsupportedOperationException("Not implemented");
 	}
@@ -65,6 +68,7 @@ public class StubNotationValidationService implements INotationValidationService
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotationValidationService#hasMapBeenValidated()
 	 */
+	@Override
 	public boolean hasBeenValidated() {
 		throw new UnsupportedOperationException("Not implemented");
 	}
@@ -72,6 +76,7 @@ public class StubNotationValidationService implements INotationValidationService
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotationValidationService#isImplemented()
 	 */
+	@Override
 	public boolean isImplemented() {
 		return true;
 	}
@@ -79,6 +84,7 @@ public class StubNotationValidationService implements INotationValidationService
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotationValidationService#isReadyToValidate()
 	 */
+	@Override
 	public boolean isReadyToValidate() {
 		throw new UnsupportedOperationException("Not implemented");
 	}
@@ -86,6 +92,7 @@ public class StubNotationValidationService implements INotationValidationService
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotationValidationService#setMapToValidate(org.pathwayeditor.businessobjects.repository.IMap)
 	 */
+	@Override
 	public void setCanvasToValidate(ICanvas mapToValidate) {
 		throw new UnsupportedOperationException("Not implemented");
 	}
@@ -93,6 +100,7 @@ public class StubNotationValidationService implements INotationValidationService
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotationValidationService#validateMap()
 	 */
+	@Override
 	public void validate() {
 		throw new UnsupportedOperationException("Not implemented");
 	}
@@ -100,6 +108,7 @@ public class StubNotationValidationService implements INotationValidationService
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotationService#getNotation()
 	 */
+	@Override
 	public INotation getNotation() {
 		return this.notationSubsystem.getNotation();
 	}
@@ -107,6 +116,7 @@ public class StubNotationValidationService implements INotationValidationService
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotationService#getNotationSubsystem()
 	 */
+	@Override
 	public INotationSubsystem getNotationSubsystem() {
 		return this.notationSubsystem;
 	}

@@ -1,7 +1,7 @@
 package org.pathwayeditor.visualeditor.behaviour;
 
-import org.pathwayeditor.visualeditor.selection.ISelectionRecord;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle.SelectionHandleType;
+import org.pathwayeditor.visualeditor.selection.ISelectionRecord;
 
 public interface ISelectionStateBehaviourController extends IMouseStateBehaviourController {
 

@@ -28,6 +28,7 @@ public class FeedbackLayer implements IFeedbackLayer {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.graphicsengine.ICanvasDrawer#paint(java.awt.Graphics2D)
 	 */
+	@Override
 	public void paint(Graphics2D g2d){
 		Rectangle rectangleBounds = g2d.getClipBounds();
 		if(logger.isDebugEnabled()){

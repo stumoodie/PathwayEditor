@@ -39,6 +39,7 @@ public class StubSBGNImportService implements INotationImportService {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotationImportService#getCode()
 	 */
+	@Override
 	public String getCode() {
 		// TODO Auto-generated method stub
 		return null;
@@ -47,6 +48,7 @@ public class StubSBGNImportService implements INotationImportService {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotationImportService#getDisplayName()
 	 */
+	@Override
 	public String getDisplayName() {
 		return DISPLAY_NAME;
 	}
@@ -55,6 +57,7 @@ public class StubSBGNImportService implements INotationImportService {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotationImportService#getRecommendedSuffix()
 	 */
+	@Override
 	public String getRecommendedSuffix() {
 		return "xml";
 	}
@@ -62,6 +65,7 @@ public class StubSBGNImportService implements INotationImportService {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotationImportService#importMap(java.io.File, org.pathwayeditor.businessobjects.repository.IFolder)
 	 */
+	@Override
 	public void importToCanvas(File importFile, ICanvas saveLocation) {
 		System.out.println("File " + importFile.getAbsolutePath() + " was imported");
 	}
@@ -69,6 +73,7 @@ public class StubSBGNImportService implements INotationImportService {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotationService#getNotation()
 	 */
+	@Override
 	public INotation getNotation() {
 		// TODO Auto-generated method stub
 		return null;
@@ -77,6 +82,7 @@ public class StubSBGNImportService implements INotationImportService {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotationService#getNotationSubsystem()
 	 */
+	@Override
 	public INotationSubsystem getNotationSubsystem() {
 		// TODO Auto-generated method stub
 		return null;

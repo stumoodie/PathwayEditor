@@ -51,6 +51,7 @@ public class LabelController extends NodeController implements ILabelController 
 		this.parentAttribute = this.domainNode.getParentNode().getAttribute();
 		this.isActive = false;
 		drawingNodePropertyChangeListener = new ICanvasAttributePropertyChangeListener() {
+			@Override
 			public void propertyChange(ICanvasAttributePropertyChangeEvent e) {
 				if(e.getPropertyChange().equals(CanvasAttributePropertyChange.SIZE)
 						|| e.getPropertyChange().equals(CanvasAttributePropertyChange.LOCATION)){

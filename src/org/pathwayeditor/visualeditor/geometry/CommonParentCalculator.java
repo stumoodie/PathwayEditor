@@ -34,10 +34,12 @@ public class CommonParentCalculator implements ICommonParentCalculator {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.visualeditor.geometry.ICommonParentCalculator#findCommonParentExcludingLabels(org.pathwayeditor.visualeditor.selection.ISubgraphSelection, org.pathwayeditor.figure.geometry.Point)
 	 */
+	@Override
 	public void findCommonParentExcludingLabels(ISubgraphSelection testSelection, Point delta){
 		findCommonParentImpl(testSelection, delta, new IHandleLabel(){
 
 			// we're ignoreing labels
+			@Override
 			public INodeController getLabelParent(ILabelController node) {
 				return null;
 			}
@@ -52,10 +54,12 @@ public class CommonParentCalculator implements ICommonParentCalculator {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.visualeditor.geometry.ICommonParentCalculator#findCommonParent(org.pathwayeditor.visualeditor.selection.ISubgraphSelection, org.pathwayeditor.figure.geometry.Point)
 	 */
+	@Override
 	public void findCommonParent(ISubgraphSelection testSelection, Point delta) {
 		findCommonParentImpl(testSelection, delta, new IHandleLabel(){
 
 			// we're ignoreing labels
+			@Override
 			public INodeController getLabelParent(ILabelController node) {
 				return getNodeController(node.getDrawingElement().getParentNode());
 			}
@@ -110,6 +114,7 @@ public class CommonParentCalculator implements ICommonParentCalculator {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.visualeditor.geometry.ICommonParentCalculator#getSelectionToReparent()
 	 */
+	@Override
 	public ISubgraphSelection getSelectionToReparent(){
 		return this.selection;
 	}
@@ -117,6 +122,7 @@ public class CommonParentCalculator implements ICommonParentCalculator {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.visualeditor.geometry.ICommonParentCalculator#canReparentSelection()
 	 */
+	@Override
 	public boolean canReparentSelection(){
 		return this.numNodesAlreadyHaveParent == 0;
 	}
@@ -124,6 +130,7 @@ public class CommonParentCalculator implements ICommonParentCalculator {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.visualeditor.geometry.ICommonParentCalculator#canMoveSelection()
 	 */
+	@Override
 	public boolean canMoveSelection(){
 		return this.numNodesAlreadyHaveParent == 0 || this.numNodesAlreadyHaveParent == this.selection.numTopDrawingNodes();
 	}
@@ -131,6 +138,7 @@ public class CommonParentCalculator implements ICommonParentCalculator {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.visualeditor.geometry.ICommonParentCalculator#hasFoundCommonParent()
 	 */
+	@Override
 	public boolean hasFoundCommonParent(){
 		return this.parent != null;
 	}
@@ -138,6 +146,7 @@ public class CommonParentCalculator implements ICommonParentCalculator {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.visualeditor.geometry.ICommonParentCalculator#getCommonParent()
 	 */
+	@Override
 	public INodeController getCommonParent(){
 		return this.parent;
 	}
@@ -146,6 +155,7 @@ public class CommonParentCalculator implements ICommonParentCalculator {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.visualeditor.geometry.ICommonParentCalculator#findPotentialParent(org.pathwayeditor.visualeditor.controller.INodeController, org.pathwayeditor.figure.geometry.IConvexHull)
 	 */
+	@Override
 	public INodeController findPotentialParent(final INodeController potentialChild, IConvexHull testPlacement){
 		calc.setFilter(new IIntersectionCalcnFilter(){
 

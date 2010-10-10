@@ -40,6 +40,7 @@ public class StubLabelAttributeDefaults implements ILabelAttributeDefaults {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.ILabelAttributeDefaults#getFillColour()
 	 */
+	@Override
 	public RGB getFillColour() {
 		return FILL_COLOUR;
 	}
@@ -47,6 +48,7 @@ public class StubLabelAttributeDefaults implements ILabelAttributeDefaults {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.ILabelAttributeDefaults#getLineColour()
 	 */
+	@Override
 	public RGB getLineColour() {
 		return LINE_COLOUR;
 	}
@@ -54,6 +56,7 @@ public class StubLabelAttributeDefaults implements ILabelAttributeDefaults {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.ILabelAttributeDefaults#getLineStyle()
 	 */
+	@Override
 	public LineStyle getLineStyle() {
 		return LINE_STYLE;
 	}
@@ -61,6 +64,7 @@ public class StubLabelAttributeDefaults implements ILabelAttributeDefaults {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.ILabelAttributeDefaults#getLineWidth()
 	 */
+	@Override
 	public double getLineWidth() {
 		return LINE_WIDTH;
 	}
@@ -75,6 +79,7 @@ public class StubLabelAttributeDefaults implements ILabelAttributeDefaults {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.ILabelAttributeDefaults#getLabelLocationPolicy()
 	 */
+	@Override
 	public LabelLocationPolicy getLabelLocationPolicy() {
 		return LabelLocationPolicy.CENTRE;
 	}
@@ -89,6 +94,7 @@ public class StubLabelAttributeDefaults implements ILabelAttributeDefaults {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.ILabelAttributeDefaults#getMinimumSize()
 	 */
+	@Override
 	public Dimension getMinimumSize() {
 		return new Dimension(10.0, 10.0);
 	}
@@ -96,6 +102,7 @@ public class StubLabelAttributeDefaults implements ILabelAttributeDefaults {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.ILabelAttributeDefaults#hasNoBorder()
 	 */
+	@Override
 	public boolean hasNoBorder() {
 		return false;
 	}
@@ -103,6 +110,7 @@ public class StubLabelAttributeDefaults implements ILabelAttributeDefaults {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.ILabelAttributeDefaults#hasNoFill()
 	 */
+	@Override
 	public boolean hasNoFill() {
 		return false;
 	}

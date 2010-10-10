@@ -53,6 +53,7 @@ public class StubNotation implements INotation {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.contextadapter.INotation#getDescription()
 	 */
+	@Override
 	public String getDescription() {
 		return EXPECTED_DESCRIPTION;
 	}
@@ -60,6 +61,7 @@ public class StubNotation implements INotation {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.contextadapter.INotation#getGlobalId()
 	 */
+	@Override
 	public String getQualifiedName() {
 		return EXPECTED_QUALIFIED_NAME;
 	}
@@ -67,6 +69,7 @@ public class StubNotation implements INotation {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.contextadapter.INotation#getName()
 	 */
+	@Override
 	public String getDisplayName() {
 		if(newName)
 			return this.notationName;
@@ -76,6 +79,7 @@ public class StubNotation implements INotation {
 	/* (non-Javadoc)
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
+	@Override
 	public int compareTo(INotation o) {
 		int retVal = this.getQualifiedName().compareTo(o.getQualifiedName());
 		return retVal == 0 ? this.getVersion().compareTo(o.getVersion()) : retVal;
@@ -84,6 +88,7 @@ public class StubNotation implements INotation {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotation#getVersion()
 	 */
+	@Override
 	public Version getVersion() {
 		return this.version;
 	}

@@ -13,13 +13,13 @@ import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
-import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveControllerEvent;
 import org.pathwayeditor.visualeditor.controller.IDrawingElementControllerListener;
+import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveControllerEvent;
 import org.pathwayeditor.visualeditor.controller.INodeController;
 import org.pathwayeditor.visualeditor.controller.IRootController;
 import org.pathwayeditor.visualeditor.controller.IViewControllerChangeListener;
-import org.pathwayeditor.visualeditor.controller.IViewControllerNodeStructureChangeEvent;
 import org.pathwayeditor.visualeditor.controller.IViewControllerModel;
+import org.pathwayeditor.visualeditor.controller.IViewControllerNodeStructureChangeEvent;
 import org.pathwayeditor.visualeditor.controller.IViewControllerNodeStructureChangeEvent.ViewControllerStructureChangeType;
 
 /**
@@ -30,6 +30,7 @@ public class FastShapeIntersectionCalculator implements IIntersectionCalculator 
 	private final Logger logger = Logger.getLogger(this.getClass());
 	
 	private static final IIntersectionCalcnFilter DEFAULT_FILTER = new IIntersectionCalcnFilter(){
+		@Override
 		public boolean accept(IDrawingElementController node) {
 			return true;
 		}
@@ -37,6 +38,7 @@ public class FastShapeIntersectionCalculator implements IIntersectionCalculator 
 	
 	private static final Comparator<IDrawingElementController> DEFAULT_COMPARATOR = new Comparator<IDrawingElementController>(){
 
+		@Override
 		public int compare(IDrawingElementController o1, IDrawingElementController o2) {
 			int retVal = 0;
 			if(o1.getDrawingElement().getLevel() < o2.getDrawingElement().getLevel()){

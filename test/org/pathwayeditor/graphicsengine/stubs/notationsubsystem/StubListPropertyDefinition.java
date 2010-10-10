@@ -43,6 +43,7 @@ public class StubListPropertyDefinition implements IListPropertyDefinition {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyDefinition#copyProperty(org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyBuilder, org.pathwayeditor.businessobjects.drawingprimitives.properties.IAnnotationProperty)
 	 */
+	@Override
 	public IAnnotationProperty copyProperty(IPropertyBuilder propertyBuilder, IAnnotationProperty otherProperty) {	
 		return propertyBuilder.copyListProperty((IListAnnotationProperty) otherProperty);
 	}
@@ -50,6 +51,7 @@ public class StubListPropertyDefinition implements IListPropertyDefinition {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyDefinition#createProperty(org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyBuilder)
 	 */
+	@Override
 	public IAnnotationProperty createProperty(IPropertyBuilder propertyBuilder) {
 		return propertyBuilder.createListProperty(this);
 	}
@@ -57,6 +59,7 @@ public class StubListPropertyDefinition implements IListPropertyDefinition {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyDefinition#getDefaultValue()
 	 */
+	@Override
 	public List<String> getDefaultValue() {
 		return DEFAULT_VALUE;
 	}
@@ -64,6 +67,7 @@ public class StubListPropertyDefinition implements IListPropertyDefinition {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyDefinition#getLabelDefaults()
 	 */
+	@Override
 	public ILabelAttributeDefaults getLabelDefaults() {
 		return labelDefaults;
 	}
@@ -71,6 +75,7 @@ public class StubListPropertyDefinition implements IListPropertyDefinition {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyDefinition#getName()
 	 */
+	@Override
 	public String getName() {
 		return NAME;
 	}
@@ -78,6 +83,7 @@ public class StubListPropertyDefinition implements IListPropertyDefinition {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyDefinition#isEditable()
 	 */
+	@Override
 	public boolean isEditable() {
 		return IS_EDITABLE;
 	}
@@ -85,6 +91,7 @@ public class StubListPropertyDefinition implements IListPropertyDefinition {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyDefinition#isVisualisable()
 	 */
+	@Override
 	public boolean isVisualisable() {
 		return IS_VISUALISABLE;
 	}
@@ -92,6 +99,7 @@ public class StubListPropertyDefinition implements IListPropertyDefinition {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyDefinition#isDisplayed()
 	 */
+	@Override
 	public boolean isAlwaysDisplayed() {
 		return false;
 	}
@@ -107,6 +115,7 @@ public class StubListPropertyDefinition implements IListPropertyDefinition {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyDefinition#getDisplayName()
 	 */
+	@Override
 	public String getDisplayName() {
 		return NAME;
 	}

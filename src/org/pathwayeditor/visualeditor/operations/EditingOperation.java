@@ -181,7 +181,7 @@ public class EditingOperation implements IEditingOperation {
 		ICompoundCommand cmpCommand = new CompoundCommand();
 		Iterator<INodeSelection> moveNodeIterator = this.selectionRecord.getSubgraphSelection().topSelectedNodeIterator();
 		while(moveNodeIterator.hasNext()){
-			INodeController nodePrimitive = (INodeController)moveNodeIterator.next().getPrimitiveController();
+			INodeController nodePrimitive = moveNodeIterator.next().getPrimitiveController();
 			ICommand cmd = new MoveNodeCommand(nodePrimitive.getDrawingElement().getAttribute(), delta);
 			cmpCommand.addCommand(cmd);
 			if(logger.isTraceEnabled()){

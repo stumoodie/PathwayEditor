@@ -26,6 +26,7 @@ public class FeedbackNode implements IFeedbackNode {
 		this.initialBounds = bounds;
 	}
 	
+	@Override
 	public int getElementIdentifier() {
 		return elementIdentifier;
 	}

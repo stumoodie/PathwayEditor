@@ -19,6 +19,7 @@ public class ReparentSelectionCommand implements ICommand {
 		this.selection = selection;
 	}
 
+	@Override
 	public void execute() {
 		this.beforeChangeMomento = this.newParent.getModel().getCurrentState();
 		this.newParent.getSubModel().moveHere(selection);

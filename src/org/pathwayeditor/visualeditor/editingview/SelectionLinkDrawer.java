@@ -20,8 +20,8 @@ import org.pathwayeditor.visualeditor.selection.ILinkBendPointHandleShape;
 import org.pathwayeditor.visualeditor.selection.ILinkMidLineHandleShape;
 import org.pathwayeditor.visualeditor.selection.ILinkSelection;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
-import org.pathwayeditor.visualeditor.selection.LinkSelectionHandle;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle.SelectionHandleType;
+import org.pathwayeditor.visualeditor.selection.LinkSelectionHandle;
 
 public class SelectionLinkDrawer  {
 	private static final double SELN_RADIUS = 5.0;

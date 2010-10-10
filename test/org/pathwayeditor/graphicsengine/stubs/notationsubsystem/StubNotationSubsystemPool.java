@@ -53,6 +53,7 @@ public class StubNotationSubsystemPool implements INotationSubsystemPool {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.bolayer.INotationSubsystemPool#getSubsystem(org.pathwayeditor.businessobjects.notationsubsystem.INotation)
 	 */
+	@Override
 	public INotationSubsystem getSubsystem(INotation notation) {
 		return notationSubSystem ;
 	}
@@ -60,6 +61,7 @@ public class StubNotationSubsystemPool implements INotationSubsystemPool {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.bolayer.INotationSubsystemPool#hasNotationSubsystem(org.pathwayeditor.businessobjects.notationsubsystem.INotation)
 	 */
+	@Override
 	public boolean hasNotationSubsystem(INotation notation) {
 		return true;
 	}
@@ -67,6 +69,7 @@ public class StubNotationSubsystemPool implements INotationSubsystemPool {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.bolayer.INotationSubsystemPool#subsystemIterator()
 	 */
+	@Override
 	public Iterator<INotationSubsystem> subsystemIterator() {
 		
 		return this.subSystemIterator.iterator();

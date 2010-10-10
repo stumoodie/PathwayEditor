@@ -52,6 +52,7 @@ public class ShapeController extends NodeController implements IShapeController 
 		this.domainNode = node;
 		this.parentAttribute = this.domainNode.getParentNode();
 		shapePropertyChangeListener = new ICanvasAttributePropertyChangeListener() {
+			@Override
 			public void propertyChange(ICanvasAttributePropertyChangeEvent e) {
 				if(e.getPropertyChange().equals(CanvasAttributePropertyChange.LINE_COLOUR)){
 					figureController.setLineColour((RGB)e.getNewValue());
@@ -84,6 +85,7 @@ public class ShapeController extends NodeController implements IShapeController 
 			}
 		};
 		annotPropChangeListener = new IAnnotationPropertyChangeListener() {
+			@Override
 			public void propertyChange(IAnnotationPropertyChangeEvent e) {
 				IAnnotationProperty prop = e.getPropertyDefinition();
 				IShapeNode node = ((IShapeAttribute)prop.getOwner()).getCurrentDrawingElement();
@@ -104,6 +106,7 @@ public class ShapeController extends NodeController implements IShapeController 
 		this.figureController = createController(domainNode.getAttribute());
 	}
 
+	@Override
 	public void activate(){
 		addListeners(this.domainNode);
 		this.isActive = true;
@@ -115,22 +118,27 @@ public class ShapeController extends NodeController implements IShapeController 
 				IAnnotationProperty prop = att.getProperty(varName);
 				prop.visit(new IAnnotationPropertyVisitor(){
 
+					@Override
 					public void visitBooleanAnnotationProperty(IBooleanAnnotationProperty prop) {
 						figureController.setBindBoolean(varName, prop.getValue());
 					}
 
+					@Override
 					public void visitIntegerAnnotationProperty(IIntegerAnnotationProperty prop) {
 						figureController.setBindInteger(varName, prop.getValue());
 					}
 
+					@Override
 					public void visitListAnnotationProperty(IListAnnotationProperty prop) {
 						logger.error("Unmatched bind variable: " + varName + ". Property has type that cannot be matched to bind variable of same name: " + prop);
 					}
 
+					@Override
 					public void visitNumberAnnotationProperty(INumberAnnotationProperty numProp) {
 						figureController.setBindDouble(varName, numProp.getValue().doubleValue());
 					}
 
+					@Override
 					public void visitPlainTextAnnotationProperty(IPlainTextAnnotationProperty prop) {
 						figureController.setBindString(varName, prop.getValue());
 					}

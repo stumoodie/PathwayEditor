@@ -40,6 +40,7 @@ public class StubTargetLinkTerminusDefinition implements ILinkTerminusDefinition
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.ILinkTerminusDefinition#getEditableAttributes()
 	 */
+	@Override
 	public EnumSet<LinkTermEditableAttributes> getEditableAttributes() {
 		return EnumSet.noneOf(LinkTermEditableAttributes.class);
 	}
@@ -47,6 +48,7 @@ public class StubTargetLinkTerminusDefinition implements ILinkTerminusDefinition
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.ILinkTerminusDefinition#getLinkEndCode()
 	 */
+	@Override
 	public LinkTermType getLinkEndCode() {
 		return LinkTermType.TARGET;
 	}
@@ -54,6 +56,7 @@ public class StubTargetLinkTerminusDefinition implements ILinkTerminusDefinition
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.ILinkTerminusDefinition#getLinkTerminusDefaults()
 	 */
+	@Override
 	public ILinkTerminusDefaults getDefaultAttributes() {
 		return this.sourceTermDefaults ;
 	}
@@ -61,6 +64,7 @@ public class StubTargetLinkTerminusDefinition implements ILinkTerminusDefinition
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.ILinkTerminusDefinition#getOwningObjectType()
 	 */
+	@Override
 	public ILinkObjectType getOwningObjectType() {
 		return this.owningType;
 	}

@@ -67,6 +67,7 @@ public class StubDefaultLinkAttributes implements ILinkAttributeDefaults {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.IShapeAttributeDefaults#getLineColour()
 	 */
+	@Override
 	public RGB getLineColour() {
 		return EXPECTED_DEFAULT_LINE_COLOUR;
 	}
@@ -74,6 +75,7 @@ public class StubDefaultLinkAttributes implements ILinkAttributeDefaults {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.IShapeAttributeDefaults#getLineStyle()
 	 */
+	@Override
 	public LineStyle getLineStyle() {
 		return EXPECTED_DEFAULT_LINE_STYLE;
 	}
@@ -81,6 +83,7 @@ public class StubDefaultLinkAttributes implements ILinkAttributeDefaults {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.IShapeAttributeDefaults#getLineWidth()
 	 */
+	@Override
 	public double getLineWidth() {
 		return EXPECTED_DEFAULT_LINE_WIDTH;
 	}
@@ -117,6 +120,7 @@ public class StubDefaultLinkAttributes implements ILinkAttributeDefaults {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.ILinkAttributeDefaults#propertyIterator()
 	 */
+	@Override
 	public Iterator<IPropertyDefinition> propertyDefinitionIterator() {
 		Collection<IPropertyDefinition> collection = Collections.emptySet();
 		return collection.iterator();
@@ -125,6 +129,7 @@ public class StubDefaultLinkAttributes implements ILinkAttributeDefaults {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.IPropertyDefinitionContainer#containsPropertyDefinition(java.lang.String)
 	 */
+	@Override
 	public boolean containsPropertyDefinition(String name) {
 		return false;
 	}
@@ -132,6 +137,7 @@ public class StubDefaultLinkAttributes implements ILinkAttributeDefaults {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.IPropertyDefinitionContainer#getPropertyDefinition(java.lang.String)
 	 */
+	@Override
 	public IPropertyDefinition getPropertyDefinition(String name) {
 		throw new IllegalArgumentException();
 	}
@@ -139,6 +145,7 @@ public class StubDefaultLinkAttributes implements ILinkAttributeDefaults {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.IPropertyDefinitionContainer#numPropertyDefinitions()
 	 */
+	@Override
 	public int numPropertyDefinitions() {
 		return 0;
 	}
@@ -146,6 +153,7 @@ public class StubDefaultLinkAttributes implements ILinkAttributeDefaults {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.IPropertyDefinitionContainer#containsPropertyDefinition(org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyDefinition)
 	 */
+	@Override
 	public boolean containsPropertyDefinition(IPropertyDefinition name) {
 		return false;
 	}

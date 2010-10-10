@@ -32,6 +32,7 @@ public class StubAutoLayoutService implements INotationAutolayoutService {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotationAutolayoutService#isImplemented()
 	 */
+	@Override
 	public boolean isImplemented() {
 		return true;
 	}
@@ -39,6 +40,7 @@ public class StubAutoLayoutService implements INotationAutolayoutService {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotationService#getNotation()
 	 */
+	@Override
 	public INotation getNotation() {
 		throw new UnsupportedOperationException("Not implemented");
 	}
@@ -46,6 +48,7 @@ public class StubAutoLayoutService implements INotationAutolayoutService {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotationService#getNotationSubsystem()
 	 */
+	@Override
 	public INotationSubsystem getNotationSubsystem() {
 		throw new UnsupportedOperationException("Not implemented");
 	}
@@ -53,6 +56,7 @@ public class StubAutoLayoutService implements INotationAutolayoutService {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotationAutolayoutService#layout(org.pathwayeditor.businessobjects.drawingprimitives.ICanvas)
 	 */
+	@Override
 	public void layout(ICanvas canvas) {
 		System.out.println("Canvas " + canvas + " laid out.");
 	}

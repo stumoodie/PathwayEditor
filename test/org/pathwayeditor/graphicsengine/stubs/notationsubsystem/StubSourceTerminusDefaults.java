@@ -46,6 +46,7 @@ public class StubSourceTerminusDefaults implements ILinkTerminusDefaults {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.ILinkTerminusDefaults#getEndDecoratorType()
 	 */
+	@Override
 	public LinkEndDecoratorShape getEndDecoratorType() {
 		return EXPECTED_END_DEC;
 	}
@@ -53,6 +54,7 @@ public class StubSourceTerminusDefaults implements ILinkTerminusDefaults {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.ILinkTerminusDefaults#getEndSize()
 	 */
+	@Override
 	public Dimension getEndSize() {
 		return EXPECTED_END_SIZE;
 	}
@@ -60,6 +62,7 @@ public class StubSourceTerminusDefaults implements ILinkTerminusDefaults {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.ILinkTerminusDefaults#getGap()
 	 */
+	@Override
 	public double getGap() {
 		return EXPECTED_OFFSET;
 	}
@@ -67,6 +70,7 @@ public class StubSourceTerminusDefaults implements ILinkTerminusDefaults {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.ILinkTerminusDefaults#getPropertiesIterator()
 	 */
+	@Override
 	public Iterator<IPropertyDefinition> propertyDefinitionIterator() {
 		return this.propertyDefinitionList.iterator();
 	}
@@ -78,6 +82,7 @@ public class StubSourceTerminusDefaults implements ILinkTerminusDefaults {
 		return this.propertyDefinitionList;
 	}
 
+	@Override
 	public boolean containsPropertyDefinition(String name) {
 		return findPropDefn(name) != null;
 	}
@@ -93,14 +98,17 @@ public class StubSourceTerminusDefaults implements ILinkTerminusDefaults {
 		return retVal;
 	}
 	
+	@Override
 	public IPropertyDefinition getPropertyDefinition(String name) {
 		return findPropDefn(name);
 	}
 
+	@Override
 	public int numPropertyDefinitions() {
 		return this.getpropdefns().size();
 	}
 
+	@Override
 	public boolean containsPropertyDefinition(IPropertyDefinition propDefn){
 		return propDefn != null && this.getpropdefns().contains(propDefn);
 	}

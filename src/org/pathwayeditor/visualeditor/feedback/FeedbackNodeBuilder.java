@@ -53,10 +53,12 @@ public class FeedbackNodeBuilder implements IFeedbackNodeBuilder {
 		this.feedbackModel = feedbackModel;
 	}
 	
+	@Override
 	public IFeedbackModel getFeedbackModel(){
 		return this.feedbackModel;
 	}
 	
+	@Override
 	public IFeedbackNode createFromDrawingNodeObjectType(IShapeObjectType objectType, Envelope initialBounds){
 		FigureDefinitionCompiler compiler = new FigureDefinitionCompiler(objectType.getDefaultAttributes().getShapeDefinition());
 		compiler.compile();
@@ -78,6 +80,7 @@ public class FeedbackNodeBuilder implements IFeedbackNodeBuilder {
 		return idCount++;
 	}
 	
+	@Override
 	public IFeedbackNode createFromDrawingNodeAttribute(IDrawingNodeAttribute nodeAttribute){
 		IFigureController figureController = null;
 		if(nodeAttribute instanceof IShapeAttribute){
@@ -94,6 +97,7 @@ public class FeedbackNodeBuilder implements IFeedbackNodeBuilder {
 		return retVal;
 	}
 	
+	@Override
 	public IFeedbackNode createDefaultNode(Envelope initialBounds){
 		IFigureController figureController = createDefaultController(initialBounds);
 		FeedbackNode retVal = new FeedbackNode(nextCounter(), figureController, initialBounds);
@@ -149,22 +153,27 @@ public class FeedbackNodeBuilder implements IFeedbackNodeBuilder {
 				IAnnotationProperty prop = att.getProperty(varName);
 				prop.visit(new IAnnotationPropertyVisitor(){
 
+					@Override
 					public void visitBooleanAnnotationProperty(IBooleanAnnotationProperty prop) {
 						figureController.setBindBoolean(varName, prop.getValue());
 					}
 
+					@Override
 					public void visitIntegerAnnotationProperty(IIntegerAnnotationProperty prop) {
 						figureController.setBindInteger(varName, prop.getValue());
 					}
 
+					@Override
 					public void visitListAnnotationProperty(IListAnnotationProperty prop) {
 						logger.error("Unmatched bind variable: " + varName + ". Property has type that cannot be matched to bind variable of same name: " + prop);
 					}
 
+					@Override
 					public void visitNumberAnnotationProperty(INumberAnnotationProperty numProp) {
 						figureController.setBindDouble(varName, numProp.getValue().doubleValue());
 					}
 
+					@Override
 					public void visitPlainTextAnnotationProperty(IPlainTextAnnotationProperty prop) {
 						figureController.setBindString(varName, prop.getValue());
 					}

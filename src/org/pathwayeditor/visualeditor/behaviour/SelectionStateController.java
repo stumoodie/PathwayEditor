@@ -17,8 +17,8 @@ import org.pathwayeditor.visualeditor.editingview.ISelectionLayer;
 import org.pathwayeditor.visualeditor.editingview.IShapePane;
 import org.pathwayeditor.visualeditor.editingview.LayerType;
 import org.pathwayeditor.visualeditor.geometry.IIntersectionCalculator;
-import org.pathwayeditor.visualeditor.selection.ISelectionRecord;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle.SelectionHandleType;
+import org.pathwayeditor.visualeditor.selection.ISelectionRecord;
 
 public class SelectionStateController implements ISelectionStateBehaviourController {
 	private final Logger logger = Logger.getLogger(this.getClass());
@@ -85,6 +85,7 @@ public class SelectionStateController implements ISelectionStateBehaviourControl
 	}
 	
 
+	@Override
 	public Point getAdjustedMousePosition(double originalMouseX, double originalMouseY){
 //		AffineTransform paneTransform = this.shapePane.getLastUsedTransform();
 		Point retVal = this.shapePane.getPaneBounds().getOrigin();
@@ -329,6 +330,7 @@ public class SelectionStateController implements ISelectionStateBehaviourControl
 		this.dragResponseMap.put(SelectionHandleType.Link, new MarqueeSelectionHandleResponse(marqueeOp));
 	}
 
+	@Override
 	public IDrawingElementController findDrawingElementAt(Point location) {
 		IDomainModelLayer domainLayer = this.shapePane.getLayer(LayerType.DOMAIN);
 		IIntersectionCalculator intCalc = domainLayer.getViewControllerStore().getIntersectionCalculator();

@@ -9,6 +9,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 
 import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.drawingprimitives.ICanvas;
@@ -95,7 +96,7 @@ public class PathwayEditor extends JPanel {
 		this.shapePane.addLayer(new FeedbackLayer(feedbackModel));
 		Envelope canvasBounds = this.viewModel.getCanvasBounds();
 		this.shapePane.setPaneBounds(canvasBounds);
-		scrollPane = new JScrollPane((ShapePane)this.shapePane, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scrollPane = new JScrollPane((ShapePane)this.shapePane, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 		scrollPane.setFocusable(true);
 		scrollPane.setWheelScrollingEnabled(true);

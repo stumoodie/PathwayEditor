@@ -54,14 +54,17 @@ public class StubLinkAObjectType implements ILinkObjectType {
 		this.targetTerminusDefn = new StubTargetLinkTerminusDefinition(this);
 		this.connectionRules = new ILinkConnectionRules(){
 
+			@Override
 			public ILinkObjectType getLinkObjectType() {
 				return StubLinkAObjectType.this;
 			}
 
+			@Override
 			public boolean isValidSource(IShapeObjectType source) {
 				return StubShapeAObjectType.UNIQUE_ID == source.getUniqueId();
 			}
 
+			@Override
 			public boolean isValidTarget(IShapeObjectType source, IShapeObjectType target) {
 				return isValidSource(source)
 					&& (StubShapeAObjectType.UNIQUE_ID == target.getUniqueId()
@@ -75,6 +78,7 @@ public class StubLinkAObjectType implements ILinkObjectType {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.ILinkObjectType#getDefaultLinkAttributes()
 	 */
+	@Override
 	public ILinkAttributeDefaults getDefaultAttributes() {
 		return this.linkAttributeDefaults;
 	}
@@ -82,6 +86,7 @@ public class StubLinkAObjectType implements ILinkObjectType {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.ILinkObjectType#getEditiableAttributes()
 	 */
+	@Override
 	public EnumSet<LinkEditableAttributes> getEditableAttributes() {
 		return EDITABLE_ATTRIBUTES;
 	}
@@ -89,6 +94,7 @@ public class StubLinkAObjectType implements ILinkObjectType {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.ILinkObjectType#getLinkConnectionRules()
 	 */
+	@Override
 	public ILinkConnectionRules getLinkConnectionRules() {
 		return connectionRules;
 	}
@@ -96,6 +102,7 @@ public class StubLinkAObjectType implements ILinkObjectType {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.ILinkObjectType#getSourceTerminusDefinition()
 	 */
+	@Override
 	public ILinkTerminusDefinition getSourceTerminusDefinition() {
 		return this.sourceTerminusDefn;
 	}
@@ -103,6 +110,7 @@ public class StubLinkAObjectType implements ILinkObjectType {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.ILinkObjectType#getTargetTerminusDefinition()
 	 */
+	@Override
 	public ILinkTerminusDefinition getTargetTerminusDefinition() {
 		return this.targetTerminusDefn;
 	}
@@ -110,6 +118,7 @@ public class StubLinkAObjectType implements ILinkObjectType {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.ILinkObjectType#getUniqueId()
 	 */
+	@Override
 	public int getUniqueId() {
 		return this.id;
 	}
@@ -117,6 +126,7 @@ public class StubLinkAObjectType implements ILinkObjectType {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.IObjectType#getDescription()
 	 */
+	@Override
 	public String getDescription() {
 		return DESCRIPTION;
 	}
@@ -124,6 +134,7 @@ public class StubLinkAObjectType implements ILinkObjectType {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.IObjectType#getName()
 	 */
+	@Override
 	public String getName() {
 		return NAME;
 	}
@@ -131,6 +142,7 @@ public class StubLinkAObjectType implements ILinkObjectType {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.IObjectType#getSyntaxService()
 	 */
+	@Override
 	public INotationSyntaxService getSyntaxService() {
 		return this.syntaxService;
 	}
@@ -138,6 +150,7 @@ public class StubLinkAObjectType implements ILinkObjectType {
 	/* (non-Javadoc)
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
+	@Override
 	public int compareTo(IObjectType o) {
 		return this.getUniqueId() < o.getUniqueId() ? -1 : this.getUniqueId() > o.getUniqueId() ? 1 : 0;
 	}

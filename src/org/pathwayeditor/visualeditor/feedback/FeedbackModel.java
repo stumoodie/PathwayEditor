@@ -215,6 +215,7 @@ public class FeedbackModel implements IFeedbackModel {
 	}
 
 
+	@Override
 	public void rebuildOnLinkSelection(ILinkSelection selection) {
 		this.nodes.clear();
 		this.links.clear();
@@ -241,6 +242,7 @@ public class FeedbackModel implements IFeedbackModel {
 //		return retVal;
 //	}
 	
+	@Override
 	public IFeedbackNodeBuilder getFeedbackNodeBuilder(){
 		return this.builder;
 	}

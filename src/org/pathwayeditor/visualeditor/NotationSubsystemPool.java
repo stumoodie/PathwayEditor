@@ -40,7 +40,8 @@ public class NotationSubsystemPool implements INotationSubsystemPool {
         this.lookup.put(notationSubsystem.getNotation(), notationSubsystem);
     }
     
-    public INotationSubsystem getSubsystem(INotation notation) {
+    @Override
+	public INotationSubsystem getSubsystem(INotation notation) {
         INotationSubsystem retVal = null;
         if(notation != null) {
             retVal = lookup.get(notation);
@@ -51,7 +52,8 @@ public class NotationSubsystemPool implements INotationSubsystemPool {
         return retVal;
     }
 
-    public boolean hasNotationSubsystem(INotation notation) {
+    @Override
+	public boolean hasNotationSubsystem(INotation notation) {
         boolean retVal = false;
         if(notation != null) {
             retVal = lookup.containsKey(notation);
@@ -59,7 +61,8 @@ public class NotationSubsystemPool implements INotationSubsystemPool {
         return retVal;
     }
 
-    public Iterator<INotationSubsystem> subsystemIterator() {
+    @Override
+	public Iterator<INotationSubsystem> subsystemIterator() {
         return this.lookup.values().iterator();
     }
 }
