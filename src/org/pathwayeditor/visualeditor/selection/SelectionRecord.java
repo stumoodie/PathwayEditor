@@ -9,9 +9,6 @@ import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElement;
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElementSelection;
-import org.pathwayeditor.businessobjects.drawingprimitives.ISelectionFactory;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
@@ -21,6 +18,8 @@ import org.pathwayeditor.visualeditor.controller.IRootController;
 import org.pathwayeditor.visualeditor.controller.IViewControllerModel;
 import org.pathwayeditor.visualeditor.geometry.EnvelopeBuilder;
 import org.pathwayeditor.visualeditor.selection.ISelection.SelectionType;
+
+import uk.ac.ed.inf.graph.compound.ICompoundGraphElement;
 
 public class SelectionRecord implements ISelectionRecord {
 	private SortedSet<ISelection> selections;
@@ -79,7 +78,7 @@ public class SelectionRecord implements ISelectionRecord {
 		}
 		this.clear();
 		for(ISelection selection : selectedSet){
-			IDrawingElement att = selection.getPrimitiveController().getDrawingElement();
+			ICompoundGraphElement att = selection.getPrimitiveController().getDrawingElement();
 			IDrawingElementController newController = this.viewModel.getDrawingPrimitiveController(att);
 			if(selection.getSelectionType().equals(SelectionType.PRIMARY)){
 				this.setPrimarySelection(newController);

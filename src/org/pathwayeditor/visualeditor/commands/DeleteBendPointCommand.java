@@ -15,18 +15,18 @@ public class DeleteBendPointCommand implements ICommand {
 
 	@Override
 	public void execute() {
-		this.originalLocation = linkAttribute.getBendPoint(bpIdx).getLocation();
+		this.originalLocation = linkAttribute.getBendPointContainer().getBendPoint(bpIdx);
 		this.redo();
 	}
 
 	@Override
 	public void redo() {
-		linkAttribute.removeBendPoint(bpIdx);
+		linkAttribute.getBendPointContainer().removeBendPoint(bpIdx);
 	}
 
 	@Override
 	public void undo() {
-		linkAttribute.createNewBendPoint(bpIdx, originalLocation);
+		linkAttribute.getBendPointContainer().createNewBendPoint(bpIdx, originalLocation);
 	}
 
 }

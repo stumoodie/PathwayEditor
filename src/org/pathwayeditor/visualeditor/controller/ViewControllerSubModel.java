@@ -2,7 +2,7 @@ package org.pathwayeditor.visualeditor.controller;
 
 import java.util.Iterator;
 
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNode;
+import uk.ac.ed.inf.graph.compound.ICompoundNode;
 
 public class ViewControllerSubModel implements IViewControllerSubModel {
 
@@ -11,14 +11,14 @@ public class ViewControllerSubModel implements IViewControllerSubModel {
 	}
 
 	@Override
-	public Iterator<IDrawingNode> childNodeIterator() {
+	public Iterator<ICompoundNode> childNodeIterator() {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException("Not implemented yet!");
 
 	}
 
 	@Override
-	public IDrawingNode getParentNode() {
+	public ICompoundNode getParentNode() {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException("Not implemented yet!");
 

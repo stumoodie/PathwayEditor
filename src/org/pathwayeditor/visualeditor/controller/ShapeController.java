@@ -4,19 +4,16 @@ import java.util.Iterator;
 import java.util.SortedSet;
 
 import org.apache.log4j.Logger;
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNode;
-import org.pathwayeditor.businessobjects.drawingprimitives.ILinkEdge;
 import org.pathwayeditor.businessobjects.drawingprimitives.IShapeAttribute;
-import org.pathwayeditor.businessobjects.drawingprimitives.IShapeNode;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.RGB;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.CanvasAttributePropertyChange;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IAnnotationPropertyChangeEvent;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IAnnotationPropertyChangeListener;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributePropertyChangeEvent;
-import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributePropertyChangeListener;
+import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributeChangeListener;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IDrawingNodeAttributeListener;
-import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IDrawingNodeAttributeResizedEvent;
-import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IDrawingNodeAttributeTranslationEvent;
+import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributeResizedEvent;
+import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributeTranslationEvent;
 import org.pathwayeditor.businessobjects.drawingprimitives.properties.IAnnotationProperty;
 import org.pathwayeditor.businessobjects.drawingprimitives.properties.IAnnotationPropertyVisitor;
 import org.pathwayeditor.businessobjects.drawingprimitives.properties.IBooleanAnnotationProperty;
@@ -36,22 +33,29 @@ import org.pathwayeditor.visualeditor.feedback.FigureCompilationCache;
 import org.pathwayeditor.visualeditor.geometry.IIntersectionCalcnFilter;
 import org.pathwayeditor.visualeditor.geometry.IIntersectionCalculator;
 
+import uk.ac.ed.inf.graph.compound.ICompoundEdge;
+import uk.ac.ed.inf.graph.compound.ICompoundGraphElement;
+import uk.ac.ed.inf.graph.compound.ICompoundNode;
+
 public class ShapeController extends NodeController implements IShapeController {
 	private final Logger logger = Logger.getLogger(this.getClass());
-	private IShapeNode domainNode;
-	private IDrawingNode parentAttribute;
-	private final ICanvasAttributePropertyChangeListener shapePropertyChangeListener;
+	private final ICompoundNode domainNode;
+	private final IShapeAttribute shapeAttribute;
+	private final ICompoundGraphElement parentAttribute;
+	private final ICanvasAttributeChangeListener shapePropertyChangeListener;
 	private final IAnnotationPropertyChangeListener annotPropChangeListener;
-	private IFigureController figureController;
+	private final IFigureController figureController;
 	private final IDrawingNodeAttributeListener parentDrawingNodePropertyChangeListener;
 	private boolean isActive;
 	
-	public ShapeController(IViewControllerModel viewModel, IShapeNode node, int index) {
+	public ShapeController(IViewControllerModel viewModel, ICompoundNode node, int index) {
 		super(viewModel, index);
 		
 		this.domainNode = node;
-		this.parentAttribute = this.domainNode.getParentNode();
-		shapePropertyChangeListener = new ICanvasAttributePropertyChangeListener() {
+		this.shapeAttribute = (IShapeAttribute)node.getAttribute();
+		this.parentAttribute = this.domainNode.getParent();
+		shapePropertyChangeListener = new ICanvasAttributeChangeListener() {
+			@Override
 			public void propertyChange(ICanvasAttributePropertyChangeEvent e) {
 				if(e.getPropertyChange().equals(CanvasAttributePropertyChange.LINE_COLOUR)){
 					figureController.setLineColour((RGB)e.getNewValue());
@@ -84,26 +88,28 @@ public class ShapeController extends NodeController implements IShapeController 
 			}
 		};
 		annotPropChangeListener = new IAnnotationPropertyChangeListener() {
+			@Override
 			public void propertyChange(IAnnotationPropertyChangeEvent e) {
 				IAnnotationProperty prop = e.getPropertyDefinition();
-				IShapeNode node = ((IShapeAttribute)prop.getOwner()).getCurrentDrawingElement();
-				assignBindVariablesToProperties(node.getAttribute(), figureController);
+				ICompoundGraphElement node = ((IShapeAttribute)prop.getOwner()).getCurrentElement();
+				assignBindVariablesToProperties((IShapeAttribute)node.getAttribute(), figureController);
 				figureController.generateFigureDefinition();
 			}	
 		};
 		parentDrawingNodePropertyChangeListener = new IDrawingNodeAttributeListener() {
 			@Override
-			public void nodeTranslated(IDrawingNodeAttributeTranslationEvent e) {
-				domainNode.getAttribute().translate(e.getTranslationDelta());
+			public void nodeTranslated(ICanvasAttributeTranslationEvent e) {
+				shapeAttribute.translate(e.getTranslationDelta());
 			}
 			
 			@Override
-			public void nodeResized(IDrawingNodeAttributeResizedEvent e) {
+			public void nodeResized(ICanvasAttributeResizedEvent e) {
 			}
 		};
-		this.figureController = createController(domainNode.getAttribute());
+		this.figureController = createController(shapeAttribute);
 	}
 
+	@Override
 	public void activate(){
 		addListeners(this.domainNode);
 		this.isActive = true;
@@ -115,22 +121,27 @@ public class ShapeController extends NodeController implements IShapeController 
 				IAnnotationProperty prop = att.getProperty(varName);
 				prop.visit(new IAnnotationPropertyVisitor(){
 
+					@Override
 					public void visitBooleanAnnotationProperty(IBooleanAnnotationProperty prop) {
 						figureController.setBindBoolean(varName, prop.getValue());
 					}
 
+					@Override
 					public void visitIntegerAnnotationProperty(IIntegerAnnotationProperty prop) {
 						figureController.setBindInteger(varName, prop.getValue());
 					}
 
+					@Override
 					public void visitListAnnotationProperty(IListAnnotationProperty prop) {
 						logger.error("Unmatched bind variable: " + varName + ". Property has type that cannot be matched to bind variable of same name: " + prop);
 					}
 
+					@Override
 					public void visitNumberAnnotationProperty(INumberAnnotationProperty numProp) {
 						figureController.setBindDouble(varName, numProp.getValue().doubleValue());
 					}
 
+					@Override
 					public void visitPlainTextAnnotationProperty(IPlainTextAnnotationProperty prop) {
 						figureController.setBindString(varName, prop.getValue());
 					}
@@ -160,9 +171,9 @@ public class ShapeController extends NodeController implements IShapeController 
 	}
 
 	private void recalculateSrcLinks(){
-		Iterator<ILinkEdge> edgeIter = this.domainNode.sourceLinkIterator();
+		Iterator<ICompoundEdge> edgeIter = this.domainNode.getOutEdgeIterator();
 		while(edgeIter.hasNext()){
-			ILinkEdge link = edgeIter.next();
+			ICompoundEdge link = edgeIter.next();
 			ILinkController linkController = this.getViewModel().getLinkController(link);
 			IShapeController srcNode = (IShapeController)this.getViewModel().getNodeController(link.getSourceShape());
 			IShapeController tgtNode = (IShapeController)this.getViewModel().getNodeController(link.getTargetShape());

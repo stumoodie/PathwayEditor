@@ -6,10 +6,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.pathwayeditor.businessobjects.drawingprimitives.IBendPoint;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
-import org.pathwayeditor.businessobjects.drawingprimitives.ILinkEdge;
-import org.pathwayeditor.businessobjects.drawingprimitives.IShapeNode;
 import org.pathwayeditor.figure.figuredefn.IAnchorLocator;
 import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
 import org.pathwayeditor.visualeditor.controller.ILinkController;

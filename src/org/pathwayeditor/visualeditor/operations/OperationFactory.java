@@ -2,8 +2,6 @@ package org.pathwayeditor.visualeditor.operations;
 
 import java.util.Iterator;
 
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElementSelection;
-import org.pathwayeditor.businessobjects.drawingprimitives.ISelectionFactory;
 import org.pathwayeditor.visualeditor.behaviour.IDefaultPopupActions;
 import org.pathwayeditor.visualeditor.behaviour.IEditingOperation;
 import org.pathwayeditor.visualeditor.behaviour.ILinkBendPointPopupActions;

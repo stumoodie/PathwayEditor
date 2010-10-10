@@ -13,13 +13,13 @@ import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
-import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveControllerEvent;
 import org.pathwayeditor.visualeditor.controller.IDrawingElementControllerListener;
+import org.pathwayeditor.visualeditor.controller.IDrawingPrimitiveControllerEvent;
 import org.pathwayeditor.visualeditor.controller.INodeController;
 import org.pathwayeditor.visualeditor.controller.IRootController;
 import org.pathwayeditor.visualeditor.controller.IViewControllerChangeListener;
-import org.pathwayeditor.visualeditor.controller.IViewControllerNodeStructureChangeEvent;
 import org.pathwayeditor.visualeditor.controller.IViewControllerModel;
+import org.pathwayeditor.visualeditor.controller.IViewControllerNodeStructureChangeEvent;
 import org.pathwayeditor.visualeditor.controller.IViewControllerNodeStructureChangeEvent.ViewControllerStructureChangeType;
 
 /**

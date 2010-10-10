@@ -6,7 +6,7 @@ import org.pathwayeditor.figure.geometry.Point;
 public class CreateBendPointCommand implements ICommand {
 	private final ILinkAttribute linkAttribute;
 	private final int lineSegmentIdx;
-	private Point position;
+	private final Point position;
 	
 	public CreateBendPointCommand(ILinkAttribute drawingElement, int lineSegmentIdx, Point position) {
 		this.linkAttribute = drawingElement;
@@ -21,12 +21,12 @@ public class CreateBendPointCommand implements ICommand {
 
 	@Override
 	public void redo() {
-		this.linkAttribute.createNewBendPoint(this.lineSegmentIdx, this.position);
+		this.linkAttribute.getBendPointContainer().createNewBendPoint(this.lineSegmentIdx, this.position);
 	}
 
 	@Override
 	public void undo() {
-		this.linkAttribute.removeBendPoint(this.lineSegmentIdx);
+		this.linkAttribute.getBendPointContainer().removeBendPoint(this.lineSegmentIdx);
 	}
 
 }

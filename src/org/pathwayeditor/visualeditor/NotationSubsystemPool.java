@@ -22,8 +22,6 @@ import java.util.TreeMap;
 import org.pathwayeditor.businessobjects.management.INotationSubsystemPool;
 import org.pathwayeditor.businessobjects.notationsubsystem.INotation;
 import org.pathwayeditor.businessobjects.notationsubsystem.INotationSubsystem;
-import org.pathwayeditor.notations.annotator.services.AnnotatorNotationSubsystem;
-import org.pathwayeditor.notations.sbgnpd.services.SbgnPdNotationSubsystem;
 
 
 public class NotationSubsystemPool implements INotationSubsystemPool {

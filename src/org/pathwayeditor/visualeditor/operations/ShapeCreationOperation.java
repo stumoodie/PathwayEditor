@@ -1,7 +1,6 @@
 package org.pathwayeditor.visualeditor.operations;
 
 import org.apache.log4j.Logger;
-import org.pathwayeditor.businessobjects.drawingprimitives.IModel;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LineStyle;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.RGB;
 import org.pathwayeditor.businessobjects.typedefn.IShapeObjectType;
@@ -16,10 +15,12 @@ import org.pathwayeditor.visualeditor.editingview.IShapePane;
 import org.pathwayeditor.visualeditor.feedback.IFeedbackModel;
 import org.pathwayeditor.visualeditor.feedback.IFeedbackNode;
 
+import uk.ac.ed.inf.graph.compound.ICompoundGraph;
+
 public class ShapeCreationOperation implements IShapeCreationOperation {
 	private final Logger logger = Logger.getLogger(this.getClass());
 	private final IShapePane shapePane;
-	private final IModel viewModel;
+	private final ICompoundGraph viewModel;
 	private final IFeedbackModel feedbackModel;
 	private final ICommandStack commandStack;
 	private IShapeObjectType shapeObjectType;
@@ -37,7 +38,7 @@ public class ShapeCreationOperation implements IShapeCreationOperation {
 	@Override
 	public void createShape(Point origin) {
 		Envelope bounds = new Envelope(origin, this.shapeObjectType.getDefaultAttributes().getSize());
-		ICommand cmd = new ShapeCreationCommand(viewModel.getRootNode(), this.shapeObjectType, bounds);
+		ICommand cmd = new ShapeCreationCommand(viewModel.getRoot(), this.shapeObjectType, bounds);
 		this.commandStack.execute(cmd);
 		if(logger.isDebugEnabled()){
 			logger.debug("Create a new shape at: " + cmd);

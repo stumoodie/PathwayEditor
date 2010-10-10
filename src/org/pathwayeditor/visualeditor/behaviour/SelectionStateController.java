@@ -17,8 +17,8 @@ import org.pathwayeditor.visualeditor.editingview.ISelectionLayer;
 import org.pathwayeditor.visualeditor.editingview.IShapePane;
 import org.pathwayeditor.visualeditor.editingview.LayerType;
 import org.pathwayeditor.visualeditor.geometry.IIntersectionCalculator;
-import org.pathwayeditor.visualeditor.selection.ISelectionRecord;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle.SelectionHandleType;
+import org.pathwayeditor.visualeditor.selection.ISelectionRecord;
 
 public class SelectionStateController implements ISelectionStateBehaviourController {
 	private final Logger logger = Logger.getLogger(this.getClass());

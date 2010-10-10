@@ -4,7 +4,6 @@ import java.util.Iterator;
 import java.util.SortedSet;
 
 import org.apache.log4j.Logger;
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNode;
 import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
@@ -13,6 +12,8 @@ import org.pathwayeditor.visualeditor.controller.INodeController;
 import org.pathwayeditor.visualeditor.controller.IShapeController;
 import org.pathwayeditor.visualeditor.selection.INodeSelection;
 import org.pathwayeditor.visualeditor.selection.ISubgraphSelection;
+
+import uk.ac.ed.inf.graph.compound.ICompoundNode;
 
 public class CommonParentCalculator implements ICommonParentCalculator {
 	private final Logger logger = Logger.getLogger(this.getClass());
@@ -45,7 +46,7 @@ public class CommonParentCalculator implements ICommonParentCalculator {
 		});
 	}
 	
-	private INodeController getNodeController(IDrawingNode node){
+	private INodeController getNodeController(ICompoundNode node){
 		return this.calc.getModel().getNodeController(node);
 	}
 	

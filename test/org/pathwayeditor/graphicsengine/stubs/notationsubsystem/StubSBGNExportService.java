@@ -20,7 +20,6 @@ package org.pathwayeditor.graphicsengine.stubs.notationsubsystem;
 
 import java.io.File;
 
-import org.pathwayeditor.businessobjects.drawingprimitives.ICanvas;
 import org.pathwayeditor.businessobjects.notationsubsystem.ExportServiceException;
 import org.pathwayeditor.businessobjects.notationsubsystem.INotation;
 import org.pathwayeditor.businessobjects.notationsubsystem.INotationExportService;

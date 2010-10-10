@@ -1,20 +1,18 @@
 package org.pathwayeditor.visualeditor.commands;
 
 import org.apache.log4j.Logger;
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElementSelection;
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNode;
-import org.pathwayeditor.businessobjects.drawingprimitives.IGraphMomento;
-import org.pathwayeditor.businessobjects.drawingprimitives.IModel;
+
+import uk.ac.ed.inf.graph.compound.ICompoundNode;
 
 public class ReparentSelectionCommand implements ICommand {
 	private final Logger logger = Logger.getLogger(this.getClass());
 	/** Shape to manipulate. */
 	private IDrawingElementSelection selection;
-	private IDrawingNode newParent;
+	private ICompoundNode newParent;
 	private IGraphMomento beforeChangeMomento;
 	private IGraphMomento afterChangeMomento;
 
-	public ReparentSelectionCommand(IDrawingNode newParent, IDrawingElementSelection selection) {
+	public ReparentSelectionCommand(ICompoundNode newParent, IDrawingElementSelection selection) {
 		this.newParent = newParent;
 		this.selection = selection;
 	}

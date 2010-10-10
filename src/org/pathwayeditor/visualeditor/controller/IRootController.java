@@ -1,10 +1,11 @@
 package org.pathwayeditor.visualeditor.controller;
 
-import org.pathwayeditor.businessobjects.drawingprimitives.IRootNode;
+import uk.ac.ed.inf.graph.compound.ICompoundNode;
+
 
 public interface IRootController extends INodeController {
 
 	@Override
-	IRootNode getDrawingElement();
+	ICompoundNode getDrawingElement();
 
 }

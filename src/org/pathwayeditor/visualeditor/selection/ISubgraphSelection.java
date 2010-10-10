@@ -2,8 +2,6 @@ package org.pathwayeditor.visualeditor.selection;
 
 import java.util.Iterator;
 
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElementSelection;
-
 public interface ISubgraphSelection {
 
 	Iterator<INodeSelection> selectedNodeIterator();

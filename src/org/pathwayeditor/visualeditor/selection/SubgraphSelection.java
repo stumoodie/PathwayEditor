@@ -4,14 +4,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElementSelection;
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNode;
-import org.pathwayeditor.businessobjects.drawingprimitives.ILinkEdge;
 import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
 import org.pathwayeditor.visualeditor.controller.ILinkController;
 import org.pathwayeditor.visualeditor.controller.INodeController;
 import org.pathwayeditor.visualeditor.controller.IViewControllerModel;
 import org.pathwayeditor.visualeditor.selection.ISelection.SelectionType;
+
+import uk.ac.ed.inf.graph.compound.ICompoundNode;
 
 public class SubgraphSelection implements ISubgraphSelection {
 	private final IDrawingElementSelection subgraphSelection;
@@ -23,9 +22,9 @@ public class SubgraphSelection implements ISubgraphSelection {
 		this.subgraphSelection = currentSelectionSubgraph;
 		this.selectionRecord = selectionRecord;
 		this.viewControllerStore = viewControllerStore;
-		Iterator<IDrawingNode> nodeIter = currentSelectionSubgraph.drawingNodeIterator();
+		Iterator<ICompoundNode> nodeIter = currentSelectionSubgraph.drawingNodeIterator();
 		while(nodeIter.hasNext()){
-			IDrawingNode drawingNode = nodeIter.next();
+			ICompoundNode drawingNode = nodeIter.next();
 			INodeController nodeController = this.viewControllerStore.getNodeController(drawingNode);
 			if(!this.selectionRecord.containsSelection(nodeController)){
 				this.subGraphSelections.put(nodeController, new NodeSelection(SelectionType.SUBGRAPH, nodeController));
@@ -87,7 +86,7 @@ public class SubgraphSelection implements ISubgraphSelection {
 
 	@Override
 	public Iterator<INodeSelection> selectedNodeIterator() {
-		final Iterator<IDrawingNode> iter = this.subgraphSelection.drawingNodeIterator();
+		final Iterator<ICompoundNode> iter = this.subgraphSelection.drawingNodeIterator();
 		Iterator<INodeSelection> retVal = new Iterator<INodeSelection>(){
 
 			@Override
@@ -117,7 +116,7 @@ public class SubgraphSelection implements ISubgraphSelection {
 	@Override
 	public Iterator<INodeSelection> topSelectedNodeIterator() {
 		// ensure that this graph selection is initialised
-		final Iterator<IDrawingNode> iter = this.subgraphSelection.topDrawingNodeIterator();
+		final Iterator<ICompoundNode> iter = this.subgraphSelection.topDrawingNodeIterator();
 		Iterator<INodeSelection> retVal = new Iterator<INodeSelection>(){
 
 			@Override

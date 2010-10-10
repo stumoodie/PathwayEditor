@@ -2,9 +2,10 @@ package org.pathwayeditor.visualeditor.controller;
 
 import java.util.List;
 
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElement;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.Point;
+
+import uk.ac.ed.inf.graph.compound.ICompoundGraphElement;
 
 public interface IDrawingElementController extends Comparable<IDrawingElementController> {
 
@@ -22,7 +23,7 @@ public interface IDrawingElementController extends Comparable<IDrawingElementCon
 	 * Gets the drawing element that is the domain model for this primitive.
 	 * @return the drawing element, which cannot be null.
 	 */
-	IDrawingElement getDrawingElement();
+	ICompoundGraphElement getDrawingElement();
 	
 	Envelope getDrawnBounds();
 	

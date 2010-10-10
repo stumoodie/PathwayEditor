@@ -2,13 +2,14 @@ package org.pathwayeditor.visualeditor.controller;
 
 import java.util.List;
 
-import org.pathwayeditor.businessobjects.drawingprimitives.IModel;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.visualeditor.geometry.IIntersectionCalculator;
 
+import uk.ac.ed.inf.graph.compound.ICompoundGraph;
+
 public interface IViewControllerModel extends IViewControllerCollection {
 
-	IModel getDomainModel();
+	ICompoundGraph getDomainModel();
 	
 	IRootController getRootNode();
 

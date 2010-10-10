@@ -20,7 +20,6 @@ package org.pathwayeditor.graphicsengine.stubs.notationsubsystem;
 
 import java.util.Set;
 
-import org.pathwayeditor.businessobjects.drawingprimitives.ICanvas;
 import org.pathwayeditor.businessobjects.notationsubsystem.INotation;
 import org.pathwayeditor.businessobjects.notationsubsystem.INotationSubsystem;
 import org.pathwayeditor.businessobjects.notationsubsystem.INotationValidationService;

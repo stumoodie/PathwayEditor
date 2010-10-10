@@ -22,8 +22,6 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
 
-import org.pathwayeditor.businessobjects.exchange.FileXmlCanvasPersistenceManager;
-import org.pathwayeditor.businessobjects.exchange.IXmlPersistenceManager;
 import org.pathwayeditor.businessobjects.management.INotationSubsystemPool;
 
 public class VisualEditor extends JFrame {

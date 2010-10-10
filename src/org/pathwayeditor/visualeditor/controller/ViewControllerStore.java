@@ -10,16 +10,6 @@ import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElement;
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElementSelection;
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNode;
-import org.pathwayeditor.businessobjects.drawingprimitives.ILabelNode;
-import org.pathwayeditor.businessobjects.drawingprimitives.ILinkEdge;
-import org.pathwayeditor.businessobjects.drawingprimitives.IModel;
-import org.pathwayeditor.businessobjects.drawingprimitives.IRootNode;
-import org.pathwayeditor.businessobjects.drawingprimitives.IShapeNode;
-import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IModelChangeListener;
-import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IModelStructureChangeEvent;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ModelStructureChangeType;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.Point;
@@ -27,10 +17,14 @@ import org.pathwayeditor.visualeditor.geometry.FastShapeIntersectionCalculator;
 import org.pathwayeditor.visualeditor.geometry.IIntersectionCalculator;
 import org.pathwayeditor.visualeditor.geometry.ILinkPointDefinition;
 
+import uk.ac.ed.inf.graph.compound.ICompoundGraph;
+import uk.ac.ed.inf.graph.compound.ICompoundGraphElement;
+import uk.ac.ed.inf.graph.compound.ICompoundNode;
+
 public class ViewControllerStore implements IViewControllerModel {
 //	private final Logger logger = Logger.getLogger(this.getClass());
-	private final IModel domainModel;
-	private final SortedMap<IDrawingElement, IDrawingElementController> domainToViewMap;
+	private final ICompoundGraph domainModel;
+	private final SortedMap<ICompoundGraphElement, IDrawingElementController> domainToViewMap;
 	private final SortedSet<IDrawingElementController> drawingPrimitives;
 	private IModelChangeListener modelListener;
 	private IRootController rootPrimitive;
@@ -39,17 +33,17 @@ public class ViewControllerStore implements IViewControllerModel {
 	private int indexCounter = 0;
 	private final IIntersectionCalculator intersectionCalculator;
 	
-	public ViewControllerStore(IModel domainModel){
+	public ViewControllerStore(ICompoundGraph domainModel){
 		this.domainModel = domainModel;
-		this.domainToViewMap = new TreeMap<IDrawingElement, IDrawingElementController>(new Comparator<IDrawingElement>(){
+		this.domainToViewMap = new TreeMap<ICompoundGraphElement, IDrawingElementController>(new Comparator<ICompoundGraphElement>(){
 
 			@Override
-			public int compare(IDrawingElement o1, IDrawingElement o2) {
+			public int compare(ICompoundGraphElement o1, ICompoundGraphElement o2) {
 //				return Integer.valueOf(o1.getAttribute().getCreationSerial()).compareTo(Integer.valueOf(o2.getAttribute().getCreationSerial()));
 //				return o1.compareTo(o2);
 				int retVal = o1.getLevel() < o2.getLevel() ? -1 : (o1.getLevel() > o2.getLevel() ? 1 : 0);
 				if(retVal == 0){
-					retVal = o1.getUniqueIndex() < o2.getUniqueIndex() ? -1 : (o1.getUniqueIndex() > o2.getUniqueIndex() ? 1 : 0);
+					retVal = o1.getIndex() < o2.getIndex() ? -1 : (o1.getIndex() > o2.getIndex() ? 1 : 0);
 				}
 //				if(logger.isTraceEnabled()){
 //					StringBuilder buf = new StringBuilder("retVal=");
@@ -108,17 +102,17 @@ public class ViewControllerStore implements IViewControllerModel {
 			
 		};
 		this.domainModel.addModelChangeListener(modelListener);
-		Iterator<IDrawingNode> nodeIter = this.domainModel.drawingNodeIterator();
+		Iterator<ICompoundNode> nodeIter = this.domainModel.drawingNodeIterator();
 		while(nodeIter.hasNext()){
-			IDrawingNode node = nodeIter.next();
+			ICompoundNode node = nodeIter.next();
 			node.getSubModel().addModelChangeListener(modelListener);
 		}
 	}
 	
 	private void addSelection(IDrawingElementSelection selection){
-		Iterator<IDrawingNode> nodeIter = selection.drawingNodeIterator();
+		Iterator<ICompoundNode> nodeIter = selection.drawingNodeIterator();
 		while(nodeIter.hasNext()){
-			IDrawingNode node = nodeIter.next();
+			ICompoundNode node = nodeIter.next();
 			INodeController newNode = createNodePrimitive(node);
 			notifyAddedNode(newNode);
 		}
@@ -136,9 +130,9 @@ public class ViewControllerStore implements IViewControllerModel {
 	}
 	
 	private void activateSelection(IDrawingElementSelection selection) {
-		Iterator<IDrawingNode> nodeIter = selection.drawingNodeIterator();
+		Iterator<ICompoundNode> nodeIter = selection.drawingNodeIterator();
 		while(nodeIter.hasNext()){
-			IDrawingNode node = nodeIter.next();
+			ICompoundNode node = nodeIter.next();
 			INodeController nodePrimitive = getNodeController(node);
 			nodePrimitive.activate();
 		}
@@ -151,9 +145,9 @@ public class ViewControllerStore implements IViewControllerModel {
 	}
 
 	private void inactivateSelection(IDrawingElementSelection selection) {
-		Iterator<IDrawingNode> nodeIter = selection.drawingNodeIterator();
+		Iterator<ICompoundNode> nodeIter = selection.drawingNodeIterator();
 		while(nodeIter.hasNext()){
-			IDrawingNode node = nodeIter.next();
+			ICompoundNode node = nodeIter.next();
 			INodeController nodePrimitive = getNodeController(node);
 			nodePrimitive.inactivate();
 		}
@@ -166,9 +160,9 @@ public class ViewControllerStore implements IViewControllerModel {
 	}
 
 	private void removeNodeSelection(IDrawingElementSelection selection){
-		Iterator<IDrawingNode> iter = selection.drawingNodeIterator();
+		Iterator<ICompoundNode> iter = selection.drawingNodeIterator();
 		while(iter.hasNext()){
-			IDrawingNode node = iter.next();
+			ICompoundNode node = iter.next();
 			INodeController nodeController = getNodeController(node); 
 			notifyRemovedNode(nodeController);
 			removeNodeController(nodeController);
@@ -196,9 +190,9 @@ public class ViewControllerStore implements IViewControllerModel {
 	}
 
 	private void buildFromDomainModel(){
-		Iterator<IDrawingNode> nodeIter = this.domainModel.drawingNodeIterator();
+		Iterator<ICompoundNode> nodeIter = this.domainModel.drawingNodeIterator();
 		while(nodeIter.hasNext()){
-			IDrawingNode node = nodeIter.next();
+			ICompoundNode node = nodeIter.next();
 			createNodePrimitive(node);
 		}
 		Iterator<ILinkEdge> edgeIter = this.domainModel.linkEdgeIterator();
@@ -208,13 +202,13 @@ public class ViewControllerStore implements IViewControllerModel {
 		}
 	}
 	
-	private INodeController createNodePrimitive(IDrawingNode node){
+	private INodeController createNodePrimitive(ICompoundNode node){
 		INodeController viewNode = null;
 		if(node instanceof IShapeNode){
 			viewNode = new ShapeController(this, (IShapeNode)node, indexCounter++);
 		}
-		else if(node instanceof ILabelNode){
-			viewNode = new LabelController(this, (ILabelNode)node, indexCounter++);
+		else if(node instanceof ICompoundNode){
+			viewNode = new LabelController(this, (ICompoundNode)node, indexCounter++);
 		}
 		else if(node instanceof IRootNode){
 			this.rootPrimitive = new RootController(this, (IRootNode)node, indexCounter++);
@@ -324,7 +318,7 @@ public class ViewControllerStore implements IViewControllerModel {
 	}
 
 	@Override
-	public INodeController getNodeController(IDrawingNode draggedNode) {
+	public INodeController getNodeController(ICompoundNode draggedNode) {
 		IDrawingElementController retVal = this.domainToViewMap.get(draggedNode);
 		if(retVal == null){
 			throw new IllegalArgumentException("domain node is not present in this view model");
@@ -382,7 +376,7 @@ public class ViewControllerStore implements IViewControllerModel {
 	}
 
 	@Override
-	public boolean containsDrawingElement(IDrawingElement testPrimitive) {
+	public boolean containsDrawingElement(ICompoundGraphElement testPrimitive) {
 		return this.domainToViewMap.containsKey(testPrimitive);
 	}
 
@@ -481,7 +475,7 @@ public class ViewControllerStore implements IViewControllerModel {
 //	}
 
 	@Override
-	public IDrawingElementController getDrawingPrimitiveController(IDrawingElement testAttribute) {
+	public IDrawingElementController getDrawingPrimitiveController(ICompoundGraphElement testAttribute) {
 		return this.domainToViewMap.get(testAttribute);
 	}
 }

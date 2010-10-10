@@ -18,7 +18,6 @@ limitations under the License.
  */
 package org.pathwayeditor.graphicsengine.stubs.notationsubsystem;
 
-import org.pathwayeditor.businessobjects.drawingprimitives.ICanvas;
 import org.pathwayeditor.businessobjects.notationsubsystem.INotation;
 import org.pathwayeditor.businessobjects.notationsubsystem.INotationAutolayoutService;
 import org.pathwayeditor.businessobjects.notationsubsystem.INotationSubsystem;

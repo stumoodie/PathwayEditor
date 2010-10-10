@@ -1,6 +1,5 @@
 package org.pathwayeditor.visualeditor.selection;
 
-import org.pathwayeditor.businessobjects.drawingprimitives.IBendPoint;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.LineSegment;
 import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
