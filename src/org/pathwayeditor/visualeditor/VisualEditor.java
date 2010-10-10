@@ -31,9 +31,9 @@ public class VisualEditor extends JFrame {
 
 	private static final int WIDTH = 1200;
 	private static final int HEIGHT = 800;
-	private JMenuBar menuBar;
+	private final JMenuBar menuBar;
 
-	private PathwayEditor insp;
+	private final PathwayEditor insp;
 	
 	public VisualEditor(String title){
 		super(title);
@@ -104,7 +104,7 @@ public class VisualEditor extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser chooser = new JFileChooser();
-				chooser.setCurrentDirectory(new File("/Users/smoodie/Documents/workspace351_64/GraphicsEngine/test/org/pathwayeditor/graphicsengine"));
+				chooser.setCurrentDirectory(new File("/Users/smoodie/Documents/workspace36_64/GraphicsEngine"));
 				chooser.setFileFilter(new FileFilter(){
 					
 					@Override
