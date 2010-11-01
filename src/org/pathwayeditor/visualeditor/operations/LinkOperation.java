@@ -1,6 +1,7 @@
 package org.pathwayeditor.visualeditor.operations;
 
 import org.apache.log4j.Logger;
+import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.behaviour.ILinkOperation;
@@ -96,13 +97,15 @@ public class LinkOperation implements ILinkOperation {
 
 	private void createNewBendPointCommand(int lineSegmentIdx, Point position) {
 		ILinkSelection linkSelection = this.selectionRecord.getUniqueLinkSelection(); 
-		ICommand cmd = new CreateBendPointCommand(linkSelection.getPrimitiveController().getDrawingElement().getAttribute(), lineSegmentIdx, position);
+		ICommand cmd = new CreateBendPointCommand((ILinkAttribute)linkSelection.getPrimitiveController().getDrawingElement().getAttribute(), lineSegmentIdx, position);
 		this.commandStack.execute(cmd);
 	}
 
 	private void createMoveBendPointCommand(int bpIdx, Point position) {
-		ILinkSelection linkSelection = this.selectionRecord.getUniqueLinkSelection(); 
-		ICommand cmd = new MoveBendPointCommand(linkSelection.getPrimitiveController().getDrawingElement().getAttribute().getBendPoint(bpIdx), position);
+		ILinkSelection linkSelection = this.selectionRecord.getUniqueLinkSelection();
+		ILinkAttribute linkAtt = (ILinkAttribute)linkSelection.getPrimitiveController().getDrawingElement().getAttribute();
+		//TODO: This is broken. This should be a delta, not an absolute position
+		ICommand cmd = new MoveBendPointCommand(linkAtt.getBendPointContainer(), bpIdx, position);
 		this.commandStack.execute(cmd);
 	}
 }

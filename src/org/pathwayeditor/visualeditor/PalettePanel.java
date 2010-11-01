@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.ScrollPaneConstants;
 
 import org.pathwayeditor.businessobjects.notationsubsystem.INotationSubsystem;
 import org.pathwayeditor.businessobjects.typedefn.ILinkObjectType;
@@ -48,7 +49,7 @@ public class PalettePanel extends JPanel {
 		
 		JPanel shapeButtonPanel = new JPanel();
 		this.palettePane = new JScrollPane(shapeButtonPanel);
-		this.palettePane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		this.palettePane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		shapeButtonPanel.setLayout(new BoxLayout(shapeButtonPanel, BoxLayout.PAGE_AXIS));
 		ShapeIconGenerator iconGenerator = new ShapeIconGenerator();
 		iconGenerator.setBounds(new Envelope(0, 0, 16, 16));
@@ -79,7 +80,7 @@ public class PalettePanel extends JPanel {
 		linkButtonPanel.setLayout(new BoxLayout(linkButtonPanel, BoxLayout.PAGE_AXIS));
 		
 		this.linkScrollPanel = new JScrollPane(linkButtonPanel);
-		this.linkScrollPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		this.linkScrollPanel.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		LinkIconGenerator linkIconGenerator = new LinkIconGenerator();
 		Iterator<ILinkObjectType> linkTypeIterator = notationSubsystem.getSyntaxService().linkTypeIterator();
 		linkIconGenerator.setBounds(new Envelope(0.0, 0.0, 64.0, 16.0));

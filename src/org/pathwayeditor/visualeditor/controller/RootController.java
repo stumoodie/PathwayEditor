@@ -1,21 +1,24 @@
 package org.pathwayeditor.visualeditor.controller;
 
+import org.pathwayeditor.businessobjects.drawingprimitives.IRootAttribute;
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.figure.geometry.RectangleHull;
 
+import uk.ac.ed.inf.graph.compound.IRootCompoundNode;
+
 public class RootController extends NodeController implements IRootController {
-	private final IRootNode domainNode;
+	private final IRootCompoundNode domainNode;
 	private final IConvexHull hull;
 	private boolean isActive;
 	
 	
-	public RootController(IViewControllerModel viewModel, IRootNode node, int index) {
+	public RootController(IViewControllerModel viewModel, IRootCompoundNode node, int index) {
 		super(viewModel, index);
 		this.domainNode = node;
-		this.hull = new RectangleHull(domainNode.getAttribute().getBounds());
+		this.hull = new RectangleHull(((IRootAttribute)domainNode.getAttribute()).getBounds());
 		this.isActive = false;
 	}
 
@@ -30,7 +33,7 @@ public class RootController extends NodeController implements IRootController {
 	}
 
 	@Override
-	public IRootNode getDrawingElement() {
+	public IRootCompoundNode getDrawingElement() {
 		return this.domainNode;
 	}
 

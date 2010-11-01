@@ -6,8 +6,10 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNodeAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
 import org.pathwayeditor.figure.figuredefn.IAnchorLocator;
+import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
 import org.pathwayeditor.visualeditor.controller.ILinkController;
 import org.pathwayeditor.visualeditor.controller.INodeController;
@@ -17,6 +19,10 @@ import org.pathwayeditor.visualeditor.geometry.ILinkPointDefinition;
 import org.pathwayeditor.visualeditor.selection.ILinkSelection;
 import org.pathwayeditor.visualeditor.selection.INodeSelection;
 import org.pathwayeditor.visualeditor.selection.ISelectionRecord;
+
+import uk.ac.ed.inf.graph.compound.CompoundNodePair;
+import uk.ac.ed.inf.graph.compound.ICompoundEdge;
+import uk.ac.ed.inf.graph.compound.ICompoundNode;
 
 public class FeedbackModel implements IFeedbackModel {
 	private final Set<IFeedbackNode> nodes;
@@ -48,21 +54,21 @@ public class FeedbackModel implements IFeedbackModel {
 			INodeSelection nodeSelection = iter.next();
 			INodeController selectedNode = nodeSelection.getPrimitiveController();
 			if(selectedNode instanceof IShapeController){
-				IShapeNode shapeNode = ((IShapeController)selectedNode).getDrawingElement();
-				Iterator<ILinkEdge> incidentEdgeIterator = shapeNode.sourceLinkIterator();
+				ICompoundNode shapeNode = ((IShapeController)selectedNode).getDrawingElement();
+				Iterator<ICompoundEdge> incidentEdgeIterator = shapeNode.getOutEdgeIterator();
 				while(incidentEdgeIterator.hasNext()){
-					ILinkEdge linkAtt = incidentEdgeIterator.next();
+					ICompoundEdge linkAtt = incidentEdgeIterator.next();
 					ILinkController linkController = selectedNode.getViewModel().getLinkController(linkAtt); 
 					incidentEdgeSet.add(linkController);
 				}
-				Iterator<ILinkEdge> incidentTgtEdgeIterator = shapeNode.targetLinkIterator();
+				Iterator<ICompoundEdge> incidentTgtEdgeIterator = shapeNode.getInEdgeIterator();
 				while(incidentTgtEdgeIterator.hasNext()){
-					ILinkEdge linkAtt = incidentTgtEdgeIterator.next();
+					ICompoundEdge linkAtt = incidentTgtEdgeIterator.next();
 					ILinkController linkController= selectedNode.getViewModel().getLinkController(linkAtt); 
 					incidentEdgeSet.add(linkController);
 				}
 			}					
-			IFeedbackNode feedbackNode = builder.createFromDrawingNodeAttribute(selectedNode.getDrawingElement().getAttribute());
+			IFeedbackNode feedbackNode = builder.createFromDrawingNodeAttribute((IDrawingNodeAttribute)selectedNode.getDrawingElement().getAttribute());
 //			this.nodes.add(feedbackNode);
 			this.selectionMapping.put(selectedNode, feedbackNode);
 		}
@@ -183,21 +189,22 @@ public class FeedbackModel implements IFeedbackModel {
 	}
 
 	private FeedbackLink createFeedbackLink(ILinkController linkEdge, IViewControllerModel viewControllerStore){
-		IShapeNode srcShape = linkEdge.getDrawingElement().getSourceShape();
+		CompoundNodePair pair = linkEdge.getDrawingElement().getConnectedNodes();
+		ICompoundNode srcShape = pair.getOutNode();
 		IShapeController srcShapeController = viewControllerStore.getShapeController(srcShape); 
 		IAnchorLocator srcAnchorLocator = srcShapeController.getFigureController().getAnchorLocatorFactory().createAnchorLocator();
-		ILinkAttribute linkAtt = linkEdge.getDrawingElement().getAttribute();
-		IShapeNode tgtShape = linkEdge.getDrawingElement().getTargetShape();
+		ILinkAttribute linkAtt = (ILinkAttribute)linkEdge.getDrawingElement().getAttribute();
+		ICompoundNode tgtShape = pair.getInNode();
 		IShapeController tgtShapeController = viewControllerStore.getShapeController(tgtShape); 
 		IAnchorLocator tgtAnchorLocator = tgtShapeController.getFigureController().getAnchorLocatorFactory().createAnchorLocator();
 		FeedbackLink retVal = new FeedbackLink((FeedbackNode)this.selectionMapping.get(srcShapeController),
 				(FeedbackNode)this.selectionMapping.get(tgtShapeController), linkAtt.getCreationSerial(),
 				linkAtt.getSourceTerminus().getLocation(), srcAnchorLocator, linkAtt.getTargetTerminus().getLocation(), tgtAnchorLocator);
 		ILinkPointDefinition linkDefn = retVal.getLinkDefinition();
-		Iterator<IBendPoint> bpIter = linkAtt.bendPointIterator();
+		Iterator<Point> bpIter = linkAtt.getBendPointContainer().bendPointIterator();
 		while(bpIter.hasNext()){
-			IBendPoint bp = bpIter.next();
-			linkDefn.addNewBendPoint(bp.getLocation());
+			Point bp = bpIter.next();
+			linkDefn.addNewBendPoint(bp);
 		}
 		linkDefn.setLineColour(linkAtt.getLineColour());
 		linkDefn.setLineStyle(linkAtt.getLineStyle());
@@ -212,6 +219,7 @@ public class FeedbackModel implements IFeedbackModel {
 	}
 
 
+	@Override
 	public void rebuildOnLinkSelection(ILinkSelection selection) {
 		this.nodes.clear();
 		this.links.clear();
@@ -238,6 +246,7 @@ public class FeedbackModel implements IFeedbackModel {
 //		return retVal;
 //	}
 	
+	@Override
 	public IFeedbackNodeBuilder getFeedbackNodeBuilder(){
 		return this.builder;
 	}

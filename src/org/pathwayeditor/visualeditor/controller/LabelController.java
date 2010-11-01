@@ -54,8 +54,7 @@ public class LabelController extends NodeController implements ILabelController 
 		drawingNodePropertyChangeListener = new ICanvasAttributeChangeListener() {
 			@Override
 			public void propertyChange(ICanvasAttributePropertyChangeEvent e) {
-				if(e.getPropertyChange().equals(CanvasAttributePropertyChange.SIZE)
-						|| e.getPropertyChange().equals(CanvasAttributePropertyChange.LOCATION)){
+				if(e.getPropertyChange().equals(CanvasAttributePropertyChange.BOUNDS)){
 					Envelope oldDrawnBounds = controller.getConvexHull().getEnvelope();
 					IDrawingNodeAttribute attribute = (IDrawingNodeAttribute)e.getAttribute();
 					controller.setRequestedEnvelope(attribute.getBounds());

@@ -8,8 +8,8 @@ import org.pathwayeditor.figure.geometry.Envelope;
 
 public abstract class DrawingElementController implements IDrawingElementController {
 	private final List<IDrawingElementControllerListener> listeners;
-	private IViewControllerModel viewModel;
-	private IViewControllerSubModel viewSubModel;
+	private final IViewControllerModel viewModel;
+	private final IViewControllerSubModel viewSubModel;
 	private final int index;
 	
 	protected DrawingElementController(IViewControllerModel viewModel, int index){
@@ -127,8 +127,8 @@ public abstract class DrawingElementController implements IDrawingElementControl
 		int retVal = this.getDrawingElement().getLevel() < other.getDrawingElement().getLevel() ? -1 :
 			(this.getDrawingElement().getLevel() > other.getDrawingElement().getLevel() ? 1 : 0);
 		if(retVal == 0){
-			retVal = this.getDrawingElement().getUniqueIndex() < other.getDrawingElement().getUniqueIndex() ? -1 :
-				(this.getDrawingElement().getUniqueIndex() > other.getDrawingElement().getUniqueIndex() ? 1 : 0);
+			retVal = this.getDrawingElement().getIndex() < other.getDrawingElement().getIndex() ? -1 :
+				(this.getDrawingElement().getIndex() > other.getDrawingElement().getIndex() ? 1 : 0);
 		}
 		return retVal;
 	}

@@ -101,7 +101,7 @@ public final class RTree<K> implements IMutableSpacialIndex2D<K> {
 		            Float.NEGATIVE_INFINITY
 		        };
 		m_maxBranches = maxBranches;
-		m_minBranches = Math.max(2, (int) (((double) (m_maxBranches + 1)) * 0.4d));
+		m_minBranches = Math.max(2, (int) (((m_maxBranches + 1)) * 0.4d));
 		m_root = new Node<K>(m_maxBranches, true);
 		m_entryMap = new HashMap<K, Node<K>>();
 		m_deletedEntries = 0;
@@ -136,6 +136,7 @@ public final class RTree<K> implements IMutableSpacialIndex2D<K> {
 	 * time (note however that garbage collection will take place in the
 	 * background).
 	 */
+	@Override
 	public final void empty() {
 		m_root = new Node<K>(m_maxBranches, true);
 		m_entryMap = new HashMap<K, Node<K>>();
@@ -150,6 +151,7 @@ public final class RTree<K> implements IMutableSpacialIndex2D<K> {
 	 * queryOverlap() with Float.NEGATIVE_INFINITY minimum values and
 	 * Float.POSITIVE_INFINITY maximum values.
 	 */
+	@Override
 	public final int size() {
 		return (isLeafNode(m_root) ? m_root.entryCount : m_root.data.deepCount);
 	}
@@ -181,6 +183,7 @@ public final class RTree<K> implements IMutableSpacialIndex2D<K> {
 	 *   if xMin is not less than or equal to xMax, or
 	 *   if yMin is not less than or equal to yMax.
 	 */
+	@Override
 	public final void insert(final K objKey, final float xMin, final float yMin,
 	                         final float xMax, final float yMax) {
 		if (objKey == null)
@@ -313,6 +316,7 @@ public final class RTree<K> implements IMutableSpacialIndex2D<K> {
 		}
 	}
 	
+	@Override
 	public final void insert(final K objKey, Envelope drawnBounds) {
 		Point origin = drawnBounds.getOrigin();
 		Point diagonal = drawnBounds.getDiagonalCorner();
@@ -920,7 +924,7 @@ public final class RTree<K> implements IMutableSpacialIndex2D<K> {
 				}
 			}
 
-		return (((long) maximumInx1) << 32) | ((long) maximumInx2);
+		return (((long) maximumInx1) << 32) | (maximumInx2);
 	}
 
 	/*
@@ -1232,6 +1236,7 @@ public final class RTree<K> implements IMutableSpacialIndex2D<K> {
 	 *   extentsArr is not null, and if extentsArr cannot be written
 	 *   to in the index range [offset, offset+3].
 	 */
+	@Override
 	public final boolean exists(final K objKey, final float[] extentsArr, final int offset) {
 		if (objKey == null)
 			return false;
@@ -1264,6 +1269,7 @@ public final class RTree<K> implements IMutableSpacialIndex2D<K> {
 	 * @return true if and only if objKey existed in this R-tree prior to this
 	 *   method invocation.
 	 */
+	@Override
 	public final boolean delete(final K objKey) {
 		if (objKey == null)
 			return false;
@@ -1559,6 +1565,7 @@ public final class RTree<K> implements IMutableSpacialIndex2D<K> {
 	 *   and if it cannot be written to in the index range
 	 *   [offset, offset+3].
 	 */
+	@Override
 	public final ISpacialEntry2DEnumerator<K> queryOverlap(final float xMin, final float yMin,
 	                                                   final float xMax, final float yMax,
 	                                                   final float[] extentsArr, final int offset,
@@ -1751,10 +1758,12 @@ public final class RTree<K> implements IMutableSpacialIndex2D<K> {
 			computeNextLeafNode();
 		}
 
+		@Override
 		public final int numRemaining() {
 			return count;
 		}
 
+		@Override
 		public final K nextExtents(final float[] extentsArr, final int offset) {
 			final Node<K> leaf = currentLeafNode;
 			final int inx;
@@ -1781,6 +1790,7 @@ public final class RTree<K> implements IMutableSpacialIndex2D<K> {
 			return leaf.objKeys.get(inx);
 		}
 
+		@Override
 		public final K nextInt() {
 			K returnThis = null;
 

@@ -13,6 +13,7 @@ import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
+import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
@@ -86,6 +87,7 @@ public class Java2DGraphicsEngine implements IGraphicsEngine {
 		g.setStroke(stroke);
 	}
 
+	@Override
 	public void drawArc(double pos, double pos2, double widthSize, double heightSize, double roundedOffset, double roundedLength) {
 		this.setLineColour();
 		this.setStroke();
@@ -95,6 +97,7 @@ public class Java2DGraphicsEngine implements IGraphicsEngine {
 		}
 	}
 
+	@Override
 	public void drawLine(double x1, double y1, double x2, double y2) {
 		this.setLineColour();
 		this.setStroke();
@@ -104,6 +107,7 @@ public class Java2DGraphicsEngine implements IGraphicsEngine {
 		}
 	}
 
+	@Override
 	public void drawOval(double x, double y, double w,	double h) {
 		this.setLineColour();
 		this.setStroke();
@@ -113,6 +117,7 @@ public class Java2DGraphicsEngine implements IGraphicsEngine {
 		}
 	}
 
+	@Override
 	public void drawPoint(double x, double y) {
 		this.setLineColour();
 		this.setStroke();
@@ -122,6 +127,7 @@ public class Java2DGraphicsEngine implements IGraphicsEngine {
 		}
 	}
 
+	@Override
 	public void drawPolygon(double[] pointArr) {
 		GeneralPath path = createPolygonPath(pointArr);
 		this.setLineColour();
@@ -132,6 +138,7 @@ public class Java2DGraphicsEngine implements IGraphicsEngine {
 		}
 	}
 
+	@Override
 	public void drawPolyline(double[] pointArr) {
 		GeneralPath path = createPolylinePath(pointArr);
 		this.setLineColour();
@@ -142,10 +149,12 @@ public class Java2DGraphicsEngine implements IGraphicsEngine {
 		}
 	}
 
+	@Override
 	public void drawRectangle(double pos, double pos2, double widthSize, double heightSize) {
 		handleRectangle(true, pos, pos2, widthSize, heightSize);
 	}
 
+	@Override
 	public void drawString(String text, double x, double y, GraphicalTextAlignment align) {
 		this.setLineColour();
 		this.setStroke();
@@ -204,6 +213,7 @@ public class Java2DGraphicsEngine implements IGraphicsEngine {
 	}
 	
 
+	@Override
 	public void fillArc(double x, double y, double w, double h, double offset, double length) {
 		this.setFillColour();
 		this.g.fill(new Arc2D.Double(x, y, w, h, offset, length, Arc2D.PIE));
@@ -212,6 +222,7 @@ public class Java2DGraphicsEngine implements IGraphicsEngine {
 		}
 	}
 
+	@Override
 	public void fillOval(double x, double y, double w, double h) {
 		this.setFillColour();
 		g.fill(new Ellipse2D.Double(x, y, w, h));
@@ -221,7 +232,7 @@ public class Java2DGraphicsEngine implements IGraphicsEngine {
 	}
 	
 	private GeneralPath createPolylinePath(double[] pointArr){
-		GeneralPath path = new GeneralPath(GeneralPath.WIND_EVEN_ODD, pointArr.length/2);
+		GeneralPath path = new GeneralPath(Path2D.WIND_EVEN_ODD, pointArr.length/2);
 		path.moveTo((float)pointArr[0], (float)pointArr[1]);
 		for(int i = 2; i < pointArr.length;){
 			path.lineTo((float)pointArr[i++], (float)pointArr[i++]);
@@ -230,7 +241,7 @@ public class Java2DGraphicsEngine implements IGraphicsEngine {
 	}
 
 	private GeneralPath createPolygonPath(double[] pointArr){
-		GeneralPath path = new GeneralPath(GeneralPath.WIND_EVEN_ODD, pointArr.length/2);
+		GeneralPath path = new GeneralPath(Path2D.WIND_EVEN_ODD, pointArr.length/2);
 		path.moveTo((float)pointArr[0], (float)pointArr[1]);
 		for(int i = 2; i < pointArr.length;){
 			path.lineTo((float)pointArr[i++], (float)pointArr[i++]);
@@ -239,6 +250,7 @@ public class Java2DGraphicsEngine implements IGraphicsEngine {
 		return path;
 	}
 
+	@Override
 	public void fillPolygon(double[] pointArr) {
 		GeneralPath path = createPolygonPath(pointArr);
 		this.setFillColour();
@@ -264,10 +276,12 @@ public class Java2DGraphicsEngine implements IGraphicsEngine {
 		}
 	}
 	
+	@Override
 	public void fillRectangle(double pos, double pos2, double widthSize, double heightSize) {
 		handleRectangle(false, pos, pos2, widthSize, heightSize);
 	}
 
+	@Override
 	public void fillRoundRectangle(double x, double y, double w, double h, double cw, double ch) {
 		RoundRectangle2D rect = new RoundRectangle2D.Double(x, y, w, h, cw, ch);
 		this.setFillColour();
@@ -277,6 +291,7 @@ public class Java2DGraphicsEngine implements IGraphicsEngine {
 		}
 	}
 
+	@Override
 	public void drawRoundRectangle(double x, double y, double w, double h, double cw, double ch) {
 		RoundRectangle2D rect = new RoundRectangle2D.Double(x, y, w, h, cw, ch);
 		this.setLineColour();
@@ -287,6 +302,7 @@ public class Java2DGraphicsEngine implements IGraphicsEngine {
 		}
 	}
 
+	@Override
 	public void fillString(String text, double x, double y, GraphicalTextAlignment align) {
 		Font f = g.getFont();
 		this.setFillColour();
@@ -311,6 +327,7 @@ public class Java2DGraphicsEngine implements IGraphicsEngine {
 		}
 	}
 
+	@Override
 	public void setFillColor(RGB color) {
 		if(color == null) throw new IllegalArgumentException("Cannot be null");
 		this.fillColour = color;
@@ -319,6 +336,7 @@ public class Java2DGraphicsEngine implements IGraphicsEngine {
 		}
 	}
 
+	@Override
 	public void setLineColor(RGB color) {
 		if(color == null) throw new IllegalArgumentException("Cannot be null");
 		this.lineColour = color;
@@ -327,6 +345,7 @@ public class Java2DGraphicsEngine implements IGraphicsEngine {
 		}
 	}
 
+	@Override
 	public void setLineWidth(double lineWidthVal) {
 		this.lineWidth = lineWidthVal;
 		if(logger.isDebugEnabled()){
@@ -334,6 +353,7 @@ public class Java2DGraphicsEngine implements IGraphicsEngine {
 		}
 	}
 
+	@Override
 	public void setFont(IFont modifiedFont) {
 		int fontSize = (int)Math.ceil(modifiedFont.getFontSize());
 		Font f = new Font(DEFAULT_FONT, getFontStyle(modifiedFont.getStyle()), fontSize);
@@ -354,6 +374,7 @@ public class Java2DGraphicsEngine implements IGraphicsEngine {
 		return retVal;
 	}
 
+	@Override
 	public void setLineStyle(LineStyle style) {
 		this.lineStyle = style;
 	}

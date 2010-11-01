@@ -43,6 +43,7 @@ public class StubRootObjectType implements IRootObjectType {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.IRootObjectType#getParentingRules()
 	 */
+	@Override
 	public IRootObjectParentingRules getParentingRules() {
 		return new RootObjectParentingRules();
 	}
@@ -50,6 +51,7 @@ public class StubRootObjectType implements IRootObjectType {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.IRootObjectType#getUniqueId()
 	 */
+	@Override
 	public int getUniqueId() {
 		return UNIQUE_ID;
 	}
@@ -57,6 +59,7 @@ public class StubRootObjectType implements IRootObjectType {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.IObjectType#getDescription()
 	 */
+	@Override
 	public String getDescription() {
 		return DESCRIPTION;
 	}
@@ -64,6 +67,7 @@ public class StubRootObjectType implements IRootObjectType {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.IObjectType#getName()
 	 */
+	@Override
 	public String getName() {
 		return NAME;
 	}
@@ -71,6 +75,7 @@ public class StubRootObjectType implements IRootObjectType {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.IObjectType#getSyntaxService()
 	 */
+	@Override
 	public INotationSyntaxService getSyntaxService() {
 		return this.syntaxService;
 	}
@@ -78,6 +83,7 @@ public class StubRootObjectType implements IRootObjectType {
 	/* (non-Javadoc)
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
+	@Override
 	public int compareTo(IObjectType o) {
 		return this.getUniqueId() < o.getUniqueId() ? -1 : this.getUniqueId() > o.getUniqueId() ? 1 : 0;
 	}
@@ -87,6 +93,7 @@ public class StubRootObjectType implements IRootObjectType {
 		/* (non-Javadoc)
 		 * @see org.pathwayeditor.businessobjects.typedefn.IRootObjectParentingRules#getObjectType()
 		 */
+		@Override
 		public IRootObjectType getObjectType() {
 			return StubRootObjectType.this;
 		}
@@ -94,6 +101,7 @@ public class StubRootObjectType implements IRootObjectType {
 		/* (non-Javadoc)
 		 * @see org.pathwayeditor.businessobjects.typedefn.IObjectTypeParentingRules#isValidChild(org.pathwayeditor.businessobjects.typedefn.IObjectType)
 		 */
+		@Override
 		public boolean isValidChild(IObjectType possibleChild) {
 			boolean retVal = false;
 			if(possibleChild.getUniqueId() == StubShapeAObjectType.UNIQUE_ID

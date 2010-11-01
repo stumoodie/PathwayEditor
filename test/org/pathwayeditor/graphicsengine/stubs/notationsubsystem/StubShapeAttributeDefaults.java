@@ -40,6 +40,7 @@ public abstract class StubShapeAttributeDefaults implements IShapeAttributeDefau
 	public   Dimension SIZE = new Dimension ( 50 , 50 ) ;
 	
 	
+	@Override
 	public String getShapeDefinition(){
 		return PRIMITIVE_SHAPE_TYPE;
 	}
@@ -48,6 +49,7 @@ public abstract class StubShapeAttributeDefaults implements IShapeAttributeDefau
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.IShapeAttributeDefaults#getFillColour()
 	 */
+	@Override
 	public RGB getFillColour() {
 		return FILL_COLOR;
 	}
@@ -55,6 +57,7 @@ public abstract class StubShapeAttributeDefaults implements IShapeAttributeDefau
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.IShapeAttributeDefaults#getLineColour()
 	 */
+	@Override
 	public RGB getLineColour() {
 		return LINE_COLOR;
 	}
@@ -62,6 +65,7 @@ public abstract class StubShapeAttributeDefaults implements IShapeAttributeDefau
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.IShapeAttributeDefaults#getLineStyle()
 	 */
+	@Override
 	public LineStyle getLineStyle() {
 		return LINE_STYLE;
 	}
@@ -69,6 +73,7 @@ public abstract class StubShapeAttributeDefaults implements IShapeAttributeDefau
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.IShapeAttributeDefaults#getLineWidth()
 	 */
+	@Override
 	public double getLineWidth() {
 		return LINE_WIDTH;
 	}
@@ -77,6 +82,7 @@ public abstract class StubShapeAttributeDefaults implements IShapeAttributeDefau
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.IShapeAttributeDefaults#getSize()
 	 */
+	@Override
 	public Dimension getSize() {
 		return SIZE;
 	}
@@ -84,10 +90,12 @@ public abstract class StubShapeAttributeDefaults implements IShapeAttributeDefau
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.IShapeAttributeDefaults#propertyIterator()
 	 */
+	@Override
 	public Iterator<IPropertyDefinition> propertyDefinitionIterator() {
 		return getpropdefns().iterator();
 	}
 
+	@Override
 	public boolean containsPropertyDefinition(String name) {
 		return findPropDefn(name) != null;
 	}
@@ -103,10 +111,12 @@ public abstract class StubShapeAttributeDefaults implements IShapeAttributeDefau
 		return retVal;
 	}
 	
+	@Override
 	public IPropertyDefinition getPropertyDefinition(String name) {
 		return findPropDefn(name);
 	}
 
+	@Override
 	public int numPropertyDefinitions() {
 		return this.getpropdefns().size();
 	}
@@ -116,6 +126,7 @@ public abstract class StubShapeAttributeDefaults implements IShapeAttributeDefau
 	 */
 	protected abstract Set<IPropertyDefinition> getpropdefns() ;
 
+	@Override
 	public boolean containsPropertyDefinition(IPropertyDefinition propDefn){
 		return propDefn != null && this.getpropdefns().contains(propDefn);
 	}

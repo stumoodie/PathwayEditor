@@ -3,6 +3,7 @@ package org.pathwayeditor.visualeditor.operations;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
+import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNodeAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.Point;
@@ -181,7 +182,7 @@ public class EditingOperation implements IEditingOperation {
 		Iterator<INodeSelection> moveNodeIterator = this.selectionRecord.getSubgraphSelection().topSelectedNodeIterator();
 		while(moveNodeIterator.hasNext()){
 			INodeController nodePrimitive = moveNodeIterator.next().getPrimitiveController();
-			ICommand cmd = new MoveNodeCommand(nodePrimitive.getDrawingElement().getAttribute(), delta);
+			ICommand cmd = new MoveNodeCommand((IDrawingNodeAttribute)nodePrimitive.getDrawingElement().getAttribute(), delta);
 			cmpCommand.addCommand(cmd);
 			if(logger.isTraceEnabled()){
 				logger.trace("Dragged shape to location: " + nodePrimitive.getBounds().getOrigin());
@@ -190,12 +191,14 @@ public class EditingOperation implements IEditingOperation {
 		Iterator<ILinkSelection> moveLinkIterator = this.selectionRecord.getSubgraphSelection().selectedLinkIterator();
 		while(moveLinkIterator.hasNext()){
 			ILinkAttribute nodePrimitive = (ILinkAttribute)moveLinkIterator.next().getPrimitiveController().getDrawingElement().getAttribute();
-			Iterator<Point> bpIter = nodePrimitive.bendPointIterator();
+			int bpIdx = 0;
+			Iterator<Point> bpIter = nodePrimitive.getBendPointContainer().bendPointIterator();
 			while(bpIter.hasNext()){
-				Point bp = bpIter.next();
-				Point newPosn = bp.translate(delta);
-				ICommand cmd = new MoveBendPointCommand(bp, newPosn);
+//				Point bp = bpIter.next();
+//				Point newPosn = bp.translate(delta);
+				ICommand cmd = new MoveBendPointCommand(nodePrimitive.getBendPointContainer(), bpIdx, delta);
 				cmpCommand.addCommand(cmd);
+				bpIdx++;
 			}
 		}
 		if(reparentingEnabled){

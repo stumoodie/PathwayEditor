@@ -3,6 +3,7 @@ package org.pathwayeditor.visualeditor.operations;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
+import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNodeAttribute;
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.behaviour.IResizeOperation;
@@ -67,7 +68,7 @@ public class ResizeOperation implements IResizeOperation {
 		ICompoundCommand cmpCommand = new CompoundCommand();
 		while(moveNodeIterator.hasNext()){
 			INodeController nodePrimitive = (INodeController)moveNodeIterator.next().getPrimitiveController();
-			ICommand cmd = new ResizeNodeCommand(nodePrimitive.getDrawingElement().getAttribute(), originDelta, resizeDelta);
+			ICommand cmd = new ResizeNodeCommand((IDrawingNodeAttribute)nodePrimitive.getDrawingElement().getAttribute(), originDelta, resizeDelta);
 			cmpCommand.addCommand(cmd);
 			logger.trace("Dragged shape to location: " + nodePrimitive.getBounds().getOrigin());
 		}

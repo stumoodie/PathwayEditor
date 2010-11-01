@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.pathwayeditor.businessobjects.drawingprimitives.IRootAttribute;
 import org.pathwayeditor.businessobjects.notationsubsystem.INotation;
 import org.pathwayeditor.businessobjects.notationsubsystem.INotationAutolayoutService;
 import org.pathwayeditor.businessobjects.notationsubsystem.INotationConversionService;
@@ -39,11 +40,11 @@ import org.pathwayeditor.businessobjects.notationsubsystem.INotationValidationSe
 public class StubNotationSubSystem implements INotationSubsystem {
 	private final INotation notation;
 	private final INotationAutolayoutService autolayoutService;
-	private INotationSyntaxService syntaxService;
-	private INotationValidationService validationService;
-	private Set<INotationExportService> exportServices=new HashSet<INotationExportService>();
-	private Set<INotationImportService> importServices=new HashSet<INotationImportService>();
-	private Set<INotationConversionService> conversionServices=new HashSet<INotationConversionService>();
+	private final INotationSyntaxService syntaxService;
+	private final INotationValidationService validationService;
+	private final Set<INotationExportService> exportServices=new HashSet<INotationExportService>();
+	private final Set<INotationImportService> importServices=new HashSet<INotationImportService>();
+	private final Set<INotationConversionService> conversionServices=new HashSet<INotationConversionService>();
 	
 	public StubNotationSubSystem(){
 		this(null);
@@ -67,6 +68,7 @@ public class StubNotationSubSystem implements INotationSubsystem {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.contextadapter.INotationSubsystem#getAutolayoutService()
 	 */
+	@Override
 	public INotationAutolayoutService getAutolayoutService() {
 		return this.autolayoutService;
 	}
@@ -74,6 +76,7 @@ public class StubNotationSubSystem implements INotationSubsystem {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.contextadapter.INotationSubsystem#getConversionServices()
 	 */
+	@Override
 	public Set<INotationConversionService> getConversionServices() {
 		return conversionServices;
 	}
@@ -81,6 +84,7 @@ public class StubNotationSubSystem implements INotationSubsystem {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.contextadapter.INotationSubsystem#getExportServices()
 	 */
+	@Override
 	public Set<INotationExportService> getExportServices() {
 		return exportServices;
 	}
@@ -88,6 +92,7 @@ public class StubNotationSubSystem implements INotationSubsystem {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.contextadapter.INotationSubsystem#getImportServices()
 	 */
+	@Override
 	public Set<INotationImportService> getImportServices() {
 		return importServices;
 	}
@@ -95,6 +100,7 @@ public class StubNotationSubSystem implements INotationSubsystem {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.contextadapter.INotationSubsystem#getNotation()
 	 */
+	@Override
 	public INotation getNotation() {
 		return this.notation;
 	}
@@ -102,6 +108,7 @@ public class StubNotationSubSystem implements INotationSubsystem {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.contextadapter.INotationSubsystem#getPluginServices()
 	 */
+	@Override
 	public Set<INotationPluginService> getPluginServices() {
 		return Collections.emptySet();
 	}
@@ -109,6 +116,7 @@ public class StubNotationSubSystem implements INotationSubsystem {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.contextadapter.INotationSubsystem#getSyntaxService()
 	 */
+	@Override
 	public INotationSyntaxService getSyntaxService() {
 		return this.syntaxService;
 	}
@@ -116,6 +124,7 @@ public class StubNotationSubSystem implements INotationSubsystem {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.contextadapter.INotationSubsystem#getValidationService()
 	 */
+	@Override
 	public INotationValidationService getValidationService() {
 		return this.validationService;
 	}
@@ -123,6 +132,7 @@ public class StubNotationSubSystem implements INotationSubsystem {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotationSubsystem#isFallback()
 	 */
+	@Override
 	public boolean isFallback() {
 		return false;
 	}
@@ -130,14 +140,16 @@ public class StubNotationSubSystem implements INotationSubsystem {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotationSubsystem#registerCanvas(org.pathwayeditor.businessobjects.drawingprimitives.ICanvas)
 	 */
-	public void registerCanvas(ICanvas canvasToRegister) {
+	@Override
+	public void registerCanvas(IRootAttribute canvasToRegister) {
 		
 	}
 
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotationSubsystem#unregisterCanvas(org.pathwayeditor.businessobjects.drawingprimitives.ICanvas)
 	 */
-	public void unregisterCanvas(ICanvas canvasToRegister) {
+	@Override
+	public void unregisterCanvas(IRootAttribute canvasToRegister) {
 	}
 
 }

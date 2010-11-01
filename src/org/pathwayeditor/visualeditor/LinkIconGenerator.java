@@ -16,6 +16,7 @@ import org.apache.batik.dom.GenericDOMImplementation;
 import org.apache.batik.dom.svg.SVGDOMImplementation;
 import org.apache.batik.svggen.SVGGraphics2D;
 import org.apache.batik.svggen.SVGGraphics2DIOException;
+import org.apache.batik.transcoder.SVGAbstractTranscoder;
 import org.apache.batik.transcoder.TranscoderException;
 import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
@@ -124,10 +125,10 @@ public class LinkIconGenerator {
 		this.writeSVGToFile(tmpFile);
 		PNGTranscoder t = new PNGTranscoder();
 		Dimension size = this.requestedBounds.getDimension();
-    	t.addTranscodingHint(PNGTranscoder.KEY_WIDTH, new Float(size.getWidth()+2.0));
-    	t.addTranscodingHint(PNGTranscoder.KEY_HEIGHT, new Float(size.getHeight()+2.0));
+    	t.addTranscodingHint(SVGAbstractTranscoder.KEY_WIDTH, new Float(size.getWidth()+2.0));
+    	t.addTranscodingHint(SVGAbstractTranscoder.KEY_HEIGHT, new Float(size.getHeight()+2.0));
 		Point origin = this.requestedBounds.getOrigin();
-    	t.addTranscodingHint(PNGTranscoder.KEY_AOI, new Rectangle2D.Double(origin.getX()-1.0, origin.getY()-1.0, size.getWidth()+2.0, size.getHeight()+2.0));
+    	t.addTranscodingHint(SVGAbstractTranscoder.KEY_AOI, new Rectangle2D.Double(origin.getX()-1.0, origin.getY()-1.0, size.getWidth()+2.0, size.getHeight()+2.0));
     	
 
     	// Set the transcoder input and output.

@@ -10,6 +10,7 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.util.Iterator;
 
+import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkTerminus;
 import org.pathwayeditor.figure.geometry.LineSegment;
 import org.pathwayeditor.figure.geometry.Point;
@@ -25,7 +26,7 @@ import org.pathwayeditor.visualeditor.selection.LinkSelectionHandle;
 
 public class SelectionLinkDrawer  {
 	private static final double SELN_RADIUS = 5.0;
-	private ILinkSelection selection;
+	private final ILinkSelection selection;
 	private Point startPosition = Point.ORIGIN;
 	private Point endPosition = Point.ORIGIN;
 	
@@ -66,8 +67,9 @@ public class SelectionLinkDrawer  {
 			handle.drawShape(handleDrawer);
 		}
 		ILinkController linkEdge = this.selection.getPrimitiveController();
-		ILinkTerminus srcTermDefaults = linkEdge.getDrawingElement().getAttribute().getSourceTerminus();
-		ILinkTerminus tgtTermDefaults = linkEdge.getDrawingElement().getAttribute().getTargetTerminus();
+		ILinkAttribute linkAttribute = (ILinkAttribute)linkEdge.getDrawingElement().getAttribute();
+		ILinkTerminus srcTermDefaults = linkAttribute.getSourceTerminus();
+		ILinkTerminus tgtTermDefaults = linkAttribute.getTargetTerminus();
 		AffineTransform before = g2d.getTransform();
 		Point srcPosn = srcTermDefaults.getLocation();
 		g2d.translate(srcPosn.getX()-SELN_RADIUS, srcPosn.getY()-SELN_RADIUS);

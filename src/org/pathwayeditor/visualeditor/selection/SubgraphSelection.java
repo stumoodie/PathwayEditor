@@ -10,19 +10,21 @@ import org.pathwayeditor.visualeditor.controller.INodeController;
 import org.pathwayeditor.visualeditor.controller.IViewControllerModel;
 import org.pathwayeditor.visualeditor.selection.ISelection.SelectionType;
 
+import uk.ac.ed.inf.graph.compound.ICompoundEdge;
 import uk.ac.ed.inf.graph.compound.ICompoundNode;
+import uk.ac.ed.inf.graph.compound.ISubCompoundGraph;
 
 public class SubgraphSelection implements ISubgraphSelection {
-	private final IDrawingElementSelection subgraphSelection;
+	private final ISubCompoundGraph subgraphSelection;
 	private final SelectionRecord selectionRecord;
 	private final IViewControllerModel viewControllerStore;
 	private final Map<IDrawingElementController, ISelection> subGraphSelections = new HashMap<IDrawingElementController, ISelection>();
 	
-	public SubgraphSelection(SelectionRecord selectionRecord, IViewControllerModel viewControllerStore, IDrawingElementSelection currentSelectionSubgraph) {
+	public SubgraphSelection(SelectionRecord selectionRecord, IViewControllerModel viewControllerStore, ISubCompoundGraph currentSelectionSubgraph) {
 		this.subgraphSelection = currentSelectionSubgraph;
 		this.selectionRecord = selectionRecord;
 		this.viewControllerStore = viewControllerStore;
-		Iterator<ICompoundNode> nodeIter = currentSelectionSubgraph.drawingNodeIterator();
+		Iterator<ICompoundNode> nodeIter = currentSelectionSubgraph.nodeIterator();
 		while(nodeIter.hasNext()){
 			ICompoundNode drawingNode = nodeIter.next();
 			INodeController nodeController = this.viewControllerStore.getNodeController(drawingNode);
@@ -30,9 +32,9 @@ public class SubgraphSelection implements ISubgraphSelection {
 				this.subGraphSelections.put(nodeController, new NodeSelection(SelectionType.SUBGRAPH, nodeController));
 			}
 		}
-		Iterator<ILinkEdge> linkIter = currentSelectionSubgraph.linkEdgeIterator();
+		Iterator<ICompoundEdge> linkIter = currentSelectionSubgraph.edgeIterator();
 		while(linkIter.hasNext()){
-			ILinkEdge drawingNode = linkIter.next();
+			ICompoundEdge drawingNode = linkIter.next();
 			ILinkController linkController = this.viewControllerStore.getLinkController(drawingNode);
 			if(!this.selectionRecord.containsSelection(linkController)){
 				this.subGraphSelections.put(linkController, new LinkSelection(SelectionType.SUBGRAPH, linkController));
@@ -41,7 +43,7 @@ public class SubgraphSelection implements ISubgraphSelection {
 	}
 
 	@Override
-	public IDrawingElementSelection getDrawingElementSelection() {
+	public ISubCompoundGraph getDrawingElementSelection() {
 		return this.subgraphSelection;
 	}
 
@@ -52,12 +54,12 @@ public class SubgraphSelection implements ISubgraphSelection {
 
 	@Override
 	public int numTopDrawingNodes() {
-		return this.subgraphSelection.numTopDrawingNodes();
+		return this.subgraphSelection.getNumTopNodes();
 	}
 
 	@Override
 	public Iterator<ILinkSelection> selectedLinkIterator() {
-		final Iterator<ILinkEdge> iter = this.subgraphSelection.linkEdgeIterator();
+		final Iterator<ICompoundEdge> iter = this.subgraphSelection.edgeIterator();
 		Iterator<ILinkSelection> retVal = new Iterator<ILinkSelection>(){
 
 			@Override
@@ -86,7 +88,7 @@ public class SubgraphSelection implements ISubgraphSelection {
 
 	@Override
 	public Iterator<INodeSelection> selectedNodeIterator() {
-		final Iterator<ICompoundNode> iter = this.subgraphSelection.drawingNodeIterator();
+		final Iterator<ICompoundNode> iter = this.subgraphSelection.nodeIterator();
 		Iterator<INodeSelection> retVal = new Iterator<INodeSelection>(){
 
 			@Override
@@ -116,7 +118,7 @@ public class SubgraphSelection implements ISubgraphSelection {
 	@Override
 	public Iterator<INodeSelection> topSelectedNodeIterator() {
 		// ensure that this graph selection is initialised
-		final Iterator<ICompoundNode> iter = this.subgraphSelection.topDrawingNodeIterator();
+		final Iterator<ICompoundNode> iter = this.subgraphSelection.topNodeIterator();
 		Iterator<INodeSelection> retVal = new Iterator<INodeSelection>(){
 
 			@Override

@@ -2,25 +2,32 @@ package org.pathwayeditor.visualeditor.commands;
 
 import org.apache.log4j.Logger;
 
+import uk.ac.ed.inf.graph.compound.ICompoundGraphMoveBuilder;
 import uk.ac.ed.inf.graph.compound.ICompoundNode;
+import uk.ac.ed.inf.graph.compound.ISubCompoundGraph;
+import uk.ac.ed.inf.graph.state.IGraphState;
+import uk.ac.ed.inf.graph.state.IRestorableGraph;
 
 public class ReparentSelectionCommand implements ICommand {
 	private final Logger logger = Logger.getLogger(this.getClass());
 	/** Shape to manipulate. */
-	private IDrawingElementSelection selection;
+	private ISubCompoundGraph selection;
 	private ICompoundNode newParent;
-	private IGraphMomento beforeChangeMomento;
-	private IGraphMomento afterChangeMomento;
+	private IGraphState beforeChangeMomento;
+	private IGraphState afterChangeMomento;
 
-	public ReparentSelectionCommand(ICompoundNode newParent, IDrawingElementSelection selection) {
+	public ReparentSelectionCommand(ICompoundNode newParent, ISubCompoundGraph selection) {
 		this.newParent = newParent;
 		this.selection = selection;
 	}
 
+	@Override
 	public void execute() {
-		this.beforeChangeMomento = this.newParent.getModel().getCurrentState();
-		this.newParent.getSubModel().moveHere(selection);
-		this.afterChangeMomento = this.newParent.getModel().getCurrentState();
+		this.beforeChangeMomento = this.newParent.getGraph().getCurrentState();
+		ICompoundGraphMoveBuilder moveBuilder = this.newParent.getChildCompoundGraph().newMoveBuilder();
+		moveBuilder.setSourceSubgraph(selection);
+		moveBuilder.makeMove();
+		this.afterChangeMomento = this.newParent.getGraph().getCurrentState();
 		if(logger.isDebugEnabled()){
 			logger.debug("Moved shape: " +  this.selection + " to  " + this.newParent);
 		}
@@ -30,19 +37,19 @@ public class ReparentSelectionCommand implements ICommand {
 
 	@Override
 	public void redo(){
-		IModel model = this.afterChangeMomento.getModel();
-		model.restoreToState(afterChangeMomento);
+		IRestorableGraph model = this.afterChangeMomento.getGraph();
+		model.restoreState(afterChangeMomento);
 		if(logger.isDebugEnabled()){
-			logger.debug("redo: restored state: " + this.afterChangeMomento.getCreationDate());
+			logger.debug("redo: restored state: " + this.afterChangeMomento);
 		}
 	}
 	
 	@Override
 	public void undo(){
-		IModel model = this.beforeChangeMomento.getModel();
-		model.restoreToState(beforeChangeMomento);
+		IRestorableGraph model = this.beforeChangeMomento.getGraph();
+		model.restoreState(beforeChangeMomento);
 		if(logger.isDebugEnabled()){
-			logger.debug("undo: restored state: " + this.afterChangeMomento.getCreationDate());
+			logger.debug("undo: restored state: " + this.afterChangeMomento);
 		}
 	}
 

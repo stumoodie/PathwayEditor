@@ -15,9 +15,9 @@ public class LinkBendPointSelectionHandle extends SelectionHandle implements ILi
 	
 	private IConvexHull rectangleHull;
 
-	public LinkBendPointSelectionHandle(ISelection selection, ILinkController nodeController, IBendPoint bp, int bpIdx){
+	public LinkBendPointSelectionHandle(ISelection selection, ILinkController nodeController, Point bp, int bpIdx){
 		super(nodeController, SelectionHandleType.LinkBendPoint, selection, bpIdx);
-		Point bisection = bp.getLocation();
+		Point bisection = bp;
 		this.rectangleHull = new RectangleHull(new Envelope(bisection.getX()-HANDLE_OFFSET, bisection.getY()-HANDLE_OFFSET,	HANDLE_WIDTH, HANDLE_HEIGHT));
 	}
 	

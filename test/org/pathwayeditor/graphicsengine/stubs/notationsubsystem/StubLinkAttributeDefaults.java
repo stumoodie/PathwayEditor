@@ -50,6 +50,7 @@ public abstract class StubLinkAttributeDefaults implements ILinkAttributeDefault
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.IShapeAttributeDefaults#getLineColour()
 	 */
+	@Override
 	public RGB getLineColour() {
 		return EXPECTED_DEFAULT_LINE_COLOUR;
 	}
@@ -57,6 +58,7 @@ public abstract class StubLinkAttributeDefaults implements ILinkAttributeDefault
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.IShapeAttributeDefaults#getLineStyle()
 	 */
+	@Override
 	public LineStyle getLineStyle() {
 		return EXPECTED_DEFAULT_LINE_STYLE;
 	}
@@ -64,6 +66,7 @@ public abstract class StubLinkAttributeDefaults implements ILinkAttributeDefault
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.IShapeAttributeDefaults#getLineWidth()
 	 */
+	@Override
 	public double getLineWidth() {
 		return EXPECTED_DEFAULT_LINE_WIDTH;
 	}
@@ -86,6 +89,7 @@ public abstract class StubLinkAttributeDefaults implements ILinkAttributeDefault
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.ILinkAttributeDefaults#propertyIterator()
 	 */
+	@Override
 	public Iterator<IPropertyDefinition> propertyDefinitionIterator() {
 		return getpropdefns().iterator();
 	}
@@ -98,6 +102,7 @@ public abstract class StubLinkAttributeDefaults implements ILinkAttributeDefault
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.IPropertyDefinitionContainer#containsPropertyDefinition(java.lang.String)
 	 */
+	@Override
 	public boolean containsPropertyDefinition(String name) {
 		return findPropDefn(name) != null;
 	}
@@ -116,6 +121,7 @@ public abstract class StubLinkAttributeDefaults implements ILinkAttributeDefault
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.IPropertyDefinitionContainer#getPropertyDefinition(java.lang.String)
 	 */
+	@Override
 	public IPropertyDefinition getPropertyDefinition(String name) {
 		return findPropDefn(name);
 	}
@@ -123,10 +129,12 @@ public abstract class StubLinkAttributeDefaults implements ILinkAttributeDefault
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.IPropertyDefinitionContainer#numPropertyDefinitions()
 	 */
+	@Override
 	public int numPropertyDefinitions() {
 		return this.getpropdefns().size();
 	}
 	
+	@Override
 	public boolean containsPropertyDefinition(IPropertyDefinition propDefn){
 		return propDefn != null && this.getpropdefns().contains(propDefn);
 	}

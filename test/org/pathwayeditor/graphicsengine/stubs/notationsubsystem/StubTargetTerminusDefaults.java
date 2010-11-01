@@ -47,6 +47,7 @@ public class StubTargetTerminusDefaults implements ILinkTerminusDefaults {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.ILinkTerminusDefaults#getEndDecoratorType()
 	 */
+	@Override
 	public LinkEndDecoratorShape getEndDecoratorType() {
 		return EXPECTED_END_DEC;
 	}
@@ -54,6 +55,7 @@ public class StubTargetTerminusDefaults implements ILinkTerminusDefaults {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.ILinkTerminusDefaults#getEndSize()
 	 */
+	@Override
 	public Dimension getEndSize() {
 		return EXPECTED_END_SIZE;
 	}
@@ -61,6 +63,7 @@ public class StubTargetTerminusDefaults implements ILinkTerminusDefaults {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.ILinkTerminusDefaults#getGap()
 	 */
+	@Override
 	public double getGap() {
 		return EXPECTED_OFFSET;
 	}

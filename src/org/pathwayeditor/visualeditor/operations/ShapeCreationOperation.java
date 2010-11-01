@@ -28,7 +28,7 @@ public class ShapeCreationOperation implements IShapeCreationOperation {
 	private Dimension sizeDelta;
 	private Point startLocation;
 
-	public ShapeCreationOperation(IShapePane shapePane, IFeedbackModel feedbackModel, IModel viewModel, ICommandStack commandStack) {
+	public ShapeCreationOperation(IShapePane shapePane, IFeedbackModel feedbackModel, ICompoundGraph viewModel, ICommandStack commandStack) {
 		this.shapePane = shapePane;
 		this.viewModel = viewModel;
 		this.feedbackModel = feedbackModel;
@@ -60,7 +60,7 @@ public class ShapeCreationOperation implements IShapeCreationOperation {
 	public void finishCreationDrag(Point newLocation) {
 		calculateBounds(newLocation);
 		Envelope bounds = new Envelope(this.startLocation, new Dimension(0, 0)).resize(originDelta, sizeDelta);
-		ICommand cmd = new ShapeCreationCommand(viewModel.getRootNode(), this.shapeObjectType, bounds);
+		ICommand cmd = new ShapeCreationCommand(viewModel.getRoot(), this.shapeObjectType, bounds);
 		this.commandStack.execute(cmd);
 		if(logger.isDebugEnabled()){
 			logger.debug("Create a new shape at: " + cmd);

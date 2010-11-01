@@ -8,9 +8,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.pathwayeditor.businessobjects.notationsubsystem.INotationSubsystem;
 import org.pathwayeditor.businessobjects.typedefn.IShapeObjectType;
-import org.pathwayeditor.bussinessobjects.stubs.notationsubsystem.StubNotationSubSystem;
-import org.pathwayeditor.bussinessobjects.stubs.notationsubsystem.StubShapeAObjectType;
 import org.pathwayeditor.figure.geometry.Envelope;
+import org.pathwayeditor.graphicsengine.stubs.notationsubsystem.StubNotationSubSystem;
+import org.pathwayeditor.graphicsengine.stubs.notationsubsystem.StubShapeAObjectType;
 
 public class ShapeIconGeneratorTest {
 	private static final Envelope EXPECTED_BOUNDS = new Envelope(0, 0, 50, 50);

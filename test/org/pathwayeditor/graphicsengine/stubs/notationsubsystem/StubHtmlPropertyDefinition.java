@@ -44,6 +44,7 @@ public class StubHtmlPropertyDefinition implements IPlainTextPropertyDefinition 
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyDefinition#copyProperty(org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyBuilder)
 	 */
+	@Override
 	public IAnnotationProperty copyProperty(IPropertyBuilder propertyBuilder, IAnnotationProperty otherProp) {
 		return propertyBuilder.copyPlainTextProperty((IPlainTextAnnotationProperty)otherProp);
 	}
@@ -51,6 +52,7 @@ public class StubHtmlPropertyDefinition implements IPlainTextPropertyDefinition 
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyDefinition#createProperty(org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyBuilder)
 	 */
+	@Override
 	public IAnnotationProperty createProperty(IPropertyBuilder propertyBuilder) {
 		return propertyBuilder.createPlainTextProperty(this);
 	}
@@ -58,6 +60,7 @@ public class StubHtmlPropertyDefinition implements IPlainTextPropertyDefinition 
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyDefinition#getDefaultValue()
 	 */
+	@Override
 	public String getDefaultValue() {
 		return DEFAULT_VALUE;
 	}
@@ -65,6 +68,7 @@ public class StubHtmlPropertyDefinition implements IPlainTextPropertyDefinition 
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyDefinition#getLabelDefaults()
 	 */
+	@Override
 	public ILabelAttributeDefaults getLabelDefaults() {
 		return this.labelDefaults;
 	}
@@ -72,6 +76,7 @@ public class StubHtmlPropertyDefinition implements IPlainTextPropertyDefinition 
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyDefinition#getName()
 	 */
+	@Override
 	public String getName() {
 		return NAME;
 	}
@@ -79,6 +84,7 @@ public class StubHtmlPropertyDefinition implements IPlainTextPropertyDefinition 
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyDefinition#isEditable()
 	 */
+	@Override
 	public boolean isEditable() {
 		return IS_EDITABLE;
 	}
@@ -86,6 +92,7 @@ public class StubHtmlPropertyDefinition implements IPlainTextPropertyDefinition 
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyDefinition#isVisualisable()
 	 */
+	@Override
 	public boolean isVisualisable() {
 		return IS_VISUALISABLE;
 	}
@@ -93,6 +100,7 @@ public class StubHtmlPropertyDefinition implements IPlainTextPropertyDefinition 
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyDefinition#isDisplayed()
 	 */
+	@Override
 	public boolean isAlwaysDisplayed() {
 		return false;
 	}
@@ -100,6 +108,7 @@ public class StubHtmlPropertyDefinition implements IPlainTextPropertyDefinition 
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyDefinition#getDisplayName()
 	 */
+	@Override
 	public String getDisplayName() {
 		return NAME;
 	}

@@ -85,6 +85,7 @@ public class SelectionStateController implements ISelectionStateBehaviourControl
 	}
 	
 
+	@Override
 	public Point getAdjustedMousePosition(double originalMouseX, double originalMouseY){
 //		AffineTransform paneTransform = this.shapePane.getLastUsedTransform();
 		Point retVal = this.shapePane.getPaneBounds().getOrigin();
@@ -329,6 +330,7 @@ public class SelectionStateController implements ISelectionStateBehaviourControl
 		this.dragResponseMap.put(SelectionHandleType.Link, new MarqueeSelectionHandleResponse(marqueeOp));
 	}
 
+	@Override
 	public IDrawingElementController findDrawingElementAt(Point location) {
 		IDomainModelLayer domainLayer = this.shapePane.getLayer(LayerType.DOMAIN);
 		IIntersectionCalculator intCalc = domainLayer.getViewControllerStore().getIntersectionCalculator();

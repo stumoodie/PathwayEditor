@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.SortedSet;
 
 import org.apache.log4j.Logger;
+import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasElementAttribute;
 import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
@@ -35,10 +36,12 @@ public class CommonParentCalculator implements ICommonParentCalculator {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.visualeditor.geometry.ICommonParentCalculator#findCommonParentExcludingLabels(org.pathwayeditor.visualeditor.selection.ISubgraphSelection, org.pathwayeditor.figure.geometry.Point)
 	 */
+	@Override
 	public void findCommonParentExcludingLabels(ISubgraphSelection testSelection, Point delta){
 		findCommonParentImpl(testSelection, delta, new IHandleLabel(){
 
 			// we're ignoreing labels
+			@Override
 			public INodeController getLabelParent(ILabelController node) {
 				return null;
 			}
@@ -53,12 +56,14 @@ public class CommonParentCalculator implements ICommonParentCalculator {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.visualeditor.geometry.ICommonParentCalculator#findCommonParent(org.pathwayeditor.visualeditor.selection.ISubgraphSelection, org.pathwayeditor.figure.geometry.Point)
 	 */
+	@Override
 	public void findCommonParent(ISubgraphSelection testSelection, Point delta) {
 		findCommonParentImpl(testSelection, delta, new IHandleLabel(){
 
 			// we're ignoreing labels
+			@Override
 			public INodeController getLabelParent(ILabelController node) {
-				return getNodeController(node.getDrawingElement().getParentNode());
+				return getNodeController((ICompoundNode)node.getDrawingElement().getParent());
 			}
 			
 		});
@@ -97,7 +102,7 @@ public class CommonParentCalculator implements ICommonParentCalculator {
 					numNodesAlreadyHaveParent = 0;
 				} else {
 					// now check if already has this parent
-					if (parent.equals(getNodeController(node.getDrawingElement().getParentNode()))) {
+					if (parent.equals(getNodeController((ICompoundNode)node.getDrawingElement().getParent()))) {
 						numNodesAlreadyHaveParent++;
 					}
 				}
@@ -111,6 +116,7 @@ public class CommonParentCalculator implements ICommonParentCalculator {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.visualeditor.geometry.ICommonParentCalculator#getSelectionToReparent()
 	 */
+	@Override
 	public ISubgraphSelection getSelectionToReparent(){
 		return this.selection;
 	}
@@ -118,6 +124,7 @@ public class CommonParentCalculator implements ICommonParentCalculator {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.visualeditor.geometry.ICommonParentCalculator#canReparentSelection()
 	 */
+	@Override
 	public boolean canReparentSelection(){
 		return this.numNodesAlreadyHaveParent == 0;
 	}
@@ -125,6 +132,7 @@ public class CommonParentCalculator implements ICommonParentCalculator {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.visualeditor.geometry.ICommonParentCalculator#canMoveSelection()
 	 */
+	@Override
 	public boolean canMoveSelection(){
 		return this.numNodesAlreadyHaveParent == 0 || this.numNodesAlreadyHaveParent == this.selection.numTopDrawingNodes();
 	}
@@ -132,6 +140,7 @@ public class CommonParentCalculator implements ICommonParentCalculator {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.visualeditor.geometry.ICommonParentCalculator#hasFoundCommonParent()
 	 */
+	@Override
 	public boolean hasFoundCommonParent(){
 		return this.parent != null;
 	}
@@ -139,6 +148,7 @@ public class CommonParentCalculator implements ICommonParentCalculator {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.visualeditor.geometry.ICommonParentCalculator#getCommonParent()
 	 */
+	@Override
 	public INodeController getCommonParent(){
 		return this.parent;
 	}
@@ -147,19 +157,24 @@ public class CommonParentCalculator implements ICommonParentCalculator {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.visualeditor.geometry.ICommonParentCalculator#findPotentialParent(org.pathwayeditor.visualeditor.controller.INodeController, org.pathwayeditor.figure.geometry.IConvexHull)
 	 */
+	@Override
 	public INodeController findPotentialParent(final INodeController potentialChild, IConvexHull testPlacement){
 		calc.setFilter(new IIntersectionCalcnFilter(){
 
 			@Override
 			public boolean accept(IDrawingElementController cont) {
 				boolean retVal = false;
-				if(cont instanceof INodeController){
-					INodeController node = (INodeController)cont;
-					retVal = node.getDrawingElement().canParent(potentialChild.getDrawingElement());
+				ICanvasElementAttribute att = (ICanvasElementAttribute)cont.getDrawingElement().getAttribute();
+				ICanvasElementAttribute possChildAtt = (ICanvasElementAttribute)potentialChild.getDrawingElement().getAttribute();
+				retVal = att.getObjectType().getParentingRules().isValidChild(possChildAtt.getObjectType());
+//				if(cont instanceof INodeController){
+//					INodeController node = (INodeController)cont;
+//					att.getObjectType().getParentingRules().isValidChild(possibleChild)
+//					retVal = node.getDrawingElement().canParent(potentialChild.getDrawingElement());
 					if(logger.isTraceEnabled()){
-						logger.trace("Node=" + node +" canParent=" + retVal + ", potentialChild=" + potentialChild);
+						logger.trace("Node=" + cont +" canParent=" + retVal + ", potentialChild=" + potentialChild);
 					}
-				}
+//				}
 				return retVal;
 			}
 			

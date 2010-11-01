@@ -2,6 +2,7 @@ package org.pathwayeditor.visualeditor.selection;
 
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.LineSegment;
+import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
 import org.pathwayeditor.visualeditor.controller.ILinkController;
 import org.pathwayeditor.visualeditor.controller.INodeController;
@@ -95,7 +96,7 @@ public abstract class SelectionHandle implements ISelectionHandle {
 	}
 
 
-	public static ISelectionHandle createLinkBendpointRegion(ISelection linkSelection, ILinkController controller, IBendPoint bp, int bpIdx) {
+	public static ISelectionHandle createLinkBendpointRegion(ISelection linkSelection, ILinkController controller, Point bp, int bpIdx) {
 		return new LinkBendPointSelectionHandle(linkSelection, controller, bp, bpIdx);
 	}
 

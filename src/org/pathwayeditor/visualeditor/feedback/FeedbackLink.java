@@ -77,6 +77,7 @@ public class FeedbackLink implements IFeedbackLink {
 		}
 	}
 
+	@Override
 	public int getElementIdentifier() {
 		return elementIdentifier;
 	}

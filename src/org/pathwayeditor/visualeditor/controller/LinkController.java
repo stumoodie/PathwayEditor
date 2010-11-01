@@ -47,7 +47,7 @@ public class LinkController extends DrawingElementController implements ILinkCon
 		this.srcTermChangeListener = new ILinkTerminusChangeListener() {
 			@Override
 			public void valueChangeEvent(ILinkTerminusValueChangeEvent e) {
-				if(e.getChangeType().equals(CanvasAttributePropertyChange.LOCATION)){
+				if(e.getChangeType().equals(CanvasAttributePropertyChange.BOUNDS)){
 					Envelope originalDrawnBounds = getDrawnBounds();
 					Point newLocation = (Point)e.getNewValue();
 					linkDefinition.setSrcAnchorPosition(newLocation);
@@ -58,7 +58,7 @@ public class LinkController extends DrawingElementController implements ILinkCon
 		this.tgtTermChangeListener = new ILinkTerminusChangeListener() {
 			@Override
 			public void valueChangeEvent(ILinkTerminusValueChangeEvent e) {
-				if(e.getChangeType().equals(CanvasAttributePropertyChange.LOCATION)){
+				if(e.getChangeType().equals(CanvasAttributePropertyChange.BOUNDS)){
 					Envelope originalDrawnBounds = getDrawnBounds();
 					Point newLocation = (Point)e.getNewValue();
 					linkDefinition.setTgtAnchorPosition(newLocation);

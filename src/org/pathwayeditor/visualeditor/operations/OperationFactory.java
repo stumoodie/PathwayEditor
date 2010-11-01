@@ -2,6 +2,7 @@ package org.pathwayeditor.visualeditor.operations;
 
 import java.util.Iterator;
 
+import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
 import org.pathwayeditor.visualeditor.behaviour.IDefaultPopupActions;
 import org.pathwayeditor.visualeditor.behaviour.IEditingOperation;
 import org.pathwayeditor.visualeditor.behaviour.ILinkBendPointPopupActions;
@@ -25,6 +26,10 @@ import org.pathwayeditor.visualeditor.geometry.ICommonParentCalculator;
 import org.pathwayeditor.visualeditor.selection.ILinkSelection;
 import org.pathwayeditor.visualeditor.selection.INodeSelection;
 import org.pathwayeditor.visualeditor.selection.ISelectionRecord;
+
+import uk.ac.ed.inf.graph.compound.ISubCompoundGraph;
+import uk.ac.ed.inf.graph.compound.ISubCompoundGraphFactory;
+import uk.ac.ed.inf.graph.compound.ISubgraphRemovalBuilder;
 
 public class OperationFactory implements IOperationFactory {
 	private final IEditingOperation editOperation;
@@ -172,32 +177,35 @@ public class OperationFactory implements IOperationFactory {
 	}
 
 	private void deleteBendpoint(int bpIdx) {
-		ILinkSelection linkSelection = this.selectionRecord.getUniqueLinkSelection(); 
-		ICommand cmd = new DeleteBendPointCommand(linkSelection.getPrimitiveController().getDrawingElement().getAttribute(), bpIdx);
+		ILinkSelection linkSelection = this.selectionRecord.getUniqueLinkSelection();
+		ILinkAttribute linkAttribute = (ILinkAttribute)linkSelection.getPrimitiveController().getDrawingElement().getAttribute();
+		ICommand cmd = new DeleteBendPointCommand(linkAttribute.getBendPointContainer(), bpIdx);
 		this.commandStack.execute(cmd);
 	}
 	
 	private void deleteSelection() {
 		Iterator<INodeSelection> nodeSelectionIter = selectionRecord.selectedNodesIterator();
-		ISelectionFactory selectionFact = null;
+		ISubCompoundGraphFactory selectionFact = null;
 		while(nodeSelectionIter.hasNext()){
 			INodeSelection selectedNode = nodeSelectionIter.next();
 			if(selectionFact == null){
-				selectionFact = selectedNode.getPrimitiveController().getViewModel().getDomainModel().newSelectionFactory();
+				selectionFact = selectedNode.getPrimitiveController().getViewModel().getDomainModel().subgraphFactory();
 			}
-			selectionFact.addDrawingNode(selectedNode.getPrimitiveController().getDrawingElement());
+			selectionFact.addElement(selectedNode.getPrimitiveController().getDrawingElement());
 		}
 		Iterator<ILinkSelection> linkSelectionIter = selectionRecord.selectedLinksIterator();
 		while(linkSelectionIter.hasNext()){
 			ILinkSelection selectedLink = linkSelectionIter.next();
 			if(selectionFact == null){
-				selectionFact = selectedLink.getPrimitiveController().getViewModel().getDomainModel().newSelectionFactory();
+				selectionFact = selectedLink.getPrimitiveController().getViewModel().getDomainModel().subgraphFactory();
 			}
-			selectionFact.addLink(selectedLink.getPrimitiveController().getDrawingElement());
+			selectionFact.addElement(selectedLink.getPrimitiveController().getDrawingElement());
 		}
 		if(selectionFact != null){
-			IDrawingElementSelection seln = selectionFact.createGeneralSelection();
-			seln.getModel().removeSubgraph(seln);
+			ISubCompoundGraph seln = selectionFact.createPermissiveInducedSubgraph();
+			ISubgraphRemovalBuilder removalBuilder = seln.getSuperGraph().newSubgraphRemovalBuilder();
+			removalBuilder.setRemovalSubgraph(seln);
+			removalBuilder.removeSubgraph();
 		}
 	}
 

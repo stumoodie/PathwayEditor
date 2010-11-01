@@ -26,6 +26,7 @@ import org.pathwayeditor.businessobjects.typedefn.ILinkConnectionRules;
 import org.pathwayeditor.businessobjects.typedefn.ILinkObjectType;
 import org.pathwayeditor.businessobjects.typedefn.ILinkTerminusDefinition;
 import org.pathwayeditor.businessobjects.typedefn.IObjectType;
+import org.pathwayeditor.businessobjects.typedefn.IObjectTypeParentingRules;
 import org.pathwayeditor.businessobjects.typedefn.IShapeObjectType;
 
 /**
@@ -54,15 +55,18 @@ public class StubLinkCObjectType implements ILinkObjectType {
 		this.targetTerminusDefn = new StubTargetLinkTerminusDefinition(this);
 		this.connectionRules = new ILinkConnectionRules(){
 
+			@Override
 			public ILinkObjectType getLinkObjectType() {
 				return StubLinkCObjectType.this;
 			}
 
+			@Override
 			public boolean isValidSource(IShapeObjectType source) {
 				return StubShapeBObjectType.UNIQUE_ID == source.getUniqueId()
 					|| StubShapeAObjectType.UNIQUE_ID == source.getUniqueId();
 			}
 
+			@Override
 			public boolean isValidTarget(IShapeObjectType source, IShapeObjectType target) {
 				return isValidSource(source)
 					&& (StubShapeBObjectType.UNIQUE_ID == target.getUniqueId()
@@ -75,6 +79,7 @@ public class StubLinkCObjectType implements ILinkObjectType {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.ILinkObjectType#getDefaultLinkAttributes()
 	 */
+	@Override
 	public ILinkAttributeDefaults getDefaultAttributes() {
 		return this.linkAttributeDefaults;
 	}
@@ -82,6 +87,7 @@ public class StubLinkCObjectType implements ILinkObjectType {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.ILinkObjectType#getEditiableAttributes()
 	 */
+	@Override
 	public EnumSet<LinkEditableAttributes> getEditableAttributes() {
 		return EDITABLE_ATTRIBUTES;
 	}
@@ -89,6 +95,7 @@ public class StubLinkCObjectType implements ILinkObjectType {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.ILinkObjectType#getLinkConnectionRules()
 	 */
+	@Override
 	public ILinkConnectionRules getLinkConnectionRules() {
 		return connectionRules;
 	}
@@ -96,6 +103,7 @@ public class StubLinkCObjectType implements ILinkObjectType {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.ILinkObjectType#getSourceTerminusDefinition()
 	 */
+	@Override
 	public ILinkTerminusDefinition getSourceTerminusDefinition() {
 		return this.sourceTerminusDefn;
 	}
@@ -103,6 +111,7 @@ public class StubLinkCObjectType implements ILinkObjectType {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.ILinkObjectType#getTargetTerminusDefinition()
 	 */
+	@Override
 	public ILinkTerminusDefinition getTargetTerminusDefinition() {
 		return this.targetTerminusDefn;
 	}
@@ -110,6 +119,7 @@ public class StubLinkCObjectType implements ILinkObjectType {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.ILinkObjectType#getUniqueId()
 	 */
+	@Override
 	public int getUniqueId() {
 		return id;
 	}
@@ -117,6 +127,7 @@ public class StubLinkCObjectType implements ILinkObjectType {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.IObjectType#getDescription()
 	 */
+	@Override
 	public String getDescription() {
 		return DESCRIPTION;
 	}
@@ -124,6 +135,7 @@ public class StubLinkCObjectType implements ILinkObjectType {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.IObjectType#getName()
 	 */
+	@Override
 	public String getName() {
 		return NAME;
 	}
@@ -131,6 +143,7 @@ public class StubLinkCObjectType implements ILinkObjectType {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.IObjectType#getSyntaxService()
 	 */
+	@Override
 	public INotationSyntaxService getSyntaxService() {
 		return this.syntaxService;
 	}
@@ -138,8 +151,15 @@ public class StubLinkCObjectType implements ILinkObjectType {
 	/* (non-Javadoc)
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
+	@Override
 	public int compareTo(IObjectType o) {
 		return this.getUniqueId() < o.getUniqueId() ? -1 : this.getUniqueId() > o.getUniqueId() ? 1 : 0;
+	}
+
+
+	@Override
+	public IObjectTypeParentingRules getParentingRules() {
+		return new LinkParentingRules(this);
 	}
 
 }

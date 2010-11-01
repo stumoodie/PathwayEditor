@@ -54,14 +54,17 @@ public class GraphicalLinkTerminusDefinition implements IGraphicalLinkTerminusDe
 		return this.gap;
 	}
 
+	@Override
 	public void setEndSize(Dimension endSize) {
 		this.endSize = endSize;
 	}
 
+	@Override
 	public void setGap(double gap) {
 		this.gap = gap;
 	}
 
+	@Override
 	public void setEndDecoratorType(LinkEndDecoratorShape endDecoratorType) {
 		this.endDecoratorType = endDecoratorType;
 	}

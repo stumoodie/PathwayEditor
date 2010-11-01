@@ -9,6 +9,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 
 import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.drawingprimitives.IRootAttribute;
@@ -35,6 +36,9 @@ import org.pathwayeditor.visualeditor.selection.ISelectionChangeEvent;
 import org.pathwayeditor.visualeditor.selection.ISelectionChangeListener;
 import org.pathwayeditor.visualeditor.selection.ISelectionRecord;
 import org.pathwayeditor.visualeditor.selection.SelectionRecord;
+
+import uk.ac.ed.inf.graph.compound.ICompoundEdge;
+import uk.ac.ed.inf.graph.compound.ICompoundGraph;
 
 public class PathwayEditor extends JPanel {
 	private static final double REFRESH_EXPANSION_Y = 20.0;
@@ -86,7 +90,7 @@ public class PathwayEditor extends JPanel {
 		isOpen = false;
 	}
 	
-	private void setUpEditorViews(IRootAttribute canvas){
+	private void setUpEditorViews(ICompoundGraph canvas){
 		this.selectionRecord = new SelectionRecord(viewModel);
 		this.feedbackModel = new FeedbackModel(selectionRecord);
 		this.shapePane = new ShapePane();
@@ -95,12 +99,13 @@ public class PathwayEditor extends JPanel {
 		this.shapePane.addLayer(new FeedbackLayer(feedbackModel));
 		Envelope canvasBounds = this.viewModel.getCanvasBounds();
 		this.shapePane.setPaneBounds(canvasBounds);
-		scrollPane = new JScrollPane((ShapePane)this.shapePane, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scrollPane = new JScrollPane((ShapePane)this.shapePane, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 		scrollPane.setFocusable(true);
 		scrollPane.setWheelScrollingEnabled(true);
         this.editBehaviourController = new MouseBehaviourController(shapePane, new OperationFactory(this.shapePane, this.feedbackModel, this.selectionRecord, viewModel, this.commandStack));
-        INotationSubsystem notationSubsystem = canvas.getObjectType().getSyntaxService().getNotationSubsystem(); 
+        IRootAttribute rootAtt = (IRootAttribute)canvas.getRoot().getAttribute();
+        INotationSubsystem notationSubsystem = rootAtt.getObjectType().getSyntaxService().getNotationSubsystem(); 
 		this.palettePane = new PalettePanel(notationSubsystem, editBehaviourController);
 		this.add(palettePane, BorderLayout.LINE_START);
 		this.add(scrollPane, BorderLayout.CENTER);
@@ -188,12 +193,12 @@ public class PathwayEditor extends JPanel {
 		}
 	}
 	
-	public void loadCanvas(IRootAttribute canvas){
+	public void loadCanvas(ICompoundGraph canvas){
 		if(isOpen){
 			reset();
 		}
         this.commandStack = new CommandStack();
-		this.viewModel = new ViewControllerStore(canvas.getCurrentElement().getGraph());
+		this.viewModel = new ViewControllerStore(canvas);
 		setUpEditorViews(canvas);
 		((ShapePane)this.shapePane).setPreferredSize(new Dimension(1800, 1800));
 		((ShapePane)this.shapePane).revalidate();
@@ -208,7 +213,7 @@ public class PathwayEditor extends JPanel {
 		this.isOpen = true;
 	}
 
-	public void selectAndFocusOnElement(ILinkEdge linkEdge) {
+	public void selectAndFocusOnElement(ICompoundEdge linkEdge) {
 		selectionRecord.clear();
 		IDrawingElementController linkController = viewModel.getLinkController(linkEdge);
 		selectionRecord.setPrimarySelection(linkController);

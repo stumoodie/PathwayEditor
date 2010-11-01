@@ -78,6 +78,7 @@ public class StubNotationSyntaxService implements INotationSyntaxService {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.contextadapter.INotationSyntaxService#getRootMapObjectType()
 	 */
+	@Override
 	public IRootObjectType getRootObjectType() {
 		return this.rootObjectType;
 	}
@@ -85,6 +86,7 @@ public class StubNotationSyntaxService implements INotationSyntaxService {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.contextadapter.INotationSyntaxService#linkTypeIterator()
 	 */
+	@Override
 	public Iterator<ILinkObjectType> linkTypeIterator() {
 		return this.links.values().iterator();
 	}
@@ -92,6 +94,7 @@ public class StubNotationSyntaxService implements INotationSyntaxService {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.contextadapter.INotationSyntaxService#shapeTypeIterator()
 	 */
+	@Override
 	public Iterator<IShapeObjectType> shapeTypeIterator() {
 		return this.shapes.values().iterator();
 	}
@@ -99,6 +102,7 @@ public class StubNotationSyntaxService implements INotationSyntaxService {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.contextadapter.INotationService#getNotation()
 	 */
+	@Override
 	public INotation getNotation() {
 		return this.notationSubsystem.getNotation();
 	}
@@ -106,6 +110,7 @@ public class StubNotationSyntaxService implements INotationSyntaxService {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.contextadapter.INotationService#getNotationSubsystem()
 	 */
+	@Override
 	public INotationSubsystem getNotationSubsystem() {
 		return this.notationSubsystem;
 	}
@@ -113,6 +118,7 @@ public class StubNotationSyntaxService implements INotationSyntaxService {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotationSyntaxService#containsLinkObjectType(int)
 	 */
+	@Override
 	public boolean containsLinkObjectType(int uniqueID) {
 		return this.links.containsKey(uniqueID);
 	}
@@ -120,6 +126,7 @@ public class StubNotationSyntaxService implements INotationSyntaxService {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotationSyntaxService#containsObjectType(int)
 	 */
+	@Override
 	public boolean containsObjectType(int uniqueID) {
 		return this.links.containsKey(uniqueID) || this.shapes.containsKey(uniqueID) || this.rootObjectType.getUniqueId() == uniqueID;
 	}
@@ -127,6 +134,7 @@ public class StubNotationSyntaxService implements INotationSyntaxService {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotationSyntaxService#containsShapeObjectType(int)
 	 */
+	@Override
 	public boolean containsShapeObjectType(int uniqueID) {
 		return this.shapes.containsKey(uniqueID);
 	}
@@ -134,6 +142,7 @@ public class StubNotationSyntaxService implements INotationSyntaxService {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotationSyntaxService#getLinkObjectType(int)
 	 */
+	@Override
 	public ILinkObjectType getLinkObjectType(int uniqueId) {
 		ILinkObjectType retVal=this.links.get(uniqueId);
 		if(retVal==null)// for object types that are present in setup data but not used in any test...
@@ -144,6 +153,7 @@ public class StubNotationSyntaxService implements INotationSyntaxService {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotationSyntaxService#getObjectType(int)
 	 */
+	@Override
 	public IObjectType getObjectType(int uniqueId) {
 		IObjectType retVal = this.shapes.get(uniqueId);
 		if(retVal == null){
@@ -160,6 +170,7 @@ public class StubNotationSyntaxService implements INotationSyntaxService {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotationSyntaxService#getShapeObjectType(int)
 	 */
+	@Override
 	public IShapeObjectType getShapeObjectType(int uniqueId) {
 		IShapeObjectType retVal = this.shapes.get(uniqueId);
 		if(retVal == null)
@@ -171,6 +182,7 @@ public class StubNotationSyntaxService implements INotationSyntaxService {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotationSyntaxService#objectTypeIterator()
 	 */
+	@Override
 	public Iterator<IObjectType> objectTypeIterator() {
 		Set<IObjectType> retVal = new HashSet<IObjectType>(this.shapes.values());
 		retVal.addAll(this.links.values());
@@ -192,6 +204,7 @@ public class StubNotationSyntaxService implements INotationSyntaxService {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotationSyntaxService#findLinkObjectTypeByName(java.lang.String)
 	 */
+	@Override
 	public ILinkObjectType findLinkObjectTypeByName(String name) {
 		return findObjectTypeByName(this.links.values(), name);
 	}
@@ -199,6 +212,7 @@ public class StubNotationSyntaxService implements INotationSyntaxService {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotationSyntaxService#findShapeObjectTypeByName(java.lang.String)
 	 */
+	@Override
 	public IShapeObjectType findShapeObjectTypeByName(String name) {
 		return findObjectTypeByName(this.shapes.values(), name);
 	}
@@ -206,6 +220,7 @@ public class StubNotationSyntaxService implements INotationSyntaxService {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotationSyntaxService#numLinkObjectTypes()
 	 */
+	@Override
 	public int numLinkObjectTypes() {
 		return this.links.size();
 	}
@@ -213,11 +228,13 @@ public class StubNotationSyntaxService implements INotationSyntaxService {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotationSyntaxService#numShapeObjectTypes()
 	 */
+	@Override
 	public int numShapeObjectTypes() {
 		return this.shapes.size();
 	}
 
 
+	@Override
 	public int numObjectTypes(){
 		return this.numLinkObjectTypes() + this.numShapeObjectTypes() + NUM_ROOT_OTS;
 	}

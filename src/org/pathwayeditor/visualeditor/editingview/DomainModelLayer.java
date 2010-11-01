@@ -31,6 +31,7 @@ public class DomainModelLayer implements IDomainModelLayer {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.graphicsengine.ICanvasDrawer#getVierwControllerStore()
 	 */
+	@Override
 	public IViewControllerModel getViewControllerStore(){
 		return this.viewControllerStore;
 	}
@@ -38,6 +39,7 @@ public class DomainModelLayer implements IDomainModelLayer {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.graphicsengine.ICanvasDrawer#paint(java.awt.Graphics2D)
 	 */
+	@Override
 	public void paint(Graphics2D g2d){
 		IGraphicsEngine graphicsEngine = new Java2DGraphicsEngine(g2d);
 		Rectangle rectangleBounds = g2d.getClipBounds();

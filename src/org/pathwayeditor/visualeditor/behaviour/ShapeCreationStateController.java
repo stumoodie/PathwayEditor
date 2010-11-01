@@ -22,6 +22,7 @@ public class ShapeCreationStateController implements ICreationStateBehaviourCont
 	}
 	
 
+	@Override
 	public Point getAdjustedMousePosition(double originalMouseX, double originalMouseY){
 		Point retVal = this.shapePane.getPaneBounds().getOrigin();
 		retVal = retVal.translate(originalMouseX, originalMouseY);
@@ -59,6 +60,7 @@ public class ShapeCreationStateController implements ICreationStateBehaviourCont
 	}
 
 
+	@Override
 	public IDrawingElementController findDrawingElementAt(Point location) {
 		IDomainModelLayer domainLayer = this.shapePane.getLayer(LayerType.DOMAIN);
 		IIntersectionCalculator intCalc = domainLayer.getViewControllerStore().getIntersectionCalculator();

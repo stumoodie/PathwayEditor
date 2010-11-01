@@ -4,14 +4,15 @@ import java.util.Iterator;
 import java.util.SortedSet;
 
 import org.apache.log4j.Logger;
+import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNodeAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.IShapeAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.RGB;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.CanvasAttributePropertyChange;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IAnnotationPropertyChangeEvent;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IAnnotationPropertyChangeListener;
-import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributePropertyChangeEvent;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributeChangeListener;
-import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IDrawingNodeAttributeListener;
+import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributePropertyChangeEvent;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributeResizedEvent;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributeTranslationEvent;
 import org.pathwayeditor.businessobjects.drawingprimitives.properties.IAnnotationProperty;
@@ -33,6 +34,7 @@ import org.pathwayeditor.visualeditor.feedback.FigureCompilationCache;
 import org.pathwayeditor.visualeditor.geometry.IIntersectionCalcnFilter;
 import org.pathwayeditor.visualeditor.geometry.IIntersectionCalculator;
 
+import uk.ac.ed.inf.graph.compound.CompoundNodePair;
 import uk.ac.ed.inf.graph.compound.ICompoundEdge;
 import uk.ac.ed.inf.graph.compound.ICompoundGraphElement;
 import uk.ac.ed.inf.graph.compound.ICompoundNode;
@@ -45,7 +47,7 @@ public class ShapeController extends NodeController implements IShapeController 
 	private final ICanvasAttributeChangeListener shapePropertyChangeListener;
 	private final IAnnotationPropertyChangeListener annotPropChangeListener;
 	private final IFigureController figureController;
-	private final IDrawingNodeAttributeListener parentDrawingNodePropertyChangeListener;
+	private final ICanvasAttributeChangeListener parentDrawingNodePropertyChangeListener;
 	private boolean isActive;
 	
 	public ShapeController(IViewControllerModel viewModel, ICompoundNode node, int index) {
@@ -70,8 +72,7 @@ public class ShapeController extends NodeController implements IShapeController 
 					figureController.setLineWidth(newLineWidth);
 					figureController.generateFigureDefinition();
 				}
-				else if(e.getPropertyChange().equals(CanvasAttributePropertyChange.SIZE)
-						|| e.getPropertyChange().equals(CanvasAttributePropertyChange.LOCATION)){
+				else if(e.getPropertyChange().equals(CanvasAttributePropertyChange.BOUNDS)){
 					IShapeAttribute attribute = (IShapeAttribute)e.getAttribute();
 					Envelope oldDrawnBounds = figureController.getConvexHull().getEnvelope();
 					figureController.setRequestedEnvelope(attribute.getBounds());
@@ -86,6 +87,14 @@ public class ShapeController extends NodeController implements IShapeController 
 					figureController.generateFigureDefinition();
 				}
 			}
+
+			@Override
+			public void nodeTranslated(ICanvasAttributeTranslationEvent e) {
+			}
+
+			@Override
+			public void nodeResized(ICanvasAttributeResizedEvent e) {
+			}
 		};
 		annotPropChangeListener = new IAnnotationPropertyChangeListener() {
 			@Override
@@ -96,7 +105,7 @@ public class ShapeController extends NodeController implements IShapeController 
 				figureController.generateFigureDefinition();
 			}	
 		};
-		parentDrawingNodePropertyChangeListener = new IDrawingNodeAttributeListener() {
+		parentDrawingNodePropertyChangeListener = new ICanvasAttributeChangeListener() {
 			@Override
 			public void nodeTranslated(ICanvasAttributeTranslationEvent e) {
 				shapeAttribute.translate(e.getTranslationDelta());
@@ -104,6 +113,10 @@ public class ShapeController extends NodeController implements IShapeController 
 			
 			@Override
 			public void nodeResized(ICanvasAttributeResizedEvent e) {
+			}
+
+			@Override
+			public void propertyChange(ICanvasAttributePropertyChangeEvent e) {
 			}
 		};
 		this.figureController = createController(shapeAttribute);
@@ -175,20 +188,22 @@ public class ShapeController extends NodeController implements IShapeController 
 		while(edgeIter.hasNext()){
 			ICompoundEdge link = edgeIter.next();
 			ILinkController linkController = this.getViewModel().getLinkController(link);
-			IShapeController srcNode = (IShapeController)this.getViewModel().getNodeController(link.getSourceShape());
-			IShapeController tgtNode = (IShapeController)this.getViewModel().getNodeController(link.getTargetShape());
+			CompoundNodePair pair = link.getConnectedNodes();
+			IShapeController srcNode = (IShapeController)this.getViewModel().getNodeController(pair.getOutNode());
+			IShapeController tgtNode = (IShapeController)this.getViewModel().getNodeController(pair.getInNode());
 			changeSourceAnchor(linkController, srcNode, tgtNode);
 //			changeTargetAnchor(linkController, srcNode, tgtNode);
 		}
 	}
 
 	private void recalculateTgtLinks(){
-		Iterator<ILinkEdge> edgeIter = this.domainNode.targetLinkIterator();
+		Iterator<ICompoundEdge> edgeIter = this.domainNode.getInEdgeIterator();
 		while(edgeIter.hasNext()){
-			ILinkEdge link = edgeIter.next();
+			ICompoundEdge link = edgeIter.next();
 			ILinkController linkController = this.getViewModel().getLinkController(link);
-			IShapeController srcNode = (IShapeController)this.getViewModel().getNodeController(link.getSourceShape());
-			IShapeController tgtNode = (IShapeController)this.getViewModel().getNodeController(link.getTargetShape());
+			CompoundNodePair pair = link.getConnectedNodes();
+			IShapeController srcNode = (IShapeController)this.getViewModel().getNodeController(pair.getOutNode());
+			IShapeController tgtNode = (IShapeController)this.getViewModel().getNodeController(pair.getInNode());
 //			changeSourceAnchor(linkController, srcNode, tgtNode);
 			changeTargetAnchor(linkController, srcNode, tgtNode);
 		}
@@ -224,7 +239,8 @@ public class ShapeController extends NodeController implements IShapeController 
 	
 	private void calculateSourceAnchor(ILinkController linkController, IShapeController srcNode, Point refPosn){
 		Point newAnchorLocn = getRevisedAnchorPosition(srcNode, refPosn);
-		linkController.getDrawingElement().getAttribute().getSourceTerminus().setLocation(newAnchorLocn);
+		ILinkAttribute linkAtt = (ILinkAttribute)linkController.getDrawingElement().getAttribute();
+		linkAtt.getSourceTerminus().setLocation(newAnchorLocn);
 		if(logger.isTraceEnabled()){
 			logger.trace("Recalculating src anchor. Reference bp = " + refPosn + ",anchor=" + newAnchorLocn);
 		}
@@ -232,7 +248,8 @@ public class ShapeController extends NodeController implements IShapeController 
 	
 	private void calculateTargetAnchor(ILinkController linkController, IShapeController tgtNode, Point refPosn){
 		Point newAnchorLocn = getRevisedAnchorPosition(tgtNode, refPosn);
-		linkController.getDrawingElement().getAttribute().getTargetTerminus().setLocation(newAnchorLocn);
+		ILinkAttribute linkAtt = (ILinkAttribute)linkController.getDrawingElement().getAttribute();
+		linkAtt.getTargetTerminus().setLocation(newAnchorLocn);
 		if(logger.isTraceEnabled()){
 			logger.trace("Recalculating tgt anchor. Reference bp = " + refPosn + ",anchor=" + newAnchorLocn);
 		}
@@ -246,29 +263,31 @@ public class ShapeController extends NodeController implements IShapeController 
 	}
 	
 	
-	private void addListeners(IShapeNode attribute) {
-		attribute.getAttribute().addChangeListener(shapePropertyChangeListener);
-		Iterator<IAnnotationProperty> iter = attribute.getAttribute().propertyIterator();
+	private void addListeners(ICompoundNode node) {
+		IShapeAttribute attribute = (IShapeAttribute)node.getAttribute();
+		attribute.addChangeListener(shapePropertyChangeListener);
+		Iterator<IAnnotationProperty> iter = attribute.propertyIterator();
 		while(iter.hasNext()){
 			IAnnotationProperty prop = iter.next();
 			prop.addChangeListener(annotPropChangeListener);
 		}
-		this.parentAttribute.getAttribute().addDrawingNodeAttributeListener(parentDrawingNodePropertyChangeListener);
+		((IDrawingNodeAttribute)this.parentAttribute.getAttribute()).addChangeListener(parentDrawingNodePropertyChangeListener);
 	}
 	
 	private void removeListeners() {
-		final IShapeAttribute attribute = this.domainNode.getAttribute();
+		final IShapeAttribute attribute = (IShapeAttribute)this.domainNode.getAttribute();
 		attribute.removeChangeListener(shapePropertyChangeListener);
 		Iterator<IAnnotationProperty> iter = attribute.propertyIterator();
 		while(iter.hasNext()){
 			IAnnotationProperty prop = iter.next();
 			prop.removeChangeListener(annotPropChangeListener);
 		}
-		parentAttribute.getAttribute().removeDrawingNodeAttributeListener(parentDrawingNodePropertyChangeListener);
+		IDrawingNodeAttribute att = (IDrawingNodeAttribute)parentAttribute.getAttribute();
+		att.removeChangeListener(parentDrawingNodePropertyChangeListener);
 	}
 		
 	@Override
-	public IShapeNode getDrawingElement() {
+	public ICompoundNode getDrawingElement() {
 		return this.domainNode;
 	}
 
@@ -292,12 +311,13 @@ public class ShapeController extends NodeController implements IShapeController 
 		boolean retVal = false;
 		// algorithm is to find the intersecting shapes and then check if the
 		// children and parents are in the intersection list
-		Envelope newBounds = this.domainNode.getAttribute().getBounds().resize(originDelta, resizeDelta);
+		IDrawingNodeAttribute nodeAtt = (IDrawingNodeAttribute)this.domainNode.getAttribute();
+		Envelope newBounds = nodeAtt.getBounds().resize(originDelta, resizeDelta);
 		if(logger.isTraceEnabled()){
 			logger.trace("In can resize. New bounds = " + newBounds + ",originDelta=" + originDelta + ",resizeDelta=" + resizeDelta);
 		}
 		if(newBounds.getDimension().getWidth() > 0.0 && newBounds.getDimension().getHeight() > 0.0){
-			INodeController parentNode = this.getViewModel().getNodeController(this.domainNode.getParentNode());
+			INodeController parentNode = this.getViewModel().getNodeController((ICompoundNode)this.domainNode.getParent());
 			IIntersectionCalculator intCal = this.getViewModel().getIntersectionCalculator();
 			intCal.setFilter(new IIntersectionCalcnFilter() {
 				@Override
@@ -320,7 +340,7 @@ public class ShapeController extends NodeController implements IShapeController 
 	}
 
 	private boolean childrenIntersect(IShapeController parentNode, SortedSet<IDrawingElementController> intersectingNodes){
-		Iterator<IShapeNode> iter = parentNode.getDrawingElement().getSubModel().shapeNodeIterator();
+		Iterator<ICompoundNode> iter = parentNode.getDrawingElement().getChildCompoundGraph().nodeIterator();
 		boolean retVal = true;
 		while(iter.hasNext() && retVal){
 			INodeController child = this.getViewModel().getNodeController(iter.next());

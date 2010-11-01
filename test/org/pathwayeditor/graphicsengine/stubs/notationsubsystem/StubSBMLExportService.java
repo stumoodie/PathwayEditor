@@ -20,6 +20,7 @@ package org.pathwayeditor.graphicsengine.stubs.notationsubsystem;
 
 import java.io.File;
 
+import org.pathwayeditor.businessobjects.drawingprimitives.IRootAttribute;
 import org.pathwayeditor.businessobjects.notationsubsystem.ExportServiceException;
 import org.pathwayeditor.businessobjects.notationsubsystem.INotation;
 import org.pathwayeditor.businessobjects.notationsubsystem.INotationExportService;
@@ -36,7 +37,8 @@ public class StubSBMLExportService implements INotationExportService {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotationExportService#exportMap(org.pathwayeditor.businessobjects.drawingprimitives.ICanvas, java.io.File)
 	 */
-	public void exportMap(ICanvas map, File exportFile) throws ExportServiceException {
+	@Override
+	public void exportMap(IRootAttribute map, File exportFile) throws ExportServiceException {
 		System.out.println("Map " + map + " was exported to " + exportFile.getAbsolutePath());
 
 	}
@@ -44,6 +46,7 @@ public class StubSBMLExportService implements INotationExportService {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotationExportService#getCode()
 	 */
+	@Override
 	public String getCode() {
 		// TODO Auto-generated method stub
 		return null;
@@ -52,6 +55,7 @@ public class StubSBMLExportService implements INotationExportService {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotationExportService#getDisplayName()
 	 */
+	@Override
 	public String getDisplayName() {
 		
 		return DISPLAY_NAME;
@@ -60,6 +64,7 @@ public class StubSBMLExportService implements INotationExportService {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotationExportService#getRecommendedSuffix()
 	 */
+	@Override
 	public String getRecommendedSuffix() {
 		return "xml";
 	}
@@ -67,6 +72,7 @@ public class StubSBMLExportService implements INotationExportService {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotationService#getNotation()
 	 */
+	@Override
 	public INotation getNotation() {
 		// TODO Auto-generated method stub
 		return null;
@@ -75,6 +81,7 @@ public class StubSBMLExportService implements INotationExportService {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotationService#getNotationSubsystem()
 	 */
+	@Override
 	public INotationSubsystem getNotationSubsystem() {
 		// TODO Auto-generated method stub
 		return null;

@@ -20,9 +20,11 @@ import org.pathwayeditor.visualeditor.geometry.EnvelopeBuilder;
 import org.pathwayeditor.visualeditor.selection.ISelection.SelectionType;
 
 import uk.ac.ed.inf.graph.compound.ICompoundGraphElement;
+import uk.ac.ed.inf.graph.compound.ISubCompoundGraph;
+import uk.ac.ed.inf.graph.compound.ISubCompoundGraphFactory;
 
 public class SelectionRecord implements ISelectionRecord {
-	private SortedSet<ISelection> selections;
+	private final SortedSet<ISelection> selections;
 	private final List<ISelectionChangeListener> listeners;
 	private final IViewControllerModel viewModel;
 	private final Map<IDrawingElementController, ISelection> controllerMapping;
@@ -35,6 +37,7 @@ public class SelectionRecord implements ISelectionRecord {
 		this.controllerMapping = new HashMap<IDrawingElementController, ISelection>();
 	}
 	
+	@Override
 	public void addSecondarySelection(IDrawingElementController drawingElement) {
 		if(drawingElement == null || drawingElement instanceof IRootController) throw new IllegalArgumentException("drawing element cannot be null or the root node");
 		if(this.selections.isEmpty()) throw new IllegalStateException("Cannot add a secondary selection before a primary selection");
@@ -64,6 +67,7 @@ public class SelectionRecord implements ISelectionRecord {
 		return retVal;
 	}
 
+	@Override
 	public void addSelectionChangeListener(ISelectionChangeListener listener) {
 		this.listeners.add(listener);
 	}
@@ -89,6 +93,7 @@ public class SelectionRecord implements ISelectionRecord {
 		}
 	}
 
+	@Override
 	public void clear() {
 		List<ISelection> oldSelection = new ArrayList<ISelection>(this.selections);
 		this.selections.clear();
@@ -97,22 +102,27 @@ public class SelectionRecord implements ISelectionRecord {
 		notifySelectionChange(oldSelection.iterator(), this.selections.iterator());
 	}
 
+	@Override
 	public ISelection getPrimarySelection() {
 		return this.selections.first();
 	}
 
+	@Override
 	public List<ISelectionChangeListener> getSelectionChangeListeners() {
 		return new ArrayList<ISelectionChangeListener>(this.listeners);
 	}
 
+	@Override
 	public int numSelected() {
 		return this.selections.size();
 	}
 
+	@Override
 	public void removeSelectionChangeListener(ISelectionChangeListener listener) {
 		this.listeners.remove(listeners);
 	}
 
+	@Override
 	public Iterator<ISelection> secondarySelectionIterator() {
 		Iterator<ISelection> retVal = this.selections.iterator();
 		// skip primary selection - if there is one
@@ -120,10 +130,12 @@ public class SelectionRecord implements ISelectionRecord {
 		return retVal;
 	}
 
+	@Override
 	public Iterator<ISelection> selectionIterator() {
 		return this.selections.iterator();
 	}
 
+	@Override
 	public void setPrimarySelection(IDrawingElementController drawingElement) {
 		if(drawingElement == null || drawingElement instanceof IRootController) throw new IllegalArgumentException("drawing element cannot be null or the root node");
 		
@@ -137,23 +149,14 @@ public class SelectionRecord implements ISelectionRecord {
 		}
 	}
 	
-	private void updateSubgraphSelection(ISelectionFactory selectionFactory, ISelection newSelection) {
-		if(newSelection instanceof INodeSelection){
-			INodeSelection nodeSelection = (INodeSelection)newSelection;
-			selectionFactory.addDrawingNode(nodeSelection.getPrimitiveController().getDrawingElement());
-		}
-		else if(newSelection instanceof ILinkSelection){
-			ILinkSelection linkSelection = (ILinkSelection)newSelection;
-			selectionFactory.addLink(linkSelection.getPrimitiveController().getDrawingElement());
-		}
-		else{
-			throw new RuntimeException("Unknown selection type");
-		}
+	private void updateSubgraphSelection(ISubCompoundGraphFactory selectionFactory, ISelection newSelection) {
+		selectionFactory.addElement(newSelection.getPrimitiveController().getDrawingElement());
 	}
 
 	private void notifySelectionChange(final Iterator<ISelection> oldSelectionIter, final Iterator<ISelection> newSelectionIter){
 		ISelectionChangeEvent event = new ISelectionChangeEvent(){
 
+			@Override
 			public ISelectionRecord getSelectionRecord() {
 				return SelectionRecord.this;
 			}
@@ -178,6 +181,7 @@ public class SelectionRecord implements ISelectionRecord {
 		}
 	}
 
+	@Override
 	public boolean isNodeSelected(IDrawingElementController testElement) {
 		Iterator<ISelection> iter = this.selections.iterator();
 		boolean retVal = false;
@@ -232,11 +236,11 @@ public class SelectionRecord implements ISelectionRecord {
 
 	@Override
 	public ISubgraphSelection getSubgraphSelection() {
-		ISelectionFactory selectionFactory = this.viewModel.getDomainModel().newSelectionFactory();
+		ISubCompoundGraphFactory selectionFactory = this.viewModel.getDomainModel().subgraphFactory();
 		for(ISelection selection : this.selections){
 			updateSubgraphSelection(selectionFactory, selection);
 		}
-		IDrawingElementSelection currentSelectionSubgraph = selectionFactory.createEdgeExcludedSelection();
+		ISubCompoundGraph currentSelectionSubgraph = selectionFactory.createInducedSubgraph();
 		SubgraphSelection retVal = new SubgraphSelection(this, this.viewModel, currentSelectionSubgraph);
 		
 		return retVal;
