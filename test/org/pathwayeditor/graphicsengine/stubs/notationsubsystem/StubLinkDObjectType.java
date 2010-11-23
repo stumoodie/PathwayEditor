@@ -26,6 +26,7 @@ import org.pathwayeditor.businessobjects.typedefn.ILinkConnectionRules;
 import org.pathwayeditor.businessobjects.typedefn.ILinkObjectType;
 import org.pathwayeditor.businessobjects.typedefn.ILinkTerminusDefinition;
 import org.pathwayeditor.businessobjects.typedefn.IObjectType;
+import org.pathwayeditor.businessobjects.typedefn.IObjectTypeParentingRules;
 import org.pathwayeditor.businessobjects.typedefn.IShapeObjectType;
 
 /**
@@ -152,4 +153,21 @@ public class StubLinkDObjectType implements ILinkObjectType {
 		return this.getUniqueId() < o.getUniqueId() ? -1 : this.getUniqueId() > o.getUniqueId() ? 1 : 0;
 	}
 
+
+	@Override
+	public IObjectTypeParentingRules getParentingRules() {
+		return new IObjectTypeParentingRules(){
+
+			@Override
+			public IObjectType getObjectType() {
+				return StubLinkDObjectType.this;
+			}
+
+			@Override
+			public boolean isValidChild(IObjectType possibleChild) {
+				return false;
+			}
+			
+		};
+	}
 }

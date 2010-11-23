@@ -265,7 +265,6 @@ grestore
                                 <FillColour red="255" green="255" blue="255"/>
                                 <LineColour red="0" green="0" blue="0"/>
                                 <PropertyRef id="21"/>
-                                <PropertyRef id="22"/>
                                 <FigureDefinition>curbounds /h exch def /w exch def /y exch def /x exch def
 h w le  {x y w h 1 h mul 1 h mul rrect}
 {x y w h 1 w mul 1 w mul rrect} ifelse</FigureDefinition>

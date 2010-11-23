@@ -1,32 +1,32 @@
 package org.pathwayeditor.visualeditor.commands;
 
-import org.pathwayeditor.businessobjects.drawingprimitives.IBendPoint;
+import org.pathwayeditor.businessobjects.drawingprimitives.IBendPointContainer;
 import org.pathwayeditor.figure.geometry.Point;
 
 public class MoveBendPointCommand implements ICommand {
-	private final IBendPoint bp;
-	private final Point newLocation;
-	private Point oldLocation;
+	private final IBendPointContainer bpContainer;
+	private final Point translation;
+	private final int idx;
 	
-	public MoveBendPointCommand(IBendPoint bendPoint, Point position) {
-		this.bp = bendPoint;
-		this.newLocation = position;
+	public MoveBendPointCommand(IBendPointContainer bpContainer, int idx, Point translation) {
+		this.bpContainer = bpContainer;
+		this.translation = translation;;
+		this.idx = idx;
 	}
 
 	@Override
 	public void execute() {
-		this.oldLocation = this.bp.getLocation();
 		redo();
 	}
 
 	@Override
 	public void redo() {
-		this.bp.setLocation(newLocation);
+		this.bpContainer.translateBendPoint(idx, this.translation.negate());
 	}
 
 	@Override
 	public void undo() {
-		this.bp.setLocation(oldLocation);
+		this.bpContainer.translateBendPoint(idx, this.translation);
 	}
 
 }

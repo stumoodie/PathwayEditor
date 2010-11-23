@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElementSelection;
 import org.pathwayeditor.businessobjects.drawingprimitives.ISelectionFactory;
+import org.pathwayeditor.businessobjects.impl.facades.SelectionFactoryFacade;
 import org.pathwayeditor.visualeditor.behaviour.IDefaultPopupActions;
 import org.pathwayeditor.visualeditor.behaviour.IEditingOperation;
 import org.pathwayeditor.visualeditor.behaviour.ILinkBendPointPopupActions;
@@ -27,6 +28,8 @@ import org.pathwayeditor.visualeditor.geometry.ICommonParentCalculator;
 import org.pathwayeditor.visualeditor.selection.ILinkSelection;
 import org.pathwayeditor.visualeditor.selection.INodeSelection;
 import org.pathwayeditor.visualeditor.selection.ISelectionRecord;
+
+import uk.ac.ed.inf.graph.compound.ISubgraphRemovalBuilder;
 
 public class OperationFactory implements IOperationFactory {
 	private final IEditingOperation editOperation;
@@ -175,7 +178,7 @@ public class OperationFactory implements IOperationFactory {
 
 	private void deleteBendpoint(int bpIdx) {
 		ILinkSelection linkSelection = this.selectionRecord.getUniqueLinkSelection(); 
-		ICommand cmd = new DeleteBendPointCommand(linkSelection.getPrimitiveController().getDrawingElement().getAttribute(), bpIdx);
+		ICommand cmd = new DeleteBendPointCommand(linkSelection.getPrimitiveController().getDrawingElement().getAttribute().getBendPointContainer(), bpIdx);
 		this.commandStack.execute(cmd);
 	}
 	
@@ -185,7 +188,7 @@ public class OperationFactory implements IOperationFactory {
 		while(nodeSelectionIter.hasNext()){
 			INodeSelection selectedNode = nodeSelectionIter.next();
 			if(selectionFact == null){
-				selectionFact = selectedNode.getPrimitiveController().getViewModel().getDomainModel().newSelectionFactory();
+				selectionFact = new SelectionFactoryFacade(selectedNode.getPrimitiveController().getViewModel().getDomainModel().getGraph().subgraphFactory());
 			}
 			selectionFact.addDrawingNode(selectedNode.getPrimitiveController().getDrawingElement());
 		}
@@ -193,13 +196,15 @@ public class OperationFactory implements IOperationFactory {
 		while(linkSelectionIter.hasNext()){
 			ILinkSelection selectedLink = linkSelectionIter.next();
 			if(selectionFact == null){
-				selectionFact = selectedLink.getPrimitiveController().getViewModel().getDomainModel().newSelectionFactory();
+				selectionFact = new SelectionFactoryFacade(selectedLink.getPrimitiveController().getViewModel().getDomainModel().getGraph().subgraphFactory());
 			}
 			selectionFact.addLink(selectedLink.getPrimitiveController().getDrawingElement());
 		}
 		if(selectionFact != null){
 			IDrawingElementSelection seln = selectionFact.createGeneralSelection();
-			seln.getModel().removeSubgraph(seln);
+			ISubgraphRemovalBuilder removalBuilder = seln.getSubgraph().getSuperGraph().newSubgraphRemovalBuilder();
+			removalBuilder.setRemovalSubgraph(seln.getSubgraph());
+			removalBuilder.removeSubgraph();
 		}
 	}
 

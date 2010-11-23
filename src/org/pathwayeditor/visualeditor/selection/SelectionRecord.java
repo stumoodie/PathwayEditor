@@ -12,6 +12,7 @@ import java.util.TreeSet;
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElement;
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElementSelection;
 import org.pathwayeditor.businessobjects.drawingprimitives.ISelectionFactory;
+import org.pathwayeditor.businessobjects.impl.facades.SelectionFactoryFacade;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
@@ -23,7 +24,7 @@ import org.pathwayeditor.visualeditor.geometry.EnvelopeBuilder;
 import org.pathwayeditor.visualeditor.selection.ISelection.SelectionType;
 
 public class SelectionRecord implements ISelectionRecord {
-	private SortedSet<ISelection> selections;
+	private final SortedSet<ISelection> selections;
 	private final List<ISelectionChangeListener> listeners;
 	private final IViewControllerModel viewModel;
 	private final Map<IDrawingElementController, ISelection> controllerMapping;
@@ -245,7 +246,7 @@ public class SelectionRecord implements ISelectionRecord {
 
 	@Override
 	public ISubgraphSelection getSubgraphSelection() {
-		ISelectionFactory selectionFactory = this.viewModel.getDomainModel().newSelectionFactory();
+		ISelectionFactory selectionFactory = new SelectionFactoryFacade(this.viewModel.getDomainModel().getGraph().subgraphFactory());
 		for(ISelection selection : this.selections){
 			updateSubgraphSelection(selectionFactory, selection);
 		}

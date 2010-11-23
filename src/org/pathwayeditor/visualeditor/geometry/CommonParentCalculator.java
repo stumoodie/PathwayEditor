@@ -4,7 +4,8 @@ import java.util.Iterator;
 import java.util.SortedSet;
 
 import org.apache.log4j.Logger;
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNode;
+import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElement;
+import org.pathwayeditor.businessobjects.impl.facades.DrawingElementFacade;
 import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
@@ -17,13 +18,13 @@ import org.pathwayeditor.visualeditor.selection.ISubgraphSelection;
 public class CommonParentCalculator implements ICommonParentCalculator {
 	private final Logger logger = Logger.getLogger(this.getClass());
 	private final IIntersectionCalculator calc;
-	private INodeController parent = null;
+	private IDrawingElementController parent = null;
 	private int numNodesAlreadyHaveParent = 0;
 	private ISubgraphSelection selection = null;
 	
 	private interface IHandleLabel {
 		
-		INodeController getLabelParent(ILabelController node);
+		IDrawingElementController getLabelParent(ILabelController node);
 		
 	}
 	
@@ -47,8 +48,8 @@ public class CommonParentCalculator implements ICommonParentCalculator {
 		});
 	}
 	
-	private INodeController getNodeController(IDrawingNode node){
-		return this.calc.getModel().getNodeController(node);
+	private IDrawingElementController getNodeController(IDrawingElement node){
+		return this.calc.getModel().getDrawingPrimitiveController(node);
 	}
 	
 	/* (non-Javadoc)
@@ -60,8 +61,8 @@ public class CommonParentCalculator implements ICommonParentCalculator {
 
 			// we're ignoreing labels
 			@Override
-			public INodeController getLabelParent(ILabelController node) {
-				return getNodeController(node.getDrawingElement().getParentNode());
+			public IDrawingElementController getLabelParent(ILabelController node) {
+				return getNodeController(new DrawingElementFacade(node.getDrawingElement().getGraphElement().getParent()));
 			}
 			
 		});
@@ -78,7 +79,7 @@ public class CommonParentCalculator implements ICommonParentCalculator {
 			numNodesAlreadyHaveParent = 0;
 			while (selectionIter.hasNext() && parent != null) {
 				INodeController node = selectionIter.next().getPrimitiveController();
-				INodeController potentialParent = null;
+				IDrawingElementController potentialParent = null;
 				if (node instanceof IShapeController) {
 					IConvexHull hull = node.getConvexHull();
 					IConvexHull newLocation = hull.translate(delta);
@@ -100,7 +101,7 @@ public class CommonParentCalculator implements ICommonParentCalculator {
 					numNodesAlreadyHaveParent = 0;
 				} else {
 					// now check if already has this parent
-					if (parent.equals(getNodeController(node.getDrawingElement().getParentNode()))) {
+					if (parent.equals(getNodeController(new DrawingElementFacade(node.getDrawingElement().getGraphElement().getParent())))) {
 						numNodesAlreadyHaveParent++;
 					}
 				}
@@ -147,7 +148,7 @@ public class CommonParentCalculator implements ICommonParentCalculator {
 	 * @see org.pathwayeditor.visualeditor.geometry.ICommonParentCalculator#getCommonParent()
 	 */
 	@Override
-	public INodeController getCommonParent(){
+	public IDrawingElementController getCommonParent(){
 		return this.parent;
 	}
 	
@@ -164,7 +165,7 @@ public class CommonParentCalculator implements ICommonParentCalculator {
 				boolean retVal = false;
 				if(cont instanceof INodeController){
 					INodeController node = (INodeController)cont;
-					retVal = node.getDrawingElement().canParent(potentialChild.getDrawingElement());
+					retVal = node.getDrawingElement().getAttribute().getObjectType().getParentingRules().isValidChild(potentialChild.getDrawingElement().getAttribute().getObjectType());
 					if(logger.isTraceEnabled()){
 						logger.trace("Node=" + node +" canParent=" + retVal + ", potentialChild=" + potentialChild);
 					}

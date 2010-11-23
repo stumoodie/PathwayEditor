@@ -23,7 +23,6 @@ import org.pathwayeditor.businessobjects.drawingprimitives.properties.IPlainText
 import org.pathwayeditor.businessobjects.drawingprimitives.properties.IPlainTextPropertyDefinition;
 import org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyBuilder;
 import org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyDefinition;
-import org.pathwayeditor.businessobjects.typedefn.ILabelAttributeDefaults;
 
 /**
  * @author smoodie
@@ -34,10 +33,10 @@ public class StubTextPropertyDefinition implements IPlainTextPropertyDefinition 
 	public static final String NAME = "TextProperty";
 	public static final boolean IS_EDITABLE = true;
 	public static final boolean IS_VISUALISABLE = true;
-	private final ILabelAttributeDefaults labelAttributeDefaults;
+//	private final ILabelAttributeDefaults labelAttributeDefaults;
 
 	public StubTextPropertyDefinition(){
-		this.labelAttributeDefaults = new StubLabelAttributeDefaults();
+//		this.labelAttributeDefaults = new StubLabelAttributeDefaults();
 	}
 
 	/* (non-Javadoc)
@@ -64,13 +63,13 @@ public class StubTextPropertyDefinition implements IPlainTextPropertyDefinition 
 		return propertyBuilder.createPlainTextProperty(this);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyDefinition#getLabelDefaults()
-	 */
-	@Override
-	public ILabelAttributeDefaults getLabelDefaults() {
-		return this.labelAttributeDefaults;
-	}
+//	/* (non-Javadoc)
+//	 * @see org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyDefinition#getLabelDefaults()
+//	 */
+//	@Override
+//	public ILabelAttributeDefaults getLabelDefaults() {
+//		return this.labelAttributeDefaults;
+//	}
 
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyDefinition#getName()
@@ -88,21 +87,21 @@ public class StubTextPropertyDefinition implements IPlainTextPropertyDefinition 
 		return IS_EDITABLE;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyDefinition#isVisualisable()
-	 */
-	@Override
-	public boolean isVisualisable() {
-		return IS_VISUALISABLE;
-	}
+//	/* (non-Javadoc)
+//	 * @see org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyDefinition#isVisualisable()
+//	 */
+//	@Override
+//	public boolean isVisualisable() {
+//		return IS_VISUALISABLE;
+//	}
 
-	/* (non-Javadoc)
-	 * @see org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyDefinition#isDisplayed()
-	 */
-	@Override
-	public boolean isAlwaysDisplayed() {
-		return true;
-	}
+//	/* (non-Javadoc)
+//	 * @see org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyDefinition#isDisplayed()
+//	 */
+//	@Override
+//	public boolean isAlwaysDisplayed() {
+//		return true;
+//	}
 	
 	@Override
 	public String getDisplayName() {
@@ -113,6 +112,7 @@ public class StubTextPropertyDefinition implements IPlainTextPropertyDefinition 
 	/* (non-Javadoc)
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
+	@Override
 	public int compareTo(IPropertyDefinition o) {
 		return this.getName().compareTo(o.getName());
 	}

@@ -12,8 +12,9 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
 import org.apache.log4j.Logger;
-import org.pathwayeditor.businessobjects.drawingprimitives.ICanvas;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkEdge;
+import org.pathwayeditor.businessobjects.drawingprimitives.IModel;
+import org.pathwayeditor.businessobjects.notationsubsystem.INotationSubsystem;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.visualeditor.behaviour.IMouseBehaviourController;
 import org.pathwayeditor.visualeditor.behaviour.MouseBehaviourController;
@@ -87,7 +88,7 @@ public class PathwayEditor extends JPanel {
 		isOpen = false;
 	}
 	
-	private void setUpEditorViews(ICanvas canvas){
+	private void setUpEditorViews(IModel canvas){
 		this.selectionRecord = new SelectionRecord(viewModel);
 		this.feedbackModel = new FeedbackModel(selectionRecord);
 		this.shapePane = new ShapePane();
@@ -101,7 +102,8 @@ public class PathwayEditor extends JPanel {
 		scrollPane.setFocusable(true);
 		scrollPane.setWheelScrollingEnabled(true);
         this.editBehaviourController = new MouseBehaviourController(shapePane, new OperationFactory(this.shapePane, this.feedbackModel, this.selectionRecord, viewModel, this.commandStack));
-		this.palettePane = new PalettePanel(canvas.getNotationSubsystem(), editBehaviourController);
+        INotationSubsystem notationSubsystem = canvas.getNotationSubsystem();
+		this.palettePane = new PalettePanel(notationSubsystem, editBehaviourController);
 		this.add(palettePane, BorderLayout.LINE_START);
 		this.add(scrollPane, BorderLayout.CENTER);
         this.selectionChangeListener = new ISelectionChangeListener() {
@@ -188,12 +190,12 @@ public class PathwayEditor extends JPanel {
 		}
 	}
 	
-	public void loadCanvas(ICanvas canvas){
+	public void loadCanvas(IModel canvas){
 		if(isOpen){
 			reset();
 		}
         this.commandStack = new CommandStack();
-		this.viewModel = new ViewControllerStore(canvas.getModel());
+		this.viewModel = new ViewControllerStore(canvas);
 		setUpEditorViews(canvas);
 		((ShapePane)this.shapePane).setPreferredSize(new Dimension(1800, 1800));
 		((ShapePane)this.shapePane).revalidate();

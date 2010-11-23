@@ -20,7 +20,7 @@ package org.pathwayeditor.graphicsengine.stubs.notationsubsystem;
 
 import java.io.File;
 
-import org.pathwayeditor.businessobjects.drawingprimitives.ICanvas;
+import org.pathwayeditor.businessobjects.drawingprimitives.IModel;
 import org.pathwayeditor.businessobjects.notationsubsystem.INotation;
 import org.pathwayeditor.businessobjects.notationsubsystem.INotationImportService;
 import org.pathwayeditor.businessobjects.notationsubsystem.INotationSubsystem;
@@ -66,7 +66,7 @@ public class StubSBGNImportService implements INotationImportService {
 	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotationImportService#importMap(java.io.File, org.pathwayeditor.businessobjects.repository.IFolder)
 	 */
 	@Override
-	public void importToCanvas(File importFile, ICanvas saveLocation) {
+	public void importToCanvas(File importFile, IModel saveLocation) {
 		System.out.println("File " + importFile.getAbsolutePath() + " was imported");
 	}
 

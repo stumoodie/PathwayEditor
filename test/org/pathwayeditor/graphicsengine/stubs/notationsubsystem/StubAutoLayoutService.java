@@ -18,7 +18,7 @@ limitations under the License.
  */
 package org.pathwayeditor.graphicsengine.stubs.notationsubsystem;
 
-import org.pathwayeditor.businessobjects.drawingprimitives.ICanvas;
+import org.pathwayeditor.businessobjects.drawingprimitives.IModel;
 import org.pathwayeditor.businessobjects.notationsubsystem.INotation;
 import org.pathwayeditor.businessobjects.notationsubsystem.INotationAutolayoutService;
 import org.pathwayeditor.businessobjects.notationsubsystem.INotationSubsystem;
@@ -57,7 +57,7 @@ public class StubAutoLayoutService implements INotationAutolayoutService {
 	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotationAutolayoutService#layout(org.pathwayeditor.businessobjects.drawingprimitives.ICanvas)
 	 */
 	@Override
-	public void layout(ICanvas canvas) {
+	public void layout(IModel canvas) {
 		System.out.println("Canvas " + canvas + " laid out.");
 	}
 

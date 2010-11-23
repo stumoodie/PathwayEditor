@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.drawingprimitives.IModel;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LineStyle;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.RGB;
+import org.pathwayeditor.businessobjects.impl.facades.RootNodeFacade;
 import org.pathwayeditor.businessobjects.typedefn.IShapeObjectType;
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Envelope;
@@ -37,7 +38,7 @@ public class ShapeCreationOperation implements IShapeCreationOperation {
 	@Override
 	public void createShape(Point origin) {
 		Envelope bounds = new Envelope(origin, this.shapeObjectType.getDefaultAttributes().getSize());
-		ICommand cmd = new ShapeCreationCommand(viewModel.getRootNode(), this.shapeObjectType, bounds);
+		ICommand cmd = new ShapeCreationCommand(new RootNodeFacade(viewModel.getGraph().getRoot()), this.shapeObjectType, bounds);
 		this.commandStack.execute(cmd);
 		if(logger.isDebugEnabled()){
 			logger.debug("Create a new shape at: " + cmd);
@@ -59,7 +60,7 @@ public class ShapeCreationOperation implements IShapeCreationOperation {
 	public void finishCreationDrag(Point newLocation) {
 		calculateBounds(newLocation);
 		Envelope bounds = new Envelope(this.startLocation, new Dimension(0, 0)).resize(originDelta, sizeDelta);
-		ICommand cmd = new ShapeCreationCommand(viewModel.getRootNode(), this.shapeObjectType, bounds);
+		ICommand cmd = new ShapeCreationCommand(new RootNodeFacade(viewModel.getGraph().getRoot()), this.shapeObjectType, bounds);
 		this.commandStack.execute(cmd);
 		if(logger.isDebugEnabled()){
 			logger.debug("Create a new shape at: " + cmd);

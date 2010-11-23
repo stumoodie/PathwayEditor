@@ -25,7 +25,6 @@ import org.pathwayeditor.businessobjects.drawingprimitives.properties.INumberAnn
 import org.pathwayeditor.businessobjects.drawingprimitives.properties.INumberPropertyDefinition;
 import org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyBuilder;
 import org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyDefinition;
-import org.pathwayeditor.businessobjects.typedefn.ILabelAttributeDefaults;
 
 /**
  * @author smoodie
@@ -35,12 +34,12 @@ public class StubNumberPropertyDefinition implements INumberPropertyDefinition {
 	public static final BigDecimal DEFAULT_VALUE = new BigDecimal(2468);
 	public static final String NAME = "NumberProperty";
 	public static final boolean IS_EDITABLE = false;
-	public static final boolean IS_VISUALISABLE = true;
+//	public static final boolean IS_VISUALISABLE = true;
 
-	private final ILabelAttributeDefaults labelDefaults;
+//	private final ILabelAttributeDefaults labelDefaults;
 
 	public StubNumberPropertyDefinition(){
-		this.labelDefaults = new StubLabelAttributeDefaults();
+//		this.labelDefaults = new StubLabelAttributeDefaults();
 	}
 	
 	/* (non-Javadoc)
@@ -67,13 +66,13 @@ public class StubNumberPropertyDefinition implements INumberPropertyDefinition {
 		return DEFAULT_VALUE;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyDefinition#getLabelDefaults()
-	 */
-	@Override
-	public ILabelAttributeDefaults getLabelDefaults() {
-		return this.labelDefaults;
-	}
+//	/* (non-Javadoc)
+//	 * @see org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyDefinition#getLabelDefaults()
+//	 */
+//	@Override
+//	public ILabelAttributeDefaults getLabelDefaults() {
+//		return this.labelDefaults;
+//	}
 
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyDefinition#getName()
@@ -91,21 +90,21 @@ public class StubNumberPropertyDefinition implements INumberPropertyDefinition {
 		return IS_EDITABLE;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyDefinition#isVisualisable()
-	 */
-	@Override
-	public boolean isVisualisable() {
-		return IS_VISUALISABLE;
-	}
+//	/* (non-Javadoc)
+//	 * @see org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyDefinition#isVisualisable()
+//	 */
+//	@Override
+//	public boolean isVisualisable() {
+//		return IS_VISUALISABLE;
+//	}
 
-	/* (non-Javadoc)
-	 * @see org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyDefinition#isDisplayed()
-	 */
-	@Override
-	public boolean isAlwaysDisplayed() {
-		return false;
-	}
+//	/* (non-Javadoc)
+//	 * @see org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyDefinition#isDisplayed()
+//	 */
+//	@Override
+//	public boolean isAlwaysDisplayed() {
+//		return false;
+//	}
 
 	@Override
 	public String getDisplayName() {
@@ -116,6 +115,7 @@ public class StubNumberPropertyDefinition implements INumberPropertyDefinition {
 	/* (non-Javadoc)
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
+	@Override
 	public int compareTo(IPropertyDefinition o) {
 		return this.getName().compareTo(o.getName());
 	}

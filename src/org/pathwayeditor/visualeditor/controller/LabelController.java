@@ -5,11 +5,10 @@ import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNodeAttribute
 import org.pathwayeditor.businessobjects.drawingprimitives.ILabelAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILabelNode;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.CanvasAttributePropertyChange;
+import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributeChangeListener;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributePropertyChangeEvent;
-import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributePropertyChangeListener;
-import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IDrawingNodeAttributeListener;
-import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IDrawingNodeAttributeResizedEvent;
-import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IDrawingNodeAttributeTranslationEvent;
+import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributeResizedEvent;
+import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributeTranslationEvent;
 import org.pathwayeditor.figure.figuredefn.FigureController;
 import org.pathwayeditor.figure.figuredefn.IFigureController;
 import org.pathwayeditor.figure.geometry.Dimension;
@@ -37,30 +36,37 @@ public class LabelController extends NodeController implements ILabelController 
 		"0.0 xoffset 0.0 yoffset w h rect\n" +
 		"grestore\n" +
 		"0.5 0.5 :labelFontSize :labelText cardinalityBox\n";
-	private ILabelNode domainNode;
+	private final ILabelNode domainNode;
 	private IDrawingNodeAttribute parentAttribute;
-	private final ICanvasAttributePropertyChangeListener drawingNodePropertyChangeListener;
-	private IDrawingNodeAttributeListener parentDrawingNodePropertyChangeListener;
+	private final ICanvasAttributeChangeListener drawingNodePropertyChangeListener;
+	private final ICanvasAttributeChangeListener parentDrawingNodePropertyChangeListener;
 //	private INodeControllerChangeListener parentNodePrimitiveChangeListener;
-	private IFigureController controller;
+	private final IFigureController controller;
 	private boolean isActive;
 	
 	public LabelController(IViewControllerModel viewModel, ILabelNode node, int index) {
 		super(viewModel, index);
 		this.domainNode = node;
-		this.parentAttribute = this.domainNode.getParentNode().getAttribute();
+		this.parentAttribute = (IDrawingNodeAttribute)this.domainNode.getGraphElement().getParent().getAttribute();
 		this.isActive = false;
-		drawingNodePropertyChangeListener = new ICanvasAttributePropertyChangeListener() {
+		drawingNodePropertyChangeListener = new ICanvasAttributeChangeListener() {
 			@Override
 			public void propertyChange(ICanvasAttributePropertyChangeEvent e) {
-				if(e.getPropertyChange().equals(CanvasAttributePropertyChange.SIZE)
-						|| e.getPropertyChange().equals(CanvasAttributePropertyChange.LOCATION)){
+				if(e.getPropertyChange().equals(CanvasAttributePropertyChange.BOUNDS)){
 					Envelope oldDrawnBounds = controller.getConvexHull().getEnvelope();
 					IDrawingNodeAttribute attribute = (IDrawingNodeAttribute)e.getAttribute();
 					controller.setRequestedEnvelope(attribute.getBounds());
 					controller.generateFigureDefinition();
 					notifyDrawnBoundsChanged(oldDrawnBounds, controller.getConvexHull().getEnvelope());
 				}
+			}
+
+			@Override
+			public void nodeTranslated(ICanvasAttributeTranslationEvent e) {
+			}
+
+			@Override
+			public void nodeResized(ICanvasAttributeResizedEvent e) {
 			}
 		};
 //		this.parentNodePrimitiveChangeListener = new INodeControllerChangeListener(){
@@ -80,15 +86,19 @@ public class LabelController extends NodeController implements ILabelController 
 //			}
 //			
 //		};
-		parentDrawingNodePropertyChangeListener = new IDrawingNodeAttributeListener() {
+		parentDrawingNodePropertyChangeListener = new ICanvasAttributeChangeListener() {
 			
 			@Override
-			public void nodeTranslated(IDrawingNodeAttributeTranslationEvent e) {
+			public void propertyChange(ICanvasAttributePropertyChangeEvent e) {
+			}
+			
+			@Override
+			public void nodeTranslated(ICanvasAttributeTranslationEvent e) {
 				domainNode.getAttribute().translate(e.getTranslationDelta());
 			}
 			
 			@Override
-			public void nodeResized(IDrawingNodeAttributeResizedEvent e) {
+			public void nodeResized(ICanvasAttributeResizedEvent e) {
 			}
 		};
 		this.controller = createController(node.getAttribute());
@@ -137,8 +147,8 @@ public class LabelController extends NodeController implements ILabelController 
 	@Override
 	public void inactivate() {
 		this.domainNode.getAttribute().removeChangeListener(drawingNodePropertyChangeListener);
-		parentAttribute = this.domainNode.getParentNode().getAttribute(); 
-		parentAttribute.removeDrawingNodeAttributeListener(parentDrawingNodePropertyChangeListener);
+		parentAttribute = (IDrawingNodeAttribute)this.domainNode.getGraphElement().getParent().getAttribute(); 
+		parentAttribute.removeChangeListener(parentDrawingNodePropertyChangeListener);
 //		if(this.getViewModel().containsDrawingElement(parentAttribute)){
 //			INodeController parentNode = this.getViewModel().getNodePrimitive(parentAttribute);
 //			parentNode.removeNodePrimitiveChangeListener(this.parentNodePrimitiveChangeListener);
@@ -150,7 +160,7 @@ public class LabelController extends NodeController implements ILabelController 
 	@Override
 	public void activate() {
 		this.domainNode.getAttribute().addChangeListener(this.drawingNodePropertyChangeListener);
-		parentAttribute.addDrawingNodeAttributeListener(parentDrawingNodePropertyChangeListener);
+		parentAttribute.addChangeListener(parentDrawingNodePropertyChangeListener);
 //		INodeController parentNode = this.getViewModel().getNodePrimitive(this.domainNode.getCurrentDrawingElement().getParentNode().getAttribute());
 //		parentNode.addNodePrimitiveChangeListener(this.parentNodePrimitiveChangeListener);
 //		this.resyncToModel();
