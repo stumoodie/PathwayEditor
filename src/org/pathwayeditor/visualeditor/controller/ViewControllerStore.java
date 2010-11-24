@@ -35,6 +35,7 @@ import org.pathwayeditor.visualeditor.geometry.IIntersectionCalculator;
 import org.pathwayeditor.visualeditor.geometry.ILinkPointDefinition;
 
 import uk.ac.ed.inf.graph.compound.ICompoundEdge;
+import uk.ac.ed.inf.graph.compound.ICompoundGraphElement;
 import uk.ac.ed.inf.graph.compound.ICompoundNode;
 import uk.ac.ed.inf.graph.compound.IGraphStructureChangeAction;
 import uk.ac.ed.inf.graph.compound.IGraphStructureChangeAction.GraphStructureChangeType;
@@ -43,7 +44,7 @@ import uk.ac.ed.inf.graph.compound.IGraphStructureChangeListener;
 public class ViewControllerStore implements IViewControllerModel {
 //	private final Logger logger = Logger.getLogger(this.getClass());
 	private final IModel domainModel;
-	private final SortedMap<IDrawingElement, IDrawingElementController> domainToViewMap;
+	private final SortedMap<ICompoundGraphElement, IDrawingElementController> domainToViewMap;
 	private final SortedSet<IDrawingElementController> drawingPrimitives;
 	private IGraphStructureChangeListener modelListener;
 	private IRootController rootPrimitive;
@@ -54,15 +55,15 @@ public class ViewControllerStore implements IViewControllerModel {
 	
 	public ViewControllerStore(IModel domainModel){
 		this.domainModel = domainModel;
-		this.domainToViewMap = new TreeMap<IDrawingElement, IDrawingElementController>(new Comparator<IDrawingElement>(){
+		this.domainToViewMap = new TreeMap<ICompoundGraphElement, IDrawingElementController>(new Comparator<ICompoundGraphElement>(){
 
 			@Override
-			public int compare(IDrawingElement o1, IDrawingElement o2) {
+			public int compare(ICompoundGraphElement o1, ICompoundGraphElement o2) {
 //				return Integer.valueOf(o1.getAttribute().getCreationSerial()).compareTo(Integer.valueOf(o2.getAttribute().getCreationSerial()));
 //				return o1.compareTo(o2);
 				int retVal = o1.getLevel() < o2.getLevel() ? -1 : (o1.getLevel() > o2.getLevel() ? 1 : 0);
 				if(retVal == 0){
-					retVal = o1.getUniqueIndex() < o2.getUniqueIndex() ? -1 : (o1.getUniqueIndex() > o2.getUniqueIndex() ? 1 : 0);
+					retVal = o1.getIndex() < o2.getIndex() ? -1 : (o1.getIndex() > o2.getIndex() ? 1 : 0);
 				}
 //				if(logger.isTraceEnabled()){
 //					StringBuilder buf = new StringBuilder("retVal=");
@@ -222,12 +223,12 @@ public class ViewControllerStore implements IViewControllerModel {
 	}
 	
 	private void removeLinkController(ILinkController linkController) {
-		domainToViewMap.remove(linkController.getDrawingElement());
+		domainToViewMap.remove(linkController.getDrawingElement().getGraphElement());
 		drawingPrimitives.remove(linkController);
 	}
 
 	private void removeNodeController(INodeController shapeNode){
-		domainToViewMap.remove(shapeNode.getDrawingElement());
+		domainToViewMap.remove(shapeNode.getDrawingElement().getGraphElement());
 		drawingPrimitives.remove(shapeNode);
 	}
 
@@ -250,7 +251,7 @@ public class ViewControllerStore implements IViewControllerModel {
 		node.visit(factory);
 		INodeController viewNode = factory.getCreatedNodeController(); 
 		if(viewNode != null){
-			this.domainToViewMap.put(viewNode.getDrawingElement(), viewNode);
+			this.domainToViewMap.put(viewNode.getDrawingElement().getGraphElement(), viewNode);
 			this.drawingPrimitives.add(viewNode);
 		}
 		return viewNode;
@@ -260,7 +261,7 @@ public class ViewControllerStore implements IViewControllerModel {
 	private ILinkController createLinkPrimitive(ICompoundEdge graphLink){
 		ILinkEdge linkEdge = new LinkEdgeFacade(graphLink);
 		ILinkController linkCtlr = new LinkController(this, linkEdge, indexCounter++);
-		this.domainToViewMap.put(linkEdge, linkCtlr);
+		this.domainToViewMap.put(linkEdge.getGraphElement(), linkCtlr);
 		this.drawingPrimitives.add(linkCtlr);
 		return linkCtlr;
 	}
@@ -352,7 +353,7 @@ public class ViewControllerStore implements IViewControllerModel {
 
 	@Override
 	public INodeController getNodeController(IDrawingNode draggedNode) {
-		IDrawingElementController retVal = this.domainToViewMap.get(draggedNode);
+		IDrawingElementController retVal = this.domainToViewMap.get(draggedNode.getGraphElement());
 		if(retVal == null){
 			throw new IllegalArgumentException("domain node is not present in this view model");
 		}
@@ -410,7 +411,7 @@ public class ViewControllerStore implements IViewControllerModel {
 
 	@Override
 	public boolean containsDrawingElement(IDrawingElement testPrimitive) {
-		return this.domainToViewMap.containsKey(testPrimitive);
+		return this.domainToViewMap.containsKey(testPrimitive.getGraphElement());
 	}
 
 	@Override
@@ -437,12 +438,12 @@ public class ViewControllerStore implements IViewControllerModel {
 
 	@Override
 	public ILinkController getLinkController(ILinkEdge attribute) {
-		return (ILinkController)this.domainToViewMap.get(attribute);
+		return (ILinkController)this.domainToViewMap.get(attribute.getGraphElement());
 	}
 
 	@Override
 	public IShapeController getShapeController(IShapeNode attribute) {
-		return (IShapeController)this.domainToViewMap.get(attribute);
+		return (IShapeController)this.domainToViewMap.get(attribute.getGraphElement());
 	}
 
 	@Override
@@ -503,7 +504,7 @@ public class ViewControllerStore implements IViewControllerModel {
 
 	@Override
 	public IDrawingElementController getDrawingPrimitiveController(IDrawingElement testAttribute) {
-		return this.domainToViewMap.get(testAttribute);
+		return this.domainToViewMap.get(testAttribute.getGraphElement());
 	}
 	
 	private class ElementControllerFactory implements ICanvasElementAttributeVisitor {
@@ -539,5 +540,10 @@ public class ViewControllerStore implements IViewControllerModel {
 			viewNode = new LabelController(viewController, new LabelNodeFacade(attribute.getCurrentElement()), indexCounter++);
 		}
 		
+	}
+
+	@Override
+	public IDrawingElementController findControllerByAttribute(ICanvasElementAttribute testAttribute) {
+		return this.domainToViewMap.get(testAttribute.getCurrentElement());
 	}
 }

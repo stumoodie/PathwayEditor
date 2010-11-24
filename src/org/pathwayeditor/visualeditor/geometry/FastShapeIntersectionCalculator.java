@@ -61,8 +61,8 @@ public class FastShapeIntersectionCalculator implements IIntersectionCalculator 
 	private final IViewControllerModel model;
 	private IIntersectionCalcnFilter filter;
 	private Comparator<IDrawingElementController> comparator = null;
-	private IDrawingElementControllerListener primitiveControllerChangeListener;
-	private IViewControllerChangeListener viewControllerChangeListener;
+	private final IDrawingElementControllerListener primitiveControllerChangeListener;
+	private final IViewControllerChangeListener viewControllerChangeListener;
 	
 	public FastShapeIntersectionCalculator(IViewControllerModel model){
 		this.model = model;
@@ -176,7 +176,7 @@ public class FastShapeIntersectionCalculator implements IIntersectionCalculator 
 			if(prim instanceof INodeController){
 				INodeController node = (INodeController)prim;
 				// ignore matches to self
-				if(!node.equals(queryNode) && !node.equals(rootNode) && filter.accept(node) && node.intersectsHull(queryHull)){
+				if(!node.equals(queryNode) && !node.equals(rootNode) && filter.accept(node) && !queryNode.getDrawingElement().isDescendent(node.getDrawingElement()) && node.intersectsHull(queryHull)){
 					retVal.add(node);
 				}
 			}
