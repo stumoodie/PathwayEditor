@@ -9,7 +9,7 @@ public interface IFeedbackLink extends IFeedbackElement {
 
 	ILinkPointDefinition getLinkDefinition();
 	
-	void moveBendPoint(int bpIdx, Point newLocation);
+	void moveBendPoint(int bpIdx, Point delta);
 
 	void newBendPoint(int lineSegmentIdx, Point initialLocation);
 

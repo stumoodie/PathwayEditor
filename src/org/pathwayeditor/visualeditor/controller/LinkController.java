@@ -104,7 +104,6 @@ public class LinkController extends DrawingElementController implements ILinkCon
 					Point bpPosn = e.getBendPoint();
 					linkDefinition.addNewBendPoint(bpIdx, bpPosn);
 					updateLinksToBendPoints(bpIdx, bpPosn);
-					e.getBendPointContainer().addChangeListener(bpChangeListener);
 				}
 				else if(e.getChangeType().equals(BendPointChange.BEND_POINT_REMOVED)){
 					int bpIdx = e.getOldIndexPos();
@@ -124,7 +123,6 @@ public class LinkController extends DrawingElementController implements ILinkCon
 						Point bpPosn = linkAttribute.getAttribute().getBendPointContainer().getBendPoint(lastBpIdx);
 						updateLinksToBendPoints(lastBpIdx, bpPosn);
 					}
-					e.getBendPointContainer().removeChangeListener(bpChangeListener);
 				}
 			}
 		};

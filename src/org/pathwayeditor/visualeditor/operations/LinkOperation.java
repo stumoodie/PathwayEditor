@@ -21,6 +21,7 @@ public class LinkOperation implements ILinkOperation {
 	private final IFeedbackModel feedbackModel; 
 	private final ISelectionRecord selectionRecord;
 	private final ICommandStack commandStack;
+	private Point newBpStartPosn;
 
 	public LinkOperation(IShapePane shapePane, IFeedbackModel feedbackModel, ISelectionRecord selectionRecord,
 			ICommandStack commandStack){
@@ -58,11 +59,11 @@ public class LinkOperation implements ILinkOperation {
 	}
 
 	@Override
-	public void newBendPointFinished(ISelectionHandle selectionHandle, Point position) {
+	public void newBendPointFinished(ISelectionHandle selectionHandle, Point delta) {
 		if(logger.isTraceEnabled()){
-			logger.trace("New bendpoint finished. lineSeg=" + selectionHandle.getHandleIndex() + ",position=" + position);
+			logger.trace("New bendpoint finished. lineSeg=" + selectionHandle.getHandleIndex() + ",position=" + delta);
 		}
-		createNewBendPointCommand(selectionHandle.getHandleIndex(), position);
+		createNewBendPointCommand(selectionHandle.getHandleIndex(), delta);
 		Envelope refreshBounds = this.feedbackModel.uniqueFeedbackLink().getLinkDefinition().getBounds();
 		feedbackModel.clear();
 		selectionRecord.restoreSelection();
@@ -70,11 +71,11 @@ public class LinkOperation implements ILinkOperation {
 	}
 
 	@Override
-	public void newBendPointOngoing(ISelectionHandle handle, Point position) {
+	public void newBendPointOngoing(ISelectionHandle handle, Point delta) {
 		if(logger.isTraceEnabled()){
-			logger.trace("Moving new bendpoint ongoing. bpIdx=" + handle.getHandleIndex() + ",position=" + position);
+			logger.trace("Moving new bendpoint ongoing. bpIdx=" + handle.getHandleIndex() + ",position=" + delta);
 		}
-		moveBendPoint(handle.getHandleIndex(), position);
+		moveBendPoint(handle.getHandleIndex(), delta);
 		shapePane.updateView(this.feedbackModel.uniqueFeedbackLink().getLinkDefinition().getBounds());
 	}
 
@@ -84,19 +85,20 @@ public class LinkOperation implements ILinkOperation {
 		feedbackModel.rebuildOnLinkSelection((ILinkSelection)selectionHandle.getSelection());
 		IFeedbackLink feedbackLink = feedbackModel.uniqueFeedbackLink();
 		Point handleOrigin = selectionHandle.getBounds().getOrigin();
-		Point handleCentre = handleOrigin.translate(selectionHandle.getBounds().getDimension().getWidth()/2.0,
+		newBpStartPosn = handleOrigin.translate(selectionHandle.getBounds().getDimension().getWidth()/2.0,
 				selectionHandle.getBounds().getDimension().getHeight()/2.0);
-		feedbackLink.newBendPoint(selectionHandle.getHandleIndex(), handleCentre);
+		feedbackLink.newBendPoint(selectionHandle.getHandleIndex(), newBpStartPosn);
 	}
 
-	private void moveBendPoint(int bendPointIdx, Point position) {
+	private void moveBendPoint(int bendPointIdx, Point delta) {
 		IFeedbackLink feedbackLink = this.feedbackModel.uniqueFeedbackLink();
-		feedbackLink.moveBendPoint(bendPointIdx, position);
+		feedbackLink.moveBendPoint(bendPointIdx, delta);
 	}
 
-	private void createNewBendPointCommand(int lineSegmentIdx, Point position) {
-		ILinkSelection linkSelection = this.selectionRecord.getUniqueLinkSelection(); 
-		ICommand cmd = new CreateBendPointCommand(linkSelection.getPrimitiveController().getDrawingElement().getAttribute().getBendPointContainer(), lineSegmentIdx, position);
+	private void createNewBendPointCommand(int lineSegmentIdx, Point delta) {
+		ILinkSelection linkSelection = this.selectionRecord.getUniqueLinkSelection();
+		Point bpLocation = this.newBpStartPosn.translate(delta);
+		ICommand cmd = new CreateBendPointCommand(linkSelection.getPrimitiveController().getDrawingElement().getAttribute().getBendPointContainer(), lineSegmentIdx, bpLocation);
 		this.commandStack.execute(cmd);
 	}
 
