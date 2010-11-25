@@ -12,7 +12,8 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
 import org.apache.log4j.Logger;
-import org.pathwayeditor.businessobjects.drawingprimitives.IRootAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.ILinkEdge;
+import org.pathwayeditor.businessobjects.drawingprimitives.IModel;
 import org.pathwayeditor.businessobjects.notationsubsystem.INotationSubsystem;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.visualeditor.behaviour.IMouseBehaviourController;
@@ -36,9 +37,6 @@ import org.pathwayeditor.visualeditor.selection.ISelectionChangeEvent;
 import org.pathwayeditor.visualeditor.selection.ISelectionChangeListener;
 import org.pathwayeditor.visualeditor.selection.ISelectionRecord;
 import org.pathwayeditor.visualeditor.selection.SelectionRecord;
-
-import uk.ac.ed.inf.graph.compound.ICompoundEdge;
-import uk.ac.ed.inf.graph.compound.ICompoundGraph;
 
 public class PathwayEditor extends JPanel {
 	private static final double REFRESH_EXPANSION_Y = 20.0;
@@ -90,7 +88,7 @@ public class PathwayEditor extends JPanel {
 		isOpen = false;
 	}
 	
-	private void setUpEditorViews(ICompoundGraph canvas){
+	private void setUpEditorViews(IModel canvas){
 		this.selectionRecord = new SelectionRecord(viewModel);
 		this.feedbackModel = new FeedbackModel(selectionRecord);
 		this.shapePane = new ShapePane();
@@ -104,8 +102,7 @@ public class PathwayEditor extends JPanel {
 		scrollPane.setFocusable(true);
 		scrollPane.setWheelScrollingEnabled(true);
         this.editBehaviourController = new MouseBehaviourController(shapePane, new OperationFactory(this.shapePane, this.feedbackModel, this.selectionRecord, viewModel, this.commandStack));
-        IRootAttribute rootAtt = (IRootAttribute)canvas.getRoot().getAttribute();
-        INotationSubsystem notationSubsystem = rootAtt.getObjectType().getSyntaxService().getNotationSubsystem(); 
+        INotationSubsystem notationSubsystem = canvas.getNotationSubsystem();
 		this.palettePane = new PalettePanel(notationSubsystem, editBehaviourController);
 		this.add(palettePane, BorderLayout.LINE_START);
 		this.add(scrollPane, BorderLayout.CENTER);
@@ -193,7 +190,7 @@ public class PathwayEditor extends JPanel {
 		}
 	}
 	
-	public void loadCanvas(ICompoundGraph canvas){
+	public void loadCanvas(IModel canvas){
 		if(isOpen){
 			reset();
 		}
@@ -213,7 +210,7 @@ public class PathwayEditor extends JPanel {
 		this.isOpen = true;
 	}
 
-	public void selectAndFocusOnElement(ICompoundEdge linkEdge) {
+	public void selectAndFocusOnElement(ILinkEdge linkEdge) {
 		selectionRecord.clear();
 		IDrawingElementController linkController = viewModel.getLinkController(linkEdge);
 		selectionRecord.setPrimarySelection(linkController);

@@ -20,7 +20,7 @@ package org.pathwayeditor.graphicsengine.stubs.notationsubsystem;
 
 import java.util.Set;
 
-import org.pathwayeditor.businessobjects.drawingprimitives.IRootAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.IModel;
 import org.pathwayeditor.businessobjects.notationsubsystem.INotation;
 import org.pathwayeditor.businessobjects.notationsubsystem.INotationSubsystem;
 import org.pathwayeditor.businessobjects.notationsubsystem.INotationValidationService;
@@ -45,7 +45,7 @@ public class StubNotationValidationService implements INotationValidationService
 	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotationValidationService#getMapBeingValidated()
 	 */
 	@Override
-	public IRootAttribute getCanvasBeingValidated() {
+	public IModel getCanvasBeingValidated() {
 		throw new UnsupportedOperationException("Not implemented");
 	}
 
@@ -93,7 +93,7 @@ public class StubNotationValidationService implements INotationValidationService
 	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotationValidationService#setMapToValidate(org.pathwayeditor.businessobjects.repository.IMap)
 	 */
 	@Override
-	public void setCanvasToValidate(IRootAttribute mapToValidate) {
+	public void setCanvasToValidate(IModel mapToValidate) {
 		throw new UnsupportedOperationException("Not implemented");
 	}
 

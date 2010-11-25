@@ -158,7 +158,19 @@ public class StubLinkAObjectType implements ILinkObjectType {
 
 	@Override
 	public IObjectTypeParentingRules getParentingRules() {
-		return new LinkParentingRules(this);
+		return new IObjectTypeParentingRules(){
+
+			@Override
+			public IObjectType getObjectType() {
+				return StubLinkAObjectType.this;
+			}
+
+			@Override
+			public boolean isValidChild(IObjectType possibleChild) {
+				return false;
+			}
+			
+		};
 	}
 
 }

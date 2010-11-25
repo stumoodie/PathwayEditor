@@ -1,11 +1,10 @@
 package org.pathwayeditor.visualeditor.controller;
 
+import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNode;
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
-
-import uk.ac.ed.inf.graph.compound.ICompoundNode;
 
 public interface INodeController extends IDrawingElementController {
 
@@ -25,7 +24,7 @@ public interface INodeController extends IDrawingElementController {
 	 * Get the drawing element. 
 	 */
 	@Override
-	ICompoundNode getDrawingElement();
+	IDrawingNode getDrawingElement();
 	
 	/**
 	 * Tests if the convex hull intersects this shape.

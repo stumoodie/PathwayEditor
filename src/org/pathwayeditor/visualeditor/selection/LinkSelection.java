@@ -4,7 +4,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
 import org.pathwayeditor.figure.geometry.LineSegment;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.controller.ILinkController;
@@ -29,8 +28,7 @@ public class LinkSelection extends Selection implements ILinkSelection {
 			this.handles.add(SelectionHandle.createLinkMidpointRegion(this, controller, lineSeg, cntr));
 			cntr++;
 		}
-		ILinkAttribute linkAtt = (ILinkAttribute)this.controller.getDrawingElement().getAttribute();
-		Iterator<Point> bpIter = linkAtt.getBendPointContainer().bendPointIterator();
+		Iterator<Point> bpIter = this.controller.getDrawingElement().getAttribute().getBendPointContainer().bendPointIterator();
 		int bpIdx = 0;
 		while(bpIter.hasNext()){
 			Point bp = bpIter.next();

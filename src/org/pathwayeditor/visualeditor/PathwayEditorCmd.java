@@ -1,6 +1,7 @@
 package org.pathwayeditor.visualeditor;
 
 public class PathwayEditorCmd {
+	@SuppressWarnings("unused")
 	private VisualEditor visualEditor;
 
 

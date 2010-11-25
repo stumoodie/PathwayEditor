@@ -19,7 +19,6 @@ limitations under the License.
 package org.pathwayeditor.graphicsengine.stubs.notationsubsystem;
 
 import java.util.HashSet;
-import java.util.Iterator;
 
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LinkEndDecoratorShape;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LinkTermType;
@@ -68,12 +67,13 @@ public class StubTargetTerminusDefaults implements ILinkTerminusDefaults {
 		return EXPECTED_OFFSET;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.pathwayeditor.businessobjects.typedefn.ILinkTerminusDefaults#getPropertiesIterator()
-	 */
-	public Iterator<IPropertyDefinition> propertyDefinitionIterator() {
-		return this.propertyDefinitionList.iterator();
-	}
+//	/* (non-Javadoc)
+//	 * @see org.pathwayeditor.businessobjects.typedefn.ILinkTerminusDefaults#getPropertiesIterator()
+//	 */
+//	@Override
+//	public Iterator<IPropertyDefinition> propertyDefinitionIterator() {
+//		return this.propertyDefinitionList.iterator();
+//	}
 
 	/**
 	 * @return
@@ -82,9 +82,10 @@ public class StubTargetTerminusDefaults implements ILinkTerminusDefaults {
 		return this.propertyDefinitionList;
 	}
 
-	public boolean containsPropertyDefinition(String name) {
-		return findPropDefn(name) != null;
-	}
+//	@Override
+//	public boolean containsPropertyDefinition(String name) {
+//		return findPropDefn(name) != null;
+//	}
 
 	IPropertyDefinition findPropDefn(String name){
 		IPropertyDefinition retVal = null;
@@ -97,15 +98,18 @@ public class StubTargetTerminusDefaults implements ILinkTerminusDefaults {
 		return retVal;
 	}
 	
-	public IPropertyDefinition getPropertyDefinition(String name) {
-		return findPropDefn(name);
-	}
+//	@Override
+//	public IPropertyDefinition getPropertyDefinition(String name) {
+//		return findPropDefn(name);
+//	}
 
-	public int numPropertyDefinitions() {
-		return this.getpropdefns().size();
-	}
+//	@Override
+//	public int numPropertyDefinitions() {
+//		return this.getpropdefns().size();
+//	}
 
-	public boolean containsPropertyDefinition(IPropertyDefinition propDefn){
-		return propDefn != null && this.getpropdefns().contains(propDefn);
-	}
+//	@Override
+//	public boolean containsPropertyDefinition(IPropertyDefinition propDefn){
+//		return propDefn != null && this.getpropdefns().contains(propDefn);
+//	}
 }

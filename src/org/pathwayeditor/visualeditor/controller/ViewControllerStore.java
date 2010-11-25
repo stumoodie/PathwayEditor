@@ -10,9 +10,24 @@ import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasElementAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasElementAttributeVisitor;
+import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElement;
+import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElementSelection;
+import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNode;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILabelAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.ILinkEdge;
+import org.pathwayeditor.businessobjects.drawingprimitives.IModel;
 import org.pathwayeditor.businessobjects.drawingprimitives.IRootAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.IShapeAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.IShapeNode;
+import org.pathwayeditor.businessobjects.impl.facades.DrawingElementSelectionFacade;
+import org.pathwayeditor.businessobjects.impl.facades.DrawingNodeFacade;
+import org.pathwayeditor.businessobjects.impl.facades.LabelNodeFacade;
+import org.pathwayeditor.businessobjects.impl.facades.LinkEdgeFacade;
+import org.pathwayeditor.businessobjects.impl.facades.RootNodeFacade;
+import org.pathwayeditor.businessobjects.impl.facades.ShapeNodeFacade;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.geometry.FastShapeIntersectionCalculator;
@@ -20,19 +35,15 @@ import org.pathwayeditor.visualeditor.geometry.IIntersectionCalculator;
 import org.pathwayeditor.visualeditor.geometry.ILinkPointDefinition;
 
 import uk.ac.ed.inf.graph.compound.ICompoundEdge;
-import uk.ac.ed.inf.graph.compound.ICompoundGraph;
 import uk.ac.ed.inf.graph.compound.ICompoundGraphElement;
 import uk.ac.ed.inf.graph.compound.ICompoundNode;
-import uk.ac.ed.inf.graph.compound.IElementAttribute;
 import uk.ac.ed.inf.graph.compound.IGraphStructureChangeAction;
 import uk.ac.ed.inf.graph.compound.IGraphStructureChangeAction.GraphStructureChangeType;
 import uk.ac.ed.inf.graph.compound.IGraphStructureChangeListener;
-import uk.ac.ed.inf.graph.compound.IRootCompoundNode;
-import uk.ac.ed.inf.graph.compound.ISubCompoundGraph;
 
 public class ViewControllerStore implements IViewControllerModel {
 //	private final Logger logger = Logger.getLogger(this.getClass());
-	private final ICompoundGraph domainModel;
+	private final IModel domainModel;
 	private final SortedMap<ICompoundGraphElement, IDrawingElementController> domainToViewMap;
 	private final SortedSet<IDrawingElementController> drawingPrimitives;
 	private IGraphStructureChangeListener modelListener;
@@ -42,7 +53,7 @@ public class ViewControllerStore implements IViewControllerModel {
 	private int indexCounter = 0;
 	private final IIntersectionCalculator intersectionCalculator;
 	
-	public ViewControllerStore(ICompoundGraph domainModel){
+	public ViewControllerStore(IModel domainModel){
 		this.domainModel = domainModel;
 		this.domainToViewMap = new TreeMap<ICompoundGraphElement, IDrawingElementController>(new Comparator<ICompoundGraphElement>(){
 
@@ -84,48 +95,71 @@ public class ViewControllerStore implements IViewControllerModel {
 	
 	private void initialiseDomainListeners() {
 		modelListener = new IGraphStructureChangeListener(){
+//			@Override
+//			public void modelStructureChange(IGraphStructureChangeEvent event) {
+//				if(event.getChangeType().equals(GraphStructureChangeType.SUBGRAPH_REMOVED)){
+////					rebuildModel();
+//					inactivateSelection(event.getOriginalSelection());
+//					removeSelection(event.getOriginalSelection());
+//				}
+//				else if(event.getChangeType().equals(GraphStructureChangeType.SUBGRAPH_MOVED)){
+//					// reinitialise the nodes
+//					inactivateSelection(event.getOriginalSelection());
+//					removeSelection(event.getOriginalSelection());
+//					addSelection(event.getChangedSelection());
+//					activateSelection(event.getChangedSelection());
+//				}
+//				else if(event.getChangeType().equals(GraphStructureChangeType.SUBGRAPH_COPIED)){
+//					addSelection(event.getChangedSelection());
+//					activateSelection(event.getChangedSelection());
+//				}
+//				else if(event.getChangeType().equals(GraphStructureChangeType.ELEMENT_ADDED)){
+//					addSelection(event.getChangedSelection());
+//					activateSelection(event.getChangedSelection());
+//				}
+//			}
 
 			@Override
 			public void graphStructureChange(IGraphStructureChangeAction event) {
 				if(event.getChangeType().equals(GraphStructureChangeType.SUBGRAPH_REMOVED)){
 //					rebuildModel();
-					inactivateSelection(event.originalSubgraph());
-					removeSelection(event.originalSubgraph());
+					inactivateSelection(new DrawingElementSelectionFacade(event.originalSubgraph()));
+					removeSelection(new DrawingElementSelectionFacade(event.originalSubgraph()));
 				}
 				else if(event.getChangeType().equals(GraphStructureChangeType.SUBGRAPH_MOVED)){
 					// reinitialise the nodes
-					inactivateSelection(event.originalSubgraph());
-					removeSelection(event.originalSubgraph());
-					addSelection(event.changedSubgraph());
-					activateSelection(event.changedSubgraph());
+					inactivateSelection(new DrawingElementSelectionFacade(event.originalSubgraph()));
+					removeSelection(new DrawingElementSelectionFacade(event.originalSubgraph()));
+					addSelection(new DrawingElementSelectionFacade(event.changedSubgraph()));
+					activateSelection(new DrawingElementSelectionFacade(event.changedSubgraph()));
 				}
 				else if(event.getChangeType().equals(GraphStructureChangeType.SUBGRAPH_COPIED)){
-					addSelection(event.changedSubgraph());
-					activateSelection(event.changedSubgraph());
+					addSelection(new DrawingElementSelectionFacade(event.changedSubgraph()));
+					activateSelection(new DrawingElementSelectionFacade(event.changedSubgraph()));
 				}
 				else if(event.getChangeType().equals(GraphStructureChangeType.ELEMENT_ADDED)){
-					addSelection(event.changedSubgraph());
-					activateSelection(event.changedSubgraph());
+					addSelection(new DrawingElementSelectionFacade(event.changedSubgraph()));
+					activateSelection(new DrawingElementSelectionFacade(event.changedSubgraph()));
 				}
 			}
-
+			
 		};
-		this.domainModel.addGraphStructureChangeListener(modelListener);
-//		Iterator<ICompoundNode> nodeIter = this.domainModel.nodeIterator();
+		this.domainModel.getGraph().addGraphStructureChangeListener(modelListener);
+//		Iterator<ICompoundNode> nodeIter = this.domainModel.drawingNodeIterator();
 //		while(nodeIter.hasNext()){
 //			ICompoundNode node = nodeIter.next();
-//			node.getChildCompoundGraph().addModelChangeListener(modelListener);
+//			node.getChildCompoundGraph().addGraphStructureChangeListener(modelListener);
 //		}
 	}
 	
-	private void addSelection(ISubCompoundGraph selection){
-		Iterator<ICompoundNode> nodeIter = selection.nodeIterator();
+	private void addSelection(IDrawingElementSelection selection){
+		Iterator<ICompoundNode> nodeIter = selection.drawingNodeIterator();
 		while(nodeIter.hasNext()){
 			ICompoundNode node = nodeIter.next();
 			INodeController newNode = createNodePrimitive(node);
 			notifyAddedNode(newNode);
 		}
-		Iterator<ICompoundEdge> linkIter = selection.edgeIterator();
+		Iterator<ICompoundEdge> linkIter = selection.linkEdgeIterator();
 		while(linkIter.hasNext()){
 			ICompoundEdge link = linkIter.next();
 			ILinkController newLinkCont = createLinkPrimitive(link);
@@ -133,55 +167,55 @@ public class ViewControllerStore implements IViewControllerModel {
 		}
 	}
 		
-	private void removeSelection(ISubCompoundGraph selection){
+	private void removeSelection(IDrawingElementSelection selection){
 		removeNodeSelection(selection);
 		removeEdgeSelection(selection);
 	}
 	
-	private void activateSelection(ISubCompoundGraph selection) {
-		Iterator<ICompoundNode> nodeIter = selection.nodeIterator();
+	private void activateSelection(IDrawingElementSelection selection) {
+		Iterator<ICompoundNode> nodeIter = selection.drawingNodeIterator();
 		while(nodeIter.hasNext()){
-			ICompoundNode node = nodeIter.next();
+			IDrawingNode node = new DrawingNodeFacade(nodeIter.next());
 			INodeController nodePrimitive = getNodeController(node);
 			nodePrimitive.activate();
 		}
-		Iterator<ICompoundEdge> linkIter = selection.edgeIterator();
+		Iterator<ICompoundEdge> linkIter = selection.linkEdgeIterator();
 		while(linkIter.hasNext()){
-			ICompoundEdge link = linkIter.next();
+			ILinkEdge link = new LinkEdgeFacade(linkIter.next());
 			ILinkController linkController = getLinkController(link);
 			linkController.activate();
 		}
 	}
 
-	private void inactivateSelection(ISubCompoundGraph selection) {
-		Iterator<ICompoundNode> nodeIter = selection.nodeIterator();
+	private void inactivateSelection(IDrawingElementSelection selection) {
+		Iterator<ICompoundNode> nodeIter = selection.drawingNodeIterator();
 		while(nodeIter.hasNext()){
-			ICompoundNode node = nodeIter.next();
+			IDrawingNode node = new DrawingNodeFacade(nodeIter.next());
 			INodeController nodePrimitive = getNodeController(node);
 			nodePrimitive.inactivate();
 		}
-		Iterator<ICompoundEdge> linkIter = selection.edgeIterator();
+		Iterator<ICompoundEdge> linkIter = selection.linkEdgeIterator();
 		while(linkIter.hasNext()){
-			ICompoundEdge link = linkIter.next();
+			ILinkEdge link = new LinkEdgeFacade(linkIter.next());
 			ILinkController linkController = getLinkController(link);
 			linkController.inactivate();
 		}
 	}
 
-	private void removeNodeSelection(ISubCompoundGraph selection){
-		Iterator<ICompoundNode> iter = selection.nodeIterator();
+	private void removeNodeSelection(IDrawingElementSelection selection){
+		Iterator<ICompoundNode> iter = selection.drawingNodeIterator();
 		while(iter.hasNext()){
-			ICompoundNode node = iter.next();
+			IDrawingNode node = new DrawingNodeFacade(iter.next());
 			INodeController nodeController = getNodeController(node); 
 			notifyRemovedNode(nodeController);
 			removeNodeController(nodeController);
 		}
 	}
 	
-	private void removeEdgeSelection(ISubCompoundGraph selection){
-		Iterator<ICompoundEdge> iter = selection.edgeIterator();
+	private void removeEdgeSelection(IDrawingElementSelection selection){
+		Iterator<ICompoundEdge> iter = selection.linkEdgeIterator();
 		while(iter.hasNext()){
-			ICompoundEdge link = iter.next();
+			ILinkEdge link = new LinkEdgeFacade(iter.next());
 			ILinkController linkController = getLinkController(link); 
 			notifyRemovedLink(linkController);
 			removeLinkController(linkController);
@@ -189,55 +223,45 @@ public class ViewControllerStore implements IViewControllerModel {
 	}
 	
 	private void removeLinkController(ILinkController linkController) {
-		domainToViewMap.remove(linkController.getDrawingElement());
+		domainToViewMap.remove(linkController.getDrawingElement().getGraphElement());
 		drawingPrimitives.remove(linkController);
 	}
 
 	private void removeNodeController(INodeController shapeNode){
-		domainToViewMap.remove(shapeNode.getDrawingElement());
+		domainToViewMap.remove(shapeNode.getDrawingElement().getGraphElement());
 		drawingPrimitives.remove(shapeNode);
 	}
 
 	private void buildFromDomainModel(){
-		Iterator<ICompoundNode> nodeIter = this.domainModel.nodeIterator();
+		Iterator<ICompoundNode> nodeIter = this.domainModel.drawingNodeIterator();
 		while(nodeIter.hasNext()){
 			ICompoundNode node = nodeIter.next();
 			createNodePrimitive(node);
 		}
-		Iterator<ICompoundEdge> edgeIter = this.domainModel.edgeIterator();
+		Iterator<ICompoundEdge> edgeIter = this.domainModel.linkEdgeIterator();
 		while(edgeIter.hasNext()){
 			ICompoundEdge link = edgeIter.next();
 			createLinkPrimitive(link);
 		}
 	}
 	
-	private INodeController createNodePrimitive(ICompoundNode compoundNode){
-		INodeController viewNode = null;
-		IElementAttribute node = compoundNode.getAttribute();
-		if(node instanceof IShapeAttribute){
-			viewNode = new ShapeController(this, compoundNode, indexCounter++);
-		}
-		else if(node instanceof ILabelAttribute){
-			viewNode = new LabelController(this, compoundNode, indexCounter++);
-		}
-		else if(node instanceof IRootAttribute){
-			this.rootPrimitive = new RootController(this, (IRootCompoundNode)compoundNode, indexCounter++);
-			viewNode = this.rootPrimitive;
-		}
-		else{
-			throw new RuntimeException("node is of unknown type");
-		}
+	private INodeController createNodePrimitive(final ICompoundNode graphNode){
+		ICanvasElementAttribute node = (ICanvasElementAttribute)graphNode.getAttribute();
+		ElementControllerFactory factory = new ElementControllerFactory(this); 
+		node.visit(factory);
+		INodeController viewNode = factory.getCreatedNodeController(); 
 		if(viewNode != null){
-			this.domainToViewMap.put(compoundNode, viewNode);
+			this.domainToViewMap.put(viewNode.getDrawingElement().getGraphElement(), viewNode);
 			this.drawingPrimitives.add(viewNode);
 		}
 		return viewNode;
 	}
 	
 	
-	private ILinkController createLinkPrimitive(ICompoundEdge linkAtt){
-		ILinkController linkCtlr = new LinkController(this, linkAtt, indexCounter++);
-		this.domainToViewMap.put(linkAtt, linkCtlr);
+	private ILinkController createLinkPrimitive(ICompoundEdge graphLink){
+		ILinkEdge linkEdge = new LinkEdgeFacade(graphLink);
+		ILinkController linkCtlr = new LinkController(this, linkEdge, indexCounter++);
+		this.domainToViewMap.put(linkEdge.getGraphElement(), linkCtlr);
 		this.drawingPrimitives.add(linkCtlr);
 		return linkCtlr;
 	}
@@ -323,13 +347,13 @@ public class ViewControllerStore implements IViewControllerModel {
 	}
 
 	@Override
-	public ICompoundGraph getDomainModel() {
+	public IModel getDomainModel() {
 		return this.domainModel;
 	}
 
 	@Override
-	public INodeController getNodeController(ICompoundNode draggedNode) {
-		IDrawingElementController retVal = this.domainToViewMap.get(draggedNode);
+	public INodeController getNodeController(IDrawingNode draggedNode) {
+		IDrawingElementController retVal = this.domainToViewMap.get(draggedNode.getGraphElement());
 		if(retVal == null){
 			throw new IllegalArgumentException("domain node is not present in this view model");
 		}
@@ -386,8 +410,8 @@ public class ViewControllerStore implements IViewControllerModel {
 	}
 
 	@Override
-	public boolean containsDrawingElement(ICompoundGraphElement testPrimitive) {
-		return this.domainToViewMap.containsKey(testPrimitive);
+	public boolean containsDrawingElement(IDrawingElement testPrimitive) {
+		return this.domainToViewMap.containsKey(testPrimitive.getGraphElement());
 	}
 
 	@Override
@@ -413,13 +437,13 @@ public class ViewControllerStore implements IViewControllerModel {
 	}
 
 	@Override
-	public ILinkController getLinkController(ICompoundEdge attribute) {
-		return (ILinkController)this.domainToViewMap.get(attribute);
+	public ILinkController getLinkController(ILinkEdge attribute) {
+		return (ILinkController)this.domainToViewMap.get(attribute.getGraphElement());
 	}
 
 	@Override
-	public IShapeController getShapeController(ICompoundNode attribute) {
-		return (IShapeController)this.domainToViewMap.get(attribute);
+	public IShapeController getShapeController(IShapeNode attribute) {
+		return (IShapeController)this.domainToViewMap.get(attribute.getGraphElement());
 	}
 
 	@Override
@@ -477,15 +501,49 @@ public class ViewControllerStore implements IViewControllerModel {
 		return this.intersectionCalculator;
 	}
 
-//	@Override
-//	public IViewControllerCollection getLastOperationResult() {
-//		// TODO Auto-generated method stub
-//		throw new UnsupportedOperationException("Not implemented yet!");
-//		
-//	}
 
 	@Override
-	public IDrawingElementController getDrawingPrimitiveController(ICompoundGraphElement testAttribute) {
-		return this.domainToViewMap.get(testAttribute);
+	public IDrawingElementController getDrawingPrimitiveController(IDrawingElement testAttribute) {
+		return this.domainToViewMap.get(testAttribute.getGraphElement());
+	}
+	
+	private class ElementControllerFactory implements ICanvasElementAttributeVisitor {
+		private INodeController viewNode = null;
+		private final IViewControllerModel viewController;
+		
+		public ElementControllerFactory(IViewControllerModel viewController){
+			this.viewController = viewController;
+		}
+		
+		public INodeController getCreatedNodeController(){
+			return this.viewNode;
+		}
+		
+		@Override
+		public void visitRoot(IRootAttribute attribute) {
+			this.viewNode = new RootController(viewController, new RootNodeFacade(attribute.getCurrentElement()), indexCounter++);
+			rootPrimitive = (IRootController)this.viewNode;
+		}
+
+		@Override
+		public void visitShape(IShapeAttribute attribute) {
+			viewNode = new ShapeController(viewController, new ShapeNodeFacade(attribute.getCurrentElement()), indexCounter++);
+		}
+
+		@Override
+		public void visitLink(ILinkAttribute attribute) {
+			throw new RuntimeException("node is of unknown type");
+		}
+
+		@Override
+		public void visitLabel(ILabelAttribute attribute) {
+			viewNode = new LabelController(viewController, new LabelNodeFacade(attribute.getCurrentElement()), indexCounter++);
+		}
+		
+	}
+
+	@Override
+	public IDrawingElementController findControllerByAttribute(ICanvasElementAttribute testAttribute) {
+		return this.domainToViewMap.get(testAttribute.getCurrentElement());
 	}
 }

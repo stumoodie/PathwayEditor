@@ -2,7 +2,7 @@ package org.pathwayeditor.visualeditor.selection;
 
 import java.util.Iterator;
 
-import uk.ac.ed.inf.graph.compound.ISubCompoundGraph;
+import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElementSelection;
 
 public interface ISubgraphSelection {
 
@@ -14,7 +14,7 @@ public interface ISubgraphSelection {
 
 	ISelectionRecord getSelectionRecord();
 
-	ISubCompoundGraph getDrawingElementSelection();
+	IDrawingElementSelection getDrawingElementSelection();
 
 	int numTopDrawingNodes();
 

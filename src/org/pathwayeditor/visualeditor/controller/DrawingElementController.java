@@ -124,11 +124,11 @@ public abstract class DrawingElementController implements IDrawingElementControl
 	
 	@Override
 	public int compareTo(IDrawingElementController other){
-		int retVal = this.getDrawingElement().getLevel() < other.getDrawingElement().getLevel() ? -1 :
-			(this.getDrawingElement().getLevel() > other.getDrawingElement().getLevel() ? 1 : 0);
+		int retVal = this.getDrawingElement().getGraphElement().getLevel() < other.getDrawingElement().getGraphElement().getLevel() ? -1 :
+			(this.getDrawingElement().getGraphElement().getLevel() > other.getDrawingElement().getGraphElement().getLevel() ? 1 : 0);
 		if(retVal == 0){
-			retVal = this.getDrawingElement().getIndex() < other.getDrawingElement().getIndex() ? -1 :
-				(this.getDrawingElement().getIndex() > other.getDrawingElement().getIndex() ? 1 : 0);
+			retVal = this.getDrawingElement().getGraphElement().getIndex() < other.getDrawingElement().getGraphElement().getIndex() ? -1 :
+				(this.getDrawingElement().getGraphElement().getIndex() > other.getDrawingElement().getGraphElement().getIndex() ? 1 : 0);
 		}
 		return retVal;
 	}

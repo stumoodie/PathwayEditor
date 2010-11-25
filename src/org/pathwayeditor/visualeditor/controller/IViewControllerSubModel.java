@@ -2,15 +2,15 @@ package org.pathwayeditor.visualeditor.controller;
 
 import java.util.Iterator;
 
-import uk.ac.ed.inf.graph.compound.ICompoundNode;
+import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNode;
 
 public interface IViewControllerSubModel extends Comparable<IViewControllerSubModel> {
 
 	IViewControllerModel getViewControllerModel();
 	
-	ICompoundNode getParentNode();
+	IDrawingNode getParentNode();
 	
-	Iterator<ICompoundNode> childNodeIterator();
+	Iterator<IDrawingNode> childNodeIterator();
 
 	int getLevel();
 	

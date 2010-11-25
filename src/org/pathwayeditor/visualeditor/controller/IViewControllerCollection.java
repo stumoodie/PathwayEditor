@@ -2,9 +2,11 @@ package org.pathwayeditor.visualeditor.controller;
 
 import java.util.Iterator;
 
-import uk.ac.ed.inf.graph.compound.ICompoundEdge;
-import uk.ac.ed.inf.graph.compound.ICompoundGraphElement;
-import uk.ac.ed.inf.graph.compound.ICompoundNode;
+import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasElementAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElement;
+import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNode;
+import org.pathwayeditor.businessobjects.drawingprimitives.ILinkEdge;
+import org.pathwayeditor.businessobjects.drawingprimitives.IShapeNode;
 
 public interface IViewControllerCollection {
 
@@ -18,13 +20,15 @@ public interface IViewControllerCollection {
 
 	Iterator<INodeController> nodeControllerIterator();
 
-	IDrawingElementController getDrawingPrimitiveController(ICompoundGraphElement testAttribute);
+	IDrawingElementController getDrawingPrimitiveController(IDrawingElement testAttribute);
 	
-	INodeController getNodeController(ICompoundNode testNode);
+	IDrawingElementController findControllerByAttribute(ICanvasElementAttribute testAttribute);
 	
-	ILinkController getLinkController(ICompoundEdge attribute);
+	INodeController getNodeController(IDrawingNode testNode);
+	
+	ILinkController getLinkController(ILinkEdge attribute);
 
-	IShapeController getShapeController(ICompoundNode attribute);
+	IShapeController getShapeController(IShapeNode attribute);
 
-	boolean containsDrawingElement(ICompoundGraphElement testPrimitive);
+	boolean containsDrawingElement(IDrawingElement testPrimitive);
 }

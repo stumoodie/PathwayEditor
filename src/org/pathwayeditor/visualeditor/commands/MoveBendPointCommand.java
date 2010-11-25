@@ -4,13 +4,13 @@ import org.pathwayeditor.businessobjects.drawingprimitives.IBendPointContainer;
 import org.pathwayeditor.figure.geometry.Point;
 
 public class MoveBendPointCommand implements ICommand {
-	private final IBendPointContainer bp;
+	private final IBendPointContainer bpContainer;
+	private final Point translation;
 	private final int idx;
-	private final Point newLocation;
 	
-	public MoveBendPointCommand(IBendPointContainer bendPoint, int idx, Point translation) {
-		this.bp = bendPoint;
-		this.newLocation = translation;
+	public MoveBendPointCommand(IBendPointContainer bpContainer, int idx, Point translation) {
+		this.bpContainer = bpContainer;
+		this.translation = translation;;
 		this.idx = idx;
 	}
 
@@ -21,12 +21,12 @@ public class MoveBendPointCommand implements ICommand {
 
 	@Override
 	public void redo() {
-		this.bp.translateBendPoint(idx, newLocation);
+		this.bpContainer.translateBendPoint(idx, this.translation.negate());
 	}
 
 	@Override
 	public void undo() {
-		this.bp.translateBendPoint(idx, newLocation.negate());
+		this.bpContainer.translateBendPoint(idx, this.translation);
 	}
 
 }

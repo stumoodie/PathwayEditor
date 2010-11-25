@@ -156,9 +156,21 @@ public class StubLinkBObjectType implements ILinkObjectType {
 		return this.getUniqueId() < o.getUniqueId() ? -1 : this.getUniqueId() > o.getUniqueId() ? 1 : 0;
 	}
 
+
 	@Override
 	public IObjectTypeParentingRules getParentingRules() {
-		return new LinkParentingRules(this);
-	}
+		return new IObjectTypeParentingRules(){
 
+			@Override
+			public IObjectType getObjectType() {
+				return StubLinkBObjectType.this;
+			}
+
+			@Override
+			public boolean isValidChild(IObjectType possibleChild) {
+				return false;
+			}
+			
+		};
+	}
 }

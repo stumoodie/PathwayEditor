@@ -25,9 +25,11 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyDefinition;
 import org.pathwayeditor.businessobjects.notationsubsystem.INotation;
 import org.pathwayeditor.businessobjects.notationsubsystem.INotationSubsystem;
 import org.pathwayeditor.businessobjects.notationsubsystem.INotationSyntaxService;
+import org.pathwayeditor.businessobjects.typedefn.ILabelObjectType;
 import org.pathwayeditor.businessobjects.typedefn.ILinkObjectType;
 import org.pathwayeditor.businessobjects.typedefn.IObjectType;
 import org.pathwayeditor.businessobjects.typedefn.IRootObjectType;
@@ -237,5 +239,27 @@ public class StubNotationSyntaxService implements INotationSyntaxService {
 	@Override
 	public int numObjectTypes(){
 		return this.numLinkObjectTypes() + this.numShapeObjectTypes() + NUM_ROOT_OTS;
+	}
+
+	@Override
+	public ILabelObjectType getLabelObjectType(int uniqueId) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Not implemented yet!");
+		
+	}
+
+	@Override
+	public ILabelObjectType getLabelObjectTypeByProperty(
+			IPropertyDefinition propDefn) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Not implemented yet!");
+		
+	}
+
+	@Override
+	public boolean isVisualisableProperty(IPropertyDefinition propDefn) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Not implemented yet!");
+		
 	}
 }

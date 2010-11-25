@@ -2,6 +2,7 @@ package org.pathwayeditor.visualeditor.geometry;
 
 import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
+import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
 import org.pathwayeditor.visualeditor.controller.INodeController;
 import org.pathwayeditor.visualeditor.selection.ISubgraphSelection;
 
@@ -19,8 +20,8 @@ public interface ICommonParentCalculator {
 
 	boolean hasFoundCommonParent();
 
-	INodeController getCommonParent();
+	IDrawingElementController getCommonParent();
 
-	INodeController findPotentialParent(final INodeController potentialChild, IConvexHull testPlacement);
+	IDrawingElementController findPotentialParent(final INodeController potentialChild, IConvexHull testPlacement);
 
 }

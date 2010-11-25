@@ -3,14 +3,15 @@ package org.pathwayeditor.visualeditor.controller;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
-import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.ILinkEdge;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.BendPointChange;
-import org.pathwayeditor.businessobjects.drawingprimitives.listeners.CanvasAttributePropertyChange;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IBendPointChangeEvent;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IBendPointChangeListener;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IBendPointLocationChangeEvent;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ILinkTerminusChangeListener;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ILinkTerminusValueChangeEvent;
+import org.pathwayeditor.businessobjects.drawingprimitives.listeners.LinkTerminusChangeType;
+import org.pathwayeditor.businessobjects.impl.facades.ShapeNodeFacade;
 import org.pathwayeditor.figure.figuredefn.IAnchorLocator;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.LineSegment;
@@ -18,15 +19,12 @@ import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.geometry.ILinkPointDefinition;
 import org.pathwayeditor.visualeditor.geometry.LinkPointDefinition;
 
-import uk.ac.ed.inf.graph.compound.CompoundNodePair;
-import uk.ac.ed.inf.graph.compound.ICompoundEdge;
-
 public class LinkController extends DrawingElementController implements ILinkController {
 	private final Logger logger = Logger.getLogger(this.getClass());
 //	private static final double LINE_SEGMENT_INTERSECTION_TOLERANCE = 1.0;
 //	private static final double LINE_HIT_TOLERENCE = 50.0;
 	//	private final Logger logger = Logger.getLogger(this.getClass());
-	private final ICompoundEdge linkAttribute;
+	private final ILinkEdge linkAttribute;
 	private final ILinkPointDefinition linkDefinition;
 	private boolean isActive;
 	private final ILinkTerminusChangeListener srcTermChangeListener;
@@ -38,16 +36,16 @@ public class LinkController extends DrawingElementController implements ILinkCon
 //	private IShapeController tgtNode;
 //	private final IBendPointChangeListener bpLocationChangeListener;
 	
-	public LinkController(IViewControllerModel localViewControllerStore, ICompoundEdge localLinkAttribute, int index){
+	public LinkController(IViewControllerModel localViewControllerStore, ILinkEdge localLinkAttribute, int index){
 		super(localViewControllerStore, index);
 		this.linkAttribute = localLinkAttribute;
-		this.linkDefinition = new LinkPointDefinition((ILinkAttribute)linkAttribute.getAttribute());
+		this.linkDefinition = new LinkPointDefinition(linkAttribute.getAttribute());
 //		srcNode = (IShapeController)this.viewModel.getNodePrimitive(this.linkAttribute.getCurrentDrawingElement().getSourceShape().getAttribute());
 //		tgtNode = (IShapeController)this.viewModel.getNodePrimitive(this.linkAttribute.getCurrentDrawingElement().getTargetShape().getAttribute());
 		this.srcTermChangeListener = new ILinkTerminusChangeListener() {
 			@Override
 			public void valueChangeEvent(ILinkTerminusValueChangeEvent e) {
-				if(e.getChangeType().equals(CanvasAttributePropertyChange.BOUNDS)){
+				if(e.getChangeType().equals(LinkTerminusChangeType.LOCATION)){
 					Envelope originalDrawnBounds = getDrawnBounds();
 					Point newLocation = (Point)e.getNewValue();
 					linkDefinition.setSrcAnchorPosition(newLocation);
@@ -58,7 +56,7 @@ public class LinkController extends DrawingElementController implements ILinkCon
 		this.tgtTermChangeListener = new ILinkTerminusChangeListener() {
 			@Override
 			public void valueChangeEvent(ILinkTerminusValueChangeEvent e) {
-				if(e.getChangeType().equals(CanvasAttributePropertyChange.BOUNDS)){
+				if(e.getChangeType().equals(LinkTerminusChangeType.LOCATION)){
 					Envelope originalDrawnBounds = getDrawnBounds();
 					Point newLocation = (Point)e.getNewValue();
 					linkDefinition.setTgtAnchorPosition(newLocation);
@@ -66,8 +64,39 @@ public class LinkController extends DrawingElementController implements ILinkCon
 				}
 			}
 		};
+//		this.bpLocationChangeListener = new IBendPointChangeListener() {
+//			
+//			@Override
+//			public void propertyChange(IBendPointLocationChangeEvent e) {
+//				Iterator<IBendPoint> bpIter = linkAttribute.getAttribute().bendPointIterator();
+//				int idx = -1;
+//				while(bpIter.hasNext()){
+//					idx++;
+//					IBendPoint bp =	 bpIter.next();
+//					if(bp.equals(e.getBendPoint())){
+//						break;
+//					}
+//				}
+//				Point bpPosn = e.getBendPoint().getLocation();
+//				linkDefinition.setBendPointPosition(idx, bpPosn);
+//				updateLinksToBendPoints(idx, bpPosn);
+//			}
+//
+//			@Override
+//			public void propertyChange(IBendPointChangeEvent e) {
+//			}
+//
+//		};
 		this.bpChangeListener = new IBendPointChangeListener() {
 			
+			@Override
+			public void locationChange(IBendPointLocationChangeEvent e) {
+				Point bpPosn = e.getNewPosition();
+				int idx = e.getBendPointIndex();
+				linkDefinition.setBendPointPosition(idx, bpPosn);
+				updateLinksToBendPoints(idx, bpPosn);
+			}
+
 			@Override
 			public void propertyChange(IBendPointChangeEvent e) {
 				if(e.getChangeType().equals(BendPointChange.BEND_POINT_ADDED)){
@@ -75,14 +104,14 @@ public class LinkController extends DrawingElementController implements ILinkCon
 					Point bpPosn = e.getBendPoint();
 					linkDefinition.addNewBendPoint(bpIdx, bpPosn);
 					updateLinksToBendPoints(bpIdx, bpPosn);
-//					e.getLink().addChangeListener(bpChangeListener);
+					e.getBendPointContainer().addChangeListener(bpChangeListener);
 				}
 				else if(e.getChangeType().equals(BendPointChange.BEND_POINT_REMOVED)){
 					int bpIdx = e.getOldIndexPos();
 					linkDefinition.removeBendPoint(bpIdx);
 					if(bpIdx < linkDefinition.numBendPoints()){
 						// recalculate anchor points on remaining bend-point(s)
-						Point bpPosn = getLinkAttribute().getBendPointContainer().getBendPoint(bpIdx);
+						Point bpPosn = linkAttribute.getAttribute().getBendPointContainer().getBendPoint(bpIdx);
 						updateLinksToBendPoints(bpIdx, bpPosn);
 					}
 					else if(linkDefinition.numBendPoints() == 0){
@@ -92,38 +121,13 @@ public class LinkController extends DrawingElementController implements ILinkCon
 					else{
 						// in this case the last bp was removed so we need to take the new last bp
 						int lastBpIdx = linkDefinition.numBendPoints()-1;
-						Point bpPosn = getLinkAttribute().getBendPointContainer().getBendPoint(lastBpIdx);
+						Point bpPosn = linkAttribute.getAttribute().getBendPointContainer().getBendPoint(lastBpIdx);
 						updateLinksToBendPoints(lastBpIdx, bpPosn);
 					}
-//					e.getLink().removeChangeListener(bpChangeListener);
+					e.getBendPointContainer().removeChangeListener(bpChangeListener);
 				}
 			}
-
-			@Override
-			public void locationChange(IBendPointLocationChangeEvent e) {
-				int idx = e.getBendPointIndex();
-				Point bpPosn = e.getNewPosition();
-				
-//				Iterator<Point> bpIter = getLinkAttribute().getBendPointContainer().bendPointIterator();
-//				int idx = -1;
-//				while(bpIter.hasNext()){
-//					idx++;
-//					IBendPoint bp = bpIter.next();
-//					if(bp.equals(e.getBendPoint())){
-//						break;
-//					}
-//				}
-//				Point bpPosn = e.getBendPoint().getLocation();
-				linkDefinition.setBendPointPosition(idx, bpPosn);
-				updateLinksToBendPoints(idx, bpPosn);
-			}
 		};
-//		this.bpChangeListener = new IBendPointChangeListener() {
-//			
-//			@Override
-//			public void propertyChange(IBendPointChangeEvent e) {
-//			}
-//		};
 //		this.srcNodeChangeListener = new ICanvasAttributePropertyChangeListener() {
 //			@Override
 //			public void propertyChange(ICanvasAttributePropertyChangeEvent e) {
@@ -142,31 +146,25 @@ public class LinkController extends DrawingElementController implements ILinkCon
 //		};
 	}
 	
-	private ILinkAttribute getLinkAttribute(){
-		return (ILinkAttribute)this.linkAttribute.getAttribute();
-	}
-	
 	private void updateAnchorPoints() {
-		updateSrcAnchor(getLinkAttribute().getTargetTerminus().getLocation());
-		updateTgtAnchor(getLinkAttribute().getSourceTerminus().getLocation());
+		updateSrcAnchor(linkAttribute.getAttribute().getTargetTerminus().getLocation());
+		updateTgtAnchor(linkAttribute.getAttribute().getSourceTerminus().getLocation());
 	}
 
 	private void updateSrcAnchor(Point otherEndPos){
-		CompoundNodePair nodePair = linkAttribute.getConnectedNodes();
-		IShapeController shapeController = getViewModel().getShapeController(nodePair.getOutNode());
+		IShapeController shapeController = getViewModel().getShapeController(new ShapeNodeFacade(linkAttribute.getSourceShape()));
 		IAnchorLocator anchorCalc = shapeController.getFigureController().getAnchorLocatorFactory().createAnchorLocator();
 		anchorCalc.setOtherEndPoint(otherEndPos);
 		Point newSrcPosn = anchorCalc.calcAnchorPosition();
-		getLinkAttribute().getSourceTerminus().setLocation(newSrcPosn);
+		linkAttribute.getAttribute().getSourceTerminus().setLocation(newSrcPosn);
 	}
 	
 	private void updateTgtAnchor(Point otherEndPos){
-		CompoundNodePair nodePair = linkAttribute.getConnectedNodes();
-		IShapeController shapeController = getViewModel().getShapeController(nodePair.getInNode());
+		IShapeController shapeController = getViewModel().getShapeController(new ShapeNodeFacade(linkAttribute.getTargetShape()));
 		IAnchorLocator anchorCalc = shapeController.getFigureController().getAnchorLocatorFactory().createAnchorLocator();
 		anchorCalc.setOtherEndPoint(otherEndPos);
 		Point newSrcPosn = anchorCalc.calcAnchorPosition();
-		getLinkAttribute().getTargetTerminus().setLocation(newSrcPosn);
+		linkAttribute.getAttribute().getTargetTerminus().setLocation(newSrcPosn);
 	}
 	
 	private void updateLinksToBendPoints(int bpIdx, Point bpPosn){
@@ -174,13 +172,13 @@ public class LinkController extends DrawingElementController implements ILinkCon
 		if(bpIdx == 0){
 			updateSrcAnchor(bpPosn);
 		}
-		if(bpIdx == getLinkAttribute().getBendPointContainer().numBendPoints()-1){
+		if(bpIdx == linkAttribute.getAttribute().getBendPointContainer().numBendPoints()-1){
 			updateTgtAnchor(bpPosn);
 		}
 	}
 	
 	@Override
-	public ICompoundEdge getDrawingElement() {
+	public ILinkEdge getDrawingElement() {
 		return this.linkAttribute;
 	}
 
@@ -191,9 +189,9 @@ public class LinkController extends DrawingElementController implements ILinkCon
 
 	@Override
 	public void activate() {
-		this.getLinkAttribute().getSourceTerminus().addLinkTerminusChangeListener(srcTermChangeListener);
-		this.getLinkAttribute().getTargetTerminus().addLinkTerminusChangeListener(tgtTermChangeListener);
-		this.getLinkAttribute().getBendPointContainer().addChangeListener(this.bpChangeListener);
+		this.linkAttribute.getAttribute().getSourceTerminus().addLinkTerminusChangeListener(srcTermChangeListener);
+		this.linkAttribute.getAttribute().getTargetTerminus().addLinkTerminusChangeListener(tgtTermChangeListener);
+		this.linkAttribute.getAttribute().getBendPointContainer().addChangeListener(this.bpChangeListener);
 //		this.srcNode.getDrawingElement().addChangeListener(srcNodeChangeListener);
 //		this.tgtNode.getDrawingElement().addChangeListener(tgtNodeChangeListener);
 		this.isActive = true;
@@ -201,9 +199,9 @@ public class LinkController extends DrawingElementController implements ILinkCon
 
 	@Override
 	public void inactivate() {
-		this.getLinkAttribute().getSourceTerminus().removeLinkTerminusChangeListener(srcTermChangeListener);
-		this.getLinkAttribute().getTargetTerminus().removeLinkTerminusChangeListener(tgtTermChangeListener);
-		this.getLinkAttribute().getBendPointContainer().removeChangeListener(this.bpChangeListener);
+		this.linkAttribute.getAttribute().getSourceTerminus().removeLinkTerminusChangeListener(srcTermChangeListener);
+		this.linkAttribute.getAttribute().getTargetTerminus().removeLinkTerminusChangeListener(tgtTermChangeListener);
+		this.linkAttribute.getAttribute().getBendPointContainer().removeChangeListener(this.bpChangeListener);
 //		this.srcNode.getDrawingElement().removeChangeListener(srcNodeChangeListener);
 //		this.tgtNode.getDrawingElement().removeChangeListener(tgtNodeChangeListener);
 		this.isActive = false;
@@ -267,9 +265,9 @@ public class LinkController extends DrawingElementController implements ILinkCon
 		Point diagonalCorner = drawnBounds.getDiagonalCorner();
 		Point verticalCorner = drawnBounds.getVerticalCorner();
 		return drawnBounds.containsPoint(line.getOrigin()) || drawnBounds.containsPoint(line.getTerminus())
-			|| line.intersect(new LineSegment(origin, horizontalCorner), this.getLinkAttribute().getLineWidth()) != null
-			|| line.intersect(new LineSegment(horizontalCorner, diagonalCorner), this.getLinkAttribute().getLineWidth()) != null
-			|| line.intersect(new LineSegment(diagonalCorner, verticalCorner), this.getLinkAttribute().getLineWidth()) != null
-			|| line.intersect(new LineSegment(verticalCorner, origin), this.getLinkAttribute().getLineWidth()) != null;
+			|| line.intersect(new LineSegment(origin, horizontalCorner), this.linkAttribute.getAttribute().getLineWidth()) != null
+			|| line.intersect(new LineSegment(horizontalCorner, diagonalCorner), this.linkAttribute.getAttribute().getLineWidth()) != null
+			|| line.intersect(new LineSegment(diagonalCorner, verticalCorner), this.linkAttribute.getAttribute().getLineWidth()) != null
+			|| line.intersect(new LineSegment(verticalCorner, origin), this.linkAttribute.getAttribute().getLineWidth()) != null;
 	}
 }

@@ -19,7 +19,6 @@ limitations under the License.
 package org.pathwayeditor.graphicsengine.stubs.notationsubsystem;
 
 import java.util.HashSet;
-import java.util.Iterator;
 
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LinkEndDecoratorShape;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LinkTermType;
@@ -67,44 +66,46 @@ public class StubSourceTerminusDefaults implements ILinkTerminusDefaults {
 		return EXPECTED_OFFSET;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.pathwayeditor.businessobjects.typedefn.ILinkTerminusDefaults#getPropertiesIterator()
-	 */
-	public Iterator<IPropertyDefinition> propertyDefinitionIterator() {
-		return this.propertyDefinitionList.iterator();
-	}
+//	/* (non-Javadoc)
+//	 * @see org.pathwayeditor.businessobjects.typedefn.ILinkTerminusDefaults#getPropertiesIterator()
+//	 */
+//	@Override
+//	public Iterator<IPropertyDefinition> propertyDefinitionIterator() {
+//		return this.propertyDefinitionList.iterator();
+//	}
 
-	/**
-	 * @return
-	 */
-	private HashSet<IPropertyDefinition> getpropdefns() {
-		return this.propertyDefinitionList;
-	}
+//	private HashSet<IPropertyDefinition> getpropdefns() {
+//		return this.propertyDefinitionList;
+//	}
 
-	public boolean containsPropertyDefinition(String name) {
-		return findPropDefn(name) != null;
-	}
+//	@Override
+//	public boolean containsPropertyDefinition(String name) {
+//		return findPropDefn(name) != null;
+//	}
 
-	IPropertyDefinition findPropDefn(String name){
-		IPropertyDefinition retVal = null;
-		for(IPropertyDefinition propDefn : this.getpropdefns()){
-			if(propDefn.getName().equals(name)){
-				retVal = propDefn;
-				break;
-			}
-		}
-		return retVal;
-	}
+//	IPropertyDefinition findPropDefn(String name){
+//		IPropertyDefinition retVal = null;
+//		for(IPropertyDefinition propDefn : this.getpropdefns()){
+//			if(propDefn.getName().equals(name)){
+//				retVal = propDefn;
+//				break;
+//			}
+//		}
+//		return retVal;
+//	}
 	
-	public IPropertyDefinition getPropertyDefinition(String name) {
-		return findPropDefn(name);
-	}
-
-	public int numPropertyDefinitions() {
-		return this.getpropdefns().size();
-	}
-
-	public boolean containsPropertyDefinition(IPropertyDefinition propDefn){
-		return propDefn != null && this.getpropdefns().contains(propDefn);
-	}
+//	@Override
+//	public IPropertyDefinition getPropertyDefinition(String name) {
+//		return findPropDefn(name);
+//	}
+//
+//	@Override
+//	public int numPropertyDefinitions() {
+//		return this.getpropdefns().size();
+//	}
+//
+//	@Override
+//	public boolean containsPropertyDefinition(IPropertyDefinition propDefn){
+//		return propDefn != null && this.getpropdefns().contains(propDefn);
+//	}
 }

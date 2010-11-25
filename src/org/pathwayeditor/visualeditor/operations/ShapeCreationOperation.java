@@ -1,8 +1,10 @@
 package org.pathwayeditor.visualeditor.operations;
 
 import org.apache.log4j.Logger;
+import org.pathwayeditor.businessobjects.drawingprimitives.IModel;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LineStyle;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.RGB;
+import org.pathwayeditor.businessobjects.impl.facades.RootNodeFacade;
 import org.pathwayeditor.businessobjects.typedefn.IShapeObjectType;
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Envelope;
@@ -15,12 +17,10 @@ import org.pathwayeditor.visualeditor.editingview.IShapePane;
 import org.pathwayeditor.visualeditor.feedback.IFeedbackModel;
 import org.pathwayeditor.visualeditor.feedback.IFeedbackNode;
 
-import uk.ac.ed.inf.graph.compound.ICompoundGraph;
-
 public class ShapeCreationOperation implements IShapeCreationOperation {
 	private final Logger logger = Logger.getLogger(this.getClass());
 	private final IShapePane shapePane;
-	private final ICompoundGraph viewModel;
+	private final IModel viewModel;
 	private final IFeedbackModel feedbackModel;
 	private final ICommandStack commandStack;
 	private IShapeObjectType shapeObjectType;
@@ -28,7 +28,7 @@ public class ShapeCreationOperation implements IShapeCreationOperation {
 	private Dimension sizeDelta;
 	private Point startLocation;
 
-	public ShapeCreationOperation(IShapePane shapePane, IFeedbackModel feedbackModel, ICompoundGraph viewModel, ICommandStack commandStack) {
+	public ShapeCreationOperation(IShapePane shapePane, IFeedbackModel feedbackModel, IModel viewModel, ICommandStack commandStack) {
 		this.shapePane = shapePane;
 		this.viewModel = viewModel;
 		this.feedbackModel = feedbackModel;
@@ -38,7 +38,7 @@ public class ShapeCreationOperation implements IShapeCreationOperation {
 	@Override
 	public void createShape(Point origin) {
 		Envelope bounds = new Envelope(origin, this.shapeObjectType.getDefaultAttributes().getSize());
-		ICommand cmd = new ShapeCreationCommand(viewModel.getRoot(), this.shapeObjectType, bounds);
+		ICommand cmd = new ShapeCreationCommand(new RootNodeFacade(viewModel.getGraph().getRoot()), this.shapeObjectType, bounds);
 		this.commandStack.execute(cmd);
 		if(logger.isDebugEnabled()){
 			logger.debug("Create a new shape at: " + cmd);
@@ -60,7 +60,7 @@ public class ShapeCreationOperation implements IShapeCreationOperation {
 	public void finishCreationDrag(Point newLocation) {
 		calculateBounds(newLocation);
 		Envelope bounds = new Envelope(this.startLocation, new Dimension(0, 0)).resize(originDelta, sizeDelta);
-		ICommand cmd = new ShapeCreationCommand(viewModel.getRoot(), this.shapeObjectType, bounds);
+		ICommand cmd = new ShapeCreationCommand(new RootNodeFacade(viewModel.getGraph().getRoot()), this.shapeObjectType, bounds);
 		this.commandStack.execute(cmd);
 		if(logger.isDebugEnabled()){
 			logger.debug("Create a new shape at: " + cmd);

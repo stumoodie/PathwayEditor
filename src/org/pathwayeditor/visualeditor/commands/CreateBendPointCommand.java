@@ -1,14 +1,14 @@
 package org.pathwayeditor.visualeditor.commands;
 
-import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.IBendPointContainer;
 import org.pathwayeditor.figure.geometry.Point;
 
 public class CreateBendPointCommand implements ICommand {
-	private final ILinkAttribute linkAttribute;
+	private final IBendPointContainer linkAttribute;
 	private final int lineSegmentIdx;
 	private final Point position;
 	
-	public CreateBendPointCommand(ILinkAttribute drawingElement, int lineSegmentIdx, Point position) {
+	public CreateBendPointCommand(IBendPointContainer drawingElement, int lineSegmentIdx, Point position) {
 		this.linkAttribute = drawingElement;
 		this.lineSegmentIdx = lineSegmentIdx;
 		this.position = position;
@@ -21,12 +21,12 @@ public class CreateBendPointCommand implements ICommand {
 
 	@Override
 	public void redo() {
-		this.linkAttribute.getBendPointContainer().createNewBendPoint(this.lineSegmentIdx, this.position);
+		this.linkAttribute.createNewBendPoint(this.lineSegmentIdx, this.position);
 	}
 
 	@Override
 	public void undo() {
-		this.linkAttribute.getBendPointContainer().removeBendPoint(this.lineSegmentIdx);
+		this.linkAttribute.removeBendPoint(this.lineSegmentIdx);
 	}
 
 }

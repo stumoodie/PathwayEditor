@@ -48,8 +48,8 @@ public class FastShapeIntersectionCalculator implements IIntersectionCalculator 
 				retVal = -1;
 			}
 			else{
-				long o1Idx = o1.getDrawingElement().getIndex();
-				long o2Idx = o2.getDrawingElement().getIndex();
+				long o1Idx = o1.getDrawingElement().getUniqueIndex();
+				long o2Idx = o2.getDrawingElement().getUniqueIndex();
 				retVal = o1Idx < o2Idx ? 1 : (o1Idx > o2Idx ? -1 : 0); 
 			}
 			return retVal;
@@ -176,7 +176,7 @@ public class FastShapeIntersectionCalculator implements IIntersectionCalculator 
 			if(prim instanceof INodeController){
 				INodeController node = (INodeController)prim;
 				// ignore matches to self
-				if(!node.equals(queryNode) && !node.equals(rootNode) && filter.accept(node) && node.intersectsHull(queryHull)){
+				if(!node.equals(queryNode) && !node.equals(rootNode) && filter.accept(node) && !queryNode.getDrawingElement().isDescendent(node.getDrawingElement()) && node.intersectsHull(queryHull)){
 					retVal.add(node);
 				}
 			}

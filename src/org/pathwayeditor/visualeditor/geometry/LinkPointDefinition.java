@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.pathwayeditor.businessobjects.drawingprimitives.IBendPointContainer;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LineStyle;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.RGB;
@@ -33,9 +34,10 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 	private Point tgtListEndPosn;
 	
 	public LinkPointDefinition(ILinkAttribute link){
-		this.pointList = new ArrayList<Point>(link.getBendPointContainer().numBendPoints()+SRC_TERM_DIM);
+		IBendPointContainer bpContainer = link.getBendPointContainer();
+		this.pointList = new ArrayList<Point>(bpContainer.numBendPoints()+SRC_TERM_DIM);
 		this.pointList.add(link.getSourceTerminus().getLocation());
-		Iterator<Point> iter = link.getBendPointContainer().bendPointIterator();
+		Iterator<Point> iter = bpContainer.bendPointIterator();
 		while(iter.hasNext()){
 			Point bp = iter.next();
 			this.pointList.add(bp);

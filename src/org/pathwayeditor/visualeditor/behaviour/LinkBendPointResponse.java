@@ -8,7 +8,7 @@ public class LinkBendPointResponse extends HandleResponse {
 //	private static final int DEFAULT_SEGMENT_IDX = 0;
 	private final ILinkOperation linkOperation;
 	private ISelectionHandle selectionHandle = null;
-	private Point lastLocation;
+	private Point lastDelta;
 	
 	public LinkBendPointResponse(ILinkOperation linkOperation){
 		super();
@@ -32,22 +32,23 @@ public class LinkBendPointResponse extends HandleResponse {
 
 	@Override
 	public void dragContinuing(Point newLocation) {
-		this.linkOperation.moveBendPointOngoing(selectionHandle, newLocation);
-		this.lastLocation = newLocation;
+		this.lastDelta = calculateLocationDelta(newLocation);
+		this.linkOperation.moveBendPointOngoing(selectionHandle, this.lastDelta);
 	}
 
 	@Override
 	public void dragFinished() {
 		exitDragOngoingState();
-		this.linkOperation.moveBendPointFinished(selectionHandle, this.lastLocation);
+		this.linkOperation.moveBendPointFinished(selectionHandle, this.lastDelta);
 	}
 
 	@Override
 	public void dragStarted(ISelectionHandle selectionHandle, Point startLocation) {
 		if(!selectionHandle.getType().equals(SelectionHandleType.LinkBendPoint)) throw new IllegalArgumentException("Only expect to respond to link bend point handles");
 		
-		this.lastLocation = startLocation;
 		this.selectionHandle = selectionHandle;
+		this.setStartLocation(startLocation);
+		this.lastDelta = calculateLocationDelta(startLocation);
 		this.linkOperation.moveBendPointStated(selectionHandle);
 		this.enterDragOngoingState();
 	}
