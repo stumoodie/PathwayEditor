@@ -2,10 +2,14 @@ package org.pathwayeditor.visualeditor.behaviour;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.SortedSet;
+
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 
 import org.apache.log4j.Logger;
 import org.pathwayeditor.figure.geometry.Dimension;
@@ -17,18 +21,20 @@ import org.pathwayeditor.visualeditor.editingview.ISelectionLayer;
 import org.pathwayeditor.visualeditor.editingview.IShapePane;
 import org.pathwayeditor.visualeditor.editingview.LayerType;
 import org.pathwayeditor.visualeditor.geometry.IIntersectionCalculator;
+import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle.SelectionHandleType;
 import org.pathwayeditor.visualeditor.selection.ISelectionRecord;
 
 public class SelectionStateController implements ISelectionStateBehaviourController {
 	private final Logger logger = Logger.getLogger(this.getClass());
 	private MouseListener mouseSelectionListener;
-	private IShapePane shapePane;
-	private Map<SelectionHandleType, IDragResponse> dragResponseMap;
+	private final IShapePane shapePane;
+	private final Map<SelectionHandleType, IDragResponse> dragResponseMap;
 	private final KeyListener keyListener;
-	private IKeyboardResponse keyboardResponseMap;
-	private Map<SelectionHandleType, IMouseFeedbackResponse> mouseResponseMap;
-	private Map<SelectionHandleType, IPopupMenuResponse> popupMenuMap;
+	private final IKeyboardResponse keyboardResponseMap;
+	private final Map<SelectionHandleType, IMouseFeedbackResponse> mouseResponseMap;
+	private final Map<SelectionHandleType, IPopupMenuResponse> popupMenuMap;
+	private final MouseListener popupMenuListener;
 	private final SelectionStateDragListener dragListener;
 	private final SelectionStateMouseFeedbackListener mouseFeedbackListener;
 	private final SelectionFeedbackListener selectionFeedbackListener;
@@ -79,6 +85,50 @@ public class SelectionStateController implements ISelectionStateBehaviourControl
 			@Override
 			public void keyTyped(KeyEvent e) {
 				logger.trace("Key type detected");
+			}
+        	
+        };
+        this.popupMenuListener = new MouseListener(){
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				if(e.isPopupTrigger()){
+					SelectionHandleType popupSelectionHandle = SelectionHandleType.None;
+					Point location = getAdjustedMousePosition(e.getPoint().getX(), e.getPoint().getY());
+					ISelectionLayer selectionLayer = shapePane.getLayer(LayerType.SELECTION);
+					IDrawingElementController nodeController = findDrawingElementAt(location);
+					if(nodeController != null){
+						if(!selectionLayer.getSelectionRecord().isNodeSelected(nodeController)){
+							// not selected so select first before do anything else
+							selectionLayer.getSelectionRecord().setPrimarySelection(nodeController);
+						}
+					}
+					ISelectionHandle currSelectionHandle = selectionLayer.getSelectionRecord().findSelectionModelAt(location);
+					if(currSelectionHandle != null){
+						popupSelectionHandle = currSelectionHandle.getType();
+					}
+					IPopupMenuResponse response = popupMenuMap.get(popupSelectionHandle);
+					JPopupMenu popup = response.getPopupMenu(currSelectionHandle);
+					if(popup != null){
+						popup.show((JPanel)shapePane, e.getX(), e.getY());
+					}
+				}
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
 			}
         	
         };
@@ -354,6 +404,7 @@ public class SelectionStateController implements ISelectionStateBehaviourControl
         this.shapePane.addMouseListener(this.dragListener);
         this.shapePane.addMouseMotionListener(this.mouseFeedbackListener);
         this.shapePane.addMouseListener(selectionFeedbackListener);
+        this.shapePane.addMouseListener(popupMenuListener);
         for(IPopupMenuResponse popupResponse : this.popupMenuMap.values()){
         	popupResponse.activate();
         }
@@ -368,6 +419,7 @@ public class SelectionStateController implements ISelectionStateBehaviourControl
         this.shapePane.removeMouseMotionListener(this.dragListener);
         this.shapePane.removeMouseListener(this.dragListener);
         this.shapePane.removeMouseListener(selectionFeedbackListener);
+        this.shapePane.removeMouseListener(popupMenuListener);
         for(IPopupMenuResponse popupResponse : this.popupMenuMap.values()){
         	popupResponse.deactivate();
         }
