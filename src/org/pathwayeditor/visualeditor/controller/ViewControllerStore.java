@@ -91,34 +91,16 @@ public class ViewControllerStore implements IViewControllerModel {
 		buildFromDomainModel();
 		this.intersectionCalculator = new FastShapeIntersectionCalculator(this);
 		initialiseDomainListeners();
+		if(this.domainModel.numDrawingElements() != this.domainToViewMap.size()){
+			throw new IllegalStateException("Inconsistent number of controllers and drawing elements");
+		}
+		if(this.domainModel.numDrawingElements() != this.drawingPrimitives.size()){
+			throw new IllegalStateException("Inconsistent number of controllers and drawing elements");
+		}
 	}
 	
 	private void initialiseDomainListeners() {
 		modelListener = new IGraphStructureChangeListener(){
-//			@Override
-//			public void modelStructureChange(IGraphStructureChangeEvent event) {
-//				if(event.getChangeType().equals(GraphStructureChangeType.SUBGRAPH_REMOVED)){
-////					rebuildModel();
-//					inactivateSelection(event.getOriginalSelection());
-//					removeSelection(event.getOriginalSelection());
-//				}
-//				else if(event.getChangeType().equals(GraphStructureChangeType.SUBGRAPH_MOVED)){
-//					// reinitialise the nodes
-//					inactivateSelection(event.getOriginalSelection());
-//					removeSelection(event.getOriginalSelection());
-//					addSelection(event.getChangedSelection());
-//					activateSelection(event.getChangedSelection());
-//				}
-//				else if(event.getChangeType().equals(GraphStructureChangeType.SUBGRAPH_COPIED)){
-//					addSelection(event.getChangedSelection());
-//					activateSelection(event.getChangedSelection());
-//				}
-//				else if(event.getChangeType().equals(GraphStructureChangeType.ELEMENT_ADDED)){
-//					addSelection(event.getChangedSelection());
-//					activateSelection(event.getChangedSelection());
-//				}
-//			}
-
 			@Override
 			public void graphStructureChange(IGraphStructureChangeAction event) {
 				if(event.getChangeType().equals(GraphStructureChangeType.SUBGRAPH_REMOVED)){
@@ -145,11 +127,6 @@ public class ViewControllerStore implements IViewControllerModel {
 			
 		};
 		this.domainModel.getGraph().addGraphStructureChangeListener(modelListener);
-//		Iterator<ICompoundNode> nodeIter = this.domainModel.drawingNodeIterator();
-//		while(nodeIter.hasNext()){
-//			ICompoundNode node = nodeIter.next();
-//			node.getChildCompoundGraph().addGraphStructureChangeListener(modelListener);
-//		}
 	}
 	
 	private void addSelection(IDrawingElementSelection selection){
@@ -165,11 +142,23 @@ public class ViewControllerStore implements IViewControllerModel {
 			ILinkController newLinkCont = createLinkPrimitive(link);
 			notifyAddedLink(newLinkCont);
 		}
+		if(this.domainModel.numDrawingElements() != this.domainToViewMap.size()){
+			throw new IllegalStateException("Inconsistent number of controllers and drawing elements");
+		}
+		if(this.domainModel.numDrawingElements() != this.drawingPrimitives.size()){
+			throw new IllegalStateException("Inconsistent number of controllers and drawing elements");
+		}
 	}
 		
 	private void removeSelection(IDrawingElementSelection selection){
 		removeNodeSelection(selection);
 		removeEdgeSelection(selection);
+		if(this.domainModel.numDrawingElements() != this.domainToViewMap.size()){
+			throw new IllegalStateException("Inconsistent number of controllers and drawing elements");
+		}
+		if(this.domainModel.numDrawingElements() != this.drawingPrimitives.size()){
+			throw new IllegalStateException("Inconsistent number of controllers and drawing elements");
+		}
 	}
 	
 	private void activateSelection(IDrawingElementSelection selection) {
