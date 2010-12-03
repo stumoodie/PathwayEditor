@@ -110,7 +110,7 @@ public abstract class DrawingElementController implements IDrawingElementControl
 	}
 	
 	@Override
-	public String toString(){
+	public final String toString(){
 		StringBuilder buf = new StringBuilder(this.getClass().getSimpleName());
 		buf.append("(index=");
 		buf.append(this.index);
@@ -118,6 +118,8 @@ public abstract class DrawingElementController implements IDrawingElementControl
 		buf.append(this.getDrawingElement());
 		buf.append(",drawnBounds=");
 		buf.append(this.getDrawnBounds());
+		buf.append(",active=");
+		buf.append(this.isActive());
 		buf.append(")");
 		return buf.toString();
 	}

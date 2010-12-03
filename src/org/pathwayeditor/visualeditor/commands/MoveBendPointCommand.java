@@ -21,12 +21,12 @@ public class MoveBendPointCommand implements ICommand {
 
 	@Override
 	public void redo() {
-		this.bpContainer.translateBendPoint(idx, this.translation.negate());
+		this.bpContainer.translateBendPoint(idx, this.translation);
 	}
 
 	@Override
 	public void undo() {
-		this.bpContainer.translateBendPoint(idx, this.translation);
+		this.bpContainer.translateBendPoint(idx, this.translation.negate());
 	}
 
 }

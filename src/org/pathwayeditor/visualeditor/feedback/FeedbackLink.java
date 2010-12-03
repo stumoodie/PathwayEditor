@@ -100,9 +100,15 @@ public class FeedbackLink implements IFeedbackLink {
 	}
 
 	@Override
-	public void moveBendPoint(int bpIdx, Point newLocation) {
-		ILinkPointDefinition origDefn = this.linkDefinition.getCopy();;
+	public void moveBendPoint(int bpIdx, Point translation) {
+		Point delta = translation;
+		if(this.lastDelta != null){
+			delta = lastDelta.difference(translation);
+		}
+		ILinkPointDefinition origDefn = this.linkDefinition.getCopy();
+		Point newLocation = this.linkDefinition.getBendPointPosition(bpIdx).translate(delta);
 		this.linkDefinition.setBendPointPosition(bpIdx, newLocation);
+		lastDelta = translation;
 		updateLinksToBendPoints(bpIdx, newLocation);
 		notifyLinkChange(origDefn, this.linkDefinition);
 	}
