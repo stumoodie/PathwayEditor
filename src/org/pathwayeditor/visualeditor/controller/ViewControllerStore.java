@@ -123,6 +123,12 @@ public class ViewControllerStore implements IViewControllerModel {
 					addSelection(new DrawingElementSelectionFacade(event.changedSubgraph()));
 					activateSelection(new DrawingElementSelectionFacade(event.changedSubgraph()));
 				}
+				if(domainModel.numDrawingElements() != domainToViewMap.size()){
+					throw new IllegalStateException("Inconsistent number of controllers and drawing elements");
+				}
+				if(domainModel.numDrawingElements() != drawingPrimitives.size()){
+					throw new IllegalStateException("Inconsistent number of controllers and drawing elements");
+				}
 			}
 			
 		};
@@ -142,23 +148,11 @@ public class ViewControllerStore implements IViewControllerModel {
 			ILinkController newLinkCont = createLinkPrimitive(link);
 			notifyAddedLink(newLinkCont);
 		}
-		if(this.domainModel.numDrawingElements() != this.domainToViewMap.size()){
-			throw new IllegalStateException("Inconsistent number of controllers and drawing elements");
-		}
-		if(this.domainModel.numDrawingElements() != this.drawingPrimitives.size()){
-			throw new IllegalStateException("Inconsistent number of controllers and drawing elements");
-		}
 	}
 		
 	private void removeSelection(IDrawingElementSelection selection){
 		removeNodeSelection(selection);
 		removeEdgeSelection(selection);
-		if(this.domainModel.numDrawingElements() != this.domainToViewMap.size()){
-			throw new IllegalStateException("Inconsistent number of controllers and drawing elements");
-		}
-		if(this.domainModel.numDrawingElements() != this.drawingPrimitives.size()){
-			throw new IllegalStateException("Inconsistent number of controllers and drawing elements");
-		}
 	}
 	
 	private void activateSelection(IDrawingElementSelection selection) {
