@@ -1,6 +1,7 @@
 package org.pathwayeditor.visualeditor;
 
 import java.awt.BorderLayout;
+import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,9 +12,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.regex.Pattern;
 
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -21,11 +20,15 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.WindowConstants;
-import javax.swing.filechooser.FileFilter;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 
 import org.pathwayeditor.businessobjects.exchange.FileXmlCanvasPersistenceManager;
 import org.pathwayeditor.businessobjects.exchange.IXmlPersistenceManager;
 import org.pathwayeditor.businessobjects.management.INotationSubsystemPool;
+import org.pathwayeditor.visualeditor.query.IPathwayQueryController;
+import org.pathwayeditor.visualeditor.query.QueryData;
+import org.pathwayeditor.visualeditor.query.SearchDialog;
 
 public class VisualEditor extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -34,6 +37,7 @@ public class VisualEditor extends JFrame {
 	private static final int HEIGHT = 800;
 	private final JMenuBar menuBar;
 	private final PathwayEditor insp;
+	private final SearchDialog searchDialog;
 	
 	public VisualEditor(String title){
 		super(title);
@@ -82,6 +86,25 @@ public class VisualEditor extends JFrame {
 			
 		});
 		this.setJMenuBar(menuBar);
+		Dialog dialog = new Dialog(this, "Search Dialog");
+		dialog.setAlwaysOnTop(true);
+		searchDialog = new SearchDialog(dialog, new IPathwayQueryController() {
+			@Override
+			public void setQueryData(QueryData queryData) {
+				
+			}
+			
+			@Override
+			public void runQuery() {
+				
+			}
+			
+			@Override
+			public QueryData getQueryData() {
+				throw new UnsupportedOperationException("Not implemented yet!");
+				
+			}
+		});
 		this.insp = new PathwayEditor();
 		this.insp.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		this.add(this.insp, BorderLayout.CENTER);
@@ -93,41 +116,39 @@ public class VisualEditor extends JFrame {
 	private void initFileMenu(){
 		JMenu fileMenu = new JMenu("File");
 		fileMenu.setMnemonic(KeyEvent.VK_F);
-		fileMenu.getAccessibleContext().setAccessibleDescription(
-		        "The only menu in this program that has menu items");
 		menuBar.add(fileMenu);
 		//a group of JMenuItems
-		JMenuItem fileMenuOpenItem = new JMenuItem("Open", KeyEvent.VK_O);
-		fileMenuOpenItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.ALT_MASK));
-		fileMenuOpenItem.getAccessibleContext().setAccessibleDescription("This doesn't really do anything");
-		fileMenuOpenItem.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JFileChooser chooser = new JFileChooser();
-//				chooser.setCurrentDirectory(new File("/Users/smoodie/Documents/workspace351_64/GraphicsEngine"));
-				chooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
-				chooser.setFileFilter(new FileFilter(){
-					
-					@Override
-					public boolean accept(File f) {
-						String fileName = f.getName();
-						return Pattern.matches(".*\\.pwe$", fileName);
-					}
-
-					@Override
-					public String getDescription() {
-						return "Pathway Editor files";
-					}
-					
-				});
-				int response = chooser.showOpenDialog(VisualEditor.this);
-				if(response == JFileChooser.APPROVE_OPTION){
-					File openFile = chooser.getSelectedFile();
-					openFile(openFile);
-				}
-			}
-		});
-		fileMenu.add(fileMenuOpenItem);
+//		JMenuItem fileMenuOpenItem = new JMenuItem("Open", KeyEvent.VK_O);
+//		fileMenuOpenItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.ALT_MASK));
+//		fileMenuOpenItem.getAccessibleContext().setAccessibleDescription("This doesn't really do anything");
+//		fileMenuOpenItem.addActionListener(new ActionListener() {
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				JFileChooser chooser = new JFileChooser();
+////				chooser.setCurrentDirectory(new File("/Users/smoodie/Documents/workspace351_64/GraphicsEngine"));
+//				chooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
+//				chooser.setFileFilter(new FileFilter(){
+//					
+//					@Override
+//					public boolean accept(File f) {
+//						String fileName = f.getName();
+//						return Pattern.matches(".*\\.pwe$", fileName);
+//					}
+//
+//					@Override
+//					public String getDescription() {
+//						return "Pathway Editor files";
+//					}
+//					
+//				});
+//				int response = chooser.showOpenDialog(VisualEditor.this);
+//				if(response == JFileChooser.APPROVE_OPTION){
+//					File openFile = chooser.getSelectedFile();
+//					openFile(openFile);
+//				}
+//			}
+//		});
+//		fileMenu.add(fileMenuOpenItem);
 		JMenuItem fileMenuExitItem = new JMenuItem("Exit", KeyEvent.VK_X);
 		fileMenuExitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.ALT_MASK));
 		fileMenuExitItem.getAccessibleContext().setAccessibleDescription("This doesn't really do anything");
@@ -138,8 +159,37 @@ public class VisualEditor extends JFrame {
 			}
 		});
 		fileMenu.add(fileMenuExitItem);
+		JMenu searchMenu = new JMenu("Search");
+		searchMenu.setMnemonic(KeyEvent.VK_S);
+		menuBar.add(searchMenu);
+		searchMenu.addMenuListener(new MenuListener(){
+
+			@Override
+			public void menuCanceled(MenuEvent arg0) {
+			}
+
+			@Override
+			public void menuDeselected(MenuEvent arg0) {
+			}
+
+			@Override
+			public void menuSelected(MenuEvent arg0) {
+				initiateSearch();
+			}
+			
+		});
+//		addActionListener(new ActionListener(){
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				initiateSearch();
+//			}
+//		});
 	}
+
 	
+	private void initiateSearch(){
+		this.searchDialog.setVisible(true);
+	}
 
 	public void openFile(File file){
 		try{
