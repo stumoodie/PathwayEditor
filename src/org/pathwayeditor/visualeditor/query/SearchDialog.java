@@ -5,6 +5,9 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.math.BigDecimal;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -14,7 +17,7 @@ import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
 
-public class SearchDialog extends JDialog implements ActionListener {
+public class SearchDialog extends JDialog implements ActionListener, FocusListener {
 	private final Logger logger = Logger.getLogger(this.getClass());
 	private static final long serialVersionUID = 1L;
 	private static final String QUERY_CMD = "query";
@@ -28,7 +31,6 @@ public class SearchDialog extends JDialog implements ActionListener {
 	private final JButton queryButton = new JButton("Search");
 	private final JButton dismissButton = new JButton("Dismiss");
 	private final IPathwayQueryController queryController;
-	private QueryData queryData;
 
 	public SearchDialog(Dialog dialog, IPathwayQueryController pathwayQuery){
 		super(dialog);
@@ -39,6 +41,7 @@ public class SearchDialog extends JDialog implements ActionListener {
 		this.dismissButton.addActionListener(this);
 		this.dismissButton.setActionCommand(CLOSE_CMD);
 		this.nodeSearchTerm.addActionListener(this);
+		this.nodeSearchTerm.addFocusListener(this);
 		this.nodeSearchTerm.setActionCommand(TERM1_CMD);
 		this.add(queryPanel);
 		this.pack();
@@ -85,13 +88,34 @@ public class SearchDialog extends JDialog implements ActionListener {
 		c.gridy = 2;
 		c.gridwidth = 1;
 		this.queryPanel.add(dismissButton, c);
+		refreshView();
+	}
+
+	private void refreshView(){
+		refreshField(this.nodeSearchTerm, this.queryController.getQueryData().getTerm1());
+		String confScoreTxt = "";
+		if(this.queryController.getQueryData().getConfScoreCutoff() != null){
+			confScoreTxt = this.queryController.getQueryData().getConfScoreCutoff().toString();
+		}
+		if(!this.queryValue.getText().equals(confScoreTxt)){
+			this.queryValue.setText(confScoreTxt);
+		}
+	}
+
+	private void refreshField(JTextField termField, String term) {
+		String fieldValue = "";
+		if(term != null){
+			fieldValue = term;
+		}
+		if(!termField.getText().equals(fieldValue)){
+			termField.setText(fieldValue);
+		}
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand().equals(QUERY_CMD)){
 			logger.debug("Running Query");
-			queryController.setQueryData(queryData);
 			queryController.runQuery();
 			logger.debug("Query finished");
 		}
@@ -100,38 +124,37 @@ public class SearchDialog extends JDialog implements ActionListener {
 		}
 		else if(e.getActionCommand().equals(TERM1_CMD) || e.getActionCommand().equals(TERM2_CMD)
 				|| e.getActionCommand().endsWith(CONF_SCORE_CMD)){
-			updateData();
+			updateQueryData();
 		}
 	}
 
-	public QueryData getQueryData() {
-		return queryData;
-	}
-
-	public void setQueryData(QueryData queryData) {
-		this.queryData = queryData;
-		updateData();
+	private void updateQueryData(){
+		updateTerm1();
+		updateQueryValue();
 	}
 	
-	private void updateData(){
-		updateField(this.nodeSearchTerm, this.queryData.getTerm1());
-		String confScoreTxt = "";
-		if(this.queryData.getConfScoreCutoff() != null){
-			confScoreTxt = this.queryData.getConfScoreCutoff().toString();
-		}
-		if(!this.queryValue.getText().equals(confScoreTxt)){
-			this.queryValue.setText(confScoreTxt);
+	private void updateQueryValue(){
+		String confScoreTxt = this.queryValue.getText();
+		if(confScoreTxt != null && !confScoreTxt.isEmpty()){
+			BigDecimal confScoreCutoff = new BigDecimal(confScoreTxt);
+			this.queryController.getQueryData().setConfScoreCutoff(confScoreCutoff);
 		}
 	}
 
-	private void updateField(JTextField termField, String term) {
-		String fieldValue = "";
-		if(term != null){
-			fieldValue = term;
+	private void updateTerm1() {
+		String term1 = this.nodeSearchTerm.getText();
+		if(term1 != null && !term1.isEmpty()){
+			this.queryController.getQueryData().setTerm1(term1);
 		}
-		if(!termField.getText().equals(fieldValue)){
-			termField.setText(fieldValue);
-		}
+	}
+
+	@Override
+	public void focusGained(FocusEvent arg0) {
+	}
+
+	@Override
+	public void focusLost(FocusEvent arg0) {
+		updateQueryData();
 	}
 
 }

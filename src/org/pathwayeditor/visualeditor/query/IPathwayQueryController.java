@@ -12,4 +12,7 @@ public interface IPathwayQueryController {
 	
 	void runQuery();
 
+	IPathwayQueryResult getQueryResult();
+
+	void initialise();
 }

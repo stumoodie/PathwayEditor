@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/GraphicsEngine/src/org/pathwayeditor/visualeditor/PathwayEditorCmd.java"/>
+<listEntry value="/GraphicsEngine/src/org/pathwayeditor/visualeditor/PathwayQueryCmd.java"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="1"/>
 </listAttribute>
-<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.pathwayeditor.visualeditor.PathwayEditorCmd"/>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.pathwayeditor.visualeditor.PathwayQueryCmd"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="${string_prompt}"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="GraphicsEngine"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx512m"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx2048m -splash:images/theiaSplash.png"/>
 </launchConfiguration>

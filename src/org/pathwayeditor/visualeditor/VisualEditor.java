@@ -1,8 +1,12 @@
 package org.pathwayeditor.visualeditor;
 
+import java.awt.AlphaComposite;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dialog;
 import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.SplashScreen;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -27,7 +31,6 @@ import org.pathwayeditor.businessobjects.exchange.FileXmlCanvasPersistenceManage
 import org.pathwayeditor.businessobjects.exchange.IXmlPersistenceManager;
 import org.pathwayeditor.businessobjects.management.INotationSubsystemPool;
 import org.pathwayeditor.visualeditor.query.IPathwayQueryController;
-import org.pathwayeditor.visualeditor.query.QueryData;
 import org.pathwayeditor.visualeditor.query.SearchDialog;
 
 public class VisualEditor extends JFrame {
@@ -38,9 +41,12 @@ public class VisualEditor extends JFrame {
 	private final JMenuBar menuBar;
 	private final PathwayEditor insp;
 	private final SearchDialog searchDialog;
+	private final IPathwayQueryController pathwayController;
 	
-	public VisualEditor(String title){
+	public VisualEditor(String title, IPathwayQueryController pathwayController){
 		super(title);
+		this.pathwayController = pathwayController;
+		doSplashScreen();
 		this.setLayout(new BorderLayout());
 		this.menuBar = new JMenuBar();
 		initFileMenu();
@@ -88,23 +94,7 @@ public class VisualEditor extends JFrame {
 		this.setJMenuBar(menuBar);
 		Dialog dialog = new Dialog(this, "Search Dialog");
 		dialog.setAlwaysOnTop(true);
-		searchDialog = new SearchDialog(dialog, new IPathwayQueryController() {
-			@Override
-			public void setQueryData(QueryData queryData) {
-				
-			}
-			
-			@Override
-			public void runQuery() {
-				
-			}
-			
-			@Override
-			public QueryData getQueryData() {
-				throw new UnsupportedOperationException("Not implemented yet!");
-				
-			}
-		});
+		searchDialog = new SearchDialog(dialog, this.pathwayController);
 		this.insp = new PathwayEditor();
 		this.insp.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		this.add(this.insp, BorderLayout.CENTER);
@@ -207,4 +197,30 @@ public class VisualEditor extends JFrame {
 			System.err.println();
 		}
 	}
+
+	private void doSplashScreen(){
+		final SplashScreen splash = SplashScreen.getSplashScreen();
+		if (splash == null) {
+			System.out.println("SplashScreen.getSplashScreen() returned null");
+			return;
+		}
+		Graphics2D g = splash.createGraphics();
+		if (g == null) {
+			System.out.println("g is null");
+			return;
+		}
+		renderSplashFrame(g, 10);
+		this.pathwayController.initialise();
+		renderSplashFrame(g, 100);
+		splash.close();
+	}
+	
+    static void renderSplashFrame(Graphics2D g, int frame) {
+        final String[] comps = {"foo", "bar", "baz"};
+        g.setComposite(AlphaComposite.Clear);
+        g.fillRect(120,140,200,40);
+        g.setPaintMode();
+        g.setColor(Color.BLACK);
+        g.drawString("Loading "+comps[(frame/5)%3]+"...", 120, 150);
+    }
 }
