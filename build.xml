@@ -41,6 +41,10 @@
 		<pathelement location="${lib.dir}/annotator/AnnotatorNotation.jar" />
 		<pathelement location="${lib.dir}/batik-1.7/batik.jar" />
 		<pathelement location="${lib.dir}/batik-1.7/batik-rasterizer.jar" />
+        <pathelement location="${lib.dir}/jopt-simple-3.2/jopt-simple-3.2.jar" />
+        <pathelement location="${lib.dir}/yfiles-2.8-complete-eval/lib/y.jar" />
+        <pathelement location="${lib.dir}/postgresql-8.4-701/postgresql-8.4-701.jdbc3.jar" />
+        <pathelement location="${lib.dir}/nop/NoP.jar" />
 	</path>
 
 	<path id="test.classpath">
