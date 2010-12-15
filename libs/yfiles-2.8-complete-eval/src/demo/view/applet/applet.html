@@ -1,0 +1,43 @@
+<html>
+<head><title>yFiles Applet Demo</title></head>
+<body bgcolor="#f0f0f0">
+
+<center>
+
+<h1>yFiles Applet Demo</h1>
+
+<object classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93"
+	width="100%" height="100%">
+        <param name="codebase" value="." />
+        <param name="code" value="demo.view.applet.AppletDemo"/>
+        <!-- Applet codebase is this directory. The y.jar needs to be copied in this directory. -->
+        <param name="archive"  value="application.jar,y.jar" />
+        <!-- Specify initial graph to be displayed.-->
+        <param name="graphsource" value="resource/samplegraph.graphml"/>
+        <!--[if gte IE 7]> <!-->
+		  <object classid="java:demo.view.applet.AppletDemo.class"
+		          codebase="."
+		          type="application/x-java-applet"
+		          width="100%" height="100%">
+		    <param name="code" value="demo.view.applet.AppletDemo"/>
+		    <!-- Safari browser needs the following param -->
+		    <param name="JAVA_CODEBASE" value="."/>
+		    <param name="archive"  value="application.jar,y.jar" />
+        <!-- Specify initial graph to be displayed.-->
+        <param name="graphsource" value="resource/samplegraph.graphml"/>
+        alt : yFiles Applet Demo
+		  </object>
+		  <!--<![endif]-->
+		  <!--[if lt IE 7]>
+		    alt : yFiles Applet Demo
+		  <![endif]-->
+
+</object>
+
+</center>
+
+<br><br><br><br><hr>
+<center>Copyright yWorks GmbH, 2000-2007. All rights reserved.</center>
+
+</body>
+</html>

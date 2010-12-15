@@ -1,0 +1,220 @@
+0 HEAD
+1 SOUR TMG
+2 VERS 3.7
+1 SUBM @SUB1@
+1 GEDC
+2 VERS 5.5
+2 FORM LINEAGE-LINKED
+1 DEST GED55
+1 DATE 13 FEB 2000
+1 CHAR ANSEL
+0 @SUB1@ SUBM 
+1 NAME Michael Kay
+1 ADDR mhkay@iclway.co.uk
+0 @I1@ INDI
+1 REFN 1
+1 NAME John Fitzgerald/Kennedy/
+1 SEX M
+1 CHAN
+2 DATE 13 FEB 2000                  
+1 BIRT
+2 DATE 29 MAY 1917
+2 PLAC Brookline, MA, USA
+1 DEAT
+2 DATE 22 NOV 1963
+2 PLAC Dallas, TX, USA
+2 NOTE Assassinated by Lee Harvey Oswald.
+3 CONT 
+1 NOTE Educated at Harvard University. Elected Congressman in 1945
+2 CONT aged 29; served three terms in the House of Representatives.
+2 CONT Elected Senator in 1952. Elected President in 1960, the
+2 CONT youngest ever President of the United States.
+2 CONT 
+2 CONT 
+1 FAMS @F1@
+1 FAMC @F2@
+0 @I2@ INDI
+1 REFN 2
+1 NAME Jaqueline Lee/Bouvier/
+1 SEX F
+1 CHAN
+2 DATE 13 FEB 2000                  
+1 BIRT
+2 DATE 28 JUL 1929
+2 PLAC Southampton, Long Island, NY, USA
+1 DEAT
+2 DATE 19 MAY 1994
+2 PLAC New York City, NY, USA
+1 BURI
+2 DATE 23 MAY 1994
+2 PLAC Arlington National, VA, USA
+1 FAMS @F1@
+1 FAMS @F3@
+1 FAMC @F4@
+0 @I3@ INDI
+1 REFN 3
+1 NAME John Vernou/Bouvier/III
+1 SEX M
+1 CHAN
+2 DATE 12 FEB 2000                  
+1 FAMS @F4@
+0 @I4@ INDI
+1 REFN 4
+1 NAME Janet Norton/Lee/
+1 SEX F
+1 CHAN
+2 DATE 12 FEB 2000                  
+1 FAMS @F4@
+0 @I5@ INDI
+1 REFN 5
+1 NAME Caroline Bouvier/Kennedy/
+1 SEX F
+1 CHAN
+2 DATE 13 FEB 2000                  
+1 BIRT
+2 DATE 27 NOV 1957
+2 PLAC New York, NY, USA
+1 FAMC @F1@
+0 @I6@ INDI
+1 REFN 6
+1 NAME John Fitzgerald/Kennedy/
+1 SEX M
+1 CHAN
+2 DATE 12 FEB 2000                  
+1 BIRT
+2 DATE 25 NOV 1960
+2 PLAC Washington, DC, USA
+1 DEAT
+2 DATE 16 JUL 1999
+2 PLAC over the Atlantic Ocean, near Aquinnah, MA, USA
+1 FAMC @F1@
+0 @I7@ INDI
+1 REFN 7
+1 NAME Patrick Bouvier/Kennedy/
+1 SEX M
+1 CHAN
+2 DATE 12 FEB 2000                  
+1 BIRT
+2 DATE 07 AUG 1963
+1 DEAT
+2 DATE 09 AUG 1963
+1 FAMC @F1@
+0 @I8@ INDI
+1 REFN 8
+1 NAME Joseph Patrick/Kennedy/
+1 SEX M
+1 CHAN
+2 DATE 12 FEB 2000                  
+1 BIRT
+2 DATE 06 SEP 1888
+2 PLAC East Boston, MA, USA
+1 DEAT
+2 DATE 16 NOV 1969
+2 PLAC Hyannis Port, MA, USA
+1 FAMS @F2@
+0 @I9@ INDI
+1 REFN 9
+1 NAME Rose Elizabeth/Fitzgerald/
+1 SEX F
+1 CHAN
+2 DATE 12 FEB 2000                  
+1 BIRT
+2 DATE 22 JUL 1890
+2 PLAC North End, Boston, MA, USA
+1 DEAT
+2 DATE 22 JAN 1995
+2 PLAC Hyannis Port, MA, USA
+1 FAMS @F2@
+0 @I10@ INDI
+1 REFN 10
+1 NAME Joseph Patrick/Kennedy/Jr
+1 SEX M
+1 CHAN
+2 DATE 12 FEB 2000                  
+1 BIRT
+2 DATE 1915
+1 DEAT
+2 DATE 1944
+1 FAMC @F2@
+0 @I11@ INDI
+1 REFN 11
+1 NAME Rosemary/Kennedy/
+1 SEX F
+1 CHAN
+2 DATE 12 FEB 2000                  
+1 BIRT
+2 DATE 1918
+1 FAMC @F2@
+0 @I12@ INDI
+1 REFN 12
+1 NAME Kathleen/Kennedy/
+1 SEX F
+1 CHAN
+2 DATE 12 FEB 2000                  
+1 BIRT
+2 DATE 1920
+1 DEAT
+2 DATE 1948
+1 FAMC @F2@
+0 @I13@ INDI
+1 REFN 13
+1 NAME Eunice Mary/Kennedy/
+1 NAME /Shriver/
+1 SEX F
+1 CHAN
+2 DATE 12 FEB 2000                  
+1 BIRT
+2 DATE 10 JUL 1921
+2 PLAC Brookline, MA, USA
+1 FAMS @F5@
+1 FAMC @F2@
+0 @I14@ INDI
+1 REFN 14
+1 NAME Robert Sargent/Shriver/Jr
+1 SEX M
+1 CHAN
+2 DATE 12 FEB 2000                  
+1 FAMS @F5@
+0 @I15@ INDI
+1 REFN 15
+1 NAME Aristotle/Onassis/
+1 SEX M
+1 CHAN
+2 DATE 13 FEB 2000                  
+1 FAMS @F3@
+0 @F1@ FAM
+1 HUSB @I1@
+1 WIFE @I2@
+1 CHIL @I5@
+1 CHIL @I6@
+1 CHIL @I7@
+1 MARR
+2 DATE 12 SEP 1953
+2 PLAC Newport, RI, USA
+0 @F2@ FAM
+1 HUSB @I8@
+1 WIFE @I9@
+1 CHIL @I10@
+1 CHIL @I1@
+1 CHIL @I11@
+1 CHIL @I12@
+1 CHIL @I13@
+1 MARR
+2 DATE 07 OCT 1914
+2 PLAC Boston, MA, USA
+0 @F3@ FAM
+1 HUSB @I15@
+1 WIFE @I2@
+1 MARR
+2 DATE AFT 1964
+0 @F4@ FAM
+1 HUSB @I3@
+1 WIFE @I4@
+1 CHIL @I2@
+0 @F5@ FAM
+1 HUSB @I14@
+1 WIFE @I13@
+1 MARR
+2 DATE 23 MAY 1953
+2 PLAC New York, NY, USA
+0 TRLR

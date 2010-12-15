@@ -194,6 +194,7 @@ public class EditingOperation implements IEditingOperation {
 			int bpIdx = 0;
 			Iterator<Point> bpIter = nodePrimitive.getBendPointContainer().bendPointIterator();
 			while(bpIter.hasNext()){
+				bpIter.next();
 				ICommand cmd = new MoveBendPointCommand(nodePrimitive.getBendPointContainer(), bpIdx, delta);
 				cmpCommand.addCommand(cmd);
 				bpIdx++;

@@ -1,0 +1,191 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+      <title>Lesson:&nbsp;Changing the Default Rendering</title>
+      <link rel="stylesheet" href="ystyle.css" type="text/css">
+      <meta name="generator" content="DocBook XSL Stylesheets V1.65.1">
+      <link rel="home" href="index.html" title="Trail:&nbsp;Creating a Simple Graph Viewer">
+      <link rel="up" href="index.html" title="Trail:&nbsp;Creating a Simple Graph Viewer">
+      <link rel="previous" href="hello.html" title="Lesson:&nbsp;A yFiles &#34;Hello World!&#34; Application">
+      <link rel="next" href="actions.html" title="Lesson:&nbsp;Adding Zooming Toolbar Actions">
+      <link type="text/css" rel="stylesheet" href="../jssh/SyntaxHighlighter.css"><script type="text/javascript" src="../jssh/shCore.js"></script><script type="text/javascript" src="../jssh/shBrushJava.js"></script><script type="text/javascript">
+  function sh() {
+
+    dp.SyntaxHighlighter.HighlightAll('programlisting', false, false, false, null, false);
+  }
+  </script></head>
+   <body onload="sh()" bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+      <div class="navheader">
+         <table width="100%" summary="Navigation header">
+            <tr>
+               <th colspan="3" align="center">Lesson:&nbsp;Changing the Default Rendering</th>
+            </tr>
+            <tr>
+               <td width="20%" align="left"><a accesskey="p" title="Lesson:&nbsp;A yFiles &#34;Hello World!&#34; Application" href="hello.html">Prev</a>&nbsp;
+               </td>
+               <th width="60%" align="center">&nbsp;</th>
+               <td width="20%" align="right">&nbsp;<a accesskey="n" title="Lesson:&nbsp;Adding Zooming Toolbar Actions" href="actions.html">Next</a></td>
+            </tr>
+         </table>
+         <div class="navline"></div>
+      </div>
+      <div class="sect1" lang="en">
+         <div class="titlepage">
+            <div>
+               <div>
+                  <h2 class="title" style="clear: both"><a name="default_realizers"></a>Lesson:&nbsp;Changing the Default Rendering
+                  </h2>
+               </div>
+            </div>
+            <div></div>
+         </div>
+         <p>
+            The way graph elements are created in the SimpleGraphViewer2 application lacks any 
+            explicit specification regarding their visual representation. 
+            Thus, Graph2D assigns defaults which it is maintaining for both nodes and edges. 
+            
+            We will now change these defaults, so that we get an arrowhead decoration at the 
+            target end of edges, and also some other default rendering for the nodes.
+            
+         </p>
+         <p>
+            The <a href="../../src/tutorial/viewer/SimpleGraphViewer3.java" title="Link to source code" target="_top">SimpleGraphViewer3</a> 
+            application will contain the new default settings.
+            
+         </p>
+         <p>
+            Let's add new method <tt class="code">configureDefaultRealizers</tt>, shown in <a href="default_realizers.html#ex_configureDefaultRealizers" title="Example&nbsp;1.5.&nbsp;Setting new default presentations for graph elements">Example&nbsp;1.5, &#8220;Setting new default presentations for graph elements&#8221;</a>, 
+            which incorporates our changes.
+            
+         </p>
+         <div class="example"><a name="ex_configureDefaultRealizers"></a><p class="title"><b>Example&nbsp;1.5.&nbsp;Setting new default presentations for graph elements</b></p><pre class="programlisting java">
+protected void configureDefaultRealizers(Graph2D graph) {
+  // Add an arrowhead decoration to the target side of the edges.
+  graph.getDefaultEdgeRealizer().setTargetArrow(Arrow.STANDARD);
+  // Set the node size and some other graphical properties.
+  NodeRealizer defaultNodeRealizer = graph.getDefaultNodeRealizer();
+  defaultNodeRealizer.setSize(80, 30);
+  defaultNodeRealizer.setFillColor(Color.ORANGE);
+  defaultNodeRealizer.setLineType(LineType.DASHED_1);
+}
+</pre></div>
+         <p>
+            In this method, we use Graph2D's getter methods to get the default edge realizer 
+            and default node realizer, and set new values via the realizer's setter methods.
+            
+            The new defaults will affect all graph elements that are created thereafter, which 
+            is why we will add the call to the method to the constructor.
+            
+         </p>
+         <div class="example"><a name="ex_SimpleGraphViewer3_ctor"></a><p class="title"><b>Example&nbsp;1.6.&nbsp;SimpleGraphViewer3 constructor</b></p><pre class="programlisting java">
+public SimpleGraphViewer3(Dimension size, String title) {
+  view = createGraph2DView();
+  graph = view.getGraph2D();
+  frame = createApplicationFrame(size, title, view);
+  configureDefaultRealizers(graph);
+}
+</pre></div>
+         <p>
+            <a href="default_realizers.html#fig_SimpleGraphViewer3" title="Figure&nbsp;1.4.&nbsp;New default visual representation for graph elements">Figure&nbsp;1.4, &#8220;New default visual representation for graph elements&#8221;</a> shows the results of our changes. 
+            The nodes have a new visual appearence and the edge finally indicates its actual 
+            direction to the user.
+            
+         </p>
+         <div class="figure"><a name="fig_SimpleGraphViewer3"></a><p class="title"><b>Figure&nbsp;1.4.&nbsp;New default visual representation for graph elements</b></p>
+            <div class="informaltable">
+               <center>
+                  <table border="0">
+                     <colgroup>
+                        <col width="100%">
+                     </colgroup>
+                     <tbody>
+                        <tr>
+                           <td>
+                              <div class="mediaobject" align="center"><img src="figures/SimpleGraphViewer3.png" align="middle" alt="New default visual representation for graph elements"></div>
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </center>
+            </div>
+         </div>
+         <p>
+            Now that we have the geometry of our nodes defined in the default realizer settings, 
+            we no longer need the <tt class="code">createNode</tt> methods to specify it. 
+            We will change the corresponding code in the <tt class="code">populateGraph</tt> method as 
+            follows.
+            
+         </p>
+         <div class="example"><a name="ex_createNode_changes"></a><p class="title"><b>Example&nbsp;1.7.&nbsp;Updated node creation calls</b></p><pre class="programlisting java">
+Node hello = graph.createNode(100, 50, "Hello");
+Node world = graph.createNode(100, 100, "World!");
+</pre></div>
+         <div class="highlights">
+            <h4><a name="d0e368"></a>Related Resources
+            </h4>
+            <p>
+               You will find related information in the yFiles for Java Developer's Guide: 
+               
+            </p>
+            <div class="itemizedlist">
+               <ul type="disc">
+                  <li><a href="http://www.yworks.com/products/yfiles/doc/developers-guide/realizers.html#binding_realizers" title="Link to Developer's Guide" target="_top">What the default realizer mechanism is</a></li>
+               </ul>
+            </div>
+            <p>
+               
+               In the yFiles for Java API: 
+               
+            </p>
+            <div class="itemizedlist">
+               <ul type="disc">
+                  <li><a href="http://www.yworks.com/products/yfiles/doc/api/y/view/Graph2D.html#createNode(double, double, java.lang.String)" title="Link to API documentation" target="_top">Graph2D.createNode<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a></li>
+               </ul>
+            </div>
+            <p>
+               
+               In the yFiles for Java source code demos: 
+               
+            </p>
+            <div class="itemizedlist">
+               <ul type="disc">
+                  <li><a href="http://www.yworks.com/products/yfiles/doc/demo/view/BuildGraphDemo.java" title="Link to demo code" target="_top">BuildGraphDemo.java</a> shows more realizer 
+                     setup, including labels
+                     
+                  </li>
+               </ul>
+            </div>
+            <p>
+               
+               
+            </p>
+         </div>
+      </div>
+      <table class="copyright" border="0" cellpadding="0" cellspacing="0" width="100%">
+         <tbody>
+            <tr>
+               <td align="right">
+                  <p class="copyright">Copyright &copy;2008-2009, yWorks GmbH. All rights reserved.</p>
+               </td>
+            </tr>
+         </tbody>
+      </table>
+      <div class="navfooter">
+         <div class="navline2"></div>
+         <table width="100%" summary="Navigation footer">
+            <tr>
+               <td width="40%" align="left"><a accesskey="p" title="Lesson:&nbsp;A yFiles &#34;Hello World!&#34; Application" href="hello.html">Prev</a>&nbsp;
+               </td>
+               <td width="20%" align="center"><a accesskey="u" title="Trail:&nbsp;Creating a Simple Graph Viewer" href="index.html">Up</a></td>
+               <td width="40%" align="right">&nbsp;<a accesskey="n" title="Lesson:&nbsp;Adding Zooming Toolbar Actions" href="actions.html">Next</a></td>
+            </tr>
+            <tr>
+               <td width="40%" align="left" valign="top">Lesson:&nbsp;A yFiles "Hello World!" Application&nbsp;</td>
+               <td width="20%" align="center"><a accesskey="h" title="yFiles for Java Tutorial" href="../index.html">Home</a></td>
+               <td width="40%" align="right" valign="top">&nbsp;Lesson:&nbsp;Adding Zooming Toolbar Actions</td>
+            </tr>
+         </table>
+      </div>
+   </body>
+</html>

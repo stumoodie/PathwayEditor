@@ -1,0 +1,311 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+      <title>Lesson:&nbsp;Adding Zooming Toolbar Actions</title>
+      <link rel="stylesheet" href="ystyle.css" type="text/css">
+      <meta name="generator" content="DocBook XSL Stylesheets V1.65.1">
+      <link rel="home" href="index.html" title="Trail:&nbsp;Creating a Simple Graph Viewer">
+      <link rel="up" href="index.html" title="Trail:&nbsp;Creating a Simple Graph Viewer">
+      <link rel="previous" href="default_realizers.html" title="Lesson:&nbsp;Changing the Default Rendering">
+      <link rel="next" href="zooming_panning.html" title="Lesson:&nbsp;Mouse-based Support for Zooming and Panning">
+      <link type="text/css" rel="stylesheet" href="../jssh/SyntaxHighlighter.css"><script type="text/javascript" src="../jssh/shCore.js"></script><script type="text/javascript" src="../jssh/shBrushJava.js"></script><script type="text/javascript">
+  function sh() {
+
+    dp.SyntaxHighlighter.HighlightAll('programlisting', false, false, false, null, false);
+  }
+  </script></head>
+   <body onload="sh()" bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+      <div class="navheader">
+         <table width="100%" summary="Navigation header">
+            <tr>
+               <th colspan="3" align="center">Lesson:&nbsp;Adding Zooming Toolbar Actions</th>
+            </tr>
+            <tr>
+               <td width="20%" align="left"><a accesskey="p" title="Lesson:&nbsp;Changing the Default Rendering" href="default_realizers.html">Prev</a>&nbsp;
+               </td>
+               <th width="60%" align="center">&nbsp;</th>
+               <td width="20%" align="right">&nbsp;<a accesskey="n" title="Lesson:&nbsp;Mouse-based Support for Zooming and Panning" href="zooming_panning.html">Next</a></td>
+            </tr>
+         </table>
+         <div class="navline"></div>
+      </div>
+      <div class="sect1" lang="en">
+         <div class="titlepage">
+            <div>
+               <div>
+                  <h2 class="title" style="clear: both"><a name="actions"></a>Lesson:&nbsp;Adding Zooming Toolbar Actions
+                  </h2>
+               </div>
+            </div>
+            <div></div>
+         </div>
+         <p>
+            We want to add a toolbar to our application with some actions to support zooming 
+            operations in the view. 
+            Zooming in and out, and a fit content action also, are natural actions in a viewer 
+            type application.
+            
+         </p>
+         <p>
+            <a href="actions.html#fig_SimpleGraphViewer4" title="Figure&nbsp;1.5.&nbsp;SimpleGraphViewer4 with toolbar and zooming actions">Figure&nbsp;1.5, &#8220;SimpleGraphViewer4 with toolbar and zooming actions&#8221;</a> shows the GUI of our <a href="../../src/tutorial/viewer/SimpleGraphViewer4.java" title="Link to source code" target="_top">SimpleGraphViewer4</a> 
+            application with the new toolbar.
+            
+         </p>
+         <div class="figure"><a name="fig_SimpleGraphViewer4"></a><p class="title"><b>Figure&nbsp;1.5.&nbsp;SimpleGraphViewer4 with toolbar and zooming actions</b></p>
+            <div class="informaltable">
+               <center>
+                  <table border="0">
+                     <colgroup>
+                        <col width="100%">
+                     </colgroup>
+                     <tbody>
+                        <tr>
+                           <td>
+                              <div class="mediaobject" align="center"><img src="figures/SimpleGraphViewer4.png" align="middle" alt="New toolbar with zooming actions"></div>
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </center>
+            </div>
+         </div>
+         <p>
+            Creating the toolbar and adding the actions is standard Java Swing code as presented 
+            in <a href="actions.html#ex_toolbar" title="Example&nbsp;1.8.&nbsp;Creating a toolbar with zooming-related actions">Example&nbsp;1.8, &#8220;Creating a toolbar with zooming-related actions&#8221;</a>.
+            
+         </p>
+         <div class="example"><a name="ex_toolbar"></a><p class="title"><b>Example&nbsp;1.8.&nbsp;Creating a toolbar with zooming-related actions</b></p><pre class="programlisting java">
+/** Creates a toolbar for this demo. */
+protected JToolBar createToolBar() {
+  JToolBar toolbar = new JToolBar();
+  toolbar.add(new FitContent(getView()));
+  toolbar.add(new Zoom(getView(), 1.25));
+  toolbar.add(new Zoom(getView(), 0.8));
+  return toolbar;
+}
+</pre></div>
+         <p>
+            We add the call to create the toolbar in our <tt class="code">createApplicationFrame</tt> 
+            method.
+            
+         </p>
+         <div class="example"><a name="ex_createToolBar"></a><p class="title"><b>Example&nbsp;1.9.&nbsp;Adding the toolbar to the application GUI</b></p><pre class="programlisting java">
+/** Creates a JFrame that will show the demo graph. */
+private JFrame createApplicationFrame(Dimension size, String title, 
+                                      JComponent view) {
+  JPanel panel = new JPanel(new BorderLayout());
+  panel.setPreferredSize(size);
+  // Add the given view to the panel.
+  panel.add(view, BorderLayout.CENTER);
+  
+  // Add a toolbar with some actions to the panel, too.
+  panel.add(createToolBar(), BorderLayout.NORTH);
+  
+  ...
+</pre></div>
+         <p>
+            <a href="actions.html#ex_Zoom" title="Example&nbsp;1.10.&nbsp;Zoom class">Example&nbsp;1.10, &#8220;Zoom class&#8221;</a> presents the Zoom class, an Action implementation that 
+            enables both zooming in and zooming out in a given Graph2DView.
+            
+         </p>
+         <div class="example"><a name="ex_Zoom"></a><p class="title"><b>Example&nbsp;1.10.&nbsp;Zoom class</b></p><pre class="programlisting java">
+/** Action that applies a specified zoom level to the given view. */
+protected static class Zoom extends AbstractAction {
+  Graph2DView view;
+  double factor;
+
+  public Zoom(Graph2DView view, double factor) {
+    super("Zoom " + (factor &gt; 1.0 ? "In" : "Out"));
+    this.view = view;
+    this.factor = factor;
+    this.putValue(Action.SHORT_DESCRIPTION, 
+                  "Zoom " + (factor &gt; 1.0 ? "In" : "Out"));
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    view.setZoom(view.getZoom() * factor);
+    // Adjusts the size of the view's world rectangle. The world rectangle 
+    // defines the region of the canvas that is accessible by using the 
+    // scrollbars of the view.
+    Rectangle box = view.getGraph2D().getBoundingBox();
+    view.setWorldRect(box.x - 20, box.y - 20, box.width + 40, box.height + 40);
+    view.updateView();
+  }
+}
+</pre></div>
+         <p>
+            In the <tt class="code">actionPerformed</tt> method the view's current zoom value is multiplied 
+            by the double parameter given at instantiation. 
+            If that parameter is greater than <tt class="code">1.0</tt> (which is the initial value for 
+            Graph2DView's zoom property), each time the action is triggered we zoom in, otherwise 
+            we zoom out.
+            
+         </p>
+         <p>
+            In addition, the view's world rectangle is also adjusted, keeping Graph2DView's 
+            scrollbars properly in sync, and an immediate repaint of the view (method <a href="http://www.yworks.com/products/yfiles/doc/api/y/view/Graph2DView.html#updateView()" title="Link to API documentation" target="_top">updateView()<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a>) 
+            is triggered.
+            
+         </p>
+         <p>
+            In <a href="actions.html#fig_SimpleGraphViewer4_zoom_in" title="Figure&nbsp;1.6.&nbsp;Zooming in on the graph">Figure&nbsp;1.6, &#8220;Zooming in on the graph&#8221;</a> you can see the result of zooming 
+            in on the graph by clicking the "Zoom In" button twice. 
+            Note that the scrollbars have appeared in order to provide the user with a means 
+            to navigate all of the world rectangle.
+            
+         </p>
+         <div class="figure"><a name="fig_SimpleGraphViewer4_zoom_in"></a><p class="title"><b>Figure&nbsp;1.6.&nbsp;Zooming in on the graph</b></p>
+            <div class="informaltable">
+               <center>
+                  <table border="0">
+                     <colgroup>
+                        <col width="100%">
+                     </colgroup>
+                     <tbody>
+                        <tr>
+                           <td>
+                              <div class="mediaobject" align="center"><img src="figures/SimpleGraphViewer4-zoom-in.png" align="middle" alt="Zooming in on the graph"></div>
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </center>
+            </div>
+         </div>
+         <p>
+            <a href="actions.html#ex_FitContent" title="Example&nbsp;1.11.&nbsp;FitContent class">Example&nbsp;1.11, &#8220;FitContent class&#8221;</a> presents the FitContent class, an Action implementation 
+            that allows to conveniently present the entire contents of a given Graph2DView.
+            
+         </p>
+         <div class="example"><a name="ex_FitContent"></a><p class="title"><b>Example&nbsp;1.11.&nbsp;FitContent class</b></p><pre class="programlisting java">
+/** Action that fits the content nicely inside the view. */
+protected static class FitContent extends AbstractAction {
+  Graph2DView view;
+
+  public FitContent(Graph2DView view) {
+    super("Fit Content");
+    this.view = view;
+    this.putValue(Action.SHORT_DESCRIPTION, "Fit Content");
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    view.fitContent();
+    view.updateView();
+  }
+}
+</pre></div>
+         <p>
+            Fit content is a feature provided by Graph2DView itself. 
+            It changes the view's zoom level (and at the same time also the viewpoint, i.e., 
+            the world coordinate that is at the viewport's origin) such that the view's current 
+            graph is displayed in its entirety, centered in the viewport.
+            
+         </p>
+         <p>
+            The FitContent class's <tt class="code">actionPerformed</tt> method shows the necessary code 
+            that also triggers an immediate repaint of the view (method <tt class="code">updateView</tt>).
+            
+         </p>
+         <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+            <h3 class="title">Note</h3>
+            <p>
+               Invoking the <tt class="code">fitContent</tt> method of a Graph2DView when there is a graph 
+               that is "small" compared to the available viewport area, the view's zoom level will 
+               not change beyond the value <tt class="code">1.0</tt>. 
+               In other words, a graph that easily fits inside the available viewport area is presented 
+               in its original size at maximum.
+               
+            </p>
+         </div>
+         <div class="sect2" lang="en">
+            <div class="titlepage">
+               <div>
+                  <div>
+                     <h3 class="title"><a name="d0e514"></a>Some Observations
+                     </h3>
+                  </div>
+               </div>
+               <div></div>
+            </div>
+            <p>
+               When we trigger the zoom out action multiple times, the rendering of the graph suddenly 
+               changes. 
+               This is due to a feature of Graph2DView which switches to a less-detail rendering 
+               strategy beyond a certain threshold for its zoom property. 
+               The default value for this threshold is <tt class="code">0.3</tt>.
+               
+            </p>
+            <p>
+               Setting a value of <tt class="code">0.0</tt> for this threshold, as shown in <a href="actions.html#ex_PaintDetailThreshold" title="Example&nbsp;1.12.&nbsp;Disabling less-detail rendering in the view">Example&nbsp;1.12, &#8220;Disabling less-detail rendering in the view&#8221;</a>, 
+               effectively prevents the view from switching to less-detail rendering.
+               
+            </p>
+            <div class="example"><a name="ex_PaintDetailThreshold"></a><p class="title"><b>Example&nbsp;1.12.&nbsp;Disabling less-detail rendering in the view</b></p><pre class="programlisting java">
+// 'view' is of type y.view.Graph2DView.
+
+// Disabling less-detail rendering in the view.
+view.setPaintDetailThreshold(0.0);
+</pre></div>
+         </div>
+         <div class="highlights">
+            <h4><a name="d0e535"></a>Related Resources
+            </h4>
+            <p>
+               You will find related information in the yFiles for Java Developer's Guide: 
+               
+            </p>
+            <div class="itemizedlist">
+               <ul type="disc">
+                  <li><a href="http://www.yworks.com/products/yfiles/doc/developers-guide/mvc_view.html#world_coordinates" title="Link to Developer's Guide" target="_top">World and view coordinate system in Graph2DView</a></li>
+                  <li><a href="http://www.yworks.com/products/yfiles/doc/developers-guide/mvc_view.html#scroll_bars" title="Link to Developer's Guide" target="_top">Graph2DView's scroll bar support</a></li>
+                  <li><a href="http://www.yworks.com/products/yfiles/doc/developers-guide/mvc_view.html#viewport_clipping" title="Link to Developer's Guide" target="_top">Viewport and clipping in Graph2DView</a></li>
+                  <li><a href="http://www.yworks.com/products/yfiles/doc/developers-guide/mvc_view.html#render_order" title="Link to Developer's Guide" target="_top">Less-detail threshold used by the view's rendering machine</a></li>
+               </ul>
+            </div>
+            <p>
+               
+               In the yFiles for Java source code demos: 
+               
+            </p>
+            <div class="itemizedlist">
+               <ul type="disc">
+                  <li><a href="http://www.yworks.com/products/yfiles/doc/demo/view/ViewActionDemo.java" title="Link to demo code" target="_top">ViewActionDemo.java</a> also shows how to 
+                     setup application actions
+                     
+                  </li>
+               </ul>
+            </div>
+            <p>
+               
+               
+            </p>
+         </div>
+      </div>
+      <table class="copyright" border="0" cellpadding="0" cellspacing="0" width="100%">
+         <tbody>
+            <tr>
+               <td align="right">
+                  <p class="copyright">Copyright &copy;2008-2009, yWorks GmbH. All rights reserved.</p>
+               </td>
+            </tr>
+         </tbody>
+      </table>
+      <div class="navfooter">
+         <div class="navline2"></div>
+         <table width="100%" summary="Navigation footer">
+            <tr>
+               <td width="40%" align="left"><a accesskey="p" title="Lesson:&nbsp;Changing the Default Rendering" href="default_realizers.html">Prev</a>&nbsp;
+               </td>
+               <td width="20%" align="center"><a accesskey="u" title="Trail:&nbsp;Creating a Simple Graph Viewer" href="index.html">Up</a></td>
+               <td width="40%" align="right">&nbsp;<a accesskey="n" title="Lesson:&nbsp;Mouse-based Support for Zooming and Panning" href="zooming_panning.html">Next</a></td>
+            </tr>
+            <tr>
+               <td width="40%" align="left" valign="top">Lesson:&nbsp;Changing the Default Rendering&nbsp;</td>
+               <td width="20%" align="center"><a accesskey="h" title="yFiles for Java Tutorial" href="../index.html">Home</a></td>
+               <td width="40%" align="right" valign="top">&nbsp;Lesson:&nbsp;Mouse-based Support for Zooming and Panning</td>
+            </tr>
+         </table>
+      </div>
+   </body>
+</html>

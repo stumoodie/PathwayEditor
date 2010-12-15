@@ -12,10 +12,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -27,10 +23,12 @@ import javax.swing.WindowConstants;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
-import org.pathwayeditor.businessobjects.exchange.FileXmlCanvasPersistenceManager;
-import org.pathwayeditor.businessobjects.exchange.IXmlPersistenceManager;
-import org.pathwayeditor.businessobjects.management.INotationSubsystemPool;
+import org.pathwayeditor.notations.annotator.services.AnnotatorNotationSubsystem;
 import org.pathwayeditor.visualeditor.query.IPathwayQueryController;
+import org.pathwayeditor.visualeditor.query.IQueryCompletedEvent;
+import org.pathwayeditor.visualeditor.query.IQueryEventListener;
+import org.pathwayeditor.visualeditor.query.IQueryVisualisationController;
+import org.pathwayeditor.visualeditor.query.QueryVisualisationController;
 import org.pathwayeditor.visualeditor.query.SearchDialog;
 
 public class VisualEditor extends JFrame {
@@ -99,6 +97,15 @@ public class VisualEditor extends JFrame {
 		this.insp.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		this.add(this.insp, BorderLayout.CENTER);
 		this.pack();
+		final IQueryVisualisationController queryVisualisationController = new QueryVisualisationController(new AnnotatorNotationSubsystem(), insp);
+		pathwayController.addQueryEventListener(new IQueryEventListener() {
+			
+			@Override
+			public void queryCompleted(IQueryCompletedEvent e) {
+				queryVisualisationController.setQueryResult(e.getQueryResult());
+				queryVisualisationController.visualiseQueryResults();
+			}
+		});
 		this.setLocationByPlatform(true);
 		this.setVisible(true);
 	}
@@ -181,22 +188,22 @@ public class VisualEditor extends JFrame {
 		this.searchDialog.setVisible(true);
 	}
 
-	public void openFile(File file){
-		try{
-			INotationSubsystemPool subsystemPool = new NotationSubsystemPool();
-			IXmlPersistenceManager canvasPersistenceManager = new FileXmlCanvasPersistenceManager(subsystemPool);
-			InputStream in = new FileInputStream(file);
-			canvasPersistenceManager.readCanvasFromStream(in);
-			in.close();
-			insp.loadCanvas(canvasPersistenceManager.getCurrentCanvas());
-//			this.getRootPane().revalidate();
-			
-		}
-		catch(IOException ex){
-			System.err.println("Error opening file!");
-			System.err.println();
-		}
-	}
+//	public void openFile(File file){
+//		try{
+//			INotationSubsystemPool subsystemPool = new NotationSubsystemPool();
+//			IXmlPersistenceManager canvasPersistenceManager = new FileXmlCanvasPersistenceManager(subsystemPool);
+//			InputStream in = new FileInputStream(file);
+//			canvasPersistenceManager.readCanvasFromStream(in);
+//			in.close();
+//			insp.loadCanvas(canvasPersistenceManager.getCurrentCanvas());
+////			this.getRootPane().revalidate();
+//			
+//		}
+//		catch(IOException ex){
+//			System.err.println("Error opening file!");
+//			System.err.println();
+//		}
+//	}
 
 	private void doSplashScreen(){
 		final SplashScreen splash = SplashScreen.getSplashScreen();

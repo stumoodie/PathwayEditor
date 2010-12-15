@@ -1,0 +1,108 @@
+<html>
+<head>
+	<style type="text/css">
+	<!--
+body {
+    font-family:Verdana, sans-serif;
+		margin-left:3px;
+		margin-right:3px;
+		margin-top:0px;
+		margin-bottom:0px;
+	}
+
+h1 {
+    padding-left:0px;
+    padding-top:8px;
+    padding-bottom:8px;
+    color:#4079ea;
+    font-size:16px;
+    margin-bottom:5px;
+}
+
+p {
+	padding-bottom:0px;
+	padding-top:0px;
+	margin-top:3px;
+	margin-bottom:0px;
+	margin-left:0px;
+	font-size:10px;
+	color:#000000;
+	}
+
+h2 {
+  font-size:12px;
+	color:#4079ea;
+  margin-top:10px;
+  margin-bottom:0px;
+}
+
+h3 {
+  font-size:11px;
+/*	margin-left:10px; */
+	margin-left:0px;
+  margin-top:8px;
+  margin-bottom:2px;
+}
+
+
+dl {
+	font-size:10px;
+	margin-top:2px;
+	margin-bottom:2px;
+	margin-left:0px;
+}
+
+dt {
+	font-weight:bold;
+	margin-top:4px;
+	color:#333366;
+}
+
+dd {
+	margin-left:5px;
+}
+
+.copyright {
+    font-size: 10px; 
+    font-style:italic;
+    text-align:right;
+    margin-top:20px;
+}
+
+code, tt {
+	font-family:monospace;
+	font-size:10px;
+	color:#0000C0;
+}
+
+ul {
+  margin-left:12px;
+}
+-->
+	</style>
+</head>
+<body>
+ <h2>Description</h2>
+ This demo extends the GroupingDemo and shows how to use the recursive group layouter to apply different layouts to the contents of group nodes.
+ The demo shows the following two use cases:
+ <ul>
+    <li>
+      Table Layout: <br>Demonstrates how to realize a table node structure, i.e.,
+      each group node in the drawing represents a table and the nodes within the groups the table rows. Edges are connected
+      to specific rows. The rows are sorted according to their y-coordinate in the initial drawing.
+    </li>
+    <li>
+      Three-Tier Layout:<br>Demonstrates how to use the recursive group layout to realize different layouts of elements assigned to different tiers.
+      Each group node can be assigned to the left, right or middle tier (depending on the group node label).
+      All group nodes labeled "left" are placed on the left side. Their content is drawn using a TreeLayouter with
+      layout orientation left-to-right. Analogously, all group nodes labeled "right" are placed on the right side.
+      Their content is drawn using a TreeLayouter with layout orientation right-to-left. Elements not assigned to "left" or
+      "right" group nodes are always lay out in the middle using the IncrementalHierarchicLayouter with layout orientation left-to-right.
+      Note that group nodes not labeled "left" or "right" are handled non-recursive.
+    </li>
+  </ul>
+  In order to recalculate the layout press the "Auto-Layout Graph" button or fold/unfold a group node.
+  If the "Use Sketch" option is enabled the IncrementalHierarchicLayouter uses the from sketch mode, i.e.,
+  it uses the current drawing as sketch.
+</body>
+</html>

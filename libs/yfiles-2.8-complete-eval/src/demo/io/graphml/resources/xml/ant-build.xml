@@ -1,0 +1,113 @@
+<!-- stripped ANT build script for yFiles deployment            -->
+<project name="yfiles" default="help" basedir=".">
+
+  <target name="help" depends="init">
+  </target>
+
+  <target name="defaultpackage" unless="package">
+  </target>
+
+  <target name="defaultlocaltmp" unless="localtmp">
+  </target>
+
+  <target name="defaultversion" unless="version">
+  </target>
+
+  <target depends="defaultversion" name="cvstagmake" unless="cvstag">
+  </target>
+
+  <target depends="cvstagmake, defaultversion, defaultlocaltmp, defaultpackage" name="init">
+  </target>
+
+  <target depends="init" name="export">
+  </target>
+
+  <target depends="export" if="eval" name="timestamp">
+  </target>
+
+  <target depends="export" name="copy-doc" description="Copies the doc files">
+  </target>
+
+  <target depends="copy-doc" name="make-changes">
+  </target>
+
+  <target depends="copy-doc" name="make-master">
+  </target>
+
+  <target depends="copy-doc" name="make-readme">
+  </target>
+
+  <target depends="export, eval-activate, timestamp" name="prepare-src-yed" if="yed.sources">
+  </target>
+
+
+  <target depends="copy-src-yfiles, prepare-src-dotnet, prepare-src-yfiles" name="prepare-src"
+          description="Prepares the source files."/>
+
+  <target depends="prepare-src-yed, eval-activate, export, timestamp"
+          name="copy-src-yfiles" description="Copies the source files.">
+  </target>
+
+  <target depends="copy-src-yfiles" if="dotnet"
+          name="prepare-src-dotnet" description="Copies and prepares additional source files for dotnet.">
+  </target>
+
+  <target depends="copy-src-yfiles"
+          name="prepare-src-yfiles" description="Prepares the source files.">
+
+  </target>
+
+  <target depends="prepare-src" name="compile-y"
+          description="Compiles the y packages.">
+  </target>
+
+  <target depends="obfuscate-y" name="compile-yed"/>
+
+  <target depends="export" if="eval" name="eval-activate">
+  </target>
+
+  <target depends="zip-src, zip" if="evalExpiration" name="eval-deactivate">
+  </target>
+
+  <target depends="compile-y" name="jar-y" description="Jars the y packages">
+  </target>
+
+  <target depends="compile-yed" name="jar-yed" if="yed.sources"
+          description="Jars yEd">
+  </target>
+
+
+  <target depends="prepare-src" name="dll-y"/>
+
+  <target name="test" depends="init">
+  </target>
+
+  <target depends="jar-y, copy-doc" name="doc"
+          description="Creates API doc for yFiles">
+  </target>
+
+
+  <target depends="jar-y" name="obfuscate-y" description="Obfuscates the y.jar">
+  </target>
+
+  <target depends="jar-yed, obfuscate-y" name="obfuscate-yed" if="yed.sources"
+          description="Obfuscates yed.jar">
+  </target>
+
+  <target
+      depends="make-master, make-readme, make-changes, doc, obfuscate-y, obfuscate-yed, dll-y"
+      name="zip">
+  </target>
+
+  <target depends="zip" name="zip-src" if="source">
+  </target>
+
+  <target depends="eval-deactivate, zip, zip-src" name="deploy"
+          description="Creates the deployment Zip file ${zip}">
+  </target>
+
+  <target name="clean" depends="init"
+          description="deletes the local tmp directory and all zips in './dist/'">
+  </target>
+
+</project>

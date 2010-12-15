@@ -1,0 +1,173 @@
+<!-- ANT build script for yfiles obfuscation           -->
+    <!-- The java based ANT tool is available from         -->
+    <!-- http://jakarta.apache.org/ant                     -->
+
+<project name="yFiles Obfuscation" default="help" basedir=".">
+
+  <target name="help">
+    <echo>
+      This file provides ant tasks that show how to obfuscate
+      the yFiles classes before they can be deployed as a part
+      of an applet or application. The ant-based obfuscation
+      will be performed by the freely available obfuscator yGuard.
+      (http://www.yworks.com/products/yguard).
+
+      As application which is based on yFiles classes we choose the
+      yFiles demo demo.view.hierarchy.HierarchyDemo. The deployment steps
+      of this application are divided into the ant tasks each of
+      which can be initiated by giving its name on the commandline.
+
+      compile - compiles all application specific class contained in
+      the demo.* packages.
+      jar - puts all application specific class files and resources
+      into the application jar application.jar. Note that the
+      yFiles classes are not contained in this jar. They still
+      reside in y.jar.
+      obfuscate - obfuscates y.jar and adjusts application.jar
+      accordingly. This obfuscation task takes as input the
+      yFiles jar file y.jar and the application jar file
+      application.jar. The output of the obfuscation task are
+      the obfuscated versions yObf.jar and applicationObf.jar
+      of these jar files.
+      The rules in the obfuscation task state that all classes
+      and property files contained in the packages y.* (y.jar)
+      will be completely obfuscated. The names of the classes
+      in the demo.* packages (application.jar) will be not be
+      obfuscated. Only the dependencies to the obfuscated
+      entities in y.jar will be adjusted accordingly.
+      run - Executes the obfuscated application, to demonstrate that
+      everything still works as expected.
+      show - opens a small browser that shows the name mapping
+      performed by yGuard.
+    </echo>
+  </target>
+
+  <!-- define some properties that are used throughout the tasks -->
+  <target name="init">
+    <!-- the base directory of the yFiles installation -->
+    <property name="yBase" location="../../.."/>
+    <!-- the path to the demo sources -->
+    <property name="src" location="${yBase}/src"/>
+    <!-- the path to the demo classes -->
+    <property name="classes" location="${yBase}/classes"/>
+    <!-- the unobfuscated yFiles jar file -->
+    <property name="yJar" location="${yBase}/lib/y.jar"/>
+    <!-- the unobfuscated application jar file -->
+    <property name="appJar" value="application.jar"/>
+    <!-- the obfuscated yFiles jar file -->
+    <property name="yJarObf" value="yObf.jar"/>
+    <!-- the obfuscated application jar file -->
+    <property name="appJarObf" value="applicationObf.jar"/>
+    <!-- the yGuard jar file containing the obfuscation task -->
+    <property name="yGuardJar" value="yguard/lib/yguard.jar"/>
+    <!-- the log file geenrated by the obfuscation task -->
+    <property name="obfuscationLog" value="obfuscation-log.xml"/>
+  </target>
+
+  <!-- compiles the application specific classes. -->
+  <target name="compile" depends="init">
+    <mkdir dir="${classes}"/>
+    <javac includeantruntime="false" srcdir="${src}" destdir="${classes}">
+      <include name="demo/**/*.java"/>
+      <classpath>
+        <pathelement location="${yJar}"/>
+      </classpath>
+    </javac>
+  </target>
+
+  <!-- puts the application specific classes into application.jar. -->
+  <target name="jar" depends="compile">
+    <delete file="${appJar}"/>
+    <jar jarfile="${appJar}">
+      <fileset dir="${src}">
+        <include name="demo/view/**/*.properties"/>
+        <include name="demo/view/**/resource/**"/>
+        <include name="demo/module/**/resource/**"/>
+        <include name="demo/module/**/*.properties"/>
+      </fileset>
+      <fileset dir="${classes}">
+        <include name="demo/view/**/*.class"/>
+        <include name="demo/module/**/*.class"/>
+      </fileset>
+    </jar>
+  </target>
+
+  <!-- obfuscates y.jar and adjusts application.jar accordingly. -->
+  <!-- Generates the jar files yObf.jar and applicationObf.jar.  -->
+  <target name="obfuscate" depends="jar">
+    <taskdef name="yguard" classname="com.yworks.yguard.YGuardTask" classpath="${yGuardJar}"/>
+    <yguard>
+
+      <!-- obfuscate yFiles for public deployment -->
+      <inoutpair in="${yJar}" out="${yJarObf}"/>
+      <!-- adjust your application accordingly to work with the obfuscated yFiles jar  -->
+      <inoutpair in="${appJar}" out="${appJarObf}"/>
+
+      <!-- [OPTIONALLY] Keep the line number table and the source file attributes
+                 of the public part of the "application" -->
+      <attribute name="LineNumberTable,SourceFile">
+        <patternset>
+          <include name="demo.view.**"/>
+        </patternset>
+      </attribute>
+
+      <rename logfile="${obfuscationLog}" replaceClassNameStrings="true">
+
+        <!-- use some unique package prefix for obfuscated classes to avoid name clashes -->
+        <property name="obfuscation-prefix" value="yguard"/>
+
+
+        <keep>
+          <!-- Keep all method, field, and class names of the "application"             -->
+          <!-- This could be adjusted to your needs if you don't want to let            -->
+          <!-- your whole application unobfuscated.                                     -->
+          <!-- In that case simply add some more "exclude" statements as depicted below -->
+          <class classes="private" methods="private" fields="private">
+            <patternset>
+              <include name="demo.**"/>
+              <!-- [OPTIONALLY] exclude some files from being exposed, i.e. obfuscate them -->
+              <!--<exclude name="demo.module.DiagonalLayoutModule"/>-->
+            </patternset>
+          </class>
+
+
+        </keep>
+
+        <!-- make sure that the .properties files are renamed according to their               -->
+        <!-- corresponding class files, yFiles needs this to function properly when obfuscated -->
+        <adjust replaceName="true">
+          <include name="y/**/*.properties"/>
+        </adjust>
+      </rename>
+    </yguard>
+  </target>
+
+
+  <!-- executes the obfuscated application -->
+  <target name="run" depends="obfuscate">
+    <java classname="demo.view.hierarchy.HierarchyDemo" fork="true">
+      <classpath>
+        <pathelement location="${yJarObf}"/>
+        <pathelement location="${appJarObf}"/>
+      </classpath>
+    </java>
+  </target>
+
+  <!-- opens a small browser that shows the name mapping performed by yGuard. -->
+  <target name="show" depends="obfuscate">
+    <echo message="${obfuscationLog}"/>
+    <java jar="${yGuardJar}" fork="true">
+      <arg value="${obfuscationLog}"/>
+    </java>
+  </target>
+
+  <!-- Removes all that has been built -->
+  <target name="clean" depends="init">
+    <delete file="${yJarObf}"/>
+    <delete file="${appJar}"/>
+    <delete file="${appJarObf}"/>
+    <delete file="${obfuscationLog}"/>
+    <delete includeemptydirs="true" dir="${classes}"/>
+  </target>
+
+</project>

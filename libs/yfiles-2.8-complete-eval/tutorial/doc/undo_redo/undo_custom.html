@@ -1,0 +1,193 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+      <title>Lesson:&nbsp;Customizing the Undo/Redo Support</title>
+      <link rel="stylesheet" href="ystyle.css" type="text/css">
+      <meta name="generator" content="DocBook XSL Stylesheets V1.65.1">
+      <link rel="home" href="index.html" title="Trail:&nbsp;Undo/Redo Support">
+      <link rel="up" href="index.html" title="Trail:&nbsp;Undo/Redo Support">
+      <link rel="previous" href="undo.html" title="Lesson:&nbsp;Enhancing an Editor Application With Undo/Redo Support">
+      <link type="text/css" rel="stylesheet" href="../jssh/SyntaxHighlighter.css"><script type="text/javascript" src="../jssh/shCore.js"></script><script type="text/javascript" src="../jssh/shBrushJava.js"></script><script type="text/javascript">
+  function sh() {
+
+    dp.SyntaxHighlighter.HighlightAll('programlisting', false, false, false, null, false);
+  }
+  </script></head>
+   <body onload="sh()" bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+      <div class="navheader">
+         <table width="100%" summary="Navigation header">
+            <tr>
+               <th colspan="3" align="center">Lesson:&nbsp;Customizing the Undo/Redo Support</th>
+            </tr>
+            <tr>
+               <td width="20%" align="left"><a accesskey="p" title="Lesson:&nbsp;Enhancing an Editor Application With Undo/Redo Support" href="undo.html">Prev</a>&nbsp;
+               </td>
+               <th width="60%" align="center">&nbsp;</th>
+               <td width="20%" align="right">&nbsp;</td>
+            </tr>
+         </table>
+         <div class="navline"></div>
+      </div>
+      <div class="sect1" lang="en">
+         <div class="titlepage">
+            <div>
+               <div>
+                  <h2 class="title" style="clear: both"><a name="undo_custom"></a>Lesson:&nbsp;Customizing the Undo/Redo Support
+                  </h2>
+               </div>
+            </div>
+            <div></div>
+         </div>
+         <p>
+            The default undo/redo support provided by class <a href="http://www.yworks.com/products/yfiles/doc/api/y/view/Graph2DUndoManager.html" title="Link to API documentation" target="_top">Graph2DUndoManager<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a> 
+            is already quite powerful, but if we need support for further actions to be reversible, 
+            we have to create our own undo/redo command. 
+            Luckily, this is straightforward to do.
+            
+         </p>
+         <p>
+            As an example, when we allow additional data associated with graph elements to be 
+            changed, and want these changes to be reversible, we need an undo/redo command that 
+            handles these actions.
+            
+         </p>
+         <p>
+            The CustomTextChanged class in the <a href="../../src/tutorial/editor/UndoRedo2.java" title="Link to source code" target="_top">UndoRedo2</a> 
+            application is tailored to match the CustomGraph2D class which provides convenience 
+            methods for storing and retrieving the additional data associated with nodes. 
+            <a href="undo_custom.html#ex_undo_command" title="Example&nbsp;1.3.&nbsp;Custom undo command implementation">Example&nbsp;1.3, &#8220;Custom undo command implementation&#8221;</a> presents the CustomTextChanged class. 
+            
+            Note that CustomTextChanged implements the <a href="http://www.yworks.com/products/yfiles/doc/api/y/base/Command.html" title="Link to API documentation" target="_top">Command<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a> 
+            interface, which is used by Graph2DUndoManager for its commands.
+            
+         </p>
+         <div class="example"><a name="ex_undo_command"></a><p class="title"><b>Example&nbsp;1.3.&nbsp;Custom undo command implementation</b></p><pre class="programlisting java">
+public class CustomTextChanged implements Command {
+  CustomGraph2D graph;
+  Node node;
+  String oldText;
+
+  public CustomTextChanged(CustomGraph2D graph, Node node, String oldText) {
+    this.graph = graph;
+    this.node = node;
+    this.oldText = oldText;
+  }
+
+  public void undo() {
+    String tmp = graph.getCustomText(node);
+    graph.setCustomText(node, oldText);
+    this.oldText = tmp;
+  }
+
+  public void redo() {
+    undo();
+  }
+
+  public void execute() {}
+}
+</pre></div>
+         <p>
+            In an undo/redo command we only need implementations for the <tt class="code">undo</tt> and 
+            <tt class="code">redo</tt> methods, not the <tt class="code">execute</tt> method of the interface. 
+            In the constructor of our Command implementation we hand over all necessary parameters. 
+            For our use case, we need the CustomGraph2D instance that handles the additional 
+            data for the nodes, the node for which the data has changed, and its old data. 
+            The new data will already be set with the node when our command gets invoked.
+            
+         </p>
+         <p>
+            Now, how (and when) do we add our undo/redo command to the command stream held by 
+            Graph2DUndoManager? 
+            Graph2DUndoManager's <a href="http://www.yworks.com/products/yfiles/doc/api/y/view/Graph2DUndoManager.html#push(y.base.Command)" title="Link to API documentation" target="_top">push<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a> 
+            method serves the "how," see the line in <a href="undo_custom.html#ex_pushing_command" title="Example&nbsp;1.4.&nbsp;Pushing onto the undo/redo command stream">Example&nbsp;1.4, &#8220;Pushing onto the undo/redo command stream&#8221;</a>.
+            
+         </p>
+         <div class="example"><a name="ex_pushing_command"></a><p class="title"><b>Example&nbsp;1.4.&nbsp;Pushing onto the undo/redo command stream</b></p><pre class="programlisting java">
+getUndoSupport().push(new CustomTextChanged(...));
+</pre></div>
+         <p>
+            The answer to the "when" is in the code snippet in <a href="undo_custom.html#ex_data_changes" title="Example&nbsp;1.5.&nbsp;Adding our undo/redo command to the command stream">Example&nbsp;1.5, &#8220;Adding our undo/redo command to the command stream&#8221;</a>.
+            
+         </p>
+         <div class="example"><a name="ex_data_changes"></a><p class="title"><b>Example&nbsp;1.5.&nbsp;Adding our undo/redo command to the command stream</b></p><pre class="programlisting java">
+toolbar.addSeparator();
+// Add text field.
+final JTextField textField = new JTextField(20);
+textField.addActionListener(new ActionListener() {
+  public void actionPerformed(ActionEvent ae) {
+    CustomGraph2D graph = getCustomGraph();
+    NodeCursor nc = graph.selectedNodes();
+    graph.firePreEvent();
+    for (; nc.ok(); nc.next()) {
+      Node n = nc.node();
+      String oldText = graph.getCustomText(n);
+      // Set the entered text as the node's additional data.
+      graph.setCustomText(n, textField.getText());
+      // Add our tailored undo/redo command to Graph2DUndoManager's command 
+      // stream.
+      if (oldText == null || !oldText.equals(textField.getText())) {
+        getUndoSupport().push(new CustomTextChanged(graph, n, oldText));
+      }
+    }
+    graph.firePostEvent();
+    textField.selectAll();
+    graph.updateViews();
+  }
+});
+toolbar.add(textField);
+</pre></div>
+         <p>
+            We will add our command when a change to the additional data of a node has actually 
+            happened, i.e., in the <tt class="code">actionPerformed</tt> method of the text field. 
+            In this callback we can see both old and new text for a node, and can create a CustomTextChanged 
+            object which we add to Graph2DUndoManager's command stream using the push method 
+            as already mentioned.
+            
+         </p>
+         <p>
+            With the CustomTextChanged command, the undo/redo support of our application is 
+            now able to reverse changes to the additional data of the nodes in the graph. 
+            Voil&agrave;.
+            
+         </p>
+         <p>
+            As a side note, our logic in the <tt class="code">actionPerformed</tt> method additionally 
+            inserts bracketing commands into the command stream by means of the <a href="http://www.yworks.com/products/yfiles/doc/api/y/base/Graph.html#firePreEvent()" title="Link to API documentation" target="_top">firePreEvent<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a> 
+            and <a href="http://www.yworks.com/products/yfiles/doc/api/y/base/Graph.html#firePostEvent()" title="Link to API documentation" target="_top">firePostEvent<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a> 
+            methods provided by the Graph class. 
+            The net effect of the bracketing is that changes to the custom text of multiple 
+            nodes are treated as a single undo/redo action. 
+            In other words, although we add as many undo/redo commands as there are changes 
+            to the custom text of nodes, when we press undo, all changes are undone at once. 
+            Without the bracketing, we would have to press undo for each text change...
+            
+         </p>
+      </div>
+      <table class="copyright" border="0" cellpadding="0" cellspacing="0" width="100%">
+         <tbody>
+            <tr>
+               <td align="right">
+                  <p class="copyright">Copyright &copy;2008-2009, yWorks GmbH. All rights reserved.</p>
+               </td>
+            </tr>
+         </tbody>
+      </table>
+      <div class="navfooter">
+         <div class="navline2"></div>
+         <table width="100%" summary="Navigation footer">
+            <tr>
+               <td width="40%" align="left"><a accesskey="p" title="Lesson:&nbsp;Enhancing an Editor Application With Undo/Redo Support" href="undo.html">Prev</a>&nbsp;
+               </td>
+               <td width="20%" align="center"><a accesskey="u" title="Trail:&nbsp;Undo/Redo Support" href="index.html">Up</a></td>
+               <td width="40%" align="right">&nbsp;</td>
+            </tr>
+            <tr>
+               <td width="40%" align="left" valign="top">Lesson:&nbsp;Enhancing an Editor Application With Undo/Redo Support&nbsp;</td>
+               <td width="20%" align="center"><a accesskey="h" title="yFiles for Java Tutorial" href="../index.html">Home</a></td>
+               <td width="40%" align="right" valign="top">&nbsp;</td>
+            </tr>
+         </table>
+      </div>
+   </body>
+</html>

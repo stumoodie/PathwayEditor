@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This file was written by the JAVA GraphML Library.-->
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://www.yworks.com/xml/schema/graphml/1.1/ygraphml.xsd"
+         xmlns:y="http://www.yworks.com/xml/graphml">
+  <key id="d0" for="node" yfiles.type="nodegraphics"/>
+  <key id="d1" for="edge" yfiles.type="edgegraphics"/>
+  <graph id="G" edgedefault="directed">
+    <node id="n0">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:Geometry x="-25.0" y="-15.0" width="50.0" height="30.0"/>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="n1">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:Geometry x="-41.5" y="262.0" width="83.0" height="76.0"/>
+        </y:GenericNode>
+      </data>
+    </node>
+    <edge id="e0" source="n0" target="n1"/>
+  </graph>
+</graphml>

@@ -1,0 +1,110 @@
+<html>
+<head>
+    <style type="text/css">
+        <!--
+        body {
+            font-family: Verdana, sans-serif;
+            margin-left: 3px;
+            margin-right: 3px;
+            margin-top: 0px;
+            margin-bottom: 0px;
+        }
+
+        h1 {
+            padding-left: 0px;
+            padding-top: 8px;
+            padding-bottom: 8px;
+            color: #4079ea;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        p {
+            padding-bottom: 0px;
+            padding-top: 0px;
+            margin-top: 3px;
+            margin-bottom: 0px;
+            margin-left: 0px;
+            font-size: 10px;
+            color: #000000;
+        }
+
+        h2 {
+            font-size: 12px;
+            color: #4079ea;
+            margin-top: 10px;
+            margin-bottom: 0px;
+        }
+
+        h3 {
+            font-size: 11px; /*	margin-left:10px; */
+            margin-left: 0px;
+            margin-top: 8px;
+            margin-bottom: 2px;
+        }
+
+        dl {
+            font-size: 10px;
+            margin-top: 2px;
+            margin-bottom: 2px;
+            margin-left: 0px;
+        }
+
+        dt {
+            font-weight: bold;
+            margin-top: 4px;
+            color: #333366;
+        }
+
+        dd {
+            margin-left: 5px;
+        }
+
+        .copyright {
+            font-size: 10px;
+            font-style: italic;
+            text-align: right;
+            margin-top: 20px;
+        }
+
+        code, tt {
+            font-family: monospace;
+            font-size: 10px;
+            color: #0000C0;
+        }
+
+        -->
+    </style>
+</head>
+<body>
+<h2>Description</h2>
+<p>
+This demo presents the critical edge feature of the hierarchic layouter. The layouter tries to vertically align each node pair
+that is connected by an edge marked as "critical". This feature can be utilized to highlight different edge paths that are relevant for a user.
+The demo allows to manually mark/unmark critical edges by selecting some edges and, then, pressing button "Mark Selected Edges"/"Unmark Selected Edges".
+Critical edges are colored red, common edges are colored black. The current state of selected edges can be toggled by double-clicking.
+Pressing the "Apply Layout" button calculates a new layout of the current graph.
+<br>
+Pressing button "Mark Longest Path" allows to automatically select all edges that belong to a longest path of the graph.
+If two nodes of the graph are marked as selected, pressing button "Mark Path Between Two Nodes" selects all edges
+of the shortest-path between this nodes.
+</p>
+<h3>Layout Settings</h3>
+<p>
+  The demo allows to specify the following layout properties:
+</p>
+<dl>
+  <dt>Minimal Layer Distance:</dt>
+  <dd>Specifies the minimum distance between two adjacent layers.</dd>
+  <dt>Minimal Node Distance:</dt>
+  <dd>Specifies the minimum distance between two adjacent nodes.</dd>
+  <dt>Use Orthogonal Edge Routes:</dt>
+  <dd>Whether or not edges are routed orthogonally. If this option is disabled, edges are routed polyline.</dd>
+  <dt>Enable Backloop Routing:</dt>
+  <dd>Whether or not reverse edges are routed as backloops, i.e., such that they also leave their source node at the bottom
+  and enter their target node at the top.</dd>
+  <dt>Enable Edge Straightening:</dt>
+  <dd>Whether or not an edge straightening optimization should be applied. This optimization tries to further reduce the number of bends.</dd>
+</dl>
+</body>
+</html>

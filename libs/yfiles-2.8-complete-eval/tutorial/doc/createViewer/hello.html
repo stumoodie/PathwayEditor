@@ -1,0 +1,272 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+      <title>Lesson:&nbsp;A yFiles "Hello World!" Application</title>
+      <link rel="stylesheet" href="ystyle.css" type="text/css">
+      <meta name="generator" content="DocBook XSL Stylesheets V1.65.1">
+      <link rel="home" href="index.html" title="Trail:&nbsp;Creating a Simple Graph Viewer">
+      <link rel="up" href="index.html" title="Trail:&nbsp;Creating a Simple Graph Viewer">
+      <link rel="previous" href="simple.html" title="Lesson:&nbsp;Creating an Empty View">
+      <link rel="next" href="default_realizers.html" title="Lesson:&nbsp;Changing the Default Rendering">
+      <link type="text/css" rel="stylesheet" href="../jssh/SyntaxHighlighter.css"><script type="text/javascript" src="../jssh/shCore.js"></script><script type="text/javascript" src="../jssh/shBrushJava.js"></script><script type="text/javascript">
+  function sh() {
+
+    dp.SyntaxHighlighter.HighlightAll('programlisting', false, false, false, null, false);
+  }
+  </script></head>
+   <body onload="sh()" bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+      <div class="navheader">
+         <table width="100%" summary="Navigation header">
+            <tr>
+               <th colspan="3" align="center">Lesson:&nbsp;A yFiles "Hello World!" Application</th>
+            </tr>
+            <tr>
+               <td width="20%" align="left"><a accesskey="p" title="Lesson:&nbsp;Creating an Empty View" href="simple.html">Prev</a>&nbsp;
+               </td>
+               <th width="60%" align="center">&nbsp;</th>
+               <td width="20%" align="right">&nbsp;<a accesskey="n" title="Lesson:&nbsp;Changing the Default Rendering" href="default_realizers.html">Next</a></td>
+            </tr>
+         </table>
+         <div class="navline"></div>
+      </div>
+      <div class="sect1" lang="en">
+         <div class="titlepage">
+            <div>
+               <div>
+                  <h2 class="title" style="clear: both"><a name="hello"></a>Lesson:&nbsp;A yFiles "Hello World!" Application
+                  </h2>
+               </div>
+            </div>
+            <div></div>
+         </div>
+         <p>
+            Upon creation of a yFiles view, there is automatically also a <a href="http://www.yworks.com/products/yfiles/doc/api/y/view/Graph2D.html" title="Link to API documentation" target="_top">Graph2D<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a> 
+            instance created. 
+            This is the graph that is actually displayed in the view. 
+            Initially, this graph is empty.
+            
+         </p>
+         <p>
+            We will now enhance our code from the previous lesson, the SimpleGraphViewer1 application, 
+            with a simple graph that displays a well-known message.
+            
+         </p>
+         <div class="figure"><a name="fig_SimpleGraphViewer2"></a><p class="title"><b>Figure&nbsp;1.2.&nbsp;Hello World!</b></p>
+            <div class="informaltable">
+               <center>
+                  <table border="0">
+                     <colgroup>
+                        <col width="100%">
+                     </colgroup>
+                     <tbody>
+                        <tr>
+                           <td>
+                              <div class="mediaobject" align="center"><img src="figures/SimpleGraphViewer2.png" align="middle" alt="Hello World!"></div>
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </center>
+            </div>
+         </div>
+         <p>
+            To this end, let's get the empty graph that is held by the view. 
+            We will do so, ultimately at least, using the <a href="http://www.yworks.com/products/yfiles/doc/api/y/view/Graph2D.html#getGraph2D()" title="Link to API documentation" target="_top">getGraph2D()<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a> 
+            getter method of Graph2DView. 
+            
+            We won't call it directly, though, but by means of a convenience method in <a href="../../src/tutorial/viewer/SimpleGraphViewer2.java" title="Link to source code" target="_top">SimpleGraphViewer2</a> 
+            that returns the graph. 
+            
+         </p>
+         <p>
+            As shown in <a href="hello.html#ex_getGraph2D" title="Example&nbsp;1.2.&nbsp;Adding the getGraph2D getter method">Example&nbsp;1.2, &#8220;Adding the getGraph2D getter method&#8221;</a>, we will add the getGraph2D getter to 
+            the constructor right after the view's creation.
+            
+         </p>
+         <div class="example"><a name="ex_getGraph2D"></a><p class="title"><b>Example&nbsp;1.2.&nbsp;Adding the getGraph2D getter method</b></p><pre class="programlisting java">
+public SimpleGraphViewer2(Dimension size, String title) {
+  view = createGraph2DView();
+  graph = view.getGraph2D();
+  frame = createApplicationFrame(size, title, view);
+}
+</pre></div>
+         <p>
+            And in the <tt class="code">main</tt> method, we will add the call to the convenience getter 
+            method.
+            
+         </p>
+         <div class="example"><a name="ex_getGraph"></a><p class="title"><b>Example&nbsp;1.3.&nbsp;Calling the convenience getter method of SimpleGraphViewer2</b></p><pre class="programlisting java">
+public static void main(String[] args) {
+  SimpleGraphViewer2 sgv = 
+    new SimpleGraphViewer2(new Dimension(400, 300), 
+                           SimpleGraphViewer2.class.getName());
+  // Get the graph that is displayed in the view and "populate" it.
+  sgv.populateGraph(sgv.getGraph());
+  sgv.show();
+}
+</pre></div>
+         <p>
+            The graph is handed over to a new method, <tt class="code">populateGraph</tt>, that we will 
+            also add to our code, and which we will use to establish a simple graph structure.
+            
+         </p>
+         <div class="sect2" lang="en">
+            <div class="titlepage">
+               <div>
+                  <div>
+                     <h3 class="title"><a name="populating"></a>Populating the Graph
+                     </h3>
+                  </div>
+               </div>
+               <div></div>
+            </div>
+            <p>
+               The Graph2D class provides several methods for creating both nodes and edges. 
+               For node creation, we will be using the <a href="http://www.yworks.com/products/yfiles/doc/api/y/view/Graph2D.html#createNode(dooule, double, double, double, java.lang.String)" title="Link to API documentation" target="_top">createNode<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a> 
+               method overload that allows us to specify the geometry of a node (i.e., location 
+               and dimension), as well as a text for its label.
+               
+            </p>
+            <p>
+               As parameter values to the <a href="http://www.yworks.com/products/yfiles/doc/api/y/view/Graph2D.html#createEdge(y.base.Node, y.base.Node)" title="Link to API documentation" target="_top">createEdge<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a> 
+               method we use the two nodes that we have just created. 
+               This gives us a directed edge from the "Hello" node to the "World!" node. 
+               <a href="hello.html#ex_populateGraph" title="Example&nbsp;1.4.&nbsp;Creating a simple graph structure">Example&nbsp;1.4, &#8220;Creating a simple graph structure&#8221;</a> shows the entire method.
+               
+            </p>
+            <div class="example"><a name="ex_populateGraph"></a><p class="title"><b>Example&nbsp;1.4.&nbsp;Creating a simple graph structure</b></p><pre class="programlisting java">
+/** Creates a simple graph structure. */
+private void populateGraph(Graph2D graph) {
+  // In the given graph, create two nodes...
+  Node hello = graph.createNode(100, 50, 80, 30, "Hello");
+  Node world = graph.createNode(100, 100, 80, 30, "World!");
+  // ...and an edge between.
+  graph.createEdge(hello, world);
+}
+</pre></div>
+            <div class="important" style="margin-left: 0.5in; margin-right: 0.5in;">
+               <h3 class="title">Important</h3>
+               <p>
+                  Ultimately, Graph2D's createNode and createEdge methods are all it takes to create 
+                  a graph structure.
+                  
+               </p>
+            </div>
+         </div>
+         <div class="sect2" lang="en">
+            <div class="titlepage">
+               <div>
+                  <div>
+                     <h3 class="title"><a name="d0e238"></a>Some Observations
+                     </h3>
+                  </div>
+               </div>
+               <div></div>
+            </div>
+            <p>
+               Although we haven't specified anything about the visual representation for the nodes
+               or the edge that we have just created, they nevertheless show some "style." 
+               This is due to default settings maintained by a Graph2D.
+               
+            </p>
+            <div class="figure"><a name="fig_SimpleGraphViewer2_default_realizers"></a><p class="title"><b>Figure&nbsp;1.3.&nbsp;Default visual representation for graph elements</b></p>
+               <div class="informaltable">
+                  <center>
+                     <table border="0">
+                        <colgroup>
+                           <col width="100%">
+                        </colgroup>
+                        <tbody>
+                           <tr>
+                              <td>
+                                 <div class="mediaobject" align="center"><img src="figures/SimpleGraphViewer2-default-realizers.png" align="middle" alt="Default visual representation for graph elements"></div>
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </center>
+               </div>
+            </div>
+            <p>
+               Graph2D uses so-called realizers for the visual presentation of graph elements, 
+               and what we see in SimpleGraphViewer2 is how the default node realizer and edge 
+               realizer render nodes and edges: 
+               
+            </p>
+            <div class="itemizedlist">
+               <ul type="disc">
+                  <li>nodes are rendered as blue rectangles with a black, one-pixel border</li>
+                  <li>edges are rendered as black, one-pixel lines</li>
+               </ul>
+            </div>
+            <p>
+               
+               In particular, a default edge realizer lacks any decoration that would indicate 
+               to a user the actual direction of an edge.
+               
+            </p>
+            <p>
+               We will see in the next lesson how we can change the default realizers. 
+               <a href="default_realizers.html" title="Lesson:&nbsp;Changing the Default Rendering">Read on...</a>.
+               
+            </p>
+         </div>
+         <div class="highlights">
+            <h4><a name="d0e275"></a>Related Resources
+            </h4>
+            <p>
+               You will find related information in the yFiles for Java Developer's Guide: 
+               
+            </p>
+            <div class="itemizedlist">
+               <ul type="disc">
+                  <li><a href="http://www.yworks.com/products/yfiles/doc/developers-guide/realizers.html#binding_realizers" title="Link to Developer's Guide" target="_top">What the default realizer mechanism is</a></li>
+               </ul>
+            </div>
+            <p>
+               
+               In the yFiles for Java API: 
+               
+            </p>
+            <div class="itemizedlist">
+               <ul type="disc">
+                  <li><a href="http://www.yworks.com/products/yfiles/doc/api/y/view/Graph2D.html#createNode(double, double, double, double, java.lang.String)" title="Link to API documentation" target="_top">Graph2D.createNode<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a></li>
+                  <li><a href="http://www.yworks.com/products/yfiles/doc/api/y/view/Graph2D.html#createEdge(y.base.Node, y.base.Node)" title="Link to API documentation" target="_top">Graph2D.createEdge<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a></li>
+               </ul>
+            </div>
+            <p>
+               
+               
+               
+               
+            </p>
+         </div>
+      </div>
+      <table class="copyright" border="0" cellpadding="0" cellspacing="0" width="100%">
+         <tbody>
+            <tr>
+               <td align="right">
+                  <p class="copyright">Copyright &copy;2008-2009, yWorks GmbH. All rights reserved.</p>
+               </td>
+            </tr>
+         </tbody>
+      </table>
+      <div class="navfooter">
+         <div class="navline2"></div>
+         <table width="100%" summary="Navigation footer">
+            <tr>
+               <td width="40%" align="left"><a accesskey="p" title="Lesson:&nbsp;Creating an Empty View" href="simple.html">Prev</a>&nbsp;
+               </td>
+               <td width="20%" align="center"><a accesskey="u" title="Trail:&nbsp;Creating a Simple Graph Viewer" href="index.html">Up</a></td>
+               <td width="40%" align="right">&nbsp;<a accesskey="n" title="Lesson:&nbsp;Changing the Default Rendering" href="default_realizers.html">Next</a></td>
+            </tr>
+            <tr>
+               <td width="40%" align="left" valign="top">Lesson:&nbsp;Creating an Empty View&nbsp;</td>
+               <td width="20%" align="center"><a accesskey="h" title="yFiles for Java Tutorial" href="../index.html">Home</a></td>
+               <td width="40%" align="right" valign="top">&nbsp;Lesson:&nbsp;Changing the Default Rendering</td>
+            </tr>
+         </table>
+      </div>
+   </body>
+</html>

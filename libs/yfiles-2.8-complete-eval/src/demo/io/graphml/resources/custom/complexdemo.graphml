@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created by yFiles 2.3.1 -->
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://www.yworks.com/xml/schema/graphml/1.1/ygraphml.xsd"
+         xmlns:y="http://www.yworks.com/xml/graphml" xmlns:demo="demo.io.graphml.complex">
+  <key id="d0" for="node" yfiles.type="nodegraphics"/>
+  <key id="d1" for="node" attr.name="myNodeAttribute"/>
+  <key id="d2" for="edge" yfiles.type="edgegraphics"/>
+  <key id="d3" for="edge" attr.name="myEdgeAttribute">
+    <default>01.01.1970</default>
+  </key>
+  <graph id="G" edgedefault="directed">
+    <node id="n0">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Geometry x="288.0" y="172.0" width="60.0" height="30.0"/>
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel x="9.5" y="5.6494140625" width="11.0" height="18.701171875" visible="true" alignment="center"
+                       fontFamily="Dialog" fontSize="12" fontStyle="plain" textColor="#000000" modelName="internal"
+                       modelPosition="c" autoSizePolicy="content">1</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+      <data key="d1">
+        <demo:ItemList>
+          <demo:Item value="7.0"/>
+          <demo:Item value="4.0"/>
+        </demo:ItemList>
+      </data>      
+    </node>
+    <node id="n1">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Geometry x="168.0" y="180.0" width="60.0" height="30.0"/>
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel x="9.5" y="5.6494140625" width="11.0" height="18.701171875" visible="true" alignment="center"
+                       fontFamily="Dialog" fontSize="12" fontStyle="plain" textColor="#000000" modelName="internal"
+                       modelPosition="c" autoSizePolicy="content">2</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+      <data key="d1">
+        <demo:ItemList>
+          <demo:Item value="1.0"/>
+          <demo:Item value="2.0"/>
+        </demo:ItemList>
+      </data>
+    </node>
+    <node id="n2">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Geometry x="233.0" y="262.0" width="60.0" height="30.0"/>
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel x="9.5" y="5.6494140625" width="11.0" height="18.701171875" visible="true" alignment="center"
+                       fontFamily="Dialog" fontSize="12" fontStyle="plain" textColor="#000000" modelName="internal"
+                       modelPosition="c" autoSizePolicy="content">3</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+      <data key="d1">
+        <demo:ItemList>
+          <demo:Item value="Item1"/>
+          <demo:Item value="Item2"/>
+        </demo:ItemList>
+      </data>
+    </node>
+    <edge id="e0" source="n1" target="n0">
+      <data key="d2">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle type="line" width="1.0" color="#000000"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+      <data key="d3">18.03.1974</data>
+    </edge>
+    <edge id="e1" source="n0" target="n2">
+      <data key="d2">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle type="line" width="1.0" color="#000000"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e2" source="n2" target="n1">
+      <data key="d2">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle type="line" width="1.0" color="#000000"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+  </graph>
+</graphml>

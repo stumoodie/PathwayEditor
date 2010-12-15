@@ -1,0 +1,1134 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+      <title>Lesson:&nbsp;Creating a Graph From Data in a Database</title>
+      <link rel="stylesheet" href="ystyle.css" type="text/css">
+      <meta name="generator" content="DocBook XSL Stylesheets V1.65.1">
+      <link rel="home" href="index.html" title="Trail:&nbsp;Getting Data Into the View">
+      <link rel="up" href="index.html" title="Trail:&nbsp;Getting Data Into the View">
+      <link rel="previous" href="index.html" title="Trail:&nbsp;Getting Data Into the View">
+      <link rel="next" href="business_model.html" title="Lesson:&nbsp;Creating a Graph From a Business Model">
+      <link type="text/css" rel="stylesheet" href="../jssh/SyntaxHighlighter.css"><script type="text/javascript" src="../jssh/shCore.js"></script><script type="text/javascript" src="../jssh/shBrushJava.js"></script><script type="text/javascript">
+  function sh() {
+
+    dp.SyntaxHighlighter.HighlightAll('programlisting', false, false, false, null, false);
+  }
+  </script></head>
+   <body onload="sh()" bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+      <div class="navheader">
+         <table width="100%" summary="Navigation header">
+            <tr>
+               <th colspan="3" align="center">Lesson:&nbsp;Creating a Graph From Data in a Database</th>
+            </tr>
+            <tr>
+               <td width="20%" align="left"><a accesskey="p" title="Trail:&nbsp;Getting Data Into the View" href="index.html">Prev</a>&nbsp;
+               </td>
+               <th width="60%" align="center">&nbsp;</th>
+               <td width="20%" align="right">&nbsp;<a accesskey="n" title="Lesson:&nbsp;Creating a Graph From a Business Model" href="business_model.html">Next</a></td>
+            </tr>
+         </table>
+         <div class="navline"></div>
+      </div>
+      <div class="sect1" lang="en">
+         <div class="titlepage">
+            <div>
+               <div>
+                  <h2 class="title" style="clear: both"><a name="database"></a>Lesson:&nbsp;Creating a Graph From Data in a Database
+                  </h2>
+               </div>
+            </div>
+            <div></div>
+         </div>
+         <p>
+            The DatabaseDemo application builds and displays a simple graph that represents 
+            part of a company's organizational structure. 
+            It uses a simplified database setup where the data corresponds to the table shown 
+            in <a href="database.html#fig_employees_table" title="Figure&nbsp;1.1.&nbsp;The employees table from DatabaseDemo's sample database">Figure&nbsp;1.1, &#8220;The employees table from DatabaseDemo's sample database&#8221;</a>.
+            
+         </p>
+         <div class="figure"><a name="fig_employees_table"></a><p class="title"><b>Figure&nbsp;1.1.&nbsp;The employees table from DatabaseDemo's sample database</b></p>
+            <div class="informaltable">
+               <center>
+                  <table border="0">
+                     <colgroup>
+                        <col width="100%">
+                     </colgroup>
+                     <tbody>
+                        <tr>
+                           <td>
+                              <div class="mediaobject" align="center"><img src="figures/employees1-table_2.gif" align="middle" alt="The employees table from DatabaseDemo's sample database"></div>
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </center>
+            </div>
+         </div>
+         <p>
+            The graph elements are derived from the data in the table in the following way:
+            
+         </p>
+         <div class="itemizedlist">
+            <ul type="disc">
+               <li>each row is turned into a node</li>
+               <li>the data from the supervisor column is used to create edges between nodes</li>
+            </ul>
+         </div>
+         <p>
+            
+            <a href="database.html#fig_DatabaseDemo" title="Figure&nbsp;1.2.&nbsp;DatabaseDemo builds a small sample graph from a simplified database setup">Figure&nbsp;1.2, &#8220;DatabaseDemo builds a small sample graph from a simplified database setup&#8221;</a> shows the application with the resulting organization 
+            chart.
+            
+         </p>
+         <div class="figure"><a name="fig_DatabaseDemo"></a><p class="title"><b>Figure&nbsp;1.2.&nbsp;DatabaseDemo builds a small sample graph from a simplified database setup</b></p>
+            <div class="informaltable">
+               <center>
+                  <table border="0">
+                     <colgroup>
+                        <col width="100%">
+                     </colgroup>
+                     <tbody>
+                        <tr>
+                           <td>
+                              <div class="mediaobject" align="center"><img src="figures/DatabaseDemo.png" align="middle" alt="DatabaseDemo builds a small sample graph from a simplified database setup"></div>
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </center>
+            </div>
+         </div>
+         <p>
+            An organization chart is an example for a tree structure, which is a quite common
+            type of diagram.
+            Tree structures have special properties, for example, there is exactly one distinct
+            "root node," which has no incoming edges (cf. 'Chief Executive Officer' to the left);
+            all other nodes have exactly one incoming edge.
+            
+            The yFiles for Java diagramming library provides a number of specialized tree layout
+            algorithms that can be used to calculate an automatic layout for this type of diagram.
+            
+            We will discuss layout algorithms later, in <a href="database.html#layout" title="Automatic Layout">the section called &#8220;Automatic Layout&#8221;</a>.
+            
+         </p>
+         <div class="sect2" lang="en">
+            <div class="titlepage">
+               <div>
+                  <div>
+                     <h3 class="title"><a name="database_setup"></a>DatabaseDemo Setup
+                     </h3>
+                  </div>
+               </div>
+               <div></div>
+            </div>
+            <p>
+               The DatabaseDemo application uses a modified variant of the SimpleGraphViewer5 application 
+               built in the <a href="../createViewer/index.html" target="_top">Creating a Simple Graph Viewer</a> 
+               trail to present the graph structure. 
+               The initial application setup shown in <a href="database.html#ex_DatabaseDemo_ctor" title="Example&nbsp;1.1.&nbsp;DatabaseDemo constructor">Example&nbsp;1.1, &#8220;DatabaseDemo constructor&#8221;</a> illustrates 
+               how the graph viewer is used.
+               
+            </p>
+            <div class="example"><a name="ex_DatabaseDemo_ctor"></a><p class="title"><b>Example&nbsp;1.1.&nbsp;DatabaseDemo constructor</b></p><pre class="programlisting java">
+public DatabaseDemo() {
+  sgv = new SimpleGraphViewer5(new Dimension(800, 600), getClass().getName()) {
+    // Overridden since we need other default values.
+    protected void configureDefaultRealizers(Graph2D graph) {
+      // Add an arrowhead decoration to the target side of the edges.
+      graph.getDefaultEdgeRealizer().setTargetArrow(Arrow.STANDARD);
+      // Set the node size and some other graphical properties.
+      NodeRealizer defaultNodeRealizer = graph.getDefaultNodeRealizer();
+      defaultNodeRealizer.setSize(200, 50);
+    }
+  };
+  graph = sgv.getGraph();
+  sgv.getView().addViewMode(new TooltipMode());
+}
+</pre></div>
+            <p>
+               The modification to the viewer is an override to configure the graph's default realizers 
+               for the application's needs. 
+               Basically, we set a uniform node size that can encompass the label texts of each 
+               node. 
+               (Later on, we will also take a look at other ways of determining node sizes.)
+               
+            </p>
+            <p>
+               The last line in the constructor adds an additional view mode to the viewer, we
+               will ignore this for the moment, but discuss it in <a href="database.html#database_data" title="Building the Graph, Part 3: Presenting Data">the section called &#8220;Building the Graph, Part 3: Presenting Data&#8221;</a> 
+               in more detail.
+               
+            </p>
+            <p>
+               The DatabaseDemo's <tt class="code">start</tt> method, which is invoked directly after the 
+               application's initialization, clearly presents the steps that are performed: 
+               
+            </p>
+            <div class="itemizedlist">
+               <ul type="disc">
+                  <li>database driver setup</li>
+                  <li>creating the graph structure from the database's data</li>
+                  <li>performing an automatic layout</li>
+                  <li>presenting the graph to the user</li>
+               </ul>
+            </div>
+            <p>
+               
+            </p>
+            <div class="example"><a name="ex_DatabaseDemo_start"></a><p class="title"><b>Example&nbsp;1.2.&nbsp;DatabaseDemo's major steps</b></p><pre class="programlisting java">
+public void start() {
+  // Load the database driver into memory.
+  loadDBDriver();
+
+  // Create the graph.
+  populateGraph();
+
+  // Perform a layout on the created graph.
+  performLayout();
+
+  // Display the graph viewer with the graph.
+  sgv.show();
+}
+</pre></div>
+            <p>
+               In the sections to come, we will focus on how the graph structure is actually created 
+               (method <tt class="code">populateGraph</tt>), and will then also briefly discuss the automatic 
+               layout of the created graph (method <tt class="code">performLayout</tt>).
+               
+            </p>
+            <p>
+               The actual database-related part, especially the database driver that is used, is 
+               ultimately just a means to an end to get the initial data to create the graph from. 
+               
+               Consequently, we will just skip any database-related code, which, for example, also 
+               includes the <tt class="code">loadDBDriver</tt> method. 
+               
+               Nevertheless, in the DatabaseDemo source code you will find enough support (as comments) 
+               for "real" database connectivity that you can use and that will help you in re-using 
+               the demo in your environment. 
+               
+            </p>
+            <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+               <h3 class="title">Note</h3>
+               <p>
+                  In order to use the demo code with other database drivers, you will need the corresponding 
+                  drivers in your classpath.
+                  
+               </p>
+            </div>
+            <div class="highlights">
+               <h4><a name="d0e162"></a>Related Resources
+               </h4>
+               <p>
+                  You will find related information in the Knowledge Base: 
+                  
+               </p>
+               <div class="itemizedlist">
+                  <ul type="disc">
+                     <li><a href="http://kb.yworks.com/article120.html" title="Link to Knowledge Base" target="_top">How to create a graph from data stored inside a database</a></li>
+                  </ul>
+               </div>
+               <p>
+                  
+                  
+               </p>
+            </div>
+         </div>
+         <div class="sect2" lang="en">
+            <div class="titlepage">
+               <div>
+                  <div>
+                     <h3 class="title"><a name="database_nodes"></a>Building the Graph, Part 1: Creating Nodes
+                     </h3>
+                  </div>
+               </div>
+               <div></div>
+            </div>
+            <p>
+               The first part when we want to create a graph structure is to actually create the 
+               nodes. 
+               In the DatabaseDemo application, we want to create nodes for a company's employees 
+               which are represented in the database as table entries.
+               
+            </p>
+            <p>
+               <a href="database.html#ex_database_query" title="Example&nbsp;1.3.&nbsp;Setup for the database query">Example&nbsp;1.3, &#8220;Setup for the database query&#8221;</a> shows the beginning of the central <tt class="code">try</tt> 
+               block in which the database query is prepared and executed.
+               
+            </p>
+            <div class="example"><a name="ex_database_query"></a><p class="title"><b>Example&nbsp;1.3.&nbsp;Setup for the database query</b></p><pre class="programlisting java">
+Connection connection = null;
+try {
+  // Create a connection to the database.
+  connection = createDBConnection();
+  
+  // Create a Statement object to execute the query with.
+  Statement stmt = connection.createStatement();
+  
+  // The actual query.
+  ResultSet results = stmt.executeQuery(
+    "SELECT id, firstname, lastname, gender, jobtitle, department, room,
+            phoneextension, supervisor
+     FROM employees_1");
+  );
+  
+  ...
+</pre></div>
+            <p>
+               The <tt class="code">results</tt> variable holds the result set of our query, which we will 
+               process and create one node for each employee entry. 
+               Basically, this processing/creating step boils down to a <tt class="code">while</tt> loop 
+               that would look as illustrated in <a href="database.html#ex_creating_nodes" title="Example&nbsp;1.4.&nbsp;The basic scheme to creating nodes">Example&nbsp;1.4, &#8220;The basic scheme to creating nodes&#8221;</a>.
+               
+            </p>
+            <div class="example"><a name="ex_creating_nodes"></a><p class="title"><b>Example&nbsp;1.4.&nbsp;The basic scheme to creating nodes</b></p><pre class="programlisting java">
+while (results.next()) {
+  Node employee = graph.createNode();
+}
+</pre></div>
+            <p>
+               The actual source code in the DatabaseDemo both before and in the while loop looks 
+               different than what is shown above. 
+               Essentially, in the actual source code there are already preparations made for the 
+               second part, the creation of the edges, which we will analyze in the <a href="database.html#database_edges" title="Building the Graph, Part 2: Creating Edges">next section</a>.
+               
+            </p>
+            <p>
+               Note that the <a href="http://www.yworks.com/products/yfiles/doc/api/y/view/Graph2D.html#createNode()" title="Link to API documentation" target="_top">createNode()<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a> method 
+               we are using does not specify anything about either the geometry (location, width/height) 
+               of a node nor the visual representation that should be used. 
+               As we have learned earlier, in the <a href="../createViewer/index.html" target="_top">Creating a Simple Graph Viewer</a> 
+               trail, a default representation and a default geometry is then used for each created 
+               node. 
+               These defaults are maintained by Graph2D, and in the graph viewer which we are using 
+               from DatabaseDemo we have customized them to our application's needs.
+               
+            </p>
+            <div class="highlights">
+               <h4><a name="d0e222"></a>Related Resources
+               </h4>
+               <p>
+                  You will find related information in the yFiles for Java API: 
+                  
+               </p>
+               <div class="itemizedlist">
+                  <ul type="disc">
+                     <li><a href="http://www.yworks.com/products/yfiles/doc/api/y/view/Graph2D.html#createNode()" title="Link to API documentation" target="_top">Graph2D.createNode<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a></li>
+                  </ul>
+               </div>
+               <p>
+                  
+                  
+               </p>
+            </div>
+         </div>
+         <div class="sect2" lang="en">
+            <div class="titlepage">
+               <div>
+                  <div>
+                     <h3 class="title"><a name="database_edges"></a>Building the Graph, Part 2: Creating Edges
+                     </h3>
+                  </div>
+               </div>
+               <div></div>
+            </div>
+            <p>
+               The second part when we want to create a graph structure is to create edges that 
+               connect the nodes. 
+               In the DatabaseDemo application, we want to create edges between employees to show 
+               the supervisor relationship. 
+               In our database data this relationship is represented by values in the supervisor 
+               column, which for each employee that has a supervisor holds the employee ID of that 
+               supervisor's entry.
+               
+            </p>
+            <p>
+               This indirection scheme (which is rather typical for a database) and also the fact 
+               that we cannot "just create" an edge, but always need the proper nodes that we actually 
+               want to connect, make some additional mapping data structures necessary.
+               
+            </p>
+            <p>
+               We will add two mapping data structures to our code: 
+               
+            </p>
+            <div class="itemizedlist">
+               <ul type="disc">
+                  <li>
+                     a HashMap (<tt class="code">id2Node</tt>) that will enable us to find the Node object that
+                     has been created for an employee given the employee's ID
+                     
+                  </li>
+                  <li>
+                     a yFiles NodeMap (<tt class="code">node2SupervisorID</tt>) that will enable us to get the
+                     supervisor's employee ID ("supervisor ID" for short) given the Node object for an
+                     employee
+                     
+                  </li>
+               </ul>
+            </div>
+            <p>
+               
+               Both are created before the while loop and then used therein. 
+               The NodeMap specifically is created using the <a href="http://www.yworks.com/products/yfiles/doc/api/y/base/Graph.html#createNodeMap()" title="Link to API documentation" target="_top">createNodeMap()<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a> 
+               method of Graph2D (inherited from y.base.Graph), which returns a default NodeMap 
+               implementation.
+               
+            </p>
+            <div class="important" style="margin-left: 0.5in; margin-right: 0.5in;">
+               <h3 class="title">Important</h3>
+               <p>
+                  Node maps (and also edge maps) are an important means to associate data with nodes 
+                  (and edges) that is used throughout the yFiles for Java diagramming library.
+                  
+               </p>
+            </div>
+            <div class="example"><a name="ex_entire_while_loop"></a><p class="title"><b>Example&nbsp;1.5.&nbsp;Entire while loop with preparations</b></p><pre class="programlisting java">
+// A map that binds the supervisor ID of each employee to the Node object.
+NodeMap node2SupervisorID = graph.createNodeMap();
+
+// This will map an employee ID to the according Node object.
+HashMap id2Node = new HashMap();
+
+while (results.next()) {
+  Node employee = graph.createNode();
+
+  // Add a mapping from an ID to a Node object.
+  Integer id = new Integer(results.getInt("id"));
+  id2Node.put(id, employee);
+
+  // If a supervisor ID is set, bind it to the created Node object via the
+  // NodeMap.
+  String supervisorString = results.getString("supervisor").trim();
+  if (supervisorString.length() &gt; 0) {
+    Integer supervisorID = Integer.valueOf(supervisorString);
+    node2SupervisorID.set(employee, supervisorID);
+  }
+}
+</pre></div>
+            <p>
+               In the loop, the HashMap is filled right after a Node object has been created using 
+               the code shown in <a href="database.html#ex_filling_HashMap" title="Example&nbsp;1.6.&nbsp;Filling the HashMap">Example&nbsp;1.6, &#8220;Filling the HashMap&#8221;</a>.
+               
+            </p>
+            <div class="example"><a name="ex_filling_HashMap"></a><p class="title"><b>Example&nbsp;1.6.&nbsp;Filling the HashMap</b></p><pre class="programlisting java">
+// Add a mapping from an ID to a Node object.
+Integer id = new Integer(results.getInt("id"));
+id2Node.put(id, employee);
+</pre></div>
+            <p>
+               The NodeMap is filled with supervisor IDs only when they are non-empty as shown 
+               in <a href="database.html#ex_filling_NodeMap" title="Example&nbsp;1.7.&nbsp;Filling the NodeMap">Example&nbsp;1.7, &#8220;Filling the NodeMap&#8221;</a>.
+               
+            </p>
+            <div class="example"><a name="ex_filling_NodeMap"></a><p class="title"><b>Example&nbsp;1.7.&nbsp;Filling the NodeMap</b></p><pre class="programlisting java">
+// If a supervisor ID is set, bind it to the created Node object via the
+// NodeMap.
+String supervisorString = results.getString("supervisor").trim();
+if (supervisorString.length() &gt; 0) {
+  Integer supervisorID = Integer.valueOf(supervisorString);
+  node2SupervisorID.set(employee, supervisorID);
+}
+</pre></div>
+            <p>
+               Why do we need the NodeMap (more precisely, the mapping that it provides) at all? 
+               The actual reason for the NodeMap is that we are iterating over the query's result 
+               set once, processing a single entry at a time, and it can always be the case that 
+               the employee entry which is referred to by the supervisor ID value has not been 
+               seen yet. 
+               If the data would not contain such a "forward reference," we could easily do without 
+               the NodeMap and instead create an edge inside the while loop.
+               
+            </p>
+            <p>
+               Instead, since we cannot assume a specific order in our data, the edges are created 
+               after the while loop. 
+               To this end, we will iterate over all nodes that we have created, and use the mappings 
+               established by the NodeMap and HashMap to create edges that connect employees with 
+               their corresponding supervisor.
+               
+            </p>
+            <p>
+               <a href="database.html#ex_creating_edges" title="Example&nbsp;1.8.&nbsp;Creating edges">Example&nbsp;1.8, &#8220;Creating edges&#8221;</a> shows the <tt class="code">for</tt> loop for iterating 
+               over the nodes. 
+               It uses the NodeCursor idiom which allows convenient iteration over a set of nodes.
+               
+            </p>
+            <div class="example"><a name="ex_creating_edges"></a><p class="title"><b>Example&nbsp;1.8.&nbsp;Creating edges</b></p><pre class="programlisting java">
+// Now we walk through all nodes and create edges from the supervisor node to 
+// the employee node.
+for (NodeCursor nc = graph.nodes(); nc.ok(); nc.next()) {
+  Node node = nc.node();
+  // Get the supervisor ID of this node using the NodeMap we filled when 
+  // creating the nodes.
+  Integer supervisorID = (Integer) node2SupervisorID.get(node);
+  if (supervisorID != null) {
+    // If a supervisor ID is set, create an edge.
+    graph.createEdge((Node) id2Node.get(supervisorID), node);
+  }
+}
+</pre></div>
+            <div class="important" style="margin-left: 0.5in; margin-right: 0.5in;">
+               <h3 class="title">Important</h3>
+               <p>
+                  NodeCursor, and also EdgeCursor, are YCursor subtypes that provide iteration services. 
+                  These types are supported and used throughout the yFiles for Java diagramming library. 
+                  Using them in a <tt class="code">for</tt> loop, for example, has the following typical structure:
+                  
+               </p><pre class="programlisting java">
+for (NodeCursor nc = graph.nodes(); nc.ok(); nc.next()) {
+  Node node = nc.node();
+  
+  // Do something with 'node'.
+}
+</pre><p>
+                  The cursor types are strongly related to the yFiles for Java list types NodeList 
+                  and EdgeList, which themselves are subtypes of the general YList.
+                  
+               </p>
+            </div>
+            <p>
+               After we are done with graph creation, we no longer need the yFiles default node 
+               map that we have created earlier, so we should dispose of the NodeMap. 
+               We will do so using the <a href="http://www.yworks.com/products/yfiles/doc/api/y/base/Graph.html#disposeNodeMap(y.base.NodeMap)" title="Link to API documentation" target="_top">disposeNodeMap<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a> 
+               method of Graph2D (inherited from y.base.Graph) as shown in <a href="database.html#ex_disposing_nodemap" title="Example&nbsp;1.9.&nbsp;Disposing of the node map">Example&nbsp;1.9, &#8220;Disposing of the node map&#8221;</a>.
+               
+            </p>
+            <div class="example"><a name="ex_disposing_nodemap"></a><p class="title"><b>Example&nbsp;1.9.&nbsp;Disposing of the node map</b></p><pre class="programlisting java">
+// Dispose of the NodeMap that we have bound to the graph, otherwise it will 
+// exist as long as the graph does.
+graph.disposeNodeMap(node2SupervisorID);
+</pre></div>
+            <div class="important" style="margin-left: 0.5in; margin-right: 0.5in;">
+               <h3 class="title">Important</h3>
+               <p>
+                  Default node maps (as well as default edge maps) that are created using the <tt class="code">createNodeMap</tt> 
+                  (<a href="http://www.yworks.com/products/yfiles/doc/api/y/base/Graph.html#createEdgeMap()" title="Link to API documentation" target="_top">createEdgeMap()<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a>) method need to 
+                  be properly disposed of in order to avoid memory leaks.
+                  
+               </p>
+            </div>
+            <h3><a name="d0e335"></a>Discussion
+            </h3>
+            <p>
+               The general scheme of first creating the nodes and then, in a second step, iterating 
+               over the created nodes and creating the edges, is typical for creating a graph structure 
+               when the graph elements are created according to some data from a database or model, 
+               for example. 
+               Specific to this scheme is also the necessity for some kind of additional mapping 
+               between the two "worlds," namely the graph elements and the original data.
+               
+            </p>
+            <p>
+               Note that we have created our nodes without assigning specific coordinates to them, 
+               i.e., currently, they will use default coordinates which means they will all lie 
+               at (0, 0) in world coordinate space. 
+               Consequently, this means that we would not see much of our graph at the moment. 
+               (Especially given the fact that the simple graph viewer that we are using does not 
+               provide any support for moving nodes...)
+               However, for this to change we will apply an automatic layout to the graph as described 
+               in <a href="database.html#layout" title="Automatic Layout">the section called &#8220;Automatic Layout&#8221;</a>.
+               
+               
+            </p>
+            <p>
+               On a related note, instead of using the preset uniform default node size for creating
+               our nodes, we could also determine a uniform node size using the actual widths of
+               all node labels.
+               Corresponding enhancements at the end of the <tt class="code">while</tt> loop in method <tt class="code">populateGraph</tt>
+               would look as follows, for example.
+               
+            </p>
+            <div class="example"><a name="ex_determining_node_sizes"></a><p class="title"><b>Example&nbsp;1.10.&nbsp;Determining the maximum width and height among all node labels</b></p><pre class="programlisting java">
+double maxWidth = 0.0, maxHeight = 0.0;
+while (results.next()) {
+  ...
+
+  double w = graph.getRealizer(employee).getLabel(0).getWidth();
+  if (w &gt; maxWidth) {
+    maxWidth = w;
+  }
+  double h = graph.getRealizer(employee).getLabel(0).getHeight();
+  if (h &gt; maxHeight) {
+    maxHeight = h;
+  }
+}
+</pre></div>
+            <p>
+               Then, after the <tt class="code">while</tt> loop, we would set the size of each node explicitly
+               by iterating over all nodes.
+               
+            </p>
+            <div class="example"><a name="ex_explicit_node_sizes"></a><p class="title"><b>Example&nbsp;1.11.&nbsp;Explicitly setting a uniform node size</b></p><pre class="programlisting java">
+for (NodeCursor nc = graph.nodes(); nc.ok(); nc.next()) {
+  graph.setSize(nc.node(), maxWidth + 20, maxHeight + 10);
+}
+</pre></div>
+            <p>
+               To set individual node widths that encompass the node label's text, we could use 
+               a similar approach where the node's width is set at the end of the <tt class="code">while</tt>
+               loop (replacing the code for determining the maximum width/height inside the while
+               and then setting the size thereafter).
+               
+            </p>
+            <div class="highlights">
+               <h4><a name="d0e377"></a>Related Resources
+               </h4>
+               <p>
+                  You will find related information in the yFiles for Java Developer's Guide: 
+                  
+               </p>
+               <div class="itemizedlist">
+                  <ul type="disc">
+                     <li><a href="http://www.yworks.com/products/yfiles/doc/developers-guide/iteration.html" title="Link to Developer's Guide" target="_top">Iteration in yFiles for Java</a></li>
+                     <li><a href="http://www.yworks.com/products/yfiles/doc/developers-guide/custom_data.html" title="Link to Developer's Guide" target="_top">Introduction to data accessors</a></li>
+                     <li><a href="http://www.yworks.com/products/yfiles/doc/developers-guide/data_accessors.html" title="Link to Developer's Guide" target="_top">More on data accessors: DataProvider, NodeMap, EdgeMap, etc.</a></li>
+                  </ul>
+               </div>
+               <p>
+                  
+                  You will find related information in the yFiles for Java API: 
+                  
+               </p>
+               <div class="itemizedlist">
+                  <ul type="disc">
+                     <li><a href="http://www.yworks.com/products/yfiles/doc/api/y/view/Graph2D.html#createEdge(y.base.Node, y.base.Node)" title="Link to API documentation" target="_top">Graph2D.createEdge<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a></li>
+                  </ul>
+               </div>
+               <p>
+                  
+                  
+               </p>
+            </div>
+         </div>
+         <div class="sect2" lang="en">
+            <div class="titlepage">
+               <div>
+                  <div>
+                     <h3 class="title"><a name="database_data"></a>Building the Graph, Part 3: Presenting Data
+                     </h3>
+                  </div>
+               </div>
+               <div></div>
+            </div>
+            <p>
+               Now that we have created the basic graph structure with nodes representing employees 
+               and edges representing the supervisor relationship, we also want to integrate the 
+               rest of our data. 
+               We will add names and titles of our employees as well as gender to the picture using 
+               the node's label and color-coding, respectively.
+               
+            </p>
+            <div class="figure"><a name="fig_DatabaseDemo_nodelabel_plain"></a><p class="title"><b>Figure&nbsp;1.3.&nbsp;Plain-text node label presentation</b></p>
+               <div class="informaltable">
+                  <center>
+                     <table border="0">
+                        <colgroup>
+                           <col width="100%">
+                        </colgroup>
+                        <tbody>
+                           <tr>
+                              <td>
+                                 <div class="mediaobject" align="center"><img src="figures/DatabaseDemo-nodelabel-plain.png" align="middle" alt="Plain-text node label presentation"></div>
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </center>
+               </div>
+            </div>
+            <div class="example"><a name="ex_label_text_plain"></a><p class="title"><b>Example&nbsp;1.12.&nbsp;Setting the label text for each node</b></p><pre class="programlisting java">
+// Set a label text. We use one single label.
+graph.getRealizer(employee).setLabelText(
+  results.getString("jobtitle") + "\n" +
+  results.getString("firstname") + " " + results.getString("lastname"));
+</pre></div>
+            <p>
+               We set the label text via the node's realizer, which is consistent given that the
+               realizer is responsible for creating the actual visual representation of the graph
+               element.
+               (Another possibility would be to use the corresponding <a href="http://www.yworks.com/products/yfiles/doc/api/y/view/Graph2D.html#setLabelText(y.base.Node,%20java.lang.String)" title="Link to API documentation" target="_top">setLabelText<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a> 
+               convenience method from Graph2D.)
+               
+            </p>
+            <p>
+               The node label presentation is good, however, we want the title of an employee to
+               stand out a little.
+               
+            </p>
+            <div class="figure"><a name="fig_DatabaseDemo_nodelabel"></a><p class="title"><b>Figure&nbsp;1.4.&nbsp;Styled node label presentation</b></p>
+               <div class="informaltable">
+                  <center>
+                     <table border="0">
+                        <colgroup>
+                           <col width="100%">
+                        </colgroup>
+                        <tbody>
+                           <tr>
+                              <td>
+                                 <div class="mediaobject" align="center"><img src="figures/DatabaseDemo-nodelabel.png" align="middle" alt="Styled node label presentation"></div>
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </center>
+               </div>
+            </div>
+            <p>
+               Let's use the node label's HTML abilities to add some style to the presentation
+               of the text.
+               This is accomplished by starting the actual text with <tt class="code">&lt;html&gt;</tt>.
+               
+            </p>
+            <div class="example"><a name="ex_label_text"></a><p class="title"><b>Example&nbsp;1.13.&nbsp;Setting the styled label text for each node</b></p><pre class="programlisting java">
+// Set a label text. In this case we use one single label and customize it 
+// using HTML.
+graph.getRealizer(employee).setLabelText(
+  "&lt;html&gt;&lt;div align='center'&gt;&lt;b&gt;" +
+  results.getString("jobtitle") + "&lt;/b&gt;&lt;br&gt;" + " " + 
+  results.getString("firstname") + " " + results.getString("lastname") + 
+  "&lt;/div&gt;&lt;/html&gt;");
+</pre></div>
+            <p>
+               The support for rendering HTML code is limited to "simple" HTML only, since it uses 
+               the Java support for HTML rendering.
+               
+            </p>
+            <p>
+               We will show the gender of our employees by color-coding the nodes. 
+               This is also done via the node realizer.
+               
+            </p>
+            <div class="figure"><a name="fig_DatabaseDemo_color_coding"></a><p class="title"><b>Figure&nbsp;1.5.&nbsp;Color-coding for nodes</b></p>
+               <div class="informaltable">
+                  <center>
+                     <table border="0">
+                        <colgroup>
+                           <col width="100%">
+                        </colgroup>
+                        <tbody>
+                           <tr>
+                              <td>
+                                 <div class="mediaobject" align="center"><img src="figures/DatabaseDemo-color-coding.png" align="middle" alt="Color-coding for nodes"></div>
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </center>
+               </div>
+            </div>
+            <div class="example"><a name="ex_node_color"></a><p class="title"><b>Example&nbsp;1.14.&nbsp;Setting the color for each node</b></p><pre class="programlisting java">
+// Nodes of male employees are colored blue, nodes of female employees are 
+// colored rose.
+if ("male".equals(results.getString("gender"))) {
+  graph.getRealizer(employee).setFillColor(LIGHT_BLUE);
+}
+else {
+  graph.getRealizer(employee).setFillColor(ROSE);
+}
+</pre></div>
+            <p>
+               We still have some of the employee data left, namely the department, the employee's
+               room number and the phone extension.
+               Let's choose a tooltip to present these.
+               
+            </p>
+            <p>
+               Conceptually, tooltip presentation in yFiles for Java is part of view mode functionality.
+               We will use the TooltipMode class, which provides specialized tooltip support.
+               
+               In the DatabaseDemo constructor we add this view mode to the graph viewer's view.
+               This enables the view mode to listen to mouse moved events in the canvas.
+               
+            </p>
+            <div class="example"><a name="ex_TooltipMode"></a><p class="title"><b>Example&nbsp;1.15.&nbsp;Adding the TooltipMode view mode</b></p><pre class="programlisting java">
+sgv.getView().addViewMode(new TooltipMode());
+</pre></div>
+            <p>
+               TooltipMode supports the tooltip text for each node to reside in a data provider.
+               The view mode will query the graph if there is a data provider available under a
+               specific key.
+               And if there is, it will use the information provided therein whenever a node's
+               tooltip should be presented.
+               
+            </p>
+            <p>
+               The <a href="http://www.yworks.com/products/yfiles/doc/api/y/base/DataProvider.html" title="Link to API documentation" target="_top">DataProvider<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a> interface itself defines 
+               read-only access to its data, so we cannot create a data provider and put in our 
+               data. 
+               Instead we create a node map, which defines read-write access, and let's us do this.
+               
+               Before the <tt class="code">while</tt> loop in the <tt class="code">populateGraph</tt> method, we
+               create the <tt class="code">nodeTooltips</tt> node map.
+               
+            </p>
+            <div class="example"><a name="ex_tooltip_nodemap"></a><p class="title"><b>Example&nbsp;1.16.&nbsp;Creating the node map to hold the tooltip text for the nodes</b></p><pre class="programlisting java">
+// A node map to hold the tooltip text.
+NodeMap nodeTooltips = graph.createNodeMap();
+</pre></div>
+            <p>
+               Inside the while loop, (e.g., at its end) we then set the tooltip text for each
+               employee.
+               
+            </p>
+            <div class="example"><a name="ex_tooltip_setting_text"></a><p class="title"><b>Example&nbsp;1.17.&nbsp;Setting the tooltip text for a node</b></p><pre class="programlisting java">
+nodeTooltips.set(employee,
+  "&lt;html&gt;&lt;b&gt;" + results.getString("department") +
+  "&lt;/b&gt;&lt;br&gt;Room: " + results.getString("room") +
+  "&lt;br&gt;Extension: " + results.getInt("phoneextension") + "&lt;/html&gt;");
+</pre></div>
+            <p>
+               Lastly, after the while loop, we register our node map as a data provider using
+               the well-known key defined in class TooltipMode.
+               
+            </p>
+            <div class="example"><a name="ex_tooltip_adding_dataprovider"></a><p class="title"><b>Example&nbsp;1.18.&nbsp;Adding the tooltip text data provider to the graph</b></p><pre class="programlisting java">
+graph.addDataProvider(TooltipMode.NODE_TOOLTIP_DPKEY, nodeTooltips);
+</pre></div>
+            <p>
+               Since the node map (which is now used as a simple data provider) is needed during
+               our application's life-time, we do not dispose of it.
+               
+            </p>
+            <p>
+               <a href="database.html#fig_DatabaseDemo_tooltip" title="Figure&nbsp;1.6.&nbsp;Data presentation using tooltip in DatabaseDemo">Figure&nbsp;1.6, &#8220;Data presentation using tooltip in DatabaseDemo&#8221;</a> shows the CEO's tooltip.
+               
+            </p>
+            <div class="figure"><a name="fig_DatabaseDemo_tooltip"></a><p class="title"><b>Figure&nbsp;1.6.&nbsp;Data presentation using tooltip in DatabaseDemo</b></p>
+               <div class="informaltable">
+                  <center>
+                     <table border="0">
+                        <colgroup>
+                           <col width="100%">
+                        </colgroup>
+                        <tbody>
+                           <tr>
+                              <td>
+                                 <div class="mediaobject" align="center"><img src="figures/DatabaseDemo-tooltip.png" align="middle" alt="Data presentation using tooltip in DatabaseDemo"></div>
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </center>
+               </div>
+            </div>
+            <div class="highlights">
+               <h4><a name="d0e562"></a>Related Resources
+               </h4>
+               <p>
+                  You will find related information in the yFiles for Java Developer's Guide: 
+                  
+               </p>
+               <div class="itemizedlist">
+                  <ul type="disc">
+                     <li><a href="http://www.yworks.com/products/yfiles/doc/developers-guide/realizer_related.html#labels" title="Link to Developer's Guide" target="_top">Label support</a></li>
+                     <li><a href="http://www.yworks.com/products/yfiles/doc/developers-guide/mvc_controller.html#cls_ViewMode" title="Link to Developer's Guide" target="_top">View modes in yFiles for Java</a></li>
+                  </ul>
+               </div>
+               <p>
+                  
+                  
+               </p>
+            </div>
+         </div>
+         <div class="sect2" lang="en">
+            <div class="titlepage">
+               <div>
+                  <div>
+                     <h3 class="title"><a name="layout"></a>Automatic Layout
+                     </h3>
+                  </div>
+               </div>
+               <div></div>
+            </div>
+            <p>
+               We have created the graph structure without assigning specific coordinates to the 
+               nodes or specifying actual edge paths. 
+               We intentionally did so, because, actually, the automatic layout algorithms available 
+               with the yFiles for Java diagramming library are designed just for this task.
+               
+            </p>
+            <p>
+               The general procedure for performing a layout is illustrated in the <tt class="code">performLayout</tt> 
+               method of the DatabaseDemo application. 
+               Disregarding the call to <tt class="code">prepareLayout</tt> (in comments) for the moment, 
+               we first create a Layouter, then wrap it using the <a href="http://www.yworks.com/products/yfiles/doc/api/y/layout/BufferedLayouter.html" title="Link to API documentation" target="_top">BufferedLayouter<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a> 
+               class, and on that we invoke the <a href="http://www.yworks.com/products/yfiles/doc/api/y/layout/Layouter.html#doLayout(y.layout.LayoutGraph)" title="Link to API documentation" target="_top">doLayout<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a> 
+               method with our graph as the parameter. 
+               
+               When that call returns, we adjust the view such that it shows the entire graph centered, 
+               and trigger an immediate repaint of all views that present our graph.
+               
+            </p>
+            <div class="example"><a name="ex_perform_layout"></a><p class="title"><b>Example&nbsp;1.19.&nbsp;Performing the layout</b></p><pre class="programlisting java">
+/** Run the layout algorithm in buffered mode. */
+private void performLayout() {
+  // OPTIONAL. Prepares the graph for edge grouping.
+//  prepareForLayout();
+  new BufferedLayouter(createLayouter()).doLayout(graph);
+  sgv.getView().fitContent();
+  graph.updateViews();
+}
+</pre></div>
+            <p>
+               Wrapping a given Layouter with a BufferedLayouter is recommended practice. 
+               The benefits of this scheme can be summarized as additional safety that prevents 
+               graph structure corruption/modification. 
+               For example, as a side-effect of layout algorithms graph structures can eventually 
+               change, most often due to structural operations that algorithms are performing, 
+               like inserting and removing nodes or edges during layout calculation. 
+               
+               BufferedLayouter avoids any modification to the original graph structure by giving 
+               a copy thereof to the actual layout algorithm.
+               
+            </p>
+            <p>
+               <a href="database.html#ex_layouter" title="Example&nbsp;1.20.&nbsp;Setup of the layouter">Example&nbsp;1.20, &#8220;Setup of the layouter&#8221;</a> shows the setup of the yFiles layout algorithm that
+               we will use to actually arrange our organization chart.
+               IncrementalHierarchicLayouter is not a specialized tree layout algorithm, but a
+               more general-purpose hierarchical layout algorithm that is well-suited for tree
+               structures also.
+               
+            </p>
+            <div class="example"><a name="ex_layouter"></a><p class="title"><b>Example&nbsp;1.20.&nbsp;Setup of the layouter</b></p><pre class="programlisting java">
+/** Creates a Layouter that will be used to perform a graph layout. */
+private Layouter createLayouter() {
+  IncrementalHierarchicLayouter ihl = new IncrementalHierarchicLayouter();
+
+  // Optional layouter customizations.
+
+  // Edges shall be routed in orthogonal fashion.
+  ihl.getEdgeLayoutDescriptor().setOrthogonallyRouted(true);
+
+  // Layout graph from left to right.
+  ihl.setLayoutOrientation(LayoutOrientation.LEFT_TO_RIGHT);
+  return ihl;
+}
+</pre></div>
+            <p>
+               In the <tt class="code">createLayouter</tt> method where we create the layouter, we also
+               specify some settings.
+               The first of which being that the layouter will create orthogonal edge paths, i.e.,
+               paths that consist of axes-parallel line segments.
+               The second one being that the overall layout direction will be left to right, which
+               means that our organization chart's root node will be at the leftmost position and
+               the rest of the diagram will extend to the right.
+               
+            </p>
+            <div class="important" style="margin-left: 0.5in; margin-right: 0.5in;">
+               <h3 class="title">Important</h3>
+               <p>
+                  These options stem from different classes. 
+                  The first one is specific to the IncrementalHierarchicLayouter class, while the 
+                  second one is provided by its superclass <a href="http://www.yworks.com/products/yfiles/doc/api/y/layout/CanonicMultiStageLayouter.html" title="Link to API documentation" target="_top">CanonicMultiStageLayouter<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a>. 
+                  
+                  Since CanonicMultiStageLayouter is the superclass for all major yFiles layout algorithms, 
+                  this option is also available even when a given layout algorithm has no understanding 
+                  of a layout direction at all (which is the case for organic layout, circular layout, 
+                  or orthogonal layout, for example)!
+                  
+               </p>
+            </div>
+            <p>
+               Now let's try another layout algorithm, a real tree layout algorithm this time. 
+               The alternative layouter setup using class <a href="http://www.yworks.com/products/yfiles/doc/api/y/layout/tree/TreeLayouter.html" title="Link to API documentation" target="_top">TreeLayouter<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a> 
+               instead of IncrementalHierarchicLayouter looks quite similar to our previous one.
+               
+            </p>
+            <div class="example"><a name="ex_alternative_layouter"></a><p class="title"><b>Example&nbsp;1.21.&nbsp;Alternative layouter setup</b></p><pre class="programlisting java">
+private Layouter createLayouter() {
+  TreeLayouter tl = new TreeLayouter();
+
+  // Optional layouter customizations.
+
+  // Edges shall be routed in orthogonal fashion.
+  tl.setLayoutStyle(TreeLayouter.ORTHOGONAL_STYLE);
+
+  // Layout graph from left to right.
+  tl.setLayoutOrientation(LayoutOrientation.LEFT_TO_RIGHT);
+  return tl;
+}
+</pre></div>
+            <p>
+               The resulting presentation of our organization chart also looks quite similar, except 
+               the edges. 
+               They are routed in a bus-like fashion, i.e., the actual edge paths of edges connecting 
+               to a common source node are merged.
+               
+            </p>
+            <div class="figure"><a name="fig_DatabaseDemo_TreeLayouter"></a><p class="title"><b>Figure&nbsp;1.7.&nbsp;DatabaseDemo using TreeLayouter</b></p>
+               <div class="informaltable">
+                  <center>
+                     <table border="0">
+                        <colgroup>
+                           <col width="100%">
+                        </colgroup>
+                        <tbody>
+                           <tr>
+                              <td>
+                                 <div class="mediaobject" align="center"><img src="figures/DatabaseDemo-TreeLayouter.png" align="middle" alt="DatabaseDemo using TreeLayouter"></div>
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </center>
+               </div>
+            </div>
+            <div class="highlights">
+               <h4><a name="d0e659"></a>Related Resources
+               </h4>
+               <p>
+                  You will find related information in the yFiles for Java Developer's Guide: 
+                  
+               </p>
+               <div class="itemizedlist">
+                  <ul type="disc">
+                     <li><a href="http://www.yworks.com/products/yfiles/doc/developers-guide/major_layouters.html" title="Link to Developer's Guide" target="_top">The different types of layout algorithms</a></li>
+                     <li><a href="http://www.yworks.com/products/yfiles/doc/developers-guide/layout_concepts.html#buffering" title="Link to Developer's Guide" target="_top">Benefits of buffered layout calculation</a></li>
+                     <li><a href="http://www.yworks.com/products/yfiles/doc/developers-guide/incremental_hierarchical_layouter.html" title="Link to Developer's Guide" target="_top">Incremental hierarchical layout</a></li>
+                     <li><a href="http://www.yworks.com/products/yfiles/doc/developers-guide/tree_layouter.html#cls_TreeLayouter" title="Link to Developer's Guide" target="_top">Tree layout using class TreeLayouter</a></li>
+                  </ul>
+               </div>
+               <p>
+                  
+                  In the yFiles for Java source code demos: 
+                  
+               </p>
+               <div class="itemizedlist">
+                  <ul type="disc">
+                     <li><a href="http://www.yworks.com/products/yfiles/doc/demo/view/layout/tree/README.html" title="Link to demo code" target="_top">Tree layout</a>-related 
+                        source code demo applications
+                        
+                     </li>
+                     <li><a href="http://www.yworks.com/products/yfiles/doc/demo/view/layout/hierarchic/README.html" title="Link to demo code" target="_top">Hierarchical layout</a>-related 
+                        source code demo applications
+                        
+                     </li>
+                  </ul>
+               </div>
+               <p>
+                  
+                  
+               </p>
+            </div>
+            <h3><a name="d0e687"></a>Optional Setup
+            </h3>
+            <p>
+               We can achieve the merged edge paths that are generated when using TreeLayouter 
+               in a similar manner also with IncrementalHierarchicLayouter. 
+               To this end, the optional <tt class="code">prepareForLayout</tt> method adds logic that is 
+               used to prepare bus-style edge routing in conjunction with IncrementalHierarchicLayouter.
+               
+            </p>
+            <div class="example"><a name="ex_edge_grouping"></a><p class="title"><b>Example&nbsp;1.22.&nbsp;Optional preparations for the layout</b></p><pre class="programlisting java">
+/** Establish the necessary setup for bus-style edge routing. */
+private void prepareForLayout() {
+  graph.addDataProvider(PortConstraintKeys.SOURCE_GROUPID_KEY, 
+                        new DataProviderAdapter() {
+    public Object get(Object edge) {
+      return ((Edge)edge).source();
+    }
+  });
+}
+</pre></div>
+            <p>
+               With the <a href="http://www.yworks.com/products/yfiles/doc/api/y/base/Graph.html#addDataProvider(java.lang.Object,%20y.base.DataProvider)" title="Link to API documentation" target="_top">addDataProvider<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a> 
+               method of Graph2D (inherited from y.base.Graph), we associate additional information 
+               with the graph. 
+               We add a data provider using a "well-known" data provider key, namely <a href="http://www.yworks.com/products/yfiles/doc/api/y/layout/PortConstraintKeys.html#SOURCE_GROUPID_KEY" title="Link to API documentation" target="_top">PortConstraintKeys.SOURCE_GROUPID_KEY<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a>, 
+               which is used in conjunction with generating edge groupings (aka bus-style edge 
+               routing). 
+               During layout calculation, IncrementalHierarchicLayouter will query the graph if 
+               there is a data provider available under that key. 
+               And if there is, it will use the information provided therein.
+               
+            </p>
+            <p>
+               For PortConstraintKeys.SOURCE_GROUPID_KEY specifically, the expected information 
+               is an object in return for a given edge of the graph. 
+               The edge paths of edges for which the same object is returned are then merged into 
+               one path at their source side (hence SOURCE_GROUPID_KEY; there is also a TARGET_GROUPID_KEY 
+               that is used for the target side of edges).
+               
+            </p>
+            <p>
+               We use the <a href="http://www.yworks.com/products/yfiles/doc/api/y/util/DataProviderAdapter.html" title="Link to API documentation" target="_top">DataProviderAdapter<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a> interface 
+               to specify the aditional information, which allows us to use logic instead of static 
+               data. 
+               In our implementation, for a given edge, we simply return the node at the source 
+               side of the edge. 
+               As a consequence, all edges that connect to the same source node will have the same 
+               return value (their common source node), and thus their edge paths will be merged.
+               
+            </p>
+            <div class="figure"><a name="fig_DatabaseDemo_edge_grouping"></a><p class="title"><b>Figure&nbsp;1.8.&nbsp;DatabaseDemo with optional edge grouping enabled</b></p>
+               <div class="informaltable">
+                  <center>
+                     <table border="0">
+                        <colgroup>
+                           <col width="100%">
+                        </colgroup>
+                        <tbody>
+                           <tr>
+                              <td>
+                                 <div class="mediaobject" align="center"><img src="figures/DatabaseDemo-edge-grouping.png" align="middle" alt="DatabaseDemo with optional edge grouping enabled"></div>
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </center>
+               </div>
+            </div>
+            <p>
+               This setup scheme for bus-style edge routing using data providers and the data provider 
+               keys defined in PortConstraintKeys is supported across all hierarchical layout algorithms.
+               
+            </p>
+            <div class="highlights">
+               <h4><a name="d0e738"></a>Related Resources
+               </h4>
+               <p>
+                  You will find related information in the yFiles for Java Developer's Guide: 
+                  
+               </p>
+               <div class="itemizedlist">
+                  <ul type="disc">
+                     <li><a href="http://www.yworks.com/products/yfiles/doc/developers-guide/layout_advanced_features.html#adv_edge_groups" title="Link to Developer's Guide" target="_top">Bus-style edge routing</a></li>
+                     <li><a href="http://www.yworks.com/products/yfiles/doc/developers-guide/layout_concepts.html#supplemental_information" title="Link to Developer's Guide" target="_top">Using DataProviderAdapter</a></li>
+                  </ul>
+               </div>
+               <p>
+                  
+                  
+               </p>
+            </div>
+         </div>
+      </div>
+      <table class="copyright" border="0" cellpadding="0" cellspacing="0" width="100%">
+         <tbody>
+            <tr>
+               <td align="right">
+                  <p class="copyright">Copyright &copy;2008-2009, yWorks GmbH. All rights reserved.</p>
+               </td>
+            </tr>
+         </tbody>
+      </table>
+      <div class="navfooter">
+         <div class="navline2"></div>
+         <table width="100%" summary="Navigation footer">
+            <tr>
+               <td width="40%" align="left"><a accesskey="p" title="Trail:&nbsp;Getting Data Into the View" href="index.html">Prev</a>&nbsp;
+               </td>
+               <td width="20%" align="center"><a accesskey="u" title="Trail:&nbsp;Getting Data Into the View" href="index.html">Up</a></td>
+               <td width="40%" align="right">&nbsp;<a accesskey="n" title="Lesson:&nbsp;Creating a Graph From a Business Model" href="business_model.html">Next</a></td>
+            </tr>
+            <tr>
+               <td width="40%" align="left" valign="top">Trail:&nbsp;Getting Data Into the View&nbsp;</td>
+               <td width="20%" align="center"><a accesskey="h" title="yFiles for Java Tutorial" href="../index.html">Home</a></td>
+               <td width="40%" align="right" valign="top">&nbsp;Lesson:&nbsp;Creating a Graph From a Business Model</td>
+            </tr>
+         </table>
+      </div>
+   </body>
+</html>

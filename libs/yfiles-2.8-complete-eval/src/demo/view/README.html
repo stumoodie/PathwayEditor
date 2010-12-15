@@ -1,0 +1,329 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:y="http://www.yworks.com/demo">
+<head>
+<title>yFiles Tutorial View Demos</title>
+<style type="text/css">
+<!--
+              body {
+  font-family:Verdana, sans-serif; 
+  margin-left:12px;
+  margin-right:12px;
+  margin-top:12px;
+  margin-bottom:12px;
+}
+
+h1 { 
+  padding-left:8px;
+  padding-top:8px;
+  padding-bottom:8px;
+  background-color:#d0d0d0;
+  color:#4079ea;
+/*  color:#4d88ff; */
+  font-size:18px;
+  margin-bottom:5px;
+}
+
+p {   
+  padding-bottom:0px;
+  padding-top:0px;
+  margin-top:3px;
+  margin-bottom:0px;
+/*  margin-left:10px; */
+  margin-left:8px;
+  font-size:12px;
+  color:#000000;
+}
+
+h2 { 
+  font-size:14px; 
+  color:#4079ea; 
+  margin-top:10px; 
+  margin-bottom:0px; 
+}
+
+h3 { 
+  font-size:13px; 
+/*  margin-left:10px; */
+  margin-left:8px;
+  margin-top:8px; 
+  margin-bottom:2px; 
+}
+
+table {
+/*  margin-left:10px; */
+  margin-left: 8px;
+  margin-top: 8px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border: 1px solid white;
+  vertical-align: baseline;
+  border-collapse: collapse;
+}
+
+td { 
+  font-size:12px;
+  background-color: #E3EEFE;
+  vertical-align:top;
+  border: 1px solid white;
+  vertical-align: baseline;
+}
+
+th {
+  font-size:12px; 
+  background-color:#a4b9ea;
+  text-align: left;
+}
+
+a {
+  color: #AA5522; font-weight:bold;
+}
+a:link {
+  text-decoration:none;
+}
+a:visited {
+  text-decoration:none; color:#772200;
+}
+a:active, 
+a:focus, 
+a:hover {
+  text-decoration: underline;
+}
+
+div.li1 {
+  font-size:12px;
+  margin-top:8px; 
+  margin-bottom:0px; 
+  margin-left:10px; 
+}
+div.li2 { 
+  margin-left:20px;
+  margin-top:2px; 
+  margin-bottom:2px; 
+  font-weight:bold;
+  font-size:12px; 
+}
+
+dl { 
+  font-size:12px;
+  margin-top:2px;
+  margin-bottom:2px;
+  margin-left:15px;
+}
+dt { 
+  font-weight:bold;
+  margin-top:4px;
+/*  color:#000000; */
+  color:#333366;
+}
+dd { 
+  margin-left:15px;
+}
+
+li { 
+  /* does not work in pre-1.5 Java JEditorPane :-( */
+/*  list-style-type:none; */
+  font-size:12px;
+}
+
+caption {
+  font-size:12px;
+}
+
+.copyright { 
+  font-size: 10px;
+  font-style:italic;
+  text-align:right;
+  margin-top:20px;
+}
+
+code, tt { 
+  font-family:monospace;
+  font-size:12px;
+  color:#0000C0;
+}
+
+            -->
+</style>
+</head>
+<body>
+    <h1>yFiles Tutorial View Demos</h1>
+
+    <p>
+      The following tutorial view demos are in this package:
+    </p>
+    <table class="toplevel">
+      <tr>
+        <th>Package</th>
+        <th>Description</th>
+      </tr>
+
+      <tr>
+        <td>
+          <a href="realizer/README.html">demo.view.realizer</a>
+        </td>
+        <td>
+          The contained tutorial demos describe how to use, customize, and extend
+          diverse NodeRealizer and EdgeRealizer classes.
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <a href="rendering/README.html">demo.view.rendering</a>
+        </td>
+        <td>
+          Centers around advanced rendering aspects of the graph view.
+          It is shown how to use auxiliary rendering classes <code>Drawable</code>,
+          <code>BackgroundRenderer</code>, and <code>BridgeCalculator</code>.
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <a href="viewmode/README.html">demo.view.viewmode</a>
+        </td>
+        <td>
+          Shows how to use, customize, and extend diverse ViewMode classes.
+          View modes provide the base functionality to handle
+          mouse-based interaction that happens in a view.
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <a href="anim/README.html">demo.view.anim</a>
+        </td>
+        <td>
+          Contains demos that center around the diverse animation effects that
+          can be applied to graph elements and to graph views.
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <a href="advanced/README.html">demo.view.advanced</a>
+        </td>
+        <td>
+          Shows advanced features like using a model graph and having multiple different 
+          views on it, or temporarily preventing parts of a graph from being editable.
+          <br/>
+          Also, contains a demo that employs special nodes with a fixed set of allowed 
+          connection points (known as ports).
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <a href="application/README.html">demo.view.application</a>
+        </td>
+        <td>
+          Shows how to use application features like drag and drop, print previewing, 
+          clipboard functionality, and undoability. 
+          Also, local views are presented, swimlane support, and searching in a 
+          graph.
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <a href="hierarchy/README.html">demo.view.hierarchy</a>
+        </td>
+        <td>
+        These demos show how to write applications that can manage a hierarchy of 
+        nested and grouped graphs. 
+        Predefined actions are used that perform navigational and structural tasks 
+        on the graph hierarchy. 
+        Furthermore, creating customized actions is presented as well.
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+<a href="applet/README.html">demo.view.applet</a>
+</td>
+        <td>
+          Features a self-contained demo setup that shows how to deploy yFiles-based applications 
+          as Java applets inside a web browser.
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+<a href="orgchart/README.html">demo.view.orgchart</a>
+</td>
+        <td>
+          Extensive demo application that presents an organization chart in a visually 
+          rich manner.
+          <br/>
+          Many aspects of yFiles are demonstrated, for example, realizer and view 
+          mode customization, or animations. 
+          Implementation of the demo's features, like level of detail (LoD) rendering, 
+          or synchronization between a business model and the graph structure using 
+          yFiles is shown in detail.
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+<a href="flowchart/README.html">demo.view.flowchart</a>
+</td>
+        <td>
+          Simple flowchart editor application that comes with a large set
+          of flowchart symbols and a reusable palette component.
+        </td>
+      </tr>
+    </table>
+  <table class="toplevel">
+<tr>
+<th>Class</th>
+<th>Description</th>
+</tr><tr xmlns="">
+<td><a href="SimpleDemo.java">demo.view.SimpleDemo</a></td><td>
+      The yFiles view says "Hello World." Shows how to display a graph
+      viewer/editor component inside a frame. Try clicking into
+      the view to create new nodes, pressing the left mouse button
+      over a node and dragging the mouse to another node to create an edge,
+      clicking a node to select it...</td>
+</tr>
+<tr xmlns="">
+<td><a href="BuildGraphDemo.java">demo.view.BuildGraphDemo</a></td><td>
+      Shows how to build a Graph2D with different node types
+      and styles applied to its elements. Try adding new nodes and edges with
+      the mouse.
+    </td>
+</tr>
+<tr xmlns="">
+<td><a href="ViewActionDemo.java">demo.view.ViewActionDemo</a></td><td>
+      Demonstrates some actions that can be performed on the view or
+	    the contents of the view:
+      <ul xmlns="http://www.w3.org/1999/xhtml">
+        <li>remove selected parts of the view</li>
+        <li>zoom out of the view</li>
+        <li>zoom in on the view</li>
+        <li>fit view content to the size of the view</li>
+        <li>print contents of the view</li>
+        <li>load a graph in GraphML format</li>
+        <li>save a graph in GraphML format</li>
+      </ul>
+    </td>
+</tr>
+</table>
+<h2>Running the Demos</h2>
+<h3>From Within an IDE</h3>
+<p>
+            Set <tt>&lt;yFilesDir&gt;/src</tt> as your source directory.
+            Then add <tt>&lt;yFilesDir&gt;/lib/y.jar</tt>
+<b>and</b> the source folder
+            <tt>&lt;yFilesDir&gt;/src</tt> to your classpath.
+            Now you should be ready to compile and run all executable demo classes.
+            </p>
+<h3>With Ant</h3>
+<p>
+              First make sure you have the
+              <a href="http://ant.apache.org">build tool Ant</a> installed on your system.
+              Now you can use the demo build script <tt>build.xml</tt>
+              located in <tt>&lt;yFilesDir&gt;/src/demo</tt> to launch each demo by specifying its simple class name as a target.
+              Alternatively, launch the interactive demo driver by specifying <tt>run</tt> as target to
+              conveniently access all demos.
+            </p>
+</body>
+</html>

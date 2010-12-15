@@ -1,0 +1,678 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:y="http://www.yworks.com/xml/graphml"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://www.yworks.com/xml/schema/graphml/1.1/ygraphml.xsd">
+  <key yfiles.type="nodegraphics" for="node" id="d0"/>
+  <key yfiles.type="edgegraphics" for="edge" id="d1"/>
+  <key yfiles.type="postprocessors" for="graph" id="d2"/>
+  <graph edgedefault="directed" id="G">
+    <node id="help">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>help</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="defaultpackage">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>defaultpackage</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="defaultlocaltmp">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>defaultlocaltmp</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="defaultversion">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>defaultversion</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="cvstagmake">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>cvstagmake</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="init">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>init</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="export">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>export</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="timestamp">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>timestamp</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="copy-doc">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>copy-doc</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="make-changes">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>make-changes</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="make-master">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>make-master</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="make-readme">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>make-readme</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="prepare-src-yed">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>prepare-src-yed</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="prepare-src">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>prepare-src</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="copy-src-yfiles">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>copy-src-yfiles</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="prepare-src-dotnet">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>prepare-src-dotnet</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="prepare-src-yfiles">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>prepare-src-yfiles</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="compile-y">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>compile-y</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="compile-yed">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>compile-yed</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="eval-activate">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>eval-activate</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="eval-deactivate">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>eval-deactivate</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="jar-y">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>jar-y</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="jar-yed">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>jar-yed</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="dll-y">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>dll-y</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="test">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>test</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="doc">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>doc</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="obfuscate-y">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>obfuscate-y</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="obfuscate-yed">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>obfuscate-yed</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="zip">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>zip</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="zip-src">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>zip-src</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="deploy">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>deploy</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="clean">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>clean</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <edge id="N10008" target="help" source="init">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Arrows target="standard" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N1001C" target="cvstagmake" source="defaultversion">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Arrows target="standard" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N10022" target="init" source="cvstagmake">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Arrows target="standard" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N10022" target="init" source="defaultversion">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Arrows target="standard" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N10022" target="init" source="defaultlocaltmp">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Arrows target="standard" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N10022" target="init" source="defaultpackage">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Arrows target="standard" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N10027" target="export" source="init">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Arrows target="standard" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N1002C" target="timestamp" source="export">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Arrows target="standard" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N10032" target="copy-doc" source="export">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Arrows target="standard" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N10038" target="make-changes" source="copy-doc">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Arrows target="standard" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N1003D" target="make-master" source="copy-doc">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Arrows target="standard" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N10042" target="make-readme" source="copy-doc">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Arrows target="standard" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N10047" target="prepare-src-yed" source="export">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Arrows target="standard" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N10047" target="prepare-src-yed" source="eval-activate">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Arrows target="standard" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N10047" target="prepare-src-yed" source="timestamp">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Arrows target="standard" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N1004D" target="prepare-src" source="copy-src-yfiles">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Arrows target="standard" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N1004D" target="prepare-src" source="prepare-src-dotnet">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Arrows target="standard" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N1004D" target="prepare-src" source="prepare-src-yfiles">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Arrows target="standard" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N10052" target="copy-src-yfiles" source="prepare-src-yed">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Arrows target="standard" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N10052" target="copy-src-yfiles" source="eval-activate">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Arrows target="standard" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N10052" target="copy-src-yfiles" source="export">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Arrows target="standard" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N10052" target="copy-src-yfiles" source="timestamp">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Arrows target="standard" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N10058" target="prepare-src-dotnet" source="copy-src-yfiles">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Arrows target="standard" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N1005F" target="prepare-src-yfiles" source="copy-src-yfiles">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Arrows target="standard" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N10065" target="compile-y" source="prepare-src">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Arrows target="standard" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N1006B" target="compile-yed" source="obfuscate-y">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Arrows target="standard" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N1006F" target="eval-activate" source="export">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Arrows target="standard" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N10075" target="eval-deactivate" source="zip-src">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Arrows target="standard" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N10075" target="eval-deactivate" source="zip">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Arrows target="standard" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N1007B" target="jar-y" source="compile-y">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Arrows target="standard" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N10081" target="jar-yed" source="compile-yed">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Arrows target="standard" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N10088" target="dll-y" source="prepare-src">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Arrows target="standard" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N1008C" target="test" source="init">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Arrows target="standard" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N10091" target="doc" source="jar-y">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Arrows target="standard" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N10091" target="doc" source="copy-doc">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Arrows target="standard" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N10097" target="obfuscate-y" source="jar-y">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Arrows target="standard" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N1009D" target="obfuscate-yed" source="jar-yed">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Arrows target="standard" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N1009D" target="obfuscate-yed" source="obfuscate-y">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Arrows target="standard" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N100A4" target="zip" source="make-master">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Arrows target="standard" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N100A4" target="zip" source="make-readme">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Arrows target="standard" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N100A4" target="zip" source="make-changes">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Arrows target="standard" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N100A4" target="zip" source="doc">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Arrows target="standard" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N100A4" target="zip" source="obfuscate-y">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Arrows target="standard" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N100A4" target="zip" source="obfuscate-yed">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Arrows target="standard" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N100A4" target="zip" source="dll-y">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Arrows target="standard" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N100A9" target="zip-src" source="zip">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Arrows target="standard" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N100AF" target="deploy" source="eval-deactivate">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Arrows target="standard" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N100AF" target="deploy" source="zip">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Arrows target="standard" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N100AF" target="deploy" source="zip-src">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Arrows target="standard" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N100B5" target="clean" source="init">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Arrows target="standard" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <data key="d2">
+      <y:Postprocessors>
+        <y:Processor class="demo.io.graphml.NodeSizeAdapter">
+          <y:Option value="false" name="IGNORE_WIDTHS"/>
+          <y:Option value="true" name="IGNORE_HEIGHTS"/>
+          <y:Option value="false" name="ADAPT_TO_MAXIMUM_NODE"/>
+        </y:Processor>
+        <y:Processor class="y.module.HierarchicLayoutModule">
+          <y:Option value="20" name="LAYOUT.MINIMAL_FIRST_SEGMENT_LENGTH"/>
+          <y:Option value="20" name="LAYOUT.MINIMAL_NODE_DISTANCE"/>
+          <y:Option value="LAYOUT_GROUPS" name="GROUPING.GROUP_LAYOUT_POLICY"/>
+          <y:Option value="true" name="NODE_ORDER.USE_TRANSPOSITION"/>
+          <y:Option value="LEFT_TO_RIGHT" name="LAYOUT.ORIENTATION"/>
+          <y:Option value="TIGHT_TREE" name="NODE_RANK.RANKING_POLICY"/>
+          <y:Option value="POLYLINE" name="LAYOUT.EDGE_ROUTING"/>
+          <y:Option value="NONE" name="LABELING.EDGE_LABELING"/>
+          <y:Option value="40" name="NODE_ORDER.RANDOMIZATION_ROUNDS"/>
+          <y:Option value="BARYCENTER" name="NODE_ORDER.WEIGHT_HEURISTIC"/>
+          <y:Option value="true" name="NODE_ORDER.REMOVE_FALSE_CROSSINGS"/>
+          <y:Option value="BEST" name="LABELING.EDGE_LABEL_MODEL"/>
+          <y:Option value="false" name="LAYOUT.BACKLOOP_ROUTING"/>
+          <y:Option value="40" name="LAYOUT.MINIMAL_LAYER_DISTANCE"/>
+          <y:Option value="10" name="LAYOUT.MINIMAL_EDGE_DISTANCE"/>
+          <y:Option value="MEDIAN_SIMPLEX" name="LAYOUT.NODE_PLACEMENT"/>
+          <y:Option value="true" name="GROUPING.ENABLE_GLOBAL_SEQUENCING"/>
+          <y:Option value="false" name="LAYOUT.ACT_ON_SELECTION_ONLY"/>
+          <y:Option value="5" name="LAYOUT.MAXIMAL_DURATION"/>
+        </y:Processor>
+      </y:Postprocessors>
+    </data>
+  </graph>
+</graphml>

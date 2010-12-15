@@ -1,0 +1,256 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+      <title>Lesson:&nbsp;Enhancing Simple Graph Viewer to Simple Graph Editor</title>
+      <link rel="stylesheet" href="ystyle.css" type="text/css">
+      <meta name="generator" content="DocBook XSL Stylesheets V1.65.1">
+      <link rel="home" href="index.html" title="Trail:&nbsp;Creating a Simple Graph Editor">
+      <link rel="up" href="index.html" title="Trail:&nbsp;Creating a Simple Graph Editor">
+      <link rel="previous" href="index.html" title="Trail:&nbsp;Creating a Simple Graph Editor">
+      <link rel="next" href="keyboard.html" title="Lesson:&nbsp;Adding Keyboard Support to the Editor">
+      <link type="text/css" rel="stylesheet" href="../jssh/SyntaxHighlighter.css"><script type="text/javascript" src="../jssh/shCore.js"></script><script type="text/javascript" src="../jssh/shBrushJava.js"></script><script type="text/javascript">
+  function sh() {
+
+    dp.SyntaxHighlighter.HighlightAll('programlisting', false, false, false, null, false);
+  }
+  </script></head>
+   <body onload="sh()" bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+      <div class="navheader">
+         <table width="100%" summary="Navigation header">
+            <tr>
+               <th colspan="3" align="center">Lesson:&nbsp;Enhancing Simple Graph Viewer to Simple Graph Editor</th>
+            </tr>
+            <tr>
+               <td width="20%" align="left"><a accesskey="p" title="Trail:&nbsp;Creating a Simple Graph Editor" href="index.html">Prev</a>&nbsp;
+               </td>
+               <th width="60%" align="center">&nbsp;</th>
+               <td width="20%" align="right">&nbsp;<a accesskey="n" title="Lesson:&nbsp;Adding Keyboard Support to the Editor" href="keyboard.html">Next</a></td>
+            </tr>
+         </table>
+         <div class="navline"></div>
+      </div>
+      <div class="sect1" lang="en">
+         <div class="titlepage">
+            <div>
+               <div>
+                  <h2 class="title" style="clear: both"><a name="mouse"></a>Lesson:&nbsp;Enhancing Simple Graph Viewer to Simple Graph Editor
+                  </h2>
+               </div>
+            </div>
+            <div></div>
+         </div>
+         <p>
+            The simple graph viewer that is the result of the <a href="../createViewer/index.html" target="_top">Creating a Simple Graph Viewer</a> 
+            trail is also a perfect starting point for a simple graph editor application.
+            
+         </p>
+         <p>
+            Of course, the <tt class="code">populateGraph</tt> method that is part of <a href="../../src/tutorial/viewer/SimpleGraphViewer5.java" title="Link to source code" target="_top">SimpleGraphViewer5</a> 
+            is not necessarily needed in an editor type application, so we can safely remove 
+            it. 
+            In contrast, we definitely need to remove the NavigationMode which enables panning 
+            support in the viewer type application. 
+            Instead of it, we will add an <a href="http://www.yworks.com/products/yfiles/doc/api/y/view/EditMode.html" title="Link to API documentation" target="_top">EditMode<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a>.
+            
+         </p>
+         <div class="example"><a name="ex_EditMode"></a><p class="title"><b>Example&nbsp;1.1.&nbsp;Creating and adding an EditMode to the view</b></p><pre class="programlisting java">
+// Creating and adding an EditMode to the view.
+editMode = new EditMode();
+view.addViewMode(editMode);
+</pre></div>
+         <p>
+            EditMode also enables panning support (via mouse-drag involving the right mouse 
+            button), but additionally also enables a wide variety of further mouse gestures: 
+            
+         </p>
+         <p>
+            You can create graph elements: 
+            
+         </p>
+         <div class="itemizedlist">
+            <ul type="disc">
+               <li>
+                  create nodes with a single mouse left click at an unoccupied place in the view
+                  
+               </li>
+               <li>
+                  create straight-line edges: mouse left drag starting on an unselected node, ending 
+                  on either selected or unselected node
+                  
+               </li>
+               <li>
+                  create polyline edges: similar overall gesture as with straight-line edges; intermediate 
+                  mouse release (first time only), respectively mouse clicks at unoccupied places 
+                  in the view yield the segments of the edge
+                  
+               </li>
+               <li>
+                  abort edge creation at any time during edge creation: mouse right click revokes 
+                  last edge segment, ESC aborts entirely
+                  
+               </li>
+            </ul>
+         </div>
+         <p>
+            
+            Select graph elements: 
+            
+         </p>
+         <div class="itemizedlist">
+            <ul type="disc">
+               <li>select nodes with a single mouse left click on an unselected node</li>
+               <li>select edges with a single mouse left click on an unselected edge</li>
+               <li>
+                  select multiple nodes using a marquee selection rectangle (mouse left drag starting 
+                  at an unoccupied place in the view)
+                  
+               </li>
+               <li>
+                  select multiple edges using a marquee selection rectangle (mouse left drag starting 
+                  at an unoccupied place in the view when at least one edge is already selected)
+                  
+               </li>
+               <li>
+                  enhance an existing selection by SHIFT-mouse left clicking further graph elements 
+                  of the same kind
+                  
+               </li>
+            </ul>
+         </div>
+         <p>
+            
+            Change the geometry (size, location) of graph elements: 
+            
+         </p>
+         <div class="itemizedlist">
+            <ul type="disc">
+               <li>
+                  resize nodes using the resize knobs (handles) that are part of a node's selection 
+                  indication (SHIFT key and CTRL key modify the resize behavior)
+                  
+               </li>
+               <li>move nodes: mouse left drag starting on a selected node</li>
+               <li>move bends: mouse left drag starting on a selected bend</li>
+               <li>move ports: mouse left drag an end point of a selected edge</li>
+            </ul>
+         </div>
+         <p>
+            
+            
+            
+         </p>
+         <p>
+            This is what the resulting <tt class="code">createGraph2DView</tt> of <a href="../../src/tutorial/editor/SimpleGraphEditor1.java" title="Link to source code" target="_top">SimpleGraphEditor1</a> 
+            looks like after we have added the EditMode.
+            
+         </p>
+         <div class="example"><a name="ex_SimpleGraphEditor1_createGraph2DView"></a><p class="title"><b>Example&nbsp;1.2.&nbsp;createGraph2DView method of SimpleGraphEditor1</b></p><pre class="programlisting java">
+private Graph2DView createGraph2DView() {
+  Graph2DView view = new Graph2DView();
+  
+  // Add a mouse wheel listener to zoom in and out of the view.
+  view.getCanvasComponent().addMouseWheelListener(
+    new Graph2DViewMouseWheelZoomListener());
+  
+  // Add the central view mode for an editor type application.
+  editMode = new EditMode();
+  view.addViewMode(editMode);
+  
+  return view;
+}
+</pre></div>
+         <p>
+            As has been said in the <a href="../createViewer/zooming_panning.html" target="_top">Creating a Simple Graph Viewer</a> 
+            trail, view modes play an important role in a yFiles-based diagramming application. 
+            They are responsible for handling all mouse-based user interaction in the view. 
+            
+            EditMode specifically is the central view mode implementation for an editor type 
+            application. 
+            However, the aforementioned functionality is not exclusively provided by EditMode 
+            itself, it is provided by EditMode in conjunction with many other view modes. 
+            These work behind the scenes with EditMode delegating specific mouse gestures to 
+            them.
+            
+         </p>
+         <div class="sect2" lang="en">
+            <div class="titlepage">
+               <div>
+                  <div>
+                     <h3 class="title"><a name="d0e116"></a>Some Observations
+                     </h3>
+                  </div>
+               </div>
+               <div></div>
+            </div>
+            <p>
+               When you start SimpleGraphEditor1 and create some nodes and connect them with edges 
+               and test the other mouse gestures listed above, you will eventually want to delete 
+               a graph element that you have created. 
+               However, this is not possible yet, because our code only covers mouse-based interaction 
+               so far.
+               
+            </p>
+            <p>
+               <a href="keyboard.html" title="Lesson:&nbsp;Adding Keyboard Support to the Editor">Read on</a> to the next lesson and see how we can get 
+               that DELETE key on your keyboard to work...
+               
+            </p>
+         </div>
+         <div class="highlights">
+            <h4><a name="d0e127"></a>Related Resources
+            </h4>
+            <p>
+               You will find related information in the yFiles for Java Developer's Guide: 
+               
+            </p>
+            <div class="itemizedlist">
+               <ul type="disc">
+                  <li><a href="http://www.yworks.com/products/yfiles/doc/developers-guide/mvc_controller.html#cls_ViewMode" title="Link to Developer's Guide" target="_top">View modes in yFiles for Java</a></li>
+                  <li><a href="http://www.yworks.com/products/yfiles/doc/developers-guide/mvc_controller.html#cls_EditMode" title="Link to Developer's Guide" target="_top">About EditMode</a></li>
+                  <li><a href="http://www.yworks.com/products/yfiles/doc/developers-guide/mvc_controller.html#cls_NavigationMode" title="Link to Developer's Guide" target="_top">About NavigationMode</a></li>
+               </ul>
+            </div>
+            <p>
+               
+               In the yFiles for Java source code demos: 
+               
+            </p>
+            <div class="itemizedlist">
+               <ul type="disc">
+                  <li><a href="http://www.yworks.com/products/yfiles/doc/demo/view/SimpleDemo.java" title="Link to demo code" target="_top">SimpleDemo.java</a></li>
+               </ul>
+            </div>
+            <p>
+               
+               
+            </p>
+         </div>
+      </div>
+      <table class="copyright" border="0" cellpadding="0" cellspacing="0" width="100%">
+         <tbody>
+            <tr>
+               <td align="right">
+                  <p class="copyright">Copyright &copy;2008-2009, yWorks GmbH. All rights reserved.</p>
+               </td>
+            </tr>
+         </tbody>
+      </table>
+      <div class="navfooter">
+         <div class="navline2"></div>
+         <table width="100%" summary="Navigation footer">
+            <tr>
+               <td width="40%" align="left"><a accesskey="p" title="Trail:&nbsp;Creating a Simple Graph Editor" href="index.html">Prev</a>&nbsp;
+               </td>
+               <td width="20%" align="center"><a accesskey="u" title="Trail:&nbsp;Creating a Simple Graph Editor" href="index.html">Up</a></td>
+               <td width="40%" align="right">&nbsp;<a accesskey="n" title="Lesson:&nbsp;Adding Keyboard Support to the Editor" href="keyboard.html">Next</a></td>
+            </tr>
+            <tr>
+               <td width="40%" align="left" valign="top">Trail:&nbsp;Creating a Simple Graph Editor&nbsp;</td>
+               <td width="20%" align="center"><a accesskey="h" title="yFiles for Java Tutorial" href="../index.html">Home</a></td>
+               <td width="40%" align="right" valign="top">&nbsp;Lesson:&nbsp;Adding Keyboard Support to the Editor</td>
+            </tr>
+         </table>
+      </div>
+   </body>
+</html>

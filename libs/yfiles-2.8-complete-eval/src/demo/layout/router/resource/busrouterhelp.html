@@ -1,0 +1,72 @@
+<html>
+<head>
+  <title>Help</title>
+  <link rel="stylesheet" type="text/css" href="helpPane.css">
+</head>
+<body>
+<h2>Help</h2>
+
+<p>
+  A bus is composed of one or several interconnected <em>hub</em> nodes and the edges that connect the regular nodes
+  to the hubs. For clarity, the hubs and edges of the same bus are displayed in a common color.
+</p>
+
+<h3>Usage</h3>
+
+<dl>
+  <dt>Adding new nodes</dt>
+  <dd>
+    The palette in the side panel provides two node templates, the upper one for regular nodes and the lower one for
+    hubs. To create a node either drag its template from the side panel into the graph view or click at the desired
+    location in the view. In the latter case, the new node's type is defined by the selected template.
+  </dd>
+
+  <dt>Adding new edges</dt>
+  <dd>
+    An edge is created by dragging the mouse from the start to the target node. Subsequently, colors are updated to
+    reflect the changed bus structure.
+  </dd>
+
+  <dt>Removing nodes and edges</dt>
+  <dd>
+    Selected nodes and edges can be removed using the <code>DELETE</code> key or the corresponding icon in the tool bar.
+  </dd>
+
+  <dt>Routing buses</dt>
+  <dd>
+    The routing algorithm and its properties are available in the tool bar. Use <code>Route All</code> to calculate a
+    new routing for all buses and <code>Route Selected</code> to route each bus in which at least one edge, one hub or
+    one adjacent regular node is selected.
+  </dd>
+</dl>
+
+<h3>Settings</h3>
+
+<dl>
+  <dt>Automatic routing</dt>
+  <dd>
+    Triggers an automatic routing for the connections of moved nodes, in which the remainders of the affected buses are
+    kept fixed. New single-edge buses are routed automatically, too. Note that the routing algorithm will remove cycles
+    and dead-end paths.
+  </dd>
+
+  <dt>Grid</dt>
+  <dd>
+    Affects both the editor and the routing algorithm. If enabled, a grid of the given spacing is shown in the view
+    and the algorithm assigns positions on grid coordinates if possible.
+  </dd>
+
+  <dt>Orthogonal mode</dt>
+  <dd>
+    Activates the orthogonal edge creation mode which restricts edge paths of newly created edges to horizontal and
+    vertical segments. Orthogonal edges are distinguishable by thicker lines.
+  </dd>
+
+  <dt>Snapping</dt>
+  <dd>
+    Specifies whether snap lines are activated.
+  </dd>
+</dl>
+
+</body>
+</html>

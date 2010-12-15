@@ -1,0 +1,146 @@
+/*
+ * NewBlue style for Javadoc API documentation. 
+ */
+
+a {
+  color: #AA5522;
+  font-weight: bold;
+}
+a:link {
+  text-decoration: none;
+}
+a:visited {
+  text-decoration: none;
+}
+a:active, 
+a:focus, 
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  font-family: monospace;
+  font-size: 12px;
+}
+a code, 
+code a {
+  font-family: Verdana, sans-serif;
+}
+
+body {
+  font-family: Verdana, sans-serif;
+  font-size: 12px;
+  background-color: #FFFFFF;
+  margin-left: 12px;
+  margin-right: 12px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  color: #000000;
+}
+
+/* Table colors */
+.TableHeadingColor {
+  background-color: #A4B9EA;
+}
+.TableSubHeadingColor {
+  background-color: #B9C9EA;
+}
+.TableRowColor {
+  background-color: #E3EEFE;
+}
+
+tr.TableHeadingColor td font {
+  font-size: 14px;
+  text-align: left;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+table, 
+td {
+  border: 1px solid white;
+  vertical-align: baseline;
+}
+
+/* Font used in left-hand frame lists */
+h2, 
+.FrameTitleFont {
+  font-size: 14px;
+  color: #4079EA;
+  margin-top: 10px;
+  margin-bottom: 0px;
+}
+.FrameHeadingFont {
+  font-size: 14px;
+  font-weight: bold;
+}
+.FrameItemFont {
+  line-height: 150%;
+}
+
+/* Navigation bar fonts and colors */
+table .NavBarCell1 {
+  background-color: white;
+  margin: 0px;
+  padding: 0px;
+}
+table .NavBarCell1 table .NavBarCell1 {
+  background-color: #A4B9EA;
+  margin-left: 2px;
+  margin-right: 2px;
+  padding: 2px 16px 2px 16px;
+}
+.NavBarCell1Rev {
+  background-color: white;
+  color: black;
+  padding: 1px;
+}
+.NavBarFont1 {
+  color: black;
+  font-family: Verdana, sans-serif;
+}
+.NavBarFont1Rev {
+  color: #772200;
+  font-family: Verdana, sans-serif;
+}
+.NavBarCell1 a:active, 
+.NavBarCell1 a:focus, 
+.NavBarCell1 a:hover {
+  color: black;
+  text-decoration: underline;
+}
+.NavBarCell2    { font-family: Arial, Helvetica, sans-serif;background-color:#FFFFFF;}
+.NavBarCell3    { font-family: Arial, Helvetica, sans-serif;background-color:#FFFFFF;}
+
+.CopyrightFooterFont {
+  font-size: 10px;
+  font-style: italic;
+  text-align: right;
+  margin-top: 20px;
+}
+
+p {
+  padding-bottom: 0px;
+  padding-top: 0px;
+  margin-top: 3px;
+  margin-bottom: 0px;
+  font-size: 12px;
+  color: #000000;
+}
+
+dl {
+  font-size: 12px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+dt {
+  font-weight: bold;
+  color: #333366;
+}
+
+.UmlTableCell {
+ border: 0px;
+}
+

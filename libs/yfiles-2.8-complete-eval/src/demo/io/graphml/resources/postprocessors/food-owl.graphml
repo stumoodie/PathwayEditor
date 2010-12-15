@@ -1,0 +1,1198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xmlns:vin="http://www.w3.org/2001/sw/WebOnt/guide-src/wine#"
+         xmlns:food="http://www.w3.org/2001/sw/WebOnt/guide-src/food#" xmlns:y="http://www.yworks.com/xml/graphml"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://www.yworks.com/xml/schema/graphml/1.1/ygraphml.xsd">
+  <key yfiles.type="nodegraphics" for="node" id="d0"/>
+  <key yfiles.type="edgegraphics" for="edge" id="d1"/>
+  <key yfiles.type="postprocessors" for="graph" id="d2"/>
+  <graph edgedefault="directed" id="G">
+    <node id="ConsumableThing">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>ConsumableThing</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="NonConsumableThing">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>NonConsumableThing</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="EdibleThing">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>EdibleThing</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="PotableLiquid">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>PotableLiquid</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="Wine">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>Wine</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="Grape">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>Grape</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="Pasta">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>Pasta</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="PastaWithWhiteSauce">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>PastaWithWhiteSauce</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="PastaWithSpicyRedSauceCourse">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>PastaWithSpicyRedSauceCourse</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="PastaWithSpicyRedSauce">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>PastaWithSpicyRedSauce</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="PastaWithRedSauce">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>PastaWithRedSauce</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="PastaWithNonSpicyRedSauceCourse">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>PastaWithNonSpicyRedSauceCourse</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="PastaWithNonSpicyRedSauce">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>PastaWithNonSpicyRedSauce</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="PastaWithLightCreamSauce">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>PastaWithLightCreamSauce</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="PastaWithLightCreamCourse">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>PastaWithLightCreamCourse</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="PastaWithHeavyCreamSauce">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>PastaWithHeavyCreamSauce</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="PastaWithHeavyCreamCourse">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>PastaWithHeavyCreamCourse</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="OysterShellfishCourse">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>OysterShellfishCourse</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="OysterShellfish">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>OysterShellfish</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="OtherTomatoBasedFoodCourse">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>OtherTomatoBasedFoodCourse</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="OtherTomatoBasedFood">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>OtherTomatoBasedFood</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="NonSweetFruitCourse">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>NonSweetFruitCourse</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="SweetFruitCourse">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>SweetFruitCourse</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="NonSweetFruit">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>NonSweetFruit</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="NonSpicyRedMeatCourse">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>NonSpicyRedMeatCourse</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="NonSpicyRedMeat">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>NonSpicyRedMeat</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="NonRedMeatCourse">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>NonRedMeatCourse</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="NonRedMeat">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>NonRedMeat</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="NonOysterShellfishCourse">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>NonOysterShellfishCourse</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="NonOysterShellfish">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>NonOysterShellfish</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="NonBlandFishCourse">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>NonBlandFishCourse</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="NonBlandFish">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>NonBlandFish</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="Meat">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>Meat</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="MealCourse">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>MealCourse</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="Meal">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>Meal</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="LightMeatFowlCourse">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>LightMeatFowlCourse</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="LightMeatFowl">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>LightMeatFowl</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="FruitCourse">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>FruitCourse</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="Fruit">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>Fruit</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="Fowl">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>Fowl</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="FishCourse">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>FishCourse</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="DessertCourse">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>DessertCourse</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="Dessert">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>Dessert</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="SweetFruit">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>SweetFruit</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="SweetDessertCourse">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>SweetDessertCourse</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="SweetDessert">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>SweetDessert</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="DarkMeatFowlCourse">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>DarkMeatFowlCourse</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="DarkMeatFowl">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>DarkMeatFowl</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="CheeseNutsDessertCourse">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>CheeseNutsDessertCourse</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="CheeseNutsDessert">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>CheeseNutsDessert</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="BlandFishCourse">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>BlandFishCourse</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="BlandFish">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>BlandFish</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="Fish">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>Fish</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="SpicyRedMeat">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>SpicyRedMeat</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="ShellfishCourse">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>ShellfishCourse</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="Shellfish">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>Shellfish</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="SeafoodCourse">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>SeafoodCourse</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="Seafood">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>Seafood</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="RedMeatCourse">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>RedMeatCourse</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="RedMeat">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>RedMeat</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="EatingGrape">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>EatingGrape</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="SpicyRedMeatCourse">
+      <data key="d0">
+        <y:GenericNode configuration="DemoDefaults#Node">
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle type="line" width="1.0" hasColor="false"/>
+          <y:NodeLabel>SpicyRedMeatCourse</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <edge id="N1001E" target="ConsumableThing"
+          source="EdibleThing">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#000000" width="1.0" type="line"/>
+          <y:Arrows target="white_delta" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N10025" target="ConsumableThing"
+          source="PotableLiquid">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#000000" width="1.0" type="line"/>
+          <y:Arrows target="white_delta" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N10028" source="EdibleThing"
+          target="PotableLiquid">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#00FF00" width="1.0" type="line"/>
+          <y:Arrows target="none" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N1009E" target="SweetFruit" source="Grape">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#000000" width="1.0" type="line"/>
+          <y:Arrows target="white_delta" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N100A5" target="EdibleThing" source="Pasta">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#000000" width="1.0" type="line"/>
+          <y:Arrows target="white_delta" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N100A8" source="Meat" target="Pasta">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#00FF00" width="1.0" type="line"/>
+          <y:Arrows target="none" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N100AB" source="Fowl" target="Pasta">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#00FF00" width="1.0" type="line"/>
+          <y:Arrows target="none" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N100AE" source="Seafood" target="Pasta">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#00FF00" width="1.0" type="line"/>
+          <y:Arrows target="none" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N100B1" source="Dessert" target="Pasta">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#00FF00" width="1.0" type="line"/>
+          <y:Arrows target="none" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N100B4" source="Fruit" target="Pasta">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#00FF00" width="1.0" type="line"/>
+          <y:Arrows target="none" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N100BB" target="Pasta"
+          source="PastaWithWhiteSauce">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#000000" width="1.0" type="line"/>
+          <y:Arrows target="white_delta" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N100BE" source="PastaWithRedSauce"
+          target="PastaWithWhiteSauce">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#00FF00" width="1.0" type="line"/>
+          <y:Arrows target="none" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N1012D" target="PastaWithRedSauce"
+          source="PastaWithSpicyRedSauce">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#000000" width="1.0" type="line"/>
+          <y:Arrows target="white_delta" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N10134" target="Pasta"
+          source="PastaWithRedSauce">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#000000" width="1.0" type="line"/>
+          <y:Arrows target="white_delta" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N101A3" target="PastaWithRedSauce"
+          source="PastaWithNonSpicyRedSauce">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#000000" width="1.0" type="line"/>
+          <y:Arrows target="white_delta" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N101A6" source="PastaWithSpicyRedSauce"
+          target="PastaWithNonSpicyRedSauce">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#00FF00" width="1.0" type="line"/>
+          <y:Arrows target="none" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N101AD" target="PastaWithWhiteSauce"
+          source="PastaWithLightCreamSauce">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#000000" width="1.0" type="line"/>
+          <y:Arrows target="white_delta" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N101B0" source="PastaWithHeavyCreamSauce"
+          target="PastaWithLightCreamSauce">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#00FF00" width="1.0" type="line"/>
+          <y:Arrows target="none" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N1021F" target="PastaWithWhiteSauce"
+          source="PastaWithHeavyCreamSauce">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#000000" width="1.0" type="line"/>
+          <y:Arrows target="white_delta" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N102B7" target="Shellfish"
+          source="OysterShellfish">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#000000" width="1.0" type="line"/>
+          <y:Arrows target="white_delta" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N10326" target="EdibleThing"
+          source="OtherTomatoBasedFood">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#000000" width="1.0" type="line"/>
+          <y:Arrows target="white_delta" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N10329" source="Pasta"
+          target="OtherTomatoBasedFood">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#00FF00" width="1.0" type="line"/>
+          <y:Arrows target="none" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N1032C" source="Meat"
+          target="OtherTomatoBasedFood">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#00FF00" width="1.0" type="line"/>
+          <y:Arrows target="none" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N1032F" source="Fowl"
+          target="OtherTomatoBasedFood">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#00FF00" width="1.0" type="line"/>
+          <y:Arrows target="none" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N10332" source="Seafood"
+          target="OtherTomatoBasedFood">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#00FF00" width="1.0" type="line"/>
+          <y:Arrows target="none" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N10335" source="Dessert"
+          target="OtherTomatoBasedFood">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#00FF00" width="1.0" type="line"/>
+          <y:Arrows target="none" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N10338" source="Fruit"
+          target="OtherTomatoBasedFood">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#00FF00" width="1.0" type="line"/>
+          <y:Arrows target="none" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N103BD" target="EdibleThing"
+          source="NonSweetFruit">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#000000" width="1.0" type="line"/>
+          <y:Arrows target="white_delta" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N103C0" source="SweetFruit"
+          target="NonSweetFruit">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#00FF00" width="1.0" type="line"/>
+          <y:Arrows target="none" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N1043C" target="RedMeat"
+          source="NonSpicyRedMeat">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#000000" width="1.0" type="line"/>
+          <y:Arrows target="white_delta" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N1043F" source="SpicyRedMeat"
+          target="NonSpicyRedMeat">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#00FF00" width="1.0" type="line"/>
+          <y:Arrows target="none" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N104AE" target="Meat" source="NonRedMeat">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#000000" width="1.0" type="line"/>
+          <y:Arrows target="white_delta" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N104B1" source="RedMeat" target="NonRedMeat">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#00FF00" width="1.0" type="line"/>
+          <y:Arrows target="none" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N104E1" target="Shellfish"
+          source="NonOysterShellfish">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#000000" width="1.0" type="line"/>
+          <y:Arrows target="white_delta" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N104E4" source="OysterShellfish"
+          target="NonOysterShellfish">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#00FF00" width="1.0" type="line"/>
+          <y:Arrows target="none" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N10514" target="Fish" source="NonBlandFish">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#000000" width="1.0" type="line"/>
+          <y:Arrows target="white_delta" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N1051B" target="EdibleThing" source="Meat">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#000000" width="1.0" type="line"/>
+          <y:Arrows target="white_delta" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N1051E" source="Fowl" target="Meat">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#00FF00" width="1.0" type="line"/>
+          <y:Arrows target="none" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N10521" source="Seafood" target="Meat">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#00FF00" width="1.0" type="line"/>
+          <y:Arrows target="none" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N10524" source="Dessert" target="Meat">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#00FF00" width="1.0" type="line"/>
+          <y:Arrows target="none" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N10527" source="Fruit" target="Meat">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#00FF00" width="1.0" type="line"/>
+          <y:Arrows target="none" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N1052E" target="ConsumableThing"
+          source="MealCourse">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#000000" width="1.0" type="line"/>
+          <y:Arrows target="white_delta" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N10563" source="PotableLiquid"
+          target="MealCourse">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#00FF00" width="1.0" type="line"/>
+          <y:Arrows target="none" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N10566" source="EdibleThing" target="MealCourse">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#00FF00" width="1.0" type="line"/>
+          <y:Arrows target="none" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N1056D" target="ConsumableThing" source="Meal">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#000000" width="1.0" type="line"/>
+          <y:Arrows target="white_delta" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N10589" source="MealCourse" target="Meal">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#00FF00" width="1.0" type="line"/>
+          <y:Arrows target="none" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N1058C" source="PotableLiquid" target="Meal">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#00FF00" width="1.0" type="line"/>
+          <y:Arrows target="none" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N1058F" source="EdibleThing" target="Meal">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#00FF00" width="1.0" type="line"/>
+          <y:Arrows target="none" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N105FE" target="Fowl" source="LightMeatFowl">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#000000" width="1.0" type="line"/>
+          <y:Arrows target="white_delta" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N10653" target="EdibleThing" source="Fowl">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#000000" width="1.0" type="line"/>
+          <y:Arrows target="white_delta" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N10656" source="Seafood" target="Fowl">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#00FF00" width="1.0" type="line"/>
+          <y:Arrows target="none" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N10659" source="Dessert" target="Fowl">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#00FF00" width="1.0" type="line"/>
+          <y:Arrows target="none" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N1065C" source="Fruit" target="Fowl">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#00FF00" width="1.0" type="line"/>
+          <y:Arrows target="none" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N106F4" target="EdibleThing" source="Dessert">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#000000" width="1.0" type="line"/>
+          <y:Arrows target="white_delta" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N106F7" source="Fruit" target="Dessert">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#00FF00" width="1.0" type="line"/>
+          <y:Arrows target="none" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N10700" target="EdibleThing" source="SweetFruit">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#000000" width="1.0" type="line"/>
+          <y:Arrows target="white_delta" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N10730" target="Dessert" source="SweetDessert">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#000000" width="1.0" type="line"/>
+          <y:Arrows target="white_delta" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N1079F" target="Fowl" source="DarkMeatFowl">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#000000" width="1.0" type="line"/>
+          <y:Arrows target="white_delta" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N107A2" source="LightMeatFowl"
+          target="DarkMeatFowl">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#00FF00" width="1.0" type="line"/>
+          <y:Arrows target="none" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N107D2" target="Dessert"
+          source="CheeseNutsDessert">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#000000" width="1.0" type="line"/>
+          <y:Arrows target="white_delta" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N107D5" source="SweetDessert"
+          target="CheeseNutsDessert">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#00FF00" width="1.0" type="line"/>
+          <y:Arrows target="none" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N10805" target="Fish" source="BlandFish">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#000000" width="1.0" type="line"/>
+          <y:Arrows target="white_delta" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N10808" source="NonBlandFish" target="BlandFish">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#00FF00" width="1.0" type="line"/>
+          <y:Arrows target="none" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N10819" target="Seafood" source="Fish">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#000000" width="1.0" type="line"/>
+          <y:Arrows target="white_delta" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N1081C" source="Shellfish" target="Fish">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#00FF00" width="1.0" type="line"/>
+          <y:Arrows target="none" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N10823" target="RedMeat" source="SpicyRedMeat">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#000000" width="1.0" type="line"/>
+          <y:Arrows target="white_delta" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N10875" target="Seafood" source="Shellfish">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#000000" width="1.0" type="line"/>
+          <y:Arrows target="white_delta" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N108A5" target="EdibleThing" source="Seafood">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#000000" width="1.0" type="line"/>
+          <y:Arrows target="white_delta" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N108A8" source="Dessert" target="Seafood">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#00FF00" width="1.0" type="line"/>
+          <y:Arrows target="none" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N108AB" source="Fruit" target="Seafood">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#00FF00" width="1.0" type="line"/>
+          <y:Arrows target="none" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N108DB" target="Meat" source="RedMeat">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#000000" width="1.0" type="line"/>
+          <y:Arrows target="white_delta" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="N10915" target="Grape" source="EatingGrape">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:LineStyle color="#000000" width="1.0" type="line"/>
+          <y:Arrows target="white_delta" source="none"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <data key="d2">
+      <y:Postprocessors>
+        <y:Processor class="demo.io.graphml.NodeSizeAdapter">
+          <y:Option value="false" name="IGNORE_WIDTHS"/>
+          <y:Option value="true" name="IGNORE_HEIGHTS"/>
+          <y:Option value="false" name="ADAPT_TO_MAXIMUM_NODE"/>
+        </y:Processor>
+        <y:Processor class="y.module.SmartOrganicLayoutModule">
+          <y:Option value="90" name="VISUAL.PREFERRED_EDGE_LENGTH"/>
+          <y:Option value="1.0" name="ALGORITHM.QUALITY_TIME_RATIO"/>
+          <y:Option value="true" name="VISUAL.OBEY_NODE_SIZES"/>
+          <y:Option value="30" name="ALGORITHM.MAXIMAL_DURATION"/>
+          <y:Option value="false" name="VISUAL.ALLOW_NODE_OVERLAPS"/>
+          <y:Option value="0.6" name="VISUAL.COMPACTNESS"/>
+          <y:Option value="10.0" name="VISUAL.MINIMAL_NODE_DISTANCE"/>
+          <y:Option value="false" name="ALGORITHM.ACTIVATE_DETERMINISTIC_MODE"/>
+          <y:Option value="ALL" name="VISUAL.SCOPE"/>
+        </y:Processor>
+      </y:Postprocessors>
+    </data>
+  </graph>
+</graphml>

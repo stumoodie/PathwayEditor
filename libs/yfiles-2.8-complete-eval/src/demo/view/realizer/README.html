@@ -1,0 +1,251 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:y="http://www.yworks.com/demo">
+<head>
+<title>yFiles Tutorial Realizer Demos</title>
+<style type="text/css">
+<!--
+              body {
+  font-family:Verdana, sans-serif; 
+  margin-left:12px;
+  margin-right:12px;
+  margin-top:12px;
+  margin-bottom:12px;
+}
+
+h1 { 
+  padding-left:8px;
+  padding-top:8px;
+  padding-bottom:8px;
+  background-color:#d0d0d0;
+  color:#4079ea;
+/*  color:#4d88ff; */
+  font-size:18px;
+  margin-bottom:5px;
+}
+
+p {   
+  padding-bottom:0px;
+  padding-top:0px;
+  margin-top:3px;
+  margin-bottom:0px;
+/*  margin-left:10px; */
+  margin-left:8px;
+  font-size:12px;
+  color:#000000;
+}
+
+h2 { 
+  font-size:14px; 
+  color:#4079ea; 
+  margin-top:10px; 
+  margin-bottom:0px; 
+}
+
+h3 { 
+  font-size:13px; 
+/*  margin-left:10px; */
+  margin-left:8px;
+  margin-top:8px; 
+  margin-bottom:2px; 
+}
+
+table {
+/*  margin-left:10px; */
+  margin-left: 8px;
+  margin-top: 8px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border: 1px solid white;
+  vertical-align: baseline;
+  border-collapse: collapse;
+}
+
+td { 
+  font-size:12px;
+  background-color: #E3EEFE;
+  vertical-align:top;
+  border: 1px solid white;
+  vertical-align: baseline;
+}
+
+th {
+  font-size:12px; 
+  background-color:#a4b9ea;
+  text-align: left;
+}
+
+a {
+  color: #AA5522; font-weight:bold;
+}
+a:link {
+  text-decoration:none;
+}
+a:visited {
+  text-decoration:none; color:#772200;
+}
+a:active, 
+a:focus, 
+a:hover {
+  text-decoration: underline;
+}
+
+div.li1 {
+  font-size:12px;
+  margin-top:8px; 
+  margin-bottom:0px; 
+  margin-left:10px; 
+}
+div.li2 { 
+  margin-left:20px;
+  margin-top:2px; 
+  margin-bottom:2px; 
+  font-weight:bold;
+  font-size:12px; 
+}
+
+dl { 
+  font-size:12px;
+  margin-top:2px;
+  margin-bottom:2px;
+  margin-left:15px;
+}
+dt { 
+  font-weight:bold;
+  margin-top:4px;
+/*  color:#000000; */
+  color:#333366;
+}
+dd { 
+  margin-left:15px;
+}
+
+li { 
+  /* does not work in pre-1.5 Java JEditorPane :-( */
+/*  list-style-type:none; */
+  font-size:12px;
+}
+
+caption {
+  font-size:12px;
+}
+
+.copyright { 
+  font-size: 10px;
+  font-style:italic;
+  text-align:right;
+  margin-top:20px;
+}
+
+code, tt { 
+  font-family:monospace;
+  font-size:12px;
+  color:#0000C0;
+}
+
+            -->
+</style>
+</head>
+<body>
+    <h1>yFiles Tutorial Realizer Demos</h1>
+    <p>
+      The following tutorial demos describe how to use, customize, and extend
+      diverse NodeRealizer and EdgeRealizer classes.
+      Among other user interface aspects, a realizer defines the way a graph element
+      is rendered.
+    </p>
+    <p>
+      <b>Note:</b> Except for the implementation of <code>demo.view.realizer.StateNodeRealizer</code>,
+      all classes listed here are also executable.
+    </p>
+  <table class="toplevel">
+<tr>
+<th>Class</th>
+<th>Description</th>
+</tr><tr xmlns="">
+<td><a href="VisualFeatureDemo.java">demo.view.realizer.VisualFeatureDemo</a></td><td>
+      Presents the visual features that are available with node realizers and edge realizers.
+      In particular, these include labels for both nodes and edges, decorations for edge
+      end points, but also colors and shapes for both types of graph elements.
+    </td>
+</tr>
+<tr xmlns="">
+<td><a href="GenericNodeRealizerDemo.java">demo.view.realizer.GenericNodeRealizerDemo</a></td><td>
+      This class demonstrates the usage of the <code xmlns="http://www.w3.org/1999/xhtml">y.view.GenericNodeRealizer</code>
+      class which makes it easy to provide customized node rendering.
+    </td>
+</tr>
+<tr xmlns="">
+<td><a href="GenericEdgeRealizerDemo.java">demo.view.realizer.GenericEdgeRealizerDemo</a></td><td>
+      This class demonstrates the usage of the <code xmlns="http://www.w3.org/1999/xhtml">y.view.GenericEdgeRealizer</code>
+      class which makes it easy to provide customized edge rendering.
+    </td>
+</tr>
+<tr xmlns="">
+<td><a href="YLabelConfigurationDemo.java">demo.view.realizer.YLabelConfigurationDemo</a></td><td>
+      This class demonstrates the usage of YLabel's configuration feature which simplifies
+      customized label rendering.
+      <br xmlns="http://www.w3.org/1999/xhtml"/>
+      Things to try: move nodes around, move node/edge labels around, select a node/edge
+      and press F2 to edit the label, insert/move bends of edges.
+    </td>
+</tr>
+<tr xmlns="">
+<td><a href="TableStyleDemo.java">demo.view.realizer.TableStyleDemo</a></td><td>
+      Demonstrates different visual styles for table groups and their content.
+    </td>
+</tr>
+<tr xmlns="">
+<td><a href="SwingRendererDemo.java">demo.view.realizer.SwingRendererDemo</a></td><td>
+      This class shows how to customize GenericNodeRealizer to display JComponents as nodes.
+    </td>
+</tr>
+<tr xmlns="">
+<td><a href="UMLClassNodeRealizer.java">demo.view.realizer.UMLClassNodeRealizer</a></td><td>
+      This class represents a custom NodeRealizer that can be used to
+      represent a class in an UML diagram. It supports classname, sterotype,
+      constraint, attribute list, and method list.
+    </td>
+</tr>
+<tr xmlns="">
+<td><a href="BridgeEdgeRealizerDemo.java">demo.view.realizer.BridgeEdgeRealizerDemo</a></td><td>
+      This class demonstrates how to implement a custom EdgeRealizer that shows
+      bridges/gaps when crossing other edges.
+    </td>
+</tr>
+<tr xmlns="">
+<td><a href="StateNodeRealizer.java">demo.view.realizer.StateNodeRealizer</a></td><td>
+      This demo shows how the custom node realizer <code xmlns="http://www.w3.org/1999/xhtml">StateNodeRealizer</code>
+      can be used within an application.
+    </td>
+</tr>
+<tr xmlns="">
+<td><a href="StateNodeRealizerDemo.java">demo.view.realizer.StateNodeRealizerDemo</a></td><td>
+      This demo shows how the custom node realizer <a xmlns="http://www.w3.org/1999/xhtml" href="StateNodeRealizer.java">
+      StateNodeRealizer</a> can be used within an application.
+    </td>
+</tr>
+<tr xmlns="">
+<td><a href="ScrollingNodeRealizer.java">demo.view.realizer.ScrollingNodeRealizer</a></td><td>
+      Demonstrates how scrollbars inside a NodeRealizer can be implemented.
+    </td>
+</tr>
+</table>
+<h2>Running the Demos</h2>
+<h3>From Within an IDE</h3>
+<p>
+            Set <tt>&lt;yFilesDir&gt;/src</tt> as your source directory.
+            Then add <tt>&lt;yFilesDir&gt;/lib/y.jar</tt>
+<b>and</b> the source folder
+            <tt>&lt;yFilesDir&gt;/src</tt> to your classpath.
+            Now you should be ready to compile and run all executable demo classes.
+            </p>
+<h3>With Ant</h3>
+<p>
+              First make sure you have the
+              <a href="http://ant.apache.org">build tool Ant</a> installed on your system.
+              Now you can use the demo build script <tt>build.xml</tt>
+              located in <tt>&lt;yFilesDir&gt;/src/demo</tt> to launch each demo by specifying its simple class name as a target.
+              Alternatively, launch the interactive demo driver by specifying <tt>run</tt> as target to
+              conveniently access all demos.
+            </p>
+</body>
+</html>

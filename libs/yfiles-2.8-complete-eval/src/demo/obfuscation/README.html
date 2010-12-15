@@ -1,0 +1,201 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:y="http://www.yworks.com/demo">
+<head>
+<title>yFiles Obfuscation Demo</title>
+<style type="text/css">
+<!--
+              body {
+  font-family:Verdana, sans-serif; 
+  margin-left:12px;
+  margin-right:12px;
+  margin-top:12px;
+  margin-bottom:12px;
+}
+
+h1 { 
+  padding-left:8px;
+  padding-top:8px;
+  padding-bottom:8px;
+  background-color:#d0d0d0;
+  color:#4079ea;
+/*  color:#4d88ff; */
+  font-size:18px;
+  margin-bottom:5px;
+}
+
+p {   
+  padding-bottom:0px;
+  padding-top:0px;
+  margin-top:3px;
+  margin-bottom:0px;
+/*  margin-left:10px; */
+  margin-left:8px;
+  font-size:12px;
+  color:#000000;
+}
+
+h2 { 
+  font-size:14px; 
+  color:#4079ea; 
+  margin-top:10px; 
+  margin-bottom:0px; 
+}
+
+h3 { 
+  font-size:13px; 
+/*  margin-left:10px; */
+  margin-left:8px;
+  margin-top:8px; 
+  margin-bottom:2px; 
+}
+
+table {
+/*  margin-left:10px; */
+  margin-left: 8px;
+  margin-top: 8px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border: 1px solid white;
+  vertical-align: baseline;
+  border-collapse: collapse;
+}
+
+td { 
+  font-size:12px;
+  background-color: #E3EEFE;
+  vertical-align:top;
+  border: 1px solid white;
+  vertical-align: baseline;
+}
+
+th {
+  font-size:12px; 
+  background-color:#a4b9ea;
+  text-align: left;
+}
+
+a {
+  color: #AA5522; font-weight:bold;
+}
+a:link {
+  text-decoration:none;
+}
+a:visited {
+  text-decoration:none; color:#772200;
+}
+a:active, 
+a:focus, 
+a:hover {
+  text-decoration: underline;
+}
+
+div.li1 {
+  font-size:12px;
+  margin-top:8px; 
+  margin-bottom:0px; 
+  margin-left:10px; 
+}
+div.li2 { 
+  margin-left:20px;
+  margin-top:2px; 
+  margin-bottom:2px; 
+  font-weight:bold;
+  font-size:12px; 
+}
+
+dl { 
+  font-size:12px;
+  margin-top:2px;
+  margin-bottom:2px;
+  margin-left:15px;
+}
+dt { 
+  font-weight:bold;
+  margin-top:4px;
+/*  color:#000000; */
+  color:#333366;
+}
+dd { 
+  margin-left:15px;
+}
+
+li { 
+  /* does not work in pre-1.5 Java JEditorPane :-( */
+/*  list-style-type:none; */
+  font-size:12px;
+}
+
+caption {
+  font-size:12px;
+}
+
+.copyright { 
+  font-size: 10px;
+  font-style:italic;
+  text-align:right;
+  margin-top:20px;
+}
+
+code, tt { 
+  font-family:monospace;
+  font-size:12px;
+  color:#0000C0;
+}
+
+            -->
+</style>
+</head>
+<body>
+    <h1>yFiles Obfuscation Demo</h1>
+
+    <p>
+      This demo shows how to obfuscate the yFiles classes before they can be
+      deployed as a part of an applet or application. Obfuscation changes 
+      class, field, and method names in a consistent but nonsensical way that does
+      not change the functionality of the software but makes decompiled Java code
+      harder to read and publicly available API description of the original code 
+      inapplicable to the obfuscated code.
+    </p>
+
+    <p>
+      In this demo the obfuscation process will be performed by the Ant-based obfuscator yGuard. 
+      In order to run yGuard it is required to have the freely available
+      deployment tool <a href="http://ant.apache.org">Ant</a> installed on your system.
+    </p>
+
+    <p>
+      The sample application used in this obfuscation demo is <a href="../view/hierarchy/README.html">
+      demo.view.hierarchy.HierarchyDemo</a>.
+    </p>
+
+    <p>
+      This demo contains the following files:
+    </p>
+    <table class="toplevel">
+      <tr>
+        <td>
+<a href="build.xml">build.xml</a>
+</td>
+        <td>The Ant build script used to obfuscate the application.</td>
+      </tr>
+      <tr>
+        <td>
+<a href="yguard/README.html">yGuard</a>
+</td>
+        <td>The yGuard obfuscation task. The newest yGuard version can be freely obtained from
+          the <a href="http://www.yworks.com/products/yguard">yGuard home page</a>.</td>
+      </tr>
+    </table>
+
+    <h2>Running the Demo</h2>
+    <p>
+      Open a console window and change to this directory.
+      Then enter "<tt>ant run</tt>". This will launch the obfuscated application.
+      Before the application will be run it first will be compiled, jarred, 
+      and obfuscated.
+    </p>
+    <p>
+      Enter "<tt>ant show</tt>" to open up a small browser that shows the name mapping
+      performed by the obfuscator.
+    </p>
+  </body>
+</html>

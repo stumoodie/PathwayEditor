@@ -1,0 +1,438 @@
+<HTML>
+  <HEAD>
+    <TITLE>GML i/o Specification</TITLE>
+    <style type="text/css">
+        body { font-family:sans-serif; margin:1.0cm; }
+        h1 { font-family:serif; text-align:center; padding-left:0.5cm; padding-top:2mm; padding-bottom:2mm; margin-top:1cm; background-color:#b0b0b0; color:black; font-size:26px; margin-bottom:18px; }
+        h2 { margin-top:1cm;border-bottom-width:1px; border-bottom-style:solid; border-bottom-color:black; font-size:21px; margin-bottom:18px; }
+        h3{ margin-top:0.3cm} font-size:16px; }
+        h4 { margin-left:1.0cm; font-size:13px; }
+        ol,ul,li,div,td,th,address,blockquote { margin-left:0.0cm; font-size:13px; }
+        dd,p { margin-left:0cm; margin-right:5mm; font-size:13px; text-align:justify;}
+        .pad { margin-left:0.5cm; }
+        li { margin-top:3px} 
+        table { padding-top:0.5cm; }
+        td { background-color:#f0f0f0; vertical-align:top; }
+        th { background-color:#e0e0e0; vertical-align:top; }
+    </style>
+
+  </HEAD>
+  <BODY>
+
+<h1>yFiles GML Compatibility and Extensions</h1>
+
+<p>
+The following table shows a list of all GML features, sections and attributes, that
+are handled by the <code>y.io.GMLIOHandler</code> class.
+</p>
+
+  <table style="vertical-align:top; text-align:left;">
+    <tr><td colspan="5"><h2>Basic GML contents</h2></td></tr>
+    <tr><td colspan="5"><h3>GML toplevel</h3></td></tr>
+    <tr>
+        <td>item</td><td>type</td><td>description</td><td>parsed</td><td>written</td>
+    </tr>
+    <tr>
+        <td>.Creator</td><td>attribute [String]</td><td>The name of the creator of the file</td><td>-</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.version</td><td>attribute [Double]</td><td>The version of the creator</td><td>-</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.graph</td><td>section (single)</td><td>The actual graph data</td><td>X</td><td>X</td>
+    </tr>
+    <tr><td colspan="5"><h3>.graph level</h3></td></tr>
+    <tr>
+        <td>item</td><td>type</td><td>description</td><td>parsed</td><td>written</td>
+    </tr>
+    <tr>
+        <td>.graph.label</td><td>attribute [String]</td><td>The textual name of the graph</td><td>-</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.graph.directed</td><td>attribute [Integer / Boolean]</td><td>Predicate, whether edges are directed</td><td>-</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.graph.node</td><td>section (multiple)</td><td>A simple node</td><td>X</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.graph.edge</td><td>section (multiple)</td><td>A simple edge</td><td>X</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.graph.defaultnodesize</td><td>attribute [String]</td><td>May be set
+to 'labelsize', the parser will automatically assign a node size for nodes,
+whose width or height is not set</td><td>X</td><td>-</td>
+    </tr>
+    <tr>
+        <td>.graph.defaultnodeinsetshorizontal</td><td>attribute
+[Integer]</td><td>Used in conjunction with defaultnodesize = 'labelsize';
+determines horizontal insets between label and nodeborder
+</td><td>X</td><td>-</td>
+    </tr>
+    <tr>
+        <td>.graph.defaultnodeinsetsvertical</td><td>attribute
+[Integer]</td><td>Used in conjunction with defaultnodesize = 'labelsize';
+determines vertical insets between label and nodeborder
+</td><td>X</td><td>-</td>
+    </tr>
+    <tr>
+        <td>.graph.defaultnodeminwidth</td><td>attribute
+[Integer]</td><td>Used in conjunction with defaultnodesize = 'labelsize';
+determines minimal width of automatically assigned widths
+</td><td>X</td><td>-</td>
+    </tr>
+    <tr>
+        <td>.graph.defaultnodeminheight</td><td>attribute
+[Integer]</td><td>Used in conjunction with defaultnodesize = 'labelsize';
+determines minimal height of automatically assigned heights
+</td><td>X</td><td>-</td>
+    </tr>
+    <tr><td colspan="5"><h3>.graph.node level</h3></td></tr>
+    <tr>
+        <td>item</td><td>type</td><td>description</td><td>parsed</td><td>written</td>
+    </tr>
+    <tr>
+        <td>.graph.node.id</td><td>attribute [Integer]</td><td>The unique node id</td><td>X</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.graph.node.label</td><td>attribute [String]</td><td>The textual name of the node (label)</td><td>X</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.graph.node.graphics</td><td>section (single)</td><td>The graphical representation of the node</td><td>X</td><td>X</td>
+    </tr>
+    <tr><td colspan="5"><h3>.graph.node.graphics level</h3></td></tr>
+    <tr>
+        <td>item</td><td>type</td><td>description</td><td>parsed</td><td>written</td>
+    </tr>
+    <tr>
+        <td>.graph.node.graphics.x</td><td>attribute [Double]</td><td>The x-coordinate of the center of the node</td><td>X</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.graph.node.graphics.y</td><td>attribute [Double]</td><td>The y-coordinate of the center of the node</td><td>X</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.graph.node.graphics.w</td><td>attribute [Double]</td><td>The width of the node</td><td>X</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.graph.node.graphics.h</td><td>attribute [Double]</td><td>The height of the node</td><td>X</td><td>X</td>
+    </tr>
+    <tr>
+        <td style="vertival-align:top;">.graph.node.graphics.type</td><td>attribute [String]</td>
+<td style="vertival-align:top;">The name of the shapetype<br/>
+    This is one of:<br/>
+    <table>
+        <tr><th>Value</th><th>Description</th></tr>
+        <tr><td>ellipse, oval, circle</td><td><img src="ellipse.gif"/></td></tr>
+        <tr><td>rectangle</td><td><img src="rectangle.gif"/></td></tr>
+        <tr><td>triangle</td><td><img src="triangle.gif"/></td></tr>
+        <tr><td>parallelogram</td><td><img src="parallelogram.gif"/></td></tr>
+        <tr><td>hexagon</td><td><img src="hexagon.gif"/></td></tr>
+        <tr><td>diamond</td><td><img src="diamond.gif"/></td></tr>
+        <tr><td>octagon</td><td><img src="octagon.gif"/></td></tr>
+        <tr><td>roundrectangle</td><td><img src="roundrect.gif"/></td></tr>
+        <tr><td>rectangle3d</td><td><img src="rectangle3d.gif"/></td></tr>
+        <tr><td>trapezoid</td><td><img src="trapezoid.gif"/></td></tr>
+        <tr><td>trapezoid2</td><td><img src="trapezoid2.gif"/></td></tr>
+     </table>
+</td><td>X</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.graph.node.graphics.image</td><td>attribute [String]</td><td>The URL of the image used for image nodes</td><td>X</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.graph.node.graphics.width</td><td>attribute [Double]</td><td>The stroke width used for the node</td><td>X</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.graph.node.graphics.fill</td><td>attribute [Color]</td><td>The fill color of the node</td><td>X</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.graph.node.graphics.outline</td><td>attribute [Color]</td><td>The stroke color used for the node</td><td>X</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.graph.node.graphics.hasFill</td><td>attribute [Integer / Boolean]</td><td>Whether or not the node has a fill color</td><td>X</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.graph.node.graphics.hasOutline</td><td>attribute [Integer / Boolean]</td><td>Whether of not the node has an outline</td><td>X</td><td>X</td>
+    </tr>
+    <tr><td colspan="5"><h3>.graph.node.LabelGraphics level</h3></td></tr>
+    <tr>
+        <td>item</td><td>type</td><td>description</td><td>parsed</td><td>written</td>
+    </tr>
+    <tr>
+        <td>.graph.node.LabelGraphics.type</td><td>attribute [String]</td><td>The content type of the label, either "text" for textual labels or "index_label" for automatic numeric
+labels</td><td>X</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.graph.node.LabelGraphics.color</td><td>attribute [Color]</td><td>The text color of the label</td><td>X</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.graph.node.LabelGraphics.fill</td><td>attribute [Color]</td><td>The background color of the label</td><td>X</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.graph.node.LabelGraphics.color</td><td>attribute [Color]</td><td>The text color of the label</td><td>X</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.graph.node.LabelGraphics.alignment</td><td>attribute [String]</td><td>The alignment of multi-line label, either "center", "left" or "right".</td><td>X</td><td>X</td>    </tr>
+    <tr>
+        <td>.graph.node.LabelGraphics.anchor</td><td>attribute [String]</td><td>The anchor type of the label, that determines the postition of the label relative to its node. Positions within the node
+             are "c", "t", "tl", "tr", "l", "r", "bl", "b", br". Positions around the node are "n", "ne", "e", "se", "s", "sw", "w", "nw". 
+             <br/><img src="labelpos_layout.gif"/>
+             </td><td>X</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.graph.node.LabelGraphics.x</td><td>attribute [Double]</td><td>The absolute x-coordinate of the label. 
+            This value will only be written if the label position does not correspond to a predefined label anchor.
+            Also, this value will only be read if no label anchor is specified.</td><td>X</td><td>X</td>    
+    </tr>
+    <tr>
+        <td>.graph.node.LabelGraphics.y</td><td>attribute [Double]</td><td>The absolute y-coordinate of the label. 
+            This value will only be written if the label position does not correspond to a predefined label anchor.
+            Also, this value will only be read if no label anchor is specified.</td><td>X</td><td>X</td>    
+    </tr>
+    <tr>
+        <td>.graph.node.LabelGraphics.fontSize</td><td>attribute [Integer]</td><td>The size of the label font</td><td>X</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.graph.node.LabelGraphics.fontStyle</td><td>attribute [String]</td><td>The style of the label font, either "plain", "italic" or "bold".</td><td>X</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.graph.node.LabelGraphics.fontName</td><td>attribute [String]</td><td>The logical name  of the label font, either "Dialog", "DialogInput", "Monospaced", "Serif", "SansSerif", or
+"Symbol".</td><td>X</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.graph.node.LabelGraphics.rotationAngle</td><td>attribute [Integter]</td><td>The rotation angle applied to this label.</td><td>X</td><td>X</td>
+    </tr>
+    
+    
+    <tr><td colspan="5"><h3>.graph.edge level</h3></td></tr>
+    <tr>
+        <td>item</td><td>type</td><td>description</td><td>parsed</td><td>written</td>
+    </tr>
+    <tr>
+        <td>.graph.edge.source</td><td>attribute [Integer]</td><td>The id of the source node (.graph.node.id)</td><td>X</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.graph.edge.target</td><td>attribute [Integer]</td><td>The id of the target node (.graph.node.id)</td><td>X</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.graph.edge.label</td><td>attribute [String]</td><td>The textual name of the edge (label)</td><td>X</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.graph.edge.graphics</td><td>section (single)</td><td>The graphical representation of the edge</td><td>X</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.graph.edge.edgeAnchor</td><td>section (single)</td><td>The port definitions</td><td>X</td><td>X</td>
+    </tr>
+    <tr><td colspan="5"><h3>.graph.edge.graphics level</h3></td></tr>
+    <tr>
+        <td>item</td><td>type</td><td>description</td><td>parsed</td><td>written</td>
+    </tr>
+    <tr>
+        <td>.graph.edge.graphics.type</td><td>attribute [String]</td><td>The name of the linetype</td><td>-</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.graph.edge.graphics.width</td><td>attribute [Double]</td><td>The stroke width used for the line</td><td>X</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.graph.edge.graphics.fill</td><td>attribute [String]</td><td>The color of the line</td><td>X</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.graph.edge.graphics.arrow</td><td>attribute [String]</td><td>"last" or "first" depending on whether there are arrows at the sourceport and the targetport</td><td>X</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.graph.edge.graphics.line</td><td>section (single)</td><td>The positions of the ports and bends of the edge</td><td>X</td><td>X</td>
+    </tr>
+    <tr><td colspan="5"><h3>.graph.edge.graphics.line level</h3></td></tr>
+    <tr>
+        <td>item</td><td>type</td><td>description</td><td>parsed</td><td>written</td>
+    </tr>
+    <tr>
+        <td>.graph.edge.graphics.line.point</td><td>section (multiple)</td><td>A single bend or port</td><td>X</td><td>X</td>
+    </tr>
+    <tr><td colspan="5"><h3>.graph.edge.graphics.line.point level</h3></td></tr>
+    <tr>
+        <td>item</td><td>type</td><td>description</td><td>parsed</td><td>written</td>
+    </tr>
+    <tr>
+        <td>.graph.edge.graphics.line.point.x</td><td>attribute [Double]</td><td>The x-coordinate of the point</td><td>X</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.graph.edge.graphics.line.point.y</td><td>attribute [Double]</td><td>The y-coordinate of the point</td><td>X</td><td>X</td>
+    </tr>
+    <tr><td colspan="5"><h3>.graph.edge.edgeAnchor level</h3></td></tr>
+    <tr>
+        <td>item</td><td>type</td><td>description</td><td>parsed</td><td>written</td>
+    </tr>
+
+    <tr>
+        <td>.graph.edge.LabelGraphics.type</td><td>attribute [String]</td><td>The content type of the label, either "text" for textual labels or "index_label" for automatic numeric
+labels</td><td>X</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.graph.edge.LabelGraphics.color</td><td>attribute [Color]</td><td>The text color of the label</td><td>X</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.graph.edge.LabelGraphics.fill</td><td>attribute [Color]</td><td>The background color of the label</td><td>X</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.graph.edge.LabelGraphics.outline</td><td>attribute [Color]</td><td>The border color of the label</td><td>X</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.graph.edge.LabelGraphics.alignment</td><td>attribute [String]</td><td>The alignment of multi-line label, either "center", "left" or "right".</td><td>X</td><td>X</td>    </tr>
+    <tr>
+        <td>.graph.edge.LabelGraphics.model</td><td>attribute [String]</td>
+        <td>The model of the label, that determines how to interpret the position of a label.
+            Known models are "center_slider", "side_slider", "six_pos", "three_pos", "two_pos", "free" and "centered".
+            For each model certain label positions can be assigned (see below)
+            </td>
+        <td>X</td>
+        <td>X</td>
+    </tr>
+    <tr>
+        <td>.graph.edge.LabelGraphics.position</td><td>attribute [String]</td>
+        <td>The symbolic position of the label, that determines the actual position of the label.
+            Known positions are "center" "tcentr", "scentr", "shead", "head" "thead", "stail", "tail" and "ttail".
+            Depicted below is a list of the available edge label models together with their 
+            <table>
+               <tr>
+                 <td><img src="label_model_centered_sm.jpg"/></td>
+                 <td><img src="label_model_two_pos_sm.jpg"/></td>
+               </tr>
+                <tr>
+                 <td align="center">Model CENTERED</td>
+                 <td align="center">Model TWO_POS</td>
+               </tr>
+               <tr>
+                 <td><img src="label_model_three_center_sm.jpg"/></td>
+                 <td><img src="label_model_six_pos_sm.jpg"/></td>
+               </tr>
+                <tr>
+                 <td align="center">Model THREE_CENTER</td>
+                 <td align="center">Model SIX_POS</td>
+               </tr>
+            </table>
+          </td>
+          <td>X</td><td>X</td>
+     </tr>
+     <tr>
+        <td>.graph.edge.LabelGraphics.x</td><td>attribute [Double]</td>
+        <td>The absolute x-coordinate of the label. This value must be used to specify the
+            position of the label for the label model types "center_slider", "side_slider" and "free".
+        </td>
+        <td>X</td><td>X</td>
+     </tr>
+     <tr>
+        <td>.graph.edge.LabelGraphics.y</td><td>attribute [Double]</td>
+        <td>The absolute y-coordinate of the label. This value must be used to specify the
+            position of the label for the label model types "center_slider", "side_slider" and "free".
+            <table>
+             <tr>
+               <td><img src="label_model_center_slider_sm.jpg"/></td>
+               <td><img src="label_model_side_slider_sm.jpg"/></td>
+             </tr>
+            <tr>
+              <td align="center">Model CENTER_SLIDER</td>
+              <td align="center">Model SIDE_SLIDER</td>
+            </tr>
+            <tr>
+              <td><img src="label_model_free_sm.jpg"/></td><td></td>
+            </tr>
+            <tr>
+              <td align="center">Model FREE</td><td></td>
+            </tr>
+           </table>
+        </td>
+        <td>X</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.graph.edge.LabelGraphics.fontSize</td><td>attribute [Integer]</td><td>The size of the label font</td><td>X</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.graph.edge.LabelGraphics.fontStyle</td><td>attribute [String]</td><td>The style of the label font, either "plain", "italic" or "bold".</td><td>X</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.graph.edge.LabelGraphics.fontName</td><td>attribute [String]</td><td>The logical name  of the label font, either "Dialog", "DialogInput", "Monospaced", "Serif", "SansSerif", or
+"Symbol".</td><td>X</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.graph.edge.LabelGraphics.rotationAngle</td><td>attribute [Integter]</td><td>The rotation angle applied to this label.</td><td>X</td><td>X</td>
+    </tr>
+
+    <tr>
+        <td>.graph.edge.edgeAnchor.xSource</td><td>attribute [Double]</td><td>the position of the source port x coordinate relative to half its width measured from the center of the node</td><td>X</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.graph.edge.edgeAnchor.ySource</td><td>attribute [Double]</td><td>the position of the source port y coordinate relative to half its height measured from the center of the node</td><td>X</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.graph.edge.edgeAnchor.xTarget</td><td>attribute [Double]</td><td>the position of the target port x coordinate relative to half its width measured from the center of the node</td><td>X</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.graph.edge.edgeAnchor.yTarget</td><td>attribute [Double]</td><td>the position of the target port x coordinate relative to half its height measured from the center of the node</td><td>X</td><td>X</td>
+    </tr>
+    <tr><td colspan="5"><h2>Hierarchy Extension</h2></td></tr>
+    <tr><td colspan="5"><h3>.graph level</h3></td></tr>
+    <tr>
+        <td>item</td><td>type</td><td>description</td><td>parsed</td><td>written</td>
+    </tr>
+    <tr>
+        <td>.graph.hierarchic</td><td>attribute [Integer / Boolean]</td><td>Predicate, whether the graph may contain subfolders and/or group nodes</td><td>-</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.graph.interedge</td><td>section (multiple)</td><td>An interedge definition</td><td>X</td><td>X</td>
+    </tr>
+    <tr><td colspan="5"><h3>.graph.node level</h3></td></tr>
+    <tr>
+        <td>item</td><td>type</td><td>description</td><td>parsed</td><td>written</td>
+    </tr>
+    <tr>
+        <td>.graph.node.graphUrl</td><td>attribute [String]</td><td>Definition of an inner graph, referenced by an URL</td><td>X</td><td>-</td>
+    </tr>
+    <tr>
+        <td>.graph.node.graph</td><td>section (single)</td><td>Inline definition of an inner graph</td><td>X</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.graph.node.isGroup</td><td>attribute [Integer / Boolean]</td><td>Whether or not the node is a group node that can be referenced by other node using the <code>gid</code> attribute</td><td>X</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.graph.node.gid</td><td>attribute [Integer]</td><td>The id of the group node this node belongs to</td><td>X</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.graph.node.graph</td><td>section (single)</td><td>Inline definition of an inner graph</td><td>X</td><td>X</td>
+    </tr>
+
+    <tr><td colspan="5"><h3>.graph.edge level</h3></td></tr>
+    <tr>
+        <td>item</td><td>type</td><td>description</td><td>parsed</td><td>written</td>
+    </tr>
+    <tr>
+        <td>.graph.edge.id</td><td>attribute [Integer]</td><td>A (scope) unique edge id</td><td>X</td><td>X</td>
+    </tr>
+    <tr><td colspan="5"><h3>.graph.interedge level</h3></td></tr>
+    <tr>
+        <td>item</td><td>type</td><td>description</td><td>parsed</td><td>written</td>
+    </tr>
+    <tr>
+        <td>.graph.interedge.sourcePath</td><td>attribute [String]</td><td>The relative path of node ids (.graph.node.id), separated by ':' to the real source node</td><td>X</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.graph.interedge.targetPath</td><td>attribute [String]</td><td>The relative path of node ids (.graph.node.id), separated by ':' to the real target node</td><td>X</td><td>X</td>
+    </tr>
+    <tr>
+        <td>.graph.interedge.representative</td><td>attribute [Integer]</td><td>The id of the representing edge in this graph (.graph.edge.id)</td><td>X</td><td>X</td>
+    </tr>
+  </table>
+
+<dl>
+<dt>attribute [String]</dt>
+<dd>This is a key value pair, where the value is a quoted String</dd>
+<dt>attribute [Integer]</dt>
+<dd>This is a key value pair, where the value is an unquoted signed Integer</dd>
+<dt>attribute [Double]</dt>
+<dd>This is a key value pair, where the value is an unquoted signed real number in double precision</dd>
+<dt>attribute [Integer / Boolean]</dt>
+<dd>This is a key value pair, where the value is an unquoted signed Integer, the parser treats non-zero values as <code>true</code> if interpreted as a boolean value</dd>
+<dt>attribute [String / Color]</dt>
+<dd>This is a key value pair, where the value is an a quoted String, in the form #RRGGBB or #RRGGBBAA, where each of the pairs is a hexadecimal value in the range of 00 to FF</dd>
+</dl>
+  </BODY>
+</HTML>

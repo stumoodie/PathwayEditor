@@ -1,0 +1,201 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+      <title>Lesson:&nbsp;EditMode Support for Tooltips</title>
+      <link rel="stylesheet" href="ystyle.css" type="text/css">
+      <meta name="generator" content="DocBook XSL Stylesheets V1.65.1">
+      <link rel="home" href="index.html" title="Trail:&nbsp;Adding Tooltips to Graph Elements">
+      <link rel="up" href="index.html" title="Trail:&nbsp;Adding Tooltips to Graph Elements">
+      <link rel="previous" href="index.html" title="Trail:&nbsp;Adding Tooltips to Graph Elements">
+      <link rel="next" href="tooltips_general.html" title="Lesson:&nbsp;General Tooltip Support">
+      <link type="text/css" rel="stylesheet" href="../jssh/SyntaxHighlighter.css"><script type="text/javascript" src="../jssh/shCore.js"></script><script type="text/javascript" src="../jssh/shBrushJava.js"></script><script type="text/javascript">
+  function sh() {
+
+    dp.SyntaxHighlighter.HighlightAll('programlisting', false, false, false, null, false);
+  }
+  </script></head>
+   <body onload="sh()" bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+      <div class="navheader">
+         <table width="100%" summary="Navigation header">
+            <tr>
+               <th colspan="3" align="center">Lesson:&nbsp;EditMode Support for Tooltips</th>
+            </tr>
+            <tr>
+               <td width="20%" align="left"><a accesskey="p" title="Trail:&nbsp;Adding Tooltips to Graph Elements" href="index.html">Prev</a>&nbsp;
+               </td>
+               <th width="60%" align="center">&nbsp;</th>
+               <td width="20%" align="right">&nbsp;<a accesskey="n" title="Lesson:&nbsp;General Tooltip Support" href="tooltips_general.html">Next</a></td>
+            </tr>
+         </table>
+         <div class="navline"></div>
+      </div>
+      <div class="sect1" lang="en">
+         <div class="titlepage">
+            <div>
+               <div>
+                  <h2 class="title" style="clear: both"><a name="tooltips_EditMode"></a>Lesson:&nbsp;EditMode Support for Tooltips
+                  </h2>
+               </div>
+            </div>
+            <div></div>
+         </div>
+         <p>
+            Class <a href="http://www.yworks.com/products/yfiles/doc/api/y/view/EditMode.html" title="Link to API documentation" target="_top">EditMode<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a> is a ViewMode implementation 
+            that provides support for presenting tooltips for both nodes and edges. 
+            You can enable tooltip presentation using <tt class="code">showNodeTips(true)</tt> for nodes 
+            and <tt class="code">showEdgeTips(true)</tt> for edges.
+            
+         </p>
+         <p>
+            By default, the text that is displayed when tooltips are enabled is that of the 
+            first node label, respectively the first edge label.
+            
+         </p>
+         <div class="figure"><a name="fig_SimpleGraphEditor_tooltip"></a><p class="title"><b>Figure&nbsp;1.1.&nbsp;Default tooltip presentation by class EditMode</b></p>
+            <div class="informaltable">
+               <center>
+                  <table border="0">
+                     <colgroup>
+                        <col width="100%">
+                     </colgroup>
+                     <tbody>
+                        <tr>
+                           <td>
+                              <div class="mediaobject" align="center"><img src="figures/SimpleGraphEditor2-tooltip.png" align="middle" alt="Default tooltip presentation by class EditMode"></div>
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </center>
+            </div>
+         </div>
+         <div class="highlights">
+            <h4><a name="d0e59"></a>Related Resources
+            </h4>
+            <p>
+               You will find related information in the yFiles for Java Developer's Guide: 
+               
+            </p>
+            <div class="itemizedlist">
+               <ul type="disc">
+                  <li><a href="http://www.yworks.com/products/yfiles/doc/developers-guide/mvc_controller.html#cls_ViewMode" title="Link to Developer's Guide" target="_top">View modes in yFiles for Java</a></li>
+               </ul>
+            </div>
+            <p>
+               
+               In the yFiles for Java API: 
+               
+            </p>
+            <div class="itemizedlist">
+               <ul type="disc">
+                  <li><a href="http://www.yworks.com/products/yfiles/doc/api/y/view/EditMode.html#showNodeTips(boolean)" title="Link to API documentation" target="_top">EditMode.showNodeTips<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a></li>
+                  <li><a href="http://www.yworks.com/products/yfiles/doc/api/y/view/EditMode.html#showEdgeTips(boolean)" title="Link to API documentation" target="_top">EditMode.showEdgeTips<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a></li>
+               </ul>
+            </div>
+            <p>
+               
+               
+            </p>
+         </div>
+         <div class="sect2" lang="en">
+            <div class="titlepage">
+               <div>
+                  <div>
+                     <h3 class="title"><a name="custom"></a>Customizing Tooltips for Graph Elements
+                     </h3>
+                  </div>
+               </div>
+               <div></div>
+            </div>
+            <p>
+               You can easily customize the tooltip text that is displayed for nodes and edges 
+               by subclassing EditMode and overriding the <tt class="code">getNodeTip</tt> and <tt class="code">getEdgeTip</tt> 
+               method, respectively. 
+               <a href="tooltips_EditMode.html#fig_SimpleGraphEditor_custom_tooltip" title="Figure&nbsp;1.2.&nbsp;Custom tooltip text">Figure&nbsp;1.2, &#8220;Custom tooltip text&#8221;</a> shows a customized node tooltip.
+               
+            </p>
+            <div class="figure"><a name="fig_SimpleGraphEditor_custom_tooltip"></a><p class="title"><b>Figure&nbsp;1.2.&nbsp;Custom tooltip text</b></p>
+               <div class="informaltable">
+                  <center>
+                     <table border="0">
+                        <colgroup>
+                           <col width="100%">
+                        </colgroup>
+                        <tbody>
+                           <tr>
+                              <td>
+                                 <div class="mediaobject" align="center"><img src="figures/SimpleGraphEditor2-tooltip-custom.png" align="middle" alt="Custom tooltip text"></div>
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </center>
+               </div>
+            </div>
+            <p>
+               You can incorporate the code to create this presentation into the constructor of 
+               the simple graph editor application from the <a href="../createEditor/index.html" target="_top">Creating a Simple Graph Editor</a> 
+               trail, for example. 
+               The <a href="../../src/tutorial/editor/SimpleGraphEditor2Tooltips.java" title="Link to source code" target="_top">SimpleGraphEditor2Tooltips</a> 
+               application already uses this code.
+               
+            </p>
+            <div class="example"><a name="ex_EditMode_tooltip_customization"></a><p class="title"><b>Example&nbsp;1.1.&nbsp;Customizing the tooltip text for nodes using EditMode</b></p><pre class="programlisting java">
+editMode = new EditMode() {
+  protected String getNodeTip(Node node) {
+    Graph2D graph = (Graph2D)node.getGraph();
+    return
+      "&lt;html&gt;width x height: &lt;b&gt;" +
+      graph.getWidth(node) + "&lt;/b&gt; x &lt;b&gt;" + graph.getHeight(node) +
+      "&lt;/b&gt;&lt;/html&gt;";
+  }
+};
+</pre></div>
+            <div class="highlights">
+               <h4><a name="d0e123"></a>Related Resources
+               </h4>
+               <p>
+                  You will find related information in the yFiles for Java API: 
+                  
+               </p>
+               <div class="itemizedlist">
+                  <ul type="disc">
+                     <li><a href="http://www.yworks.com/products/yfiles/doc/api/y/view/EditMode.html#getNodeTips(y.base.Node)" title="Link to API documentation" target="_top">EditMode.getNodeTips<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a></li>
+                     <li><a href="http://www.yworks.com/products/yfiles/doc/api/y/view/EditMode.html#getEdgeTips(y.base.Edge)" title="Link to API documentation" target="_top">EditMode.getEdgeTips<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a></li>
+                  </ul>
+               </div>
+               <p>
+                  
+                  
+               </p>
+            </div>
+         </div>
+      </div>
+      <table class="copyright" border="0" cellpadding="0" cellspacing="0" width="100%">
+         <tbody>
+            <tr>
+               <td align="right">
+                  <p class="copyright">Copyright &copy;2008-2009, yWorks GmbH. All rights reserved.</p>
+               </td>
+            </tr>
+         </tbody>
+      </table>
+      <div class="navfooter">
+         <div class="navline2"></div>
+         <table width="100%" summary="Navigation footer">
+            <tr>
+               <td width="40%" align="left"><a accesskey="p" title="Trail:&nbsp;Adding Tooltips to Graph Elements" href="index.html">Prev</a>&nbsp;
+               </td>
+               <td width="20%" align="center"><a accesskey="u" title="Trail:&nbsp;Adding Tooltips to Graph Elements" href="index.html">Up</a></td>
+               <td width="40%" align="right">&nbsp;<a accesskey="n" title="Lesson:&nbsp;General Tooltip Support" href="tooltips_general.html">Next</a></td>
+            </tr>
+            <tr>
+               <td width="40%" align="left" valign="top">Trail:&nbsp;Adding Tooltips to Graph Elements&nbsp;</td>
+               <td width="20%" align="center"><a accesskey="h" title="yFiles for Java Tutorial" href="../index.html">Home</a></td>
+               <td width="40%" align="right" valign="top">&nbsp;Lesson:&nbsp;General Tooltip Support</td>
+            </tr>
+         </table>
+      </div>
+   </body>
+</html>

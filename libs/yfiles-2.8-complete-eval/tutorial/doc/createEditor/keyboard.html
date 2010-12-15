@@ -1,0 +1,170 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+      <title>Lesson:&nbsp;Adding Keyboard Support to the Editor</title>
+      <link rel="stylesheet" href="ystyle.css" type="text/css">
+      <meta name="generator" content="DocBook XSL Stylesheets V1.65.1">
+      <link rel="home" href="index.html" title="Trail:&nbsp;Creating a Simple Graph Editor">
+      <link rel="up" href="index.html" title="Trail:&nbsp;Creating a Simple Graph Editor">
+      <link rel="previous" href="mouse.html" title="Lesson:&nbsp;Enhancing Simple Graph Viewer to Simple Graph Editor">
+      <link rel="next" href="grouping.html" title="Lesson:&nbsp;Adding Grouping Support to the Editor">
+      <link type="text/css" rel="stylesheet" href="../jssh/SyntaxHighlighter.css"><script type="text/javascript" src="../jssh/shCore.js"></script><script type="text/javascript" src="../jssh/shBrushJava.js"></script><script type="text/javascript">
+  function sh() {
+
+    dp.SyntaxHighlighter.HighlightAll('programlisting', false, false, false, null, false);
+  }
+  </script></head>
+   <body onload="sh()" bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+      <div class="navheader">
+         <table width="100%" summary="Navigation header">
+            <tr>
+               <th colspan="3" align="center">Lesson:&nbsp;Adding Keyboard Support to the Editor</th>
+            </tr>
+            <tr>
+               <td width="20%" align="left"><a accesskey="p" title="Lesson:&nbsp;Enhancing Simple Graph Viewer to Simple Graph Editor" href="mouse.html">Prev</a>&nbsp;
+               </td>
+               <th width="60%" align="center">&nbsp;</th>
+               <td width="20%" align="right">&nbsp;<a accesskey="n" title="Lesson:&nbsp;Adding Grouping Support to the Editor" href="grouping.html">Next</a></td>
+            </tr>
+         </table>
+         <div class="navline"></div>
+      </div>
+      <div class="sect1" lang="en">
+         <div class="titlepage">
+            <div>
+               <div>
+                  <h2 class="title" style="clear: both"><a name="keyboard"></a>Lesson:&nbsp;Adding Keyboard Support to the Editor
+                  </h2>
+               </div>
+            </div>
+            <div></div>
+         </div>
+         <p>
+            In order to enable keyboard support for the view of our editor type application, 
+            we need the <a href="http://www.yworks.com/products/yfiles/doc/api/y/view/Graph2DViewActions.html" title="Link to API documentation" target="_top">Graph2DViewActions<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a> class. 
+            Let's add the code shown in <a href="keyboard.html#ex_Graph2DViewActions" title="Example&nbsp;1.3.&nbsp;Adding Graph2DViewActions to the view">Example&nbsp;1.3, &#8220;Adding Graph2DViewActions to the view&#8221;</a> to SimpleGraphEditor1, 
+            creating <a href="../../src/tutorial/editor/SimpleGraphEditor2.java" title="Link to source code" target="_top">SimpleGraphEditor2</a>.
+            
+         </p>
+         <div class="example"><a name="ex_Graph2DViewActions"></a><p class="title"><b>Example&nbsp;1.3.&nbsp;Adding Graph2DViewActions to the view</b></p><pre class="programlisting java">
+// Creating and installing keyboard actions for the view.
+new Graph2DViewActions(view).install();
+</pre></div>
+         <p>
+            <a href="keyboard.html#ex_SimpleGraphEditor2_createGraph2DView" title="Example&nbsp;1.4.&nbsp;createGraph2DView method of SimpleGraphEditor2">Example&nbsp;1.4, &#8220;createGraph2DView method of SimpleGraphEditor2&#8221;</a> shows the new <tt class="code">createGraph2DView</tt> 
+            method with the above code incorporated.
+            
+         </p>
+         <div class="example"><a name="ex_SimpleGraphEditor2_createGraph2DView"></a><p class="title"><b>Example&nbsp;1.4.&nbsp;createGraph2DView method of SimpleGraphEditor2</b></p><pre class="programlisting java">
+private Graph2DView createGraph2DView() {
+  Graph2DView view = new Graph2DView();
+  
+  // Add a mouse wheel listener to zoom in and out of the view.
+  view.getCanvasComponent().addMouseWheelListener(
+    new Graph2DViewMouseWheelZoomListener());
+  
+  // Add the central view mode for an editor type application.
+  editMode = new EditMode();
+  view.addViewMode(editMode);
+  
+  // Creating and installing keyboard actions for the view.
+  new Graph2DViewActions(view).install();
+  
+  return view;
+}
+</pre></div>
+         <p>
+            After we have "installed" the Graph2DViewActions, our application now has a working 
+            DELETE key, which we can use to delete selected graph elements. 
+            Also, using the F2 function key, we can edit the label of selected graph elements, 
+            and if we want to, by pressing CONTROL-A we can select all nodes and bends, or all 
+            edges when there is an edge selected at first.
+            
+         </p>
+         <p>
+            Further keyboard support that is enabled covers graph element navigation: 
+            navigating nodes is possible using the cursor keys, navigating edges needs a selected 
+            edge at first, the cursor keys, and additionally the ALT modifier key.
+            
+         </p>
+         <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+            <h3 class="title">Note</h3>
+            <p>
+               Actually, Graph2DViewActions not only adds keyboard support. 
+               In fact, it also provides a number of predefined Action implementations to handle 
+               hierarchy-related user interaction (of course, these implementations also have keyboard 
+               short-cuts). 
+               We will make use of some of them in the <a href="grouping.html" title="Lesson:&nbsp;Adding Grouping Support to the Editor">next lesson</a>...
+               
+            </p>
+         </div>
+         <div class="highlights">
+            <h4><a name="d0e191"></a>Related Resources
+            </h4>
+            <p>
+               You will find related information in the yFiles for Java Developer's Guide: 
+               
+            </p>
+            <div class="itemizedlist">
+               <ul type="disc">
+                  <li><a href="http://www.yworks.com/products/yfiles/doc/developers-guide/mvc_controller.html#interaction_keyboard" title="Link to Developer's Guide" target="_top">Keyboard support</a></li>
+               </ul>
+            </div>
+            <p>
+               
+               In the yFiles for Java API: 
+               
+            </p>
+            <div class="itemizedlist">
+               <ul type="disc">
+                  <li><a href="http://www.yworks.com/products/yfiles/doc/api/y/view/Graph2DViewActions.html#Graph2DViewActions(y.view.Graph2DView)" title="Link to API documentation" target="_top">Graph2DViewActions(Graph2DView) constructor<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a></li>
+               </ul>
+            </div>
+            <p>
+               
+               In the yFiles for Java source code demos: 
+               
+            </p>
+            <div class="itemizedlist">
+               <ul type="disc">
+                  <li><a href="http://www.yworks.com/products/yfiles/doc/demo/view/BuildGraphDemo.java" title="Link to demo code" target="_top">BuildGraphDemo.java</a></li>
+                  <li><a href="http://www.yworks.com/products/yfiles/doc/demo/view/ViewActionDemo.java" title="Link to demo code" target="_top">ViewActionDemo.java</a> is a full-featured 
+                     editor type application with support for loading and saving graphs, as well as printing
+                     
+                  </li>
+               </ul>
+            </div>
+            <p>
+               
+               
+            </p>
+         </div>
+      </div>
+      <table class="copyright" border="0" cellpadding="0" cellspacing="0" width="100%">
+         <tbody>
+            <tr>
+               <td align="right">
+                  <p class="copyright">Copyright &copy;2008-2009, yWorks GmbH. All rights reserved.</p>
+               </td>
+            </tr>
+         </tbody>
+      </table>
+      <div class="navfooter">
+         <div class="navline2"></div>
+         <table width="100%" summary="Navigation footer">
+            <tr>
+               <td width="40%" align="left"><a accesskey="p" title="Lesson:&nbsp;Enhancing Simple Graph Viewer to Simple Graph Editor" href="mouse.html">Prev</a>&nbsp;
+               </td>
+               <td width="20%" align="center"><a accesskey="u" title="Trail:&nbsp;Creating a Simple Graph Editor" href="index.html">Up</a></td>
+               <td width="40%" align="right">&nbsp;<a accesskey="n" title="Lesson:&nbsp;Adding Grouping Support to the Editor" href="grouping.html">Next</a></td>
+            </tr>
+            <tr>
+               <td width="40%" align="left" valign="top">Lesson:&nbsp;Enhancing Simple Graph Viewer to Simple Graph Editor&nbsp;</td>
+               <td width="20%" align="center"><a accesskey="h" title="yFiles for Java Tutorial" href="../index.html">Home</a></td>
+               <td width="40%" align="right" valign="top">&nbsp;Lesson:&nbsp;Adding Grouping Support to the Editor</td>
+            </tr>
+         </table>
+      </div>
+   </body>
+</html>

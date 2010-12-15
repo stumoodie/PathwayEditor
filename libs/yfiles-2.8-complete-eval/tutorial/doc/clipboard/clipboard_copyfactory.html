@@ -1,0 +1,145 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+      <title>Lesson:&nbsp;Customizing the Copying of Graph Elements</title>
+      <link rel="stylesheet" href="ystyle.css" type="text/css">
+      <meta name="generator" content="DocBook XSL Stylesheets V1.65.1">
+      <link rel="home" href="index.html" title="Trail:&nbsp;Clipboard Support">
+      <link rel="up" href="index.html" title="Trail:&nbsp;Clipboard Support">
+      <link rel="previous" href="clipboard_general.html" title="Lesson:&nbsp;Enabling Clipboard Support in an Editor Application">
+      <link type="text/css" rel="stylesheet" href="../jssh/SyntaxHighlighter.css"><script type="text/javascript" src="../jssh/shCore.js"></script><script type="text/javascript" src="../jssh/shBrushJava.js"></script><script type="text/javascript">
+  function sh() {
+
+    dp.SyntaxHighlighter.HighlightAll('programlisting', false, false, false, null, false);
+  }
+  </script></head>
+   <body onload="sh()" bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+      <div class="navheader">
+         <table width="100%" summary="Navigation header">
+            <tr>
+               <th colspan="3" align="center">Lesson:&nbsp;Customizing the Copying of Graph Elements</th>
+            </tr>
+            <tr>
+               <td width="20%" align="left"><a accesskey="p" title="Lesson:&nbsp;Enabling Clipboard Support in an Editor Application" href="clipboard_general.html">Prev</a>&nbsp;
+               </td>
+               <th width="60%" align="center">&nbsp;</th>
+               <td width="20%" align="right">&nbsp;</td>
+            </tr>
+         </table>
+         <div class="navline"></div>
+      </div>
+      <div class="sect1" lang="en">
+         <div class="titlepage">
+            <div>
+               <div>
+                  <h2 class="title" style="clear: both"><a name="clipboard_copyfactory"></a>Lesson:&nbsp;Customizing the Copying of Graph Elements
+                  </h2>
+               </div>
+            </div>
+            <div></div>
+         </div>
+         <p>
+            During Cut, Copy, or Paste actions, Graph2DClipboard copies graph elements to/from 
+            the clipboard (or, more precisely, to/from the clipboard graph). 
+            By default, it uses the <a href="http://www.yworks.com/products/yfiles/doc/api/y/util/GraphCopier.CopyFactory.html" title="Link to API documentation" target="_top">GraphCopier.CopyFactory<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a> 
+            implementation that is registered with the graph to do so. 
+            If we need special support when graph elements are copied, most notably, because 
+            we need additional data that is associated with graph elements to be copied, too, 
+            we simply provide our own CopyFactory implementation.
+            
+         </p>
+         <p>
+            The graph class that is used in the <a href="../../src/tutorial/editor/Clipboard2.java" title="Link to source code" target="_top">Clipboard2</a> 
+            application, class CustomGraph2D, is our custom Graph2D subclass from the <a href="../additionalData/index.html" target="_top">Handling Additional Data for Graph Elements</a> 
+            trail. 
+            It holds additional data for the nodes of a graph. 
+            In order for these data to be copied properly, we create the CopyFactory implementation 
+            shown in <a href="clipboard_copyfactory.html#ex_CustomGraph2DCopyFactory" title="Example&nbsp;1.3.&nbsp;Custom CopyFactory implementation for class CustomGraph2D">Example&nbsp;1.3, &#8220;Custom CopyFactory implementation for class CustomGraph2D&#8221;</a>.
+            
+         </p>
+         <div class="example"><a name="ex_CustomGraph2DCopyFactory"></a><p class="title"><b>Example&nbsp;1.3.&nbsp;Custom CopyFactory implementation for class CustomGraph2D</b></p><pre class="programlisting java">
+public class CustomGraph2DCopyFactory extends 
+             Graph2DCopyFactory.HierarchicGraph2DCopyFactory {
+  /** Creates a new CustomGraph2D. */
+  public Graph createGraph() {
+    return new CustomGraph2D();
+  }
+
+  /** Copies a node of a CustomGraph2D together with its additional data. */
+  public Node copyNode(Graph targetGraph, Node originalNode) {
+    Node newNode = super.copyNode(targetGraph, originalNode);
+    if (originalNode.getGraph() instanceof CustomGraph2D &amp;&amp; 
+        targetGraph instanceof CustomGraph2D) {
+      CustomGraph2D sourceGraph = (CustomGraph2D)originalNode.getGraph();
+      CustomGraph2D g = (CustomGraph2D)targetGraph;
+      g.setCustomText(newNode, sourceGraph.getCustomText(originalNode));
+    }
+    return newNode;
+  }
+}
+</pre></div>
+         <p>
+            As the base for our CustomGraph2DCopyFactory class we use the <a href="http://www.yworks.com/products/yfiles/doc/api/y/view/Graph2DCopyFactory.HierarchicGraph2DCopyFactory.html" title="Link to API documentation" target="_top">Graph2DCopyFactory.HierarchicGraph2DCopyFactory<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a> 
+            class which is used for copying graph elements in conjunction with the standard 
+            Graph2D. 
+            We only need to appropriately override the <tt class="code">createGraph</tt> and the <tt class="code">copyNode</tt> 
+            methods defined in the CopyFactory interface. 
+            
+            Note that the former method will be called to create the proper graph type in the 
+            clipboard necessary to hold graph elements during the clipboard actions.
+            
+         </p>
+         <p>
+            What we need to do now, is that we make the CustomGraph2D class return our CopyFactory 
+            implementation whenever requested. 
+            To this end, we override the protected method in CustomGraph2D as shown in <a href="clipboard_copyfactory.html#ex_CopyFactory_creator" title="Example&nbsp;1.4.&nbsp;Creating the CopyFactory in the Graph2D subclass">Example&nbsp;1.4, &#8220;Creating the CopyFactory in the Graph2D subclass&#8221;</a>.
+            
+         </p>
+         <div class="example"><a name="ex_CopyFactory_creator"></a><p class="title"><b>Example&nbsp;1.4.&nbsp;Creating the CopyFactory in the Graph2D subclass</b></p><pre class="programlisting java">
+/** Creates a new CustomGraph2DCopyFactory. */
+protected GraphCopier.CopyFactory createGraphCopyFactory() {
+  return new CustomGraph2DCopyFactory();
+}
+</pre></div>
+         <p>
+            With our CustomGraph2DCopyFactory in place, Graph2DClipboard will find and use it 
+            and any additional data will be copied together with its node.
+            
+         </p>
+         <p>
+            As a side note, if we only needed special graph element copying logic with clipboard 
+            actions, then registering our CopyFactory implementation directly with the Graph2DClipboard 
+            using the 
+            <a href="http://www.yworks.com/products/yfiles/doc/api/y/view/Graph2DClipboard.html#setCopyFactory(y.util.GraphCopier.CopyFactory)" title="Link to API documentation" target="_top">setCopyFactory<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a> 
+            method would have also sufficed.
+            
+         </p>
+      </div>
+      <table class="copyright" border="0" cellpadding="0" cellspacing="0" width="100%">
+         <tbody>
+            <tr>
+               <td align="right">
+                  <p class="copyright">Copyright &copy;2008-2009, yWorks GmbH. All rights reserved.</p>
+               </td>
+            </tr>
+         </tbody>
+      </table>
+      <div class="navfooter">
+         <div class="navline2"></div>
+         <table width="100%" summary="Navigation footer">
+            <tr>
+               <td width="40%" align="left"><a accesskey="p" title="Lesson:&nbsp;Enabling Clipboard Support in an Editor Application" href="clipboard_general.html">Prev</a>&nbsp;
+               </td>
+               <td width="20%" align="center"><a accesskey="u" title="Trail:&nbsp;Clipboard Support" href="index.html">Up</a></td>
+               <td width="40%" align="right">&nbsp;</td>
+            </tr>
+            <tr>
+               <td width="40%" align="left" valign="top">Lesson:&nbsp;Enabling Clipboard Support in an Editor Application&nbsp;</td>
+               <td width="20%" align="center"><a accesskey="h" title="yFiles for Java Tutorial" href="../index.html">Home</a></td>
+               <td width="40%" align="right" valign="top">&nbsp;</td>
+            </tr>
+         </table>
+      </div>
+   </body>
+</html>

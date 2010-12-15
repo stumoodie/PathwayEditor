@@ -1,0 +1,84 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="helpPane.css">
+</head>
+<body>
+<h2>Description</h2>
+
+<p>
+  This demo shows how to apply <code>PartialLayouter</code> to orthogonal layouts. This layout algorithm changes the
+  coordinates of a given set of graph elements (called <i>partial</i> elements) and leaves the location and size of all
+  other elements (called <i>fixed</i> elements) unchanged. The algorithm aims to place the partial elements such that
+  the resulting drawing (including the fixed elements) has a good quality with respect to common graph drawing
+  aesthetics.
+</p>
+
+<p>
+  Partial node elements can be assigned to so called subgraph components. During the layout process each subgraph
+  induced by the nodes of a component is first laid out using the specified subgraph layouter. Then, the different
+  components are placed one-by-one onto the drawing area such that the number of overlaps among graph elements is small.
+  The user can specify different objectives (placement strategies) for finding 'good' positions for subgraph components.
+</p>
+
+<p>
+  The demo allows to specify fixed and partial elements. Fixed elements are drawn grey and partial elements orange. To
+  change the fixed/partial state of elements, select the corresponding elements and click on the "Lock Selected
+  Elements" or "Unlock Selected Elements" button. The current state of selected elements can be toggled with a
+  mouse-double-click. To start the partial layouter click on the "Apply Partial Layout" button.
+
+<h3>Available Properties</h3>
+
+<dl>
+  <dt>Subgraph Layout</dt>
+  <dd>
+    Specifies the layout algorithm that is applied to the subgraph components. "Unchanged" specifies
+    that the layout of the components is not changed.
+  </dd>
+
+  <dt>Grid Size</dt>
+  <dd>
+    Specifies the minimum distance between two adjacent nodes as well as the grid size.
+  </dd>
+
+  <dt>Component Assignment</dt>
+  <dd>
+    Specifies the subgraph components.<br>
+    "Single Nodes" specifies that each partial node is assigned to a separate component.<br>
+    "Connected Graphs" specifies that all partial nodes of a connected component are assigned to the
+    same subgraph component.<br>
+    "Same Component" specifies that all partial nodes are assigned to the same component.
+  </dd>
+
+  <dt>Snapping</dt>
+  <dd>
+    If enabled, the algorithm tries to align nodes with each other.
+  </dd>
+
+  <dt>Use Sketch</dt>
+  <dd>
+    Specifies that each component should be placed close to its original position.
+  </dd>
+
+  <dt>Resize Fixed Groups</dt>
+  <dd>
+    Specifies that fixed groups may be resized.
+  </dd>
+</dl>
+
+<h3>Additional Features</h3>
+
+<dl>
+  <dt>Duplicate Action</dt>
+  <dd>
+    Select some nodes and press <code>CTRL + D</code>. This duplicates the selected nodes and integrates
+    the new nodes into the graph. The options defined above will be applied to the "new" nodes.
+  </dd>
+
+  <dt>Grouping</dt>
+  <dd>
+    Select some nodes and press <code>CTRL + ALT + G</code>. This inserts a new group node that contains the
+    selected elements.
+  </dd>
+</dl>
+</body>
+</html>

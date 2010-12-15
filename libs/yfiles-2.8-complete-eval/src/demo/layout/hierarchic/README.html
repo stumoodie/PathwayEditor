@@ -1,0 +1,247 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:y="http://www.yworks.com/demo">
+<head>
+<title>yFiles Tutorial Demos for Hierarchical Layout</title>
+<style type="text/css">
+<!--
+              body {
+  font-family:Verdana, sans-serif; 
+  margin-left:12px;
+  margin-right:12px;
+  margin-top:12px;
+  margin-bottom:12px;
+}
+
+h1 { 
+  padding-left:8px;
+  padding-top:8px;
+  padding-bottom:8px;
+  background-color:#d0d0d0;
+  color:#4079ea;
+/*  color:#4d88ff; */
+  font-size:18px;
+  margin-bottom:5px;
+}
+
+p {   
+  padding-bottom:0px;
+  padding-top:0px;
+  margin-top:3px;
+  margin-bottom:0px;
+/*  margin-left:10px; */
+  margin-left:8px;
+  font-size:12px;
+  color:#000000;
+}
+
+h2 { 
+  font-size:14px; 
+  color:#4079ea; 
+  margin-top:10px; 
+  margin-bottom:0px; 
+}
+
+h3 { 
+  font-size:13px; 
+/*  margin-left:10px; */
+  margin-left:8px;
+  margin-top:8px; 
+  margin-bottom:2px; 
+}
+
+table {
+/*  margin-left:10px; */
+  margin-left: 8px;
+  margin-top: 8px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border: 1px solid white;
+  vertical-align: baseline;
+  border-collapse: collapse;
+}
+
+td { 
+  font-size:12px;
+  background-color: #E3EEFE;
+  vertical-align:top;
+  border: 1px solid white;
+  vertical-align: baseline;
+}
+
+th {
+  font-size:12px; 
+  background-color:#a4b9ea;
+  text-align: left;
+}
+
+a {
+  color: #AA5522; font-weight:bold;
+}
+a:link {
+  text-decoration:none;
+}
+a:visited {
+  text-decoration:none; color:#772200;
+}
+a:active, 
+a:focus, 
+a:hover {
+  text-decoration: underline;
+}
+
+div.li1 {
+  font-size:12px;
+  margin-top:8px; 
+  margin-bottom:0px; 
+  margin-left:10px; 
+}
+div.li2 { 
+  margin-left:20px;
+  margin-top:2px; 
+  margin-bottom:2px; 
+  font-weight:bold;
+  font-size:12px; 
+}
+
+dl { 
+  font-size:12px;
+  margin-top:2px;
+  margin-bottom:2px;
+  margin-left:15px;
+}
+dt { 
+  font-weight:bold;
+  margin-top:4px;
+/*  color:#000000; */
+  color:#333366;
+}
+dd { 
+  margin-left:15px;
+}
+
+li { 
+  /* does not work in pre-1.5 Java JEditorPane :-( */
+/*  list-style-type:none; */
+  font-size:12px;
+}
+
+caption {
+  font-size:12px;
+}
+
+.copyright { 
+  font-size: 10px;
+  font-style:italic;
+  text-align:right;
+  margin-top:20px;
+}
+
+code, tt { 
+  font-family:monospace;
+  font-size:12px;
+  color:#0000C0;
+}
+
+            -->
+</style>
+</head>
+<body>
+    <h1>yFiles Tutorial Demos for Hierarchical Layout</h1>
+    <p>
+    This package contains tutorial source code demos that showcase
+    various aspects of the yFiles hierarchical layout facilities.
+    </p>
+  <table class="toplevel">
+<tr>
+<th>Class</th>
+<th>Description</th>
+</tr><tr xmlns="">
+<td><a href="IncrementalHierarchicLayouterDemo.java">demo.layout.hierarchic.IncrementalHierarchicLayouterDemo</a></td><td>
+      This demo shows how to use IncrementalHierarchicLayouter together
+      with sophisticated customized view modes.
+    </td>
+</tr>
+<tr xmlns="">
+<td><a href="SwimlaneGroupDemo.java">demo.layout.hierarchic.SwimlaneGroupDemo</a></td><td>
+      This demo shows the effect of combining
+      <code xmlns="http://www.w3.org/1999/xhtml">IncrementalHierarchicLayouter</code>'s support for grouping and
+      swim lanes.
+    </td>
+</tr>
+<tr xmlns="">
+<td><a href="IncrementalHierarchicGroupDemo.java">demo.layout.hierarchic.IncrementalHierarchicGroupDemo</a></td><td>
+      This demo shows how IncrementalHierarchicLayouter can be used to fully or incrementally
+      layout hierarchically nested graphs. The demo supports automatic relayout after expanding folder nodes,
+      collapsing group nodes. Furthermore it provides toolbar buttons that
+      trigger full layout and incremental relayout. A settings dialog for group layout options is provided as well.
+      In incremental layout mode all selected elements are added incrementally to the existing layout.
+    </td>
+</tr>
+<tr xmlns="">
+<td><a href="LayerConstraintsDemo.java">demo.layout.hierarchic.LayerConstraintsDemo</a></td><td>
+      Demo that shows how to apply layer constraints when calculating hierarchical layouts.
+    </td>
+</tr>
+<tr xmlns="">
+<td><a href="PortCandidateDemo.java">demo.layout.hierarchic.PortCandidateDemo</a></td><td>
+      This demo shows how port candidate sets can be used with the incremental hierarchic layouter
+      to control from what side edges connect to certain node types in the automatic layout process.
+      <br xmlns="http://www.w3.org/1999/xhtml"/>
+      Usage: The template nodes in the list to the left have different port candidate sets. Try changing
+      the graph using the templates and note the effect for a new layout.
+    </td>
+</tr>
+<tr xmlns="">
+<td><a href="SequenceConstraintsDemo.java">demo.layout.hierarchic.SequenceConstraintsDemo</a></td><td>
+      Demonstrates how to apply sequence constraints when calculating hierarchical
+      layouts. For hierarchical layouts, a sequence is the in-layer order of nodes,
+      e.g. with layout direction from top to bottom, a sequence is the left to
+      right order of nodes.
+    </td>
+</tr>
+<tr xmlns="">
+<td><a href="SimpleSwimlaneLayouterDemo.java">demo.layout.hierarchic.SimpleSwimlaneLayouterDemo</a></td><td>
+      Demonstrates the swim lane feature of the IncrementalHierarchicLayouter.
+    </td>
+</tr>
+<tr xmlns="">
+<td><a href="SimpleIncrementalHierarchicLayouterDemo.java">demo.layout.hierarchic.SimpleIncrementalHierarchicLayouterDemo</a></td><td>
+      This simple demo shows how to use the IncrementalHierarchicLayouter
+      to either calculate a new layout or calculate a new layout given the current
+      sketch or incrementally layout selected nodes to an already existing graph whose
+      layout is read from the current sketch.
+    </td>
+</tr>
+<tr xmlns="">
+<td><a href="HierarchicLayouterDemo.java">demo.layout.hierarchic.HierarchicLayouterDemo</a></td><td>
+      Demonstrates various aspects of the HierarchicLayouter.
+    </td>
+</tr>
+<tr xmlns="">
+<td><a href="CriticalPathDemo.java">demo.layout.hierarchic.CriticalPathDemo</a></td><td>
+      Demonstrates IncrementalHierarchicLayouter's critical path feature.
+      The algorithm will try to align the nodes of a critical path such
+      that the interconnecting edges can be routed in a straight, vertical
+      fashion.
+    </td>
+</tr>
+</table>
+<h2>Running the Demos</h2>
+<h3>From Within an IDE</h3>
+<p>
+            Set <tt>&lt;yFilesDir&gt;/src</tt> as your source directory.
+            Then add <tt>&lt;yFilesDir&gt;/lib/y.jar</tt>
+<b>and</b> the source folder
+            <tt>&lt;yFilesDir&gt;/src</tt> to your classpath.
+            Now you should be ready to compile and run all executable demo classes.
+            </p>
+<h3>With Ant</h3>
+<p>
+              First make sure you have the
+              <a href="http://ant.apache.org">build tool Ant</a> installed on your system.
+              Now you can use the demo build script <tt>build.xml</tt>
+              located in <tt>&lt;yFilesDir&gt;/src/demo</tt> to launch each demo by specifying its simple class name as a target.
+              Alternatively, launch the interactive demo driver by specifying <tt>run</tt> as target to
+              conveniently access all demos.
+            </p>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="helpPane.css">
+</head>
+<body>
+<h2>Description</h2>
+
+<p>
+  This demo shows how to configure edge labels and the corresponding edge label models as well as how to apply the
+  generic edge labeling algorithm.
+</p>
+
+<h3>Usage</h3>
+
+<dl>
+  <dt>Adding a new Label</dt>
+  <dd>
+    To add a new edge label right-click on an edge and choose item <code>Add Label</code>.
+  </dd>
+
+  <dt>Editing a Label</dt>
+  <dd>
+    To change a label text, use <code>Edit Label</code> from the label's context menu. Labels can be moved by drag and
+    drop to another valid position.
+  </dd>
+
+  <dt>Automatic Label Placement</dt>
+  <dd>
+    The generic labeling algorithm is applied automatically after changing any of the properties in the side bar. To
+    manually apply the generic labeling algorithm click on <code>Place Labels</code> in the tool bar.
+  </dd>
+</dl>
+
+<h3>Properties</h3>
+
+<dl>
+  <dt>Rotation Angle</dt>
+  <dd>
+    The rotation angle (in degrees) of the edge labels. If auto rotation is enabled, this angle is added to the angle
+    calculated by auto rotation.
+  </dd>
+
+  <dt>Auto Flipping</dt>
+  <dd>
+    If enabled, automatically flips the presentation of a label when it is upside-down.
+  </dd>
+
+  <dt>Label Model</dt>
+  <dd>
+    The label model of the edge labels. A label model defines the set of valid positions of each label.
+  </dd>
+
+  <dt>Auto Rotation</dt>
+  <dd>
+    If enabled, labels are placed in parallel to their corresponding edge segment. The specified rotation angle is added
+    to the angle calculated by this feature.
+  </dd>
+
+  <dt>Allow 90 Degree Deviation</dt>
+  <dd>
+    If enabled, allows additional positions which are rotated by 90 degrees with respect to the positions calculated by
+    auto rotation.
+  </dd>
+
+  <dt>Edge To Label Distance</dt>
+  <dd>
+    Specifies the minimum distance between an edge label and the corresponding edge segment.
+  </dd>
+</dl>
+
+</body>
+</html>

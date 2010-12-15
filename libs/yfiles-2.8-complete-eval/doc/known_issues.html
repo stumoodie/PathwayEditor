@@ -1,0 +1,79 @@
+<HTML>
+<HEAD>
+    <TITLE>yFiles Known Issues</TITLE>
+    <LINK rel="stylesheet" type="text/css" href="yfiles.css">
+</HEAD>
+<BODY>
+
+<h1>yFiles Known Issues</h1>
+
+<h2>Virtual Machine Crash in Rendering Code</h2>
+<p>
+  JDK 1.6.0 (initial version) sometimes crashes when rendering huge glyphs. This
+  will happen if you zoom into the view and use extreme zoom levels (far greater than 10).
+  Updating the JDK will fix this (note that there is no issue and no entry in the change log
+  of the JDK for this).
+</p>
+<p>
+  Occasionally, we have experienced crashes of the Virtual Machine and HotSpot errors 
+  when using antialiased painting and at the same time having the smoothed bends 
+  feature of PolyLineEdgeRealizer enabled. 
+  This is a JDK bug (Bug ID: 5089985) and is fixed in newer versions of the JDK. 
+</p>
+<p>
+  Occasionally, we have experienced crashes of the Virtual Machine and HotSpot errors
+  when using ShadowNodePainter with Suns Java 1.4.2. JDK 1.5 and higher seem to work stable with ShadowNodePainter.
+</p>
+
+<h2>Repaint Bugs in Graph2DView</h2>
+
+<p>
+We have experienced occasional repaint bugs in Graph2DView when Suns Java-1.4.0
+is being used as Java Runtime. This problem has been reported on Linux and Windows
+Operation Systems. 
+</p><p>
+Sometimes the problem can be solved by upgrading the graphics card
+device driver, sometimes not. This problem has not been reported to occur when Java-1.3.x
+or Java 1.4.1 is being used as Java Runtime, therefore we suggest not to use Java 1.4.0.
+</p>
+
+
+<h2>Lost Focus Bugs on Windows OS</h2>
+
+<p>
+We have experienced problems with losing the keyboard focus when Suns Java-1.4.0
+is being used on Windows operating systems. The problem does not occur 
+when Java-1.3.x or Java 1.4.1 is being used as Java Runtime.
+</p>
+<p>In order to avoid that problem we suggest not to use Java 1.4.0. 
+</p>
+
+<h2>Incorrect JToolbar Display in Windows L&amp;F</h2>
+
+<p>
+Incorrect display of toolbar separators are a known problem of older versions of the Java Runtime
+(Bug-ID: 4722908). This problem is not present in newer versions of the JRE.
+</p>
+
+<h2>Exception in AWT Thread Relating to Empty JTree</h2>
+<p>
+When Java 1.4.0 is used and the following conditions are met using yEd:
+</p>
+<ul>
+<li>
+the JTree on the left has no items, but focus 
+</li>
+<li>
+a key is pressed 
+</li>
+</ul>
+<p>
+then an exception will be thrown in the AWT thread. 
+This is a JDK bug and the problem does not occur when using other versions of the JRE. 
+</p>
+
+<p class="copyright">Copyright yWorks GmbH, 2001-2010. All rights reserved</p>
+
+</BODY>
+</HTML>
+

@@ -1,0 +1,941 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:y="http://www.yworks.com/demo" basedir="." default="help" name="yFiles-Demos">
+<target description="Displays all demo targets" name="help">
+<echo>Demo specific targets:</echo>
+<echo>ImageMapDemo
+    runs demo demo.io.ImageMapDemo</echo>
+<echo>TiledImageDemo
+    runs demo demo.io.TiledImageDemo</echo>
+<echo>GraphMLDemo
+    runs demo demo.io.graphml.GraphMLDemo</echo>
+<echo>GenericNodeRealizerSerializationDemo
+    runs demo demo.io.graphml.GenericNodeRealizerDemo</echo>
+<echo>CustomNodeRealizerSerializerDemo
+    runs demo demo.io.graphml.CustomNodeRealizerSerializerDemo</echo>
+<echo>SimpleAttributesDemo
+    runs demo demo.io.graphml.SimpleAttributesDemo</echo>
+<echo>DynamicAttributesDemoDemonstrates how to configure GraphMLIOHandler to be able to handle attributes dynamically.
+    </echo>
+<echo>PostprocessorDemo
+    runs demo demo.io.graphml.PostprocessorDemo</echo>
+<echo>XmlXslDemo
+      Demonstrates how to use class XmlXslIOHandler to read XML content with the help of additional
+      style sheets.
+    </echo>
+<echo>ListDemo
+    runs demo demo.base.ListDemo</echo>
+<echo>GraphDemo
+    runs demo demo.base.GraphDemo</echo>
+<echo>NodeMapTest
+    runs demo demo.base.NodeMapTest</echo>
+<echo>ExtendedGraph
+    runs demo demo.base.ExtendedGraph</echo>
+<echo>RandomGraphGenerator
+    runs demo demo.base.RandomGraphGenerator</echo>
+<echo>CyclesTest
+    runs demo demo.algo.CyclesTest</echo>
+<echo>GraphConnectivityTest
+    runs demo demo.algo.GraphConnectivityTest</echo>
+<echo>SpanningTreeTest
+    runs demo demo.algo.SpanningTreeTest</echo>
+<echo>ShortestPathTest
+    runs demo demo.algo.ShortestPathTest</echo>
+<echo>ShortestPathDemo
+    runs demo demo.algo.ShortestPathDemo</echo>
+<echo>TopologicalTest
+    runs demo demo.algo.TopologicalTest</echo>
+<echo>TopologicalSortDemo
+    runs demo demo.algo.TopologicalSortDemo</echo>
+<echo>LayoutDemo
+    runs demo demo.layout.LayoutDemo</echo>
+<echo>Graph2DLayoutExecutorDemo
+    runs demo demo.layout.Graph2DLayoutExecutorDemo</echo>
+<echo>IncrementalHierarchicLayouterDemo
+      This demo shows how to use IncrementalHierarchicLayouter together
+      with sophisticated customized view modes.
+    </echo>
+<echo>SwimlaneGroupDemo
+      This demo shows the effect of combining
+      IncrementalHierarchicLayouter's support for grouping and
+      swim lanes.
+    </echo>
+<echo>IncrementalHierarchicGroupDemo
+    runs demo demo.layout.hierarchic.IncrementalHierarchicGroupDemo</echo>
+<echo>LayerConstraintsDemo
+      Demo that shows how to apply layer constraints when calculating hierarchical layouts.
+    </echo>
+<echo>PortCandidateDemo
+    runs demo demo.layout.hierarchic.PortCandidateDemo</echo>
+<echo>SequenceConstraintsDemo
+    runs demo demo.layout.hierarchic.SequenceConstraintsDemo</echo>
+<echo>SimpleSwimlaneLayouterDemo
+      Demonstrates the swim lane feature of the IncrementalHierarchicLayouter.
+    </echo>
+<echo>SimpleIncrementalHierarchicLayouterDemo
+      This simple demo shows how to use the IncrementalHierarchicLayouter
+      to either calculate a new layout or calculate a new layout given the current
+      sketch or incrementally layout selected nodes to an already existing graph whose
+      layout is read from the current sketch.
+    </echo>
+<echo>HierarchicLayouterDemo
+      Demonstrates various aspects of the HierarchicLayouter.
+    </echo>
+<echo>CriticalPathDemo
+      Demonstrates IncrementalHierarchicLayouter's critical path feature.
+      The algorithm will try to align the nodes of a critical path such
+      that the interconnecting edges can be routed in a straight, vertical
+      fashion.
+    </echo>
+<echo>CollapsibleTreeDemo
+    runs demo demo.layout.tree.CollapsibleTreeDemo</echo>
+<echo>TreeLayoutConfigurationDemo
+    runs demo demo.layout.tree.TreeLayoutConfigurationDemo</echo>
+<echo>DendrogramLayouterDemo
+      This demo shows how to dynamically maintain a tree as a dendrogram.
+    </echo>
+<echo>IncrementalTreeLayouterDemo
+      This demo shows how GenericTreeLayouter can handle port constraints and multiple
+      different NodePlacer instances and implementations at the same time.
+    </echo>
+<echo>AssistantPlacerDemo
+      This demo shows how to use GenericTreeLayouter in conjunction
+      with AssistantPlacer.
+    </echo>
+<echo>RotatableNodePlacersDemo
+      This demo presents GenericTreeLayouter in conjunction
+      with node placers that support subtree rotation.
+    </echo>
+<echo>OrganicLayouterDemo
+      Demonstrates different organic layout algorithms and
+      how to specify individual preferred edge lengths
+      for OrganicLayouter.
+    </echo>
+<echo>AnimatedNavigationDemo
+    runs demo demo.layout.organic.AnimatedNavigationDemo</echo>
+<echo>NavigationDemo
+    runs demo demo.layout.organic.NavigationDemo</echo>
+<echo>InteractiveOrganicDemo
+    runs demo demo.layout.organic.InteractiveOrganicDemo</echo>
+<echo>EdgeRouterDemo
+      Demonstrates yFiles' orthogonal edge routing capabilities.
+    </echo>
+<echo>MazeRouterDemo
+      Demonstrates yFiles' orthogonal edge routing capabilities through a maze.
+    </echo>
+<echo>BusRouterDemo
+    Demonstrates the orthogonal bus-style edge routing capabilities of yFiles.
+  </echo>
+<echo>NodeLabelingDemo
+         Demonstrates basic node labeling features.
+     </echo>
+<echo>EdgeLabelingDemo
+             Demonstrates basic edge labeling features.
+         </echo>
+<echo>MixedLayoutDemo
+      This demo extends
+      GroupingDemo
+      to show how to use the recursive group layouter to apply different layouts to the contents of group nodes.
+    </echo>
+<echo>RecursiveLayoutDemo
+      This demo extends
+      GroupingDemo
+      to show how to use the recursive group layouter.
+    </echo>
+<echo>HierarchicPartialLayoutDemoPartial Layouter for hierarchic layout</echo>
+<echo>OrganicPartialLayoutDemoPartial Layouter for organic layout</echo>
+<echo>OrthogonalPartialLayoutDemoPartial Layouter for orthogonal layout</echo>
+<echo>CircularPartialLayoutDemoPartial Layouter for circular layout</echo>
+<echo>LayoutWithoutAView
+    runs demo demo.layout.withoutview.LayoutWithoutAView</echo>
+<echo>GroupingLayoutWithoutAView
+    runs demo demo.layout.withoutview.GroupingLayoutWithoutAView</echo>
+<echo>IncrementalLayoutWithoutAView
+    runs demo demo.layout.withoutview.IncrementalLayoutWithoutAView</echo>
+<echo>SwimlaneLayoutWithoutAView
+    runs demo demo.layout.withoutview.SwimlaneLayoutWithoutAView</echo>
+<echo>PartitionGridLayoutWithoutAView
+    runs demo demo.layout.withoutview.PartitionGridLayoutWithoutAView</echo>
+<echo>RecursiveGroupLayouterDemo
+    runs demo demo.layout.withoutview.RecursiveGroupLayouterDemo</echo>
+<echo>UMLClassDiagramLayouterDemo
+      This demo shows how DirectedOrthogonalLayouter and
+      OrthogonalEdgeRouter can be used to nicely layout UML
+      Class Diagrams in an orthogonal layout style.
+    </echo>
+<echo>LayoutModuleDemo
+    runs demo demo.layout.module.LayoutModuleDemo</echo>
+<echo>FamilyTreeDemo
+      This Demo shows how to use the FamilyTreeLayouter.
+    </echo>
+<echo>SimpleDemo
+    runs demo demo.view.SimpleDemo</echo>
+<echo>BuildGraphDemo
+    runs demo demo.view.BuildGraphDemo</echo>
+<echo>ViewActionDemo
+    runs demo demo.view.ViewActionDemo</echo>
+<echo>UndoRedoDemoShows how to use undo/redo functionality provided by yFiles.</echo>
+<echo>ClipboardDemo
+      Demonstrates how to use the yFiles clipboard functionality to cut, copy, and paste parts of a graph.
+    </echo>
+<echo>DragAndDropDemo
+      Shows how to drag different node and edge types from a list and how to drop
+      them onto a graph view.
+    </echo>
+<echo>LocalViewDemo
+      Demonstrates local views, a feature that uses a given (model) graph to
+      create a (hopefully smaller) graph which emphasizes a certain aspect of
+      the original graph.
+    </echo>
+<echo>PrintPreviewDemo
+      Demonstrates how to use the yFiles print preview panel and how to
+      add a title and a footer to a printed page or poster.
+    </echo>
+<echo>SwimlaneDemo
+      Demonstrates how to use and customize y.view.tabular.TableGroupNodeRealizer to work as a pool
+      having several swim lanes and milestones.
+    </echo>
+<echo>SearchDemo
+      Demonstrates how to find nodes in a graph that match a specific criterion
+      and how to visually present all matching nodes in simple way.
+    </echo>
+<echo>OrgChartDemo
+      The main demo program in this tutorial.
+    </echo>
+<echo>AnimatedStructuralChangesDemo
+    runs demo demo.view.anim.AnimatedStructuralChangesDemo</echo>
+<echo>AnimationEffectsDemo
+    runs demo demo.view.anim.AnimationEffectsDemo</echo>
+<echo>LabelAnimationDemo
+    runs demo demo.view.anim.LabelAnimationDemo</echo>
+<echo>EaseInEaseOutDemo
+    runs demo demo.view.anim.EaseInEaseOutDemo</echo>
+<echo>FadeInFadeOutDemo
+    runs demo demo.view.anim.FadeInFadeOutDemo</echo>
+<echo>BridgeDemo
+    runs demo demo.view.rendering.BridgeDemo</echo>
+<echo>BackgroundDemo
+      Demonstrates how to use background images in the view.
+    </echo>
+<echo>DrawablesDemo
+      This demo shows how to add objects of type Drawable to a Graph2DView.
+    </echo>
+<echo>VisualFeatureDemo
+      Presents the visual features that are available with node realizers and edge realizers.
+      In particular, these include labels for both nodes and edges, decorations for edge
+      end points, but also colors and shapes for both types of graph elements.
+    </echo>
+<echo>GenericNodeRealizerDemo
+    runs demo demo.view.realizer.GenericNodeRealizerDemo</echo>
+<echo>GenericEdgeRealizerDemo
+      This class demonstrates the usage of the y.view.GenericEdgeRealizer
+      class which makes it easy to provide customized edge rendering.
+    </echo>
+<echo>YLabelConfigurationDemo
+    runs demo demo.view.realizer.YLabelConfigurationDemo</echo>
+<echo>TableStyleDemo
+    runs demo demo.view.realizer.TableStyleDemo</echo>
+<echo>SwingRendererDemo
+    runs demo demo.view.realizer.SwingRendererDemo</echo>
+<echo>UMLClassNodeRealizer
+    runs demo demo.view.realizer.UMLClassNodeRealizer</echo>
+<echo>BridgeEdgeRealizerDemo
+    runs demo demo.view.realizer.BridgeEdgeRealizerDemo</echo>
+<echo>StateNodeRealizerDemo
+    runs demo demo.view.realizer.StateNodeRealizerDemo</echo>
+<echo>ScrollingNodeRealizer
+    runs demo demo.view.realizer.ScrollingNodeRealizer</echo>
+<echo>HierarchyDemo
+      Exhibits the Nested Graph Hierarchy and the Node Grouping
+      technologies that are a modular part of the yFiles library.
+    </echo>
+<echo>CustomGroupVisualizationDemo
+      Demonstrates how to customize the visual representation of group and folder
+      nodes using y.view.hierarchy.GenericGroupNodeRealizer.
+    </echo>
+<echo>GroupingDemo
+      Exhibits the Nested Graph Hierarchy and the Node Grouping technologies
+      that are a modular part of the yFiles library.
+    </echo>
+<echo>GroupNavigationDemo
+      This demo extends
+      GroupingDemo
+      to show how to implement custom navigation actions to navigate to group/folder node contents and back.
+    </echo>
+<echo>HierarchyJTreeDemo
+      This demo extends
+      GroupingDemo
+      to show how to use class
+      y.view.hierarchy.HierarchyJTree
+      to display the hierarchical structure as a JTree.
+     </echo>
+<echo>EdgeConnectorDemo
+      Shows how to mimic node-to-edge and edge-to-edge connection.
+    </echo>
+<echo>InactiveLayerDemo
+      Demonstrates how to put a part of a graph in an inactive background layer of the view.
+    </echo>
+<echo>ModelViewManagerDemo
+      Demonstrates automatic structural synchronization between several graphs using y.view.ModelViewManager.
+    </echo>
+<echo>NodePortsDemo
+        Demonstrates how to use node ports.
+    </echo>
+<echo>LogicGatesDemo
+    runs demo demo.view.advanced.ports.LogicGatesDemo</echo>
+<echo>MagnifierViewModeDemo
+      Demonstrates how to use a magnifying glass effect to zoom view regions locally.
+    </echo>
+<echo>FullScreenNavigationDemo
+    runs demo demo.view.viewmode.FullScreenNavigationDemo</echo>
+<echo>OrthogonalEdgeViewModeDemo
+    runs demo demo.view.viewmode.OrthogonalEdgeViewModeDemo</echo>
+<echo>SnapLineDemo
+    runs demo demo.view.viewmode.SnapLineDemo</echo>
+<echo>RollOverEffectDemo
+    runs demo demo.view.viewmode.RollOverEffectDemo</echo>
+<echo>MouseInputDemo
+      Demonstrates how to add a custom drawable to the view that interacts
+      with the MouseInputMode that is registered with class EditMode by default.
+    </echo>
+<echo>PopupModeDemo
+      Demonstrates how to display context sensitive popup menus
+      and how to edit node labels in the view.
+    </echo>
+<echo>CreateEdgeModeDemo
+      Demonstrates how CreateEdgeMode can be customized to prevent
+      the creation of certain edges and to provide feedback whether
+      creating an edge to the node the mouse is hovering over is possible.
+    </echo>
+<echo>PortCreateEdgeModeDemo
+      Demonstrates how CreateEdgeMode can be customized in order to
+      control automatic assignments of ports for edges.
+    </echo>
+<echo>FlowchartDemoThe main demo program in this tutorial.</echo>
+<echo>NodePropertyEditorDemo
+      Demonstrates how to create a node property editor for nodes.
+    </echo>
+<echo>OptionHandlerDemo
+      Demonstrates how to create an OptionHandler whose values are
+      editable by multiple editor components.
+    </echo>
+<echo/>
+<echo/>
+<echo>General targets:</echo>
+<echo>touch
+    touches all demo .java files</echo>
+<echo>clean
+    removes all that has been built</echo>
+<echo>compile
+    compiles the demo packages</echo>
+<echo/>
+<echo>run
+    launches the interactive Demo Browser</echo>
+</target>
+<target name="-init">
+<property value=".." name="demo.src.dir"/>
+<property value="../../classes" name="demo.class.dir"/>
+<property value="../../lib/y.jar" name="y.jar"/>
+<property value="../../doc/api" name="doc.dir"/>
+<condition property="jdk1.3">
+<equals arg1="${ant.java.version}" arg2="1.3"/>
+</condition>
+<path id="democlasspath">
+<pathelement location="${demo.class.dir}"/>
+<pathelement location="${demo.src.dir}"/>
+<pathelement location="${y.jar}"/>
+</path>
+</target>
+<target description="Compiles the demo files" depends="-init" name="compile">
+<mkdir dir="${demo.class.dir}"/>
+<javac debug="true" srcdir="${demo.src.dir}" destdir="${demo.class.dir}" includes="demo/**/*.java" includeAntRuntime="false">
+<classpath>
+<pathelement location="${y.jar}"/>
+</classpath>
+<exclude if="jdk1.3" name="demo/browser/**"/>
+<exclude if="jdk1.3" name="demo/DemoBrowser.java"/>
+</javac>
+</target>
+<target unless="jdk1.3" description="Launches the interactive Demo Browser" depends="compile" name="run">
+<java failonerror="true" classname="demo.DemoBrowser" fork="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="ImageMapDemo" depends="compile">
+<java classname="demo.io.ImageMapDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="TiledImageDemo" depends="compile">
+<java classname="demo.io.TiledImageDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="GraphMLDemo" depends="compile">
+<java classname="demo.io.graphml.GraphMLDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="GenericNodeRealizerSerializationDemo" depends="compile">
+<java classname="demo.io.graphml.GenericNodeRealizerDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="CustomNodeRealizerSerializerDemo" depends="compile">
+<java classname="demo.io.graphml.CustomNodeRealizerSerializerDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="SimpleAttributesDemo" depends="compile">
+<java classname="demo.io.graphml.SimpleAttributesDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="DynamicAttributesDemo" depends="compile" description="Demonstrates how to configure GraphMLIOHandler to be able to handle attributes dynamically.&#10;    ">
+<java classname="demo.io.graphml.DynamicAttributesDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="PostprocessorDemo" depends="compile">
+<java classname="demo.io.graphml.PostprocessorDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="XmlXslDemo" depends="compile" description="&#10;      Demonstrates how to use class XmlXslIOHandler to read XML content with the help of additional&#10;      style sheets.&#10;    ">
+<java classname="demo.io.graphml.XmlXslDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="ListDemo" depends="compile">
+<java classname="demo.base.ListDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="GraphDemo" depends="compile">
+<java classname="demo.base.GraphDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="NodeMapTest" depends="compile">
+<java classname="demo.base.NodeMapTest" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="ExtendedGraph" depends="compile">
+<java classname="demo.base.ExtendedGraph" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="RandomGraphGenerator" depends="compile">
+<java classname="demo.base.RandomGraphGenerator" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="CyclesTest" depends="compile">
+<java classname="demo.algo.CyclesTest" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="GraphConnectivityTest" depends="compile">
+<java classname="demo.algo.GraphConnectivityTest" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="SpanningTreeTest" depends="compile">
+<java classname="demo.algo.SpanningTreeTest" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="ShortestPathTest" depends="compile">
+<java classname="demo.algo.ShortestPathTest" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="ShortestPathDemo" depends="compile">
+<java classname="demo.algo.ShortestPathDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="TopologicalTest" depends="compile">
+<java classname="demo.algo.TopologicalTest" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="TopologicalSortDemo" depends="compile">
+<java classname="demo.algo.TopologicalSortDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="LayoutDemo" depends="compile">
+<java classname="demo.layout.LayoutDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="Graph2DLayoutExecutorDemo" depends="compile">
+<java classname="demo.layout.Graph2DLayoutExecutorDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="IncrementalHierarchicLayouterDemo" depends="compile" description="&#10;      This demo shows how to use IncrementalHierarchicLayouter together&#10;      with sophisticated customized view modes.&#10;    ">
+<java classname="demo.layout.hierarchic.IncrementalHierarchicLayouterDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="SwimlaneGroupDemo" depends="compile" description="&#10;      This demo shows the effect of combining&#10;      IncrementalHierarchicLayouter's support for grouping and&#10;      swim lanes.&#10;    ">
+<java classname="demo.layout.hierarchic.SwimlaneGroupDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="IncrementalHierarchicGroupDemo" depends="compile">
+<java classname="demo.layout.hierarchic.IncrementalHierarchicGroupDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="LayerConstraintsDemo" depends="compile" description="&#10;      Demo that shows how to apply layer constraints when calculating hierarchical layouts.&#10;    ">
+<java classname="demo.layout.hierarchic.LayerConstraintsDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="PortCandidateDemo" depends="compile">
+<java classname="demo.layout.hierarchic.PortCandidateDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="SequenceConstraintsDemo" depends="compile">
+<java classname="demo.layout.hierarchic.SequenceConstraintsDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="SimpleSwimlaneLayouterDemo" depends="compile" description="&#10;      Demonstrates the swim lane feature of the IncrementalHierarchicLayouter.&#10;    ">
+<java classname="demo.layout.hierarchic.SimpleSwimlaneLayouterDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="SimpleIncrementalHierarchicLayouterDemo" depends="compile" description="&#10;      This simple demo shows how to use the IncrementalHierarchicLayouter&#10;      to either calculate a new layout or calculate a new layout given the current&#10;      sketch or incrementally layout selected nodes to an already existing graph whose&#10;      layout is read from the current sketch.&#10;    ">
+<java classname="demo.layout.hierarchic.SimpleIncrementalHierarchicLayouterDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="HierarchicLayouterDemo" depends="compile" description="&#10;      Demonstrates various aspects of the HierarchicLayouter.&#10;    ">
+<java classname="demo.layout.hierarchic.HierarchicLayouterDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="CriticalPathDemo" depends="compile" description="&#10;      Demonstrates IncrementalHierarchicLayouter's critical path feature.&#10;      The algorithm will try to align the nodes of a critical path such&#10;      that the interconnecting edges can be routed in a straight, vertical&#10;      fashion.&#10;    ">
+<java classname="demo.layout.hierarchic.CriticalPathDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="CollapsibleTreeDemo" depends="compile">
+<java classname="demo.layout.tree.CollapsibleTreeDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="TreeLayoutConfigurationDemo" depends="compile">
+<java classname="demo.layout.tree.TreeLayoutConfigurationDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="DendrogramLayouterDemo" depends="compile" description="&#10;      This demo shows how to dynamically maintain a tree as a dendrogram.&#10;    ">
+<java classname="demo.layout.tree.DendrogramLayouterDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="IncrementalTreeLayouterDemo" depends="compile" description="&#10;      This demo shows how GenericTreeLayouter can handle port constraints and multiple&#10;      different NodePlacer instances and implementations at the same time.&#10;    ">
+<java classname="demo.layout.tree.IncrementalTreeLayouterDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="AssistantPlacerDemo" depends="compile" description="&#10;      This demo shows how to use GenericTreeLayouter in conjunction&#10;      with AssistantPlacer.&#10;    ">
+<java classname="demo.layout.tree.AssistantPlacerDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="RotatableNodePlacersDemo" depends="compile" description="&#10;      This demo presents GenericTreeLayouter in conjunction&#10;      with node placers that support subtree rotation.&#10;    ">
+<java classname="demo.layout.tree.RotatableNodePlacersDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="OrganicLayouterDemo" depends="compile" description="&#10;      Demonstrates different organic layout algorithms and&#10;      how to specify individual preferred edge lengths&#10;      for OrganicLayouter.&#10;    ">
+<java classname="demo.layout.organic.OrganicLayouterDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="AnimatedNavigationDemo" depends="compile">
+<java classname="demo.layout.organic.AnimatedNavigationDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="NavigationDemo" depends="compile">
+<java classname="demo.layout.organic.NavigationDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="InteractiveOrganicDemo" depends="compile">
+<java classname="demo.layout.organic.InteractiveOrganicDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="EdgeRouterDemo" depends="compile" description="&#10;      Demonstrates yFiles' orthogonal edge routing capabilities.&#10;    ">
+<java classname="demo.layout.router.EdgeRouterDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="MazeRouterDemo" depends="compile" description="&#10;      Demonstrates yFiles' orthogonal edge routing capabilities through a maze.&#10;    ">
+<java classname="demo.layout.router.MazeRouterDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="BusRouterDemo" depends="compile" description="&#10;    Demonstrates the orthogonal bus-style edge routing capabilities of yFiles.&#10;  ">
+<java classname="demo.layout.router.BusRouterDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="NodeLabelingDemo" depends="compile" description="&#10;         Demonstrates basic node labeling features.&#10;     ">
+<java classname="demo.layout.labeling.NodeLabelingDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="EdgeLabelingDemo" depends="compile" description="&#10;             Demonstrates basic edge labeling features.&#10;         ">
+<java classname="demo.layout.labeling.EdgeLabelingDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="MixedLayoutDemo" depends="compile" description="&#10;      This demo extends&#10;      GroupingDemo&#10;      to show how to use the recursive group layouter to apply different layouts to the contents of group nodes.&#10;    ">
+<java classname="demo.layout.mixed.MixedLayoutDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="RecursiveLayoutDemo" depends="compile" description="&#10;      This demo extends&#10;      GroupingDemo&#10;      to show how to use the recursive group layouter.&#10;    ">
+<java classname="demo.layout.mixed.RecursiveLayoutDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="HierarchicPartialLayoutDemo" depends="compile" description="Partial Layouter for hierarchic layout">
+<java classname="demo.layout.partial.HierarchicPartialLayoutDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="OrganicPartialLayoutDemo" depends="compile" description="Partial Layouter for organic layout">
+<java classname="demo.layout.partial.OrganicPartialLayoutDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="OrthogonalPartialLayoutDemo" depends="compile" description="Partial Layouter for orthogonal layout">
+<java classname="demo.layout.partial.OrthogonalPartialLayoutDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="CircularPartialLayoutDemo" depends="compile" description="Partial Layouter for circular layout">
+<java classname="demo.layout.partial.CircularPartialLayoutDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="LayoutWithoutAView" depends="compile">
+<java classname="demo.layout.withoutview.LayoutWithoutAView" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="GroupingLayoutWithoutAView" depends="compile">
+<java classname="demo.layout.withoutview.GroupingLayoutWithoutAView" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="IncrementalLayoutWithoutAView" depends="compile">
+<java classname="demo.layout.withoutview.IncrementalLayoutWithoutAView" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="SwimlaneLayoutWithoutAView" depends="compile">
+<java classname="demo.layout.withoutview.SwimlaneLayoutWithoutAView" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="PartitionGridLayoutWithoutAView" depends="compile">
+<java classname="demo.layout.withoutview.PartitionGridLayoutWithoutAView" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="RecursiveGroupLayouterDemo" depends="compile">
+<java classname="demo.layout.withoutview.RecursiveGroupLayouterDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="UMLClassDiagramLayouterDemo" depends="compile" description="&#10;      This demo shows how DirectedOrthogonalLayouter and&#10;      OrthogonalEdgeRouter can be used to nicely layout UML&#10;      Class Diagrams in an orthogonal layout style.&#10;    ">
+<java classname="demo.layout.orthogonal.UMLClassDiagramLayouterDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="LayoutModuleDemo" depends="compile">
+<java classname="demo.layout.module.LayoutModuleDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="FamilyTreeDemo" depends="compile" description="&#10;      This Demo shows how to use the FamilyTreeLayouter.&#10;    ">
+<java classname="demo.layout.genealogy.FamilyTreeDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="SimpleDemo" depends="compile">
+<java classname="demo.view.SimpleDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="BuildGraphDemo" depends="compile">
+<java classname="demo.view.BuildGraphDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="ViewActionDemo" depends="compile">
+<java classname="demo.view.ViewActionDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="UndoRedoDemo" depends="compile" description="Shows how to use undo/redo functionality provided by yFiles.">
+<java classname="demo.view.application.UndoRedoDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="ClipboardDemo" depends="compile" description="&#10;      Demonstrates how to use the yFiles clipboard functionality to cut, copy, and paste parts of a graph.&#10;    ">
+<java classname="demo.view.application.ClipboardDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="DragAndDropDemo" depends="compile" description="&#10;      Shows how to drag different node and edge types from a list and how to drop&#10;      them onto a graph view.&#10;    ">
+<java classname="demo.view.application.DragAndDropDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="LocalViewDemo" depends="compile" description="&#10;      Demonstrates local views, a feature that uses a given (model) graph to&#10;      create a (hopefully smaller) graph which emphasizes a certain aspect of&#10;      the original graph.&#10;    ">
+<java classname="demo.view.application.LocalViewDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="PrintPreviewDemo" depends="compile" description="&#10;      Demonstrates how to use the yFiles print preview panel and how to&#10;      add a title and a footer to a printed page or poster.&#10;    ">
+<java classname="demo.view.application.PrintPreviewDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="SwimlaneDemo" depends="compile" description="&#10;      Demonstrates how to use and customize y.view.tabular.TableGroupNodeRealizer to work as a pool&#10;      having several swim lanes and milestones.&#10;    ">
+<java classname="demo.view.application.SwimlaneDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="SearchDemo" depends="compile" description="&#10;      Demonstrates how to find nodes in a graph that match a specific criterion&#10;      and how to visually present all matching nodes in simple way.&#10;    ">
+<java classname="demo.view.application.SearchDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="OrgChartDemo" depends="compile" description="&#10;      The main demo program in this tutorial.&#10;    ">
+<java classname="demo.view.orgchart.OrgChartDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="AnimatedStructuralChangesDemo" depends="compile">
+<java classname="demo.view.anim.AnimatedStructuralChangesDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="AnimationEffectsDemo" depends="compile">
+<java classname="demo.view.anim.AnimationEffectsDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="LabelAnimationDemo" depends="compile">
+<java classname="demo.view.anim.LabelAnimationDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="EaseInEaseOutDemo" depends="compile">
+<java classname="demo.view.anim.EaseInEaseOutDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="FadeInFadeOutDemo" depends="compile">
+<java classname="demo.view.anim.FadeInFadeOutDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="BridgeDemo" depends="compile">
+<java classname="demo.view.rendering.BridgeDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="BackgroundDemo" depends="compile" description="&#10;      Demonstrates how to use background images in the view.&#10;    ">
+<java classname="demo.view.rendering.BackgroundDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="DrawablesDemo" depends="compile" description="&#10;      This demo shows how to add objects of type Drawable to a Graph2DView.&#10;    ">
+<java classname="demo.view.rendering.DrawablesDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="VisualFeatureDemo" depends="compile" description="&#10;      Presents the visual features that are available with node realizers and edge realizers.&#10;      In particular, these include labels for both nodes and edges, decorations for edge&#10;      end points, but also colors and shapes for both types of graph elements.&#10;    ">
+<java classname="demo.view.realizer.VisualFeatureDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="GenericNodeRealizerDemo" depends="compile">
+<java classname="demo.view.realizer.GenericNodeRealizerDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="GenericEdgeRealizerDemo" depends="compile" description="&#10;      This class demonstrates the usage of the y.view.GenericEdgeRealizer&#10;      class which makes it easy to provide customized edge rendering.&#10;    ">
+<java classname="demo.view.realizer.GenericEdgeRealizerDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="YLabelConfigurationDemo" depends="compile">
+<java classname="demo.view.realizer.YLabelConfigurationDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="TableStyleDemo" depends="compile">
+<java classname="demo.view.realizer.TableStyleDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="SwingRendererDemo" depends="compile">
+<java classname="demo.view.realizer.SwingRendererDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="UMLClassNodeRealizer" depends="compile">
+<java classname="demo.view.realizer.UMLClassNodeRealizer" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="BridgeEdgeRealizerDemo" depends="compile">
+<java classname="demo.view.realizer.BridgeEdgeRealizerDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="StateNodeRealizerDemo" depends="compile">
+<java classname="demo.view.realizer.StateNodeRealizerDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="ScrollingNodeRealizer" depends="compile">
+<java classname="demo.view.realizer.ScrollingNodeRealizer" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="HierarchyDemo" depends="compile" description="&#10;      Exhibits the Nested Graph Hierarchy and the Node Grouping&#10;      technologies that are a modular part of the yFiles library.&#10;    ">
+<java classname="demo.view.hierarchy.HierarchyDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="CustomGroupVisualizationDemo" depends="compile" description="&#10;      Demonstrates how to customize the visual representation of group and folder&#10;      nodes using y.view.hierarchy.GenericGroupNodeRealizer.&#10;    ">
+<java classname="demo.view.hierarchy.CustomGroupVisualizationDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="GroupingDemo" depends="compile" description="&#10;      Exhibits the Nested Graph Hierarchy and the Node Grouping technologies&#10;      that are a modular part of the yFiles library.&#10;    ">
+<java classname="demo.view.hierarchy.GroupingDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="GroupNavigationDemo" depends="compile" description="&#10;      This demo extends&#10;      GroupingDemo&#10;      to show how to implement custom navigation actions to navigate to group/folder node contents and back.&#10;    ">
+<java classname="demo.view.hierarchy.GroupNavigationDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="HierarchyJTreeDemo" depends="compile" description="&#10;      This demo extends&#10;      GroupingDemo&#10;      to show how to use class&#10;      y.view.hierarchy.HierarchyJTree&#10;      to display the hierarchical structure as a JTree.&#10;     ">
+<java classname="demo.view.hierarchy.HierarchyJTreeDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="EdgeConnectorDemo" depends="compile" description="&#10;      Shows how to mimic node-to-edge and edge-to-edge connection.&#10;    ">
+<java classname="demo.view.advanced.EdgeConnectorDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="InactiveLayerDemo" depends="compile" description="&#10;      Demonstrates how to put a part of a graph in an inactive background layer of the view.&#10;    ">
+<java classname="demo.view.advanced.InactiveLayerDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="ModelViewManagerDemo" depends="compile" description="&#10;      Demonstrates automatic structural synchronization between several graphs using y.view.ModelViewManager.&#10;    ">
+<java classname="demo.view.advanced.ModelViewManagerDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="NodePortsDemo" depends="compile" description="&#10;        Demonstrates how to use node ports.&#10;    ">
+<java classname="demo.view.advanced.ports.NodePortsDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="LogicGatesDemo" depends="compile">
+<java classname="demo.view.advanced.ports.LogicGatesDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="MagnifierViewModeDemo" depends="compile" description="&#10;      Demonstrates how to use a magnifying glass effect to zoom view regions locally.&#10;    ">
+<java classname="demo.view.viewmode.MagnifierViewModeDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="FullScreenNavigationDemo" depends="compile">
+<java classname="demo.view.viewmode.FullScreenNavigationDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="OrthogonalEdgeViewModeDemo" depends="compile">
+<java classname="demo.view.viewmode.OrthogonalEdgeViewModeDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="SnapLineDemo" depends="compile">
+<java classname="demo.view.viewmode.SnapLineDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="RollOverEffectDemo" depends="compile">
+<java classname="demo.view.viewmode.RollOverEffectDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="MouseInputDemo" depends="compile" description="&#10;      Demonstrates how to add a custom drawable to the view that interacts&#10;      with the MouseInputMode that is registered with class EditMode by default.&#10;    ">
+<java classname="demo.view.viewmode.MouseInputDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="PopupModeDemo" depends="compile" description="&#10;      Demonstrates how to display context sensitive popup menus&#10;      and how to edit node labels in the view.&#10;    ">
+<java classname="demo.view.viewmode.PopupModeDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="CreateEdgeModeDemo" depends="compile" description="&#10;      Demonstrates how CreateEdgeMode can be customized to prevent&#10;      the creation of certain edges and to provide feedback whether&#10;      creating an edge to the node the mouse is hovering over is possible.&#10;    ">
+<java classname="demo.view.viewmode.CreateEdgeModeDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="PortCreateEdgeModeDemo" depends="compile" description="&#10;      Demonstrates how CreateEdgeMode can be customized in order to&#10;      control automatic assignments of ports for edges.&#10;    ">
+<java classname="demo.view.viewmode.PortCreateEdgeModeDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="FlowchartDemo" depends="compile" description="The main demo program in this tutorial.">
+<java classname="demo.view.flowchart.FlowchartDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="NodePropertyEditorDemo" depends="compile" description="&#10;      Demonstrates how to create a node property editor for nodes.&#10;    ">
+<java classname="demo.option.NodePropertyEditorDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target name="OptionHandlerDemo" depends="compile" description="&#10;      Demonstrates how to create an OptionHandler whose values are&#10;      editable by multiple editor components.&#10;    ">
+<java classname="demo.option.OptionHandlerDemo" fork="true" failonerror="true">
+<classpath refid="democlasspath"/>
+</java>
+</target>
+<target description="Touches the .java files of the demos" depends="-init" name="touch-demo">
+<touch>
+<fileset dir="${demo.src.dir}" includes="**/*.java"/>
+</touch>
+</target>
+<target description="Removes all that has been built." depends="-init" name="clean">
+<delete dir="${demo.class.dir}" includeEmptyDirs="true"/>
+</target>
+</project>

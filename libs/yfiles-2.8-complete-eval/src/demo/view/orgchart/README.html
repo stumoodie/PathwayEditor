@@ -1,0 +1,228 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:y="http://www.yworks.com/demo">
+<head>
+<title>yFiles Tutorial Organization Chart Demo</title>
+<style type="text/css">
+<!--
+              body {
+  font-family:Verdana, sans-serif; 
+  margin-left:12px;
+  margin-right:12px;
+  margin-top:12px;
+  margin-bottom:12px;
+}
+
+h1 { 
+  padding-left:8px;
+  padding-top:8px;
+  padding-bottom:8px;
+  background-color:#d0d0d0;
+  color:#4079ea;
+/*  color:#4d88ff; */
+  font-size:18px;
+  margin-bottom:5px;
+}
+
+p {   
+  padding-bottom:0px;
+  padding-top:0px;
+  margin-top:3px;
+  margin-bottom:0px;
+/*  margin-left:10px; */
+  margin-left:8px;
+  font-size:12px;
+  color:#000000;
+}
+
+h2 { 
+  font-size:14px; 
+  color:#4079ea; 
+  margin-top:10px; 
+  margin-bottom:0px; 
+}
+
+h3 { 
+  font-size:13px; 
+/*  margin-left:10px; */
+  margin-left:8px;
+  margin-top:8px; 
+  margin-bottom:2px; 
+}
+
+table {
+/*  margin-left:10px; */
+  margin-left: 8px;
+  margin-top: 8px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border: 1px solid white;
+  vertical-align: baseline;
+  border-collapse: collapse;
+}
+
+td { 
+  font-size:12px;
+  background-color: #E3EEFE;
+  vertical-align:top;
+  border: 1px solid white;
+  vertical-align: baseline;
+}
+
+th {
+  font-size:12px; 
+  background-color:#a4b9ea;
+  text-align: left;
+}
+
+a {
+  color: #AA5522; font-weight:bold;
+}
+a:link {
+  text-decoration:none;
+}
+a:visited {
+  text-decoration:none; color:#772200;
+}
+a:active, 
+a:focus, 
+a:hover {
+  text-decoration: underline;
+}
+
+div.li1 {
+  font-size:12px;
+  margin-top:8px; 
+  margin-bottom:0px; 
+  margin-left:10px; 
+}
+div.li2 { 
+  margin-left:20px;
+  margin-top:2px; 
+  margin-bottom:2px; 
+  font-weight:bold;
+  font-size:12px; 
+}
+
+dl { 
+  font-size:12px;
+  margin-top:2px;
+  margin-bottom:2px;
+  margin-left:15px;
+}
+dt { 
+  font-weight:bold;
+  margin-top:4px;
+/*  color:#000000; */
+  color:#333366;
+}
+dd { 
+  margin-left:15px;
+}
+
+li { 
+  /* does not work in pre-1.5 Java JEditorPane :-( */
+/*  list-style-type:none; */
+  font-size:12px;
+}
+
+caption {
+  font-size:12px;
+}
+
+.copyright { 
+  font-size: 10px;
+  font-style:italic;
+  text-align:right;
+  margin-top:20px;
+}
+
+code, tt { 
+  font-family:monospace;
+  font-size:12px;
+  color:#0000C0;
+}
+
+            -->
+</style>
+</head>
+<body>
+    <h1>yFiles Tutorial Organization Chart Demo</h1>
+    <p>
+    This demo visualizes an organization chart. This comprehensive demo shows
+    many aspects of yFiles. In particular it shows how to
+    </p>
+    <ul>
+      <li>visualize XML-formatted data as a graph</li>
+      <li>create a tree diagram from a <code>javax.swing.tree.TreeModel</code>
+</li>
+      <li>create customized node realizers that show text and multiple icons</li>
+      <li>create a customized <code>y.view.NavigationMode</code> view mode</li>
+      <li>create fancy roll-over effects when hovering over nodes</li>
+      <li>implement level of detail (LoD) rendering of graphs</li>
+      <li>synchronize the selection state of <code>javax.swing.JTree</code> and <code>y.view.Graph2D</code>
+</li>
+      <li>customize <code>y.layout.tree.GenericTreeLayouter</code> to make it a perfect match for laying out organization charts</li>
+      <li>create local views for a large diagram</li>
+      <li>apply incremental layout and apply nice fade in and fade out effects to added or removed elements</li>
+      <li>implement and use keyboard navigation for <code>y.view.Graph2DView</code>
+</li>
+    </ul>
+    <p>
+    This demo is composed of multiple classes. Class <code>demo.view.OrgChartDemo</code> is the organization chart application and driver class
+    that organizes the UI elements and makes use of the swing component <code>demo.view.orgchart.JOrgChart</code>. The model data used in this sample
+    is represented by the Swing tree model <code>demo.view.orgchart.OrgChartTreeModel</code>. Class <code>demo.view.orgchart.JOrgChart</code>
+    builds upon the more generic tree chart component <code>demo.view.orgchart.JTreeChart</code>. In a nutshell, JTreeChart
+    visualizes a generic TreeModel and includes all the viewer logic, while JOrgChart visualizes a OrgChartTreeModel and
+    customizes the look and feel of the component. Also it customizes the look and feel of the component to make it suitable for
+    organization charts.
+    </p>
+    <p>
+    Directory <a href="resources">resources</a> contains the XML-based organization chart sample file, a help file, and application icons.
+    </p>
+  <table class="toplevel">
+<tr>
+<th>Class</th>
+<th>Description</th>
+</tr><tr xmlns="">
+<td><a href="OrgChartDemo.java">demo.view.orgchart.OrgChartDemo</a></td><td>
+      The main demo program in this tutorial.
+    </td>
+</tr>
+<tr xmlns="">
+<td><a href="OrgChartTreeModel.java">demo.view.orgchart.OrgChartTreeModel</a></td><td>TreeModel that uses Employee as TreeNodes.</td>
+</tr>
+<tr xmlns="">
+<td><a href="JOrgChart.java">demo.view.orgchart.JOrgChart</a></td><td>Organization chart component that builds upon the more generic tree chart component <code xmlns="http://www.w3.org/1999/xhtml">demo.view.orgchart.JTreeChart</code>.
+    It visualizes a <code xmlns="http://www.w3.org/1999/xhtml">demo.view.orgchart.OrgChartTreeModel</code>. Also it customizes the look and feel of the component to make it suitable for
+    organization charts. TreeModel that uses Employee as TreeNodes
+    </td>
+</tr>
+<tr xmlns="">
+<td><a href="JTreeChart.java">demo.view.orgchart.JTreeChart</a></td><td>Tree chart component that allows to display local views of the tree.
+    </td>
+</tr>
+<tr xmlns="">
+<td><a href="KeyboardNavigation.java">demo.view.orgchart.KeyboardNavigation</a></td><td>Factory class that provides <code xmlns="http://www.w3.org/1999/xhtml">java.awt.event.KeyListener</code> implementations suitable for
+    navigating within Graph2DView.
+    </td>
+</tr>
+</table>
+<h2>Running the Demos</h2>
+<h3>From Within an IDE</h3>
+<p>
+            Set <tt>&lt;yFilesDir&gt;/src</tt> as your source directory.
+            Then add <tt>&lt;yFilesDir&gt;/lib/y.jar</tt>
+<b>and</b> the source folder
+            <tt>&lt;yFilesDir&gt;/src</tt> to your classpath.
+            Now you should be ready to compile and run all executable demo classes.
+            </p>
+<h3>With Ant</h3>
+<p>
+              First make sure you have the
+              <a href="http://ant.apache.org">build tool Ant</a> installed on your system.
+              Now you can use the demo build script <tt>build.xml</tt>
+              located in <tt>&lt;yFilesDir&gt;/src/demo</tt> to launch each demo by specifying its simple class name as a target.
+              Alternatively, launch the interactive demo driver by specifying <tt>run</tt> as target to
+              conveniently access all demos.
+            </p>
+</body>
+</html>

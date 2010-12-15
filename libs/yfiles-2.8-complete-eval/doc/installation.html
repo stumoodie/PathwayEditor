@@ -1,0 +1,72 @@
+<HTML>
+<HEAD>
+    <TITLE>Installing yFiles</TITLE>
+    <LINK rel="stylesheet" type="text/css" href="yfiles.css">
+</HEAD>
+
+<BODY>
+
+<h1>Installing yFiles</h1>
+
+<h2>Prerequisites</h2>
+<p>
+To build applications that are based on yFiles Complete or yFiles Viewer
+you need to have a Java2 Software Development Kit version 1.4 or higher installed on your system.
+To build applications that are based on yFiles Layout or yFiles Basic
+it suffices to have a Java2 Software Development Kit version 1.3 installed on your system.
+We suggest to use J2SE 1.5 SDK or higher from Sun Microsystems which is
+freely downloadable at <a href="http://java.sun.com/j2se">http://java.sun.com/j2se</a>
+for Microsoft Windows, Linux, and Solaris operating systems.  
+</p>
+<p>
+If you just want to run the provided demo applications it suffices to 
+have a Java2 Runtime Environment version 1.4 or higher installed.
+We suggest to use the J2SE 5 from Sun Microsystems which is
+freely downloadable at <a href="http://java.sun.com/j2se">http://java.sun.com/j2se</a>
+for Microsoft Windows, Linux, and Solaris operating systems.  
+</p><p>
+Then you need a program to unpack the yFiles distribution. For that you 
+can use <A HREF="http://www.winzip.com">Winzip</A> for Windows. If you are 
+on a UNIX platform use the <code>unzip</code> command. 
+Alternatively, you can use the <code>jar</code> command that is part of the JSDK 
+distribution. 
+</p>
+
+<h2>Installation</h2>
+
+<p>Unpack the yFiles Zip archive to a directory of your choice. The yFiles
+distribution will be contained in a directory prefixed <b>yfiles</b>.</p>
+
+<p>In order to use the yFiles library you need to include the Jar file <b>y.jar</b> in your
+Java classpath. </p>
+
+<p>
+Optionally, you should download the yFiles Developer's Guide. It can be obtained from the same
+source as the yFiles class library itself. The Developer's Guide comes as a zipped
+archive file. To install it, simply unpack the archive to the yFiles documentation 
+directory <a href=".">&lt;yFilesDir>/doc</a> so that the links contained in the
+documentation work. 
+</p>
+<p>
+Note: During installation you may be asked by your unzip program whether or not 
+to overwrite the file <tt>developers-guide/index.html</tt>. 
+In that case answer "Yes."
+</p>
+
+<p>That's basically it. </p>
+
+<p>
+You can verify that the installation was correct by running the 
+<a href="../src/demo/README.html">demo programs</a> that are part of the yFiles 
+distribution.
+</p>
+<p>
+Note that the resource files located in the demo subfolders or the tutorial subfolder 
+need to be in your classpath in order for the demos to properly function. 
+IDEA users should add at least the resource patterns <code>?*.png;?*.jpg:?*.gif:?*.gml;?*.ygf;?*.graphml;?*.xml;?*.xsl;?*.csv</code>
+to their compiler settings.
+</p>
+<p class="copyright">Copyright yWorks GmbH, 2001-2010. All rights reserved.</p>
+
+</BODY>
+</HTML>

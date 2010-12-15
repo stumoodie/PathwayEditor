@@ -1,0 +1,296 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:y="http://www.yworks.com/demo">
+<head>
+<title>yFiles Tutorial Module Demos</title>
+<style type="text/css">
+<!--
+              body {
+  font-family:Verdana, sans-serif; 
+  margin-left:12px;
+  margin-right:12px;
+  margin-top:12px;
+  margin-bottom:12px;
+}
+
+h1 { 
+  padding-left:8px;
+  padding-top:8px;
+  padding-bottom:8px;
+  background-color:#d0d0d0;
+  color:#4079ea;
+/*  color:#4d88ff; */
+  font-size:18px;
+  margin-bottom:5px;
+}
+
+p {   
+  padding-bottom:0px;
+  padding-top:0px;
+  margin-top:3px;
+  margin-bottom:0px;
+/*  margin-left:10px; */
+  margin-left:8px;
+  font-size:12px;
+  color:#000000;
+}
+
+h2 { 
+  font-size:14px; 
+  color:#4079ea; 
+  margin-top:10px; 
+  margin-bottom:0px; 
+}
+
+h3 { 
+  font-size:13px; 
+/*  margin-left:10px; */
+  margin-left:8px;
+  margin-top:8px; 
+  margin-bottom:2px; 
+}
+
+table {
+/*  margin-left:10px; */
+  margin-left: 8px;
+  margin-top: 8px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border: 1px solid white;
+  vertical-align: baseline;
+  border-collapse: collapse;
+}
+
+td { 
+  font-size:12px;
+  background-color: #E3EEFE;
+  vertical-align:top;
+  border: 1px solid white;
+  vertical-align: baseline;
+}
+
+th {
+  font-size:12px; 
+  background-color:#a4b9ea;
+  text-align: left;
+}
+
+a {
+  color: #AA5522; font-weight:bold;
+}
+a:link {
+  text-decoration:none;
+}
+a:visited {
+  text-decoration:none; color:#772200;
+}
+a:active, 
+a:focus, 
+a:hover {
+  text-decoration: underline;
+}
+
+div.li1 {
+  font-size:12px;
+  margin-top:8px; 
+  margin-bottom:0px; 
+  margin-left:10px; 
+}
+div.li2 { 
+  margin-left:20px;
+  margin-top:2px; 
+  margin-bottom:2px; 
+  font-weight:bold;
+  font-size:12px; 
+}
+
+dl { 
+  font-size:12px;
+  margin-top:2px;
+  margin-bottom:2px;
+  margin-left:15px;
+}
+dt { 
+  font-weight:bold;
+  margin-top:4px;
+/*  color:#000000; */
+  color:#333366;
+}
+dd { 
+  margin-left:15px;
+}
+
+li { 
+  /* does not work in pre-1.5 Java JEditorPane :-( */
+/*  list-style-type:none; */
+  font-size:12px;
+}
+
+caption {
+  font-size:12px;
+}
+
+.copyright { 
+  font-size: 10px;
+  font-style:italic;
+  text-align:right;
+  margin-top:20px;
+}
+
+code, tt { 
+  font-family:monospace;
+  font-size:12px;
+  color:#0000C0;
+}
+
+            -->
+</style>
+</head>
+<body>
+    <h1>yFiles Tutorial Module Demos</h1>
+    <p>
+      The following source code samples demonstrate how to use and
+      write yFiles modules.
+    </p>
+  <table class="toplevel">
+<tr>
+<th>Class</th>
+<th>Description</th>
+</tr><tr xmlns="">
+<td><a href="LayoutModuleDemo.java">demo.layout.module.LayoutModuleDemo</a></td><td>
+      Demonstrates how layout modules can be added to the GUI of an application.
+      A layout module is a layout algorithm combined
+      with an option dialog that allows to change the
+      settings of a layout algorithm interactively
+      (only available if layout is part of distribution).
+</td>
+</tr>
+<tr xmlns="">
+<td><a href="DiagonalLayoutModule.java">demo.layout.module.DiagonalLayoutModule</a></td><td>
+      This module represents an interactive configurator and launcher for the demo
+      Layouter
+      <a xmlns="http://www.w3.org/1999/xhtml" href="../withoutview/DiagonalLayouter.java">DiagonalLayouter</a>
+      .
+      Additionally, this class can be executed separately. In this case it shows off
+      the internationalization and serialization features of the OptionHandler class.
+      By launching the module class using a two letter language constant as an
+      argument, the dialog will be internationalized in that language if the
+      corresponding localized properties file is available. Try either 'en' for
+      English or 'de' for German.
+</td>
+</tr>
+<tr xmlns="">
+<td><a href="ComponentLayoutModule.java">demo.layout.module.ComponentLayoutModule</a></td><td>
+      This module represents an interactive configurator and launcher for ComponentLayouter. 
+      It is similar to ComponentLayoutModule found in the yFiles package y.module.
+    </td>
+</tr>
+<tr xmlns="">
+<td><a href="FamilyTreeLayoutModule.java">demo.layout.module.FamilyTreeLayoutModule</a></td><td>
+      This module represents an interactive configurator and launcher for
+      FamilyTreeLayouter.
+      It is similar to FamilyTreeLayoutModule found in the yFiles package y.module.
+    </td>
+</tr>
+<tr xmlns="">
+<td><a href="CircularLayoutModule.java">demo.layout.module.CircularLayoutModule</a></td><td>
+      This module represents an interactive configurator and launcher for CircularLayouter.
+      It is similar to CircularLayoutModule found in the yFiles package y.module.
+</td>
+</tr>
+<tr xmlns="">
+<td><a href="HierarchicLayoutModule.java">demo.layout.module.HierarchicLayoutModule</a></td><td>
+      This module represents an interactive configurator and launcher for HierarchicLayouter
+      and HierarchicGroupLayouter.
+      It is similar to HierarchicLayoutModule found in the yFiles package y.module.
+</td>
+</tr>
+<tr xmlns="">
+<td><a href="IncrementalHierarchicLayoutModule.java">demo.layout.module.IncrementalHierarchicLayoutModule</a></td><td>
+      This module represents an interactive configurator and launcher for IncrementalHierarchicLayouter.
+      It is similar to IncrementalHierarchicLayoutModule found in the yFiles package y.module.
+</td>
+</tr>
+<tr xmlns="">
+<td><a href="OrganicLayoutModule.java">demo.layout.module.OrganicLayoutModule</a></td><td>
+      This module represents an interactive configurator and launcher for OrganicLayouter.
+      It is similar to OrganicLayoutModule found in the yFiles package y.module.
+</td>
+</tr>
+<tr xmlns="">
+<td><a href="SmartOrganicLayoutModule.java">demo.layout.module.SmartOrganicLayoutModule</a></td><td>
+      This module represents an interactive configurator and launcher for SmartOrganicLayout.
+      It is similar to SmartOrganicLayoutModule found in the yFiles package y.module.
+    </td>
+</tr>
+<tr xmlns="">
+<td><a href="OrthogonalLayoutModule.java">demo.layout.module.OrthogonalLayoutModule</a></td><td>
+      This module represents an interactive configurator and launcher for OrthogonalLayouter
+      and OrthogonalGroupLayouter respectively.
+      It is similar to OrthogonalLayoutModule found in the yFiles package y.module.
+</td>
+</tr>
+<tr xmlns="">
+<td><a href="DirectedOrthogonalLayoutModule.java">demo.layout.module.DirectedOrthogonalLayoutModule</a></td><td>
+      This module represents an interactive configurator and launcher for DirectedOrthogonalLayout. 
+      It is similar to DirectedOrthogonalLayoutModule found in the yFiles package y.module.
+    </td>
+</tr>
+<tr xmlns="">
+<td><a href="CompactOrthogonalLayoutModule.java">demo.layout.module.CompactOrthogonalLayoutModule</a></td><td>
+      This module represents an interactive configurator and launcher for CompactOrthogonalLayout. 
+      It is similar to CompactOrthogonalLayoutModule found in the yFiles package y.module.
+    </td>
+</tr>
+<tr xmlns="">
+<td><a href="TreeLayoutModule.java">demo.layout.module.TreeLayoutModule</a></td><td>
+      This module represents an interactive configurator and launcher for the
+      different tree layouts in yFiles.
+      It is similar to TreeLayoutModule found in the yFiles package y.module.
+</td>
+</tr>
+<tr xmlns="">
+<td><a href="OrthogonalEdgeRouterModule.java">demo.layout.module.OrthogonalEdgeRouterModule</a></td><td>
+      This module represents an interactive configurator and launcher for
+      OrthogonalEdgeRouter. It is similar to
+      OrthogonalEdgeRouterModule found in the yFiles package y.module.
+</td>
+</tr>
+<tr xmlns="">
+<td><a href="ChannelEdgeRouterModule.java">demo.layout.module.ChannelEdgeRouterModule</a></td><td>
+This module represents an interactive configurator and launcher for ChannelEdgeRouter. 
+It is similar to ChannelEdgeRouterModule found in the yFiles package y.module.
+    </td>
+</tr>
+<tr xmlns="">
+<td><a href="OrganicEdgeRouterModule.java">demo.layout.module.OrganicEdgeRouterModule</a></td><td>
+      This module represents an interactive configurator and launcher for OrganicEdgeRouter. 
+      It is similar to OrganicEdgeRouterModule found in the yFiles package y.module.
+    </td>
+</tr>
+<tr xmlns="">
+<td><a href="LabelingModule.java">demo.layout.module.LabelingModule</a></td><td>
+      This module represents an interactive configurator and launcher for the yFiles
+      labeling algorithms.
+      It is similar to LabelingModule found in the yFiles package y.module.
+</td>
+</tr>
+</table>
+<h2>Running the Demos</h2>
+<h3>From Within an IDE</h3>
+<p>
+            Set <tt>&lt;yFilesDir&gt;/src</tt> as your source directory.
+            Then add <tt>&lt;yFilesDir&gt;/lib/y.jar</tt>
+<b>and</b> the source folder
+            <tt>&lt;yFilesDir&gt;/src</tt> to your classpath.
+            Now you should be ready to compile and run all executable demo classes.
+            </p>
+<h3>With Ant</h3>
+<p>
+              First make sure you have the
+              <a href="http://ant.apache.org">build tool Ant</a> installed on your system.
+              Now you can use the demo build script <tt>build.xml</tt>
+              located in <tt>&lt;yFilesDir&gt;/src/demo</tt> to launch each demo by specifying its simple class name as a target.
+              Alternatively, launch the interactive demo driver by specifying <tt>run</tt> as target to
+              conveniently access all demos.
+            </p>
+</body>
+</html>

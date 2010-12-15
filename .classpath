@@ -76,5 +76,10 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="libs/postgresql-8.4-701/postgresql-8.4-701.jdbc3.jar"/>
+	<classpathentry kind="lib" path="libs/yfiles-2.8-complete-eval/lib/y.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/Users/smoodie/Documents/workspace36_64/GraphicsEngine/libs/yfiles-2.8-complete-eval/doc/api/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

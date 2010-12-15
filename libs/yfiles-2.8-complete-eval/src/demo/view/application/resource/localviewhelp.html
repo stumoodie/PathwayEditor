@@ -1,0 +1,278 @@
+<html>
+<head>
+	<style type="text/css">
+	<!--
+body {
+    font-family:Verdana, sans-serif;
+		margin-left:3px;
+		margin-right:3px;
+		margin-top:0px;
+		margin-bottom:0px;
+	}
+
+h1 {
+    padding-left:0px;
+    padding-top:8px;
+    padding-bottom:8px;
+    color:#4079ea;
+    font-size:16px;
+    margin-bottom:5px;
+}
+
+p {
+	padding-bottom:0px;
+	padding-top:0px;
+	margin-top:3px;
+	margin-bottom:0px;
+	margin-left:0px;
+	font-size:10px;
+	color:#000000;
+	}
+
+h2 {
+  font-size:12px;
+	color:#4079ea;
+  margin-top:10px;
+  margin-bottom:0px;
+}
+
+h3 {
+  font-size:11px;
+/*	margin-left:10px; */
+	margin-left:0px;
+  margin-top:8px;
+  margin-bottom:2px;
+}
+
+h4 {
+  font-size:10px;
+  margin-left:0px;
+  margin-top:6px;
+  margin-bottom:2px;
+}
+
+
+dl {
+	font-size:10px;
+	margin-top:2px;
+	margin-bottom:2px;
+	margin-left:0px;
+}
+
+dt {
+	font-weight:bold;
+	margin-top:4px;
+	color:#333366;
+}
+
+dt.inner {
+  font-weight:bold;
+  margin-top:4px;
+  color:#000000;
+}
+
+  dd {
+	margin-left:5px;
+}
+
+.copyright {
+    font-size: 10px; 
+    font-style:italic;
+    text-align:right;
+    margin-top:20px;
+}
+
+code, tt {
+	font-family:monospace;
+	font-size:10px;
+	color:#0000C0;
+}
+
+.keyword {
+  font-weight:bold;
+}
+
+-->
+	</style>
+</head>
+<body>
+ <p>
+ A local view displays a subset of a graph's elements. The intent is usually to
+ improve performance, usability, or view experience in general (or all of the
+ before mentioned).
+ </p>
+ <h2>Main Graph View</h2>
+   <p>
+   The display and editor area to the right. Several ways to interact with its
+   graph are possible and may trigger an update of the local view (the display
+   area to the left) depending on the chosen <em>update trigger</em> (see
+   below).
+   </p>
+
+  <h3>Mouse Interaction</h3>
+  <dl>
+    <dt>Left Click on Node</dt>
+    <dd>Selects the node.</dd>
+    <dt>Left Click on Canvas</dt>
+    <dd>Creates a new node.</dd>
+    <dt>Left Mouse Drag on Canvas</dt>
+    <dd>Selects multiple graph elements.</dd>
+    <dt>Left Mouse Drag on Node</dt>
+    <dd>Creates an edge.</dd>
+    <dt>Right Mouse Drag</dt>
+    <dd>Moves the diagram within the view.</dd>
+    <dt>Mouse Wheel</dt>
+    <dd>Changes the zoom level of the view.</dd>
+  </dl>
+
+  <h3>Key Bindings</h3>
+	<dl>
+    <dt>Left Arrow Key</dt>
+    <dd>Selects a node to the left of the currently selected node</dd>
+    <dt>Right Arrow Key</dt>
+    <dd>Selects a node to the right of the currently selected node</dd>
+    <dt>Up Arrow Key</dt>
+    <dd>Selects a node above the currently selected node</dd>
+    <dt>Down Arrow Key</dt>
+    <dd>Selects a node below the currently selected node</dd>
+	</dl>
+
+ <h2>Local Graph View</h2>
+   <p>
+   The display area to the left.
+   </p>
+
+  <h3>Mouse Interaction</h3>
+  <dl>
+    <dt>Double Click on Node</dt>
+    <dd>Selects and centers the node in the main view if possible.</dd>
+    <dt>Double Click on Edge</dt>
+    <dd>Selects and centers the edge in the main view if possible.</dd>
+  </dl>
+
+ <h2>Settings</h2>
+ <p>
+   The available settings govern when and how to update the local graph view.
+ </p>
+
+   <h3>Update Trigger</h3>
+   <dl>
+     <dt>Mouse Hover</dt>
+     <dd>The local view is updated if the mouse hovers (for about 1/10 of a
+         second) over a node or edge in the main graph view.
+         The node or edge over which the mouse hovers is the single input
+         element for the chosen update strategy (see below).</dd>
+     <dt>Selection Change</dt>
+     <dd>The local view is updated if the selection state of nodes or edges is
+         changed in the main graph view changes.
+         Either all selected nodes or all selected edges (as appropriate)
+         are used as input elements for the chosen update strategy (see
+         below).</dd>
+   </dl>
+
+   <h3>Node Strategies</h3>
+   <p>
+     Available strategies to create local views for input nodes.
+     Clicking on the corresponding radio button will activate the strategy
+     and possibly display additional settings.
+   </p>
+   <dl>
+     <dt>Neighborhood</dt>
+     <dd>Displays all nodes that are reachable by directed or undirected paths
+         upto a specific length.
+       <dl>
+         <dt class="inner">Included Nodes</dt>
+         <dd>
+           Determines which nodes make up the neighborhood of the input
+           nodes.
+           <br/>
+           <span class="keyword">Predecessors</span> means all nodes that are
+           reachable by outgoing edges only.
+           <br/>
+           <span class="keyword">Successors</span> means all nodes that are
+           reachable by ingoing edges only.
+           <br/>
+           <span class="keyword">Predecessors and Successors</span> means the
+           union of the two aforementioned node sets.
+           <br/>
+           <span class="keyword">All Neighbors</span> means all nodes that are
+           reachable by undirected edge paths.
+         </dd>
+         <dt class="inner">Maximum Graph Distance</dt>
+         <dd>The maximum number of edges to traverse to reach a neighborhood
+             node.</dd>
+         <dt class="inner">Included Edges</dt>
+         <dd>
+           Determines the edges that are displayed in the local view.
+           <br/>
+           <span class="keyword">None</span> means no edges at all.
+           <br/>
+           <span class="keyword">Subgraph Edges</span> means all edges
+           that connect any two of the displayed nodes.
+           <br/>
+           <span class="keyword">Shortest Paths</span> means the edges that lie
+           on the shortest path from one of the input nodes to one of the other
+           displayed nodes.
+         </dd>
+       </dl>
+     </dd>
+     <dt>Common Parent Group</dt>
+     <dd>
+       Displays all nodes that share the same parent group node as one of the
+       input nodes and edges connecting only these nodes.
+       <br/>
+       <span class="keyword">Include Descendants</span> determines whether
+       the contents of displayed group nodes should be displayed as well.
+     </dd>
+     <dt>Ancestor Groups</dt>
+     <dd>
+       Displays the input nodes and all of their ancestor group nodes.
+       A group node is considered to be the ancestor of another node if it
+       either contains the node itself or one of its ancestor nodes.
+       <br/>
+       <span class="keyword">Include Focus Nodes</span> determines whether
+       the input nodes are displayed as well.
+     </dd>
+     <dt>Folder Contents</dt>
+     <dd>
+       Displays the contents or inner graphs of all input nodes that are
+       folder nodes. The nodes labeled <em>y.util</em> and <em>y.util.pq</em>
+       are the only folder nodes in the sample diagram that is displayed in
+       the main graph view.
+       <br/>
+       <span class="keyword">Always Include Folders</span> means that for each
+       input folder node a group node representative is created in the local
+       view.
+       <br/>
+       <span class="keyword">Include Folders As Needed</span> means that a
+       group node representative for input folder nodes is created if the
+       contents of more than one folder are displayed.
+       <br/>
+       <span class="keyword">Never Include Folders</span> means that input
+       folder nodes will not be displayed in the local view.
+     </dd>
+     <dt>Selected Subgraph</dt>
+     <dd>Displays the selected input nodes and all edges connecting only these
+         nodes.</dd>
+   </dl>
+
+   <h3>Edge Strategies</h3>
+   <p>
+     Available strategies to create local views for input edges.
+     Clicking on the corresponding radio button will activate the strategy
+     and possibly display additional settings.
+   </p>
+   <dl>
+     <dt>Source and Target</dt>
+     <dd>Displays the input edges and their respective source and target
+         nodes.</dd>
+     <dt>Edge Group</dt>
+     <dd>
+       Displays all edges that share source and/or target node (depending on
+       the selection states of the <span class="keyword">Source</span> and
+       <span class="keyword">Target</span> settings to the right) with one
+       of the input edges.</dd>
+   </dl>
+
+</body>
+</html>

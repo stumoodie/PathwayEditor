@@ -1,0 +1,244 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:y="http://www.yworks.com/demo">
+<head>
+<title>yFiles Tutorial ViewMode Demos</title>
+<style type="text/css">
+<!--
+              body {
+  font-family:Verdana, sans-serif; 
+  margin-left:12px;
+  margin-right:12px;
+  margin-top:12px;
+  margin-bottom:12px;
+}
+
+h1 { 
+  padding-left:8px;
+  padding-top:8px;
+  padding-bottom:8px;
+  background-color:#d0d0d0;
+  color:#4079ea;
+/*  color:#4d88ff; */
+  font-size:18px;
+  margin-bottom:5px;
+}
+
+p {   
+  padding-bottom:0px;
+  padding-top:0px;
+  margin-top:3px;
+  margin-bottom:0px;
+/*  margin-left:10px; */
+  margin-left:8px;
+  font-size:12px;
+  color:#000000;
+}
+
+h2 { 
+  font-size:14px; 
+  color:#4079ea; 
+  margin-top:10px; 
+  margin-bottom:0px; 
+}
+
+h3 { 
+  font-size:13px; 
+/*  margin-left:10px; */
+  margin-left:8px;
+  margin-top:8px; 
+  margin-bottom:2px; 
+}
+
+table {
+/*  margin-left:10px; */
+  margin-left: 8px;
+  margin-top: 8px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border: 1px solid white;
+  vertical-align: baseline;
+  border-collapse: collapse;
+}
+
+td { 
+  font-size:12px;
+  background-color: #E3EEFE;
+  vertical-align:top;
+  border: 1px solid white;
+  vertical-align: baseline;
+}
+
+th {
+  font-size:12px; 
+  background-color:#a4b9ea;
+  text-align: left;
+}
+
+a {
+  color: #AA5522; font-weight:bold;
+}
+a:link {
+  text-decoration:none;
+}
+a:visited {
+  text-decoration:none; color:#772200;
+}
+a:active, 
+a:focus, 
+a:hover {
+  text-decoration: underline;
+}
+
+div.li1 {
+  font-size:12px;
+  margin-top:8px; 
+  margin-bottom:0px; 
+  margin-left:10px; 
+}
+div.li2 { 
+  margin-left:20px;
+  margin-top:2px; 
+  margin-bottom:2px; 
+  font-weight:bold;
+  font-size:12px; 
+}
+
+dl { 
+  font-size:12px;
+  margin-top:2px;
+  margin-bottom:2px;
+  margin-left:15px;
+}
+dt { 
+  font-weight:bold;
+  margin-top:4px;
+/*  color:#000000; */
+  color:#333366;
+}
+dd { 
+  margin-left:15px;
+}
+
+li { 
+  /* does not work in pre-1.5 Java JEditorPane :-( */
+/*  list-style-type:none; */
+  font-size:12px;
+}
+
+caption {
+  font-size:12px;
+}
+
+.copyright { 
+  font-size: 10px;
+  font-style:italic;
+  text-align:right;
+  margin-top:20px;
+}
+
+code, tt { 
+  font-family:monospace;
+  font-size:12px;
+  color:#0000C0;
+}
+
+            -->
+</style>
+</head>
+<body>
+    <h1>yFiles Tutorial ViewMode Demos</h1>
+    <p>
+      The following tutorial demos describe how to use, customize, and extend
+      diverse ViewMode classes. View modes provide the base functionality to handle
+      mouse-based interaction that happens in a view.
+    </p>
+  <table class="toplevel">
+<tr>
+<th>Class</th>
+<th>Description</th>
+</tr><tr xmlns="">
+<td><a href="MagnifierViewModeDemo.java">demo.view.viewmode.MagnifierViewModeDemo</a></td><td>
+      Demonstrates how to use a magnifying glass effect to zoom view regions locally.
+    </td>
+</tr>
+<tr xmlns="">
+<td><a href="FullScreenNavigationDemo.java">demo.view.viewmode.FullScreenNavigationDemo</a></td><td>
+      This demo demonstrates the usage of y.view.NavigationComponent and y.view.Overview. Both controls
+      will be added to a glass pane the view provides (y.view.Graph2DView#getGlassPane()) and can be toggled during
+      runtime.
+      <br xmlns="http://www.w3.org/1999/xhtml"/>
+      Besides one can switch to a full screen mode and navigate through the graph view.
+    </td>
+</tr>
+<tr xmlns="">
+<td><a href="OrthogonalEdgeViewModeDemo.java">demo.view.viewmode.OrthogonalEdgeViewModeDemo</a></td><td>Demonstrates how to customize EditMode in order to simulate orthogonal edges.
+      <br xmlns="http://www.w3.org/1999/xhtml"/>
+      This demo allows to switch between the creation of orthogonal and polygonal edges and toggling snapping behavior
+      on and off.
+      Toggling the "Orthogonal" button in the toolbar switches the type of newly created edges.
+      Also intelligent snapping for the various view modes can be toggled in the tool bar.
+      This affects the behavior of CreateEdgeMode and EditMode, as well as implicitly the minor modes
+      of EditMode.
+    </td>
+</tr>
+<tr xmlns="">
+<td><a href="SnapLineDemo.java">demo.view.viewmode.SnapLineDemo</a></td><td>Demonstrates EditMode's snapping feature in conjunction with orthogonal edges.
+      <br xmlns="http://www.w3.org/1999/xhtml"/>
+      This demo can be used to toggle the snapping feature on and off. It shows how a custom <b xmlns="http://www.w3.org/1999/xhtml">SnapLine</b>
+      (the red vertical line) can be used to snap nodes and edges to other entities.
+      Toggling the button in the toolbar toggles snapping on and off, the sliders can be used to adjust the
+      preferred distance between nodes and edges. This will influence the "preferred distance snap lines."
+    </td>
+</tr>
+<tr xmlns="">
+<td><a href="RollOverEffectDemo.java">demo.view.viewmode.RollOverEffectDemo</a></td><td>
+      Demonstrates how to create a custom ViewMode that uses yFiles'
+      Animation Framework to produce a roll over effect for nodes under the mouse
+      cursor.
+    </td>
+</tr>
+<tr xmlns="">
+<td><a href="MouseInputDemo.java">demo.view.viewmode.MouseInputDemo</a></td><td>
+      Demonstrates how to add a custom drawable to the view that interacts
+      with the MouseInputMode that is registered with class EditMode by default.
+    </td>
+</tr>
+<tr xmlns="">
+<td><a href="PopupModeDemo.java">demo.view.viewmode.PopupModeDemo</a></td><td>
+      Demonstrates how to display context sensitive popup menus
+      and how to edit node labels in the view.
+    </td>
+</tr>
+<tr xmlns="">
+<td><a href="CreateEdgeModeDemo.java">demo.view.viewmode.CreateEdgeModeDemo</a></td><td>
+      Demonstrates how CreateEdgeMode can be customized to prevent
+      the creation of certain edges and to provide feedback whether
+      creating an edge to the node the mouse is hovering over is possible.
+    </td>
+</tr>
+<tr xmlns="">
+<td><a href="PortCreateEdgeModeDemo.java">demo.view.viewmode.PortCreateEdgeModeDemo</a></td><td>
+      Demonstrates how CreateEdgeMode can be customized in order to
+      control automatic assignments of ports for edges.
+    </td>
+</tr>
+</table>
+<h2>Running the Demos</h2>
+<h3>From Within an IDE</h3>
+<p>
+            Set <tt>&lt;yFilesDir&gt;/src</tt> as your source directory.
+            Then add <tt>&lt;yFilesDir&gt;/lib/y.jar</tt>
+<b>and</b> the source folder
+            <tt>&lt;yFilesDir&gt;/src</tt> to your classpath.
+            Now you should be ready to compile and run all executable demo classes.
+            </p>
+<h3>With Ant</h3>
+<p>
+              First make sure you have the
+              <a href="http://ant.apache.org">build tool Ant</a> installed on your system.
+              Now you can use the demo build script <tt>build.xml</tt>
+              located in <tt>&lt;yFilesDir&gt;/src/demo</tt> to launch each demo by specifying its simple class name as a target.
+              Alternatively, launch the interactive demo driver by specifying <tt>run</tt> as target to
+              conveniently access all demos.
+            </p>
+</body>
+</html>

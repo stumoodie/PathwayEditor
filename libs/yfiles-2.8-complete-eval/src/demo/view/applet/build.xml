@@ -1,0 +1,66 @@
+<!-- Ant build script for yFiles applet deployment.    -->
+<!-- The Java based Ant tool is available from         -->
+<!-- http://ant.apache.org/                            -->
+
+<project name="yFiles Applet" default="all" basedir=".">
+
+  <target name="help">
+    <echo>
+      This Ant script can be used to perform deployment of this sample applet. Deployment is composed of two steps.
+      First the applet's application classes are compiled and jarred into "application.jar" together with all
+      application resources. Next the yFiles Jar file "y.jar" is copied from &lt;yFilesDir>/lib to this directory.
+      Once the two Jar files are located in the sample directory, the applet is ready to be displayed on a web page.
+      To try out the applet open the HTML page "applet.html" with your web browser.
+    </echo>
+  </target>
+
+  <!-- Define some properties that are used throughout the tasks. -->
+  <target name="init">
+    <!-- the base directory of the yFiles installation -->
+    <property name="yBase"          location="../../../.."/>
+    <!-- the path to the demo sources -->
+    <property name="src"            location="${yBase}/src"/>
+    <!-- the path to the demo classes -->
+    <property name="classes"        location="${yBase}/classes"/>
+    <!-- the yFiles jar file -->
+    <property name="yJar"           location="${yBase}/lib/y.jar"/>
+    <!-- the application jar file -->
+    <property name="appJar"         value="application.jar"/>
+  </target>
+
+  <!-- Compiles the application's classes. -->
+  <target name="compile" depends="init">
+    <mkdir dir="${classes}"/>
+    <javac includeantruntime="false" srcdir="${src}" destdir="${classes}">
+      <include name="demo/view/applet/*.java"/>
+      <classpath>
+        <pathelement location="${yJar}"/>
+      </classpath>
+    </javac>
+  </target>
+
+  <!-- Puts the application's classes into "application.jar." -->
+  <target name="jar" depends="compile">
+    <delete file="${appJar}"/>
+    <jar jarfile="${appJar}">
+      <fileset dir="${src}">
+        <include name="demo/view/applet/resource/*.gif"/>
+        <include name="demo/view/applet/resource/*.png"/>
+      </fileset>
+      <fileset dir="${classes}">
+        <include name="demo/view/applet/*.class"/>
+      </fileset>
+    </jar>
+  </target>
+
+  <target name="all" depends="jar">
+    <copy file="${yJar}" tofile="y.jar"/>
+  </target>
+  
+  <!-- Removes all that has been built. -->
+  <target name="clean" depends="init">
+    <delete file="${appJar}"/>
+    <delete includeemptydirs="true" dir="${classes}"/>
+  </target>
+
+</project>

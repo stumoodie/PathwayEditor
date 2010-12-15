@@ -1,0 +1,173 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+      <title>Lesson:&nbsp;Mouse-based Support for Zooming and Panning</title>
+      <link rel="stylesheet" href="ystyle.css" type="text/css">
+      <meta name="generator" content="DocBook XSL Stylesheets V1.65.1">
+      <link rel="home" href="index.html" title="Trail:&nbsp;Creating a Simple Graph Viewer">
+      <link rel="up" href="index.html" title="Trail:&nbsp;Creating a Simple Graph Viewer">
+      <link rel="previous" href="actions.html" title="Lesson:&nbsp;Adding Zooming Toolbar Actions">
+      <link type="text/css" rel="stylesheet" href="../jssh/SyntaxHighlighter.css"><script type="text/javascript" src="../jssh/shCore.js"></script><script type="text/javascript" src="../jssh/shBrushJava.js"></script><script type="text/javascript">
+  function sh() {
+
+    dp.SyntaxHighlighter.HighlightAll('programlisting', false, false, false, null, false);
+  }
+  </script></head>
+   <body onload="sh()" bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+      <div class="navheader">
+         <table width="100%" summary="Navigation header">
+            <tr>
+               <th colspan="3" align="center">Lesson:&nbsp;Mouse-based Support for Zooming and Panning</th>
+            </tr>
+            <tr>
+               <td width="20%" align="left"><a accesskey="p" title="Lesson:&nbsp;Adding Zooming Toolbar Actions" href="actions.html">Prev</a>&nbsp;
+               </td>
+               <th width="60%" align="center">&nbsp;</th>
+               <td width="20%" align="right">&nbsp;</td>
+            </tr>
+         </table>
+         <div class="navline"></div>
+      </div>
+      <div class="sect1" lang="en">
+         <div class="titlepage">
+            <div>
+               <div>
+                  <h2 class="title" style="clear: both"><a name="zooming_panning"></a>Lesson:&nbsp;Mouse-based Support for Zooming and Panning
+                  </h2>
+               </div>
+            </div>
+            <div></div>
+         </div>
+         <p>
+            The SimpleGraphViewer4 application from the previous lesson already provides support 
+            for zooming in the view via actions. 
+            We will now add further mouse-based support to our application that will enable 
+            convenient zooming and panning in the view.
+            
+         </p>
+         <p>
+            The result, the <a href="../../src/tutorial/viewer/SimpleGraphViewer5.java" title="Link to source code" target="_top">SimpleGraphViewer5</a> 
+            application, will be a simple, but functional viewer type diagramming application 
+            that finishes this trail.
+            
+         </p>
+         <p>
+            First, we add support for panning, i.e., moving the viewport, to our application. 
+            Panning is realized via a mouse-drag gesture which is handled by yFiles class <a href="http://www.yworks.com/products/yfiles/doc/api/y/view/NavigationMode.html" title="Link to API documentation" target="_top">NavigationMode<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a>. 
+            
+            NavigationMode is a so-called view mode and hence we use the <a href="http://www.yworks.com/products/yfiles/doc/api/y/view/Graph2DView.html#addViewMode(y.view.ViewMode)" title="Link to API documentation" target="_top">addViewMode<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a> 
+            method to add it to the set of view modes for our view. 
+            This is shown in <a href="zooming_panning.html#ex_NavigationMode" title="Example&nbsp;1.13.&nbsp;Adding support for mouse-drag panning">Example&nbsp;1.13, &#8220;Adding support for mouse-drag panning&#8221;</a>.
+            
+         </p>
+         <div class="example"><a name="ex_NavigationMode"></a><p class="title"><b>Example&nbsp;1.13.&nbsp;Adding support for mouse-drag panning</b></p><pre class="programlisting java">
+// Add a view mode for convenient mouse navigation.
+view.addViewMode(new NavigationMode());
+</pre></div>
+         <p>
+            View modes play an important role in a yFiles-based diagramming application. 
+            They are responsible for handling all mouse-based user interaction in the view. 
+            
+            Using NavigationMode specifically, provides panning support via mouse-drag gestures 
+            involving the left mouse button as well as the right mouse button.
+            
+         </p>
+         <p>
+            Although mouse-based interaction, too, mouse-wheel support is not realized by means 
+            of a view mode. 
+            Instead, it is handled directly via an implementation of a standard Java mouse-wheel 
+            listener. 
+            We add the <a href="http://www.yworks.com/products/yfiles/doc/api/y/view/Graph2DViewMouseWheelZoomListener.html" title="Link to API documentation" target="_top">Graph2DViewMouseWheelZoomListener<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a> 
+            to the view's actual canvas component as presented in <a href="zooming_panning.html#ex_mousewheel_zooming" title="Example&nbsp;1.14.&nbsp;Adding support for mouse-wheel zooming">Example&nbsp;1.14, &#8220;Adding support for mouse-wheel zooming&#8221;</a>.
+            
+         </p>
+         <div class="example"><a name="ex_mousewheel_zooming"></a><p class="title"><b>Example&nbsp;1.14.&nbsp;Adding support for mouse-wheel zooming</b></p><pre class="programlisting java">
+// Add a mouse-wheel listener to zoom in and out of the view.
+view.getCanvasComponent().addMouseWheelListener(
+  new Graph2DViewMouseWheelZoomListener());
+</pre></div>
+         <p>
+            <a href="zooming_panning.html#ex_SimpleGraphViewer5_createGraph2DView" title="Example&nbsp;1.15.&nbsp;createGraph2DView method of SimpleGraphViewer5">Example&nbsp;1.15, &#8220;createGraph2DView method of SimpleGraphViewer5&#8221;</a> shows the <tt class="code">createGraph2DView</tt> 
+            method where we integrate both new features.
+            
+         </p>
+         <div class="example"><a name="ex_SimpleGraphViewer5_createGraph2DView"></a><p class="title"><b>Example&nbsp;1.15.&nbsp;createGraph2DView method of SimpleGraphViewer5</b></p><pre class="programlisting java">
+private Graph2DView createGraph2DView() {
+  Graph2DView view = new Graph2DView();
+  
+  // Add a mouse wheel listener to zoom in and out of the view.
+  view.getCanvasComponent().addMouseWheelListener(
+    new Graph2DViewMouseWheelZoomListener());
+  // Add a view mode for convenient mouse navigation.
+  view.addViewMode(new NavigationMode());
+  
+  return view;
+}
+</pre></div>
+         <p>
+            Congratulations! 
+            You have finished this trail and have created a simple, but functional viewer type 
+            diagramming application using the yFiles for Java diagramming class library.
+            
+         </p>
+         <div class="highlights">
+            <h4><a name="d0e622"></a>Related Resources
+            </h4>
+            <p>
+               You will find related information in the yFiles for Java Developer's Guide: 
+               
+            </p>
+            <div class="itemizedlist">
+               <ul type="disc">
+                  <li><a href="http://www.yworks.com/products/yfiles/doc/developers-guide/mvc_controller.html#cls_ViewMode" title="Link to Developer's Guide" target="_top">View modes in yFiles for Java</a></li>
+                  <li><a href="http://www.yworks.com/products/yfiles/doc/developers-guide/mvc_controller.html#cls_NavigationMode" title="Link to Developer's Guide" target="_top">About NavigationMode</a></li>
+                  <li><a href="http://www.yworks.com/products/yfiles/doc/developers-guide/mvc_view.html#mousewheel" title="Link to Developer's Guide" target="_top">Mouse-wheel zooming</a></li>
+               </ul>
+            </div>
+            <p>
+               
+               In the yFiles for Java source code demos: 
+               
+            </p>
+            <div class="itemizedlist">
+               <ul type="disc">
+                  <li><a href="http://www.yworks.com/products/yfiles/doc/demo/view/viewmode/MagnifierViewModeDemo.java" title="Link to demo code" target="_top">MagnifierViewModeDemo.java</a> presents 
+                     a specialized view mode that provides a magnifying glass tool
+                     
+                  </li>
+               </ul>
+            </div>
+            <p>
+               
+               
+            </p>
+         </div>
+      </div>
+      <table class="copyright" border="0" cellpadding="0" cellspacing="0" width="100%">
+         <tbody>
+            <tr>
+               <td align="right">
+                  <p class="copyright">Copyright &copy;2008-2009, yWorks GmbH. All rights reserved.</p>
+               </td>
+            </tr>
+         </tbody>
+      </table>
+      <div class="navfooter">
+         <div class="navline2"></div>
+         <table width="100%" summary="Navigation footer">
+            <tr>
+               <td width="40%" align="left"><a accesskey="p" title="Lesson:&nbsp;Adding Zooming Toolbar Actions" href="actions.html">Prev</a>&nbsp;
+               </td>
+               <td width="20%" align="center"><a accesskey="u" title="Trail:&nbsp;Creating a Simple Graph Viewer" href="index.html">Up</a></td>
+               <td width="40%" align="right">&nbsp;</td>
+            </tr>
+            <tr>
+               <td width="40%" align="left" valign="top">Lesson:&nbsp;Adding Zooming Toolbar Actions&nbsp;</td>
+               <td width="20%" align="center"><a accesskey="h" title="yFiles for Java Tutorial" href="../index.html">Home</a></td>
+               <td width="40%" align="right" valign="top">&nbsp;</td>
+            </tr>
+         </table>
+      </div>
+   </body>
+</html>

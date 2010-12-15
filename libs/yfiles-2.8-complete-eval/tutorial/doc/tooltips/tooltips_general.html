@@ -1,0 +1,327 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+      <title>Lesson:&nbsp;General Tooltip Support</title>
+      <link rel="stylesheet" href="ystyle.css" type="text/css">
+      <meta name="generator" content="DocBook XSL Stylesheets V1.65.1">
+      <link rel="home" href="index.html" title="Trail:&nbsp;Adding Tooltips to Graph Elements">
+      <link rel="up" href="index.html" title="Trail:&nbsp;Adding Tooltips to Graph Elements">
+      <link rel="previous" href="tooltips_EditMode.html" title="Lesson:&nbsp;EditMode Support for Tooltips">
+      <link type="text/css" rel="stylesheet" href="../jssh/SyntaxHighlighter.css"><script type="text/javascript" src="../jssh/shCore.js"></script><script type="text/javascript" src="../jssh/shBrushJava.js"></script><script type="text/javascript">
+  function sh() {
+
+    dp.SyntaxHighlighter.HighlightAll('programlisting', false, false, false, null, false);
+  }
+  </script></head>
+   <body onload="sh()" bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+      <div class="navheader">
+         <table width="100%" summary="Navigation header">
+            <tr>
+               <th colspan="3" align="center">Lesson:&nbsp;General Tooltip Support</th>
+            </tr>
+            <tr>
+               <td width="20%" align="left"><a accesskey="p" title="Lesson:&nbsp;EditMode Support for Tooltips" href="tooltips_EditMode.html">Prev</a>&nbsp;
+               </td>
+               <th width="60%" align="center">&nbsp;</th>
+               <td width="20%" align="right">&nbsp;</td>
+            </tr>
+         </table>
+         <div class="navline"></div>
+      </div>
+      <div class="sect1" lang="en">
+         <div class="titlepage">
+            <div>
+               <div>
+                  <h2 class="title" style="clear: both"><a name="tooltips_general"></a>Lesson:&nbsp;General Tooltip Support
+                  </h2>
+               </div>
+            </div>
+            <div></div>
+         </div>
+         <p>
+            Although class <a href="http://www.yworks.com/products/yfiles/doc/api/y/view/EditMode.html" title="Link to API documentation" target="_top">EditMode<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a> provides support 
+            for tooltip presentation, it surely cannot be used in a viewer type diagramming 
+            application.
+            Since <a href="http://www.yworks.com/products/yfiles/doc/api/y/view/NavigationMode.html" title="Link to API documentation" target="_top">NavigationMode<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a>, which we have used 
+            in our simple graph viewer in the <a href="../createViewer/index.html" target="_top">Creating a Simple Graph Viewer</a> 
+            trail, lacks tooltip support, let's create a specialized view mode that we can use 
+            to add tooltip presentation to any application.
+            
+         </p>
+         <p>
+            The screenshot of <a href="../../src/tutorial/viewer/SimpleGraphViewer5Tooltips.java" title="Link to source code" target="_top">SimpleGraphViewer5Tooltips</a> 
+            in <a href="tooltips_general.html#fig_SimpleGraphViewer_tooltip" title="Figure&nbsp;1.3.&nbsp;Data presentation using tooltip in SimpleGraphViewer">Figure&nbsp;1.3, &#8220;Data presentation using tooltip in SimpleGraphViewer&#8221;</a> shows where we want to go.
+            
+         </p>
+         <div class="figure"><a name="fig_SimpleGraphViewer_tooltip"></a><p class="title"><b>Figure&nbsp;1.3.&nbsp;Data presentation using tooltip in SimpleGraphViewer</b></p>
+            <div class="informaltable">
+               <center>
+                  <table border="0">
+                     <colgroup>
+                        <col width="100%">
+                     </colgroup>
+                     <tbody>
+                        <tr>
+                           <td>
+                              <div class="mediaobject" align="center"><img src="figures/SimpleGraphViewer5-tooltip-custom.png" align="middle" alt="Data presentation using tooltip in SimpleGraphViewer"></div>
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </center>
+            </div>
+         </div>
+         <p>
+            In <a href="tooltips_general.html#ex_TooltipMode" title="Example&nbsp;1.2.&nbsp;ViewMode implementation class TooltipMode">Example&nbsp;1.2, &#8220;ViewMode implementation class TooltipMode&#8221;</a> you can take a look at the complete source code 
+            for our tooltip presentation view mode. 
+            It closely resembles the tooltip-related API of class y.view.EditMode.
+            
+         </p>
+         <div class="example"><a name="ex_TooltipMode"></a><p class="title"><b>Example&nbsp;1.2.&nbsp;ViewMode implementation class TooltipMode</b></p><pre class="programlisting java">
+public class TooltipMode extends ViewMode {
+  public static final Object NODE_TOOLTIP_DPKEY =
+      "TooltipMode.NODE_TOOLTIP_DPKEY";
+  public static final Object EDGE_TOOLTIP_DPKEY =
+      "TooltipMode.EDGE_TOOLTIP_DPKEY";
+
+  boolean showNodeTips;
+  boolean showEdgeTips;
+
+  /**
+   * Instantiates a new TooltipMode.
+   * By default, node tooltips are enabled.
+   */
+  public TooltipMode() {
+    this(true, false);
+  }
+
+  /** Instantiates a new TooltipMode. */
+  public TooltipMode(boolean showNodeTips, boolean showEdgeTips) {
+    this.showNodeTips = showNodeTips;
+    this.showEdgeTips = showEdgeTips;
+  }
+
+  /**
+   * If set to &lt;code&gt;true&lt;/code&gt; this view mode will show a tooltip displaying
+   * whatever is returned by {@link #getNodeTip(Node node)}.
+   */
+  public void showNodeTips(boolean showToolTip) {
+    showNodeTips = showToolTip;
+    if (!showNodeTips &amp;&amp; view != null) {
+      view.setToolTipText(null);
+    }
+  }
+
+  /**
+   * Returns &lt;code&gt;true&lt;/code&gt; if this view mode should display tooltip text for
+   * nodes.
+   */
+  public boolean doShowNodeTips() {
+    return showNodeTips;
+  }
+
+  /**
+   * If set to &lt;code&gt;true&lt;/code&gt; this view mode will show a tooltip displaying
+   * whatever is returned by {@link #getEdgeTip(Edge edge)}.
+   */
+  public void showEdgeTips(boolean showToolTip) {
+    showEdgeTips = showToolTip;
+    if (!showEdgeTips &amp;&amp; view != null) {
+      view.setToolTipText(null);
+    }
+  }
+
+  /**
+   * Returns &lt;code&gt;true&lt;/code&gt; if this view mode should display tooltip text for
+   * edges.
+   */
+  public boolean doShowEdgeTips() {
+    return showEdgeTips;
+  }
+
+  public void mouseMoved(double x, double y) {
+    HitInfo hitInfo = getHitInfo(x, y);
+
+    if (doShowNodeTips() || doShowEdgeTips()) {
+      String tooltipText = null;
+      if (hitInfo.getHitNode() != null) {
+        if (doShowNodeTips()) {
+          tooltipText = getNodeTip(hitInfo.getHitNode());
+        }
+      }
+      else if (hitInfo.getHitEdge() != null) {
+        if (doShowEdgeTips()) {
+          tooltipText = getEdgeTip(hitInfo.getHitEdge());
+        }
+      }
+      if (tooltipText != null &amp;&amp; tooltipText.length() &lt; 1) {
+        tooltipText = null;
+      }
+      view.setToolTipText(tooltipText);
+    }
+  }
+
+  /**
+   * Returns the tooltip text to be displayed for the given node.
+   * &lt;p&gt;
+   * This method will be called to get the tooltip text associated with the
+   * given node. The tooltip text will only be displayed if
+   * &lt;code&gt;doShowNodeTips&lt;/code&gt; returns &lt;code&gt;true&lt;/code&gt;.
+   * &lt;/p&gt;
+   * &lt;p&gt;
+   * By default the label text of the node will be returned. If a data provider
+   * is registered with the node's graph using the {@link #NODE_TOOLTIP_DPKEY}
+   * key, then the tooltip text that is returned by the data provider for the
+   * given node is used instead.
+   * &lt;br/&gt;
+   * Subclasses may want to override this behavior.
+   * &lt;/p&gt;
+   */
+  protected String getNodeTip(Node node) {
+    String result;
+    DataProvider dp = getGraph2D().getDataProvider(NODE_TOOLTIP_DPKEY);
+
+    if (dp != null &amp;&amp; (result = (String)dp.get(node)) != null) {
+      return result;
+    }
+    return getGraph2D().getLabelText(node);
+  }
+
+  /**
+   * Returns the tooltip text to be displayed for the given edge.
+   * &lt;p&gt;
+   * This method will be called to get the tooltip text associated with the
+   * given edge. The tooltip text will only be displayed if
+   * &lt;code&gt;doShowEdgeTips&lt;/code&gt; returns &lt;code&gt;true&lt;/code&gt;.
+   * &lt;/p&gt;
+   * &lt;p&gt;
+   * By default the label text of the edge's first label will be returned. If a
+   * data provider is registered with the node's graph using the
+   * {@link #EDGE_TOOLTIP_DPKEY} key, then the tooltip text that is returned by
+   * the data provider for the given edge is used instead.
+   * &lt;br/&gt;
+   * Subclasses may want to override this behavior.
+   * &lt;/p&gt;
+   */
+  protected String getEdgeTip(Edge edge) {
+    String result;
+    DataProvider dp = getGraph2D().getDataProvider(EDGE_TOOLTIP_DPKEY);
+
+    if (dp != null &amp;&amp; (result = (String)dp.get(edge)) != null) {
+      return result;
+    }
+
+    EdgeRealizer er = getGraph2D().getRealizer(edge);
+    return (er.labelCount() &gt; 0) ? er.getLabel(0).getText() : null;
+  }
+}
+</pre></div>
+         <h3><a name="d0e186"></a>Using Class TooltipMode
+         </h3>
+         <p>
+            Using the TooltipMode class we can easily customize tooltips without the need for 
+            subclassing. 
+            We can do so by means of data providers that we register with a graph using the 
+            data provider keys defined in TooltipMode, namely <tt class="code">NODE_TOOLTIP_DPKEY</tt> 
+            and <tt class="code">EDGE_TOOLTIP_DPKEY</tt>.
+            
+         </p>
+         <p>
+            For example, let's add a data provider to our graph that generates the tooltip text 
+            for a node on-the-fly, using the following logic which simply prints the width and 
+            height of a node, nicely arranged using some HTML styling. 
+            
+            In the SimpleGraphViewer5 application from the <a href="../createViewer/index.html" target="_top">Creating a Simple Graph Viewer</a> 
+            trail, we can do this in the <tt class="code">main</tt> method as follows.
+            
+         </p>
+         <div class="example"><a name="ex_tooltip_text_data_provider"></a><p class="title"><b>Example&nbsp;1.3.&nbsp;Registering a data provider for node tooltips</b></p><pre class="programlisting java">
+sgv.getGraph().addDataProvider(TooltipMode.NODE_TOOLTIP_DPKEY, 
+                               new DataProviderAdapter() {
+    public Object get(Object actuallyNode) {
+      Node node = (Node)actuallyNode;
+      Graph2D graph = (Graph2D)node.getGraph();
+      return "&lt;html&gt;width x height: &lt;b&gt;" + 
+             graph.getWidth(node) + "&lt;/b&gt; x &lt;b&gt;" + graph.getHeight(node) + 
+             "&lt;/b&gt;&lt;/html&gt;";
+    }
+});
+</pre></div>
+         <p>
+            Of course, we also need to add TooltipMode itself to the view modes that process 
+            mouse events occurring in our view. 
+            We will do so in the same way that NavigationMode is added in the <tt class="code">createGraph2DView</tt> 
+            method of SimpleGraphViewer5, using the <a href="http://www.yworks.com/products/yfiles/doc/api/y/view/Graph2DView.html#addViewMode(y.view.ViewMode)" title="Link to API documentation" target="_top">addViewMode<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a> 
+            method of Graph2DView.
+            
+         </p>
+         <div class="example"><a name="ex_adding_TooltipMode"></a><p class="title"><b>Example&nbsp;1.4.&nbsp;Adding TooltipMode to the view modes of a given view</b></p><pre class="programlisting java">
+// 'view' is of type y.view.Graph2DView.
+
+view.addViewMode(new TooltipMode());
+</pre></div>
+         <p>
+            Now, our modified simple graph viewer application, SimpleGraphViewer5Tooltips, will 
+            present tooltips for nodes that show the width and height.
+            
+         </p>
+         <div class="highlights">
+            <h4><a name="d0e227"></a>Related Resources
+            </h4>
+            <p>
+               You will find related information in the yFiles for Java Developer's Guide: 
+               
+            </p>
+            <div class="itemizedlist">
+               <ul type="disc">
+                  <li><a href="http://www.yworks.com/products/yfiles/doc/developers-guide/mvc_controller.html#cls_ViewMode" title="Link to Developer's Guide" target="_top">View modes in yFiles for Java</a></li>
+                  <li><a href="http://www.yworks.com/products/yfiles/doc/developers-guide/layout_concepts.html#supplemental_information" title="Link to Developer's Guide" target="_top">Using DataProviderAdapter</a></li>
+               </ul>
+            </div>
+            <p>
+               
+               In the yFiles for Java source code demos: 
+               
+            </p>
+            <div class="itemizedlist">
+               <ul type="disc">
+                  <li><a href="http://www.yworks.com/products/yfiles/doc/demo/view/viewmode/README.html" title="Link to demo code" target="_top">ViewMode</a>-related 
+                     source code demo applications
+                     
+                  </li>
+               </ul>
+            </div>
+            <p>
+               
+               
+            </p>
+         </div>
+      </div>
+      <table class="copyright" border="0" cellpadding="0" cellspacing="0" width="100%">
+         <tbody>
+            <tr>
+               <td align="right">
+                  <p class="copyright">Copyright &copy;2008-2009, yWorks GmbH. All rights reserved.</p>
+               </td>
+            </tr>
+         </tbody>
+      </table>
+      <div class="navfooter">
+         <div class="navline2"></div>
+         <table width="100%" summary="Navigation footer">
+            <tr>
+               <td width="40%" align="left"><a accesskey="p" title="Lesson:&nbsp;EditMode Support for Tooltips" href="tooltips_EditMode.html">Prev</a>&nbsp;
+               </td>
+               <td width="20%" align="center"><a accesskey="u" title="Trail:&nbsp;Adding Tooltips to Graph Elements" href="index.html">Up</a></td>
+               <td width="40%" align="right">&nbsp;</td>
+            </tr>
+            <tr>
+               <td width="40%" align="left" valign="top">Lesson:&nbsp;EditMode Support for Tooltips&nbsp;</td>
+               <td width="20%" align="center"><a accesskey="h" title="yFiles for Java Tutorial" href="../index.html">Home</a></td>
+               <td width="40%" align="right" valign="top">&nbsp;</td>
+            </tr>
+         </table>
+      </div>
+   </body>
+</html>

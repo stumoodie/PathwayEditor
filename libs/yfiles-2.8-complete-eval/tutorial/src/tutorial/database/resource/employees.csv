@@ -1,0 +1,13 @@
+id,firstname,lastname,gender,jobtitle,department,room,phoneextension,supervisor
+1,Martin,Tailor,male,Chief Executive Officer,CEO,A302,42,
+2,Ron,Williams,male,Marketing Manager,Marketing,A231,195,1
+3,Mike,Copperfield,male,Chief Financial Officer,Administration,A304,219,1
+4,Michael,Williams,male,Information Services Manager,Administration,A215,184,1
+5,Chris,Miller,male,Vice President of Production,Production,A204,38,1
+6,David,Norman,male,Vice President of Engineering,Production,A258,167,1
+7,Kim,Marshal,female,Vice President of Sales,Sales,A329,74,1
+8,Linda,Smith,female,Human Resource Manager,Administration,A174,153,3
+9,Steven,Tanner,male,Accounts Manager,Administration,A184,57,3
+10,Joe,North,male,Finance Manager,Administration,A153,234,3
+11,Alice,Simpson,female,Quality Assurance Manager,Production,A125,29,6
+12,Ron,Green,male,Production Supervisor,Production,A119,122,6

@@ -1,0 +1,448 @@
+<html>
+   <head>
+      <title>Migration Notes</title>
+      <link rel="stylesheet" href="yfiles.css" type="text/css">
+      <style type="text/css">
+h3 {
+  margin-left: 0px;
+}
+h4 {
+  font-size: 12px;
+  font-weight: normal;
+  text-decoration: underline;
+  margin-top: 8px;
+  margin-left: 8px;
+  margin-bottom: 0px;
+}
+
+div.programlisting pre.programlisting {
+  margin-left: 8px;
+  font-size: 12px;
+  background-color: #E3EEFE;
+  border: 1px solid white;
+  vertical-align: baseline;
+  padding: 2px;
+}
+
+div.example div.informaltable div.migration td.version {
+  font-size: 12px;
+  background-color: #A4B9EA;
+  font-weight: bold;
+  text-align: center;
+}
+      </style>
+   </head>
+   <body>
+      <div class="appendix" lang="en">
+         <div class="titlepage">
+            <div>
+               <div>
+                  <h1 class="title"><a name="migration"></a>Migration Notes</h1>
+               </div>
+            </div>
+            <div></div>
+         </div>
+         <div class="toc">
+            <p><b>Table of Contents</b></p>
+            <dl>
+               <dt><span class="section"><a href="#d0e30120">Migrating From yFiles for Java 2.7 to 2.8</a></span></dt>
+
+               <dd>
+                  <dl>
+                     <dt><span class="section"><a href="#migration_java">API Changes</a></span></dt>
+                     <dd>
+                        <dl>
+                           <dt><span class="section"><a href="#d0e30130">Labels and Labeling-related Infrastructure now use OrientedRectangle</a></span></dt>
+                        </dl>
+                     </dd>
+                     <dt><span class="section"><a href="#migration_ygf">YGF Deprecation</a></span></dt>
+                     <dd>
+                        <dl>
+                           <dt><span class="section"><a href="#d0e30148">Remedy</a></span></dt>
+                        </dl>
+                     </dd>
+
+                     <dt><span class="section"><a href="#improvements_java">Improvements</a></span></dt>
+                     <dd>
+                        <dl>
+                           <dt><span class="section"><a href="#d0e30162">Graph2DUndoManager's Handling of Inner Graphs</a></span></dt>
+                        </dl>
+                     </dd>
+                  </dl>
+               </dd>
+            </dl>
+         </div>
+         <div class="section" lang="en">
+
+            <div class="titlepage">
+               <div>
+                  <div>
+                     <h2 class="title" style="clear: both"><a name="d0e30120"></a>Migrating From yFiles for Java 2.7 to 2.8
+                     </h2>
+
+                  </div>
+               </div>
+               <div></div>
+            </div>
+            <p>
+               The migration of a yFiles for Java 2.7 application to yFiles for Java 2.8 comprises
+               changes to your code as described in following sections.
+
+            </p>
+            <div class="section" lang="en">
+               <div class="titlepage">
+                  <div>
+                     <div>
+                        <h2 class="title"><a name="migration_java"></a>API Changes
+                        </h2>
+                     </div>
+                  </div>
+                  <div></div>
+               </div>
+               <p>
+
+               </p>
+               <div class="section" lang="en">
+                  <div class="titlepage">
+                     <div>
+                        <div>
+                           <h3 class="title"><a name="d0e30130"></a>Labels and Labeling-related Infrastructure now use OrientedRectangle
+                           </h3>
+                        </div>
+                     </div>
+                     <div></div>
+                  </div>
+                  <div class="section" lang="en">
+                     <div class="titlepage">
+                        <div>
+                           <div>
+                              <h4 class="title"><a name="d0e30153"></a>Change
+                              </h4>
+                           </div>
+                        </div>
+                        <div></div>
+                     </div>
+                     <p>
+                        The return types and signatures of the following methods defined in interfaces <a href="api/y/layout/NodeLabelModel.html" title="Link to API documentation" target="_top">NodeLabelModel</a>
+                        and <a href="api/y/layout/EdgeLabelModel.html" title="Link to API documentation" target="_top">EdgeLabelModel</a> have changed to use <a href="api/y/geom/OrientedRectangle.html" title="Link to API documentation" target="_top">OrientedRectangle</a>:
+
+                     </p>
+                  </div>
+                  <div class="table"><a name="tab_compat_label_model_methods_OrientedRectangle"></a><p class="title"><b>Table&nbsp;B.1.&nbsp;Label model methods that use OrientedRectangle</b></p>
+                     <table summary="Label model methods that use OrientedRectangle" width="100%" border="1">
+                        <colgroup>
+                           <col width="25%" align="left">
+                           <col width="75%" align="left">
+                        </colgroup>
+                        <thead>
+                           <tr>
+                              <th align="left">Interface name</th>
+                              <th align="left">Method</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           <tr>
+                              <td rowspan="2" align="left"><a href="api/y/layout/EdgeLabelModel.html" title="Link to API documentation" target="_top">EdgeLabelModel</a></td>
+                              <td align="left"><a href="api/y/layout/EdgeLabelModel.html#createModelParameter(y.geom.OrientedRectangle, y.layout.EdgeLayout, y.layout.NodeLayout, y.layout.NodeLayout)" title="Link to API documentation" target="_top">Object createModelParameter(OrientedRectangle, EdgeLayout, NodeLayout, NodeLayout)</a>
+                                   (OrientedRectangle instead of <a href="api/y/geom/YRectangle.html" title="Link to API documentation" target="_top">YRectangle</a>)
+
+                              </td>
+                           </tr>
+                           <tr>
+                              <td align="left"><a href="api/y/layout/EdgeLabelModel.html#getLabelPlacement(y.geom.YDimension, y.layout.EdgeLayout, y.layout.NodeLayout, y.layout.NodeLayout, java.lang.Object)" title="Link to API documentation" target="_top">OrientedRectangle getLabelPlacement(YDimension, EdgeLayout, NodeLayout, NodeLayout, Object)</a>
+                                   (OrientedRectangle instead of <a href="api/y/geom/YPoint.html" title="Link to API documentation" target="_top">YPoint</a>)
+
+                              </td>
+                           </tr>
+                           <tr>
+                              <td rowspan="2" align="left"><a href="api/y/layout/NodeLabelModel.html" title="Link to API documentation" target="_top">NodeLabelModel</a></td>
+                              <td align="left"><a href="api/y/layout/NodeLabelModel.html#createModelParameter(y.geom.OrientedRectangle, y.layout.NodeLayout)" title="Link to API documentation" target="_top">Object createModelParameter(OrientedRectangle, NodeLayout)</a>
+                                   (OrientedRectangle instead of <a href="api/y/geom/YRectangle.html" title="Link to API documentation" target="_top">YRectangle</a>)
+
+                              </td>
+                           </tr>
+                           <tr>
+                              <td align="left"><a href="api/y/layout/NodeLabelModel.html#getLabelPlacement(y.geom.YDimension, y.layout.NodeLayout, java.lang.Object)" title="Link to API documentation" target="_top">OrientedRectangle getLabelPlacement(YDimension, NodeLayout, Object)</a>
+                                   (OrientedRectangle instead of <a href="api/y/geom/YPoint.html" title="Link to API documentation" target="_top">YPoint</a>)
+
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </div>
+                  <div class="section" lang="en">
+                     <div class="titlepage">
+                        <div>
+                           <div>
+                              <h4 class="title"><a name="d0e30209"></a>Remedy
+                              </h4>
+                           </div>
+                        </div>
+                        <div></div>
+                     </div>
+                     <p>
+                        If you are using either of the <tt class="code">getLabelPlacement</tt> methods to get a YPoint,
+                        you can replace their occurrences by corresponding static convenience methods from
+                        class <a href="api/y/layout/LayoutTool.html" title="Link to API documentation" target="_top">LayoutTool</a>, for example:
+
+                     </p>
+                     <div class="itemizedlist">
+                        <ul type="disc">
+                           <li>
+                              EdgeLabelModel: <a href="api/y/layout/LayoutTool.html#getLabelPlacement(y.layout.EdgeLabelModel, y.geom.YDimension, y.layout.EdgeLayout, y.layout.NodeLayout, y.layout.NodeLayout, java.lang.Object)" title="Link to API documentation" target="_top">static YPoint getLabelPlacement(EdgeLabelModel, YDimension, EdgeLayout, NodeLayout, NodeLayout, Object)</a></li>
+                           <li>
+                              NodeLabelModel: <a href="api/y/layout/LayoutTool.html#getLabelPlacement(y.layout.NodeLabelModel, y.geom.YDimension, y.layout.NodeLayout, java.lang.Object)" title="Link to API documentation" target="_top">static YPoint getLabelPlacement(NodeLabelModel, YDimension, NodeLayout, Object)</a></li>
+                        </ul>
+                     </div>
+                     <p>
+
+                        Alternatively, you can also get the YPoint of the upper left corner of an OrientedRectangle
+                        like so:
+
+                     </p><div class="programlisting"><pre class="programlisting java">
+// 'or' is of type y.geom.OrientedRectangle.
+
+// Get the upper left corner of the oriented rectangle's bounding box.
+YPoint location = or.getBoundingBox().getLocation();
+</pre></div><p>
+                        If you are using either of the <tt class="code">createModelParameter</tt> methods, you can
+                        create an OrientedRectangle from your YRectangle like so:
+
+                     </p>
+                     <div class="example"><a name="ex_migrate_UndoManager"></a><p class="title"><b>Example&nbsp;B.1.&nbsp;Using the copy constructor of OrientedRectangle</b></p>
+                        <div class="informaltable">
+                           <div class="migration">
+                              <table width="100%" border="1">
+                                 <colgroup>
+                                    <col width="5%">
+                                    <col width="95%">
+                                 </colgroup>
+                                 <tbody>
+                                    <tr>
+                                       <td class="version" align="center">2.7</td>
+                                       <td><pre class="programlisting java">
+// 'elm' is of type y.layout.EdgeLabelModel.
+// 'yRect' is of type y.geom.YRectangle.
+
+// Works analogously for NodeLabelModel.
+Object param = elm.createModelParameter(yRect, eLayout,
+                                        srcNodeLayout, targetNodeLayout);
+</pre></td>
+                                    </tr>
+                                    <tr>
+                                       <td class="version" align="center">2.8</td>
+                                       <td><pre class="programlisting java">
+// 'elm' is of type y.layout.EdgeLabelModel.
+// 'yRect' is of type y.geom.YRectangle.
+
+// Works analogously for NodeLabelModel.
+Object param = elm.createModelParameter(new OrientedRectangle(yRect), eLayout,
+                                        srcNodeLayout, targetNodeLayout);
+</pre></td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="section" lang="en">
+                     <div class="titlepage">
+                        <div>
+                           <div>
+                              <h4 class="title"><a name="d0e30133"></a>Change
+                              </h4>
+                           </div>
+                        </div>
+                        <div></div>
+                     </div>
+                     <p>
+                        Abstract method <a href="api/y/view/YLabel.html#getBox()" title="Link to API documentation" target="_top">getBox()</a> of class YLabel
+                        has been made final and thus can no longer be implemented.
+                     </p>
+                  </div>
+                  <div class="section" lang="en">
+                     <div class="titlepage">
+                        <div>
+                           <div>
+                              <h4 class="title"><a name="d0e30140"></a>Remedy
+                              </h4>
+                           </div>
+                        </div>
+                        <div></div>
+                     </div>
+                     <p>
+                        If you have created your own label implementation, you will have to implement new
+                        abstract method <a href="api/y/view/YLabel.html#getOrientedBox()" title="Link to API documentation" target="_top">getOrientedBox()</a> instead,
+                        which uses <a href="api/y/geom/OrientedRectangle.html" title="Link to API documentation" target="_top">OrientedRectangle</a> as its return
+                        type.
+                     </p>
+                     <p>
+                        To get an OrientedRectangle from a YRectangle you can use the copy constructor of
+                        class OrientedRectangle:
+
+                     </p><div class="programlisting"><pre class="programlisting java">
+// 'yRect' is of type y.geom.YRectangle.
+
+OrientedRectangle or = new OrientedRectangle(yRect);
+</pre></div></div>
+               </div>
+            </div>
+            <div class="section" lang="en">
+               <div class="titlepage">
+
+                  <div>
+                     <div>
+                        <h2 class="title"><a name="migration_ygf"></a>YGF Deprecation
+                        </h2>
+                     </div>
+                  </div>
+                  <div></div>
+               </div>
+               <p>
+
+                  The YGF file format (Y Graph Format) is deprecated as of yFiles for Java 2.8
+                  Consequently, any related I/O methods are marked deprecated.
+                  In particular, this means the read and write methods of classes YLabel
+                  (<a href="api/y/view/YLabel.html#read(java.io.ObjectInputStream)" title="Link to API documentation" target="_top">read</a>
+                  and <a href="api/y/view/YLabel.html#write(java.io.ObjectOutputStream)" title="Link to API documentation" target="_top">write</a>),
+                  NodeRealizer
+                  (<a href="api/y/view/NodeRealizer.html#read(java.io.ObjectInputStream)" title="Link to API documentation" target="_top">read</a>
+                  and <a href="api/y/view/NodeRealizer.html#write(java.io.ObjectOutputStream)" title="Link to API documentation" target="_top">write</a>),
+                  and EdgeRealizer
+                  (<a href="api/y/view/EdgeRealizer.html#read(java.io.ObjectInputStream)" title="Link to API documentation" target="_top">read</a>
+                  and <a href="api/y/view/EdgeRealizer.html#write(java.io.ObjectOutputStream)" title="Link to API documentation" target="_top">write</a>).
+
+               </p>
+
+               <div class="section" lang="en">
+                  <div class="titlepage">
+                     <div>
+                        <div>
+                           <h4 class="title"><a name="d0e30148"></a>Remedy
+                           </h4>
+                        </div>
+                     </div>
+                     <div></div>
+
+                  </div>
+                  <p>
+                     As a replacement, use the GraphML file format to write your graphs.
+                     See <a href="developers-guide/io.html" title="Chapter&nbsp;9.&nbsp;Input and Output">Chapter&nbsp;9, <i>Input and Output</i></a>, especially the <a href="developers-guide/graphml.html" title="GraphML">the section called &#8220;GraphML&#8221;</a> in the yFiles for Java Developer's Guide.
+
+                  </p>
+               </div>
+            </div>
+
+            <div class="section" lang="en">
+               <div class="titlepage">
+                  <div>
+                     <div>
+                        <h2 class="title"><a name="improvements_java"></a>Improvements
+                        </h2>
+                     </div>
+                  </div>
+                  <div></div>
+
+               </div>
+               <p>
+
+               </p>
+               <div class="section" lang="en">
+                  <div class="titlepage">
+                     <div>
+                        <div>
+                           <h3 class="title"><a name="d0e30162"></a>Graph2DUndoManager's Handling of Inner Graphs
+                           </h3>
+
+                        </div>
+                     </div>
+                     <div></div>
+                  </div>
+                  <div class="section" lang="en">
+                     <div class="titlepage">
+                        <div>
+                           <div>
+                              <h4 class="title"><a name="d0e30165"></a>Change
+                              </h4>
+
+                           </div>
+                        </div>
+                        <div></div>
+                     </div>
+                     <p>
+                        Improved the behavior of class Graph2DUndoManager's <a href="api/y/view/Graph2DUndoManager.html#Graph2DUndoManager(y.view.Graph2D)" title="Link to API documentation" target="_top">Graph2DUndoManager(Graph2D)</a>
+                        constructor to correctly register the undo manager as GraphListener and <a href="api/y/view/Graph2D.BackupRealizersHandler.html" title="Link to API documentation" target="_top">Graph2D.BackupRealizersHandler</a>
+
+                        for all existing inner graphs of the argument root graph.
+
+                     </p>
+                  </div>
+                  <div class="section" lang="en">
+                     <div class="titlepage">
+                        <div>
+                           <div>
+                              <h4 class="title"><a name="d0e30175"></a>Consequence
+                              </h4>
+                           </div>
+
+                        </div>
+                        <div></div>
+                     </div>
+                     <p>
+                        If you are using Graph2DUndoManager's one-argument constructor <span class="bold"><b>and</b></span>
+                        you are manually registering the undo manager as listener/backup handler for inner
+                        graphs, remove the manual registering.
+
+                     </p>
+                     <div class="example"><a name="ex_improved_Graph2DUndoManager"></a><p class="title"><b>Example&nbsp;B.1.&nbsp;Registering a Graph2DUndoManager</b></p>
+
+                        <div class="informaltable">
+                           <div class="migration">
+                              <table width="100%" border="1">
+                                 <colgroup>
+                                    <col width="5%">
+                                    <col width="95%">
+                                 </colgroup>
+                                 <tbody>
+                                    <tr>
+
+                                       <td class="version" align="center">2.7</td>
+                                       <td><pre class="programlisting java">
+// 'graph2D' is of type y.view.Graph2D.
+
+Graph2DUndoManager manager = new Graph2DUndoManager(graph2D);
+
+// Get the inner graphs of this root graph.
+List innerGraphs = myGetAllInnerGraphs(graph2D);
+
+Iterator it = innerGraphs.iterator();
+while (it.hasNext()) {
+  Graph inner = (Graph)it.getNext();
+  inner.addGraphListener(manager);
+  ((Graph2D)inner).setBackupRealizersHandler(manager);
+}</pre>
+                                       </td>
+                                    </tr>
+                                    <tr>
+                                       <td class="version" align="center">2.8</td>
+                                       <td><pre class="programlisting java">
+// 'graph2D' is of type y.view.Graph2D.
+
+Graph2DUndoManager manager = new Graph2DUndoManager(graph2D);</pre>
+                                       </td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+
+            </div>
+         </div>
+      </div>
+      <p class="copyright">Copyright &copy;2004-2010, yWorks GmbH. All rights reserved.</p>
+   </body>
+</html>

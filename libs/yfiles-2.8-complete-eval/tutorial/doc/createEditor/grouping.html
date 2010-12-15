@@ -1,0 +1,502 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+      <title>Lesson:&nbsp;Adding Grouping Support to the Editor</title>
+      <link rel="stylesheet" href="ystyle.css" type="text/css">
+      <meta name="generator" content="DocBook XSL Stylesheets V1.65.1">
+      <link rel="home" href="index.html" title="Trail:&nbsp;Creating a Simple Graph Editor">
+      <link rel="up" href="index.html" title="Trail:&nbsp;Creating a Simple Graph Editor">
+      <link rel="previous" href="keyboard.html" title="Lesson:&nbsp;Adding Keyboard Support to the Editor">
+      <link type="text/css" rel="stylesheet" href="../jssh/SyntaxHighlighter.css"><script type="text/javascript" src="../jssh/shCore.js"></script><script type="text/javascript" src="../jssh/shBrushJava.js"></script><script type="text/javascript">
+  function sh() {
+
+    dp.SyntaxHighlighter.HighlightAll('programlisting', false, false, false, null, false);
+  }
+  </script></head>
+   <body onload="sh()" bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+      <div class="navheader">
+         <table width="100%" summary="Navigation header">
+            <tr>
+               <th colspan="3" align="center">Lesson:&nbsp;Adding Grouping Support to the Editor</th>
+            </tr>
+            <tr>
+               <td width="20%" align="left"><a accesskey="p" title="Lesson:&nbsp;Adding Keyboard Support to the Editor" href="keyboard.html">Prev</a>&nbsp;
+               </td>
+               <th width="60%" align="center">&nbsp;</th>
+               <td width="20%" align="right">&nbsp;</td>
+            </tr>
+         </table>
+         <div class="navline"></div>
+      </div>
+      <div class="sect1" lang="en">
+         <div class="titlepage">
+            <div>
+               <div>
+                  <h2 class="title" style="clear: both"><a name="grouping"></a>Lesson:&nbsp;Adding Grouping Support to the Editor
+                  </h2>
+               </div>
+            </div>
+            <div></div>
+         </div>
+         <p>
+            As simple as it is, the editor type application that we have built can be perfectly 
+            used to create and edit "flat" graphs. 
+            Now, if we want to use it to also work with grouped graphs, where we have nodes 
+            that can contain other nodes, then we will need to add grouping support.
+            
+         </p>
+         <p>
+            Grouping support means the ability to put nodes into other, so-called group nodes, 
+            which allows to create a hierarchical inclusion tree of (sub)graphs. 
+            This is also referred to as a graph hierarchy, or a grouped graph structure.
+            
+         </p>
+         <p>
+            Group nodes can have one of two states: they are either open or closed: 
+            
+         </p>
+         <div class="itemizedlist">
+            <ul type="disc">
+               <li>
+                  When open, the nodes contained in a group node are both visible and also part of 
+                  the same graph that the group node is in. 
+                  
+               </li>
+               <li>
+                  When closed, the contained nodes are no longer visible, since they are actually 
+                  moved to another graph, the so-called inner graph of the closed group node.
+                  
+               </li>
+            </ul>
+         </div>
+         <p>
+            
+            A closed group node is also called "folder node."
+            
+         </p>
+         <p>
+            <a href="grouping.html#fig_SimpleGroupingEditor1" title="Figure&nbsp;1.1.&nbsp;Group node and folder node side by side">Figure&nbsp;1.1, &#8220;Group node and folder node side by side&#8221;</a> shows the <a href="../../src/tutorial/editor/SimpleGroupingEditor1.java" title="Link to source code" target="_top">SimpleGroupingEditor1</a> 
+            demo application with both group node and folder node in the view.
+            
+         </p>
+         <div class="figure"><a name="fig_SimpleGroupingEditor1"></a><p class="title"><b>Figure&nbsp;1.1.&nbsp;Group node and folder node side by side</b></p>
+            <div class="informaltable">
+               <center>
+                  <table border="0">
+                     <colgroup>
+                        <col width="100%">
+                     </colgroup>
+                     <tbody>
+                        <tr>
+                           <td>
+                              <div class="mediaobject" align="center"><img src="figures/SimpleGroupingEditor1.png" align="middle" alt="Group node and folder node side by side."></div>
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </center>
+            </div>
+         </div>
+         <p>
+            Our current editor application can only handle "flat" graphs, i.e., graphs that 
+            do not contain group nodes or folder nodes. 
+            However, we will change that right away.
+            
+         </p>
+         <p>
+            For that, we need to create a <a href="http://www.yworks.com/products/yfiles/doc/api/y/view/hierarchy/HierarchyManager.html" title="Link to API documentation" target="_top">HierarchyManager<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a> 
+            for our graph as shown in <a href="grouping.html#ex_SimpleGroupingEditor1_ctor" title="Example&nbsp;1.6.&nbsp;SimpleGroupingEditor1 constructor (where the HierarchyManager is created)">Example&nbsp;1.6, &#8220;SimpleGroupingEditor1 constructor (where the HierarchyManager is created)&#8221;</a>. 
+            Naturally, the HierarchyManager is only the beginning, but a very important one: 
+            it maintains the model that is behind a graph hierarchy, and it is responsible for 
+            quite everything related to that model.
+            
+         </p>
+         <div class="example"><a name="ex_SimpleGroupingEditor1_HierarchyManager"></a><p class="title"><b>Example&nbsp;1.5.&nbsp;Creating the HierarchyManager to handle the graph hierarchy</b></p><pre class="programlisting java">
+// Instantiate a HierarchyManager for the graph.
+hierarchy = new HierarchyManager(graph);
+</pre></div>
+         <p>
+            In the constructor of <a href="../../src/tutorial/editor/SimpleGroupingEditor1.java" title="Link to source code" target="_top">SimpleGroupingEditor1</a>, 
+            where we actually create the HierarchyManager, we immediately hand it over in the 
+            call to the new <tt class="code">configureDefaultGroupNodeRealizers</tt> method that we use 
+            to configure the visual representation of our group nodes.
+            
+         </p>
+         <div class="example"><a name="ex_SimpleGroupingEditor1_ctor"></a><p class="title"><b>Example&nbsp;1.6.&nbsp;SimpleGroupingEditor1 constructor (where the HierarchyManager is created)</b></p><pre class="programlisting java">
+public SimpleGroupingEditor1(Dimension size, String title) {
+  view = createGraph2DView();
+  graph = view.getGraph2D();
+  
+  // Instantiate a HierarchyManager for the graph.
+  hierarchy = new HierarchyManager(graph);
+  
+  frame = createApplicationFrame(size, title, view);
+  configureDefaultRealizers(graph);
+  
+  // Configure group node type and visual representation.
+  configureDefaultGroupNodeRealizers(hierarchy);
+}
+</pre></div>
+         <p>
+            The <tt class="code">configureDefaultGroupNodeRealizers</tt> method is shown in full length 
+            in <a href="grouping.html#ex_SimpleGroupingEditor1_configureDefaultGroupNodeRealizers" title="Example&nbsp;1.7.&nbsp;configureDefaultGroupNodeRealizers method in SimpleGroupingEditor1">Example&nbsp;1.7, &#8220;configureDefaultGroupNodeRealizers method in SimpleGroupingEditor1&#8221;</a>. 
+            
+            It uses the given HierarchyManager to get the <a href="http://www.yworks.com/products/yfiles/doc/api/y/view/hierarchy/DefaultHierarchyGraphFactory.html" title="Link to API documentation" target="_top">DefaultHierarchyGraphFactory<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a> 
+            which is responsible for creating both group nodes and folder nodes in a graph hierarchy.
+            
+         </p>
+         <p>
+            Similar to the default realizer mechanism of the Graph2D (which we have learned 
+            about in the <a href="../createViewer/index.html" target="_top">Creating a Simple Graph Viewer</a> 
+            trail), this factory maintains default node realizers for both group nodes and folder 
+            nodes. 
+            In the <tt class="code">configureDefaultGroupNodeRealizers</tt> method, we set up and create 
+            a <a href="http://www.yworks.com/products/yfiles/doc/api/y/view/hierarchy/GenericGroupNodeRealizer.html" title="Link to API documentation" target="_top">GenericGroupNodeRealizer<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a> 
+            to render these node types.
+            
+         </p>
+         <p>
+            GenericGroupNodeRealizer is a subclass of GenericNodeRealizer, and as such uses 
+            a so-called configuration that defines all aspects of the node realizer's visual 
+            representation and behavior. 
+            For our GenericGroupNodeRealizer we will be happy with the default configuration 
+            which we can retrieve using the static <a href="http://www.yworks.com/products/yfiles/doc/api/y/view/hierarchy/GenericGroupNodeRealizer.html#createDefaultConfigurationMap()" title="Link to API documentation" target="_top">createDefaultConfigurationMap()<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a> 
+            method. 
+            
+            Basically, this gives us already a group node representation: 
+            
+         </p>
+         <div class="itemizedlist">
+            <ul type="disc">
+               <li>that renders a rectangular node</li>
+               <li>
+                  with a "title bar" that shows the group node's label and a state icon that can be 
+                  used for collapsing/expanding the group node (see below)
+                  
+               </li>
+               <li>
+                  that automatically adjusts its size according to the bounding box of its contained 
+                  nodes
+                  
+               </li>
+            </ul>
+         </div>
+         <p>
+            
+            As our only customization to this, we set other fill color and line color for the 
+            group node. 
+            
+            Finally, at the end of the method, we assign copies of our node realizer as the 
+            default realizer for group node and folder node representation. 
+            Note that GenericGroupNodeRealizer is used for both representations: group node 
+            as well as folder node.
+            
+         </p>
+         <p>
+            With the default group node/folder node realizers set in the graph factory, all 
+            group nodes and folder nodes that are created subsequently will have the specified 
+            rendering and behavior.
+            
+         </p>
+         <div class="example"><a name="ex_SimpleGroupingEditor1_configureDefaultGroupNodeRealizers"></a><p class="title"><b>Example&nbsp;1.7.&nbsp;configureDefaultGroupNodeRealizers method in SimpleGroupingEditor1</b></p><pre class="programlisting java">
+protected void configureDefaultGroupNodeRealizers(HierarchyManager hierarchy) {
+  // Get the graph factory that maintains the default group node/folder node realizer.
+  DefaultHierarchyGraphFactory hgf = (DefaultHierarchyGraphFactory)hierarchy.getGraphFactory();
+
+  GenericNodeRealizer.Factory factory = GenericNodeRealizer.getFactory();
+  // Get the default configuration for a GenericGroupNodeRealizer and add it to 
+  // the factory that holds all configurations for generic node realizers.
+  factory.addConfiguration("DefaultGroupNodeConfig", 
+                           GenericGroupNodeRealizer.createDefaultConfigurationMap());
+
+  GenericGroupNodeRealizer gnr = new GenericGroupNodeRealizer();
+  // Use the default configuration.
+  gnr.setConfiguration("DefaultGroupNodeConfig");
+  gnr.setFillColor(new Color(202, 236, 255, 132));
+  gnr.setLineColor(new Color(102, 102, 153, 255));
+  
+  // Set the default group node/folder node realizer.
+  hgf.setDefaultGroupNodeRealizer(gnr.createCopy());
+  hgf.setDefaultFolderNodeRealizer(gnr.createCopy());
+}
+</pre></div>
+         <p>
+            One of the nice things about GenericGroupNodeRealizer is that it brings convenient 
+            support for collapsing/expanding a group node when clicking on the state icon in 
+            its "title bar." 
+            This support is provided by a MouseInputEditor implementation which is part of the 
+            configuration. 
+            
+            The MouseInputEditor implementation is used, if node-specific mouse interaction 
+            in the view is enabled, which we can easily achieve by the following line:
+            
+         </p>
+         <div class="example"><a name="ex_SimpleGroupingEditor1_setNodeSearchingEnabled"></a><p class="title"><b>Example&nbsp;1.8.&nbsp;Enabling GenericGroupNodeRealizer's support for collapsing/expanding group nodes</b></p><pre class="programlisting java">
+// To enable convenient switching between group node and folder node presentation.
+editMode.getMouseInputMode().setNodeSearchingEnabled(true);
+</pre></div>
+         <p>
+            In the bigger context, this line is part of the EditMode setup when creating the 
+            application's view:
+            
+         </p>
+         <div class="example"><a name="ex_SimpleGroupingEditor1_createGraph2DView"></a><p class="title"><b>Example&nbsp;1.9.&nbsp;createGraph2DView method with updated EditMode setup to enable node-specific mouse interaction</b></p><pre class="programlisting java">
+private Graph2DView createGraph2DView() {
+  Graph2DView view = new Graph2DView();
+  // Add a mouse wheel listener to zoom in and out of the view.
+  view.getCanvasComponent().addMouseWheelListener(new Graph2DViewMouseWheelZoomListener());
+  // Add the central view mode for an editor type application.
+  editMode = new EditMode();
+  
+  // To enable convenient switching between group node and folder node presentation.
+  editMode.getMouseInputMode().setNodeSearchingEnabled(true);
+  
+  view.addViewMode(editMode);
+  // "Install" keyboard support and many predefined hierarchy-related actions.
+  new Graph2DViewActions(view).install();
+  
+  return view;
+}
+</pre></div>
+         <p>
+            In the method where we create our application's view, we also use the Graph2DViewActions 
+            class. 
+            In the <a href="keyboard.html" title="Lesson:&nbsp;Adding Keyboard Support to the Editor">previous lesson</a> we have added the corresponding 
+            line to enable keyboard support in the view. 
+            However, the Graph2DViewActions class also adds quite a number of predefined Action 
+            implementations to the ActionMap of the Graph2DView to handle hierarchy-related 
+            user interaction.
+            
+         </p>
+         <p>
+            In the tradition of our simple applications, we will make two of these actions available 
+            in the toolbar: 
+            the Group Selection action and its counterpart, the Ungroup Selection action. 
+            
+            The code that does this is shown in <a href="grouping.html#ex_SimpleGraphEditor2_createToolBar" title="Example&nbsp;1.10.&nbsp;createToolBar method of SimpleGroupingEditor1">Example&nbsp;1.10, &#8220;createToolBar method of SimpleGroupingEditor1&#8221;</a>. 
+            We retrieve the predefined actions from the ActionMap of the view's actual canvas 
+            component and add buttons to the toolbar that use these actions: 
+            
+         </p>
+         <div class="itemizedlist">
+            <ul type="disc">
+               <li>
+                  The former action, if the button is clicked and there is at least one selected node 
+                  in the view, will create a new group node and put in the selected nodes. 
+                  The group node will encompasses the selected nodes and the selected nodes are then 
+                  "children" of the group node in the graph hierarchy.
+                  
+               </li>
+               <li>
+                  The latter action, if the button is clicked and there is at least one selected node 
+                  in the view, will take the selected nodes out of their directly containing group 
+                  node. 
+                  The selected nodes are no longer "children" of the group node in the graph hierarchy.
+                  
+               </li>
+            </ul>
+         </div>
+         <p>
+            
+            
+         </p>
+         <div class="example"><a name="ex_SimpleGraphEditor2_createToolBar"></a><p class="title"><b>Example&nbsp;1.10.&nbsp;createToolBar method of SimpleGroupingEditor1</b></p><pre class="programlisting java">
+protected JToolBar createToolBar() {
+  JToolBar toolbar = new JToolBar();
+  toolbar.add(new FitContent(getView()));
+  toolbar.add(new Zoom(getView(), 1.25));
+  toolbar.add(new Zoom(getView(), 0.8));
+  
+  toolbar.addSeparator();
+  // Get the action map from the Graph2DView's canvas component.
+  ActionMap aMap = view.getCanvasComponent().getActionMap();
+  // Add some of the hierarchy-related actions as toolbar buttons.
+  toolbar.add(aMap.get(Graph2DViewActions.GROUP_SELECTION)).setText("Group Selection");
+  toolbar.add(aMap.get(Graph2DViewActions.UNGROUP_SELECTION)).setText("Ungroup Selection");
+  
+  return toolbar;
+}
+</pre></div>
+         <p>
+            Now that we have the buttons and all logic properly in place, let's run the application 
+            and create some group nodes at last!
+            
+         </p>
+         <p>
+            We can easily do so by first creating some "normal" nodes, selecting them, and then 
+            using the "Group Selection" toolbar button. 
+            Immediately, the selected nodes will be contained in a newly created group node. 
+            Good. 
+            Let's try the "Ungroup Selection" toolbar button also. 
+            Umm, nothing happens. 
+            What's wrong?
+            
+         </p>
+         <p>
+            With the Ungroup Selection action, "taking selected nodes out" (of their directly 
+            containing group node) as described above, does not mean that they are moved in 
+            any way. 
+            They are logically taken out of the group node, i.e., they are no longer "children" 
+            of the group node in the graph hierarchy. 
+            
+            At first, this might be irritating since there doesn't seem to change anything when 
+            pressing the toolbar button for that action. 
+            However, when you try moving around selected nodes, you will quickly see the difference 
+            between nodes being grouped vs. nodes not being grouped.
+            
+         </p>
+         <p>
+            When you move grouped nodes, i.e., nodes that have a group node as their parent 
+            in the graph hierarchy, the borders of any containing group node(s) automatically 
+            adjust as you move. 
+            In other words, you won't be able to move the nodes out of the group node(s). 
+            
+            In contrast, with ungrouped nodes you will not see anything like that, they can 
+            be freely moved.
+            
+         </p>
+         <p>
+            OK, that out of the way, what else is new when we have a grouped graph with group 
+            nodes and that all? 
+            And where are the folder nodes, you ask. 
+            Good questions.
+            
+         </p>
+         <p>
+            "Folder node" is just another name for a closed group node. 
+            Now, closing a group node is easily done by clicking on the state icon, the little 
+            minus sign in the top-left corner of the group node. 
+            Voil&agrave;, we have a folder node. 
+            By clicking on the state icon again (which has turned into a plus sign), you will 
+            get the group node back. 
+            
+            Note how the contained nodes of the group node disappear from the view when you 
+            close the group node, and re-appear when you open the folder node.
+            
+         </p>
+         <p>
+            The other, less obvious mouse gesture that is new in a grouped graph is related 
+            to moving diagram elements into and out of group nodes. 
+            
+         </p>
+         <div class="itemizedlist">
+            <ul type="disc">
+               <li>
+                  Adding nodes to a group node: move nodes while holding the SHIFT key into the group 
+                  node's area.
+                  
+               </li>
+               <li>
+                  Removing nodes from a group node: press the SHIFT key and move nodes out of the 
+                  group node's area. 
+                  It is important that the SHIFT key is down before the actual move gesture starts.
+                  
+               </li>
+            </ul>
+         </div>
+         <p>
+            
+            
+         </p>
+         <div class="sect2" lang="en">
+            <div class="titlepage">
+               <div>
+                  <div>
+                     <h3 class="title"><a name="d0e387"></a>Some Observations
+                     </h3>
+                  </div>
+               </div>
+               <div></div>
+            </div>
+            <p>
+               Upon creation, the label of a group node shows the following text: "Group" 
+               But where does this come from? 
+               We surely haven't specified that anywhere! 
+               Is this part of the default group node magic, or maybe provided by some logic in 
+               the GenericGroupNodeRealizer's configuration?
+               
+            </p>
+            <p>
+               The answer is that the label text is set when the group node is being created by 
+               the Group Selection action of class Graph2DViewActions. 
+               It is the default text for a group node, and if we would need to, we could use the 
+               <a href="http://www.yworks.com/products/yfiles/doc/api/y/view/Graph2DViewActions.GroupSelectionAction.html#createGroupName(y.base.Node, y.view.Graph2DView)" title="Link to API documentation" target="_top">createGroupName<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a> 
+               callback method which is part of the Group Selection action to conveniently customize 
+               it.
+               
+            </p>
+         </div>
+         <div class="highlights">
+            <h4><a name="d0e399"></a>Related Resources
+            </h4>
+            <p>
+               You will find related information in the yFiles for Java Developer's Guide: 
+               
+            </p>
+            <div class="itemizedlist">
+               <ul type="disc">
+                  <li><a href="http://www.yworks.com/products/yfiles/doc/developers-guide/hier_mvc_controller.html" title="Link to Developer's Guide" target="_top">Group Nodes and Folder Nodes User Interaction</a></li>
+                  <li><a href="http://www.yworks.com/products/yfiles/doc/developers-guide/mvc_controller.html#intf_MouseInputEditor" title="Link to Developer's Guide" target="_top">MouseInputEditor</a></li>
+                  <li><a href="http://www.yworks.com/products/yfiles/doc/developers-guide/realizers.html#cls_GenericNodeRealizer" title="Link to Developer's Guide" target="_top">GenericNodeRealizer</a> 
+                     and 
+                     <a href="http://www.yworks.com/products/yfiles/doc/developers-guide/custom_realizers.html#customization_implements" title="Link to Developer's Guide" target="_top">How to customize a GenericNodeRealizer configuration</a></li>
+                  <li><a href="http://www.yworks.com/products/yfiles/doc/developers-guide/hier_realizers.html#cls_GroupNodeRealizer" title="Link to Developer's Guide" target="_top">GenericGroupNodeRealizer</a></li>
+               </ul>
+            </div>
+            <p>
+               
+               In the yFiles for Java API: 
+               
+            </p>
+            <div class="itemizedlist">
+               <ul type="disc">
+                  <li>
+                     inner classes of <a href="http://www.yworks.com/products/yfiles/doc/api/y/view/Graph2DViewActions.html" title="Link to API documentation" target="_top">Graph2DViewActions<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a>, 
+                     for example <a href="http://www.yworks.com/products/yfiles/doc/api/y/view/Graph2DViewActions.GroupSelectionAction.html" title="Link to API documentation" target="_top">Graph2DViewActions.GroupSelectionAction<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a></li>
+                  <li><a href="http://www.yworks.com/products/yfiles/doc/api/y/view/Graph2DViewActions.html#install()" title="Link to API documentation" target="_top">Graph2DViewActions.install<sup><img src="figures/icon_api.gif" align="bottom" border="0"></sup></a></li>
+               </ul>
+            </div>
+            <p>
+               
+               In the yFiles for Java source code demos: 
+               
+            </p>
+            <div class="itemizedlist">
+               <ul type="disc">
+                  <li><a href="http://www.yworks.com/products/yfiles/doc/demo/view/hierarchy/GroupingDemo.java" title="Link to demo code" target="_top">GroupingDemo.java</a></li>
+               </ul>
+            </div>
+            <p>
+               
+               
+            </p>
+         </div>
+      </div>
+      <table class="copyright" border="0" cellpadding="0" cellspacing="0" width="100%">
+         <tbody>
+            <tr>
+               <td align="right">
+                  <p class="copyright">Copyright &copy;2008-2009, yWorks GmbH. All rights reserved.</p>
+               </td>
+            </tr>
+         </tbody>
+      </table>
+      <div class="navfooter">
+         <div class="navline2"></div>
+         <table width="100%" summary="Navigation footer">
+            <tr>
+               <td width="40%" align="left"><a accesskey="p" title="Lesson:&nbsp;Adding Keyboard Support to the Editor" href="keyboard.html">Prev</a>&nbsp;
+               </td>
+               <td width="20%" align="center"><a accesskey="u" title="Trail:&nbsp;Creating a Simple Graph Editor" href="index.html">Up</a></td>
+               <td width="40%" align="right">&nbsp;</td>
+            </tr>
+            <tr>
+               <td width="40%" align="left" valign="top">Lesson:&nbsp;Adding Keyboard Support to the Editor&nbsp;</td>
+               <td width="20%" align="center"><a accesskey="h" title="yFiles for Java Tutorial" href="../index.html">Home</a></td>
+               <td width="40%" align="right" valign="top">&nbsp;</td>
+            </tr>
+         </table>
+      </div>
+   </body>
+</html>

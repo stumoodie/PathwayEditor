@@ -1,0 +1,334 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:y="http://www.yworks.com/demo">
+<head>
+<title>yFiles Demo Programs</title>
+<style type="text/css">
+<!--
+              body {
+  font-family:Verdana, sans-serif; 
+  margin-left:12px;
+  margin-right:12px;
+  margin-top:12px;
+  margin-bottom:12px;
+}
+
+h1 { 
+  padding-left:8px;
+  padding-top:8px;
+  padding-bottom:8px;
+  background-color:#d0d0d0;
+  color:#4079ea;
+/*  color:#4d88ff; */
+  font-size:18px;
+  margin-bottom:5px;
+}
+
+p {   
+  padding-bottom:0px;
+  padding-top:0px;
+  margin-top:3px;
+  margin-bottom:0px;
+/*  margin-left:10px; */
+  margin-left:8px;
+  font-size:12px;
+  color:#000000;
+}
+
+h2 { 
+  font-size:14px; 
+  color:#4079ea; 
+  margin-top:10px; 
+  margin-bottom:0px; 
+}
+
+h3 { 
+  font-size:13px; 
+/*  margin-left:10px; */
+  margin-left:8px;
+  margin-top:8px; 
+  margin-bottom:2px; 
+}
+
+table {
+/*  margin-left:10px; */
+  margin-left: 8px;
+  margin-top: 8px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border: 1px solid white;
+  vertical-align: baseline;
+  border-collapse: collapse;
+}
+
+td { 
+  font-size:12px;
+  background-color: #E3EEFE;
+  vertical-align:top;
+  border: 1px solid white;
+  vertical-align: baseline;
+}
+
+th {
+  font-size:12px; 
+  background-color:#a4b9ea;
+  text-align: left;
+}
+
+a {
+  color: #AA5522; font-weight:bold;
+}
+a:link {
+  text-decoration:none;
+}
+a:visited {
+  text-decoration:none; color:#772200;
+}
+a:active, 
+a:focus, 
+a:hover {
+  text-decoration: underline;
+}
+
+div.li1 {
+  font-size:12px;
+  margin-top:8px; 
+  margin-bottom:0px; 
+  margin-left:10px; 
+}
+div.li2 { 
+  margin-left:20px;
+  margin-top:2px; 
+  margin-bottom:2px; 
+  font-weight:bold;
+  font-size:12px; 
+}
+
+dl { 
+  font-size:12px;
+  margin-top:2px;
+  margin-bottom:2px;
+  margin-left:15px;
+}
+dt { 
+  font-weight:bold;
+  margin-top:4px;
+/*  color:#000000; */
+  color:#333366;
+}
+dd { 
+  margin-left:15px;
+}
+
+li { 
+  /* does not work in pre-1.5 Java JEditorPane :-( */
+/*  list-style-type:none; */
+  font-size:12px;
+}
+
+caption {
+  font-size:12px;
+}
+
+.copyright { 
+  font-size: 10px;
+  font-style:italic;
+  text-align:right;
+  margin-top:20px;
+}
+
+code, tt { 
+  font-family:monospace;
+  font-size:12px;
+  color:#0000C0;
+}
+
+            -->
+</style>
+</head>
+<body>
+    <h1>yFiles Demo Programs</h1>
+
+    <p>
+      The yFiles distributions contain a variety of tutorial Java programs
+      accompanied by their source code. These programs demonstrate how to 
+      use essential features of the yFiles library.
+    </p>
+
+    <p>
+      Not all of the listed demos may be part of your yFiles distribution type.
+      <b>yFiles Complete</b> contains all demo programs, <b>yFiles Viewer</b>
+      contains all demos except the layout demos, <b>yFiles Layout</b>
+      contains the graph, the graph algorithm, and the viewer independent
+      layout demos in demo/layout. <b>yFiles Basic</b> contains only 
+      the basic graph and graph algorithm demos.
+    </p>
+
+    <h2>Running the Demos</h2>
+
+    <h3>From Within an IDE</h3>
+
+    <p>
+      Set <tt>&lt;yFilesDir&gt;/src</tt> as your source directory. 
+      Then add <tt>&lt;yFilesDir&gt;/lib/y.jar</tt> <b>and</b> the source folder 
+      <tt>&lt;yFilesDir&gt;/src</tt> to your classpath. 
+      Now you should be ready to compile and run all executable demo classes. 
+    </p>
+
+    <p>
+      If your IDE supports executing targets from ANT build files, the simplest
+      way to run one of the demo programs is by calling the appropriate target
+      from the demo build script <a href="build.xml">build.xml</a> located
+      in this directory. See below for more information on the available ANT
+      targets.
+    </p>
+
+    <h3>With Ant</h3>
+
+    <p>
+      First make sure you have the <a href="http://ant.apache.org">build tool Ant</a> 
+      installed on your system. 
+      Now you can use the demo build script <a href="build.xml">build.xml</a> located 
+      in this directory to launch each demo by specifying its simple class name 
+      as a target. 
+    </p>
+
+    <p>
+      <b>Note:</b> 
+      As an alternative, you can also use the build script's <tt>run</tt> target 
+      to launch the DemoBrowser application, an interactive "shell" that allows 
+      convenient access to all demos. 
+      It features execution of each demo, and also displays both its source code 
+      and documentation. 
+    </p>
+
+    <h2>Tutorial Demos</h2>
+
+    <h3>Basic Graph Demos</h3>
+
+    <p>
+      Tutorial programs that show how to use the graph data type and related classes
+      from the yFiles base package <a href="../../doc/api/y/base/package-summary.html">y.base</a>
+      are located in the folder <a href="base/README.html">demo/base</a>. 
+    </p>
+
+    <h3>Graph Algorithm Demos</h3>
+
+    <p>
+      The graph algorithm demos are located in the folder 
+      <a href="algo/README.html">demo/algo</a>. These tutorial
+      demos show how to use some of the included graph and network algorithms
+      that are located in the yFiles package <a href="../../doc/api/y/algo/package-summary.html">y.algo</a>.
+    </p>
+
+    <h3>Graph Viewer Demos</h3>
+
+    <p>
+      Programs that demonstrate how to use the yFiles graph viewer components in 
+      an application are located in the folder <a href="view/README.html">demo/view</a>.
+      <br/>
+      Further aspects related to the viewer components and the visual representation of 
+      graphs and their elements are demonstrated in several subpackages: 
+    </p>
+    <ul>
+      <li>
+        rendering in <a href="view/rendering/README.html">demo/view/rendering</a>
+      </li>
+      <li>
+        node realizer and edge realizer customization in 
+        <a href="view/realizer/README.html">demo/view/realizer</a> (and also in 
+        <a href="view/advanced/README.html">demo/view/advanced</a> -- see below) 
+      </li>
+      <li>
+        user interaction in 
+        <a href="view/viewmode/README.html">demo/view/viewmode</a>
+      </li>
+    </ul>
+    <p>
+      The following subpackages present additional topics: 
+    </p>
+    <ul>
+      <li>
+        an extensive demo application that presents an organization chart in a visually 
+        rich manner in <a href="view/orgchart/README.html">demo/view/orgchart</a>
+      </li>
+      <li>
+        a demo application that presents a flowchart editor in <a href="view/flowchart/README.html">demo/view/flowchart</a>
+      </li>
+      <li>
+        application-related functionality (undo/redo, print preview, etc.) in 
+        <a href="view/application/README.html">demo/view/application</a>
+      </li>
+      <li>
+        deploying yFiles viewer functionality as an applet inside web browsers in 
+        <a href="view/applet/README.html">demo/view/applet</a>
+      </li>
+      <li>
+        special node realizer features and how to support them with file I/O in 
+        <a href="view/advanced/README.html">demo/view/advanced</a>
+      </li>
+    </ul>
+
+    <h3>Graph Animation Demos</h3>
+
+    <p>
+      Programs that demonstrate how to add animated effects to graphs and views
+      can be found in <a href="view/anim/README.html">demo/view/anim</a>.
+    </p>
+
+    <h3>Graph Hierarchy Demos</h3>
+    <p>
+      Sample applications that show how to use the nested graph hierarchy features 
+      of yFiles are located in <a href="view/hierarchy/README.html">demo/view/hierarchy</a>.
+    </p>
+
+    <h3>Graph Layout Demos</h3>
+
+    <p>
+      Programs that demonstrate how to use the API of the diverse yFiles graph layout 
+      algorithms can be found in the folder <a href="layout/README.html">demo/layout</a> 
+      and its sub-folders. 
+      Folder <a href="layout/withoutview/README.html">demo/layout/withoutview</a> contains
+      demos that show how to use the layout and labeling
+      functionality for various algorithms when the yFiles Viewer distribution is not present.              		      
+    </p>
+
+    <h3>Graph I/O Demos</h3>
+
+    <p>
+      Programs that show how to read and write graphs from and to different formats
+      are located in <a href="io/README.html">demo/io</a>. This folder also 
+      includes an example on how to customize and extend existing graph formats 
+      to personal needs.
+      <br/>
+      The demos in <a href="io/graphml/README.html">demo/io/graphml</a> show how
+      to use and how to customize the GraphML I/O functionality.
+    </p>
+
+    <h3>GUI Utility Demo</h3>
+
+    <p>
+      An example program that depicts the functionality of the yFiles 
+      <a href="../../doc/api/y/option/package-summary.html">y.option</a>
+      package of the yFiles Viewer distribution
+      can be found in <a href="option/README.html">demo/option</a>.
+    </p>
+
+    <h2>yEd Lite Graph Editor Application</h2>
+
+    <p>
+      yEd Lite is a powerful multi-purpose
+      graph editor. It exhibits most of the features available in
+      the library. This source code demo is available as a separate download through our
+      software download center.
+    </p>
+
+
+    <h2>yFiles Obfuscation Demo</h2>
+
+    <p>
+      <a href="obfuscation/README.html">This demo</a> shows how to obfuscate the yFiles 
+      classes before they can be deployed as a part of an applet or application.
+      In this demo the obfuscation process will be  performed by the Ant-based obfuscator 
+      yGuard (<a href="http://www.yworks.com/products/yguard">yGuard home page</a>). 
+    </p>
+  </body>
+</html>

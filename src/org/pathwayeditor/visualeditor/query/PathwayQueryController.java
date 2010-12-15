@@ -2,25 +2,17 @@ package org.pathwayeditor.visualeditor.query;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
-import org.pathwayeditor.businessobjects.drawingprimitives.ILinkEdge;
-import org.pathwayeditor.businessobjects.drawingprimitives.IModel;
-import org.pathwayeditor.businessobjects.management.IModelFactory;
-import org.pathwayeditor.businessobjects.management.ModelFactory;
-import org.pathwayeditor.businessobjects.notationsubsystem.INotationSubsystem;
 import org.pathwayeditor.naming.of.parts.IDictionaryEntry;
 import org.pathwayeditor.naming.of.parts.INamingOfPartsLookup;
 import org.pathwayeditor.naming.of.parts.impl.DBNoPLookup;
-import org.pathwayeditor.notations.annotator.ndom.IInteraction;
-import org.pathwayeditor.notations.annotator.services.AnnotatorNotationSubsystem;
-
-import uk.ac.ed.inf.graph.compound.ICompoundGraphCopyBuilder;
-import uk.ac.ed.inf.graph.compound.ISubCompoundGraph;
-import uk.ac.ed.inf.graph.compound.ISubCompoundGraphFactory;
 
 public class PathwayQueryController implements IPathwayQueryController {
 	private final Logger logger = Logger.getLogger(this.getClass());
@@ -34,12 +26,12 @@ public class PathwayQueryController implements IPathwayQueryController {
 //	private double cutOff;
 	private IPathwayQueryResult queryResult;
 	private INamingOfPartsLookup nopLookup;
-	private final INotationSubsystem annotationSubsystem;
+	private final List<IQueryEventListener> listeners;
 	
 	public PathwayQueryController(INetworkQueryEngine networkQueryEngine, DataSource dbSource){
 		this.dbSource = dbSource;
 		this.networkQueryEngine = networkQueryEngine;
-		annotationSubsystem = new AnnotatorNotationSubsystem();
+		this.listeners = new LinkedList<IQueryEventListener>();
 	}
 	
 	
@@ -102,39 +94,13 @@ public class PathwayQueryController implements IPathwayQueryController {
 //		ResultsTableModel resultsTableModel = this.resultsTable.getTableModel();
 //		resultsTableModel.reset();
 		executeQuery();
-		buildInteractionModel();
+		notifyQueryCompleted();
 //		Iterator<IInteraction> edgeIter = queryResult.resultIterator();
 //		logger.info("Query found " + queryResult.numInteractions() + " interactions");
 //		resultsTableModel.setData(edgeIter, queryResult.numInteractions());
 	}
 	
 	
-	private void buildInteractionModel() {
-		IModelFactory modelFactory = new ModelFactory();
-		modelFactory.setNotationSubsystem(this.annotationSubsystem);
-		modelFactory.setName("QueryResults");
-		IModel queryModel= modelFactory.createModel();
-		ISubCompoundGraphFactory resultsGraphFractory = null; 
-		Iterator<IInteraction> interIter = this.queryResult.resultIterator();
-		while(interIter.hasNext()){
-			IInteraction intern = interIter.next();
-			ILinkEdge edge = intern.getLink();
-			if(resultsGraphFractory == null){
-				resultsGraphFractory = edge.getGraphElement().getGraph().subgraphFactory();
-			}
-			resultsGraphFractory.addElement(edge.getGraphElement());
-			resultsGraphFractory.addElement(edge.getSourceShape());
-			resultsGraphFractory.addElement(edge.getTargetShape());
-		}
-		if(resultsGraphFractory != null){
-			ISubCompoundGraph copySubgraph = resultsGraphFractory.createSubgraph();
-			ICompoundGraphCopyBuilder copyBuilder = queryModel.getGraph().getRoot().getChildCompoundGraph().newCopyBuilder();
-			copyBuilder.setSourceSubgraph(copySubgraph);
-			copyBuilder.makeCopy();
-		}
-	}
-
-
 	private void executeQuery() {
 		if(logger.isDebugEnabled()){
 			logger.debug("Running query with query data=" + queryData);
@@ -181,6 +147,42 @@ public class PathwayQueryController implements IPathwayQueryController {
 	@Override
 	public QueryData getQueryData() {
 		return this.queryData;
+	}
+	
+	@Override
+	public void addQueryEventListener(IQueryEventListener listener){
+		this.listeners.add(listener);
+	}
+
+
+	@Override
+	public void removeQueryEventListener(IQueryEventListener listener) {
+		this.listeners.remove(listeners);
+	}
+
+
+	@Override
+	public List<IQueryEventListener> getQueryEventListeners() {
+		return new ArrayList<IQueryEventListener>(this.listeners);
+	}
+	
+	
+	private void notifyQueryCompleted(){
+		IQueryCompletedEvent e = new IQueryCompletedEvent() {
+			
+			@Override
+			public IPathwayQueryResult getQueryResult() {
+				return queryResult;
+			}
+
+			@Override
+			public QueryData getQueryData() {
+				return queryData;
+			}
+		};
+		for(IQueryEventListener l : this.listeners){
+			l.queryCompleted(e);
+		}
 	}
 
 }
