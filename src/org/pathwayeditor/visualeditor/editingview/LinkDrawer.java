@@ -24,7 +24,7 @@ import org.pathwayeditor.visualeditor.geometry.ILinkPointDefinition;
 
 public class LinkDrawer  {
 	private final Logger logger = Logger.getLogger(this.getClass()); 
-	private ILinkPointDefinition linkEdge;
+	private final ILinkPointDefinition linkEdge;
 	private Point startPosition = Point.ORIGIN;
 	private Point endPosition = Point.ORIGIN;
 	
@@ -96,6 +96,7 @@ public class LinkDrawer  {
 		g2d.translate(srcTermDefaults.getGap(), 0);
 //		Dimension srcEndSize = srcTermDefaults.getEndSize();
 //		g2d.scale(srcEndSize.getWidth(), srcEndSize.getHeight());
+		logger.trace("Draw src end decorator");
 		drawEndDecorator(g2d, linkEdge.getLineColour(), linkEdge.getLineWidth(), srcTermDefaults.getEndDecoratorType(),
 				linkDefinition.getSrcEndPoint(), srcTermDefaults.getEndSize());
 		g2d.setTransform(before);
@@ -106,8 +107,9 @@ public class LinkDrawer  {
 		g2d.translate(tgtTermDefaults.getGap(), 0);
 //		Dimension tgtEndSize = tgtTermDefaults.getEndSize();
 //		g2d.scale(tgtEndSize.getWidth(), tgtEndSize.getHeight());
+		logger.trace("Draw tgt end decorator");
 		drawEndDecorator(g2d, linkEdge.getLineColour(), linkEdge.getLineWidth(), tgtTermDefaults.getEndDecoratorType(),
-				linkDefinition.getSrcEndPoint(), tgtTermDefaults.getEndSize());
+				linkDefinition.getTgtEndPoint(), tgtTermDefaults.getEndSize());
 		g2d.setTransform(before);
 	}
 	
@@ -125,8 +127,8 @@ public class LinkDrawer  {
 			LineSegment lineSegment = lineIterator.next();
 			Line2D.Double line = new Line2D.Double(lineSegment.getOrigin().getX(), lineSegment.getOrigin().getY(),
 					lineSegment.getTerminus().getX(), lineSegment.getTerminus().getY());
-			if(logger.isDebugEnabled()){
-				logger.debug("Drawing line: " + lineSegment);
+			if(logger.isTraceEnabled()){
+				logger.trace("Drawing line: " + lineSegment);
 			}
 			g2d.draw(line);
 		}
@@ -134,8 +136,8 @@ public class LinkDrawer  {
 	
 	private void drawEndDecorator(Graphics2D g2d, RGB lineColour, double lineWidth,
 			LinkEndDecoratorShape endShape, Point startPos, Dimension size){
-		if(logger.isDebugEnabled()){
-			logger.debug("Draw End Dec: startPos=" + startPos + ",size=" + size + ",type=" + endShape);
+		if(logger.isTraceEnabled()){
+			logger.trace("Draw End Dec: startPos=" + startPos + ",size=" + size + ",type=" + endShape);
 		}
 		if(!endShape.equals(LinkEndDecoratorShape.NONE)){
 			g2d.setColor(new Color(lineColour.getRed(), lineColour.getGreen(), lineColour.getBlue()));

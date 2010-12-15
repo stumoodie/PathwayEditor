@@ -17,18 +17,11 @@ import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttr
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributeResizedEvent;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributeTranslationEvent;
 import org.pathwayeditor.businessobjects.drawingprimitives.properties.IAnnotationProperty;
-import org.pathwayeditor.businessobjects.drawingprimitives.properties.IAnnotationPropertyVisitor;
-import org.pathwayeditor.businessobjects.drawingprimitives.properties.IBooleanAnnotationProperty;
-import org.pathwayeditor.businessobjects.drawingprimitives.properties.IIntegerAnnotationProperty;
-import org.pathwayeditor.businessobjects.drawingprimitives.properties.IListAnnotationProperty;
-import org.pathwayeditor.businessobjects.drawingprimitives.properties.INumberAnnotationProperty;
-import org.pathwayeditor.businessobjects.drawingprimitives.properties.IPlainTextAnnotationProperty;
 import org.pathwayeditor.businessobjects.impl.facades.DrawingElementFacade;
 import org.pathwayeditor.businessobjects.impl.facades.DrawingNodeFacade;
 import org.pathwayeditor.businessobjects.impl.facades.LinkEdgeFacade;
 import org.pathwayeditor.businessobjects.impl.facades.ShapeNodeFacade;
 import org.pathwayeditor.businessobjects.impl.facades.SubModelFacade;
-import org.pathwayeditor.figure.figuredefn.FigureController;
 import org.pathwayeditor.figure.figuredefn.IAnchorLocator;
 import org.pathwayeditor.figure.figuredefn.IFigureController;
 import org.pathwayeditor.figure.geometry.Dimension;
@@ -36,7 +29,6 @@ import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.figure.geometry.RectangleHull;
-import org.pathwayeditor.visualeditor.feedback.FigureCompilationCache;
 import org.pathwayeditor.visualeditor.geometry.IIntersectionCalcnFilter;
 import org.pathwayeditor.visualeditor.geometry.IIntersectionCalculator;
 
@@ -49,7 +41,7 @@ public class ShapeController extends NodeController implements IShapeController 
 	private final IDrawingElement parentAttribute;
 	private final ICanvasAttributeChangeListener shapePropertyChangeListener;
 	private final IAnnotationPropertyChangeListener annotPropChangeListener;
-	private final IFigureController figureController;
+	private final IFigureControllerHelper figureController;
 	private final ICanvasAttributeChangeListener parentDrawingNodePropertyChangeListener;
 	private boolean isActive;
 	
@@ -58,35 +50,37 @@ public class ShapeController extends NodeController implements IShapeController 
 		
 		this.domainNode = node;
 		this.parentAttribute = new DrawingElementFacade(this.domainNode.getGraphElement().getParent());
+		this.figureController = new ShapeFigureControllerHelper(domainNode.getAttribute());
+		figureController.createFigureController();
 		shapePropertyChangeListener = new ICanvasAttributeChangeListener() {
 			@Override
 			public void propertyChange(ICanvasAttributePropertyChangeEvent e) {
 				if(e.getPropertyChange().equals(CanvasAttributePropertyChange.LINE_COLOUR)){
-					figureController.setLineColour((RGB)e.getNewValue());
-					figureController.generateFigureDefinition();
+					figureController.getFigureController().setLineColour((RGB)e.getNewValue());
+					figureController.refreshGraphicalAttributes();
 				}
 				else if(e.getPropertyChange().equals(CanvasAttributePropertyChange.FILL_COLOUR)){
-					figureController.setFillColour((RGB)e.getNewValue());
-					figureController.generateFigureDefinition();
+					figureController.getFigureController().setFillColour((RGB)e.getNewValue());
+					figureController.refreshGraphicalAttributes();
 				}
 				else if(e.getPropertyChange().equals(CanvasAttributePropertyChange.LINE_WIDTH)){
 					Double newLineWidth = (Double)e.getNewValue();
-					figureController.setLineWidth(newLineWidth);
-					figureController.generateFigureDefinition();
+					figureController.getFigureController().setLineWidth(newLineWidth);
+					figureController.refreshGraphicalAttributes();
 				}
 				else if(e.getPropertyChange().equals(CanvasAttributePropertyChange.BOUNDS)){
 					IShapeAttribute attribute = (IShapeAttribute)e.getAttribute();
-					Envelope oldDrawnBounds = figureController.getConvexHull().getEnvelope();
-					figureController.setRequestedEnvelope(attribute.getBounds());
-					figureController.generateFigureDefinition();
+					Envelope oldDrawnBounds = figureController.getFigureController().getConvexHull().getEnvelope();
+					figureController.getFigureController().setRequestedEnvelope(attribute.getBounds());
+					figureController.refreshGraphicalAttributes();
 					recalculateSrcLinks();
 					recalculateTgtLinks();
-					notifyDrawnBoundsChanged(oldDrawnBounds, figureController.getConvexHull().getEnvelope());
+					notifyDrawnBoundsChanged(oldDrawnBounds, figureController.getFigureController().getConvexHull().getEnvelope());
 				}
 				else if(e.getPropertyChange().equals(CanvasAttributePropertyChange.LINE_STYLE)){
 					IShapeAttribute attribute = (IShapeAttribute)e.getAttribute();
-					figureController.setLineStyle(attribute.getLineStyle());
-					figureController.generateFigureDefinition();
+					figureController.getFigureController().setLineStyle(attribute.getLineStyle());
+					figureController.refreshGraphicalAttributes();
 				}
 			}
 
@@ -101,8 +95,9 @@ public class ShapeController extends NodeController implements IShapeController 
 		annotPropChangeListener = new IAnnotationPropertyChangeListener() {
 			@Override
 			public void propertyChange(IAnnotationPropertyChangeEvent e) {
-				assignBindVariablesToProperties(domainNode.getAttribute(), figureController);
-				figureController.generateFigureDefinition();
+				figureController.refreshBoundProperties();
+//				assignBindVariablesToProperties(domainNode.getAttribute(), figureController);
+//				figureController.generateFigureDefinition();
 			}	
 		};
 		parentDrawingNodePropertyChangeListener = new ICanvasAttributeChangeListener() {
@@ -117,7 +112,6 @@ public class ShapeController extends NodeController implements IShapeController 
 			public void nodeResized(ICanvasAttributeResizedEvent e) {
 			}
 		};
-		this.figureController = createController(domainNode.getAttribute());
 	}
 
 	@Override
@@ -126,60 +120,60 @@ public class ShapeController extends NodeController implements IShapeController 
 		this.isActive = true;
 	}
 	
-	private void assignBindVariablesToProperties(IShapeAttribute att, final IFigureController figureController) {
-		for(final String varName : figureController.getBindVariableNames()){
-			if(att.containsProperty(varName)){
-				IAnnotationProperty prop = att.getProperty(varName);
-				prop.visit(new IAnnotationPropertyVisitor(){
+//	private void assignBindVariablesToProperties(IShapeAttribute att, final IFigureController figureController) {
+//		for(final String varName : figureController.getBindVariableNames()){
+//			if(att.containsProperty(varName)){
+//				IAnnotationProperty prop = att.getProperty(varName);
+//				prop.visit(new IAnnotationPropertyVisitor(){
+//
+//					@Override
+//					public void visitBooleanAnnotationProperty(IBooleanAnnotationProperty prop) {
+//						figureController.setBindBoolean(varName, prop.getValue());
+//					}
+//
+//					@Override
+//					public void visitIntegerAnnotationProperty(IIntegerAnnotationProperty prop) {
+//						figureController.setBindInteger(varName, prop.getValue());
+//					}
+//
+//					@Override
+//					public void visitListAnnotationProperty(IListAnnotationProperty prop) {
+//						logger.error("Unmatched bind variable: " + varName + ". Property has type that cannot be matched to bind variable of same name: " + prop);
+//					}
+//
+//					@Override
+//					public void visitNumberAnnotationProperty(INumberAnnotationProperty numProp) {
+//						figureController.setBindDouble(varName, numProp.getValue().doubleValue());
+//					}
+//
+//					@Override
+//					public void visitPlainTextAnnotationProperty(IPlainTextAnnotationProperty prop) {
+//						figureController.setBindString(varName, prop.getValue());
+//					}
+//					
+//				});
+//			}
+//			else{
+//				logger.error("Unmatched bind variable: " + varName
+//						+ ". No property matched bind variable name was found.");
+//			}
+//		}
+//	}
 
-					@Override
-					public void visitBooleanAnnotationProperty(IBooleanAnnotationProperty prop) {
-						figureController.setBindBoolean(varName, prop.getValue());
-					}
-
-					@Override
-					public void visitIntegerAnnotationProperty(IIntegerAnnotationProperty prop) {
-						figureController.setBindInteger(varName, prop.getValue());
-					}
-
-					@Override
-					public void visitListAnnotationProperty(IListAnnotationProperty prop) {
-						logger.error("Unmatched bind variable: " + varName + ". Property has type that cannot be matched to bind variable of same name: " + prop);
-					}
-
-					@Override
-					public void visitNumberAnnotationProperty(INumberAnnotationProperty numProp) {
-						figureController.setBindDouble(varName, numProp.getValue().doubleValue());
-					}
-
-					@Override
-					public void visitPlainTextAnnotationProperty(IPlainTextAnnotationProperty prop) {
-						figureController.setBindString(varName, prop.getValue());
-					}
-					
-				});
-			}
-			else{
-				logger.error("Unmatched bind variable: " + varName
-						+ ". No property matched bind variable name was found.");
-			}
-		}
-	}
-
-	private IFigureController createController(IShapeAttribute attribute){
-//		FigureDefinitionCompiler compiler = new FigureDefinitionCompiler(attribute.getShapeDefinition());
-//		compiler.compile();
-//		IFigureController figureController = new FigureController(compiler.getCompiledFigureDefinition());
-		IFigureController figureController = new FigureController(FigureCompilationCache.getInstance().lookup(attribute.getShapeDefinition()));
-		figureController.setRequestedEnvelope(attribute.getBounds());
-		figureController.setFillColour(attribute.getFillColour());
-		figureController.setLineColour(attribute.getLineColour());
-		figureController.setLineStyle(attribute.getLineStyle());
-		figureController.setLineWidth(attribute.getLineWidth());
-		assignBindVariablesToProperties(attribute, figureController);
-		figureController.generateFigureDefinition();
-		return figureController;
-	}
+//	private IFigureController createController(IShapeAttribute attribute){
+////		FigureDefinitionCompiler compiler = new FigureDefinitionCompiler(attribute.getShapeDefinition());
+////		compiler.compile();
+////		IFigureController figureController = new FigureController(compiler.getCompiledFigureDefinition());
+//		IFigureController figureController = new FigureController(FigureCompilationCache.getInstance().lookup(attribute.getShapeDefinition()));
+//		figureController.setRequestedEnvelope(attribute.getBounds());
+//		figureController.setFillColour(attribute.getFillColour());
+//		figureController.setLineColour(attribute.getLineColour());
+//		figureController.setLineStyle(attribute.getLineStyle());
+//		figureController.setLineWidth(attribute.getLineWidth());
+//		assignBindVariablesToProperties(attribute, figureController);
+//		figureController.generateFigureDefinition();
+//		return figureController;
+//	}
 
 	private void recalculateSrcLinks(){
 		Iterator<ICompoundEdge> edgeIter = this.domainNode.sourceLinkIterator();
@@ -285,17 +279,17 @@ public class ShapeController extends NodeController implements IShapeController 
 
 	@Override
 	public IFigureController getFigureController() {
-		return this.figureController;
+		return this.figureController.getFigureController();
 	}
 
 	@Override
 	public Envelope getBounds() {
-		return this.figureController.getRequestedEnvelope();
+		return this.figureController.getFigureController().getRequestedEnvelope();
 	}
 
 	@Override
 	public IConvexHull getConvexHull() {
-		return this.figureController.getConvexHull();
+		return this.figureController.getFigureController().getConvexHull();
 	}
 
 	@Override
@@ -353,7 +347,7 @@ public class ShapeController extends NodeController implements IShapeController 
 
 	@Override
 	public Envelope getDrawnBounds() {
-		return this.figureController.getEnvelope();
+		return this.figureController.getFigureController().getEnvelope();
 	}
 
 	@Override
@@ -368,7 +362,7 @@ public class ShapeController extends NodeController implements IShapeController 
 
 	@Override
 	public boolean intersectsHull(IConvexHull queryHull) {
-		return this.figureController.getConvexHull().hullsIntersect(queryHull);
+		return this.figureController.getFigureController().getConvexHull().hullsIntersect(queryHull);
 	}
 
 	@Override

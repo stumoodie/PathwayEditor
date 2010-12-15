@@ -30,8 +30,8 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 	private double lineWidth = DEFAULT_LINE_WIDTH;
 	private final IGraphicalLinkTerminusDefinition srcTermDefn;
 	private final IGraphicalLinkTerminusDefinition tgtTermDefn;
-	private Point srcListStartPosn;
-	private Point tgtListEndPosn;
+	private Point srcLineStartPosn;
+	private Point tgtLineEndPosn;
 	
 	public LinkPointDefinition(ILinkAttribute link){
 		IBendPointContainer bpContainer = link.getBendPointContainer();
@@ -48,8 +48,8 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 		this.lineWidth = link.getLineWidth();
 		this.srcTermDefn = new GraphicalLinkTerminusDefinition(link.getSourceTerminus());
 		this.tgtTermDefn = new GraphicalLinkTerminusDefinition(link.getTargetTerminus());
-		this.srcListStartPosn = calcFirstDrawnPoint(this.getSourceLineSegment(), this.srcTermDefn.getEndSize(), this.srcTermDefn.getGap());
-		this.tgtListEndPosn = calcFirstDrawnPoint(this.getTargetLineSegment(), this.tgtTermDefn.getEndSize(), this.tgtTermDefn.getGap());
+		this.srcLineStartPosn = calcFirstDrawnPoint(this.getSourceLineSegment(), this.srcTermDefn.getEndSize(), this.srcTermDefn.getGap());
+		this.tgtLineEndPosn = calcFirstDrawnPoint(this.getTargetLineSegment(), this.tgtTermDefn.getEndSize(), this.tgtTermDefn.getGap());
 	}
 	
 	public LinkPointDefinition(ILinkObjectType linkObjectType, Point srcPosn, Point tgtPosn){
@@ -62,8 +62,8 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 		this.lineWidth = link.getLineWidth();
 		this.srcTermDefn = new GraphicalLinkTerminusDefinition(linkObjectType.getSourceTerminusDefinition());
 		this.tgtTermDefn = new GraphicalLinkTerminusDefinition(linkObjectType.getTargetTerminusDefinition());
-		this.srcListStartPosn = calcFirstDrawnPoint(this.getSourceLineSegment(), this.srcTermDefn.getEndSize(), this.srcTermDefn.getGap());
-		this.tgtListEndPosn = calcFirstDrawnPoint(this.getTargetLineSegment(), this.tgtTermDefn.getEndSize(), this.tgtTermDefn.getGap());
+		this.srcLineStartPosn = calcFirstDrawnPoint(this.getSourceLineSegment(), this.srcTermDefn.getEndSize(), this.srcTermDefn.getGap());
+		this.tgtLineEndPosn = calcFirstDrawnPoint(this.getTargetLineSegment(), this.tgtTermDefn.getEndSize(), this.tgtTermDefn.getGap());
 	}
 	
 	public LinkPointDefinition(Point srcAnchor, Point tgtAnchor) {
@@ -72,8 +72,8 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 		this.tgtTermDefn = new GraphicalLinkTerminusDefinition();
 		this.pointList.add(srcAnchor);
 		this.pointList.add(tgtAnchor);
-		this.srcListStartPosn = calcFirstDrawnPoint(this.getSourceLineSegment(), this.srcTermDefn.getEndSize(), this.srcTermDefn.getGap());
-		this.tgtListEndPosn = calcFirstDrawnPoint(this.getTargetLineSegment(), this.tgtTermDefn.getEndSize(), this.tgtTermDefn.getGap());
+		this.srcLineStartPosn = calcFirstDrawnPoint(this.getSourceLineSegment(), this.srcTermDefn.getEndSize(), this.srcTermDefn.getGap());
+		this.tgtLineEndPosn = calcFirstDrawnPoint(this.getTargetLineSegment(), this.tgtTermDefn.getEndSize(), this.tgtTermDefn.getGap());
 	}
 	
 	public LinkPointDefinition(LinkPointDefinition other, Point translation){
@@ -86,8 +86,8 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 		lineWidth = other.lineWidth;
 		srcTermDefn = new GraphicalLinkTerminusDefinition(other.srcTermDefn);
 		tgtTermDefn = new GraphicalLinkTerminusDefinition(other.tgtTermDefn);
-		this.srcListStartPosn = other.srcListStartPosn;
-		this.tgtListEndPosn = other.tgtListEndPosn;
+		this.srcLineStartPosn = other.srcLineStartPosn;
+		this.tgtLineEndPosn = other.tgtLineEndPosn;
 	}
 
 	public LinkPointDefinition(LinkPointDefinition other){
@@ -97,8 +97,8 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 		lineWidth = other.lineWidth;
 		srcTermDefn = new GraphicalLinkTerminusDefinition(other.srcTermDefn);
 		tgtTermDefn = new GraphicalLinkTerminusDefinition(other.tgtTermDefn);
-		this.srcListStartPosn = other.srcListStartPosn;
-		this.tgtListEndPosn = other.tgtListEndPosn;
+		this.srcLineStartPosn = other.srcLineStartPosn;
+		this.tgtLineEndPosn = other.tgtLineEndPosn;
 	}
 
 	@Override
@@ -150,8 +150,8 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 	}
 	
 	private void updateLineStart(){
-		this.srcListStartPosn = calcFirstDrawnPoint(this.getSourceLineSegment(), this.srcTermDefn.getEndSize(), this.srcTermDefn.getGap());
-		this.tgtListEndPosn = calcFirstDrawnPoint(this.getTargetLineSegment(), this.tgtTermDefn.getEndSize(), this.tgtTermDefn.getGap());
+		this.srcLineStartPosn = calcFirstDrawnPoint(this.getSourceLineSegment(), this.srcTermDefn.getEndSize(), this.srcTermDefn.getGap());
+		this.tgtLineEndPosn = calcFirstDrawnPoint(this.getTargetLineSegment(), this.tgtTermDefn.getEndSize(), this.tgtTermDefn.getGap());
 	}
 	
 	/* (non-Javadoc)
@@ -191,10 +191,15 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 
 	private static Point calcFirstDrawnPoint(LineSegment original, Dimension decoratorSize, double gapLen){
 		double totalOffset = gapLen + decoratorSize.getWidth();
-		double theta = original.angle();
-		double x = totalOffset * Math.cos(theta);
-		double y = totalOffset * Math.sin(theta);
+		double length = original.getLength();
+		double x = (original.getXDisplacement() * totalOffset)/length;
+		double y = (original.getYDisplacement() * totalOffset)/length;
+//		double theta = original.angle();
+//		double x = totalOffset * Math.cos(theta);
+//		double y = totalOffset * Math.sin(theta);
 		return original.getOrigin().translate(x, y);
+//		Vector u = original.getVector().unitVector().scale(totalOffset);
+//		return original.getOrigin().translate(u.getIMagnitude(), u.getJMagnitude());
 	}
 	
 	/* (non-Javadoc)
@@ -238,14 +243,14 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 	@Override
 	public Iterator<LineSegment> drawnLineSegIterator(){
 		List<LineSegment> retVal = new LinkedList<LineSegment>();
-		Point firstP = this.srcListStartPosn;
+		Point firstP = this.srcLineStartPosn;
 		Point lastP = null;
 		for(int i = 1; i < this.pointList.size() -1; i++){
 			lastP = this.pointList.get(i);
 			retVal.add(new LineSegment(firstP, lastP));
 			firstP = lastP;
 		}
-		lastP = this.tgtListEndPosn;
+		lastP = this.tgtLineEndPosn;
 		retVal.add(new LineSegment(firstP, lastP));
 		return retVal.iterator();
 	}

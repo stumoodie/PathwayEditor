@@ -23,6 +23,7 @@ public class ShapePane extends JPanel implements IShapePane {
 	private final Logger logger = Logger.getLogger(this.getClass());
 	private static final long serialVersionUID = -7580080598416351849L;
 	private static final double RESIZE_DIM = 20.0;
+	private static final boolean DEBUG_REFRESH_BOUNDS = Boolean.getBoolean("org.pathwayeditor.visualeditor.editingview.debugRefreshBounds");
 
 //	private final double PANE_BORDER = 20.0;
 	private final double PANE_BORDER = 0.0;
@@ -73,7 +74,7 @@ public class ShapePane extends JPanel implements IShapePane {
 		for(IShapePaneLayer layer : this.layers){
 			layer.paint(g2d);
 		}
-		if(logger.isTraceEnabled()){
+		if(DEBUG_REFRESH_BOUNDS){
 			g2d.setColor(Color.ORANGE);
 			g2d.setTransform(originalTransform);
 			Rectangle r = g2d.getClipBounds();

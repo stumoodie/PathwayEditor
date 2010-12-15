@@ -56,7 +56,6 @@ public class PathwayEditor extends JPanel {
 	private ISelectionChangeListener selectionChangeListener;
 	private IFeedbackModel feedbackModel;
 	private boolean isOpen = false;
-
 	private ILayoutCalculator layoutCalculator;
 
 	public PathwayEditor(){
@@ -190,17 +189,32 @@ public class PathwayEditor extends JPanel {
 		}
 	}
 	
-	public void loadCanvas(IModel canvas){
+//	public void loadCanvas(IModel canvas){
+//		if(isOpen){
+//			reset();
+//		}
+//        this.commandStack = new CommandStack();
+//		this.viewModel = new ViewControllerStore(canvas);
+//		setUpEditorViews(canvas);
+//		((ShapePane)this.shapePane).setPreferredSize(new Dimension(1800, 1800));
+//		((ShapePane)this.shapePane).revalidate();
+//	}
+
+	public void renderModel(IModel model){
 		if(isOpen){
 			reset();
 		}
         this.commandStack = new CommandStack();
-		this.viewModel = new ViewControllerStore(canvas);
-		setUpEditorViews(canvas);
+		this.viewModel = new ViewControllerStore(model);
+		setUpEditorViews(this.viewModel.getDomainModel());
 		((ShapePane)this.shapePane).setPreferredSize(new Dimension(1800, 1800));
 		((ShapePane)this.shapePane).revalidate();
 	}
 
+	public IViewControllerModel getViewControllerModel(){
+		return this.viewModel;
+	}
+	
 	
 	private void initialise(){
 		this.editBehaviourController.activate();
