@@ -107,7 +107,6 @@ public class VisualEditor extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser chooser = new JFileChooser();
-//				chooser.setCurrentDirectory(new File("/Users/smoodie/Documents/workspace351_64/GraphicsEngine"));
 				chooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
 				chooser.setFileFilter(new FileFilter(){
 					
@@ -153,7 +152,6 @@ public class VisualEditor extends JFrame {
 			canvasPersistenceManager.readCanvasFromStream(in);
 			in.close();
 			insp.renderModel(canvasPersistenceManager.getCurrentCanvas());
-//			this.getRootPane().revalidate();
 			
 		}
 		catch(IOException ex){
