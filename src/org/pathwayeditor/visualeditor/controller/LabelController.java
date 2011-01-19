@@ -1,6 +1,7 @@
 package org.pathwayeditor.visualeditor.controller;
 
 import org.apache.log4j.Logger;
+import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasElementAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNodeAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILabelAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILabelNode;
@@ -37,17 +38,16 @@ public class LabelController extends NodeController implements ILabelController 
 		"grestore\n" +
 		"0.5 0.5 :labelFontSize :labelText cardinalityBox\n";
 	private final ILabelNode domainNode;
-	private IDrawingNodeAttribute parentAttribute;
+	private final ICanvasElementAttribute parentAttribute;
 	private final ICanvasAttributeChangeListener drawingNodePropertyChangeListener;
 	private final ICanvasAttributeChangeListener parentDrawingNodePropertyChangeListener;
-//	private INodeControllerChangeListener parentNodePrimitiveChangeListener;
 	private final IFigureController controller;
 	private boolean isActive;
 	
 	public LabelController(IViewControllerModel viewModel, ILabelNode node, int index) {
 		super(viewModel, index);
 		this.domainNode = node;
-		this.parentAttribute = (IDrawingNodeAttribute)this.domainNode.getGraphElement().getParent().getAttribute();
+		this.parentAttribute = (ICanvasElementAttribute)this.domainNode.getGraphElement().getParent().getAttribute();
 		this.isActive = false;
 		drawingNodePropertyChangeListener = new ICanvasAttributeChangeListener() {
 			@Override
@@ -69,23 +69,6 @@ public class LabelController extends NodeController implements ILabelController 
 			public void nodeResized(ICanvasAttributeResizedEvent e) {
 			}
 		};
-//		this.parentNodePrimitiveChangeListener = new INodeControllerChangeListener(){
-//
-//			@Override
-//			public void nodeTranslated(INodeTranslationEvent e) {
-//				translatePrimitive(e.getTranslationDelta());
-//			}
-//
-//			@Override
-//			public void nodeResized(INodeResizeEvent e) {
-//			}
-//
-//			@Override
-//			public void changedBounds(INodeBoundsChangeEvent e) {
-//				
-//			}
-//			
-//		};
 		parentDrawingNodePropertyChangeListener = new ICanvasAttributeChangeListener() {
 			
 			@Override
@@ -105,9 +88,6 @@ public class LabelController extends NodeController implements ILabelController 
 	}
 
 	private IFigureController createController(ILabelAttribute attribute){
-//		FigureDefinitionCompiler compiler = new FigureDefinitionCompiler(LABEL_DEFINITION);
-//		compiler.compile();
-//		IFigureController figureController = new FigureController(compiler.getCompiledFigureDefinition());
 		IFigureController figureController = new FigureController(FigureCompilationCache.getInstance().lookup(LABEL_DEFINITION));
 		figureController.setRequestedEnvelope(attribute.getBounds());
 		figureController.setFillColour(attribute.getBackgroundColor());
@@ -115,7 +95,7 @@ public class LabelController extends NodeController implements ILabelController 
 		figureController.setLineStyle(attribute.getLineStyle());
 		figureController.setLineWidth(attribute.getLineWidth());
 		figureController.setBindDouble("labelFontSize", 10.0);
-		figureController.setBindString("labelText", attribute.getProperty().getValue().toString());
+		figureController.setBindString("labelText", attribute.getDisplayedContent());
 		figureController.setBindBoolean("noborderFlag", attribute.hasNoBorder());
 		figureController.generateFigureDefinition();
 		return figureController;
@@ -136,23 +116,10 @@ public class LabelController extends NodeController implements ILabelController 
 		return this.controller.getConvexHull();
 	}
 
-//	@Override
-//	public void translatePrimitive(Point translation) {
-//		Envelope currBounds = this.domainNode.getBounds();
-//		controller.setRequestedEnvelope(currBounds.translate(translation));
-//		controller.generateFigureDefinition();
-//		this.notifyTranslation(translation);
-//	}
-
 	@Override
 	public void inactivate() {
 		this.domainNode.getAttribute().removeChangeListener(drawingNodePropertyChangeListener);
-		parentAttribute = (IDrawingNodeAttribute)this.domainNode.getGraphElement().getParent().getAttribute(); 
 		parentAttribute.removeChangeListener(parentDrawingNodePropertyChangeListener);
-//		if(this.getViewModel().containsDrawingElement(parentAttribute)){
-//			INodeController parentNode = this.getViewModel().getNodePrimitive(parentAttribute);
-//			parentNode.removeNodePrimitiveChangeListener(this.parentNodePrimitiveChangeListener);
-//		}
 		this.isActive = false;
 	}
 
@@ -161,9 +128,6 @@ public class LabelController extends NodeController implements ILabelController 
 	public void activate() {
 		this.domainNode.getAttribute().addChangeListener(this.drawingNodePropertyChangeListener);
 		parentAttribute.addChangeListener(parentDrawingNodePropertyChangeListener);
-//		INodeController parentNode = this.getViewModel().getNodePrimitive(this.domainNode.getCurrentDrawingElement().getParentNode().getAttribute());
-//		parentNode.addNodePrimitiveChangeListener(this.parentNodePrimitiveChangeListener);
-//		this.resyncToModel();
 		this.isActive = true;
 	}
 
@@ -172,33 +136,12 @@ public class LabelController extends NodeController implements ILabelController 
 		return this.controller;
 	}
 
-//	@Override
-//	public void resizePrimitive(Point originDelta, Dimension resizeDelta) {
-//		Envelope currBounds = this.domainNode.getBounds();
-//		controller.setRequestedEnvelope(currBounds.translate(originDelta).changeDimension(currBounds.getDimension().resize(resizeDelta.getWidth(), resizeDelta.getHeight())));
-//		controller.generateFigureDefinition();
-//		this.notifyResize(originDelta, resizeDelta);
-//	}
-
 	@Override
 	public boolean canResize(Point originDelta, Dimension resizeDelta) {
 		Envelope newBounds = this.getBounds().resize(originDelta, resizeDelta);
 		return (newBounds.getDimension().getWidth() > 0.0 && newBounds.getDimension().getHeight() > 0.0);
 	}
 	
-//	@Override
-//	public void redefinedSyncroniseToModel() {
-//		ILabelAttribute attribute = this.domainNode;
-//		Envelope originalBounds = getBounds();
-//		controller.setRequestedEnvelope(attribute.getBounds());
-//		controller.setFillColour(attribute.getBackgroundColor());
-//		controller.setLineColour(attribute.getForegroundColor());
-//		controller.setLineStyle(attribute.getLineStyle());
-//		controller.setLineWidth(attribute.getLineWidth());
-//		controller.generateFigureDefinition();
-//		notifyChangedBounds(originalBounds, getBounds());
-//	}
-
 	@Override
 	public boolean isActive() {
 		return this.isActive;
