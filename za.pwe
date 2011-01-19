@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<epx:canvas xmlns:epx="http://www.pathwayeditor.org/Exchange"
+<epx:canvas xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:epx="http://www.pathwayeditor.org/Exchange"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.pathwayeditor.org/Exchange http://www.pathwayeditor.org/Exchange/Canvas.xsd"
-    name="za.pwe" lastCreationSerial="28">
+    name="za.pwe" lastCreationSerial="29">
     <Grid snapToGrid="false" gridOn="false">
         <GridSize width="200.0" height="300.0"/>
     </Grid>
@@ -99,7 +99,7 @@
     </Notation>
     <CanvasSize width="200.0" height="300.0"/>
     <Background red="255" green="255" blue="255"/>
-    <Model lastNodeIndex="25" lastEdgeIndex="1">
+    <Model lastNodeIndex="26" lastEdgeIndex="1">
         <RootNode nodeId="0">
             <SubModel>
                 <ShapeNode nodeId="3">
@@ -437,6 +437,19 @@ grestore
 { x y w h oval } ifelse</FigureDefinition>
                     </ShapeAttribute>
                 </ShapeNode>
+                <LabelNode nodeId="26">
+                    <SubModel/>
+                    <LabelAttribute creationSerial="29"
+                        lineStyle="SOLID"
+                        lineWidth="1.0" noFill="true" noBorder="true">
+                        <Location x="369.0" y="374.0"/>
+                        <Size width="42.0" height="22.0"/>
+                        <LineColour red="0" green="0" blue="0"/>
+                        <FillColour red="255"
+                            green="255" blue="255"/>
+                        <PropertyRef id="39"/>
+                    </LabelAttribute>
+                </LabelNode>
                 <LinkEdge linkIdx="0" srcNodeIdx="3" tgtNodeIdx="13">
                     <LinkAttribute creationSerial="17" lineStyle="SOLID"
                         lineWidth="1.0" objectTypeId="20" lastBendPointIndex="0">
