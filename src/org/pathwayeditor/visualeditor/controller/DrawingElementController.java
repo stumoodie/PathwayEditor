@@ -76,12 +76,6 @@ public abstract class DrawingElementController implements IDrawingElementControl
 		}
 	}
 	
-//	@Override
-//	public final int compareTo(IDrawingElementController o) {
-//		return this.index == o.getIndex() ? 0 : (this.index < o.getIndex() ? -1 : 1);
-//	}
-
-	
 	@Override
 	public final int getIndex(){
 		return this.index;
