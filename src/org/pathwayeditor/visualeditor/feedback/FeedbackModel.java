@@ -6,11 +6,15 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.pathwayeditor.businessobjects.drawingprimitives.ILabelNode;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkEdge;
 import org.pathwayeditor.businessobjects.drawingprimitives.IShapeNode;
+import org.pathwayeditor.businessobjects.drawingprimitives.ISubModel;
+import org.pathwayeditor.businessobjects.impl.facades.LabelNodeFacade;
 import org.pathwayeditor.businessobjects.impl.facades.LinkEdgeFacade;
 import org.pathwayeditor.businessobjects.impl.facades.ShapeNodeFacade;
+import org.pathwayeditor.businessobjects.impl.facades.SubModelFacade;
 import org.pathwayeditor.figure.figuredefn.IAnchorLocator;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
@@ -24,6 +28,7 @@ import org.pathwayeditor.visualeditor.selection.INodeSelection;
 import org.pathwayeditor.visualeditor.selection.ISelectionRecord;
 
 import uk.ac.ed.inf.graph.compound.ICompoundEdge;
+import uk.ac.ed.inf.graph.compound.ICompoundNode;
 
 public class FeedbackModel implements IFeedbackModel {
 	private final Set<IFeedbackNode> nodes;
@@ -70,7 +75,6 @@ public class FeedbackModel implements IFeedbackModel {
 				}
 			}					
 			IFeedbackNode feedbackNode = builder.createFromDrawingNodeAttribute(selectedNode.getDrawingElement().getAttribute());
-//			this.nodes.add(feedbackNode);
 			this.selectionMapping.put(selectedNode, feedbackNode);
 		}
 	}
@@ -83,11 +87,27 @@ public class FeedbackModel implements IFeedbackModel {
 			IFeedbackLink feedbackLink = createFeedbackLink(selectedLink.getPrimitiveController(), selectedLink.getPrimitiveController().getViewModel());
 			this.links.add(feedbackLink);
 			this.selectionMapping.put(linkController, feedbackLink);
+			buildLinkLabels(linkController);
 		}
 		IViewControllerModel viewController = this.selectionRecord.getPrimarySelection().getPrimitiveController().getViewModel();
 		for(ILinkController linkEdge : incidentEdgeSet){
 			IFeedbackLink feedbackLink = createFeedbackLink(linkEdge, viewController);
 			this.links.add(feedbackLink);
+			buildLinkLabels(linkEdge);
+		}
+	}
+	
+	
+	private void buildLinkLabels(ILinkController linkController){
+		ISubModel linkSubmodel = new SubModelFacade(linkController.getDrawingElement().getGraphElement().getChildCompoundGraph()); 
+		Iterator<ICompoundNode> labelIter = linkSubmodel.labelIterator();
+		while(labelIter.hasNext()){
+			ILabelNode label = new LabelNodeFacade(labelIter.next());
+			INodeController labelController = linkController.getViewModel().getNodeController(label); 
+			if(!this.selectionMapping.containsKey(labelController)){
+				IFeedbackNode feedbackNode = builder.createFromDrawingNodeAttribute(label.getAttribute());
+				this.selectionMapping.put(labelController, feedbackNode);
+			}
 		}
 	}
 	
