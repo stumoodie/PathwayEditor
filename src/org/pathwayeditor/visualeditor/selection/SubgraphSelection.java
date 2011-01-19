@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElementSelection;
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNode;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkEdge;
@@ -19,6 +20,7 @@ import uk.ac.ed.inf.graph.compound.ICompoundEdge;
 import uk.ac.ed.inf.graph.compound.ICompoundNode;
 
 public class SubgraphSelection implements ISubgraphSelection {
+	private final Logger logger = Logger.getLogger(this.getClass());
 	private final IDrawingElementSelection subgraphSelection;
 	private final SelectionRecord selectionRecord;
 	private final IViewControllerModel viewControllerStore;
@@ -40,7 +42,11 @@ public class SubgraphSelection implements ISubgraphSelection {
 		while(linkIter.hasNext()){
 			ILinkEdge drawingNode = new LinkEdgeFacade(linkIter.next());
 			ILinkController linkController = this.viewControllerStore.getLinkController(drawingNode);
-			if(!this.selectionRecord.containsSelection(linkController)){
+			if(linkController == null){
+				Exception e = new IllegalStateException("Link Controller not found");
+				logger.error("Link Controller not found. drawingElement=" + drawingNode, e);
+			}
+			else if(!this.selectionRecord.containsSelection(linkController)){
 				this.subGraphSelections.put(linkController, new LinkSelection(SelectionType.SUBGRAPH, linkController));
 			}
 		}
