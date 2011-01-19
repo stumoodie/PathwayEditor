@@ -99,6 +99,7 @@ public class LinkController extends DrawingElementController implements ILinkCon
 
 			@Override
 			public void propertyChange(IBendPointChangeEvent e) {
+				Envelope originalDrawnBounds = getDrawnBounds();
 				if(e.getChangeType().equals(BendPointChange.BEND_POINT_ADDED)){
 					int bpIdx = e.getNewIndexPos();
 					Point bpPosn = e.getBendPoint();
@@ -124,6 +125,7 @@ public class LinkController extends DrawingElementController implements ILinkCon
 						updateLinksToBendPoints(lastBpIdx, bpPosn);
 					}
 				}
+				notifyDrawnBoundsChanged(originalDrawnBounds, getDrawnBounds());
 			}
 		};
 //		this.srcNodeChangeListener = new ICanvasAttributePropertyChangeListener() {
