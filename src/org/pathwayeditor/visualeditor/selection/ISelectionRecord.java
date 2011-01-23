@@ -23,9 +23,9 @@ public interface ISelectionRecord {
 	
 	Iterator<ISelection> selectionIterator();
 	
-	Iterator<INodeSelection> selectedNodesIterator();
+	Iterator<INodeSelection> selectedNodeIterator();
 	
-	Iterator<ILinkSelection> selectedLinksIterator();
+	Iterator<ILinkSelection> selectedLinkIterator();
 	
 	int numSelected();
 	

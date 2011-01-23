@@ -18,4 +18,6 @@ public interface ISubgraphSelection {
 
 	int numTopDrawingNodes();
 
+	Iterator<ILinkSelection> topSelectedLinkIterator();
+
 }

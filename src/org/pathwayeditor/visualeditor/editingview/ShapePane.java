@@ -175,8 +175,8 @@ public class ShapePane extends JPanel implements IShapePane {
 			logger.trace("Update requested. Model bounds=" + updateBounds + ", screen bounds=" + bounds);
 		}
 		revalidate();
-		repaint(bounds);
-//		repaint();
+//		repaint(bounds);
+		repaint();
 		if(logger.isTraceEnabled()){
 			logger.trace("Pane is focusable? = " + this.isFocusable());
 			logger.trace("Pane has focus? = " + this.hasFocus());

@@ -34,7 +34,8 @@ public class SelectionLayer implements ISelectionLayer {
 		if(logger.isDebugEnabled()){
 			logger.debug("Selecting objects to update with bounds=" + updateBound);
 		}
-		Iterator<INodeSelection> selectionNodeIter = this.selections.selectedNodesIterator();
+//		ISubgraphSelection selections = this.selections.getSubgraphSelection();
+		Iterator<INodeSelection> selectionNodeIter = selections.selectedNodeIterator();
 		while(selectionNodeIter.hasNext()){
 			INodeSelection selectionNode = selectionNodeIter.next();
 			if(selectionNode.getPrimitiveController().getDrawnBounds().intersects(updateBound)){
@@ -45,7 +46,7 @@ public class SelectionLayer implements ISelectionLayer {
 				selection.paint(g2d);
 			}
 		}
-		Iterator<ILinkSelection> selectionLinkIter = this.selections.selectedLinksIterator();
+		Iterator<ILinkSelection> selectionLinkIter = selections.selectedLinkIterator();
 		while(selectionLinkIter.hasNext()){
 			ILinkSelection selectionLink = selectionLinkIter.next();
 			if(selectionLink.getPrimitiveController().getDrawnBounds().intersects(updateBound)){

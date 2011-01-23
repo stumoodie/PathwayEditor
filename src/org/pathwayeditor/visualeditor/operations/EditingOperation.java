@@ -11,7 +11,7 @@ import org.pathwayeditor.visualeditor.commands.CompoundCommand;
 import org.pathwayeditor.visualeditor.commands.ICommand;
 import org.pathwayeditor.visualeditor.commands.ICommandStack;
 import org.pathwayeditor.visualeditor.commands.ICompoundCommand;
-import org.pathwayeditor.visualeditor.commands.MoveBendPointCommand;
+import org.pathwayeditor.visualeditor.commands.MoveLinkCommand;
 import org.pathwayeditor.visualeditor.commands.MoveNodeCommand;
 import org.pathwayeditor.visualeditor.commands.ReparentSelectionCommand;
 import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
@@ -179,6 +179,21 @@ public class EditingOperation implements IEditingOperation {
 
 	private void createMoveCommand(Point delta, boolean reparentingEnabled){
 		ICompoundCommand cmpCommand = new CompoundCommand();
+		Iterator<ILinkSelection> moveLinkIterator = this.selectionRecord.getSubgraphSelection().topSelectedLinkIterator();
+		while(moveLinkIterator.hasNext()){
+			ILinkAttribute nodePrimitive = moveLinkIterator.next().getPrimitiveController().getDrawingElement().getAttribute();
+			ICommand cmd = new MoveLinkCommand(nodePrimitive, delta);
+			cmpCommand.addCommand(cmd);
+//			ILinkAttribute nodePrimitive = moveLinkIterator.next().getPrimitiveController().getDrawingElement().getAttribute();
+//			int bpIdx = 0;
+//			Iterator<Point> bpIter = nodePrimitive.getBendPointContainer().bendPointIterator();
+//			while(bpIter.hasNext()){
+//				bpIter.next();
+//				ICommand cmd = new MoveBendPointCommand(nodePrimitive.getBendPointContainer(), bpIdx, delta);
+//				cmpCommand.addCommand(cmd);
+//				bpIdx++;
+//			}
+		}
 		Iterator<INodeSelection> moveNodeIterator = this.selectionRecord.getSubgraphSelection().topSelectedNodeIterator();
 		while(moveNodeIterator.hasNext()){
 			INodeController nodePrimitive = moveNodeIterator.next().getPrimitiveController();
@@ -186,18 +201,6 @@ public class EditingOperation implements IEditingOperation {
 			cmpCommand.addCommand(cmd);
 			if(logger.isTraceEnabled()){
 				logger.trace("Dragged shape to location: " + nodePrimitive.getBounds().getOrigin());
-			}
-		}
-		Iterator<ILinkSelection> moveLinkIterator = this.selectionRecord.getSubgraphSelection().selectedLinkIterator();
-		while(moveLinkIterator.hasNext()){
-			ILinkAttribute nodePrimitive = moveLinkIterator.next().getPrimitiveController().getDrawingElement().getAttribute();
-			int bpIdx = 0;
-			Iterator<Point> bpIter = nodePrimitive.getBendPointContainer().bendPointIterator();
-			while(bpIter.hasNext()){
-				bpIter.next();
-				ICommand cmd = new MoveBendPointCommand(nodePrimitive.getBendPointContainer(), bpIdx, delta);
-				cmpCommand.addCommand(cmd);
-				bpIdx++;
 			}
 		}
 		if(reparentingEnabled){

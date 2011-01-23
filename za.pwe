@@ -442,7 +442,7 @@ grestore
                     <LabelAttribute creationSerial="29"
                         lineStyle="SOLID"
                         lineWidth="1.0" noFill="true" noBorder="true">
-                        <Location x="369.0" y="374.0"/>
+                        <Location x="535.0" y="374.0"/>
                         <Size width="42.0" height="22.0"/>
                         <LineColour red="0" green="0" blue="0"/>
                         <FillColour red="255"

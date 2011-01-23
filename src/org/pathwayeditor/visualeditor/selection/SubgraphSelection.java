@@ -155,4 +155,34 @@ public class SubgraphSelection implements ISubgraphSelection {
 		return retVal;
 	}
 
+	@Override
+	public Iterator<ILinkSelection> topSelectedLinkIterator() {
+		// ensure that this graph selection is initialized
+		final Iterator<ICompoundEdge> iter = this.subgraphSelection.topLinkEdgesIterator();
+		Iterator<ILinkSelection> retVal = new Iterator<ILinkSelection>(){
+
+			@Override
+			public boolean hasNext() {
+				return iter.hasNext();
+			}
+
+			@Override
+			public ILinkSelection next() {
+				ILinkController nodeController = viewControllerStore.getLinkController(new LinkEdgeFacade(iter.next()));
+				ILinkSelection retVal = selectionRecord.getLinkSelection(nodeController);
+				if(retVal == null){
+					retVal = (ILinkSelection)subGraphSelections.get(nodeController);
+				}
+				return retVal;
+			}
+
+			@Override
+			public void remove() {
+				throw new UnsupportedOperationException("Removal not supported");
+			}
+			
+		};
+		return retVal;
+	}
+
 }

@@ -134,9 +134,9 @@ public class FeedbackModel implements IFeedbackModel {
 		this.links.clear();
 		this.selectionMapping.clear();
 		Set<ILinkController> incidentEdgeSet = new HashSet<ILinkController>();
-		final Iterator<INodeSelection> selectionNodeIter = this.selectionRecord.selectedNodesIterator();
+		final Iterator<INodeSelection> selectionNodeIter = this.selectionRecord.selectedNodeIterator();
 		buildGraphSelectionNodes(selectionNodeIter, incidentEdgeSet);
-		final Iterator<ILinkSelection> linkIter = this.selectionRecord.selectedLinksIterator();
+		final Iterator<ILinkSelection> linkIter = this.selectionRecord.selectedLinkIterator();
 		buildGraphSelectionLinks(linkIter, incidentEdgeSet);
 //		buildStrictSelectionNodes();
 //		buildStrictSelectionLinks();

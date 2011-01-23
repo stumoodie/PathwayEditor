@@ -2,10 +2,12 @@ package org.pathwayeditor.visualeditor.selection;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -203,7 +205,7 @@ public class SelectionRecord implements ISelectionRecord {
 	}
 
 	@Override
-	public Iterator<ILinkSelection> selectedLinksIterator() {
+	public Iterator<ILinkSelection> selectedLinkIterator() {
 		List<ILinkSelection> retVal = new LinkedList<ILinkSelection>();
 		Iterator<ISelection> iter = this.selectionIterator();
 		while(iter.hasNext()){
@@ -216,7 +218,7 @@ public class SelectionRecord implements ISelectionRecord {
 	}
 
 	@Override
-	public Iterator<INodeSelection> selectedNodesIterator() {
+	public Iterator<INodeSelection> selectedNodeIterator() {
 		List<INodeSelection> retVal = new LinkedList<INodeSelection>();
 		Iterator<ISelection> iter = this.selectionIterator();
 		while(iter.hasNext()){
@@ -289,23 +291,6 @@ public class SelectionRecord implements ISelectionRecord {
 			retVal = this.builder.getEnvelope();
 		}
 		return retVal;
-//		double minX = Double.MAX_VALUE;
-//		double maxX = Double.MIN_VALUE;
-//		double minY = Double.MAX_VALUE;
-//		double maxY = Double.MIN_VALUE;
-//		for(ISelection sel : this.selections){
-//			Point o = sel.getPrimitiveController().getDrawnBounds().getOrigin();
-//			Point d = sel.getPrimitiveController().getDrawnBounds().getDiagonalCorner();
-//			minX = Math.min(minX, o.getX());
-//			maxX = Math.max(maxX, o.getX());
-//			minY = Math.min(minY, o.getY());
-//			maxY = Math.max(maxY, o.getY());
-//			minX = Math.min(minX, d.getX());
-//			maxX = Math.max(maxX, d.getX());
-//			minY = Math.min(minY, d.getY());
-//			maxY = Math.max(maxY, d.getY());
-//		}
-//		return new Envelope(minX, minY, maxX-minX, maxY-minY);
 	}
 
 }

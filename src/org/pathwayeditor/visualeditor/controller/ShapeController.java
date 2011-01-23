@@ -85,7 +85,7 @@ public class ShapeController extends NodeController implements IShapeController 
 			}
 
 			@Override
-			public void nodeTranslated(ICanvasAttributeTranslationEvent e) {
+			public void elementTranslated(ICanvasAttributeTranslationEvent e) {
 			}
 
 			@Override
@@ -105,7 +105,7 @@ public class ShapeController extends NodeController implements IShapeController 
 			public void propertyChange(ICanvasAttributePropertyChangeEvent e) {
 			}
 			@Override
-			public void nodeTranslated(ICanvasAttributeTranslationEvent e) {
+			public void elementTranslated(ICanvasAttributeTranslationEvent e) {
 				domainNode.getAttribute().translate(e.getTranslationDelta());
 			}
 			@Override

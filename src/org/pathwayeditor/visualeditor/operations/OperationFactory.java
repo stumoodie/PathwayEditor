@@ -183,7 +183,7 @@ public class OperationFactory implements IOperationFactory {
 	}
 	
 	private void deleteSelection() {
-		Iterator<INodeSelection> nodeSelectionIter = selectionRecord.selectedNodesIterator();
+		Iterator<INodeSelection> nodeSelectionIter = selectionRecord.selectedNodeIterator();
 		ISelectionFactory selectionFact = null;
 		while(nodeSelectionIter.hasNext()){
 			INodeSelection selectedNode = nodeSelectionIter.next();
@@ -192,7 +192,7 @@ public class OperationFactory implements IOperationFactory {
 			}
 			selectionFact.addDrawingNode(selectedNode.getPrimitiveController().getDrawingElement());
 		}
-		Iterator<ILinkSelection> linkSelectionIter = selectionRecord.selectedLinksIterator();
+		Iterator<ILinkSelection> linkSelectionIter = selectionRecord.selectedLinkIterator();
 		while(linkSelectionIter.hasNext()){
 			ILinkSelection selectedLink = linkSelectionIter.next();
 			if(selectionFact == null){

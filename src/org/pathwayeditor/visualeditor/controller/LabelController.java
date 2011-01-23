@@ -43,6 +43,9 @@ public class LabelController extends NodeController implements ILabelController 
 	private final ICanvasAttributeChangeListener parentDrawingNodePropertyChangeListener;
 	private final IFigureController controller;
 	private boolean isActive;
+//	private final IBendPointChangeListener parentLinkBendpointChangeListener;
+//	private final ILinkTerminusChangeListener parentSourceLinkterminusChangeListener;
+//	private final ILinkTerminusChangeListener parentTargetLinkterminusChangeListener;
 	
 	public LabelController(IViewControllerModel viewModel, ILabelNode node, int index) {
 		super(viewModel, index);
@@ -62,7 +65,7 @@ public class LabelController extends NodeController implements ILabelController 
 			}
 
 			@Override
-			public void nodeTranslated(ICanvasAttributeTranslationEvent e) {
+			public void elementTranslated(ICanvasAttributeTranslationEvent e) {
 			}
 
 			@Override
@@ -76,7 +79,7 @@ public class LabelController extends NodeController implements ILabelController 
 			}
 			
 			@Override
-			public void nodeTranslated(ICanvasAttributeTranslationEvent e) {
+			public void elementTranslated(ICanvasAttributeTranslationEvent e) {
 				domainNode.getAttribute().translate(e.getTranslationDelta());
 			}
 			
@@ -87,6 +90,13 @@ public class LabelController extends NodeController implements ILabelController 
 		this.controller = createController(node.getAttribute());
 	}
 
+//	private void recalculateLabelPosition(ILinkAttribute linkAtt){
+//		ILabelLocationPolicy posnPolicy = new LinkLabelPositionPolicy();
+//		posnPolicy.setOwner(linkAtt);
+//		ILinkPointDefinition linkPointDefn = new LinkPointDefinition(linkAtt);
+//		posnPolicy.setLinkEndPoints(linkPointDefn);
+//	}
+	
 	private IFigureController createController(ILabelAttribute attribute){
 		IFigureController figureController = new FigureController(FigureCompilationCache.getInstance().lookup(LABEL_DEFINITION));
 		figureController.setRequestedEnvelope(attribute.getBounds());

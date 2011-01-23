@@ -76,7 +76,7 @@ public class ResizeOperation implements IResizeOperation {
 
 	private boolean canContinueToResize(Point originDelta, Dimension resizeDelta){
 		boolean retVal = true;
-		Iterator<INodeSelection> iter = this.selectionRecord.selectedNodesIterator();
+		Iterator<INodeSelection> iter = this.selectionRecord.selectedNodeIterator();
 		while(iter.hasNext() && retVal){
 			INodeController nodeController = iter.next().getPrimitiveController();
 			retVal = nodeController.canResize(originDelta, resizeDelta);
