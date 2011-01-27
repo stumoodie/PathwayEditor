@@ -46,9 +46,7 @@ public class LinkLabelPositionPolicy implements ILabelLocationPolicy {
 	private Point calcIntersection(LineSegment tangent, LineSegment l){
 		Point retVal = null;
 		List<Point> intn = tangent.getLinesIntersections(l);
-		if(intn.size() > 0 && l.containsPoint(intn.get(0), 0.1)){
-			retVal = intn.get(0);
-		}
+		retVal = intn.get(0);
 		return retVal;
 	}
 

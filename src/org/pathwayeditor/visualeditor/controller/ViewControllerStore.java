@@ -520,7 +520,12 @@ public class ViewControllerStore implements IViewControllerModel {
 
 		@Override
 		public void visitLabel(ILabelAttribute attribute) {
-			viewNode = new LabelController(viewController, new LabelNodeFacade(attribute.getCurrentElement()), indexCounter++);
+			if(attribute.getCurrentElement().getParent() instanceof ICompoundEdge){
+				viewNode = new LinkLabelController(viewController, new LabelNodeFacade(attribute.getCurrentElement()), indexCounter++);
+			}
+			else{
+				viewNode = new LabelController(viewController, new LabelNodeFacade(attribute.getCurrentElement()), indexCounter++);
+			}
 		}
 		
 	}

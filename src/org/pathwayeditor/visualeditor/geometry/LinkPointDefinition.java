@@ -194,12 +194,7 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 		double length = original.getLength();
 		double x = (original.getXDisplacement() * totalOffset)/length;
 		double y = (original.getYDisplacement() * totalOffset)/length;
-//		double theta = original.angle();
-//		double x = totalOffset * Math.cos(theta);
-//		double y = totalOffset * Math.sin(theta);
 		return original.getOrigin().translate(x, y);
-//		Vector u = original.getVector().unitVector().scale(totalOffset);
-//		return original.getOrigin().translate(u.getIMagnitude(), u.getJMagnitude());
 	}
 	
 	/* (non-Javadoc)
@@ -254,19 +249,6 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 		retVal.add(new LineSegment(firstP, lastP));
 		return retVal.iterator();
 	}
-
-//	public Iterator<LineSegment> drawnLineSegIterator(){
-//		List<LineSegment> retVal = new LinkedList<LineSegment>();
-//		Iterator<Point> pointIter = this.pointList.iterator();
-//		Point firstP = pointIter.next();
-//		Point lastP = null;
-//		while(pointIter.hasNext()){
-//			lastP = pointIter.next();
-//			retVal.add(new LineSegment(firstP, lastP));
-//			firstP = lastP;
-//		}
-//		return retVal.iterator();
-//	}
 
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.graphicsengine.ILinkPointDefinition#addNewBendPoint(int, org.pathwayeditor.figure.geometry.Point)
@@ -325,11 +307,11 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 	@Override
 	public boolean containsPoint(Point p){//, double lineWidthTolerence) {
 		boolean retVal = false;
-		final double halfLineHeight = this.lineWidth + LINE_HIT_TOLERENCE;
+//		final double halfLineHeight = this.lineWidth + LINE_HIT_TOLERENCE;
 		Iterator<LineSegment> lineSegIter = this.lineSegIterator();
 		while(lineSegIter.hasNext() && !retVal){
 			LineSegment seg = lineSegIter.next();
-			retVal = seg.containsPoint(p, halfLineHeight);
+			retVal = seg.intersectsWithCircle(p, LINE_HIT_TOLERENCE);
 			if(logger.isTraceEnabled() && retVal){
 				logger.trace("Segment contains point: p=" + p + ", seg" + seg);
 			}

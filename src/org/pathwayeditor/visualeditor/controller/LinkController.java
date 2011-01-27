@@ -9,13 +9,11 @@ import org.pathwayeditor.businessobjects.drawingprimitives.listeners.BendPointCh
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IBendPointChangeEvent;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IBendPointChangeListener;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IBendPointLocationChangeEvent;
-import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IBendPointTranslationEvent;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributeChangeListener;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributePropertyChangeEvent;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributeResizedEvent;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributeTranslationEvent;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ILinkTerminusChangeListener;
-import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ILinkTerminusTranslationEvent;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ILinkTerminusValueChangeEvent;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.LinkTerminusChangeType;
 import org.pathwayeditor.businessobjects.impl.facades.ShapeNodeFacade;
@@ -52,10 +50,6 @@ public class LinkController extends DrawingElementController implements ILinkCon
 					notifyDrawnBoundsChanged(originalDrawnBounds, getDrawnBounds());
 				}
 			}
-
-			@Override
-			public void terminusTranslated(ILinkTerminusTranslationEvent e) {
-			}
 		};
 		this.tgtTermChangeListener = new ILinkTerminusChangeListener() {
 			@Override
@@ -66,10 +60,6 @@ public class LinkController extends DrawingElementController implements ILinkCon
 					linkDefinition.setTgtAnchorPosition(newLocation);
 					notifyDrawnBoundsChanged(originalDrawnBounds, getDrawnBounds());
 				}
-			}
-
-			@Override
-			public void terminusTranslated(ILinkTerminusTranslationEvent e) {
 			}
 		};
 		this.parentDrawingElementPropertyChangeListener = new ICanvasAttributeChangeListener() {
@@ -126,10 +116,6 @@ public class LinkController extends DrawingElementController implements ILinkCon
 					}
 				}
 				notifyDrawnBoundsChanged(originalDrawnBounds, getDrawnBounds());
-			}
-
-			@Override
-			public void translationChange(IBendPointTranslationEvent e) {
 			}
 		};
 	}

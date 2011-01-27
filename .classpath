@@ -60,6 +60,10 @@
 			<attribute name="javadoc_location" value="jar:platform:/resource/GraphicsEngine/libs/compoundGraph/CompoundGraph-docs.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry combineaccessrules="false" kind="src" path="/BusinessObjects"/>
+	<classpathentry kind="lib" path="libs/businessObjects/BusinessObjects.jar" sourcepath="libs/businessObjects/BusinessObjects-src.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/GraphicsEngine/libs/businessObjects/BusinessObjects-docs.jar!/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
