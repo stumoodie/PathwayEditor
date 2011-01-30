@@ -229,4 +229,8 @@ public class PathwayEditor extends JPanel {
 		IDrawingElementController linkController = viewModel.getLinkController(linkEdge);
 		selectionRecord.setPrimarySelection(linkController);
 	}
+	
+	public ISelectionRecord getSelectionRecord(){
+		return this.selectionRecord;
+	}
 }

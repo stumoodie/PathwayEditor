@@ -74,11 +74,6 @@ public class LinkLabelController extends CommonLabelController implements ILabel
 	}
 
 	private void recalculateLabelPosition(){
-//		ILabelLocationPolicy posnPolicy = new LinkLabelPositionPolicy();
-//		posnPolicy.setOwner(parentAttribute);
-//		ILinkPointDefinition linkPointDefn = new LinkPointDefinition(parentAttribute);
-//		posnPolicy.setLinkEndPoints(linkPointDefn);
-//		Point newLabelPosn = posnPolicy.nextLabelLocation();
 		LineSegment originalLink = new LineSegment(this.parentAttribute.getSourceTerminus().getLocation(),
 				this.parentAttribute.getTargetTerminus().getLocation());
 		Point linkMidPoint = originalLink.getMidPoint();

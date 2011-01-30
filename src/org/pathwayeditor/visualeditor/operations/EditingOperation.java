@@ -184,15 +184,6 @@ public class EditingOperation implements IEditingOperation {
 			ILinkAttribute nodePrimitive = moveLinkIterator.next().getPrimitiveController().getDrawingElement().getAttribute();
 			ICommand cmd = new MoveLinkCommand(nodePrimitive, delta);
 			cmpCommand.addCommand(cmd);
-//			ILinkAttribute nodePrimitive = moveLinkIterator.next().getPrimitiveController().getDrawingElement().getAttribute();
-//			int bpIdx = 0;
-//			Iterator<Point> bpIter = nodePrimitive.getBendPointContainer().bendPointIterator();
-//			while(bpIter.hasNext()){
-//				bpIter.next();
-//				ICommand cmd = new MoveBendPointCommand(nodePrimitive.getBendPointContainer(), bpIdx, delta);
-//				cmpCommand.addCommand(cmd);
-//				bpIdx++;
-//			}
 		}
 		Iterator<INodeSelection> moveNodeIterator = this.selectionRecord.getSubgraphSelection().topSelectedNodeIterator();
 		while(moveNodeIterator.hasNext()){

@@ -116,9 +116,6 @@ public class FeedbackNodeBuilder implements IFeedbackNodeBuilder {
 	}
 
 	private IFigureController createLabelController(ILabelAttribute attribute){
-//		FigureDefinitionCompiler compiler = new FigureDefinitionCompiler(LABEL_DEFINITION);
-//		compiler.compile();
-//		IFigureController figureController = new FigureController(compiler.getCompiledFigureDefinition());
 		IFigureController figureController = new FigureController(FigureCompilationCache.getInstance().lookup(LABEL_DEFINITION));
 		figureController.setRequestedEnvelope(attribute.getBounds());
 		figureController.setFillColour(attribute.getBackgroundColor());
@@ -126,16 +123,13 @@ public class FeedbackNodeBuilder implements IFeedbackNodeBuilder {
 		figureController.setLineStyle(attribute.getLineStyle());
 		figureController.setLineWidth(attribute.getLineWidth());
 		figureController.setBindDouble("labelFontSize", 10.0);
-		figureController.setBindString("labelText", attribute.getProperty().getValue().toString());
+		figureController.setBindString("labelText", attribute.getDisplayedContent());
 		figureController.setBindBoolean("noborderFlag", attribute.hasNoBorder());
 		figureController.generateFigureDefinition();
 		return figureController;
 	}
 
 	private IFigureController createShapeController(IShapeAttribute attribute){
-//		FigureDefinitionCompiler compiler = new FigureDefinitionCompiler(attribute.getShapeDefinition());
-//		compiler.compile();
-//		IFigureController figureController = new FigureController(compiler.getCompiledFigureDefinition());
 		IFigureController figureController = new FigureController(FigureCompilationCache.getInstance().lookup(attribute.getShapeDefinition()));
 		figureController.setRequestedEnvelope(attribute.getBounds());
 		figureController.setFillColour(attribute.getFillColour());

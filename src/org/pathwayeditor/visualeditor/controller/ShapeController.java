@@ -5,7 +5,6 @@ import java.util.SortedSet;
 
 import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElement;
-import org.pathwayeditor.businessobjects.drawingprimitives.ILinkEdge;
 import org.pathwayeditor.businessobjects.drawingprimitives.IShapeAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.IShapeNode;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.RGB;
@@ -19,8 +18,6 @@ import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttr
 import org.pathwayeditor.businessobjects.drawingprimitives.properties.IAnnotationProperty;
 import org.pathwayeditor.businessobjects.impl.facades.DrawingElementFacade;
 import org.pathwayeditor.businessobjects.impl.facades.DrawingNodeFacade;
-import org.pathwayeditor.businessobjects.impl.facades.LinkEdgeFacade;
-import org.pathwayeditor.businessobjects.impl.facades.ShapeNodeFacade;
 import org.pathwayeditor.businessobjects.impl.facades.SubModelFacade;
 import org.pathwayeditor.figure.figuredefn.IAnchorLocator;
 import org.pathwayeditor.figure.figuredefn.IFigureController;
@@ -32,7 +29,6 @@ import org.pathwayeditor.figure.geometry.RectangleHull;
 import org.pathwayeditor.visualeditor.geometry.IIntersectionCalcnFilter;
 import org.pathwayeditor.visualeditor.geometry.IIntersectionCalculator;
 
-import uk.ac.ed.inf.graph.compound.ICompoundEdge;
 import uk.ac.ed.inf.graph.compound.ICompoundNode;
 
 public class ShapeController extends NodeController implements IShapeController {
@@ -73,8 +69,8 @@ public class ShapeController extends NodeController implements IShapeController 
 					Envelope oldDrawnBounds = figureController.getFigureController().getConvexHull().getEnvelope();
 					figureController.getFigureController().setRequestedEnvelope(attribute.getBounds());
 					figureController.refreshGraphicalAttributes();
-					recalculateSrcLinks();
-					recalculateTgtLinks();
+//					recalculateSrcLinks();
+//					recalculateTgtLinks();
 					notifyDrawnBoundsChanged(oldDrawnBounds, figureController.getFigureController().getConvexHull().getEnvelope());
 				}
 				else if(e.getPropertyChange().equals(CanvasAttributePropertyChange.LINE_STYLE)){
@@ -175,29 +171,29 @@ public class ShapeController extends NodeController implements IShapeController 
 //		return figureController;
 //	}
 
-	private void recalculateSrcLinks(){
-		Iterator<ICompoundEdge> edgeIter = this.domainNode.sourceLinkIterator();
-		while(edgeIter.hasNext()){
-			ILinkEdge link = new LinkEdgeFacade(edgeIter.next());
-			ILinkController linkController = this.getViewModel().getLinkController(link);
-			IShapeController srcNode = (IShapeController)this.getViewModel().getNodeController(new ShapeNodeFacade(link.getSourceShape()));
-			IShapeController tgtNode = (IShapeController)this.getViewModel().getNodeController(new ShapeNodeFacade(link.getTargetShape()));
-			changeSourceAnchor(linkController, srcNode, tgtNode);
-//			changeTargetAnchor(linkController, srcNode, tgtNode);
-		}
-	}
-
-	private void recalculateTgtLinks(){
-		Iterator<ICompoundEdge> edgeIter = this.domainNode.targetLinkIterator();
-		while(edgeIter.hasNext()){
-			ILinkEdge link = new LinkEdgeFacade(edgeIter.next());
-			ILinkController linkController = this.getViewModel().getLinkController(link);
-			IShapeController srcNode = (IShapeController)this.getViewModel().getNodeController(new ShapeNodeFacade(link.getSourceShape()));
-			IShapeController tgtNode = (IShapeController)this.getViewModel().getNodeController(new ShapeNodeFacade(link.getTargetShape()));
+//	private void recalculateSrcLinks(){
+//		Iterator<ICompoundEdge> edgeIter = this.domainNode.sourceLinkIterator();
+//		while(edgeIter.hasNext()){
+//			ILinkEdge link = new LinkEdgeFacade(edgeIter.next());
+//			ILinkController linkController = this.getViewModel().getLinkController(link);
+//			IShapeController srcNode = (IShapeController)this.getViewModel().getNodeController(new ShapeNodeFacade(link.getSourceShape()));
+//			IShapeController tgtNode = (IShapeController)this.getViewModel().getNodeController(new ShapeNodeFacade(link.getTargetShape()));
 //			changeSourceAnchor(linkController, srcNode, tgtNode);
-			changeTargetAnchor(linkController, srcNode, tgtNode);
-		}
-	}
+////			changeTargetAnchor(linkController, srcNode, tgtNode);
+//		}
+//	}
+//
+//	private void recalculateTgtLinks(){
+//		Iterator<ICompoundEdge> edgeIter = this.domainNode.targetLinkIterator();
+//		while(edgeIter.hasNext()){
+//			ILinkEdge link = new LinkEdgeFacade(edgeIter.next());
+//			ILinkController linkController = this.getViewModel().getLinkController(link);
+//			IShapeController srcNode = (IShapeController)this.getViewModel().getNodeController(new ShapeNodeFacade(link.getSourceShape()));
+//			IShapeController tgtNode = (IShapeController)this.getViewModel().getNodeController(new ShapeNodeFacade(link.getTargetShape()));
+////			changeSourceAnchor(linkController, srcNode, tgtNode);
+//			changeTargetAnchor(linkController, srcNode, tgtNode);
+//		}
+//	}
 
 	public void changeSourceAnchor(ILinkController linkController, IShapeController srcNode, IShapeController tgtNode){
 		if(linkController.getLinkDefinition().numBendPoints() > 0){
