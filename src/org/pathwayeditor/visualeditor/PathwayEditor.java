@@ -80,6 +80,10 @@ public class PathwayEditor extends JPanel {
 		this.feedbackModel = null;
 	}
 	
+	public boolean isOpen(){
+		return isOpen;
+	}
+	
 	public void close(){
 		if(isOpen){
 			reset();
