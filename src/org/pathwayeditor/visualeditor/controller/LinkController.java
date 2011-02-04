@@ -129,7 +129,10 @@ public class LinkController extends DrawingElementController implements ILinkCon
 			}
 			@Override
 			public void elementTranslated(ICanvasAttributeTranslationEvent e) {
+				Envelope oldDrawnBounds = linkDefinition.getBounds();
 				linkDefinition.translate(e.getTranslationDelta());
+				Envelope newDrawnBounds = linkDefinition.getBounds();
+				notifyDrawnBoundsChanged(oldDrawnBounds, newDrawnBounds);
 			}
 			@Override
 			public void nodeResized(ICanvasAttributeResizedEvent e) {
