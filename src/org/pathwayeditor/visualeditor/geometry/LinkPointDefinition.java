@@ -20,10 +20,12 @@ import org.pathwayeditor.figure.geometry.Point;
 public class LinkPointDefinition implements ILinkPointDefinition {
 	private final Logger logger = Logger.getLogger(this.getClass());
 	
-	private static final double LINE_HIT_TOLERENCE = 5.0;
+	private static final double LINE_HIT_TOLERENCE = 2.0;
 	private static final int SRC_TERM_DIM = 2;
 	private static final int SRC_IDX = 0;
 	private static final double DEFAULT_LINE_WIDTH = 1.0;
+	private static final double MOUSE_HOT_SPHERE_RADIUS = 5.0;
+
 	private final List<Point> pointList;
 	private RGB lineColour = RGB.BLACK;
 	private LineStyle lineStyle = LineStyle.SOLID;
@@ -104,19 +106,19 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 	@Override
 	public Envelope getBounds(){
 		double minX = Double.MAX_VALUE;
-		double maxX = Double.MIN_VALUE;
+		double maxX = -Double.MAX_VALUE;
 		double minY = Double.MAX_VALUE;
-		double maxY = Double.MIN_VALUE;
+		double maxY = -Double.MAX_VALUE;
 		final double halfLineHeight = this.lineWidth + LINE_HIT_TOLERENCE;
 		Iterator<Point> pointIter = this.pointList.iterator();
 		while(pointIter.hasNext()){
 			Point p = pointIter.next();
-			minX = Math.min(minX, p.getX()-halfLineHeight);
-			maxX = Math.max(maxX, p.getX()+halfLineHeight);
-			minY = Math.min(minY, p.getY()-halfLineHeight);
-			maxY = Math.max(maxY, p.getY()+halfLineHeight);
+			minX = Math.min(minX, p.getX());
+			maxX = Math.max(maxX, p.getX());
+			minY = Math.min(minY, p.getY());
+			maxY = Math.max(maxY, p.getY());
 		}
-		return new Envelope(minX, minY, maxX-minX, maxY-minY);
+		return new Envelope(minX-halfLineHeight, minY-halfLineHeight, maxX-minX+halfLineHeight, maxY-minY+halfLineHeight);
 	}
 	
 	/* (non-Javadoc)
@@ -311,7 +313,7 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 		Iterator<LineSegment> lineSegIter = this.lineSegIterator();
 		while(lineSegIter.hasNext() && !retVal){
 			LineSegment seg = lineSegIter.next();
-			retVal = seg.intersectsWithCircle(p, LINE_HIT_TOLERENCE);
+			retVal = seg.intersectsWithCircle(p, MOUSE_HOT_SPHERE_RADIUS);
 			if(logger.isTraceEnabled() && retVal){
 				logger.trace("Segment contains point: p=" + p + ", seg" + seg);
 			}
