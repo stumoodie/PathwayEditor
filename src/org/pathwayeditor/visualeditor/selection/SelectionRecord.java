@@ -47,7 +47,7 @@ public class SelectionRecord implements ISelectionRecord {
 			List<ISelection> oldSelection = new ArrayList<ISelection>(this.selections);
 			ISelection seln = createSelection(SelectionType.SECONDARY, drawingElement);
 			this.builder.union(seln.getPrimitiveController().getDrawnBounds());
-			notifySelectionChange(oldSelection.iterator(), this.selections.iterator());
+			notifySelectionChange(SelectionChangeType.SECONDARY_SELCTION_CHANGED, oldSelection.iterator(), this.selections.iterator());
 		}
 	}
 	
@@ -99,7 +99,7 @@ public class SelectionRecord implements ISelectionRecord {
 		this.selections.clear();
 		this.controllerMapping.clear();
 		this.builder = null;
-		notifySelectionChange(oldSelection.iterator(), this.selections.iterator());
+		notifySelectionChange(SelectionChangeType.SELECTION_CLEARED, oldSelection.iterator(), this.selections.iterator());
 	}
 
 	@Override
@@ -145,7 +145,7 @@ public class SelectionRecord implements ISelectionRecord {
 			this.selections.clear();
 			ISelection newSeln = createSelection(SelectionType.PRIMARY, drawingElement);
 			this.builder = new EnvelopeBuilder(newSeln.getPrimitiveController().getDrawnBounds());
-			notifySelectionChange(oldSelection.iterator(), this.selections.iterator());
+			notifySelectionChange(SelectionChangeType.PRIMARY_SELECTION_CHANGED, oldSelection.iterator(), this.selections.iterator());
 		}
 	}
 	
@@ -163,7 +163,7 @@ public class SelectionRecord implements ISelectionRecord {
 		}
 	}
 
-	private void notifySelectionChange(final Iterator<ISelection> oldSelectionIter, final Iterator<ISelection> newSelectionIter){
+	private void notifySelectionChange(final SelectionChangeType type, final Iterator<ISelection> oldSelectionIter, final Iterator<ISelection> newSelectionIter){
 		ISelectionChangeEvent event = new ISelectionChangeEvent(){
 
 			@Override
@@ -179,6 +179,20 @@ public class SelectionRecord implements ISelectionRecord {
 			@Override
 			public Iterator<ISelection> oldSelectionIter() {
 				return oldSelectionIter;
+			}
+
+			@Override
+			public SelectionChangeType getSelectionChange() {
+				return type;
+			}
+
+			@Override
+			public ISelection getPrimarySelection() {
+				ISelection retVal = null;
+				if(!selections.isEmpty()){
+					retVal = selections.first();
+				}
+				return retVal;
 			}
 			
 		};

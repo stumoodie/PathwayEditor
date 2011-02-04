@@ -4,7 +4,11 @@ import java.util.Iterator;
 
 public interface ISelectionChangeEvent {
 
+	SelectionChangeType getSelectionChange();
+	
 	ISelectionRecord getSelectionRecord();
+	
+	ISelection getPrimarySelection();
 	
 	Iterator<ISelection> newSelectionIter();
 	
