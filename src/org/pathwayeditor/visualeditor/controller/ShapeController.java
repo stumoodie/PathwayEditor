@@ -19,13 +19,13 @@ import org.pathwayeditor.businessobjects.drawingprimitives.properties.IAnnotatio
 import org.pathwayeditor.businessobjects.impl.facades.DrawingElementFacade;
 import org.pathwayeditor.businessobjects.impl.facades.DrawingNodeFacade;
 import org.pathwayeditor.businessobjects.impl.facades.SubModelFacade;
-import org.pathwayeditor.figure.figuredefn.IAnchorLocator;
-import org.pathwayeditor.figure.figuredefn.IFigureRenderingController;
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.figure.geometry.RectangleHull;
+import org.pathwayeditor.figure.rendering.IAnchorLocator;
+import org.pathwayeditor.figure.rendering.IFigureRenderingController;
 import org.pathwayeditor.visualeditor.geometry.IIntersectionCalcnFilter;
 import org.pathwayeditor.visualeditor.geometry.IIntersectionCalculator;
 

@@ -9,13 +9,13 @@ import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttr
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributePropertyChangeEvent;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributeResizedEvent;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributeTranslationEvent;
-import org.pathwayeditor.figure.figuredefn.FigureRenderingController;
-import org.pathwayeditor.figure.figuredefn.IFigureRenderingController;
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.figure.geometry.RectangleHull;
+import org.pathwayeditor.figure.rendering.FigureRenderingController;
+import org.pathwayeditor.figure.rendering.IFigureRenderingController;
 import org.pathwayeditor.visualeditor.feedback.FigureCompilationCache;
 
 public abstract class CommonLabelController extends NodeController implements ILabelController {

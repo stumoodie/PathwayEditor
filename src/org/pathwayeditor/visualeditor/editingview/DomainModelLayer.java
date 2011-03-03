@@ -7,10 +7,10 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
-import org.pathwayeditor.figure.figuredefn.FigureRenderer;
-import org.pathwayeditor.figure.figuredefn.IFigureRenderingController;
-import org.pathwayeditor.figure.figuredefn.IGraphicsEngine;
 import org.pathwayeditor.figure.geometry.Envelope;
+import org.pathwayeditor.figure.rendering.FigureRenderer;
+import org.pathwayeditor.figure.rendering.IFigureRenderingController;
+import org.pathwayeditor.figure.rendering.IGraphicsEngine;
 import org.pathwayeditor.graphicsengine.Java2DGraphicsEngine;
 import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
 import org.pathwayeditor.visualeditor.controller.ILabelController;

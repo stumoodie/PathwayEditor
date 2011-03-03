@@ -23,10 +23,10 @@ import java.util.EnumSet;
 import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LineStyle;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.RGB;
-import org.pathwayeditor.figure.figuredefn.GraphicalTextAlignment;
-import org.pathwayeditor.figure.figuredefn.IFont;
-import org.pathwayeditor.figure.figuredefn.IFont.Style;
-import org.pathwayeditor.figure.figuredefn.IGraphicsEngine;
+import org.pathwayeditor.figure.rendering.GraphicalTextAlignment;
+import org.pathwayeditor.figure.rendering.IFont;
+import org.pathwayeditor.figure.rendering.IGraphicsEngine;
+import org.pathwayeditor.figure.rendering.IFont.Style;
 
 public class Java2DGraphicsEngine implements IGraphicsEngine {
 	private final Logger logger = Logger.getLogger(this.getClass());

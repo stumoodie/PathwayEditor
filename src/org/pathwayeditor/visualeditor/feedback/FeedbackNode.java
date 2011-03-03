@@ -6,11 +6,11 @@ import java.util.List;
 
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LineStyle;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.RGB;
-import org.pathwayeditor.figure.figuredefn.IFigureRenderingController;
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
+import org.pathwayeditor.figure.rendering.IFigureRenderingController;
 
 public class FeedbackNode implements IFeedbackNode {
 //	private final Logger logger = Logger.getLogger(this.getClass()); 

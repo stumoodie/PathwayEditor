@@ -18,9 +18,9 @@ import org.pathwayeditor.businessobjects.drawingprimitives.properties.IPlainText
 import org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyDefinition;
 import org.pathwayeditor.businessobjects.typedefn.IShapeAttributeDefaults;
 import org.pathwayeditor.businessobjects.typedefn.IShapeObjectType;
-import org.pathwayeditor.figure.figuredefn.FigureRenderingController;
-import org.pathwayeditor.figure.figuredefn.IFigureRenderingController;
 import org.pathwayeditor.figure.geometry.Envelope;
+import org.pathwayeditor.figure.rendering.FigureRenderingController;
+import org.pathwayeditor.figure.rendering.IFigureRenderingController;
 import org.pathwayeditor.figurevm.FigureDefinitionCompiler;
 
 public class FeedbackNodeBuilder implements IFeedbackNodeBuilder {

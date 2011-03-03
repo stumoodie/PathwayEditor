@@ -1,6 +1,6 @@
 package org.pathwayeditor.visualeditor.controller;
 
-import org.pathwayeditor.figure.figuredefn.IFigureRenderingController;
+import org.pathwayeditor.figure.rendering.IFigureRenderingController;
 
 public interface IFigureControllerHelper {
 

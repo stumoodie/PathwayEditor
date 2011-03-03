@@ -7,10 +7,10 @@ import java.awt.Rectangle;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
-import org.pathwayeditor.figure.figuredefn.FigureRenderer;
-import org.pathwayeditor.figure.figuredefn.IFigureRenderingController;
-import org.pathwayeditor.figure.figuredefn.IGraphicsEngine;
 import org.pathwayeditor.figure.geometry.Envelope;
+import org.pathwayeditor.figure.rendering.FigureRenderer;
+import org.pathwayeditor.figure.rendering.IFigureRenderingController;
+import org.pathwayeditor.figure.rendering.IGraphicsEngine;
 import org.pathwayeditor.graphicsengine.Java2DGraphicsEngine;
 import org.pathwayeditor.visualeditor.feedback.IFeedbackLink;
 import org.pathwayeditor.visualeditor.feedback.IFeedbackModel;

@@ -22,9 +22,9 @@ import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LabelLocat
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LineStyle;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.RGB;
 import org.pathwayeditor.businessobjects.typedefn.ILabelAttributeDefaults;
-import org.pathwayeditor.figure.figuredefn.GenericFont;
-import org.pathwayeditor.figure.figuredefn.IFont;
 import org.pathwayeditor.figure.geometry.Dimension;
+import org.pathwayeditor.figure.rendering.GenericFont;
+import org.pathwayeditor.figure.rendering.IFont;
 
 
 /**

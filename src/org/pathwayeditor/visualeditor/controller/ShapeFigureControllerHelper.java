@@ -9,8 +9,8 @@ import org.pathwayeditor.businessobjects.drawingprimitives.properties.IIntegerAn
 import org.pathwayeditor.businessobjects.drawingprimitives.properties.IListAnnotationProperty;
 import org.pathwayeditor.businessobjects.drawingprimitives.properties.INumberAnnotationProperty;
 import org.pathwayeditor.businessobjects.drawingprimitives.properties.IPlainTextAnnotationProperty;
-import org.pathwayeditor.figure.figuredefn.FigureRenderingController;
-import org.pathwayeditor.figure.figuredefn.IFigureRenderingController;
+import org.pathwayeditor.figure.rendering.FigureRenderingController;
+import org.pathwayeditor.figure.rendering.IFigureRenderingController;
 import org.pathwayeditor.visualeditor.feedback.FigureCompilationCache;
 
 public class ShapeFigureControllerHelper implements IFigureControllerHelper {

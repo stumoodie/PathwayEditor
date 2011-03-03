@@ -19,10 +19,10 @@ import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ILinkTermin
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ILinkTerminusValueChangeEvent;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.LinkTerminusChangeType;
 import org.pathwayeditor.businessobjects.impl.facades.ShapeNodeFacade;
-import org.pathwayeditor.figure.figuredefn.IAnchorLocator;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.LineSegment;
 import org.pathwayeditor.figure.geometry.Point;
+import org.pathwayeditor.figure.rendering.IAnchorLocator;
 import org.pathwayeditor.visualeditor.geometry.ILinkPointDefinition;
 import org.pathwayeditor.visualeditor.geometry.LinkPointDefinition;
 

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.pathwayeditor.figure.figuredefn.IAnchorLocator;
 import org.pathwayeditor.figure.geometry.Point;
+import org.pathwayeditor.figure.rendering.IAnchorLocator;
 import org.pathwayeditor.visualeditor.geometry.ILinkPointDefinition;
 import org.pathwayeditor.visualeditor.geometry.LinkPointDefinition;
 
