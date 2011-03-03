@@ -18,10 +18,10 @@ import org.pathwayeditor.businessobjects.drawingprimitives.properties.IPlainText
 import org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyDefinition;
 import org.pathwayeditor.businessobjects.typedefn.IShapeAttributeDefaults;
 import org.pathwayeditor.businessobjects.typedefn.IShapeObjectType;
+import org.pathwayeditor.figure.definition.FigureDefinitionCompiler;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.rendering.FigureRenderingController;
 import org.pathwayeditor.figure.rendering.IFigureRenderingController;
-import org.pathwayeditor.figurevm.FigureDefinitionCompiler;
 
 public class FeedbackNodeBuilder implements IFeedbackNodeBuilder {
 	private final String DEFAULT_DEFINITION =

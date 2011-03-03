@@ -31,6 +31,7 @@ import org.pathwayeditor.businessobjects.drawingprimitives.properties.IPlainText
 import org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyDefinition;
 import org.pathwayeditor.businessobjects.typedefn.IShapeAttributeDefaults;
 import org.pathwayeditor.businessobjects.typedefn.IShapeObjectType;
+import org.pathwayeditor.figure.definition.FigureDefinitionCompiler;
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.Point;
@@ -39,7 +40,6 @@ import org.pathwayeditor.figure.rendering.FigureRenderingController;
 import org.pathwayeditor.figure.rendering.GraphicsInstructionList;
 import org.pathwayeditor.figure.rendering.IFigureRenderingController;
 import org.pathwayeditor.figure.rendering.IGraphicsEngine;
-import org.pathwayeditor.figurevm.FigureDefinitionCompiler;
 import org.pathwayeditor.graphicsengine.Java2DGraphicsEngine;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;

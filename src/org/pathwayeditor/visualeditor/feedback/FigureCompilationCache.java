@@ -3,8 +3,8 @@ package org.pathwayeditor.visualeditor.feedback;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.pathwayeditor.figurevm.FigureDefinitionCompiler;
-import org.pathwayeditor.figurevm.ICompiledFigureDefinition;
+import org.pathwayeditor.figure.definition.FigureDefinitionCompiler;
+import org.pathwayeditor.figure.definition.ICompiledFigureDefinition;
 
 public class FigureCompilationCache {
 	private static FigureCompilationCache anInstance = null;
