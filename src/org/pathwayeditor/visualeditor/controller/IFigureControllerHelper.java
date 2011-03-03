@@ -1,12 +1,12 @@
 package org.pathwayeditor.visualeditor.controller;
 
-import org.pathwayeditor.figure.figuredefn.IFigureController;
+import org.pathwayeditor.figure.figuredefn.IFigureRenderingController;
 
 public interface IFigureControllerHelper {
 
 	void createFigureController();
 
-	IFigureController getFigureController();
+	IFigureRenderingController getFigureController();
 	
 	void refreshBoundProperties();
 

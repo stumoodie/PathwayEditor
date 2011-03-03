@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LineStyle;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.RGB;
-import org.pathwayeditor.figure.figuredefn.IFigureController;
+import org.pathwayeditor.figure.figuredefn.IFigureRenderingController;
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.IConvexHull;
@@ -28,7 +28,7 @@ public interface IFeedbackNode extends IFeedbackElement {
 	 * Get the figure controller for this figure
 	 * @return
 	 */
-	IFigureController getFigureController();
+	IFigureRenderingController getFigureController();
 
 	void resizePrimitive(Point originDelta, Dimension sizeDelta);
 

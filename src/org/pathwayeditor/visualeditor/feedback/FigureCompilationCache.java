@@ -4,11 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.pathwayeditor.figurevm.FigureDefinitionCompiler;
-import org.pathwayeditor.figurevm.IFigureDefinition;
+import org.pathwayeditor.figurevm.ICompiledFigureDefinition;
 
 public class FigureCompilationCache {
 	private static FigureCompilationCache anInstance = null;
-	private final Map<String, IFigureDefinition> lookup;
+	private final Map<String, ICompiledFigureDefinition> lookup;
 	
 	public static FigureCompilationCache getInstance(){
 		if(anInstance == null){
@@ -18,10 +18,10 @@ public class FigureCompilationCache {
 	}
 	
 	public FigureCompilationCache(){
-		this.lookup = new HashMap<String, IFigureDefinition>();
+		this.lookup = new HashMap<String, ICompiledFigureDefinition>();
 	}
 	
-	public IFigureDefinition lookup(String figureDefnStr){
+	public ICompiledFigureDefinition lookup(String figureDefnStr){
 		if(!lookup.containsKey(figureDefnStr)){
 			FigureDefinitionCompiler compiler = new FigureDefinitionCompiler(figureDefnStr);
 			compiler.compile();

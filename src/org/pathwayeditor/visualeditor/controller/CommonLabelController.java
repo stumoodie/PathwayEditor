@@ -9,8 +9,8 @@ import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttr
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributePropertyChangeEvent;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributeResizedEvent;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributeTranslationEvent;
-import org.pathwayeditor.figure.figuredefn.FigureController;
-import org.pathwayeditor.figure.figuredefn.IFigureController;
+import org.pathwayeditor.figure.figuredefn.FigureRenderingController;
+import org.pathwayeditor.figure.figuredefn.IFigureRenderingController;
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.IConvexHull;
@@ -37,7 +37,7 @@ public abstract class CommonLabelController extends NodeController implements IL
 		"grestore\n" +
 		"0.5 0.5 :labelFontSize :labelText cardinalityBox\n";
 	private final ILabelNode domainNode;
-	private final IFigureController controller;
+	private final IFigureRenderingController controller;
 	private boolean isActive;
 	private final ICanvasAttributeChangeListener drawingNodePropertyChangeListener;
 	
@@ -68,18 +68,18 @@ public abstract class CommonLabelController extends NodeController implements IL
 		};
 	}
 
-	private IFigureController createController(ILabelAttribute attribute){
-		IFigureController figureController = new FigureController(FigureCompilationCache.getInstance().lookup(LABEL_DEFINITION));
-		figureController.setRequestedEnvelope(attribute.getBounds());
-		figureController.setFillColour(attribute.getBackgroundColor());
-		figureController.setLineColour(attribute.getForegroundColor());
-		figureController.setLineStyle(attribute.getLineStyle());
-		figureController.setLineWidth(attribute.getLineWidth());
-		figureController.setBindDouble("labelFontSize", 10.0);
-		figureController.setBindString("labelText", attribute.getDisplayedContent());
-		figureController.setBindBoolean("noborderFlag", attribute.hasNoBorder());
-		figureController.generateFigureDefinition();
-		return figureController;
+	private IFigureRenderingController createController(ILabelAttribute attribute){
+		IFigureRenderingController figureRenderingController = new FigureRenderingController(FigureCompilationCache.getInstance().lookup(LABEL_DEFINITION));
+		figureRenderingController.setRequestedEnvelope(attribute.getBounds());
+		figureRenderingController.setFillColour(attribute.getBackgroundColor());
+		figureRenderingController.setLineColour(attribute.getForegroundColor());
+		figureRenderingController.setLineStyle(attribute.getLineStyle());
+		figureRenderingController.setLineWidth(attribute.getLineWidth());
+		figureRenderingController.setBindDouble("labelFontSize", 10.0);
+		figureRenderingController.setBindString("labelText", attribute.getDisplayedContent());
+		figureRenderingController.setBindBoolean("noborderFlag", attribute.hasNoBorder());
+		figureRenderingController.generateFigureDefinition();
+		return figureRenderingController;
 	}
 
 	@Override
@@ -117,7 +117,7 @@ public abstract class CommonLabelController extends NodeController implements IL
 	protected abstract void activateOverride();
 
 	@Override
-	public final IFigureController getFigureController() {
+	public final IFigureRenderingController getFigureController() {
 		return this.controller;
 	}
 

@@ -7,8 +7,8 @@ import java.awt.Rectangle;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
-import org.pathwayeditor.figure.figuredefn.FigureDrawer;
-import org.pathwayeditor.figure.figuredefn.IFigureController;
+import org.pathwayeditor.figure.figuredefn.FigureRenderer;
+import org.pathwayeditor.figure.figuredefn.IFigureRenderingController;
 import org.pathwayeditor.figure.figuredefn.IGraphicsEngine;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.graphicsengine.Java2DGraphicsEngine;
@@ -48,8 +48,8 @@ public class FeedbackLayer implements IFeedbackLayer {
 		while(shapeIter.hasNext()){
 			IFeedbackNode shapeNode = shapeIter.next();
 			if(shapeNode.getBounds().intersects(updateBound)){
-				IFigureController controller = shapeNode.getFigureController();
-				FigureDrawer drawer = new FigureDrawer(controller.getFigureDefinition());
+				IFigureRenderingController controller = shapeNode.getFigureController();
+				FigureRenderer drawer = new FigureRenderer(controller.getFigureDefinition());
 				drawer.drawFigure(graphicsEngine);
 			}
 		}

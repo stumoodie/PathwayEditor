@@ -151,7 +151,7 @@ public class VisualEditor extends JFrame {
 			InputStream in = new FileInputStream(file);
 			canvasPersistenceManager.readCanvasFromStream(in);
 			in.close();
-			insp.renderModel(canvasPersistenceManager.getCurrentCanvas());
+			insp.renderModel(canvasPersistenceManager.getCurrentModel());
 			
 		}
 		catch(IOException ex){

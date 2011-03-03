@@ -20,7 +20,7 @@ import org.pathwayeditor.businessobjects.impl.facades.DrawingElementFacade;
 import org.pathwayeditor.businessobjects.impl.facades.DrawingNodeFacade;
 import org.pathwayeditor.businessobjects.impl.facades.SubModelFacade;
 import org.pathwayeditor.figure.figuredefn.IAnchorLocator;
-import org.pathwayeditor.figure.figuredefn.IFigureController;
+import org.pathwayeditor.figure.figuredefn.IFigureRenderingController;
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.IConvexHull;
@@ -240,7 +240,7 @@ public class ShapeController extends NodeController implements IShapeController 
 	}
 	
 	private Point getRevisedAnchorPosition(IShapeController nodeController, Point refPoint){
-		IFigureController controller = nodeController.getFigureController();
+		IFigureRenderingController controller = nodeController.getFigureController();
 		IAnchorLocator calc = controller.getAnchorLocatorFactory().createAnchorLocator();
 		calc.setOtherEndPoint(refPoint);
 		return calc.calcAnchorPosition();
@@ -274,7 +274,7 @@ public class ShapeController extends NodeController implements IShapeController 
 	}
 
 	@Override
-	public IFigureController getFigureController() {
+	public IFigureRenderingController getFigureController() {
 		return this.figureController.getFigureController();
 	}
 

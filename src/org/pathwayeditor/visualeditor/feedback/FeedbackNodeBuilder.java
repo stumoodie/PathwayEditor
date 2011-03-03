@@ -18,8 +18,8 @@ import org.pathwayeditor.businessobjects.drawingprimitives.properties.IPlainText
 import org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyDefinition;
 import org.pathwayeditor.businessobjects.typedefn.IShapeAttributeDefaults;
 import org.pathwayeditor.businessobjects.typedefn.IShapeObjectType;
-import org.pathwayeditor.figure.figuredefn.FigureController;
-import org.pathwayeditor.figure.figuredefn.IFigureController;
+import org.pathwayeditor.figure.figuredefn.FigureRenderingController;
+import org.pathwayeditor.figure.figuredefn.IFigureRenderingController;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figurevm.FigureDefinitionCompiler;
 
@@ -62,16 +62,16 @@ public class FeedbackNodeBuilder implements IFeedbackNodeBuilder {
 	public IFeedbackNode createFromDrawingNodeObjectType(IShapeObjectType objectType, Envelope initialBounds){
 		FigureDefinitionCompiler compiler = new FigureDefinitionCompiler(objectType.getDefaultAttributes().getShapeDefinition());
 		compiler.compile();
-		IFigureController figureController = new FigureController(compiler.getCompiledFigureDefinition());
-		figureController.setRequestedEnvelope(initialBounds);
+		IFigureRenderingController figureRenderingController = new FigureRenderingController(compiler.getCompiledFigureDefinition());
+		figureRenderingController.setRequestedEnvelope(initialBounds);
 		IShapeAttributeDefaults attribute = objectType.getDefaultAttributes();
-		figureController.setFillColour(attribute.getFillColour());
-		figureController.setLineColour(attribute.getLineColour());
-		figureController.setLineStyle(attribute.getLineStyle());
-		figureController.setLineWidth(attribute.getLineWidth());
-		assignBindVariablesToPropertyDefaults(attribute, figureController);
-		figureController.generateFigureDefinition();
-		FeedbackNode retVal = new FeedbackNode(nextCounter(), figureController, initialBounds);
+		figureRenderingController.setFillColour(attribute.getFillColour());
+		figureRenderingController.setLineColour(attribute.getLineColour());
+		figureRenderingController.setLineStyle(attribute.getLineStyle());
+		figureRenderingController.setLineWidth(attribute.getLineWidth());
+		assignBindVariablesToPropertyDefaults(attribute, figureRenderingController);
+		figureRenderingController.generateFigureDefinition();
+		FeedbackNode retVal = new FeedbackNode(nextCounter(), figureRenderingController, initialBounds);
 		this.feedbackModel.addNode(retVal);
 		return retVal;
 	}
@@ -82,79 +82,79 @@ public class FeedbackNodeBuilder implements IFeedbackNodeBuilder {
 	
 	@Override
 	public IFeedbackNode createFromDrawingNodeAttribute(IDrawingNodeAttribute nodeAttribute){
-		IFigureController figureController = null;
+		IFigureRenderingController figureRenderingController = null;
 		if(nodeAttribute instanceof IShapeAttribute){
-			figureController = createShapeController((IShapeAttribute)nodeAttribute);
+			figureRenderingController = createShapeController((IShapeAttribute)nodeAttribute);
 		}
 		else if(nodeAttribute instanceof ILabelAttribute){
-			figureController = createLabelController((ILabelAttribute)nodeAttribute);
+			figureRenderingController = createLabelController((ILabelAttribute)nodeAttribute);
 		}
 		else{
 			throw new IllegalArgumentException("Cannot deal with node of unknown type: " + nodeAttribute);
 		}
-		FeedbackNode retVal = new FeedbackNode(nextCounter(), figureController, nodeAttribute.getBounds());
+		FeedbackNode retVal = new FeedbackNode(nextCounter(), figureRenderingController, nodeAttribute.getBounds());
 		this.feedbackModel.addNode(retVal);
 		return retVal;
 	}
 	
 	@Override
 	public IFeedbackNode createDefaultNode(Envelope initialBounds){
-		IFigureController figureController = createDefaultController(initialBounds);
-		FeedbackNode retVal = new FeedbackNode(nextCounter(), figureController, initialBounds);
+		IFigureRenderingController figureRenderingController = createDefaultController(initialBounds);
+		FeedbackNode retVal = new FeedbackNode(nextCounter(), figureRenderingController, initialBounds);
 		this.feedbackModel.addNode(retVal);
 		return retVal;
 	}
 	
 
-	private IFigureController createDefaultController(Envelope initialBounds){
+	private IFigureRenderingController createDefaultController(Envelope initialBounds){
 		FigureDefinitionCompiler compiler = new FigureDefinitionCompiler(DEFAULT_DEFINITION);
 		compiler.compile();
-		IFigureController figureController = new FigureController(compiler.getCompiledFigureDefinition());
-		figureController.setRequestedEnvelope(initialBounds);
-		figureController.generateFigureDefinition();
-		return figureController;
+		IFigureRenderingController figureRenderingController = new FigureRenderingController(compiler.getCompiledFigureDefinition());
+		figureRenderingController.setRequestedEnvelope(initialBounds);
+		figureRenderingController.generateFigureDefinition();
+		return figureRenderingController;
 	}
 
-	private IFigureController createLabelController(ILabelAttribute attribute){
-		IFigureController figureController = new FigureController(FigureCompilationCache.getInstance().lookup(LABEL_DEFINITION));
-		figureController.setRequestedEnvelope(attribute.getBounds());
-		figureController.setFillColour(attribute.getBackgroundColor());
-		figureController.setLineColour(attribute.getForegroundColor());
-		figureController.setLineStyle(attribute.getLineStyle());
-		figureController.setLineWidth(attribute.getLineWidth());
-		figureController.setBindDouble("labelFontSize", 10.0);
-		figureController.setBindString("labelText", attribute.getDisplayedContent());
-		figureController.setBindBoolean("noborderFlag", attribute.hasNoBorder());
-		figureController.generateFigureDefinition();
-		return figureController;
+	private IFigureRenderingController createLabelController(ILabelAttribute attribute){
+		IFigureRenderingController figureRenderingController = new FigureRenderingController(FigureCompilationCache.getInstance().lookup(LABEL_DEFINITION));
+		figureRenderingController.setRequestedEnvelope(attribute.getBounds());
+		figureRenderingController.setFillColour(attribute.getBackgroundColor());
+		figureRenderingController.setLineColour(attribute.getForegroundColor());
+		figureRenderingController.setLineStyle(attribute.getLineStyle());
+		figureRenderingController.setLineWidth(attribute.getLineWidth());
+		figureRenderingController.setBindDouble("labelFontSize", 10.0);
+		figureRenderingController.setBindString("labelText", attribute.getDisplayedContent());
+		figureRenderingController.setBindBoolean("noborderFlag", attribute.hasNoBorder());
+		figureRenderingController.generateFigureDefinition();
+		return figureRenderingController;
 	}
 
-	private IFigureController createShapeController(IShapeAttribute attribute){
-		IFigureController figureController = new FigureController(FigureCompilationCache.getInstance().lookup(attribute.getShapeDefinition()));
-		figureController.setRequestedEnvelope(attribute.getBounds());
-		figureController.setFillColour(attribute.getFillColour());
-		figureController.setLineColour(attribute.getLineColour());
-		figureController.setLineStyle(attribute.getLineStyle());
-		figureController.setLineWidth(attribute.getLineWidth());
-		assignBindVariablesToProperties(attribute, figureController);
-		figureController.generateFigureDefinition();
-		return figureController;
+	private IFigureRenderingController createShapeController(IShapeAttribute attribute){
+		IFigureRenderingController figureRenderingController = new FigureRenderingController(FigureCompilationCache.getInstance().lookup(attribute.getShapeDefinition()));
+		figureRenderingController.setRequestedEnvelope(attribute.getBounds());
+		figureRenderingController.setFillColour(attribute.getFillColour());
+		figureRenderingController.setLineColour(attribute.getLineColour());
+		figureRenderingController.setLineStyle(attribute.getLineStyle());
+		figureRenderingController.setLineWidth(attribute.getLineWidth());
+		assignBindVariablesToProperties(attribute, figureRenderingController);
+		figureRenderingController.generateFigureDefinition();
+		return figureRenderingController;
 	}
 
-	private void assignBindVariablesToProperties(IShapeAttribute att, final IFigureController figureController) {
-		for(final String varName : figureController.getBindVariableNames()){
+	private void assignBindVariablesToProperties(IShapeAttribute att, final IFigureRenderingController figureRenderingController) {
+		for(final String varName : figureRenderingController.getBindVariableNames()){
 			if(att.containsProperty(varName)){
 				IAnnotationProperty prop = att.getProperty(varName);
 				prop.visit(new IAnnotationPropertyVisitor(){
 
 					@Override
 					public void visitBooleanAnnotationProperty(IBooleanAnnotationProperty prop) {
-						figureController.setBindBoolean(varName, prop.getValue());
+						figureRenderingController.setBindBoolean(varName, prop.getValue());
 					}
 
 					@Override
 					public void visitIntegerAnnotationProperty(IIntegerAnnotationProperty prop) {
-						figureController.setBindInteger(varName, prop.getValue());
+						figureRenderingController.setBindInteger(varName, prop.getValue());
 					}
 
 					@Override
@@ -164,12 +164,12 @@ public class FeedbackNodeBuilder implements IFeedbackNodeBuilder {
 
 					@Override
 					public void visitNumberAnnotationProperty(INumberAnnotationProperty numProp) {
-						figureController.setBindDouble(varName, numProp.getValue().doubleValue());
+						figureRenderingController.setBindDouble(varName, numProp.getValue().doubleValue());
 					}
 
 					@Override
 					public void visitPlainTextAnnotationProperty(IPlainTextAnnotationProperty prop) {
-						figureController.setBindString(varName, prop.getValue());
+						figureRenderingController.setBindString(varName, prop.getValue());
 					}
 					
 				});
@@ -181,24 +181,24 @@ public class FeedbackNodeBuilder implements IFeedbackNodeBuilder {
 		}
 	}
 
-	private void assignBindVariablesToPropertyDefaults(IShapeAttributeDefaults att, final IFigureController figureController) {
-		for(final String varName : figureController.getBindVariableNames()){
+	private void assignBindVariablesToPropertyDefaults(IShapeAttributeDefaults att, final IFigureRenderingController figureRenderingController) {
+		for(final String varName : figureRenderingController.getBindVariableNames()){
 			if(att.containsPropertyDefinition(varName)){
 				IPropertyDefinition prop = att.getPropertyDefinition(varName);
 				if(prop instanceof IBooleanPropertyDefinition){
-					figureController.setBindBoolean(varName, ((IBooleanPropertyDefinition)prop).getDefaultValue());
+					figureRenderingController.setBindBoolean(varName, ((IBooleanPropertyDefinition)prop).getDefaultValue());
 				}
 				else if(prop instanceof IIntegerPropertyDefinition){
-					figureController.setBindInteger(varName, ((IIntegerPropertyDefinition)prop).getDefaultValue());
+					figureRenderingController.setBindInteger(varName, ((IIntegerPropertyDefinition)prop).getDefaultValue());
 				}
 				else if(prop instanceof IListAnnotationProperty){
 					logger.error("Unmatched bind variable: " + varName + ". Property has type that cannot be matched to bind variable of same name: " + prop);
 				}
 				else if(prop instanceof INumberAnnotationProperty){
-					figureController.setBindDouble(varName, ((INumberPropertyDefinition)prop).getDefaultValue().doubleValue());
+					figureRenderingController.setBindDouble(varName, ((INumberPropertyDefinition)prop).getDefaultValue().doubleValue());
 				}
 				else if(prop instanceof IPlainTextPropertyDefinition){
-					figureController.setBindString(varName, ((IPlainTextPropertyDefinition)prop).getDefaultValue());
+					figureRenderingController.setBindString(varName, ((IPlainTextPropertyDefinition)prop).getDefaultValue());
 				}
 			}
 			else{

@@ -26,6 +26,7 @@ import org.pathwayeditor.figure.figuredefn.GenericFont;
 import org.pathwayeditor.figure.figuredefn.IFont;
 import org.pathwayeditor.figure.geometry.Dimension;
 
+
 /**
  * @author smoodie
  *

@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LineStyle;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.RGB;
-import org.pathwayeditor.figure.figuredefn.IFigureController;
+import org.pathwayeditor.figure.figuredefn.IFigureRenderingController;
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.IConvexHull;
@@ -14,15 +14,15 @@ import org.pathwayeditor.figure.geometry.Point;
 
 public class FeedbackNode implements IFeedbackNode {
 //	private final Logger logger = Logger.getLogger(this.getClass()); 
-	private IFigureController figureController;
+	private IFigureRenderingController figureRenderingController;
 	private final Envelope initialBounds;
 	private final int elementIdentifier;
 	private final List<IFeedbackNodeListener> listeners;
 
-	public FeedbackNode(int uniqueId, IFigureController figureController, Envelope bounds){
+	public FeedbackNode(int uniqueId, IFigureRenderingController figureRenderingController, Envelope bounds){
 		this.listeners = new LinkedList<IFeedbackNodeListener>();
 		this.elementIdentifier = uniqueId;
-		this.figureController = figureController;
+		this.figureRenderingController = figureRenderingController;
 		this.initialBounds = bounds;
 	}
 	
@@ -33,8 +33,8 @@ public class FeedbackNode implements IFeedbackNode {
 
 	@Override
 	public void resizePrimitive(Point originDelta, Dimension resizeDelta) {
-		figureController.setRequestedEnvelope(this.initialBounds.resize(originDelta, resizeDelta));
-		figureController.generateFigureDefinition();
+		figureRenderingController.setRequestedEnvelope(this.initialBounds.resize(originDelta, resizeDelta));
+		figureRenderingController.generateFigureDefinition();
 		notifyResize(this.initialBounds, originDelta, resizeDelta);
 	}
 
@@ -66,8 +66,8 @@ public class FeedbackNode implements IFeedbackNode {
 
 	@Override
 	public void translatePrimitive(Point translation) {
-		figureController.setRequestedEnvelope(this.initialBounds.translate(translation));
-		figureController.generateFigureDefinition();
+		figureRenderingController.setRequestedEnvelope(this.initialBounds.translate(translation));
+		figureRenderingController.generateFigureDefinition();
 		notifyTranslation(this.initialBounds, translation);
 	}
 
@@ -115,8 +115,8 @@ public class FeedbackNode implements IFeedbackNode {
 	}
 
 	@Override
-	public IFigureController getFigureController() {
-		return this.figureController;
+	public IFigureRenderingController getFigureController() {
+		return this.figureRenderingController;
 	}
 
 	@Override
@@ -158,26 +158,26 @@ public class FeedbackNode implements IFeedbackNode {
 
 	@Override
 	public void setFillColour(RGB colour) {
-		this.figureController.setFillColour(colour);
-		this.figureController.generateFigureDefinition();
+		this.figureRenderingController.setFillColour(colour);
+		this.figureRenderingController.generateFigureDefinition();
 	}
 
 	@Override
 	public void setLineColour(RGB colour) {
-		this.figureController.setLineColour(colour);
-		this.figureController.generateFigureDefinition();
+		this.figureRenderingController.setLineColour(colour);
+		this.figureRenderingController.generateFigureDefinition();
 	}
 
 	@Override
 	public void setLineStyle(LineStyle lineStyle) {
-		this.figureController.setLineStyle(lineStyle);
-		this.figureController.generateFigureDefinition();
+		this.figureRenderingController.setLineStyle(lineStyle);
+		this.figureRenderingController.generateFigureDefinition();
 	}
 
 	@Override
 	public void setLineWidth(double lineWidth) {
-		this.figureController.setLineWidth(lineWidth);
-		this.figureController.generateFigureDefinition();
+		this.figureRenderingController.setLineWidth(lineWidth);
+		this.figureRenderingController.generateFigureDefinition();
 	}
 
 }

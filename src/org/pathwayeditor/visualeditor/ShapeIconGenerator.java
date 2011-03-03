@@ -31,10 +31,10 @@ import org.pathwayeditor.businessobjects.drawingprimitives.properties.IPlainText
 import org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyDefinition;
 import org.pathwayeditor.businessobjects.typedefn.IShapeAttributeDefaults;
 import org.pathwayeditor.businessobjects.typedefn.IShapeObjectType;
-import org.pathwayeditor.figure.figuredefn.FigureController;
-import org.pathwayeditor.figure.figuredefn.FigureDrawer;
+import org.pathwayeditor.figure.figuredefn.FigureRenderingController;
+import org.pathwayeditor.figure.figuredefn.FigureRenderer;
 import org.pathwayeditor.figure.figuredefn.GraphicsInstructionList;
-import org.pathwayeditor.figure.figuredefn.IFigureController;
+import org.pathwayeditor.figure.figuredefn.IFigureRenderingController;
 import org.pathwayeditor.figure.figuredefn.IGraphicsEngine;
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Envelope;
@@ -96,19 +96,19 @@ public class ShapeIconGenerator {
 		IGraphicsEngine graphicsEngine = new Java2DGraphicsEngine(svgGenerator);
 		FigureDefinitionCompiler compiler = new FigureDefinitionCompiler(objectType.getDefaultAttributes().getShapeDefinition());
 		compiler.compile();
-		IFigureController figureController = new FigureController(compiler.getCompiledFigureDefinition());
+		IFigureRenderingController figureRenderingController = new FigureRenderingController(compiler.getCompiledFigureDefinition());
 //		figureController.setRequestedEnvelope(requestedBounds.translate(new Point(20.0, 20.0)));
-		figureController.setRequestedEnvelope(requestedBounds);
+		figureRenderingController.setRequestedEnvelope(requestedBounds);
 		IShapeAttributeDefaults attribute = objectType.getDefaultAttributes();
-		figureController.setFillColour(attribute.getFillColour());
-		figureController.setLineColour(attribute.getLineColour());
-		figureController.setLineStyle(attribute.getLineStyle());
-		figureController.setLineWidth(attribute.getLineWidth());
-		assignBindVariablesToPropertyDefaults(attribute, figureController);
-		figureController.generateFigureDefinition();
-		this.actualBounds = figureController.getEnvelope();
-		GraphicsInstructionList graphicsInstList = figureController.getFigureDefinition();
-		FigureDrawer drawer = new FigureDrawer(graphicsInstList);
+		figureRenderingController.setFillColour(attribute.getFillColour());
+		figureRenderingController.setLineColour(attribute.getLineColour());
+		figureRenderingController.setLineStyle(attribute.getLineStyle());
+		figureRenderingController.setLineWidth(attribute.getLineWidth());
+		assignBindVariablesToPropertyDefaults(attribute, figureRenderingController);
+		figureRenderingController.generateFigureDefinition();
+		this.actualBounds = figureRenderingController.getEnvelope();
+		GraphicsInstructionList graphicsInstList = figureRenderingController.getFigureDefinition();
+		FigureRenderer drawer = new FigureRenderer(graphicsInstList);
 		drawer.drawFigure(graphicsEngine);
 //		document.appendChild(svgGenerator.getRoot());
 		document.normalizeDocument();
@@ -172,24 +172,24 @@ public class ShapeIconGenerator {
 		return icon;
 	}
 	
-	private void assignBindVariablesToPropertyDefaults(IShapeAttributeDefaults att, final IFigureController figureController) {
-		for(final String varName : figureController.getBindVariableNames()){
+	private void assignBindVariablesToPropertyDefaults(IShapeAttributeDefaults att, final IFigureRenderingController figureRenderingController) {
+		for(final String varName : figureRenderingController.getBindVariableNames()){
 			if(att.containsPropertyDefinition(varName)){
 				IPropertyDefinition prop = att.getPropertyDefinition(varName);
 				if(prop instanceof IBooleanPropertyDefinition){
-					figureController.setBindBoolean(varName, ((IBooleanPropertyDefinition)prop).getDefaultValue());
+					figureRenderingController.setBindBoolean(varName, ((IBooleanPropertyDefinition)prop).getDefaultValue());
 				}
 				else if(prop instanceof IIntegerPropertyDefinition){
-					figureController.setBindInteger(varName, ((IIntegerPropertyDefinition)prop).getDefaultValue());
+					figureRenderingController.setBindInteger(varName, ((IIntegerPropertyDefinition)prop).getDefaultValue());
 				}
 				else if(prop instanceof IListAnnotationProperty){
 					logger.error("Unmatched bind variable: " + varName + ". Property has type that cannot be matched to bind variable of same name: " + prop);
 				}
 				else if(prop instanceof INumberAnnotationProperty){
-					figureController.setBindDouble(varName, ((INumberPropertyDefinition)prop).getDefaultValue().doubleValue());
+					figureRenderingController.setBindDouble(varName, ((INumberPropertyDefinition)prop).getDefaultValue().doubleValue());
 				}
 				else if(prop instanceof IPlainTextPropertyDefinition){
-					figureController.setBindString(varName, ((IPlainTextPropertyDefinition)prop).getDefaultValue());
+					figureRenderingController.setBindString(varName, ((IPlainTextPropertyDefinition)prop).getDefaultValue());
 				}
 			}
 			else{

@@ -2,9 +2,9 @@ package org.pathwayeditor.visualeditor.controller;
 
 import org.pathwayeditor.businessobjects.drawingprimitives.ILabelNode;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
-import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IBendPointChangeEvent;
-import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IBendPointChangeListener;
+import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IBendPointContainerListener;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IBendPointLocationChangeEvent;
+import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IBendPointStructureChangeEvent;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributeChangeListener;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributePropertyChangeEvent;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributeResizedEvent;
@@ -18,7 +18,7 @@ import org.pathwayeditor.figure.geometry.Point;
 public class LinkLabelController extends CommonLabelController implements ILabelController {
 	private final ILinkAttribute parentAttribute;
 	private final ICanvasAttributeChangeListener parentDrawingNodePropertyChangeListener;
-	private final IBendPointChangeListener parentLinkBendpointChangeListener;
+	private final IBendPointContainerListener parentLinkBendpointChangeListener;
 	private final ILinkTerminusChangeListener parentSourceLinkterminusChangeListener;
 	private final ILinkTerminusChangeListener parentTargetLinkterminusChangeListener;
 	
@@ -40,15 +40,17 @@ public class LinkLabelController extends CommonLabelController implements ILabel
 			public void nodeResized(ICanvasAttributeResizedEvent e) {
 			}
 		};
-		this.parentLinkBendpointChangeListener = new IBendPointChangeListener() {
+		this.parentLinkBendpointChangeListener = new IBendPointContainerListener() {
 			
-			@Override
-			public void propertyChange(IBendPointChangeEvent e) {
-			}
 			
 			@Override
 			public void locationChange(IBendPointLocationChangeEvent e) {
 				// don't recalculate label posn at moment.
+			}
+
+			@Override
+			public void structureChange(IBendPointStructureChangeEvent e) {
+				
 			}
 		};
 		this.parentSourceLinkterminusChangeListener = new ILinkTerminusChangeListener() {

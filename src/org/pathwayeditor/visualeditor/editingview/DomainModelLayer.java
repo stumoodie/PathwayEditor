@@ -7,8 +7,8 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
-import org.pathwayeditor.figure.figuredefn.FigureDrawer;
-import org.pathwayeditor.figure.figuredefn.IFigureController;
+import org.pathwayeditor.figure.figuredefn.FigureRenderer;
+import org.pathwayeditor.figure.figuredefn.IFigureRenderingController;
 import org.pathwayeditor.figure.figuredefn.IGraphicsEngine;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.graphicsengine.Java2DGraphicsEngine;
@@ -96,11 +96,11 @@ public class DomainModelLayer implements IDomainModelLayer {
 			}
 			if(controller instanceof IShapeController){
 				IShapeController shapeNode = (IShapeController)controller;
-				IFigureController figController = shapeNode.getFigureController();
+				IFigureRenderingController figController = shapeNode.getFigureController();
 				if(logger.isTraceEnabled()){
 					logger.trace("Refreshing node=" + shapeNode + " at bounds=" + shapeNode.getDrawnBounds());
 				}
-				FigureDrawer drawer = new FigureDrawer(figController.getFigureDefinition());
+				FigureRenderer drawer = new FigureRenderer(figController.getFigureDefinition());
 				drawer.drawFigure(graphicsEngine);
 			}
 			else if(controller instanceof ILabelController){
@@ -108,8 +108,8 @@ public class DomainModelLayer implements IDomainModelLayer {
 				if(logger.isTraceEnabled()){
 					logger.trace("Refreshing node=" + labelNode + " at bounds=" + labelNode.getDrawnBounds());
 				}
-				IFigureController figController = labelNode.getFigureController();
-				FigureDrawer drawer = new FigureDrawer(figController.getFigureDefinition());
+				IFigureRenderingController figController = labelNode.getFigureController();
+				FigureRenderer drawer = new FigureRenderer(figController.getFigureDefinition());
 				drawer.drawFigure(graphicsEngine);
 			}
 			else if(controller instanceof ILinkController){

@@ -66,7 +66,7 @@ public class StubSBGNImportService implements INotationImportService {
 	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotationImportService#importMap(java.io.File, org.pathwayeditor.businessobjects.repository.IFolder)
 	 */
 	@Override
-	public void importToCanvas(File importFile, IModel saveLocation) {
+	public void importToModel(File importFile, IModel saveLocation) {
 		System.out.println("File " + importFile.getAbsolutePath() + " was imported");
 	}
 

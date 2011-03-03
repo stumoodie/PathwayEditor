@@ -6,11 +6,11 @@ import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasElementAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkEdge;
 import org.pathwayeditor.businessobjects.drawingprimitives.IShapeAttribute;
-import org.pathwayeditor.businessobjects.drawingprimitives.listeners.BendPointChange;
+import org.pathwayeditor.businessobjects.drawingprimitives.listeners.BendPointStructureChange;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.CanvasAttributePropertyChange;
-import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IBendPointChangeEvent;
-import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IBendPointChangeListener;
+import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IBendPointContainerListener;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IBendPointLocationChangeEvent;
+import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IBendPointStructureChangeEvent;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributeChangeListener;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributePropertyChangeEvent;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributeResizedEvent;
@@ -36,7 +36,7 @@ public class LinkController extends DrawingElementController implements ILinkCon
 	private final ICanvasAttributeChangeListener tgtNodeListener;
 	private final ILinkTerminusChangeListener srcTermChangeListener;
 	private final ILinkTerminusChangeListener tgtTermChangeListener;
-	private final IBendPointChangeListener bpChangeListener;
+	private final IBendPointContainerListener bpChangeListener;
 	private final ICanvasAttributeChangeListener parentDrawingElementPropertyChangeListener;
 	private final ICanvasAttributeChangeListener linkAttributePropertyChangeListener;
 	
@@ -82,7 +82,7 @@ public class LinkController extends DrawingElementController implements ILinkCon
 			public void nodeResized(ICanvasAttributeResizedEvent e) {
 			}
 		};
-		this.bpChangeListener = new IBendPointChangeListener() {
+		this.bpChangeListener = new IBendPointContainerListener() {
 			
 			@Override
 			public void locationChange(IBendPointLocationChangeEvent e) {
@@ -93,15 +93,15 @@ public class LinkController extends DrawingElementController implements ILinkCon
 			}
 
 			@Override
-			public void propertyChange(IBendPointChangeEvent e) {
+			public void structureChange(IBendPointStructureChangeEvent e) {
 				Envelope originalDrawnBounds = getDrawnBounds();
-				if(e.getChangeType().equals(BendPointChange.BEND_POINT_ADDED)){
+				if(e.getChangeType().equals(BendPointStructureChange.BEND_POINT_ADDED)){
 					int bpIdx = e.getNewIndexPos();
 					Point bpPosn = e.getBendPoint();
 					linkDefinition.addNewBendPoint(bpIdx, bpPosn);
 					updateLinksToBendPoints(bpIdx, bpPosn);
 				}
-				else if(e.getChangeType().equals(BendPointChange.BEND_POINT_REMOVED)){
+				else if(e.getChangeType().equals(BendPointStructureChange.BEND_POINT_REMOVED)){
 					int bpIdx = e.getOldIndexPos();
 					linkDefinition.removeBendPoint(bpIdx);
 					if(bpIdx < linkDefinition.numBendPoints()){

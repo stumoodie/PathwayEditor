@@ -9,14 +9,14 @@ import org.pathwayeditor.businessobjects.drawingprimitives.properties.IIntegerAn
 import org.pathwayeditor.businessobjects.drawingprimitives.properties.IListAnnotationProperty;
 import org.pathwayeditor.businessobjects.drawingprimitives.properties.INumberAnnotationProperty;
 import org.pathwayeditor.businessobjects.drawingprimitives.properties.IPlainTextAnnotationProperty;
-import org.pathwayeditor.figure.figuredefn.FigureController;
-import org.pathwayeditor.figure.figuredefn.IFigureController;
+import org.pathwayeditor.figure.figuredefn.FigureRenderingController;
+import org.pathwayeditor.figure.figuredefn.IFigureRenderingController;
 import org.pathwayeditor.visualeditor.feedback.FigureCompilationCache;
 
 public class ShapeFigureControllerHelper implements IFigureControllerHelper {
 	private final Logger logger = Logger.getLogger(this.getClass());
 	private final IShapeAttribute attribute;
-	private IFigureController figureController; 
+	private IFigureRenderingController figureRenderingController; 
 
 	public ShapeFigureControllerHelper(IShapeAttribute nodeAttribute){
 		this.attribute = nodeAttribute; 
@@ -28,42 +28,42 @@ public class ShapeFigureControllerHelper implements IFigureControllerHelper {
 	 */
 	@Override
 	public void createFigureController(){
-		figureController = new FigureController(FigureCompilationCache.getInstance().lookup(attribute.getShapeDefinition()));
-		figureController.setRequestedEnvelope(attribute.getBounds());
-		figureController.setFillColour(attribute.getFillColour());
-		figureController.setLineColour(attribute.getLineColour());
-		figureController.setLineStyle(attribute.getLineStyle());
-		figureController.setLineWidth(attribute.getLineWidth());
+		figureRenderingController = new FigureRenderingController(FigureCompilationCache.getInstance().lookup(attribute.getShapeDefinition()));
+		figureRenderingController.setRequestedEnvelope(attribute.getBounds());
+		figureRenderingController.setFillColour(attribute.getFillColour());
+		figureRenderingController.setLineColour(attribute.getLineColour());
+		figureRenderingController.setLineStyle(attribute.getLineStyle());
+		figureRenderingController.setLineWidth(attribute.getLineWidth());
 		refreshBoundProperties();
-		figureController.generateFigureDefinition();
+		figureRenderingController.generateFigureDefinition();
 	}
 	
 	@Override
-	public IFigureController getFigureController(){
-		return this.figureController;
+	public IFigureRenderingController getFigureController(){
+		return this.figureRenderingController;
 	}
 	
 	@Override
 	public void refreshBoundProperties() {
 		assignBoundVariablesToProperties();
-		figureController.generateFigureDefinition();
+		figureRenderingController.generateFigureDefinition();
 	}
 	
 	
 	private void assignBoundVariablesToProperties(){
-		for(final String varName : figureController.getBindVariableNames()){
+		for(final String varName : figureRenderingController.getBindVariableNames()){
 			if(attribute.containsProperty(varName)){
 				IAnnotationProperty prop = attribute.getProperty(varName);
 				prop.visit(new IAnnotationPropertyVisitor(){
 
 					@Override
 					public void visitBooleanAnnotationProperty(IBooleanAnnotationProperty prop) {
-						figureController.setBindBoolean(varName, prop.getValue());
+						figureRenderingController.setBindBoolean(varName, prop.getValue());
 					}
 
 					@Override
 					public void visitIntegerAnnotationProperty(IIntegerAnnotationProperty prop) {
-						figureController.setBindInteger(varName, prop.getValue());
+						figureRenderingController.setBindInteger(varName, prop.getValue());
 					}
 
 					@Override
@@ -73,12 +73,12 @@ public class ShapeFigureControllerHelper implements IFigureControllerHelper {
 
 					@Override
 					public void visitNumberAnnotationProperty(INumberAnnotationProperty numProp) {
-						figureController.setBindDouble(varName, numProp.getValue().doubleValue());
+						figureRenderingController.setBindDouble(varName, numProp.getValue().doubleValue());
 					}
 
 					@Override
 					public void visitPlainTextAnnotationProperty(IPlainTextAnnotationProperty prop) {
-						figureController.setBindString(varName, prop.getValue());
+						figureRenderingController.setBindString(varName, prop.getValue());
 					}
 					
 				});
@@ -93,7 +93,7 @@ public class ShapeFigureControllerHelper implements IFigureControllerHelper {
 
 	@Override
 	public void refreshGraphicalAttributes() {
-		this.figureController.generateFigureDefinition();
+		this.figureRenderingController.generateFigureDefinition();
 	}
 
 
