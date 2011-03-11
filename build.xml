@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 
-<project name="NotationSubsystemBuild" default="buildAll">
+<project name="GraphicsEngine" default="buildAll">
 	<property name="build.dir" value="./antBuild" />
 	<property name="build.dir.src" value="${build.dir}/src"/>
 	<property name="build.dir.tests" value="${build.dir}/test"/>
