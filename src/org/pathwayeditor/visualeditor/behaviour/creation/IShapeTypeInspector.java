@@ -1,4 +1,4 @@
-package org.pathwayeditor.visualeditor.behaviour;
+package org.pathwayeditor.visualeditor.behaviour.creation;
 
 import org.pathwayeditor.businessobjects.typedefn.IShapeObjectType;
 

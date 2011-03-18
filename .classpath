@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry excluding="org/pathwayeditor/visualeditor/behaviour/IMoveResponse.java|org/pathwayeditor/visualeditor/behaviour/ShapeCreationStateController.java" kind="src" path="src"/>
+	<classpathentry excluding="org/pathwayeditor/visualeditor/behaviour/IMoveResponse.java|org/pathwayeditor/visualeditor/behaviour/ShapeCreationStateController.java|org/pathwayeditor/visualeditor/behaviour/SelectionStateController.java|org/pathwayeditor/visualeditor/behaviour/CreationMouseListener.java" kind="src" path="src"/>
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="lib" path="libs/apache-log4j-1.2.15/log4j-1.2.15.jar"/>
 	<classpathentry kind="lib" path="libs/antlr-3.2/antlr-3.2.jar"/>

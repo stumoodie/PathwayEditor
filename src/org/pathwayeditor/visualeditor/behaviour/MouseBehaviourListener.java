@@ -11,14 +11,14 @@ import org.pathwayeditor.visualeditor.behaviour.IMouseFeedbackResponse.StateType
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle.SelectionHandleType;
 
-public class SelectionMouseListener implements MouseListener, MouseMotionListener {
+public class MouseBehaviourListener implements MouseListener, MouseMotionListener {
 	private ISelectionHandle currSelectionHandle;
 	private IDragResponse currDragResponse;
 	private IMouseFeedbackResponse currMouseFeedbackResponse;
 	private final ISelectionStateBehaviourController mouseBehaviourController;
 	private final Logger logger = Logger.getLogger(this.getClass());
 	
-	public SelectionMouseListener(ISelectionStateBehaviourController mouseBehaviourController) {
+	public MouseBehaviourListener(ISelectionStateBehaviourController mouseBehaviourController) {
 		this.mouseBehaviourController = mouseBehaviourController;
 	}
 

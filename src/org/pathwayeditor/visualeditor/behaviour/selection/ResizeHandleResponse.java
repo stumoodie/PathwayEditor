@@ -1,7 +1,9 @@
-package org.pathwayeditor.visualeditor.behaviour;
+package org.pathwayeditor.visualeditor.behaviour.selection;
 
 import org.apache.log4j.Logger;
 import org.pathwayeditor.figure.geometry.Point;
+import org.pathwayeditor.visualeditor.behaviour.HandleResponse;
+import org.pathwayeditor.visualeditor.behaviour.operation.IResizeOperation;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
 
 public class ResizeHandleResponse extends HandleResponse {

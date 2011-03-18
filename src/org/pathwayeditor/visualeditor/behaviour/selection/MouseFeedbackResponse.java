@@ -1,8 +1,9 @@
-package org.pathwayeditor.visualeditor.behaviour;
+package org.pathwayeditor.visualeditor.behaviour.selection;
 
 import java.awt.Cursor;
 
 import org.apache.log4j.Logger;
+import org.pathwayeditor.visualeditor.behaviour.IMouseFeedbackResponse;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle.SelectionHandleType;
 
 public class MouseFeedbackResponse implements IMouseFeedbackResponse {

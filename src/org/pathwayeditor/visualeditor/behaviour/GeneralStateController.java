@@ -14,12 +14,12 @@ public class GeneralStateController implements ISelectionStateBehaviourControlle
 //	private final IKeyboardResponse keyboardResponseMap;
 //	private final MouseListener popupMenuListener;
 	private boolean activated = false;
-	private final SelectionMouseListener mouseListener;
+	private final MouseBehaviourListener mouseListener;
 	private final IControllerResponses responses;
 
 	public GeneralStateController(IShapePane pane, IControllerResponses responses){
 		this.shapePane = pane;
-		this.mouseListener = new SelectionMouseListener(this);
+		this.mouseListener = new MouseBehaviourListener(this);
 		this.responses = responses;
 	}
 	

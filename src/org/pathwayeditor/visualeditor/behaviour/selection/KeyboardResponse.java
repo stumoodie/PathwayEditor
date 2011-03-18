@@ -1,13 +1,15 @@
-package org.pathwayeditor.visualeditor.behaviour;
+package org.pathwayeditor.visualeditor.behaviour.selection;
 
 import org.apache.log4j.Logger;
 import org.pathwayeditor.figure.geometry.Point;
-import org.pathwayeditor.visualeditor.behaviour.IEditingOperation.ReparentingStateType;
+import org.pathwayeditor.visualeditor.behaviour.operation.IEditingOperation;
+import org.pathwayeditor.visualeditor.behaviour.operation.IEditingOperation.ReparentingStateType;
+import org.pathwayeditor.visualeditor.behaviour.IKeyboardResponse;
 
 public class KeyboardResponse implements IKeyboardResponse {
 	private final Logger logger = Logger.getLogger(this.getClass());
 	private static final double MIN_DELTA = 1.0;
-	private IEditingOperation editingOperation;
+	private final IEditingOperation editingOperation;
 	private Point lastDelta;
 	private CursorType currentCursorKey;
 	private boolean keyDown = false;

@@ -3,7 +3,7 @@ package org.pathwayeditor.visualeditor.operations;
 import java.util.SortedSet;
 
 import org.pathwayeditor.figure.geometry.Point;
-import org.pathwayeditor.visualeditor.behaviour.ISelectionOperation;
+import org.pathwayeditor.visualeditor.behaviour.operation.ISelectionOperation;
 import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
 import org.pathwayeditor.visualeditor.geometry.IIntersectionCalculator;
 import org.pathwayeditor.visualeditor.selection.ISelectionRecord;

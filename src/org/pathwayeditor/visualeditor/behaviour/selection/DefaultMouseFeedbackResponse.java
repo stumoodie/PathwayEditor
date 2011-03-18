@@ -1,6 +1,8 @@
-package org.pathwayeditor.visualeditor.behaviour;
+package org.pathwayeditor.visualeditor.behaviour.selection;
 
 import java.awt.Cursor;
+
+import org.pathwayeditor.visualeditor.behaviour.IMouseFeedbackResponse;
 
 public class DefaultMouseFeedbackResponse implements IMouseFeedbackResponse {
 	private StateType currentState = StateType.DEFAULT;

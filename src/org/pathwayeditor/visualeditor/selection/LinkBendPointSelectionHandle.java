@@ -49,7 +49,7 @@ public class LinkBendPointSelectionHandle extends SelectionHandle implements ILi
 
 	@Override
 	public Iterator<Point> pointIterator() {
-		return this.rectangleHull.iterator();
+		return this.rectangleHull.pointIterator();
 	}
 
 }

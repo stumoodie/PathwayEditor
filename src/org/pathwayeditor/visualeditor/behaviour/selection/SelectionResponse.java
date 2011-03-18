@@ -1,6 +1,8 @@
-package org.pathwayeditor.visualeditor.behaviour;
+package org.pathwayeditor.visualeditor.behaviour.selection;
 
 import org.pathwayeditor.figure.geometry.Point;
+import org.pathwayeditor.visualeditor.behaviour.ISelectionResponse;
+import org.pathwayeditor.visualeditor.behaviour.operation.ISelectionOperation;
 
 public class SelectionResponse implements ISelectionResponse {
 	private final ISelectionOperation selectionRecord;

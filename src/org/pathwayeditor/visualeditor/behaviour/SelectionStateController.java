@@ -15,6 +15,8 @@ import org.apache.log4j.Logger;
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.behaviour.IKeyboardResponse.CursorType;
+import org.pathwayeditor.visualeditor.behaviour.selection.ISelectionResponse;
+import org.pathwayeditor.visualeditor.behaviour.selection.SelectionResponse;
 import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
 import org.pathwayeditor.visualeditor.editingview.IDomainModelLayer;
 import org.pathwayeditor.visualeditor.editingview.ISelectionLayer;

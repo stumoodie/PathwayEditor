@@ -3,7 +3,7 @@ package org.pathwayeditor.visualeditor.operations;
 import org.apache.log4j.Logger;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.Point;
-import org.pathwayeditor.visualeditor.behaviour.ILinkOperation;
+import org.pathwayeditor.visualeditor.behaviour.operation.ILinkOperation;
 import org.pathwayeditor.visualeditor.commands.CreateBendPointCommand;
 import org.pathwayeditor.visualeditor.commands.ICommand;
 import org.pathwayeditor.visualeditor.commands.ICommandStack;

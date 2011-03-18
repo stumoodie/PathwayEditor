@@ -6,6 +6,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 import org.apache.log4j.Logger;
+import org.pathwayeditor.visualeditor.behaviour.operation.IShapeCreationOperation;
 
 public class CreationMouseListener implements MouseListener, MouseMotionListener {
 	private final Logger logger = Logger.getLogger(this.getClass());

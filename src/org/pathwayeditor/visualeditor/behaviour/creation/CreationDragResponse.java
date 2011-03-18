@@ -1,14 +1,16 @@
-package org.pathwayeditor.visualeditor.behaviour;
+package org.pathwayeditor.visualeditor.behaviour.creation;
 
 import org.pathwayeditor.figure.geometry.Point;
+import org.pathwayeditor.visualeditor.behaviour.HandleResponse;
+import org.pathwayeditor.visualeditor.behaviour.operation.IShapeCreationOperation;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
 
-public class CreationResponse extends HandleResponse {
+public class CreationDragResponse extends HandleResponse {
 	private final IShapeCreationOperation shapeCreationOperation;
 	private final IShapeTypeInspector shapeTypeInspector;
 	private Point lastDelta;
 
-	public CreationResponse(IShapeCreationOperation shapeCreationOperation, IShapeTypeInspector shapeTypeInspector) {
+	public CreationDragResponse(IShapeCreationOperation shapeCreationOperation, IShapeTypeInspector shapeTypeInspector) {
 		this.shapeCreationOperation = shapeCreationOperation;
 		this.shapeTypeInspector = shapeTypeInspector;
 	}

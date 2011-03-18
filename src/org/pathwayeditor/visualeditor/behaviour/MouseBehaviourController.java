@@ -3,6 +3,10 @@ package org.pathwayeditor.visualeditor.behaviour;
 import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.typedefn.ILinkObjectType;
 import org.pathwayeditor.businessobjects.typedefn.IShapeObjectType;
+import org.pathwayeditor.visualeditor.behaviour.creation.CreationControllerResponses;
+import org.pathwayeditor.visualeditor.behaviour.creation.IShapeTypeInspector;
+import org.pathwayeditor.visualeditor.behaviour.operation.IOperationFactory;
+import org.pathwayeditor.visualeditor.behaviour.selection.SelectionControllerResponses;
 import org.pathwayeditor.visualeditor.editingview.IShapePane;
 
 public class MouseBehaviourController implements IMouseBehaviourController {

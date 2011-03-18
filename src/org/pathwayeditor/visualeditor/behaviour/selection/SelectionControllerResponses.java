@@ -1,10 +1,19 @@
-package org.pathwayeditor.visualeditor.behaviour;
+package org.pathwayeditor.visualeditor.behaviour.selection;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Point;
+import org.pathwayeditor.visualeditor.behaviour.IControllerResponses;
+import org.pathwayeditor.visualeditor.behaviour.IDragResponse;
+import org.pathwayeditor.visualeditor.behaviour.IMouseFeedbackResponse;
+import org.pathwayeditor.visualeditor.behaviour.ISelectionResponse;
+import org.pathwayeditor.visualeditor.behaviour.operation.IEditingOperation;
+import org.pathwayeditor.visualeditor.behaviour.operation.ILinkOperation;
+import org.pathwayeditor.visualeditor.behaviour.operation.IMarqueeOperation;
+import org.pathwayeditor.visualeditor.behaviour.operation.IOperationFactory;
+import org.pathwayeditor.visualeditor.behaviour.operation.IResizeOperation;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle.SelectionHandleType;
 
 public class SelectionControllerResponses implements IControllerResponses {

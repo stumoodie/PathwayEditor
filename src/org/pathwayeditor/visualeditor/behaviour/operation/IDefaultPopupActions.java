@@ -1,4 +1,4 @@
-package org.pathwayeditor.visualeditor.behaviour;
+package org.pathwayeditor.visualeditor.behaviour.operation;
 
 
 public interface IDefaultPopupActions {
