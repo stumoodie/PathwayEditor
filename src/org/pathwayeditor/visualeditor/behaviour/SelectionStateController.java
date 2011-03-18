@@ -27,7 +27,7 @@ import org.pathwayeditor.visualeditor.selection.ISelectionRecord;
 
 public class SelectionStateController implements ISelectionStateBehaviourController {
 	private final Logger logger = Logger.getLogger(this.getClass());
-	private MouseListener mouseSelectionListener;
+//	private MouseListener mouseSelectionListener;
 	private final IShapePane shapePane;
 	private final Map<SelectionHandleType, IDragResponse> dragResponseMap;
 	private final KeyListener keyListener;
@@ -35,10 +35,8 @@ public class SelectionStateController implements ISelectionStateBehaviourControl
 	private final Map<SelectionHandleType, IMouseFeedbackResponse> mouseResponseMap;
 	private final Map<SelectionHandleType, IPopupMenuResponse> popupMenuMap;
 	private final MouseListener popupMenuListener;
-	private final SelectionStateDragListener dragListener;
-	private final SelectionStateMouseFeedbackListener mouseFeedbackListener;
-	private final SelectionFeedbackListener selectionFeedbackListener;
 	private boolean activated = false;
+	private final SelectionMouseListener mouseListener;
 
 	public SelectionStateController(IShapePane pane, IOperationFactory opFactory){
 		this.shapePane = pane;
@@ -49,9 +47,7 @@ public class SelectionStateController implements ISelectionStateBehaviourControl
 		initialiseDragResponses(opFactory);
 		initialiseMouseResponse();
 		initialisePopupMenuResponse(opFactory);
-        this.dragListener = new SelectionStateDragListener(this);
-        this.mouseFeedbackListener = new SelectionStateMouseFeedbackListener(this);
-        this.selectionFeedbackListener = new SelectionFeedbackListener(this);
+		this.mouseListener = new SelectionMouseListener(this);
         this.keyListener = new KeyListener(){
 
 			@Override
@@ -399,11 +395,13 @@ public class SelectionStateController implements ISelectionStateBehaviourControl
 	@Override
 	public void activate(){
 		this.shapePane.addKeyListener(this.keyListener);
-        this.shapePane.addMouseListener(this.mouseSelectionListener);
-        this.shapePane.addMouseMotionListener(this.dragListener);
-        this.shapePane.addMouseListener(this.dragListener);
-        this.shapePane.addMouseMotionListener(this.mouseFeedbackListener);
-        this.shapePane.addMouseListener(selectionFeedbackListener);
+//        this.shapePane.addMouseListener(this.mouseSelectionListener);
+//        this.shapePane.addMouseMotionListener(this.dragListener);
+//        this.shapePane.addMouseListener(this.dragListener);
+//        this.shapePane.addMouseMotionListener(this.mouseFeedbackListener);
+//        this.shapePane.addMouseListener(selectionFeedbackListener);
+        this.shapePane.addMouseMotionListener(this.mouseListener);
+        this.shapePane.addMouseListener(this.mouseListener);
         this.shapePane.addMouseListener(popupMenuListener);
         for(IPopupMenuResponse popupResponse : this.popupMenuMap.values()){
         	popupResponse.activate();
@@ -414,11 +412,13 @@ public class SelectionStateController implements ISelectionStateBehaviourControl
 	@Override
 	public void deactivate(){
 		this.shapePane.removeKeyListener(this.keyListener);
-        this.shapePane.removeMouseListener(this.mouseSelectionListener);
-        this.shapePane.removeMouseMotionListener(this.mouseFeedbackListener);
-        this.shapePane.removeMouseMotionListener(this.dragListener);
-        this.shapePane.removeMouseListener(this.dragListener);
-        this.shapePane.removeMouseListener(selectionFeedbackListener);
+//        this.shapePane.removeMouseListener(this.mouseSelectionListener);
+//        this.shapePane.removeMouseMotionListener(this.mouseFeedbackListener);
+//        this.shapePane.removeMouseMotionListener(this.dragListener);
+//        this.shapePane.removeMouseListener(this.dragListener);
+//        this.shapePane.removeMouseListener(selectionFeedbackListener);
+        this.shapePane.removeMouseMotionListener(this.mouseListener);
+        this.shapePane.removeMouseListener(this.mouseListener);
         this.shapePane.removeMouseListener(popupMenuListener);
         for(IPopupMenuResponse popupResponse : this.popupMenuMap.values()){
         	popupResponse.deactivate();
