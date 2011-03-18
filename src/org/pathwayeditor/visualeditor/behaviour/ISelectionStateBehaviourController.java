@@ -1,13 +1,16 @@
 package org.pathwayeditor.visualeditor.behaviour;
 
+import org.pathwayeditor.figure.geometry.Point;
+import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle.SelectionHandleType;
-import org.pathwayeditor.visualeditor.selection.ISelectionRecord;
 
 public interface ISelectionStateBehaviourController extends IMouseStateBehaviourController {
 
-	ISelectionRecord getSelectionRecord();
+	ISelectionResponse getSelectionResponse(SelectionHandleType type);
 
 	IDragResponse getDragResponse(SelectionHandleType type);
 
 	IMouseFeedbackResponse getMouseFeedbackResponse(SelectionHandleType type);
+
+	ISelectionHandle getSelectionHandle(Point location);
 }

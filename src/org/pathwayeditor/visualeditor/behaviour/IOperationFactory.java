@@ -19,5 +19,7 @@ public interface IOperationFactory {
 	ILinkBendPointPopupActions getLinkBendpointPopupMenuResponse();
 
 	IShapeCreationOperation getShapeCreationOperation();
+	
+	ISelectionOperation getSelectionOperation();
 
 }

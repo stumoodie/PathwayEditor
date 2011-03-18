@@ -23,7 +23,6 @@ import org.pathwayeditor.visualeditor.editingview.LayerType;
 import org.pathwayeditor.visualeditor.geometry.IIntersectionCalculator;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle.SelectionHandleType;
-import org.pathwayeditor.visualeditor.selection.ISelectionRecord;
 
 public class SelectionStateController implements ISelectionStateBehaviourController {
 	private final Logger logger = Logger.getLogger(this.getClass());
@@ -37,6 +36,7 @@ public class SelectionStateController implements ISelectionStateBehaviourControl
 	private final MouseListener popupMenuListener;
 	private boolean activated = false;
 	private final SelectionMouseListener mouseListener;
+	private final ISelectionResponse selectionResponse;
 
 	public SelectionStateController(IShapePane pane, IOperationFactory opFactory){
 		this.shapePane = pane;
@@ -128,6 +128,7 @@ public class SelectionStateController implements ISelectionStateBehaviourControl
 			}
         	
         };
+        this.selectionResponse = new SelectionResponse(opFactory.getSelectionOperation());
 	}
 	
 
@@ -376,8 +377,8 @@ public class SelectionStateController implements ISelectionStateBehaviourControl
 		this.dragResponseMap.put(SelectionHandleType.Link, new MarqueeSelectionHandleResponse(marqueeOp));
 	}
 
-	@Override
-	public IDrawingElementController findDrawingElementAt(Point location) {
+//	@Override
+	private IDrawingElementController findDrawingElementAt(Point location) {
 		IDomainModelLayer domainLayer = this.shapePane.getLayer(LayerType.DOMAIN);
 		IIntersectionCalculator intCalc = domainLayer.getViewControllerStore().getIntersectionCalculator();
 		intCalc.setFilter(null);
@@ -457,11 +458,11 @@ public class SelectionStateController implements ISelectionStateBehaviourControl
 	}
 
 
-	@Override
-	public ISelectionRecord getSelectionRecord() {
-		ISelectionLayer selectionLayer = this.shapePane.getLayer(LayerType.SELECTION);
-		return selectionLayer.getSelectionRecord();
-	}
+//	@Override
+//	public ISelectionRecord getSelectionRecord() {
+//		ISelectionLayer selectionLayer = this.shapePane.getLayer(LayerType.SELECTION);
+//		return selectionLayer.getSelectionRecord();
+//	}
 
 
 //	@Override
@@ -473,5 +474,18 @@ public class SelectionStateController implements ISelectionStateBehaviourControl
 	@Override
 	public boolean isActivated() {
 		return this.activated ;
+	}
+
+
+	@Override
+	public ISelectionResponse getSelectionResponse(SelectionHandleType type) {
+		return this.selectionResponse;
+	}
+
+
+	@Override
+	public ISelectionHandle getSelectionHandle(Point location) {
+		ISelectionLayer selectionLayer = this.shapePane.getLayer(LayerType.SELECTION);		
+		return selectionLayer.getSelectionRecord().findSelectionModelAt(location);
 	}
 }
