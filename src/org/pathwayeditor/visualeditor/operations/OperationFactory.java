@@ -60,7 +60,7 @@ public class OperationFactory implements IOperationFactory {
 		linkOperation = new LinkOperation(shapePane, feedbackModel, selectionRecord, commandStack);
 		marqueeOperation = new MarqueeOperation(shapePane, feedbackModel, selectionRecord, viewModel.getIntersectionCalculator());
 		initResponses();
-		shapeCreationOperation = new ShapeCreationOperation(shapePane, feedbackModel, viewModel.getDomainModel(), commandStack);
+		shapeCreationOperation = new ShapeCreationOperation(shapePane, feedbackModel, viewModel, commandStack);
 		this.selectionOperations = new SelectionOperation(selectionRecord, viewModel.getIntersectionCalculator());
 	}
 	

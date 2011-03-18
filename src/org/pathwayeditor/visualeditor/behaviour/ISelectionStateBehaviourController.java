@@ -6,7 +6,7 @@ import org.pathwayeditor.visualeditor.selection.ISelectionHandle.SelectionHandle
 
 public interface ISelectionStateBehaviourController extends IMouseStateBehaviourController {
 
-	ISelectionResponse getSelectionResponse(SelectionHandleType type);
+	ISelectionResponse getClickResponse();
 
 	IDragResponse getDragResponse(SelectionHandleType type);
 

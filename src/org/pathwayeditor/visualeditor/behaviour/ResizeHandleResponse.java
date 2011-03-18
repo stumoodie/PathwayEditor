@@ -71,7 +71,7 @@ public class ResizeHandleResponse extends HandleResponse {
 	}
 
 	@Override
-	public boolean canMove() {
+	public boolean canOperationSucceed() {
 		return true;
 	}
 

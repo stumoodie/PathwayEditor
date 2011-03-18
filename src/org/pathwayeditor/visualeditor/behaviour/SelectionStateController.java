@@ -26,7 +26,6 @@ import org.pathwayeditor.visualeditor.selection.ISelectionHandle.SelectionHandle
 
 public class SelectionStateController implements ISelectionStateBehaviourController {
 	private final Logger logger = Logger.getLogger(this.getClass());
-//	private MouseListener mouseSelectionListener;
 	private final IShapePane shapePane;
 	private final Map<SelectionHandleType, IDragResponse> dragResponseMap;
 	private final KeyListener keyListener;
@@ -478,7 +477,7 @@ public class SelectionStateController implements ISelectionStateBehaviourControl
 
 
 	@Override
-	public ISelectionResponse getSelectionResponse(SelectionHandleType type) {
+	public ISelectionResponse getClickResponse() {
 		return this.selectionResponse;
 	}
 

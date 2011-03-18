@@ -29,6 +29,13 @@ public interface IIntersectionCalculator {
 	SortedSet<IDrawingElementController> findDrawingPrimitivesAt(Point p);
 
 	SortedSet<IDrawingElementController> findIntersectingController(Envelope bounds);
+
+	/**
+	 * Find nodes that intersect this hull.
+	 * @param queryHull the hull to test
+	 * @return the nodes, including the root node that intersect this hull.
+	 */
+	SortedSet<IDrawingElementController> findIntersectingNodes(IConvexHull queryHull);
 	
-	SortedSet<IDrawingElementController> findIntersectingControllerBounds(Envelope bounds);
+//	SortedSet<IDrawingElementController> findIntersectingControllerBounds(Envelope bounds);
 }

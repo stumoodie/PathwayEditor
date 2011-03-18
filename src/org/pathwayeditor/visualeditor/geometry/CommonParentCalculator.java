@@ -144,20 +144,13 @@ public class CommonParentCalculator implements ICommonParentCalculator {
 		return this.parent != null;
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.pathwayeditor.visualeditor.geometry.ICommonParentCalculator#getCommonParent()
-	 */
 	@Override
 	public IDrawingElementController getCommonParent(){
 		return this.parent;
 	}
 	
 	
-	/* (non-Javadoc)
-	 * @see org.pathwayeditor.visualeditor.geometry.ICommonParentCalculator#findPotentialParent(org.pathwayeditor.visualeditor.controller.INodeController, org.pathwayeditor.figure.geometry.IConvexHull)
-	 */
-	@Override
-	public INodeController findPotentialParent(final INodeController potentialChild, IConvexHull testPlacement){
+	private INodeController findPotentialParent(final INodeController potentialChild, IConvexHull testPlacement){
 		calc.setFilter(new IIntersectionCalcnFilter(){
 
 			@Override

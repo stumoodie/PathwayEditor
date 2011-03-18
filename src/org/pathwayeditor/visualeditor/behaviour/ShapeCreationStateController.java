@@ -25,17 +25,6 @@ public class ShapeCreationStateController implements ICreationStateBehaviourCont
 		}
 		return retVal;  
 	}
-//	public Point getAdjustedMousePosition(double originalMouseX, double originalMouseY){
-//		AffineTransform paneTransform = this.shapePane.getLastUsedTransform();
-//		Point retVal = null;
-//		if(paneTransform == null){
-//			retVal = new Point(originalMouseX, originalMouseY);
-//		}
-//		else{
-//			retVal = new Point((originalMouseX-paneTransform.getTranslateX())/paneTransform.getScaleX(), (originalMouseY-paneTransform.getTranslateY())/paneTransform.getScaleY()); 
-//		}
-//		return retVal;  
-//	}
 
 	@Override
 	public void activate(){
@@ -53,22 +42,6 @@ public class ShapeCreationStateController implements ICreationStateBehaviourCont
         this.activated = false;
 	}
 
-
-////	@Override
-//	private IDrawingElementController findDrawingElementAt(Point location) {
-//		IDomainModelLayer domainLayer = this.shapePane.getLayer(LayerType.DOMAIN);
-//		IIntersectionCalculator intCalc = domainLayer.getViewControllerStore().getIntersectionCalculator();
-//		intCalc.setFilter(null);
-//		SortedSet<IDrawingElementController> hits = intCalc.findDrawingPrimitivesAt(new Point(location.getX(), location.getY()));
-//		IDrawingElementController retVal = null;
-//		if(!hits.isEmpty()){
-//			retVal = hits.first();
-//			if(logger.isTraceEnabled()){
-//				logger.trace("Found hit at: " + retVal);
-//			}
-//		}
-//		return retVal;
-//	}
 
 	@Override
 	public boolean isActivated() {

@@ -4,7 +4,7 @@ import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.behaviour.IEditingOperation.ReparentingStateType;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
 
-public class CentralHandleResponse extends HandleResponse implements IMoveResponse {
+public class CentralHandleResponse extends HandleResponse {
 	private final IEditingOperation editingOperation;
 	private ReparentingStateType reparentingState = ReparentingStateType.FORBIDDEN;
 	private Point lastDelta;
@@ -46,7 +46,7 @@ public class CentralHandleResponse extends HandleResponse implements IMoveRespon
 	}
 
 	@Override
-	public boolean canMove() {
+	public boolean canOperationSucceed() {
 		return this.reparentingState.equals(ReparentingStateType.CAN_MOVE);
 	}
 

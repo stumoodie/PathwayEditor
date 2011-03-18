@@ -10,15 +10,24 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 	
 	private IMouseStateBehaviourController currentStateController; 
 	private final ISelectionStateBehaviourController selectionStateController;
-	private final ICreationStateBehaviourController creationStateController;
-	private final IShapeCreationOperation shapeCreationOp;
+	private final ISelectionStateBehaviourController creationStateController;
+//	private final IShapeCreationOperation shapeCreationOp;
 
 	private boolean activated;
+	private IShapeObjectType currShapeType;
 	
 	public MouseBehaviourController(IShapePane pane, IOperationFactory opFactory){
-		this.selectionStateController = new SelectionStateController(pane, opFactory);
-		this.shapeCreationOp = opFactory.getShapeCreationOperation();
-		this.creationStateController = new ShapeCreationStateController(pane, this.shapeCreationOp);
+		this.selectionStateController = new GeneralStateController(pane, new SelectionControllerResponses(opFactory));
+		this.creationStateController = new GeneralStateController(pane, new CreationControllerResponses(opFactory,
+				new IShapeTypeInspector() {
+					
+					@Override
+					public IShapeObjectType getCurrentShapeType() {
+						return currShapeType;
+					}
+				}));;
+//		this.shapeCreationOp = opFactory.getShapeCreationOperation();
+//		this.creationStateController = new ShapeCreationStateController(pane, this.shapeCreationOp);
 		this.currentStateController = this.selectionStateController;
 	}
 
@@ -63,14 +72,15 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 
 	@Override
 	public void setShapeCreationMode(IShapeObjectType shapeType) {
-		if(this.currentStateController.equals(this.shapeCreationOp)){
-			this.shapeCreationOp.setShapeObjectType(shapeType);
-		}
-		else{
+		this.currShapeType = shapeType;
+		if(!this.currentStateController.equals(this.creationStateController)){
+//			this.shapeCreationOp.setShapeObjectType(shapeType);
+//		}
+//		else{
 			if(this.isActivated()){
 				this.currentStateController.deactivate();
 			}
-			this.shapeCreationOp.setShapeObjectType(shapeType);
+//			this.shapeCreationOp.setShapeObjectType(shapeType);
 			this.currentStateController = this.creationStateController;
 			if(this.isActivated()){
 				this.currentStateController.activate();

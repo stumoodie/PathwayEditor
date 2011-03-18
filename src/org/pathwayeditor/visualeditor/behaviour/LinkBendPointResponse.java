@@ -21,7 +21,7 @@ public class LinkBendPointResponse extends HandleResponse {
 	}
 
 	@Override
-	public boolean canMove() {
+	public boolean canOperationSucceed() {
 		return true;
 	}
 

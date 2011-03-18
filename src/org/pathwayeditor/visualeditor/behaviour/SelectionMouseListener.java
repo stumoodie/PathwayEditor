@@ -54,7 +54,7 @@ public class SelectionMouseListener implements MouseListener, MouseMotionListene
 							currMouseFeedbackResponse.changeState(StateType.REPARENTING);
 							logger.trace("Setting hand cursor as reparenting enabled");
 						}
-						else if(currDragResponse.canMove()){
+						else if(currDragResponse.canOperationSucceed()){
 							logger.trace("Can move, but cannot reparent. Setting to default for current location");
 							currMouseFeedbackResponse.changeState(StateType.DEFAULT);
 						}
@@ -95,16 +95,16 @@ public class SelectionMouseListener implements MouseListener, MouseMotionListene
 	public void mouseClicked(MouseEvent e) {
 		if(e.getButton() == MouseEvent.BUTTON1){
 			Point location = this.mouseBehaviourController.getAdjustedMousePosition(e.getPoint().getX(), e.getPoint().getY());
-			currSelectionHandle = mouseBehaviourController.getSelectionHandle(location);
+//			currSelectionHandle = mouseBehaviourController.getSelectionHandle(location);
 			ISelectionResponse currSelnResponse = null;
 			if(currSelectionHandle != null){
-				currSelnResponse = this.mouseBehaviourController.getSelectionResponse(currSelectionHandle.getType());
+				currSelnResponse = this.mouseBehaviourController.getClickResponse();
 			}
 			else{
-				currSelnResponse = this.mouseBehaviourController.getSelectionResponse(SelectionHandleType.None);
+				currSelnResponse = this.mouseBehaviourController.getClickResponse();
 			}
 			if(!e.isShiftDown() && !e.isAltDown()){
-				currSelnResponse.primarySelection(location);
+				currSelnResponse.primaryClick(location);
 //				Point location = this.mouseBehaviourController.getAdjustedMousePosition(e.getPoint().getX(), e.getPoint().getY());
 //				IDrawingElementController nodeController = this.mouseBehaviourController.findDrawingElementAt(location);
 //				if(nodeController != null){
@@ -115,7 +115,7 @@ public class SelectionMouseListener implements MouseListener, MouseMotionListene
 //				}
 			}
 			else if(e.isShiftDown() && !e.isAltDown()){
-				currSelnResponse.secondarySelection(location);
+				currSelnResponse.secondaryClick(location);
 //				Point location = this.mouseBehaviourController.getAdjustedMousePosition(e.getPoint().getX(), e.getPoint().getY());
 //				IDrawingElementController nodeController = this.mouseBehaviourController.findDrawingElementAt(location);
 //				if(nodeController != null){

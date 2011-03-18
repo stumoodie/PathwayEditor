@@ -1,7 +1,6 @@
 package org.pathwayeditor.visualeditor.commands;
 
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNode;
-import org.pathwayeditor.businessobjects.drawingprimitives.IRootNode;
+import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElement;
 import org.pathwayeditor.businessobjects.drawingprimitives.IShapeNode;
 import org.pathwayeditor.businessobjects.drawingprimitives.IShapeNodeFactory;
 import org.pathwayeditor.businessobjects.impl.facades.ShapeNodeFactoryFacade;
@@ -11,13 +10,13 @@ import org.pathwayeditor.figure.geometry.Envelope;
 import uk.ac.ed.inf.graph.state.IGraphState;
 
 public class ShapeCreationCommand implements ICommand {
-	private final IDrawingNode parentNode;
+	private final IDrawingElement parentNode;
 	private final IShapeObjectType objectType;
 	private final Envelope bounds;
 	private IGraphState createdState;
 	private IGraphState originalState;
 	
-	public ShapeCreationCommand(IRootNode rootNode, IShapeObjectType shapeObjectType, Envelope bounds) {
+	public ShapeCreationCommand(IDrawingElement rootNode, IShapeObjectType shapeObjectType, Envelope bounds) {
 		this.parentNode = rootNode;
 		this.objectType = shapeObjectType;
 		this.bounds = bounds; 

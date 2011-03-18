@@ -4,8 +4,8 @@ import org.pathwayeditor.figure.geometry.Point;
 
 public interface ISelectionResponse {
 
-	void primarySelection(Point location);
+	void primaryClick(Point location);
 
-	void secondarySelection(Point location);
+	void secondaryClick(Point location);
 
 }

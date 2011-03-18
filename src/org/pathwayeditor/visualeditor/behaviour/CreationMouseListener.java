@@ -6,12 +6,11 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 import org.apache.log4j.Logger;
-import org.pathwayeditor.figure.geometry.Point;
 
 public class CreationMouseListener implements MouseListener, MouseMotionListener {
 	private final Logger logger = Logger.getLogger(this.getClass());
 	private final IShapeCreationOperation creationOperation;
-	private IMouseStateBehaviourController controller;
+	private final IMouseStateBehaviourController controller;
 	private boolean dragMayBeStarting;
 	private java.awt.Point possibleDragStartPosition;
 	private boolean dragStarted;
@@ -23,11 +22,11 @@ public class CreationMouseListener implements MouseListener, MouseMotionListener
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		logger.trace("Mouse clicked at: " + e.getPoint());
-		Point origin = controller.getAdjustedMousePosition(e.getPoint().getX(), e.getPoint().getY());
-		creationOperation.createShape(origin);
-		dragStarted = false;
-		dragMayBeStarting = false; 
+//		logger.trace("Mouse clicked at: " + e.getPoint());
+//		Point origin = controller.getAdjustedMousePosition(e.getPoint().getX(), e.getPoint().getY());
+//		creationOperation.createShape(origin);
+//		dragStarted = false;
+//		dragMayBeStarting = false; 
 	}
 
 	@Override

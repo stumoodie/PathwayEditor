@@ -10,14 +10,14 @@ public class SelectionResponse implements ISelectionResponse {
 	}
 	
 	@Override
-	public void primarySelection(Point location) {
+	public void primaryClick(Point location) {
 		selectionRecord.setCurrentLocation(location);
 		selectionRecord.setPrimaryClick();
 		selectionRecord.handleClick();
 	}
 
 	@Override
-	public void secondarySelection(Point location) {
+	public void secondaryClick(Point location) {
 		selectionRecord.setCurrentLocation(location);
 		selectionRecord.setSecondaryClick();
 		selectionRecord.handleClick();
