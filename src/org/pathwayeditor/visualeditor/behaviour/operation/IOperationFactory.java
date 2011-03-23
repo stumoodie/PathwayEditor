@@ -23,4 +23,6 @@ public interface IOperationFactory {
 	
 	ISelectionOperation getSelectionOperation();
 
+	ILinkCreationOperation getLinkCreationOperation();
+
 }

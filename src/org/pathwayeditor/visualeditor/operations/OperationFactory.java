@@ -8,6 +8,7 @@ import org.pathwayeditor.businessobjects.impl.facades.SelectionFactoryFacade;
 import org.pathwayeditor.visualeditor.behaviour.operation.IDefaultPopupActions;
 import org.pathwayeditor.visualeditor.behaviour.operation.IEditingOperation;
 import org.pathwayeditor.visualeditor.behaviour.operation.ILinkBendPointPopupActions;
+import org.pathwayeditor.visualeditor.behaviour.operation.ILinkCreationOperation;
 import org.pathwayeditor.visualeditor.behaviour.operation.ILinkOperation;
 import org.pathwayeditor.visualeditor.behaviour.operation.ILinkPopupActions;
 import org.pathwayeditor.visualeditor.behaviour.operation.IMarqueeOperation;
@@ -47,6 +48,7 @@ public class OperationFactory implements IOperationFactory {
 	private final IViewControllerModel viewModel;
 	private final IShapeCreationOperation shapeCreationOperation;
 	private final ISelectionOperation selectionOperations;
+	private final ILinkCreationOperation linkCreationOperation;
 
 	public OperationFactory(IShapePane shapePane, IFeedbackModel feedbackModel, ISelectionRecord selectionRecord, IViewControllerModel viewModel,
 			ICommandStack commandStack){
@@ -62,6 +64,7 @@ public class OperationFactory implements IOperationFactory {
 		initResponses();
 		shapeCreationOperation = new ShapeCreationOperation(shapePane, feedbackModel, viewModel, commandStack);
 		this.selectionOperations = new SelectionOperation(selectionRecord, viewModel.getIntersectionCalculator());
+		this.linkCreationOperation = new LinkCreationOperation(shapePane, feedbackModel, viewModel, commandStack);
 	}
 	
 	private void initResponses(){
@@ -219,5 +222,10 @@ public class OperationFactory implements IOperationFactory {
 	@Override
 	public ISelectionOperation getSelectionOperation() {
 		return this.selectionOperations;
+	}
+
+	@Override
+	public ILinkCreationOperation getLinkCreationOperation() {
+		return this.linkCreationOperation;
 	}
 }

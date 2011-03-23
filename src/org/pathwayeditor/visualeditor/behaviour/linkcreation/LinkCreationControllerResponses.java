@@ -1,4 +1,4 @@
-package org.pathwayeditor.visualeditor.behaviour.creation;
+package org.pathwayeditor.visualeditor.behaviour.linkcreation;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -20,17 +20,17 @@ import org.pathwayeditor.visualeditor.behaviour.selection.LinkPopupMenuResponse;
 import org.pathwayeditor.visualeditor.behaviour.selection.ShapePopupMenuResponse;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle.SelectionHandleType;
 
-public class CreationControllerResponses implements IControllerResponses {
+public class LinkCreationControllerResponses implements IControllerResponses {
 	private final IDragResponse dragResponse;
 	private final ISelectionResponse selectionResponse;
 	private final IMouseFeedbackResponse feedbackResponse;
 	private final IKeyboardResponse keyboardResponse;
 	private final Map<SelectionHandleType, IPopupMenuResponse> popupMenuMap; 
 	
-	public CreationControllerResponses(IOperationFactory opFactory, IShapeTypeInspector shapeTypeInspector) {
-		this.dragResponse = new CreationDragResponse(opFactory.getShapeCreationOperation(), shapeTypeInspector);
-        this.selectionResponse = new SelectionCreationResponse();
-        this.feedbackResponse = new MouseCreationFeedbackResponse();
+	public LinkCreationControllerResponses(IOperationFactory opFactory, ILinkTypeInspector shapeTypeInspector) {
+		this.dragResponse = new LinkCreationDragResponse(opFactory.getLinkCreationOperation(), shapeTypeInspector);
+        this.selectionResponse = new SelectionLinkCreationResponse();
+        this.feedbackResponse = new MouseLinkCreationFeedbackResponse();
         this.keyboardResponse = new KeyboardResponse(new IEditingOperation() {
 			
 			@Override

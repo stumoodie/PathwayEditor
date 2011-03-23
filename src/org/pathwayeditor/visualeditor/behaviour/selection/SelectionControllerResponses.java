@@ -1,13 +1,16 @@
 package org.pathwayeditor.visualeditor.behaviour.selection;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.behaviour.IControllerResponses;
 import org.pathwayeditor.visualeditor.behaviour.IDragResponse;
+import org.pathwayeditor.visualeditor.behaviour.IKeyboardResponse;
 import org.pathwayeditor.visualeditor.behaviour.IMouseFeedbackResponse;
+import org.pathwayeditor.visualeditor.behaviour.IPopupMenuResponse;
 import org.pathwayeditor.visualeditor.behaviour.ISelectionResponse;
 import org.pathwayeditor.visualeditor.behaviour.operation.IEditingOperation;
 import org.pathwayeditor.visualeditor.behaviour.operation.ILinkOperation;
@@ -19,7 +22,9 @@ import org.pathwayeditor.visualeditor.selection.ISelectionHandle.SelectionHandle
 public class SelectionControllerResponses implements IControllerResponses {
 	private final Map<SelectionHandleType, IDragResponse> dragResponseMap;
 	private final Map<SelectionHandleType, IMouseFeedbackResponse> mouseResponseMap;
+	private final Map<SelectionHandleType, IPopupMenuResponse> popupMenuMap;
 	private final SelectionResponse selectionResponse;
+	private final IKeyboardResponse keyboardResponse;
 
 	public SelectionControllerResponses(IOperationFactory opFactory) {
 		this.dragResponseMap = new HashMap<SelectionHandleType, IDragResponse>();
@@ -27,6 +32,9 @@ public class SelectionControllerResponses implements IControllerResponses {
 		this.mouseResponseMap = new HashMap<SelectionHandleType, IMouseFeedbackResponse>();
 		initialiseMouseResponse();
         this.selectionResponse = new SelectionResponse(opFactory.getSelectionOperation());
+        this.keyboardResponse = new KeyboardResponse(opFactory.getMoveOperation());
+        this.popupMenuMap = new HashMap<SelectionHandleType, IPopupMenuResponse>();
+        initialisePopupMenuResponse(opFactory);
 	}
 
 	@Override
@@ -42,6 +50,22 @@ public class SelectionControllerResponses implements IControllerResponses {
 	@Override
 	public ISelectionResponse getSelectionResponse() {
 		return this.selectionResponse;
+	}
+
+	private void initialisePopupMenuResponse(IOperationFactory opFactory){
+		this.popupMenuMap.put(SelectionHandleType.Central, new ShapePopupMenuResponse(opFactory.getShapePopupMenuResponse()));
+		this.popupMenuMap.put(SelectionHandleType.N, new ShapePopupMenuResponse(opFactory.getShapePopupMenuResponse()));
+		this.popupMenuMap.put(SelectionHandleType.NE, new ShapePopupMenuResponse(opFactory.getShapePopupMenuResponse()));
+		this.popupMenuMap.put(SelectionHandleType.E, new ShapePopupMenuResponse(opFactory.getShapePopupMenuResponse()));
+		this.popupMenuMap.put(SelectionHandleType.SE, new ShapePopupMenuResponse(opFactory.getShapePopupMenuResponse()));
+		this.popupMenuMap.put(SelectionHandleType.S, new ShapePopupMenuResponse(opFactory.getShapePopupMenuResponse()));
+		this.popupMenuMap.put(SelectionHandleType.SW, new ShapePopupMenuResponse(opFactory.getShapePopupMenuResponse()));
+		this.popupMenuMap.put(SelectionHandleType.W, new ShapePopupMenuResponse(opFactory.getShapePopupMenuResponse()));
+		this.popupMenuMap.put(SelectionHandleType.NW, new ShapePopupMenuResponse(opFactory.getShapePopupMenuResponse()));
+		this.popupMenuMap.put(SelectionHandleType.Link, new LinkPopupMenuResponse(opFactory.getLinkPopupMenuResponse()));
+		this.popupMenuMap.put(SelectionHandleType.LinkMidPoint, new LinkPopupMenuResponse(opFactory.getLinkPopupMenuResponse()));
+		this.popupMenuMap.put(SelectionHandleType.LinkBendPoint, new LinkBendpointPopupMenuResponse(opFactory.getLinkBendpointPopupMenuResponse()));
+		this.popupMenuMap.put(SelectionHandleType.None, new DefaultPopupMenuResponse(opFactory.getDefaultPopupMenuResponse()));
 	}
 
 	private void initialiseMouseResponse(){
@@ -254,5 +278,25 @@ public class SelectionControllerResponses implements IControllerResponses {
 		this.dragResponseMap.put(SelectionHandleType.LinkBendPoint, new LinkBendPointResponse(linkOp));
 		this.dragResponseMap.put(SelectionHandleType.None, new MarqueeSelectionHandleResponse(marqueeOp));
 		this.dragResponseMap.put(SelectionHandleType.Link, new MarqueeSelectionHandleResponse(marqueeOp));
+	}
+
+	@Override
+	public IKeyboardResponse getKeyboardResponse() {
+		return this.keyboardResponse;
+	}
+
+	@Override
+	public IPopupMenuResponse getPopupMenuResponse(SelectionHandleType popupSelectionHandle) {
+		return this.popupMenuMap.get(popupSelectionHandle);
+	}
+
+	@Override
+	public Iterator<IPopupMenuResponse> popResponseIterator() {
+		return this.popupMenuMap.values().iterator();
+	}
+
+	@Override
+	public int numPopupResponses() {
+		return this.popupMenuMap.size();
 	}
 }

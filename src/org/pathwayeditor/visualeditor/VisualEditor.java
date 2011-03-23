@@ -5,7 +5,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.SplashScreen;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -41,7 +40,7 @@ public class VisualEditor extends JFrame {
 	
 	public VisualEditor(String title){
 		super(title);
-		doSplashScreen();
+//		doSplashScreen();
 		this.setLayout(new BorderLayout());
 		this.menuBar = new JMenuBar();
 		initFileMenu();
@@ -160,21 +159,21 @@ public class VisualEditor extends JFrame {
 		}
 	}
 
-	private void doSplashScreen(){
-		final SplashScreen splash = SplashScreen.getSplashScreen();
-		if (splash == null) {
-			System.out.println("SplashScreen.getSplashScreen() returned null");
-			return;
-		}
-		Graphics2D g = splash.createGraphics();
-		if (g == null) {
-			System.out.println("g is null");
-			return;
-		}
-		renderSplashFrame(g, 10);
-		renderSplashFrame(g, 100);
-		splash.close();
-	}
+//	private void doSplashScreen(){
+//		final SplashScreen splash = SplashScreen.getSplashScreen();
+//		if (splash == null) {
+//			System.out.println("SplashScreen.getSplashScreen() returned null");
+//			return;
+//		}
+//		Graphics2D g = splash.createGraphics();
+//		if (g == null) {
+//			System.out.println("g is null");
+//			return;
+//		}
+//		renderSplashFrame(g, 10);
+//		renderSplashFrame(g, 100);
+//		splash.close();
+//	}
 	
     static void renderSplashFrame(Graphics2D g, int frame) {
         final String[] comps = {"foo", "bar", "baz"};

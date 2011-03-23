@@ -1,7 +1,15 @@
 package org.pathwayeditor.visualeditor.behaviour;
 
+import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
+import java.util.Iterator;
+
+import javax.swing.JPopupMenu;
+
 import org.apache.log4j.Logger;
 import org.pathwayeditor.figure.geometry.Point;
+import org.pathwayeditor.visualeditor.behaviour.selection.PopupMenuListener;
+import org.pathwayeditor.visualeditor.behaviour.selection.SelectionKeyListener;
 import org.pathwayeditor.visualeditor.editingview.ISelectionLayer;
 import org.pathwayeditor.visualeditor.editingview.IShapePane;
 import org.pathwayeditor.visualeditor.editingview.LayerType;
@@ -12,15 +20,18 @@ public class GeneralStateController implements ISelectionStateBehaviourControlle
 	private final Logger logger = Logger.getLogger(this.getClass());
 	private final IShapePane shapePane;
 //	private final IKeyboardResponse keyboardResponseMap;
-//	private final MouseListener popupMenuListener;
+	private final MouseListener popupMenuListener;
 	private boolean activated = false;
 	private final MouseBehaviourListener mouseListener;
+	private final KeyListener keyListener; 
 	private final IControllerResponses responses;
 
 	public GeneralStateController(IShapePane pane, IControllerResponses responses){
 		this.shapePane = pane;
 		this.mouseListener = new MouseBehaviourListener(this);
 		this.responses = responses;
+		this.popupMenuListener = new PopupMenuListener(this);
+		this.keyListener = new SelectionKeyListener(responses);
 	}
 	
 
@@ -44,25 +55,35 @@ public class GeneralStateController implements ISelectionStateBehaviourControlle
 
 	@Override
 	public void activate(){
-//		this.shapePane.addKeyListener(this.keyListener);
+		this.shapePane.addKeyListener(this.keyListener);
         this.shapePane.addMouseMotionListener(this.mouseListener);
         this.shapePane.addMouseListener(this.mouseListener);
-//        this.shapePane.addMouseListener(popupMenuListener);
+        this.shapePane.addMouseListener(popupMenuListener);
 //        for(IPopupMenuResponse popupResponse : this.popupMenuMap.values()){
 //        	popupResponse.activate();
 //        }
+        Iterator<IPopupMenuResponse> iter = this.responses.popResponseIterator();
+        while(iter.hasNext()){
+        	IPopupMenuResponse popupResponse = iter.next();
+        	popupResponse.activate();
+        }
         this.activated = true;
 	}
 
 	@Override
 	public void deactivate(){
-//		this.shapePane.removeKeyListener(this.keyListener);
+		this.shapePane.removeKeyListener(this.keyListener);
         this.shapePane.removeMouseMotionListener(this.mouseListener);
         this.shapePane.removeMouseListener(this.mouseListener);
-//        this.shapePane.removeMouseListener(popupMenuListener);
+        this.shapePane.removeMouseListener(popupMenuListener);
 //        for(IPopupMenuResponse popupResponse : this.popupMenuMap.values()){
 //        	popupResponse.deactivate();
 //        }
+        Iterator<IPopupMenuResponse> iter = this.responses.popResponseIterator();
+        while(iter.hasNext()){
+        	IPopupMenuResponse popupResponse = iter.next();
+        	popupResponse.deactivate();
+        }
         this.activated = false;
 	}
 
@@ -126,5 +147,18 @@ public class GeneralStateController implements ISelectionStateBehaviourControlle
 	public ISelectionHandle getSelectionHandle(Point location) {
 		ISelectionLayer selectionLayer = this.shapePane.getLayer(LayerType.SELECTION);		
 		return selectionLayer.getSelectionRecord().findSelectionModelAt(location);
+	}
+
+
+	@Override
+	public IPopupMenuResponse getPopupMenuResponse(SelectionHandleType popupSelectionHandle) {
+		return this.responses.getPopupMenuResponse(popupSelectionHandle);
+	}
+
+
+	@Override
+	public void showPopupMenus(JPopupMenu popup, int x, int y) {
+//		popup.show(shapePane, x, y);
+		this.shapePane.showPopup(popup, x, y);
 	}
 }

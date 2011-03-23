@@ -19,7 +19,7 @@ public class FeedbackLink implements IFeedbackLink {
 	private final IFeedbackNodeListener tgtFeedbackNodeListener;
 	private final List<IFeedbackLinkListener> listeners;
 	
-	public FeedbackLink(FeedbackNode srcNode, FeedbackNode tgtNode, int elementIdentifier, Point srcAnchor, IAnchorLocator srcAnchorLocator, Point tgtAnchor, IAnchorLocator tgtAnchorLocator) {
+	public FeedbackLink(IFeedbackNode srcNode, IFeedbackNode tgtNode, int elementIdentifier, Point srcAnchor, IAnchorLocator srcAnchorLocator, Point tgtAnchor, IAnchorLocator tgtAnchorLocator) {
 		this.listeners = new LinkedList<IFeedbackLinkListener>();
 		this.elementIdentifier = elementIdentifier;
 		this.linkDefinition = new LinkPointDefinition(srcAnchor, tgtAnchor);

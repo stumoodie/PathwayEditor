@@ -15,14 +15,12 @@ import org.pathwayeditor.businessobjects.impl.facades.LabelNodeFacade;
 import org.pathwayeditor.businessobjects.impl.facades.LinkEdgeFacade;
 import org.pathwayeditor.businessobjects.impl.facades.ShapeNodeFacade;
 import org.pathwayeditor.businessobjects.impl.facades.SubModelFacade;
-import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.figure.rendering.IAnchorLocator;
 import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
 import org.pathwayeditor.visualeditor.controller.ILinkController;
 import org.pathwayeditor.visualeditor.controller.INodeController;
 import org.pathwayeditor.visualeditor.controller.IShapeController;
 import org.pathwayeditor.visualeditor.controller.IViewControllerModel;
-import org.pathwayeditor.visualeditor.geometry.ILinkPointDefinition;
 import org.pathwayeditor.visualeditor.selection.ILinkSelection;
 import org.pathwayeditor.visualeditor.selection.INodeSelection;
 import org.pathwayeditor.visualeditor.selection.ISelectionRecord;
@@ -36,6 +34,7 @@ public class FeedbackModel implements IFeedbackModel {
 	private final Map<IDrawingElementController, IFeedbackElement> selectionMapping;
 	private final ISelectionRecord selectionRecord;
 	private final IFeedbackNodeBuilder builder;
+	private final IFeedbackLinkBuilder linkBuilder;
 	
 	public FeedbackModel(ISelectionRecord selectionRecord){
 		this.nodes = new HashSet<IFeedbackNode>();
@@ -43,6 +42,7 @@ public class FeedbackModel implements IFeedbackModel {
 		this.selectionMapping = new HashMap<IDrawingElementController, IFeedbackElement>();
 		this.selectionRecord = selectionRecord;
 		this.builder = new FeedbackNodeBuilder(this);
+		this.linkBuilder = new FeedbackLinkBuilder(this);
 	}
 	
 	@Override
@@ -209,7 +209,7 @@ public class FeedbackModel implements IFeedbackModel {
 		
 	}
 
-	private FeedbackLink createFeedbackLink(ILinkController linkEdge, IViewControllerModel viewControllerStore){
+	private IFeedbackLink createFeedbackLink(ILinkController linkEdge, IViewControllerModel viewControllerStore){
 		IShapeNode srcShape = new ShapeNodeFacade(linkEdge.getDrawingElement().getSourceShape());
 		IShapeController srcShapeController = viewControllerStore.getShapeController(srcShape); 
 		IAnchorLocator srcAnchorLocator = srcShapeController.getFigureController().getAnchorLocatorFactory().createAnchorLocator();
@@ -217,24 +217,27 @@ public class FeedbackModel implements IFeedbackModel {
 		IShapeNode tgtShape = new ShapeNodeFacade(linkEdge.getDrawingElement().getTargetShape());
 		IShapeController tgtShapeController = viewControllerStore.getShapeController(tgtShape); 
 		IAnchorLocator tgtAnchorLocator = tgtShapeController.getFigureController().getAnchorLocatorFactory().createAnchorLocator();
-		FeedbackLink retVal = new FeedbackLink((FeedbackNode)this.selectionMapping.get(srcShapeController),
-				(FeedbackNode)this.selectionMapping.get(tgtShapeController), linkAtt.getCreationSerial(),
-				linkAtt.getSourceTerminus().getLocation(), srcAnchorLocator, linkAtt.getTargetTerminus().getLocation(), tgtAnchorLocator);
-		ILinkPointDefinition linkDefn = retVal.getLinkDefinition();
-		Iterator<Point> bpIter = linkAtt.getBendPointContainer().bendPointIterator();
-		while(bpIter.hasNext()){
-			Point bp = bpIter.next();
-			linkDefn.addNewBendPoint(bp);
-		}
-		linkDefn.setLineColour(linkAtt.getLineColour());
-		linkDefn.setLineStyle(linkAtt.getLineStyle());
-		linkDefn.setLineWidth(linkAtt.getLineWidth());
-		linkDefn.getSourceTerminusDefinition().setEndDecoratorType(linkAtt.getSourceTerminus().getEndDecoratorType());
-		linkDefn.getSourceTerminusDefinition().setGap(linkAtt.getSourceTerminus().getGap());
-		linkDefn.getSourceTerminusDefinition().setEndSize(linkAtt.getSourceTerminus().getEndSize());
-		linkDefn.getTargetTerminusDefinition().setEndDecoratorType(linkAtt.getTargetTerminus().getEndDecoratorType());
-		linkDefn.getTargetTerminusDefinition().setGap(linkAtt.getTargetTerminus().getGap());
-		linkDefn.getTargetTerminusDefinition().setEndSize(linkAtt.getTargetTerminus().getEndSize());
+		IFeedbackLink retVal = this.linkBuilder.createFromAttribute((IFeedbackNode)this.selectionMapping.get(srcShapeController),
+				(IFeedbackNode)this.selectionMapping.get(tgtShapeController), linkAtt, linkAtt.getSourceTerminus().getLocation(), srcAnchorLocator,
+				linkAtt.getTargetTerminus().getLocation(), tgtAnchorLocator);
+//		FeedbackLink retVal = new FeedbackLink((FeedbackNode)this.selectionMapping.get(srcShapeController),
+//				(FeedbackNode)this.selectionMapping.get(tgtShapeController), linkAtt.getCreationSerial(),
+//				linkAtt.getSourceTerminus().getLocation(), srcAnchorLocator, linkAtt.getTargetTerminus().getLocation(), tgtAnchorLocator);
+//		ILinkPointDefinition linkDefn = retVal.getLinkDefinition();
+//		Iterator<Point> bpIter = linkAtt.getBendPointContainer().bendPointIterator();
+//		while(bpIter.hasNext()){
+//			Point bp = bpIter.next();
+//			linkDefn.addNewBendPoint(bp);
+//		}
+//		linkDefn.setLineColour(linkAtt.getLineColour());
+//		linkDefn.setLineStyle(linkAtt.getLineStyle());
+//		linkDefn.setLineWidth(linkAtt.getLineWidth());
+//		linkDefn.getSourceTerminusDefinition().setEndDecoratorType(linkAtt.getSourceTerminus().getEndDecoratorType());
+//		linkDefn.getSourceTerminusDefinition().setGap(linkAtt.getSourceTerminus().getGap());
+//		linkDefn.getSourceTerminusDefinition().setEndSize(linkAtt.getSourceTerminus().getEndSize());
+//		linkDefn.getTargetTerminusDefinition().setEndDecoratorType(linkAtt.getTargetTerminus().getEndDecoratorType());
+//		linkDefn.getTargetTerminusDefinition().setGap(linkAtt.getTargetTerminus().getGap());
+//		linkDefn.getTargetTerminusDefinition().setEndSize(linkAtt.getTargetTerminus().getEndSize());
 		return retVal;
 	}
 
@@ -278,5 +281,14 @@ public class FeedbackModel implements IFeedbackModel {
 
 	void addNode(FeedbackNode newNode) {
 		this.nodes.add(newNode);
+	}
+
+	void addEdge(FeedbackLink newEdge) {
+		this.links.add(newEdge);
+	}
+
+	@Override
+	public IFeedbackLinkBuilder getFeedbackLinkBuilder() {
+		return this.linkBuilder;
 	}
 }

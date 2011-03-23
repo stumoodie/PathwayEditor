@@ -5,6 +5,8 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.Iterator;
 
+import javax.swing.JPopupMenu;
+
 import org.pathwayeditor.figure.geometry.Envelope;
 
 public interface IShapePane {
@@ -38,5 +40,7 @@ public interface IShapePane {
 	void removeKeyListener(KeyListener keyListener);
 
 	void removeMouseListener(MouseListener mouseSelectionListener);
+
+	void showPopup(JPopupMenu popup, int x, int y);
 	
 }

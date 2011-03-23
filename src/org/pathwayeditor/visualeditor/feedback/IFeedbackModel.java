@@ -30,5 +30,7 @@ public interface IFeedbackModel {
 
 	IFeedbackNodeBuilder getFeedbackNodeBuilder();
 
+	IFeedbackLinkBuilder getFeedbackLinkBuilder();
+
 	IFeedbackNode uniqueFeedbackNode();
 }

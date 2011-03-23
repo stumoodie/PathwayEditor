@@ -14,6 +14,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 
 import org.apache.log4j.Logger;
 import org.pathwayeditor.figure.geometry.Envelope;
@@ -181,6 +182,11 @@ public class ShapePane extends JPanel implements IShapePane {
 			logger.trace("Pane is focusable? = " + this.isFocusable());
 			logger.trace("Pane has focus? = " + this.hasFocus());
 		}
+	}
+
+	@Override
+	public void showPopup(JPopupMenu popup, int x, int y) {
+		popup.show(this, x, y);
 	}
 
 //	@Override
