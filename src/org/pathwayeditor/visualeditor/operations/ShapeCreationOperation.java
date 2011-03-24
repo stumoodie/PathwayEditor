@@ -78,7 +78,7 @@ public class ShapeCreationOperation implements IShapeCreationOperation {
 			}
 		}
 		
-		this.shapePane.updateView();
+//		this.shapePane.updateView();
 		this.feedbackModel.clear();
 		this.shapePane.updateView();
 	}

@@ -5,7 +5,6 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JPopupMenu;
 
-import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.behaviour.IPopupMenuResponse;
 import org.pathwayeditor.visualeditor.behaviour.ISelectionStateBehaviourController;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
@@ -34,8 +33,9 @@ public class PopupMenuListener implements MouseListener {
 	public void mousePressed(MouseEvent e) {
 		if(e.isPopupTrigger()){
 			SelectionHandleType popupSelectionHandle = SelectionHandleType.None;
-			Point location = controller.getAdjustedMousePosition(e.getPoint().getX(), e.getPoint().getY());
-			ISelectionHandle currSelectionHandle = controller.getSelectionHandle(location);
+//			Point location = controller.getAdjustedMousePosition(e.getPoint().getX(), e.getPoint().getY());
+			this.controller.setMousePosition(e.getPoint().getX(), e.getPoint().getY());
+			ISelectionHandle currSelectionHandle = controller.getSelectionHandle();
 			
 //			ISelectionLayer selectionLayer = shapePane.getLayer(LayerType.SELECTION);
 //			IDrawingElementController nodeController = findDrawingElementAt(location);
@@ -52,7 +52,7 @@ public class PopupMenuListener implements MouseListener {
 			IPopupMenuResponse response = controller.getPopupMenuResponse(popupSelectionHandle);
 			JPopupMenu popup = response.getPopupMenu(currSelectionHandle);
 			if(popup != null){
-				controller.showPopupMenus(popup, e.getX(), e.getY());
+				controller.showPopupMenus(popup);
 //				popup.show(shapePane, e.getX(), e.getY());
 			}
 		}

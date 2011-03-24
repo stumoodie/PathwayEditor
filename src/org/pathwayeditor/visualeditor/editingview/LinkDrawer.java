@@ -90,7 +90,7 @@ public class LinkDrawer  {
 		AffineTransform before = g2d.getTransform();
 		ILinkPointDefinition linkDefinition = this.linkEdge;
 		double srcLineAngle = linkDefinition.getSourceLineSegment().angle();
-		Point srcPosn = linkDefinition.getSrcEndPoint();
+		Point srcPosn = linkDefinition.getSrcAnchorPosition();
 		g2d.translate(srcPosn.getX(), srcPosn.getY());
 		g2d.rotate(srcLineAngle);
 		g2d.translate(srcTermDefaults.getGap(), 0);
@@ -98,10 +98,10 @@ public class LinkDrawer  {
 //		g2d.scale(srcEndSize.getWidth(), srcEndSize.getHeight());
 		logger.trace("Draw src end decorator");
 		drawEndDecorator(g2d, linkEdge.getLineColour(), linkEdge.getLineWidth(), srcTermDefaults.getEndDecoratorType(),
-				linkDefinition.getSrcEndPoint(), srcTermDefaults.getEndSize());
+				linkDefinition.getSrcAnchorPosition(), srcTermDefaults.getEndSize());
 		g2d.setTransform(before);
 		double tgtLineAngle = linkDefinition.getTargetLineSegment().angle();
-		Point tgtPosn = linkDefinition.getTgtEndPoint();
+		Point tgtPosn = linkDefinition.getTgtAnchorPosition();
 		g2d.translate(tgtPosn.getX(), tgtPosn.getY());
 		g2d.rotate(tgtLineAngle);
 		g2d.translate(tgtTermDefaults.getGap(), 0);
@@ -109,7 +109,7 @@ public class LinkDrawer  {
 //		g2d.scale(tgtEndSize.getWidth(), tgtEndSize.getHeight());
 		logger.trace("Draw tgt end decorator");
 		drawEndDecorator(g2d, linkEdge.getLineColour(), linkEdge.getLineWidth(), tgtTermDefaults.getEndDecoratorType(),
-				linkDefinition.getTgtEndPoint(), tgtTermDefaults.getEndSize());
+				linkDefinition.getTgtAnchorPosition(), tgtTermDefaults.getEndSize());
 		g2d.setTransform(before);
 	}
 	

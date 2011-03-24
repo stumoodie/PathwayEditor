@@ -16,9 +16,9 @@ public interface ILinkPointDefinition {
 
 	void setBendPointPosition(int bpIdx, Point newPosn);
 
-	Point getSrcEndPoint();
+	Point getSrcAnchorPosition();
 
-	Point getTgtEndPoint();
+	Point getTgtAnchorPosition();
 
 	Point getBendPointPosition(int bpIdx);
 

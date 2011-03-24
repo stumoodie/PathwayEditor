@@ -1,6 +1,5 @@
 package org.pathwayeditor.visualeditor.behaviour;
 
-import org.pathwayeditor.figure.geometry.Point;
 
 
 public interface IMouseStateBehaviourController {
@@ -11,7 +10,7 @@ public interface IMouseStateBehaviourController {
 	
 	void deactivate();
 
-	Point getAdjustedMousePosition(double x, double y);
+//	Point getAdjustedMousePosition(double x, double y);
 
 //	IDrawingElementController findDrawingElementAt(Point location);
 

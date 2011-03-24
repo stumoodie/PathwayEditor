@@ -24,7 +24,6 @@ import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.figure.geometry.RectangleHull;
-import org.pathwayeditor.figure.rendering.IAnchorLocator;
 import org.pathwayeditor.figure.rendering.IFigureRenderingController;
 import org.pathwayeditor.visualeditor.geometry.IIntersectionCalcnFilter;
 import org.pathwayeditor.visualeditor.geometry.IIntersectionCalculator;
@@ -116,135 +115,57 @@ public class ShapeController extends NodeController implements IShapeController 
 		this.isActive = true;
 	}
 	
-//	private void assignBindVariablesToProperties(IShapeAttribute att, final IFigureController figureController) {
-//		for(final String varName : figureController.getBindVariableNames()){
-//			if(att.containsProperty(varName)){
-//				IAnnotationProperty prop = att.getProperty(varName);
-//				prop.visit(new IAnnotationPropertyVisitor(){
-//
-//					@Override
-//					public void visitBooleanAnnotationProperty(IBooleanAnnotationProperty prop) {
-//						figureController.setBindBoolean(varName, prop.getValue());
-//					}
-//
-//					@Override
-//					public void visitIntegerAnnotationProperty(IIntegerAnnotationProperty prop) {
-//						figureController.setBindInteger(varName, prop.getValue());
-//					}
-//
-//					@Override
-//					public void visitListAnnotationProperty(IListAnnotationProperty prop) {
-//						logger.error("Unmatched bind variable: " + varName + ". Property has type that cannot be matched to bind variable of same name: " + prop);
-//					}
-//
-//					@Override
-//					public void visitNumberAnnotationProperty(INumberAnnotationProperty numProp) {
-//						figureController.setBindDouble(varName, numProp.getValue().doubleValue());
-//					}
-//
-//					@Override
-//					public void visitPlainTextAnnotationProperty(IPlainTextAnnotationProperty prop) {
-//						figureController.setBindString(varName, prop.getValue());
-//					}
-//					
-//				});
-//			}
-//			else{
-//				logger.error("Unmatched bind variable: " + varName
-//						+ ". No property matched bind variable name was found.");
-//			}
+
+//	public void changeSourceAnchor(ILinkController linkController, IShapeController srcNode, IShapeController tgtNode){
+//		if(linkController.getLinkDefinition().numBendPoints() > 0){
+//			// there are bend-points so we use the bp as the reference position
+//			Point refPoint = linkController.getLinkDefinition().getSourceLineSegment().getTerminus();
+//			this.calculateSourceAnchor(linkController, srcNode, refPoint);
 //		}
-//	}
-
-//	private IFigureController createController(IShapeAttribute attribute){
-////		FigureDefinitionCompiler compiler = new FigureDefinitionCompiler(attribute.getShapeDefinition());
-////		compiler.compile();
-////		IFigureController figureController = new FigureController(compiler.getCompiledFigureDefinition());
-//		IFigureController figureController = new FigureController(FigureCompilationCache.getInstance().lookup(attribute.getShapeDefinition()));
-//		figureController.setRequestedEnvelope(attribute.getBounds());
-//		figureController.setFillColour(attribute.getFillColour());
-//		figureController.setLineColour(attribute.getLineColour());
-//		figureController.setLineStyle(attribute.getLineStyle());
-//		figureController.setLineWidth(attribute.getLineWidth());
-//		assignBindVariablesToProperties(attribute, figureController);
-//		figureController.generateFigureDefinition();
-//		return figureController;
-//	}
-
-//	private void recalculateSrcLinks(){
-//		Iterator<ICompoundEdge> edgeIter = this.domainNode.sourceLinkIterator();
-//		while(edgeIter.hasNext()){
-//			ILinkEdge link = new LinkEdgeFacade(edgeIter.next());
-//			ILinkController linkController = this.getViewModel().getLinkController(link);
-//			IShapeController srcNode = (IShapeController)this.getViewModel().getNodeController(new ShapeNodeFacade(link.getSourceShape()));
-//			IShapeController tgtNode = (IShapeController)this.getViewModel().getNodeController(new ShapeNodeFacade(link.getTargetShape()));
-//			changeSourceAnchor(linkController, srcNode, tgtNode);
-////			changeTargetAnchor(linkController, srcNode, tgtNode);
+//		else{
+//			// otherwise we just use the centre positions of the shapes
+//			// as they will be after the move is completed
+//			this.calculateSourceAnchor(linkController, srcNode, tgtNode.getConvexHull().getCentre());
+//			this.calculateTargetAnchor(linkController, tgtNode, srcNode.getConvexHull().getCentre());
 //		}
 //	}
 //
-//	private void recalculateTgtLinks(){
-//		Iterator<ICompoundEdge> edgeIter = this.domainNode.targetLinkIterator();
-//		while(edgeIter.hasNext()){
-//			ILinkEdge link = new LinkEdgeFacade(edgeIter.next());
-//			ILinkController linkController = this.getViewModel().getLinkController(link);
-//			IShapeController srcNode = (IShapeController)this.getViewModel().getNodeController(new ShapeNodeFacade(link.getSourceShape()));
-//			IShapeController tgtNode = (IShapeController)this.getViewModel().getNodeController(new ShapeNodeFacade(link.getTargetShape()));
-////			changeSourceAnchor(linkController, srcNode, tgtNode);
-//			changeTargetAnchor(linkController, srcNode, tgtNode);
+//	public void changeTargetAnchor(ILinkController linkController, IShapeController srcNode, IShapeController tgtNode){
+//		if(linkController.getLinkDefinition().numBendPoints() > 0){
+//			// there are bend-points so we use the bp as the reference position
+//			Point refPoint = linkController.getLinkDefinition().getTargetLineSegment().getTerminus();
+//			this.calculateTargetAnchor(linkController, tgtNode, refPoint);
+//		}
+//		else{
+//			// otherwise we just use the centre positions of the shapes
+//			// as they will be after the move is completed
+//			this.calculateTargetAnchor(linkController, tgtNode, srcNode.getConvexHull().getCentre());
+//			this.calculateSourceAnchor(linkController, srcNode, tgtNode.getConvexHull().getCentre());
 //		}
 //	}
-
-	public void changeSourceAnchor(ILinkController linkController, IShapeController srcNode, IShapeController tgtNode){
-		if(linkController.getLinkDefinition().numBendPoints() > 0){
-			// there are bend-points so we use the bp as the reference position
-			Point refPoint = linkController.getLinkDefinition().getSourceLineSegment().getTerminus();
-			this.calculateSourceAnchor(linkController, srcNode, refPoint);
-		}
-		else{
-			// otherwise we just use the centre positions of the shapes
-			// as they will be after the move is completed
-			this.calculateSourceAnchor(linkController, srcNode, tgtNode.getConvexHull().getCentre());
-			this.calculateTargetAnchor(linkController, tgtNode, srcNode.getConvexHull().getCentre());
-		}
-	}
-
-	public void changeTargetAnchor(ILinkController linkController, IShapeController srcNode, IShapeController tgtNode){
-		if(linkController.getLinkDefinition().numBendPoints() > 0){
-			// there are bend-points so we use the bp as the reference position
-			Point refPoint = linkController.getLinkDefinition().getTargetLineSegment().getTerminus();
-			this.calculateTargetAnchor(linkController, tgtNode, refPoint);
-		}
-		else{
-			// otherwise we just use the centre positions of the shapes
-			// as they will be after the move is completed
-			this.calculateTargetAnchor(linkController, tgtNode, srcNode.getConvexHull().getCentre());
-			this.calculateSourceAnchor(linkController, srcNode, tgtNode.getConvexHull().getCentre());
-		}
-	}
 	
-	private void calculateSourceAnchor(ILinkController linkController, IShapeController srcNode, Point refPosn){
-		Point newAnchorLocn = getRevisedAnchorPosition(srcNode, refPosn);
-		linkController.getDrawingElement().getAttribute().getSourceTerminus().setLocation(newAnchorLocn);
-		if(logger.isTraceEnabled()){
-			logger.trace("Recalculating src anchor. Reference bp = " + refPosn + ",anchor=" + newAnchorLocn);
-		}
-	}
-	
-	private void calculateTargetAnchor(ILinkController linkController, IShapeController tgtNode, Point refPosn){
-		Point newAnchorLocn = getRevisedAnchorPosition(tgtNode, refPosn);
-		linkController.getDrawingElement().getAttribute().getTargetTerminus().setLocation(newAnchorLocn);
-		if(logger.isTraceEnabled()){
-			logger.trace("Recalculating tgt anchor. Reference bp = " + refPosn + ",anchor=" + newAnchorLocn);
-		}
-	}
-	
-	private Point getRevisedAnchorPosition(IShapeController nodeController, Point refPoint){
-		IFigureRenderingController controller = nodeController.getFigureController();
-		IAnchorLocator calc = controller.getAnchorLocatorFactory().createAnchorLocator();
-		calc.setOtherEndPoint(refPoint);
-		return calc.calcAnchorPosition();
-	}
+//	private void calculateSourceAnchor(ILinkController linkController, IShapeController srcNode, Point refPosn){
+//		Point newAnchorLocn = getRevisedAnchorPosition(srcNode, refPosn);
+//		linkController.getDrawingElement().getAttribute().getSourceTerminus().setLocation(newAnchorLocn);
+//		if(logger.isTraceEnabled()){
+//			logger.trace("Recalculating src anchor. Reference bp = " + refPosn + ",anchor=" + newAnchorLocn);
+//		}
+//	}
+//	
+//	private void calculateTargetAnchor(ILinkController linkController, IShapeController tgtNode, Point refPosn){
+//		Point newAnchorLocn = getRevisedAnchorPosition(tgtNode, refPosn);
+//		linkController.getDrawingElement().getAttribute().getTargetTerminus().setLocation(newAnchorLocn);
+//		if(logger.isTraceEnabled()){
+//			logger.trace("Recalculating tgt anchor. Reference bp = " + refPosn + ",anchor=" + newAnchorLocn);
+//		}
+//	}
+//	
+//	private Point getRevisedAnchorPosition(IShapeController nodeController, Point refPoint){
+//		IFigureRenderingController controller = nodeController.getFigureController();
+//		IAnchorLocator calc = controller.getAnchorLocatorFactory().createAnchorLocator();
+//		calc.setOtherEndPoint(refPoint);
+//		return calc.calcAnchorPosition();
+//	}
 	
 	
 	private void addListeners(IShapeNode attribute) {

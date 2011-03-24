@@ -27,7 +27,8 @@ public class FeedbackNodeBuilder implements IFeedbackNodeBuilder {
 	private final String DEFAULT_DEFINITION =
 		"curbounds /h exch def /w exch def /y exch def /x exch def\n" +
 		"/xoffset { w mul x add } def /yoffset { h mul y add } def\n" +
-		"0.0 xoffset 0.0 yoffset w h rect\n";
+		"0.0 xoffset 0.0 yoffset w h rect\n" +
+		"(C) setanchor\n";
 	private final String LABEL_DEFINITION =
 		"curbounds /h exch def /w exch def /y exch def /x exch def\n" +
 		"/xoffset { w mul x add } def /yoffset { h mul y add } def\n" +

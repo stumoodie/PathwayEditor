@@ -185,34 +185,10 @@ public class ShapePane extends JPanel implements IShapePane {
 	}
 
 	@Override
-	public void showPopup(JPopupMenu popup, int x, int y) {
-		popup.show(this, x, y);
+	public void showPopup(JPopupMenu popup, double x, double y) {
+		java.awt.Point p = new java.awt.Point();
+		p.setLocation(x, y);
+		popup.show(this, p.x, p.y);
 	}
 
-//	@Override
-//	public Dimension getPreferredScrollableViewportSize() {
-//		Rectangle prefSize = new Rectangle();
-//		prefSize.setRect(canvasBounds.getOrigin().getX(), canvasBounds.getOrigin().getY(), canvasBounds.getDimension().getWidth()+2*PANE_BORDER, canvasBounds.getDimension().getHeight() + 2*PANE_BORDER);
-//		return prefSize.getSize();
-//	}
-//
-//	@Override
-//	public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
-//		return 10;
-//	}
-//
-//	@Override
-//	public boolean getScrollableTracksViewportHeight() {
-//		return true;
-//	}
-//
-//	@Override
-//	public boolean getScrollableTracksViewportWidth() {
-//		return true;
-//	}
-//
-//	@Override
-//	public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
-//		return 10;
-//	}
 }

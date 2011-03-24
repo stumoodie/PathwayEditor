@@ -32,8 +32,7 @@ public class FeedbackLinkBuilder implements IFeedbackLinkBuilder {
 	@Override
 	public IFeedbackLink createFromAttribute(IFeedbackNode srcNode, IFeedbackNode tgtNode, ILinkAttribute linkAttribute,
 			Point srcAnchorLocn, IAnchorLocator srcAnchorLocator, Point tgtAnchorLocation, IAnchorLocator tgtAnchorLocator) {
-		FeedbackLink retVal = new FeedbackLink(srcNode,	tgtNode, nextCounter(), srcAnchorLocn, srcAnchorLocator,
-				tgtAnchorLocation, tgtAnchorLocator);
+		FeedbackLink retVal = new FeedbackLink(srcNode,	tgtNode, nextCounter(), srcAnchorLocn, srcAnchorLocator, tgtAnchorLocation, tgtAnchorLocator);
 		ILinkPointDefinition linkDefn = retVal.getLinkDefinition();
 		Iterator<Point> bpIter = linkAttribute.getBendPointContainer().bendPointIterator();
 		while(bpIter.hasNext()){

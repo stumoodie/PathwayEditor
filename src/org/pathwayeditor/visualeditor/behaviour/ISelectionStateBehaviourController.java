@@ -8,15 +8,19 @@ import org.pathwayeditor.visualeditor.selection.ISelectionHandle.SelectionHandle
 
 public interface ISelectionStateBehaviourController extends IMouseStateBehaviourController {
 
+	void setMousePosition(double x, double y);
+	
 	ISelectionResponse getClickResponse();
 
 	IDragResponse getDragResponse(SelectionHandleType type);
 
 	IMouseFeedbackResponse getMouseFeedbackResponse(SelectionHandleType type);
 
-	ISelectionHandle getSelectionHandle(Point location);
+	ISelectionHandle getSelectionHandle();
 
 	IPopupMenuResponse getPopupMenuResponse(SelectionHandleType popupSelectionHandle);
 
-	void showPopupMenus(JPopupMenu popup, int x, int y);
+	void showPopupMenus(JPopupMenu popup);
+
+	Point getDiagramLocation();
 }

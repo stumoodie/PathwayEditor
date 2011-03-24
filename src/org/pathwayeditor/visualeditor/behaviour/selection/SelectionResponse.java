@@ -5,24 +5,24 @@ import org.pathwayeditor.visualeditor.behaviour.ISelectionResponse;
 import org.pathwayeditor.visualeditor.behaviour.operation.ISelectionOperation;
 
 public class SelectionResponse implements ISelectionResponse {
-	private final ISelectionOperation selectionRecord;
+	private final ISelectionOperation selectionOperation;
 	
 	public SelectionResponse(ISelectionOperation selectionOperation){
-		this.selectionRecord = selectionOperation;
+		this.selectionOperation = selectionOperation;
 	}
 	
 	@Override
 	public void primaryClick(Point location) {
-		selectionRecord.setCurrentLocation(location);
-		selectionRecord.setPrimaryClick();
-		selectionRecord.handleClick();
+		selectionOperation.setCurrentLocation(location);
+		selectionOperation.setPrimaryClick();
+		selectionOperation.handleClick();
 	}
 
 	@Override
 	public void secondaryClick(Point location) {
-		selectionRecord.setCurrentLocation(location);
-		selectionRecord.setSecondaryClick();
-		selectionRecord.handleClick();
+		selectionOperation.setCurrentLocation(location);
+		selectionOperation.setSecondaryClick();
+		selectionOperation.handleClick();
 	}
 
 }

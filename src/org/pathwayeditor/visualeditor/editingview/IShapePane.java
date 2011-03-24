@@ -41,6 +41,6 @@ public interface IShapePane {
 
 	void removeMouseListener(MouseListener mouseSelectionListener);
 
-	void showPopup(JPopupMenu popup, int x, int y);
+	void showPopup(JPopupMenu popup, double x, double y);
 	
 }

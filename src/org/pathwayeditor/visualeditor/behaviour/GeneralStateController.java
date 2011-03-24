@@ -25,6 +25,7 @@ public class GeneralStateController implements ISelectionStateBehaviourControlle
 	private final MouseBehaviourListener mouseListener;
 	private final KeyListener keyListener; 
 	private final IControllerResponses responses;
+	private Point mousePosition;
 
 	public GeneralStateController(IShapePane pane, IControllerResponses responses){
 		this.shapePane = pane;
@@ -36,18 +37,18 @@ public class GeneralStateController implements ISelectionStateBehaviourControlle
 	
 
 	@Override
-	public Point getAdjustedMousePosition(double originalMouseX, double originalMouseY){
+	public Point getDiagramLocation(){
 //		AffineTransform paneTransform = this.shapePane.getLastUsedTransform();
 		Point retVal = this.shapePane.getPaneBounds().getOrigin();
 //		if(paneTransform == null){
-		retVal = retVal.translate(originalMouseX, originalMouseY);
+		retVal = retVal.translate(this.mousePosition);
 //		}
 //		else{
 //			retVal = new Point((originalMouseX-paneTransform.getTranslateX())/paneTransform.getScaleX(), (originalMouseY-paneTransform.getTranslateY())/paneTransform.getScaleY()); 
 //		}
 		if(logger.isTraceEnabled()){
 //			logger.trace("Adjust position. origX=" + originalMouseX + ",origY=" + originalMouseY + " : adjustedPoint=" + retVal + ", transform=" + paneTransform);
-			logger.trace("Adjust position. origX=" + originalMouseX + ",origY=" + originalMouseY + " : adjustedPoint=" + retVal + ", paneBounds=" + shapePane.getPaneBounds());
+			logger.trace("Adjust position. orig=" + this.mousePosition + " : adjustedPoint=" + retVal + ", paneBounds=" + shapePane.getPaneBounds());
 		}
 		return retVal;  
 	}
@@ -144,9 +145,9 @@ public class GeneralStateController implements ISelectionStateBehaviourControlle
 
 
 	@Override
-	public ISelectionHandle getSelectionHandle(Point location) {
+	public ISelectionHandle getSelectionHandle() {
 		ISelectionLayer selectionLayer = this.shapePane.getLayer(LayerType.SELECTION);		
-		return selectionLayer.getSelectionRecord().findSelectionModelAt(location);
+		return selectionLayer.getSelectionRecord().findSelectionModelAt(getDiagramLocation());
 	}
 
 
@@ -157,8 +158,13 @@ public class GeneralStateController implements ISelectionStateBehaviourControlle
 
 
 	@Override
-	public void showPopupMenus(JPopupMenu popup, int x, int y) {
-//		popup.show(shapePane, x, y);
-		this.shapePane.showPopup(popup, x, y);
+	public void showPopupMenus(JPopupMenu popup) {
+		this.shapePane.showPopup(popup, this.mousePosition.getX(), this.mousePosition.getY());
+	}
+
+
+	@Override
+	public void setMousePosition(double x, double y) {
+		this.mousePosition = new Point(x, y);
 	}
 }

@@ -160,7 +160,7 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 	 * @see org.pathwayeditor.graphicsengine.ILinkPointDefinition#getSrcEndPoint()
 	 */
 	@Override
-	public Point getSrcEndPoint(){
+	public Point getSrcAnchorPosition(){
 		return this.pointList.get(SRC_IDX);
 	}
 	
@@ -168,7 +168,7 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 	 * @see org.pathwayeditor.graphicsengine.ILinkPointDefinition#getTgtEndPoint()
 	 */
 	@Override
-	public Point getTgtEndPoint(){
+	public Point getTgtAnchorPosition(){
 		return this.pointList.get(this.pointList.size()-1);
 	}
 	
@@ -223,7 +223,7 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 	@Override
 	public Iterator<LineSegment> lineSegIterator(){
 		List<LineSegment> retVal = new LinkedList<LineSegment>();
-		Point firstP = this.getSrcEndPoint();
+		Point firstP = this.getSrcAnchorPosition();
 		Point lastP = null;
 		for(int i = 1; i < this.pointList.size(); i++){
 			lastP = this.pointList.get(i);
@@ -303,7 +303,7 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 	 */
 	@Override
 	public LineSegment getLinkDirection() {
-		return new LineSegment(this.getSrcEndPoint(), this.getTgtEndPoint());
+		return new LineSegment(this.getSrcAnchorPosition(), this.getTgtAnchorPosition());
 	}
 
 	@Override
