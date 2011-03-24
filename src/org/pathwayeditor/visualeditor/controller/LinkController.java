@@ -27,6 +27,7 @@ import org.pathwayeditor.visualeditor.geometry.ILinkPointDefinition;
 import org.pathwayeditor.visualeditor.geometry.LinkPointDefinition;
 
 public class LinkController extends DrawingElementController implements ILinkController {
+	private static final int MAX_NUM_ANCHOR_RECALCS = 5;
 	private final Logger logger = Logger.getLogger(this.getClass());
 	private final ICanvasElementAttribute parentAttribute;
 	private final ILinkEdge linkAttribute;
@@ -209,8 +210,17 @@ public class LinkController extends DrawingElementController implements ILinkCon
 //	}
 	
 	private void updateAnchorPoints() {
-		updateSrcAnchor(linkAttribute.getAttribute().getTargetTerminus().getLocation());
-		updateTgtAnchor(linkAttribute.getAttribute().getSourceTerminus().getLocation());
+		int cntr = MAX_NUM_ANCHOR_RECALCS;
+		boolean converged = false;
+		while(cntr-- > 0 && !converged){
+			Point oldSrcLocn = linkAttribute.getAttribute().getSourceTerminus().getLocation();
+			Point oldTgtLocn = linkAttribute.getAttribute().getTargetTerminus().getLocation();
+			updateSrcAnchor(linkAttribute.getAttribute().getTargetTerminus().getLocation());
+			updateTgtAnchor(linkAttribute.getAttribute().getSourceTerminus().getLocation());
+			Point newSrcLocn = linkAttribute.getAttribute().getSourceTerminus().getLocation();
+			Point newTgtLocn = linkAttribute.getAttribute().getTargetTerminus().getLocation();
+			converged = oldSrcLocn.equals(newSrcLocn) && oldTgtLocn.equals(newTgtLocn);
+		}
 	}
 
 	private void updateSrcAnchor(Point otherEndPos){
