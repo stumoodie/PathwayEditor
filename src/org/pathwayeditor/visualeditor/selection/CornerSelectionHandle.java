@@ -4,7 +4,7 @@ import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.controller.INodeController;
 
-public class CornerSelectionHandle extends SelectionHandle {
+public class CornerSelectionHandle extends SelectionHandle implements ICornerSelectionHandleShape {
 	private static final double RADIUS = 4.0;
 	private Point centre;
 	private final Point initialCentre;
@@ -37,7 +37,6 @@ public class CornerSelectionHandle extends SelectionHandle {
 
 	@Override
 	public void drawShape(IHandleShapeDrawer drawer) {
-		// TODO Auto-generated method stub
-		
+		drawer.drawHandle(this);
 	}
 }

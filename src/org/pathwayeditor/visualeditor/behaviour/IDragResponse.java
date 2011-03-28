@@ -1,7 +1,6 @@
 package org.pathwayeditor.visualeditor.behaviour;
 
 import org.pathwayeditor.figure.geometry.Point;
-import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
 
 public interface IDragResponse {
 
@@ -18,12 +17,12 @@ public interface IDragResponse {
 	 */
 	boolean canContinueDrag(Point delta);
 	
+	
 	/**
 	 * Start a drag operation.
-	 * @param selectionHandle the selection handle that the drag is being initiated from. 
 	 * @param startLocation the initial location of this drag.
 	 */
-	void dragStarted(ISelectionHandle selectionHandle, Point startLocation);
+	void dragStarted(Point startLocation);
 	
 	/**
 	 * Tells this drag response whether the shift key has been selected.  
@@ -68,5 +67,4 @@ public interface IDragResponse {
 	 * @return true if is will succeed, false otherwise.
 	 */
 	boolean canOperationSucceed();
-	
 }

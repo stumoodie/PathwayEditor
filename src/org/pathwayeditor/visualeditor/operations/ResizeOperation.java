@@ -89,10 +89,10 @@ public class ResizeOperation implements IResizeOperation {
 		Iterator<IFeedbackNode> moveNodeIterator = this.feedbackModel.nodeIterator();
 		while(moveNodeIterator.hasNext()){
 			IFeedbackNode nodePrimitive = moveNodeIterator.next();
-			nodePrimitive.resizePrimitive(originDelta, resizeDelta);
 			if(logger.isTraceEnabled()){
-				logger.trace("Resizing shape to bounds: " + nodePrimitive.getBounds());
+				logger.trace("Resizing shape=" + nodePrimitive + "bounds=" + nodePrimitive.getBounds() + ",originDelta=" + originDelta + ",resizeDelta=" + resizeDelta);
 			}
+			nodePrimitive.resizePrimitive(originDelta, resizeDelta);
 		}
 	}
 }

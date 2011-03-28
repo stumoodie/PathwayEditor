@@ -17,17 +17,18 @@ import org.pathwayeditor.visualeditor.behaviour.operation.ILinkOperation;
 import org.pathwayeditor.visualeditor.behaviour.operation.IMarqueeOperation;
 import org.pathwayeditor.visualeditor.behaviour.operation.IOperationFactory;
 import org.pathwayeditor.visualeditor.behaviour.operation.IResizeOperation;
+import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle.SelectionHandleType;
 
 public class SelectionControllerResponses implements IControllerResponses {
-	private final Map<SelectionHandleType, IDragResponse> dragResponseMap;
+	private final Map<SelectionHandleType, ISelectionDragResponse> dragResponseMap;
 	private final Map<SelectionHandleType, IMouseFeedbackResponse> mouseResponseMap;
 	private final Map<SelectionHandleType, IPopupMenuResponse> popupMenuMap;
 	private final SelectionResponse selectionResponse;
 	private final IKeyboardResponse keyboardResponse;
 
 	public SelectionControllerResponses(IOperationFactory opFactory) {
-		this.dragResponseMap = new HashMap<SelectionHandleType, IDragResponse>();
+		this.dragResponseMap = new HashMap<SelectionHandleType, ISelectionDragResponse>();
 		initialiseDragResponses(opFactory);
 		this.mouseResponseMap = new HashMap<SelectionHandleType, IMouseFeedbackResponse>();
 		initialiseMouseResponse();
@@ -38,13 +39,23 @@ public class SelectionControllerResponses implements IControllerResponses {
 	}
 
 	@Override
-	public IDragResponse getDragResponse(SelectionHandleType type) {
-		return this.dragResponseMap.get(type);
+	public IDragResponse getDragResponse(ISelectionHandle handle) {
+		SelectionHandleType type = getSelectionHandleType(handle);
+		ISelectionDragResponse retVal = this.dragResponseMap.get(type);
+		retVal.setSelectionHandle(handle);
+		return retVal;
 	}
 
+	
+	private static SelectionHandleType getSelectionHandleType(ISelectionHandle handle){
+		return handle != null ? handle.getType() : SelectionHandleType.None;
+	}
+	
 	@Override
-	public IMouseFeedbackResponse getFeedbackResponse(SelectionHandleType type) {
-		return this.mouseResponseMap.get(type);
+	public IMouseFeedbackResponse getFeedbackResponse(ISelectionHandle handle) {
+		SelectionHandleType type = getSelectionHandleType(handle);
+		IMouseFeedbackResponse retVal = this.mouseResponseMap.get(type);
+		return retVal;
 	}
 
 	@Override
@@ -286,8 +297,10 @@ public class SelectionControllerResponses implements IControllerResponses {
 	}
 
 	@Override
-	public IPopupMenuResponse getPopupMenuResponse(SelectionHandleType popupSelectionHandle) {
-		return this.popupMenuMap.get(popupSelectionHandle);
+	public IPopupMenuResponse getPopupMenuResponse(ISelectionHandle popupSelectionHandle) {
+		IPopupMenuResponse retVal = this.popupMenuMap.get(getSelectionHandleType(popupSelectionHandle));
+		retVal.setSelectionHandle(popupSelectionHandle);
+		return retVal;
 	}
 
 	@Override

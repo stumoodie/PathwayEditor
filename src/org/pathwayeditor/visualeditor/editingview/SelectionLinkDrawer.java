@@ -15,17 +15,20 @@ import org.pathwayeditor.figure.geometry.LineSegment;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.controller.ILinkController;
 import org.pathwayeditor.visualeditor.geometry.ILinkPointDefinition;
+import org.pathwayeditor.visualeditor.selection.ICentralSelectionHandleShape;
+import org.pathwayeditor.visualeditor.selection.ICornerSelectionHandleShape;
 import org.pathwayeditor.visualeditor.selection.IHandleShapeDrawer;
 import org.pathwayeditor.visualeditor.selection.ILinkBendPointHandleShape;
 import org.pathwayeditor.visualeditor.selection.ILinkMidLineHandleShape;
 import org.pathwayeditor.visualeditor.selection.ILinkSelection;
+import org.pathwayeditor.visualeditor.selection.ILinkSelectionHandleShape;
+import org.pathwayeditor.visualeditor.selection.IMidPointSelectionHandleShape;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle.SelectionHandleType;
-import org.pathwayeditor.visualeditor.selection.LinkSelectionHandle;
 
 public class SelectionLinkDrawer  {
 	private static final double SELN_RADIUS = 5.0;
-	private ILinkSelection selection;
+	private final ILinkSelection selection;
 	private Point startPosition = Point.ORIGIN;
 	private Point endPosition = Point.ORIGIN;
 	
@@ -161,9 +164,8 @@ public class SelectionLinkDrawer  {
 		}
 
 		@Override
-		public void drawHandle(LinkSelectionHandle linkSelectionHandle) {
-			ILinkController linkEdge = (ILinkController)linkSelectionHandle.getSelection().getPrimitiveController();
-			ILinkPointDefinition linkDefinition = linkEdge.getLinkDefinition();
+		public void drawHandle(ILinkSelectionHandleShape linkSelectionHandle) {
+			ILinkPointDefinition linkDefinition = linkSelectionHandle.getLinkDefinition();
 			g2d.setColor(Color.RED);
 			g2d.setStroke(createStroke(1.0));
 
@@ -174,6 +176,29 @@ public class SelectionLinkDrawer  {
 						lineSegment.getTerminus().getX(), lineSegment.getTerminus().getY());
 				g2d.draw(line);
 			}
+		}
+
+		@Override
+		public void drawHandle(ICentralSelectionHandleShape centralSelectionHandleShape) {
+			// TODO Auto-generated method stub
+			throw new UnsupportedOperationException("Not implemented yet!");
+			
+		}
+
+		@Override
+		public void drawHandle(
+				ICornerSelectionHandleShape cornerSelectionHandleShape) {
+			// TODO Auto-generated method stub
+			throw new UnsupportedOperationException("Not implemented yet!");
+			
+		}
+
+		@Override
+		public void drawHandle(
+				IMidPointSelectionHandleShape midPointSelectionHandleShape) {
+			// TODO Auto-generated method stub
+			throw new UnsupportedOperationException("Not implemented yet!");
+			
 		}
 	}
 }

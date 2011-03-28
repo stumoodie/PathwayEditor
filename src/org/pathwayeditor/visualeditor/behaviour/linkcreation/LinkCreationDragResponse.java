@@ -3,16 +3,17 @@ package org.pathwayeditor.visualeditor.behaviour.linkcreation;
 import org.pathwayeditor.businessobjects.drawingprimitives.IShapeNode;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.behaviour.HandleResponse;
+import org.pathwayeditor.visualeditor.behaviour.creation.ILinkCreationDragResponse;
 import org.pathwayeditor.visualeditor.behaviour.operation.ILinkCreationOperation;
+import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
 import org.pathwayeditor.visualeditor.controller.IShapeController;
-import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
-import org.pathwayeditor.visualeditor.selection.ISelectionHandle.SelectionHandleType;
 
-public class LinkCreationDragResponse extends HandleResponse {
+public class LinkCreationDragResponse extends HandleResponse implements ILinkCreationDragResponse {
 	private final ILinkCreationOperation linkCreationOperation;
 	private final ILinkTypeInspector shapeTypeInspector;
 	private Point lastDelta;
 	private boolean canContinue;
+	private IDrawingElementController currentNode;
 
 	public LinkCreationDragResponse(ILinkCreationOperation linkCreationOperation, ILinkTypeInspector linkTypeInspector) {
 		this.linkCreationOperation = linkCreationOperation;
@@ -24,14 +25,16 @@ public class LinkCreationDragResponse extends HandleResponse {
 		return this.canContinue;
 	}
 
+	
+	
 	@Override
-	public void dragStarted(ISelectionHandle selectionHandle, Point startLocation) {
+	public void dragStarted(Point startLocation) {
 		this.enterDragOngoingState();
 		this.setStartLocation(startLocation);
 		this.lastDelta = this.calculateLocationDelta(startLocation);
-		if(selectionHandle != null && selectionHandle.getType().equals(SelectionHandleType.Central) && selectionHandle.getDrawingPrimitiveController() instanceof IShapeController){
+		if(this.currentNode instanceof IShapeController){
 			this.linkCreationOperation.setLinkObjectType(shapeTypeInspector.getCurrentLinkType());
-			this.linkCreationOperation.startCreationDrag((IShapeNode)selectionHandle.getDrawingPrimitiveController().getDrawingElement());
+			this.linkCreationOperation.startCreationDrag((IShapeNode)currentNode.getDrawingElement());
 			this.canContinue = true;
 		}
 		else{
@@ -62,5 +65,11 @@ public class LinkCreationDragResponse extends HandleResponse {
 	public boolean canOperationSucceed() {
 		return this.linkCreationOperation.canCreationSucceed();
 	}
+
+	@Override
+	public void setCurrentNode(IDrawingElementController drawingPrimitiveController) {
+		this.currentNode = drawingPrimitiveController;
+	}
+
 
 }

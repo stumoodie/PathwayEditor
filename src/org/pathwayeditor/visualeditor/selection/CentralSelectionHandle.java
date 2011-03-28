@@ -4,7 +4,7 @@ import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.controller.INodeController;
 
-public class CentralSelectionHandle extends SelectionHandle {
+public class CentralSelectionHandle extends SelectionHandle implements ICentralSelectionHandleShape {
 	
 	public CentralSelectionHandle(ISelection selection, INodeController nodeController){
 		super(nodeController, SelectionHandleType.Central, selection);
@@ -34,7 +34,6 @@ public class CentralSelectionHandle extends SelectionHandle {
 
 	@Override
 	public void drawShape(IHandleShapeDrawer drawer) {
-		// TODO Auto-generated method stub
-		
+		drawer.drawHandle(this);
 	}
 }

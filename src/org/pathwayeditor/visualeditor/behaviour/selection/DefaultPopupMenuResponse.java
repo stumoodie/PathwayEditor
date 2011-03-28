@@ -13,9 +13,9 @@ import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
 public class DefaultPopupMenuResponse implements IPopupMenuResponse {
 	private final JPopupMenu popup;
 	private final ActionListener selectAllListener;
-	private JMenuItem selectShapeItem;
-	private JMenuItem deleteShapeItem;
-	private ActionListener deleteListener;
+	private final JMenuItem selectShapeItem;
+	private final JMenuItem deleteShapeItem;
+	private final ActionListener deleteListener;
 	private final IDefaultPopupActions popupActions;
 	
 	public DefaultPopupMenuResponse(final IDefaultPopupActions localPopupActions){
@@ -57,8 +57,19 @@ public class DefaultPopupMenuResponse implements IPopupMenuResponse {
 	}
 	
 	@Override
-	public JPopupMenu getPopupMenu(ISelectionHandle selectionHandle) {
+	public JPopupMenu getPopupMenu() {
 		deleteShapeItem.setEnabled(this.popupActions.isDeleteActionValid());
 		return this.popup;
+	}
+
+
+	@Override
+	public void setSelectionHandle(ISelectionHandle selectionHandle) {
+	}
+
+
+	@Override
+	public ISelectionHandle getSelectionHandle() {
+		return null;
 	}
 }

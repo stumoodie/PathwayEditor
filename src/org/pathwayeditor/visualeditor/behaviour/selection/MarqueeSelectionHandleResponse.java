@@ -7,7 +7,7 @@ import org.pathwayeditor.visualeditor.behaviour.HandleResponse;
 import org.pathwayeditor.visualeditor.behaviour.operation.IMarqueeOperation;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
 
-public class MarqueeSelectionHandleResponse extends HandleResponse {
+public class MarqueeSelectionHandleResponse extends HandleResponse implements ISelectionDragResponse {
 	private final Logger logger = Logger.getLogger(this.getClass());
 	private final IMarqueeOperation operation;
 	private Point originDelta;
@@ -55,7 +55,7 @@ public class MarqueeSelectionHandleResponse extends HandleResponse {
 	}
 
 	@Override
-	public void dragStarted(ISelectionHandle selectionHandle, Point newLocation) {
+	public void dragStarted(Point newLocation) {
 		this.enterDragOngoingState();
 		this.setStartLocation(newLocation);
 		calculateBounds(newLocation);
@@ -78,6 +78,10 @@ public class MarqueeSelectionHandleResponse extends HandleResponse {
 	@Override
 	public boolean canOperationSucceed() {
 		return true;
+	}
+
+	@Override
+	public void setSelectionHandle(ISelectionHandle selectionHandle) {
 	}
 
 }

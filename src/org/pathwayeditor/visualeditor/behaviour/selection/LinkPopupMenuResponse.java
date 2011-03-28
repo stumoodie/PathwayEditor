@@ -13,7 +13,7 @@ import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
 public class LinkPopupMenuResponse implements IPopupMenuResponse {
 	private final JPopupMenu popup;
 	private final ActionListener deleteListener;
-	private JMenuItem deleteShapeItem;
+	private final JMenuItem deleteShapeItem;
 	
 	public LinkPopupMenuResponse(final ILinkPopupActions popupActions){
 		popup = new JPopupMenu();
@@ -41,8 +41,19 @@ public class LinkPopupMenuResponse implements IPopupMenuResponse {
 	}
 	
 	@Override
-	public JPopupMenu getPopupMenu(ISelectionHandle selectionHandle) {
+	public JPopupMenu getPopupMenu() {
 		return this.popup;
+	}
+
+
+	@Override
+	public void setSelectionHandle(ISelectionHandle selectionHandle) {
+	}
+
+
+	@Override
+	public ISelectionHandle getSelectionHandle() {
+		return null;
 	}
 
 }

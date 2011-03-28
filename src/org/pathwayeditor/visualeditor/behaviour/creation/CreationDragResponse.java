@@ -3,7 +3,6 @@ package org.pathwayeditor.visualeditor.behaviour.creation;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.behaviour.HandleResponse;
 import org.pathwayeditor.visualeditor.behaviour.operation.IShapeCreationOperation;
-import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
 
 public class CreationDragResponse extends HandleResponse {
 	private final IShapeCreationOperation shapeCreationOperation;
@@ -19,9 +18,10 @@ public class CreationDragResponse extends HandleResponse {
 	public boolean canContinueDrag(Point delta) {
 		return true;
 	}
+	
 
 	@Override
-	public void dragStarted(ISelectionHandle selectionHandle, Point startLocation) {
+	public void dragStarted(Point startLocation) {
 		this.enterDragOngoingState();
 		this.setStartLocation(startLocation);
 		this.lastDelta = this.calculateLocationDelta(startLocation);

@@ -5,7 +5,7 @@ import org.pathwayeditor.visualeditor.behaviour.HandleResponse;
 import org.pathwayeditor.visualeditor.behaviour.operation.ILinkOperation;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
 
-public class LinkMidPointResponse extends HandleResponse {
+public class LinkMidPointResponse extends HandleResponse implements ISelectionDragResponse {
 	private final ILinkOperation linkOperation;
 	private ISelectionHandle selectionHandle = null;
 	private Point lastDelta;
@@ -43,11 +43,15 @@ public class LinkMidPointResponse extends HandleResponse {
 	}
 
 	@Override
-	public void dragStarted(ISelectionHandle selectionHandle, Point startLocation) {
+	public void dragStarted(Point startLocation) {
 		this.setStartLocation(startLocation);
 		this.lastDelta = calculateLocationDelta(startLocation);
-		this.selectionHandle = selectionHandle;
 		this.linkOperation.newBendPointStarted(selectionHandle);
 		this.enterDragOngoingState();
+	}
+
+	@Override
+	public void setSelectionHandle(ISelectionHandle selectionHandle) {
+		this.selectionHandle = selectionHandle;
 	}
 }

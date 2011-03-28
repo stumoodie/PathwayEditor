@@ -1,38 +1,30 @@
 package org.pathwayeditor.visualeditor.behaviour;
 
-import java.awt.event.KeyListener;
-import java.awt.event.MouseListener;
-import java.util.Iterator;
+import java.util.SortedSet;
 
 import javax.swing.JPopupMenu;
 
 import org.apache.log4j.Logger;
 import org.pathwayeditor.figure.geometry.Point;
-import org.pathwayeditor.visualeditor.behaviour.selection.PopupMenuListener;
-import org.pathwayeditor.visualeditor.behaviour.selection.SelectionKeyListener;
+import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
+import org.pathwayeditor.visualeditor.controller.INodeController;
+import org.pathwayeditor.visualeditor.editingview.IDomainModelLayer;
 import org.pathwayeditor.visualeditor.editingview.ISelectionLayer;
 import org.pathwayeditor.visualeditor.editingview.IShapePane;
 import org.pathwayeditor.visualeditor.editingview.LayerType;
+import org.pathwayeditor.visualeditor.geometry.IIntersectionCalcnFilter;
+import org.pathwayeditor.visualeditor.geometry.IIntersectionCalculator;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
-import org.pathwayeditor.visualeditor.selection.ISelectionHandle.SelectionHandleType;
 
 public class GeneralStateController implements ISelectionStateBehaviourController {
 	private final Logger logger = Logger.getLogger(this.getClass());
 	private final IShapePane shapePane;
-//	private final IKeyboardResponse keyboardResponseMap;
-	private final MouseListener popupMenuListener;
-	private boolean activated = false;
-	private final MouseBehaviourListener mouseListener;
-	private final KeyListener keyListener; 
 	private final IControllerResponses responses;
 	private Point mousePosition;
 
 	public GeneralStateController(IShapePane pane, IControllerResponses responses){
 		this.shapePane = pane;
-		this.mouseListener = new MouseBehaviourListener(this);
 		this.responses = responses;
-		this.popupMenuListener = new PopupMenuListener(this);
-		this.keyListener = new SelectionKeyListener(responses);
 	}
 	
 
@@ -54,87 +46,22 @@ public class GeneralStateController implements ISelectionStateBehaviourControlle
 	}
 	
 
-	@Override
-	public void activate(){
-		this.shapePane.addKeyListener(this.keyListener);
-        this.shapePane.addMouseMotionListener(this.mouseListener);
-        this.shapePane.addMouseListener(this.mouseListener);
-        this.shapePane.addMouseListener(popupMenuListener);
-//        for(IPopupMenuResponse popupResponse : this.popupMenuMap.values()){
-//        	popupResponse.activate();
-//        }
-        Iterator<IPopupMenuResponse> iter = this.responses.popResponseIterator();
-        while(iter.hasNext()){
-        	IPopupMenuResponse popupResponse = iter.next();
-        	popupResponse.activate();
-        }
-        this.activated = true;
-	}
-
-	@Override
-	public void deactivate(){
-		this.shapePane.removeKeyListener(this.keyListener);
-        this.shapePane.removeMouseMotionListener(this.mouseListener);
-        this.shapePane.removeMouseListener(this.mouseListener);
-        this.shapePane.removeMouseListener(popupMenuListener);
-//        for(IPopupMenuResponse popupResponse : this.popupMenuMap.values()){
-//        	popupResponse.deactivate();
-//        }
-        Iterator<IPopupMenuResponse> iter = this.responses.popResponseIterator();
-        while(iter.hasNext()){
-        	IPopupMenuResponse popupResponse = iter.next();
-        	popupResponse.deactivate();
-        }
-        this.activated = false;
-	}
-
-
-//	private void handleKeyRelease(){
-//		if(this.keyboardResponseMap.isKeyPressed()){
-//			this.keyboardResponseMap.cursorsKeyUp();
-//			logger.trace("Key release detected");
-//		}
-//	}
-//	
-//	private void handleKeyPress(CursorType cursorPressed){
-//		if(!this.keyboardResponseMap.isKeyPressed()){
-//			this.keyboardResponseMap.cursorKeyDown(cursorPressed);
-//			logger.trace("Initial key press detected");
-//		}
-//		else{
-//			this.keyboardResponseMap.cursorKeyStillDown(cursorPressed);
-//			logger.trace("Key press ongoing");
-//		}
-//	}
 	
 	@Override
-	public IDragResponse getDragResponse(SelectionHandleType type) {
-		return this.responses.getDragResponse(type);
+	public IDragResponse getDragResponse() {
+		return this.responses.getDragResponse(getSelectionHandle());
 	}
 
 
-	@Override
-	public IMouseFeedbackResponse getMouseFeedbackResponse(SelectionHandleType type) {
-		return this.responses.getFeedbackResponse(type);
-	}
-
-
-//	@Override
-//	public ISelectionRecord getSelectionRecord() {
-//		ISelectionLayer selectionLayer = this.shapePane.getLayer(LayerType.SELECTION);
-//		return selectionLayer.getSelectionRecord();
-//	}
-
-
-//	@Override
-//	public void updateView() {
-//		this.shapePane.updateView();
+//	private SelectionHandleType getSelectionHandleType() {
+//		ISelectionHandle retVal = getSelectionHandle();
+//		return retVal != null ? retVal.getType() : SelectionHandleType.None; 
 //	}
 
 
 	@Override
-	public boolean isActivated() {
-		return this.activated ;
+	public IMouseFeedbackResponse getMouseFeedbackResponse() {
+		return this.responses.getFeedbackResponse(getSelectionHandle());
 	}
 
 
@@ -144,16 +71,19 @@ public class GeneralStateController implements ISelectionStateBehaviourControlle
 	}
 
 
-	@Override
-	public ISelectionHandle getSelectionHandle() {
+	private ISelectionHandle getSelectionHandle() {
 		ISelectionLayer selectionLayer = this.shapePane.getLayer(LayerType.SELECTION);		
 		return selectionLayer.getSelectionRecord().findSelectionModelAt(getDiagramLocation());
 	}
 
 
 	@Override
-	public IPopupMenuResponse getPopupMenuResponse(SelectionHandleType popupSelectionHandle) {
-		return this.responses.getPopupMenuResponse(popupSelectionHandle);
+	public IPopupMenuResponse getPopupMenuResponse() {
+//		ISelectionHandle selectionHandle = getSelectionHandle();
+//		SelectionHandleType type = selectionHandle != null ? selectionHandle.getType() : SelectionHandleType.None;
+		IPopupMenuResponse retVal = this.responses.getPopupMenuResponse(getSelectionHandle());
+//		retVal.setSelectionHandle(selectionHandle);
+		return retVal;
 	}
 
 
@@ -166,5 +96,24 @@ public class GeneralStateController implements ISelectionStateBehaviourControlle
 	@Override
 	public void setMousePosition(double x, double y) {
 		this.mousePosition = new Point(x, y);
+	}
+
+
+	@Override
+	public INodeController getNodeAtCurrentPoint() {
+		IDomainModelLayer domainLayer = this.shapePane.getLayer(LayerType.DOMAIN);
+		IIntersectionCalculator intnCalc = domainLayer.getViewControllerStore().getIntersectionCalculator();
+		intnCalc.setFilter(new IIntersectionCalcnFilter() {
+			@Override
+			public boolean accept(IDrawingElementController node) {
+				return node instanceof INodeController;
+			}
+		});
+		SortedSet<IDrawingElementController> hits = intnCalc.findDrawingPrimitivesAt(getDiagramLocation());
+		INodeController retVal = null;
+		if(!hits.isEmpty()){
+			retVal = (INodeController)hits.first();
+		}
+		return retVal;
 	}
 }

@@ -18,6 +18,7 @@ import org.pathwayeditor.visualeditor.behaviour.selection.KeyboardResponse;
 import org.pathwayeditor.visualeditor.behaviour.selection.LinkBendpointPopupMenuResponse;
 import org.pathwayeditor.visualeditor.behaviour.selection.LinkPopupMenuResponse;
 import org.pathwayeditor.visualeditor.behaviour.selection.ShapePopupMenuResponse;
+import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle.SelectionHandleType;
 
 public class CreationControllerResponses implements IControllerResponses {
@@ -71,12 +72,12 @@ public class CreationControllerResponses implements IControllerResponses {
 	}
 
 	@Override
-	public IDragResponse getDragResponse(SelectionHandleType type) {
+	public IDragResponse getDragResponse(ISelectionHandle type) {
 		return this.dragResponse;
 	}
 
 	@Override
-	public IMouseFeedbackResponse getFeedbackResponse(SelectionHandleType type) {
+	public IMouseFeedbackResponse getFeedbackResponse(ISelectionHandle type) {
 		return this.feedbackResponse;
 	}
 
@@ -91,7 +92,7 @@ public class CreationControllerResponses implements IControllerResponses {
 	}
 
 	@Override
-	public IPopupMenuResponse getPopupMenuResponse(SelectionHandleType popupSelectionHandle) {
+	public IPopupMenuResponse getPopupMenuResponse(ISelectionHandle popupSelectionHandle) {
 		return this.popupMenuMap.get(popupSelectionHandle);
 	}
 

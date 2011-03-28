@@ -6,7 +6,7 @@ import org.pathwayeditor.visualeditor.behaviour.HandleResponse;
 import org.pathwayeditor.visualeditor.behaviour.operation.IResizeOperation;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
 
-public class ResizeHandleResponse extends HandleResponse {
+public class ResizeHandleResponse extends HandleResponse implements ISelectionDragResponse {
 	private final Logger logger = Logger.getLogger(this.getClass());
 	private final INewPositionCalculator newPositionCalculator;
 	private final IResizeOperation operation;
@@ -39,7 +39,7 @@ public class ResizeHandleResponse extends HandleResponse {
 	}
 
 	@Override
-	public void dragStarted(ISelectionHandle selectionHandle, Point newLocation) {
+	public void dragStarted(Point newLocation) {
 		this.enterDragOngoingState();
 		this.setStartLocation(newLocation);
 		Point delta = calculateLocationDelta(newLocation);
@@ -75,6 +75,10 @@ public class ResizeHandleResponse extends HandleResponse {
 	@Override
 	public boolean canOperationSucceed() {
 		return true;
+	}
+
+	@Override
+	public void setSelectionHandle(ISelectionHandle selectionHandle) {
 	}
 
 }

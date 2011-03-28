@@ -13,9 +13,9 @@ import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
 public class LinkBendpointPopupMenuResponse implements IPopupMenuResponse {
 	private final JPopupMenu popup;
 	private final ActionListener deleteListener;
-	private JMenuItem deleteShapeItem;
-	private JMenuItem deleteBendPointItem;
-	private ActionListener deleteBendPointItemListener;
+	private final JMenuItem deleteShapeItem;
+	private final JMenuItem deleteBendPointItem;
+	private final ActionListener deleteBendPointItemListener;
 	private ISelectionHandle selectionHandle;
 	final ILinkBendPointPopupActions popupActions;
 	
@@ -58,9 +58,20 @@ public class LinkBendpointPopupMenuResponse implements IPopupMenuResponse {
 	}
 	
 	@Override
-	public JPopupMenu getPopupMenu(ISelectionHandle selectionHandle) {
-		this.selectionHandle = selectionHandle;
+	public JPopupMenu getPopupMenu() {
 		return this.popup;
+	}
+
+
+	@Override
+	public void setSelectionHandle(ISelectionHandle selectionHandle) {
+		this.selectionHandle = selectionHandle;
+	}
+
+
+	@Override
+	public ISelectionHandle getSelectionHandle() {
+		return this.selectionHandle;
 	}
 
 }

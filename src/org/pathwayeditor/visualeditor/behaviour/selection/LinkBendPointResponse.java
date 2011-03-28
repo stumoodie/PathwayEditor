@@ -6,7 +6,7 @@ import org.pathwayeditor.visualeditor.behaviour.operation.ILinkOperation;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle.SelectionHandleType;
 
-public class LinkBendPointResponse extends HandleResponse {
+public class LinkBendPointResponse extends HandleResponse implements ISelectionDragResponse {
 //	private static final int DEFAULT_SEGMENT_IDX = 0;
 	private final ILinkOperation linkOperation;
 	private ISelectionHandle selectionHandle = null;
@@ -45,13 +45,17 @@ public class LinkBendPointResponse extends HandleResponse {
 	}
 
 	@Override
-	public void dragStarted(ISelectionHandle selectionHandle, Point startLocation) {
+	public void dragStarted(Point startLocation) {
 		if(!selectionHandle.getType().equals(SelectionHandleType.LinkBendPoint)) throw new IllegalArgumentException("Only expect to respond to link bend point handles");
 		
-		this.selectionHandle = selectionHandle;
 		this.setStartLocation(startLocation);
 		this.lastDelta = calculateLocationDelta(startLocation);
 		this.linkOperation.moveBendPointStated(selectionHandle);
 		this.enterDragOngoingState();
+	}
+
+	@Override
+	public void setSelectionHandle(ISelectionHandle selectionHandle) {
+		this.selectionHandle = selectionHandle;
 	}
 }

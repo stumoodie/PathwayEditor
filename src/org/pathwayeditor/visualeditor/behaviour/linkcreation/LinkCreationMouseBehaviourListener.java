@@ -1,33 +1,33 @@
-package org.pathwayeditor.visualeditor.behaviour;
+package org.pathwayeditor.visualeditor.behaviour.linkcreation;
 
 import java.awt.Cursor;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 
 import org.apache.log4j.Logger;
 import org.pathwayeditor.figure.geometry.Point;
+import org.pathwayeditor.visualeditor.behaviour.IMouseBehaviourListener;
+import org.pathwayeditor.visualeditor.behaviour.IMouseFeedbackResponse;
 import org.pathwayeditor.visualeditor.behaviour.IMouseFeedbackResponse.StateType;
-import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
-import org.pathwayeditor.visualeditor.selection.ISelectionHandle.SelectionHandleType;
+import org.pathwayeditor.visualeditor.behaviour.ISelectionResponse;
+import org.pathwayeditor.visualeditor.behaviour.ISelectionStateBehaviourController;
+import org.pathwayeditor.visualeditor.behaviour.creation.ILinkCreationDragResponse;
+import org.pathwayeditor.visualeditor.controller.INodeController;
 
-public class MouseBehaviourListener implements MouseListener, MouseMotionListener {
-	private ISelectionHandle currSelectionHandle;
-	private IDragResponse currDragResponse;
+public class LinkCreationMouseBehaviourListener implements IMouseBehaviourListener {
+//	private ISelectionHandle currSelectionHandle;
+	private ILinkCreationDragResponse currDragResponse;
 	private IMouseFeedbackResponse currMouseFeedbackResponse;
 	private final ISelectionStateBehaviourController mouseBehaviourController;
 	private final Logger logger = Logger.getLogger(this.getClass());
 	
-	public MouseBehaviourListener(ISelectionStateBehaviourController mouseBehaviourController) {
+	public LinkCreationMouseBehaviourListener(ISelectionStateBehaviourController mouseBehaviourController) {
 		this.mouseBehaviourController = mouseBehaviourController;
 	}
 
 	private void setCurrentCursorResponse(){
 //		ISelectionHandle selectionModel = this.mouseBehaviourController.getSelectionRecord().findSelectionModelAt(location);
 //		SelectionHandleType selectionRegion = selectionModel != null ? selectionModel.getType() : SelectionHandleType.None;
-		ISelectionHandle selectionRegion = this.mouseBehaviourController.getSelectionHandle();
-		SelectionHandleType selectionType = selectionRegion != null ? selectionRegion.getType() : SelectionHandleType.None;
-		currMouseFeedbackResponse = this.mouseBehaviourController.getMouseFeedbackResponse(selectionType);
+		currMouseFeedbackResponse = this.mouseBehaviourController.getMouseFeedbackResponse();
 	}
 
 	@Override
@@ -36,17 +36,8 @@ public class MouseBehaviourListener implements MouseListener, MouseMotionListene
 			this.mouseBehaviourController.setMousePosition(e.getPoint().getX(), e.getPoint().getY());
 //			Point location = mouseBehaviourController.getAdjustedMousePosition(e.getPoint().getX(), e.getPoint().getY());
 			if(currDragResponse == null){
-//				currSelectionHandle = null;
-				currSelectionHandle = mouseBehaviourController.getSelectionHandle();
-				if(currSelectionHandle != null){
-					currDragResponse = this.mouseBehaviourController.getDragResponse(currSelectionHandle.getType());
-					currMouseFeedbackResponse = this.mouseBehaviourController.getMouseFeedbackResponse(currSelectionHandle.getType());
-				}
-				else{
-//					mouseBehaviourController.getTopShapeAtThisPosition();
-					currDragResponse = this.mouseBehaviourController.getDragResponse(SelectionHandleType.None);
-					currMouseFeedbackResponse = this.mouseBehaviourController.getMouseFeedbackResponse(SelectionHandleType.None);
-				}
+					currDragResponse = (ILinkCreationDragResponse)this.mouseBehaviourController.getDragResponse();
+					currMouseFeedbackResponse = this.mouseBehaviourController.getMouseFeedbackResponse();
 			}
 			if(currDragResponse != null){
 				Point location = this.mouseBehaviourController.getDiagramLocation();
@@ -68,7 +59,11 @@ public class MouseBehaviourListener implements MouseListener, MouseMotionListene
 					}
 				}
 				else{
-					currDragResponse.dragStarted(currSelectionHandle, location);
+					INodeController node = this.mouseBehaviourController.getNodeAtCurrentPoint();
+					if(node != null){
+						currDragResponse.setCurrentNode(node);
+						currDragResponse.dragStarted(location);
+					}
 				}
 			}
 		}
@@ -80,15 +75,15 @@ public class MouseBehaviourListener implements MouseListener, MouseMotionListene
 //		Point location = this.mouseBehaviourController.getAdjustedMousePosition(e.getPoint().getX(), e.getPoint().getY());
 //		ISelectionHandle selectionHandle = this.mouseBehaviourController.getSelectionHandle(location);
 		this.mouseBehaviourController.setMousePosition(e.getPoint().getX(), e.getPoint().getY());
-		ISelectionHandle selectionHandle = this.mouseBehaviourController.getSelectionHandle();
-		if(logger.isTraceEnabled()){
-			logger.trace("Selection handle = " + selectionHandle);
-		}
-		SelectionHandleType selectionRegion = selectionHandle != null ? selectionHandle.getType() : SelectionHandleType.None;
-		IMouseFeedbackResponse currMouseFeedbackResponse = this.mouseBehaviourController.getMouseFeedbackResponse(selectionRegion);
-		if(logger.isTraceEnabled()){
-			logger.trace("selection handle type = " + selectionRegion);
-		}
+//		ISelectionHandle selectionHandle = this.mouseBehaviourController.getSelectionHandle();
+//		if(logger.isTraceEnabled()){
+//			logger.trace("Selection handle = " + selectionHandle);
+//		}
+//		SelectionHandleType selectionRegion = selectionHandle != null ? selectionHandle.getType() : SelectionHandleType.None;
+		IMouseFeedbackResponse currMouseFeedbackResponse = this.mouseBehaviourController.getMouseFeedbackResponse();
+//		if(logger.isTraceEnabled()){
+//			logger.trace("selection handle type = " + selectionRegion);
+//		}
 		Cursor feedbackCursor = currMouseFeedbackResponse.getCurrentCursor();
 		if(logger.isTraceEnabled()){
 			logger.trace("feedback cursor = " + feedbackCursor.getName());
@@ -103,14 +98,14 @@ public class MouseBehaviourListener implements MouseListener, MouseMotionListene
 //			Point location = this.mouseBehaviourController.getAdjustedMousePosition(e.getPoint().getX(), e.getPoint().getY());
 			Point location = this.mouseBehaviourController.getDiagramLocation();
 //			currSelectionHandle = mouseBehaviourController.getSelectionHandle(location);
-			currSelectionHandle = mouseBehaviourController.getSelectionHandle();
+//			currSelectionHandle = mouseBehaviourController.getSelectionHandle();
 			ISelectionResponse currSelnResponse = null;
-			if(currSelectionHandle != null){
+//			if(currSelectionHandle != null){
+//				currSelnResponse = this.mouseBehaviourController.getClickResponse();
+//			}
+//			else{
 				currSelnResponse = this.mouseBehaviourController.getClickResponse();
-			}
-			else{
-				currSelnResponse = this.mouseBehaviourController.getClickResponse();
-			}
+//			}
 			if(!e.isShiftDown() && !e.isAltDown()){
 				currSelnResponse.primaryClick(location);
 //				Point location = this.mouseBehaviourController.getAdjustedMousePosition(e.getPoint().getX(), e.getPoint().getY());
@@ -132,6 +127,7 @@ public class MouseBehaviourListener implements MouseListener, MouseMotionListene
 			}
 		}
 	}
+
 
 	@Override
 	public void mouseEntered(MouseEvent e) {

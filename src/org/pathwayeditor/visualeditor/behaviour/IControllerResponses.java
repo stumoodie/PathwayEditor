@@ -2,19 +2,19 @@ package org.pathwayeditor.visualeditor.behaviour;
 
 import java.util.Iterator;
 
-import org.pathwayeditor.visualeditor.selection.ISelectionHandle.SelectionHandleType;
+import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
 
 public interface IControllerResponses {
 
-	IDragResponse getDragResponse(SelectionHandleType type);
+	IDragResponse getDragResponse(ISelectionHandle handle);
 
-	IMouseFeedbackResponse getFeedbackResponse(SelectionHandleType type);
+	IMouseFeedbackResponse getFeedbackResponse(ISelectionHandle type);
 
 	ISelectionResponse getSelectionResponse();
 
 	IKeyboardResponse getKeyboardResponse();
 
-	IPopupMenuResponse getPopupMenuResponse(SelectionHandleType popupSelectionHandle);
+	IPopupMenuResponse getPopupMenuResponse(ISelectionHandle popupSelectionHandle);
 
 	Iterator<IPopupMenuResponse> popResponseIterator();
 	

@@ -3,8 +3,7 @@ package org.pathwayeditor.visualeditor.behaviour;
 import javax.swing.JPopupMenu;
 
 import org.pathwayeditor.figure.geometry.Point;
-import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
-import org.pathwayeditor.visualeditor.selection.ISelectionHandle.SelectionHandleType;
+import org.pathwayeditor.visualeditor.controller.INodeController;
 
 public interface ISelectionStateBehaviourController extends IMouseStateBehaviourController {
 
@@ -12,15 +11,17 @@ public interface ISelectionStateBehaviourController extends IMouseStateBehaviour
 	
 	ISelectionResponse getClickResponse();
 
-	IDragResponse getDragResponse(SelectionHandleType type);
+	IDragResponse getDragResponse();
 
-	IMouseFeedbackResponse getMouseFeedbackResponse(SelectionHandleType type);
+	IMouseFeedbackResponse getMouseFeedbackResponse();
 
-	ISelectionHandle getSelectionHandle();
+//	ISelectionHandle getSelectionHandle();
 
-	IPopupMenuResponse getPopupMenuResponse(SelectionHandleType popupSelectionHandle);
+	IPopupMenuResponse getPopupMenuResponse();
 
 	void showPopupMenus(JPopupMenu popup);
 
 	Point getDiagramLocation();
+	
+	INodeController getNodeAtCurrentPoint();
 }

@@ -5,7 +5,7 @@ import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.figure.geometry.Scale;
 import org.pathwayeditor.visualeditor.controller.INodeController;
 
-public class MidPointSelectionHandle extends SelectionHandle {
+public class MidPointSelectionHandle extends SelectionHandle implements IMidPointSelectionHandleShape {
 	private static final double HANDLE_OFFSET = 4.0;
 	private static final double HANDLE_WIDTH = HANDLE_OFFSET*2;
 	private static final double HANDLE_HEIGHT = HANDLE_OFFSET*2;
@@ -42,7 +42,6 @@ public class MidPointSelectionHandle extends SelectionHandle {
 
 	@Override
 	public void drawShape(IHandleShapeDrawer drawer) {
-		// TODO Auto-generated method stub
-		
+		drawer.drawHandle(this);
 	}
 }

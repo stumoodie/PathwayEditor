@@ -5,7 +5,7 @@ import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.controller.ILinkController;
 import org.pathwayeditor.visualeditor.geometry.ILinkPointDefinition;
 
-public class LinkSelectionHandle extends SelectionHandle implements ISelectionHandle {
+public class LinkSelectionHandle extends SelectionHandle implements ILinkSelectionHandleShape {
 	private final ILinkPointDefinition linkPointDefinition;
 
 	public LinkSelectionHandle(LinkSelection linkSelection, ILinkController controller) {
@@ -36,6 +36,11 @@ public class LinkSelectionHandle extends SelectionHandle implements ISelectionHa
 	@Override
 	public int compareTo(ISelectionHandle o) {
 		return this.getDrawingPrimitiveController().compareTo(o.getDrawingPrimitiveController());
+	}
+
+	@Override
+	public ILinkPointDefinition getLinkDefinition() {
+		return ((ILinkController)this.getDrawingPrimitiveController()).getLinkDefinition();
 	}
 
 }
