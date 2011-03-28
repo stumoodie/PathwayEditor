@@ -9,15 +9,9 @@ public abstract class HandleResponse implements IDragResponse {
 	private boolean shiftSelected = false;
 	private boolean isDragOngoing = false;
 	private Point startLocation;
-//	private Point delta; 
-//	private Point lastLocation;
 	
 	protected HandleResponse(){
 	}
-	
-//	protected final Point getLastLocation(){
-//		return this.lastLocation;
-//	}
 	
 	protected final Point getStartLocation(){
 		return this.startLocation;
@@ -25,17 +19,11 @@ public abstract class HandleResponse implements IDragResponse {
 	
 	protected final void setStartLocation(Point startLocation){
 		this.startLocation  = startLocation;
-//		this.lastLocation = startLocation;
-//		this.delta = Point.ORIGIN;
 	}
 	
 	protected final Point calculateLocationDelta(Point newLocation){
 		return this.startLocation.difference(newLocation);
 	}
-	
-//	protected final Point getDelta(){
-//		return this.delta;
-//	}
 	
 	protected final boolean isAltSelected() {
 		return altSelected;

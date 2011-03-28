@@ -35,24 +35,12 @@ public class PopupMenuListener implements IPopupMenuListener {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		if(e.isPopupTrigger()){
-//			SelectionHandleType popupSelectionHandle = SelectionHandleType.None;
-//			Point location = controller.getAdjustedMousePosition(e.getPoint().getX(), e.getPoint().getY());
 			this.controller.setMousePosition(e.getPoint().getX(), e.getPoint().getY());
 			
-//			ISelectionLayer selectionLayer = shapePane.getLayer(LayerType.SELECTION);
-//			IDrawingElementController nodeController = findDrawingElementAt(location);
-//			if(nodeController != null){
-//				if(!selectionLayer.getSelectionRecord().isNodeSelected(nodeController)){
-//					// not selected so select first before do anything else
-//					selectionLayer.getSelectionRecord().setPrimarySelection(nodeController);
-//				}
-//			}
-//			ISelectionHandle currSelectionHandle = selectionLayer.getSelectionRecord().findSelectionModelAt(location);
 			IPopupMenuResponse response = controller.getPopupMenuResponse();
 			JPopupMenu popup = response.getPopupMenu();
 			if(popup != null){
 				controller.showPopupMenus(popup);
-//				popup.show(shapePane, e.getX(), e.getY());
 			}
 		}
 	}

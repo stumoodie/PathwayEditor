@@ -14,7 +14,6 @@ import org.pathwayeditor.visualeditor.behaviour.creation.ILinkCreationDragRespon
 import org.pathwayeditor.visualeditor.controller.INodeController;
 
 public class LinkCreationMouseBehaviourListener implements IMouseBehaviourListener {
-//	private ISelectionHandle currSelectionHandle;
 	private ILinkCreationDragResponse currDragResponse;
 	private IMouseFeedbackResponse currMouseFeedbackResponse;
 	private final ISelectionStateBehaviourController mouseBehaviourController;
@@ -25,8 +24,6 @@ public class LinkCreationMouseBehaviourListener implements IMouseBehaviourListen
 	}
 
 	private void setCurrentCursorResponse(){
-//		ISelectionHandle selectionModel = this.mouseBehaviourController.getSelectionRecord().findSelectionModelAt(location);
-//		SelectionHandleType selectionRegion = selectionModel != null ? selectionModel.getType() : SelectionHandleType.None;
 		currMouseFeedbackResponse = this.mouseBehaviourController.getMouseFeedbackResponse();
 	}
 
@@ -34,7 +31,6 @@ public class LinkCreationMouseBehaviourListener implements IMouseBehaviourListen
 	public void mouseDragged(MouseEvent e) {
 		if(e.getButton() == MouseEvent.BUTTON1){
 			this.mouseBehaviourController.setMousePosition(e.getPoint().getX(), e.getPoint().getY());
-//			Point location = mouseBehaviourController.getAdjustedMousePosition(e.getPoint().getX(), e.getPoint().getY());
 			if(currDragResponse == null){
 					currDragResponse = (ILinkCreationDragResponse)this.mouseBehaviourController.getDragResponse();
 					currMouseFeedbackResponse = this.mouseBehaviourController.getMouseFeedbackResponse();
@@ -72,18 +68,8 @@ public class LinkCreationMouseBehaviourListener implements IMouseBehaviourListen
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-//		Point location = this.mouseBehaviourController.getAdjustedMousePosition(e.getPoint().getX(), e.getPoint().getY());
-//		ISelectionHandle selectionHandle = this.mouseBehaviourController.getSelectionHandle(location);
 		this.mouseBehaviourController.setMousePosition(e.getPoint().getX(), e.getPoint().getY());
-//		ISelectionHandle selectionHandle = this.mouseBehaviourController.getSelectionHandle();
-//		if(logger.isTraceEnabled()){
-//			logger.trace("Selection handle = " + selectionHandle);
-//		}
-//		SelectionHandleType selectionRegion = selectionHandle != null ? selectionHandle.getType() : SelectionHandleType.None;
 		IMouseFeedbackResponse currMouseFeedbackResponse = this.mouseBehaviourController.getMouseFeedbackResponse();
-//		if(logger.isTraceEnabled()){
-//			logger.trace("selection handle type = " + selectionRegion);
-//		}
 		Cursor feedbackCursor = currMouseFeedbackResponse.getCurrentCursor();
 		if(logger.isTraceEnabled()){
 			logger.trace("feedback cursor = " + feedbackCursor.getName());
@@ -95,35 +81,14 @@ public class LinkCreationMouseBehaviourListener implements IMouseBehaviourListen
 	public void mouseClicked(MouseEvent e) {
 		if(e.getButton() == MouseEvent.BUTTON1){
 			this.mouseBehaviourController.setMousePosition(e.getPoint().getX(), e.getPoint().getY());
-//			Point location = this.mouseBehaviourController.getAdjustedMousePosition(e.getPoint().getX(), e.getPoint().getY());
 			Point location = this.mouseBehaviourController.getDiagramLocation();
-//			currSelectionHandle = mouseBehaviourController.getSelectionHandle(location);
-//			currSelectionHandle = mouseBehaviourController.getSelectionHandle();
 			ISelectionResponse currSelnResponse = null;
-//			if(currSelectionHandle != null){
-//				currSelnResponse = this.mouseBehaviourController.getClickResponse();
-//			}
-//			else{
-				currSelnResponse = this.mouseBehaviourController.getClickResponse();
-//			}
+			currSelnResponse = this.mouseBehaviourController.getClickResponse();
 			if(!e.isShiftDown() && !e.isAltDown()){
 				currSelnResponse.primaryClick(location);
-//				Point location = this.mouseBehaviourController.getAdjustedMousePosition(e.getPoint().getX(), e.getPoint().getY());
-//				IDrawingElementController nodeController = this.mouseBehaviourController.findDrawingElementAt(location);
-//				if(nodeController != null){
-//					this.mouseBehaviourController.getSelectionRecord().setPrimarySelection(nodeController);
-//				}
-//				else{
-//					this.mouseBehaviourController.getSelectionRecord().clear();
-//				}
 			}
 			else if(e.isShiftDown() && !e.isAltDown()){
 				currSelnResponse.secondaryClick(location);
-//				Point location = this.mouseBehaviourController.getAdjustedMousePosition(e.getPoint().getX(), e.getPoint().getY());
-//				IDrawingElementController nodeController = this.mouseBehaviourController.findDrawingElementAt(location);
-//				if(nodeController != null){
-//					this.mouseBehaviourController.getSelectionRecord().addSecondarySelection(nodeController);
-//				}
 			}
 		}
 	}
@@ -147,9 +112,7 @@ public class LinkCreationMouseBehaviourListener implements IMouseBehaviourListen
 			currDragResponse.dragFinished();
 			currMouseFeedbackResponse.reset();
 			currDragResponse = null;
-//			this.mouseBehaviour.updateView();
 		}
-//		Point location = this.mouseBehaviourController.getAdjustedMousePosition(e.getPoint().getX(), e.getPoint().getY());
 		this.mouseBehaviourController.setMousePosition(e.getPoint().getX(), e.getPoint().getY());
 		setCurrentCursorResponse();
 		e.getComponent().setCursor(currMouseFeedbackResponse.getCurrentCursor());

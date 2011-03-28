@@ -73,15 +73,7 @@ public class MouseBehaviourController implements IMouseBehaviourController {
         this.shapePane.addMouseMotionListener(this.currentStateController);
         this.shapePane.addMouseListener(this.currentStateController);
         this.shapePane.addMouseListener(popupMenuListener);
-//        for(IPopupMenuResponse popupResponse : this.popupMenuMap.values()){
-//        	popupResponse.activate();
-//        }
         this.popupMenuListener.activate();
-//        Iterator<IPopupMenuResponse> iter = this.responses.popResponseIterator();
-//        while(iter.hasNext()){
-//        	IPopupMenuResponse popupResponse = iter.next();
-//        	popupResponse.activate();
-//        }
         this.activated = true;
 	}
 
@@ -91,15 +83,7 @@ public class MouseBehaviourController implements IMouseBehaviourController {
         this.shapePane.removeMouseMotionListener(this.currentStateController);
         this.shapePane.removeMouseListener(this.currentStateController);
         this.shapePane.removeMouseListener(popupMenuListener);
-//        for(IPopupMenuResponse popupResponse : this.popupMenuMap.values()){
-//        	popupResponse.deactivate();
-//        }
         this.popupMenuListener.deactivate();
-//        Iterator<IPopupMenuResponse> iter = this.responses.popResponseIterator();
-//        while(iter.hasNext()){
-//        	IPopupMenuResponse popupResponse = iter.next();
-//        	popupResponse.deactivate();
-//        }
         this.activated = false;
 	}
 

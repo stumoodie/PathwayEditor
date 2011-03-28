@@ -30,16 +30,9 @@ public class GeneralStateController implements ISelectionStateBehaviourControlle
 
 	@Override
 	public Point getDiagramLocation(){
-//		AffineTransform paneTransform = this.shapePane.getLastUsedTransform();
 		Point retVal = this.shapePane.getPaneBounds().getOrigin();
-//		if(paneTransform == null){
 		retVal = retVal.translate(this.mousePosition);
-//		}
-//		else{
-//			retVal = new Point((originalMouseX-paneTransform.getTranslateX())/paneTransform.getScaleX(), (originalMouseY-paneTransform.getTranslateY())/paneTransform.getScaleY()); 
-//		}
 		if(logger.isTraceEnabled()){
-//			logger.trace("Adjust position. origX=" + originalMouseX + ",origY=" + originalMouseY + " : adjustedPoint=" + retVal + ", transform=" + paneTransform);
 			logger.trace("Adjust position. orig=" + this.mousePosition + " : adjustedPoint=" + retVal + ", paneBounds=" + shapePane.getPaneBounds());
 		}
 		return retVal;  
@@ -51,12 +44,6 @@ public class GeneralStateController implements ISelectionStateBehaviourControlle
 	public IDragResponse getDragResponse() {
 		return this.responses.getDragResponse(getSelectionHandle());
 	}
-
-
-//	private SelectionHandleType getSelectionHandleType() {
-//		ISelectionHandle retVal = getSelectionHandle();
-//		return retVal != null ? retVal.getType() : SelectionHandleType.None; 
-//	}
 
 
 	@Override
@@ -79,10 +66,7 @@ public class GeneralStateController implements ISelectionStateBehaviourControlle
 
 	@Override
 	public IPopupMenuResponse getPopupMenuResponse() {
-//		ISelectionHandle selectionHandle = getSelectionHandle();
-//		SelectionHandleType type = selectionHandle != null ? selectionHandle.getType() : SelectionHandleType.None;
 		IPopupMenuResponse retVal = this.responses.getPopupMenuResponse(getSelectionHandle());
-//		retVal.setSelectionHandle(selectionHandle);
 		return retVal;
 	}
 

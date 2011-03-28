@@ -25,10 +25,6 @@ public class ShapeCreationMouseBehaviourListener implements IMouseBehaviourListe
 	}
 
 	private void setCurrentCursorResponse(){
-//		ISelectionHandle selectionModel = this.mouseBehaviourController.getSelectionRecord().findSelectionModelAt(location);
-//		SelectionHandleType selectionRegion = selectionModel != null ? selectionModel.getType() : SelectionHandleType.None;
-//		ISelectionHandle selectionRegion = this.mouseBehaviourController.getSelectionHandle();
-//		SelectionHandleType selectionType = selectionRegion != null ? selectionRegion.getType() : SelectionHandleType.None;
 		currMouseFeedbackResponse = this.mouseBehaviourController.getMouseFeedbackResponse();
 	}
 
@@ -36,7 +32,6 @@ public class ShapeCreationMouseBehaviourListener implements IMouseBehaviourListe
 	public void mouseDragged(MouseEvent e) {
 		if(e.getButton() == MouseEvent.BUTTON1){
 			this.mouseBehaviourController.setMousePosition(e.getPoint().getX(), e.getPoint().getY());
-//			Point location = mouseBehaviourController.getAdjustedMousePosition(e.getPoint().getX(), e.getPoint().getY());
 			if(currDragResponse != null){
 				Point location = this.mouseBehaviourController.getDiagramLocation();
 				if(currDragResponse.isDragOngoing()){
@@ -66,18 +61,8 @@ public class ShapeCreationMouseBehaviourListener implements IMouseBehaviourListe
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-//		Point location = this.mouseBehaviourController.getAdjustedMousePosition(e.getPoint().getX(), e.getPoint().getY());
-//		ISelectionHandle selectionHandle = this.mouseBehaviourController.getSelectionHandle(location);
 		this.mouseBehaviourController.setMousePosition(e.getPoint().getX(), e.getPoint().getY());
-//		ISelectionHandle selectionHandle = this.mouseBehaviourController.getSelectionHandle();
-//		if(logger.isTraceEnabled()){
-//			logger.trace("Selection handle = " + selectionHandle);
-//		}
-//		SelectionHandleType selectionRegion = selectionHandle != null ? selectionHandle.getType() : SelectionHandleType.None;
 		IMouseFeedbackResponse currMouseFeedbackResponse = this.mouseBehaviourController.getMouseFeedbackResponse();
-//		if(logger.isTraceEnabled()){
-//			logger.trace("selection handle type = " + selectionRegion);
-//		}
 		Cursor feedbackCursor = currMouseFeedbackResponse.getCurrentCursor();
 		if(logger.isTraceEnabled()){
 			logger.trace("feedback cursor = " + feedbackCursor.getName());
@@ -87,10 +72,6 @@ public class ShapeCreationMouseBehaviourListener implements IMouseBehaviourListe
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-//		if(e.getButton() == MouseEvent.BUTTON1){
-//			this.mouseBehaviourController.setMousePosition(e.getPoint().getX(), e.getPoint().getY());
-//			Point location = this.mouseBehaviourController.getDiagramLocation();
-//		}
 	}
 
 
