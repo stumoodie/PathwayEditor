@@ -60,7 +60,21 @@ public class FeedbackLinkBuilder implements IFeedbackLinkBuilder {
 		FeedbackLink retVal = new FeedbackLink(srcNode,	tgtNode, nextCounter(),
 				srcNode.getConvexHull().getCentre(), srcAnchorLocator,
 				tgtNode.getConvexHull().getCentre(), tgtAnchorLocator);
-		ILinkPointDefinition linkDefn = retVal.getLinkDefinition();
+		this.feedbackModel.addEdge(retVal);
+		return buildFromObjectType(retVal, objectType);
+	}
+
+
+	@Override
+	public IFeedbackLink createNodelessLinkFromObjectType(Point srcPosn, Point tgtPosn, ILinkObjectType linkObjectType) {
+		IFeedbackLink retVal = buildFromObjectType(new FeedbackNodelessLink(nextCounter(), srcPosn, tgtPosn), linkObjectType);
+		this.feedbackModel.addEdge(retVal);
+		return retVal;
+	}
+
+
+	private IFeedbackLink buildFromObjectType(IFeedbackLink feedbackLink, ILinkObjectType objectType) {
+		ILinkPointDefinition linkDefn = feedbackLink.getLinkDefinition();
 		ILinkAttributeDefaults linkAttribute = objectType.getDefaultAttributes();
 		linkDefn.setLineColour(linkAttribute.getLineColour());
 		linkDefn.setLineStyle(linkAttribute.getLineStyle());
@@ -73,8 +87,7 @@ public class FeedbackLinkBuilder implements IFeedbackLinkBuilder {
 		linkDefn.getTargetTerminusDefinition().setEndDecoratorType(tgtDefaults.getEndDecoratorType());
 		linkDefn.getTargetTerminusDefinition().setGap(tgtDefaults.getGap());
 		linkDefn.getTargetTerminusDefinition().setEndSize(tgtDefaults.getEndSize());
-		this.feedbackModel.addEdge(retVal);
-		return retVal;
+		return feedbackLink;
 	}
 
 }

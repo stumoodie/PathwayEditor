@@ -1,27 +1,17 @@
 package org.pathwayeditor.visualeditor.operations;
 
-import java.util.SortedSet;
-
 import org.apache.log4j.Logger;
-import org.pathwayeditor.businessobjects.drawingprimitives.IShapeNode;
 import org.pathwayeditor.businessobjects.typedefn.ILinkObjectType;
-import org.pathwayeditor.figure.geometry.Dimension;
-import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.figure.rendering.IAnchorLocator;
 import org.pathwayeditor.visualeditor.behaviour.operation.ILinkCreationOperation;
 import org.pathwayeditor.visualeditor.commands.ICommand;
 import org.pathwayeditor.visualeditor.commands.ICommandStack;
 import org.pathwayeditor.visualeditor.commands.LinkCreationCommand;
-import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
 import org.pathwayeditor.visualeditor.controller.IShapeController;
-import org.pathwayeditor.visualeditor.controller.IViewControllerModel;
 import org.pathwayeditor.visualeditor.editingview.IShapePane;
 import org.pathwayeditor.visualeditor.feedback.IFeedbackLink;
 import org.pathwayeditor.visualeditor.feedback.IFeedbackModel;
-import org.pathwayeditor.visualeditor.feedback.IFeedbackNode;
-import org.pathwayeditor.visualeditor.geometry.IIntersectionCalcnFilter;
-import org.pathwayeditor.visualeditor.geometry.IIntersectionCalculator;
 import org.pathwayeditor.visualeditor.geometry.ILinkPointDefinition;
 
 public class LinkCreationOperation implements ILinkCreationOperation {
@@ -30,16 +20,14 @@ public class LinkCreationOperation implements ILinkCreationOperation {
 	private final IFeedbackModel feedbackModel;
 	private final ICommandStack commandStack;
 	private ILinkObjectType linkObjectType;
-	private boolean canCreationSucceed = false;
-	private final IViewControllerModel viewModel;
-	private IFeedbackNode srcShape;
-	private IFeedbackNode tgtShape;
 	private IFeedbackLink currentEdge;
-	private IShapeNode srcNode;
+	private IShapeController srcNode;
+	private IAnchorLocator srcAnchorLocator;
+	private boolean creationStarted;
+	private IShapeController potentialTargetNode;
 
-	public LinkCreationOperation(IShapePane shapePane, IFeedbackModel feedbackModel, IViewControllerModel viewModel, ICommandStack commandStack) {
+	public LinkCreationOperation(IShapePane shapePane, IFeedbackModel feedbackModel, ICommandStack commandStack) {
 		this.shapePane = shapePane;
-		this.viewModel = viewModel;
 		this.feedbackModel = feedbackModel;
 		this.commandStack = commandStack;
 	}
@@ -55,14 +43,13 @@ public class LinkCreationOperation implements ILinkCreationOperation {
 	}
 
 	@Override
-	public void finishCreationDrag(Point delta) {
-		IShapeController potentialTargetNode = findTopPermittedController(delta);
+	public void finishCreation() {
 		if(potentialTargetNode != null){
 			ILinkPointDefinition linkDefn = this.currentEdge.getLinkDefinition();
 			IAnchorLocator tgtLocator = potentialTargetNode.getFigureController().getAnchorLocatorFactory().createAnchorLocator();
 			tgtLocator.setOtherEndPoint(linkDefn.getSrcAnchorPosition());
 			//TODO: Deal with self edge
-			ICommand cmd = new LinkCreationCommand(srcNode, potentialTargetNode.getDrawingElement(), this.linkObjectType, linkDefn.getSrcAnchorPosition(), tgtLocator.calcAnchorPosition());
+			ICommand cmd = new LinkCreationCommand(srcNode.getDrawingElement(), potentialTargetNode.getDrawingElement(), this.linkObjectType, linkDefn.getSrcAnchorPosition(), tgtLocator.calcAnchorPosition());
 			this.commandStack.execute(cmd);
 			if(logger.isDebugEnabled()){
 				logger.debug("Create a new shape at: " + cmd);
@@ -70,58 +57,105 @@ public class LinkCreationOperation implements ILinkCreationOperation {
 		}
 		this.feedbackModel.clear();
 		this.shapePane.updateView();
-		this.srcShape = null;
 		this.srcNode = null;
-		this.tgtShape = null;
+		this.potentialTargetNode = null;
 		this.currentEdge = null;
-		this.canCreationSucceed = false;
+		this.creationStarted = false;
 	}
 	
-	private IShapeController findTopPermittedController(Point delta){
-		IIntersectionCalculator intnCalc = this.viewModel.getIntersectionCalculator();
-		intnCalc.setFilter(new IIntersectionCalcnFilter() {
-			@Override
-			public boolean accept(IDrawingElementController node) {
-				return node instanceof IShapeController;
+//	private IShapeController findTopPermittedController(Point delta){
+//		IIntersectionCalculator intnCalc = this.viewModel.getIntersectionCalculator();
+//		intnCalc.setFilter(new IIntersectionCalcnFilter() {
+//			@Override
+//			public boolean accept(IDrawingElementController node) {
+//				return node instanceof IShapeController;
+//			}
+//		});
+//		SortedSet<IDrawingElementController> hits = intnCalc.findDrawingPrimitivesAt(this.currentEdge.getLinkDefinition().getSrcAnchorPosition().translate(delta));
+//		IShapeController retVal = null;
+//		if(!hits.isEmpty()){
+//			IShapeController potentialTargetNode = (IShapeController)hits.first();
+//			if(this.linkObjectType.getLinkConnectionRules().isValidTarget(srcNode.getAttribute().getObjectType(), potentialTargetNode.getDrawingElement().getAttribute().getObjectType())){
+//				retVal = potentialTargetNode;
+//			}
+//		}
+//		return retVal;
+//	}
+	
+	@Override
+	public void creationOngoing(Point newPosition) {
+		feedbackModel.clear();
+		if(this.srcNode.equals(this.potentialTargetNode)){
+			if(logger.isTraceEnabled()){
+				logger.trace("Not Drawing link. Posn=" + newPosition);
 			}
-		});
-		SortedSet<IDrawingElementController> hits = intnCalc.findDrawingPrimitivesAt(this.currentEdge.getLinkDefinition().getSrcAnchorPosition().translate(delta));
-		IShapeController retVal = null;
-		if(!hits.isEmpty()){
-			IShapeController potentialTargetNode = (IShapeController)hits.first();
-			if(this.linkObjectType.getLinkConnectionRules().isValidTarget(srcNode.getAttribute().getObjectType(), potentialTargetNode.getDrawingElement().getAttribute().getObjectType())){
-				retVal = potentialTargetNode;
+			this.currentEdge = null;
+		}
+		else if(this.canFinishCreation()){
+			Point oldSrcPosn = null;
+			Point srcPosn = this.srcAnchorLocator.calcAnchorPosition();
+			Point oldTgtPosn = null;
+			Point tgtPosn = newPosition;
+			IAnchorLocator tgtAnchorLocator = this.potentialTargetNode.getFigureController().getAnchorLocatorFactory().createAnchorLocator();
+			while(!srcPosn.equals(oldSrcPosn) && !tgtPosn.equals(oldTgtPosn)){
+				this.srcAnchorLocator.setOtherEndPoint(newPosition);
+				oldSrcPosn = srcPosn;
+				srcPosn = this.srcAnchorLocator.calcAnchorPosition();
+				tgtAnchorLocator.setOtherEndPoint(srcPosn);
+				oldTgtPosn = tgtPosn;
+				tgtPosn = tgtAnchorLocator.calcAnchorPosition();
+			}
+			currentEdge = feedbackModel.getFeedbackLinkBuilder().createNodelessLinkFromObjectType(srcPosn, tgtPosn, linkObjectType);
+			if(logger.isTraceEnabled()){
+				logger.trace("Drawing link from shape to shape. Link=" + currentEdge);
 			}
 		}
-		return retVal;
-	}
-
-	@Override
-	public void ongoingCreationDrag(Point delta) {
-		this.tgtShape.translatePrimitive(delta);
+		else{
+			this.srcAnchorLocator.setOtherEndPoint(newPosition);
+			Point srcPosn = this.srcAnchorLocator.calcAnchorPosition();
+			currentEdge = feedbackModel.getFeedbackLinkBuilder().createNodelessLinkFromObjectType(srcPosn, newPosition, linkObjectType);
+			if(logger.isTraceEnabled()){
+				logger.trace("Drawing link=" + currentEdge);
+			}
+		}
 		this.shapePane.updateView();
 	}
 	
 	@Override
-	public void startCreationDrag(IShapeNode hitNode) {
-		this.canCreationSucceed = false;
+	public void startCreation() {
+		this.creationStarted = true;
 		feedbackModel.clear();
-		if(this.linkObjectType.getLinkConnectionRules().isValidSource(hitNode.getAttribute().getObjectType())){
-			this.srcNode = hitNode;
-			this.srcShape = this.feedbackModel.getFeedbackNodeBuilder().createFromDrawingNodeAttribute(hitNode.getAttribute());
-			this.tgtShape = this.feedbackModel.getFeedbackNodeBuilder().createDefaultNode(new Envelope(hitNode.getAttribute().getBounds().getCentre(), new Dimension(1.0, 1.0)));
-			currentEdge = feedbackModel.getFeedbackLinkBuilder().createFromObjectType(srcShape, tgtShape, linkObjectType);
-			this.shapePane.updateView();
-			if(logger.isTraceEnabled()){
-				logger.trace("Starting create link drag. link=" + currentEdge);
-			}
-		}
+		this.srcAnchorLocator = this.srcNode.getFigureController().getAnchorLocatorFactory().createAnchorLocator();
+		this.shapePane.updateView();
 	}
-
 
 	@Override
-	public boolean canCreationSucceed() {
-		return this.canCreationSucceed ;
+	public void setPotentialTarget(IShapeController potentialTarget) {
+		this.potentialTargetNode = potentialTarget;
 	}
-	
+
+	@Override
+	public boolean isLinkCreationStarted() {
+		return this.creationStarted;
+	}
+
+	@Override
+	public boolean canFinishCreation() {
+		return this.srcNode != null && this.potentialTargetNode != null && this.linkObjectType != null &&
+			this.linkObjectType.getLinkConnectionRules().isValidTarget(this.srcNode.getDrawingElement().getAttribute().getObjectType(),
+					this.potentialTargetNode.getDrawingElement().getAttribute().getObjectType());
+	}
+
+	@Override
+	public void setPotentialSourceNode(IShapeController potentialSource) {
+		this.srcNode = potentialSource;
+	}
+
+	@Override
+	public boolean canStartCreation() {
+		return this.srcNode != null	&& this.linkObjectType != null &&
+			this.linkObjectType.getLinkConnectionRules().isValidSource(this.srcNode.getDrawingElement().getAttribute().getObjectType());
+	}
+
+
 }

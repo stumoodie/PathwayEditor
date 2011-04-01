@@ -180,4 +180,10 @@ public class FeedbackNode implements IFeedbackNode {
 		this.figureRenderingController.generateFigureDefinition();
 	}
 
+	@Override
+	public void setLocation(Point newPosition) {
+		Point delta = this.initialBounds.getOrigin().difference(newPosition);
+		this.translatePrimitive(delta);
+	}
+
 }

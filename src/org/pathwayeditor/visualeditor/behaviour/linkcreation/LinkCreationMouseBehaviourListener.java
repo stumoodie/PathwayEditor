@@ -1,94 +1,61 @@
 package org.pathwayeditor.visualeditor.behaviour.linkcreation;
 
-import java.awt.Cursor;
 import java.awt.event.MouseEvent;
 
 import org.apache.log4j.Logger;
-import org.pathwayeditor.figure.geometry.Point;
+import org.pathwayeditor.visualeditor.behaviour.IHitCalculator;
 import org.pathwayeditor.visualeditor.behaviour.IMouseBehaviourListener;
-import org.pathwayeditor.visualeditor.behaviour.IMouseFeedbackResponse;
-import org.pathwayeditor.visualeditor.behaviour.IMouseFeedbackResponse.StateType;
-import org.pathwayeditor.visualeditor.behaviour.ISelectionResponse;
-import org.pathwayeditor.visualeditor.behaviour.ISelectionStateBehaviourController;
-import org.pathwayeditor.visualeditor.behaviour.creation.ILinkCreationDragResponse;
-import org.pathwayeditor.visualeditor.controller.INodeController;
+import org.pathwayeditor.visualeditor.behaviour.operation.ILinkCreationOperation;
+import org.pathwayeditor.visualeditor.controller.IShapeController;
 
 public class LinkCreationMouseBehaviourListener implements IMouseBehaviourListener {
-	private ILinkCreationDragResponse currDragResponse;
-	private IMouseFeedbackResponse currMouseFeedbackResponse;
-	private final ISelectionStateBehaviourController mouseBehaviourController;
+	private ILinkCreationOperation linkCreationResponse;
+	private final IHitCalculator mouseBehaviourController;
 	private final Logger logger = Logger.getLogger(this.getClass());
+	private ILinkTypeInspector objectTypeInspector;
 	
-	public LinkCreationMouseBehaviourListener(ISelectionStateBehaviourController mouseBehaviourController) {
-		this.mouseBehaviourController = mouseBehaviourController;
-	}
-
-	private void setCurrentCursorResponse(){
-		currMouseFeedbackResponse = this.mouseBehaviourController.getMouseFeedbackResponse();
+	public LinkCreationMouseBehaviourListener(IHitCalculator locationCalculator, ILinkCreationOperation linkCreationResponse,
+			ILinkTypeInspector objectTypeInspector) {
+		this.mouseBehaviourController = locationCalculator;
+		this.linkCreationResponse = linkCreationResponse;
+		this.objectTypeInspector = objectTypeInspector;
 	}
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		if(e.getButton() == MouseEvent.BUTTON1){
-			this.mouseBehaviourController.setMousePosition(e.getPoint().getX(), e.getPoint().getY());
-			if(currDragResponse == null){
-					currDragResponse = (ILinkCreationDragResponse)this.mouseBehaviourController.getDragResponse();
-					currMouseFeedbackResponse = this.mouseBehaviourController.getMouseFeedbackResponse();
-			}
-			if(currDragResponse != null){
-				Point location = this.mouseBehaviourController.getDiagramLocation();
-				if(currDragResponse.isDragOngoing()){
-					if(currDragResponse.canContinueDrag(location)){
-						currDragResponse.dragContinuing(location);
-						if(currDragResponse.canReparent()){
-							currMouseFeedbackResponse.changeState(StateType.REPARENTING);
-							logger.trace("Setting hand cursor as reparenting enabled");
-						}
-						else if(currDragResponse.canOperationSucceed()){
-							logger.trace("Can move, but cannot reparent. Setting to default for current location");
-							currMouseFeedbackResponse.changeState(StateType.DEFAULT);
-						}
-						else{
-							currMouseFeedbackResponse.changeState(StateType.FORBIDDEN);
-							logger.trace("Move is forbidden");
-						}
-					}
-				}
-				else{
-					INodeController node = this.mouseBehaviourController.getNodeAtCurrentPoint();
-					if(node != null){
-						currDragResponse.setCurrentNode(node);
-						currDragResponse.dragStarted(location);
-					}
-				}
-			}
-		}
-		e.getComponent().setCursor(currMouseFeedbackResponse.getCurrentCursor());
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		this.mouseBehaviourController.setMousePosition(e.getPoint().getX(), e.getPoint().getY());
-		IMouseFeedbackResponse currMouseFeedbackResponse = this.mouseBehaviourController.getMouseFeedbackResponse();
-		Cursor feedbackCursor = currMouseFeedbackResponse.getCurrentCursor();
-		if(logger.isTraceEnabled()){
-			logger.trace("feedback cursor = " + feedbackCursor.getName());
+		if(this.linkCreationResponse.isLinkCreationStarted()){
+			this.mouseBehaviourController.setMousePosition(e.getPoint().getX(), e.getPoint().getY());
+			if(logger.isTraceEnabled()){
+				logger.trace("Link creation ongoing posn=" + this.mouseBehaviourController.getDiagramLocation());
+			}
+			IShapeController potentialTarget = this.mouseBehaviourController.getShapeAtCurrentLocation();
+			this.linkCreationResponse.setPotentialTarget(potentialTarget);
+			this.linkCreationResponse.creationOngoing(this.mouseBehaviourController.getDiagramLocation());
 		}
-		e.getComponent().setCursor(feedbackCursor);
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if(e.getButton() == MouseEvent.BUTTON1){
 			this.mouseBehaviourController.setMousePosition(e.getPoint().getX(), e.getPoint().getY());
-			Point location = this.mouseBehaviourController.getDiagramLocation();
-			ISelectionResponse currSelnResponse = null;
-			currSelnResponse = this.mouseBehaviourController.getClickResponse();
-			if(!e.isShiftDown() && !e.isAltDown()){
-				currSelnResponse.primaryClick(location);
+			if(this.linkCreationResponse.isLinkCreationStarted()){
+				IShapeController finalShape = this.mouseBehaviourController.getShapeAtCurrentLocation();
+				this.linkCreationResponse.setPotentialTarget(finalShape);
+				if(this.linkCreationResponse.canFinishCreation()){
+					this.linkCreationResponse.finishCreation();
+				}
 			}
-			else if(e.isShiftDown() && !e.isAltDown()){
-				currSelnResponse.secondaryClick(location);
+			else{
+				IShapeController startShape = this.mouseBehaviourController.getShapeAtCurrentLocation();
+				this.linkCreationResponse.setPotentialSourceNode(startShape);
+				this.linkCreationResponse.setLinkObjectType(this.objectTypeInspector.getCurrentLinkType());
+				if(this.linkCreationResponse.canStartCreation()){
+					this.linkCreationResponse.startCreation();
+				}
 			}
 		}
 	}
@@ -108,14 +75,6 @@ public class LinkCreationMouseBehaviourListener implements IMouseBehaviourListen
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		if(currDragResponse != null){
-			currDragResponse.dragFinished();
-			currMouseFeedbackResponse.reset();
-			currDragResponse = null;
-		}
-		this.mouseBehaviourController.setMousePosition(e.getPoint().getX(), e.getPoint().getY());
-		setCurrentCursorResponse();
-		e.getComponent().setCursor(currMouseFeedbackResponse.getCurrentCursor());
 	}
 
 }

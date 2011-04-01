@@ -1,21 +1,29 @@
 package org.pathwayeditor.visualeditor.behaviour.operation;
 
-import org.pathwayeditor.businessobjects.drawingprimitives.IShapeNode;
 import org.pathwayeditor.businessobjects.typedefn.ILinkObjectType;
 import org.pathwayeditor.figure.geometry.Point;
+import org.pathwayeditor.visualeditor.controller.IShapeController;
 
 public interface ILinkCreationOperation {
 
-	void startCreationDrag(IShapeNode startNode);
+	void startCreation();
 
 	void setLinkObjectType(ILinkObjectType currentLinkType);
 
 	ILinkObjectType getLinkObjectType();
 
-	void ongoingCreationDrag(Point lastDelta);
+	void creationOngoing(Point lastDelta);
 
-	void finishCreationDrag(Point lastDelta);
+	void finishCreation();
 
-	boolean canCreationSucceed();
+	void setPotentialTarget(IShapeController potentialTarget);
+
+	boolean isLinkCreationStarted();
+
+	boolean canFinishCreation();
+
+	void setPotentialSourceNode(IShapeController potentialSource);
+
+	boolean canStartCreation();
 
 }

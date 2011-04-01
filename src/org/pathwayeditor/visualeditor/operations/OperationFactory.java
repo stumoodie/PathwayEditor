@@ -64,7 +64,7 @@ public class OperationFactory implements IOperationFactory {
 		initResponses();
 		shapeCreationOperation = new ShapeCreationOperation(shapePane, feedbackModel, viewModel, commandStack);
 		this.selectionOperations = new SelectionOperation(selectionRecord, viewModel.getIntersectionCalculator());
-		this.linkCreationOperation = new LinkCreationOperation(shapePane, feedbackModel, viewModel, commandStack);
+		this.linkCreationOperation = new LinkCreationOperation(shapePane, feedbackModel, commandStack);
 	}
 	
 	private void initResponses(){

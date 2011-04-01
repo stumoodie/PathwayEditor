@@ -45,4 +45,6 @@ public interface IFeedbackNode extends IFeedbackElement {
 	void setLineStyle(LineStyle solid);
 
 	void setLineWidth(double d);
+
+	void setLocation(Point newPosition);
 }

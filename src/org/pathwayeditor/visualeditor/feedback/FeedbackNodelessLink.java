@@ -5,76 +5,19 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.pathwayeditor.figure.geometry.Point;
-import org.pathwayeditor.figure.rendering.IAnchorLocator;
 import org.pathwayeditor.visualeditor.geometry.ILinkPointDefinition;
 import org.pathwayeditor.visualeditor.geometry.LinkPointDefinition;
 
-public class FeedbackLink implements IFeedbackLink {
+public class FeedbackNodelessLink implements IFeedbackLink {
 	private final ILinkPointDefinition linkDefinition;
-	private IAnchorLocator srcAnchorCalc;
-	private IAnchorLocator tgtAnchorCalc;
 	private Point lastDelta = null;
 	private final int elementIdentifier;
-	private final IFeedbackNodeListener srcFeedbackNodeListener;
-	private final IFeedbackNodeListener tgtFeedbackNodeListener;
 	private final List<IFeedbackLinkListener> listeners;
 	
-	public FeedbackLink(IFeedbackNode srcNode, IFeedbackNode tgtNode, int elementIdentifier, Point srcAnchor, IAnchorLocator srcAnchorLocator, Point tgtAnchor, IAnchorLocator tgtAnchorLocator) {
+	public FeedbackNodelessLink(int elementIdentifier, Point srcAnchor, Point tgtAnchor) {
 		this.listeners = new LinkedList<IFeedbackLinkListener>();
 		this.elementIdentifier = elementIdentifier;
 		this.linkDefinition = new LinkPointDefinition(srcAnchor, tgtAnchor);
-		this.srcAnchorCalc = srcAnchorLocator;
-		this.tgtAnchorCalc = tgtAnchorLocator;
-		this.srcFeedbackNodeListener = new IFeedbackNodeListener() {
-			
-			@Override
-			public void nodeTranslationEvent(IFeedbackNodeTranslationEvent e) {
-				IFeedbackNode srcNode = e.getNode();
-				srcAnchorCalc = srcNode.getFigureController().getAnchorLocatorFactory().createAnchorLocator();
-				ILinkPointDefinition origDefn = linkDefinition.getCopy();;
-				updateSrcAnchor(linkDefinition.getSourceLineSegment().getTerminus());
-				updateTgtAnchor(linkDefinition.getTargetLineSegment().getTerminus());
-				notifyLinkChange(origDefn, linkDefinition);
-			}
-			
-			@Override
-			public void nodeResizeEvent(IFeedbackNodeResizeEvent e) {
-				IFeedbackNode srcNode = e.getNode();
-				srcAnchorCalc = srcNode.getFigureController().getAnchorLocatorFactory().createAnchorLocator();
-				ILinkPointDefinition origDefn = linkDefinition.getCopy();;
-				updateSrcAnchor(linkDefinition.getSourceLineSegment().getTerminus());
-				updateTgtAnchor(linkDefinition.getTargetLineSegment().getTerminus());
-				notifyLinkChange(origDefn, linkDefinition);
-			}
-		};
-		this.tgtFeedbackNodeListener = new IFeedbackNodeListener() {
-			
-			@Override
-			public void nodeTranslationEvent(IFeedbackNodeTranslationEvent e) {
-				IFeedbackNode tgtNode = e.getNode();
-				tgtAnchorCalc = tgtNode.getFigureController().getAnchorLocatorFactory().createAnchorLocator();
-				ILinkPointDefinition origDefn = linkDefinition.getCopy();;
-				updateTgtAnchor(linkDefinition.getTargetLineSegment().getTerminus());
-				updateSrcAnchor(linkDefinition.getSourceLineSegment().getTerminus());
-				notifyLinkChange(origDefn, linkDefinition);
-			}
-			
-			@Override
-			public void nodeResizeEvent(IFeedbackNodeResizeEvent e) {
-				IFeedbackNode tgtNode = e.getNode();
-				tgtAnchorCalc = tgtNode.getFigureController().getAnchorLocatorFactory().createAnchorLocator();
-				ILinkPointDefinition origDefn = linkDefinition.getCopy();;
-				updateTgtAnchor(linkDefinition.getTargetLineSegment().getTerminus());
-				updateSrcAnchor(linkDefinition.getSourceLineSegment().getTerminus());
-				notifyLinkChange(origDefn, linkDefinition);
-			}
-		};
-		if(srcNode != null){
-			srcNode.addFeedbackNodeListener(this.srcFeedbackNodeListener);
-		}
-		if(tgtNode != null){
-			tgtNode.addFeedbackNodeListener(this.tgtFeedbackNodeListener);
-		}
 	}
 
 	@Override
@@ -124,15 +67,11 @@ public class FeedbackLink implements IFeedbackLink {
 	}
 	
 	private void updateSrcAnchor(Point otherEndPos){
-		srcAnchorCalc.setOtherEndPoint(otherEndPos);
-		Point newSrcPosn = srcAnchorCalc.calcAnchorPosition();
-		this.linkDefinition.setSrcAnchorPosition(newSrcPosn);
+		this.linkDefinition.setSrcAnchorPosition(otherEndPos);
 	}
 	
 	private void updateTgtAnchor(Point otherEndPos){
-		tgtAnchorCalc.setOtherEndPoint(otherEndPos);
-		Point newSrcPosn = tgtAnchorCalc.calcAnchorPosition();
-		this.linkDefinition.setTgtAnchorPosition(newSrcPosn);
+		this.linkDefinition.setTgtAnchorPosition(otherEndPos);
 	}
 
 	@Override
@@ -188,9 +127,9 @@ public class FeedbackLink implements IFeedbackLink {
 			return true;
 		if (obj == null)
 			return false;
-		if (!(obj instanceof FeedbackLink))
+		if (!(obj instanceof FeedbackNodelessLink))
 			return false;
-		FeedbackLink other = (FeedbackLink) obj;
+		FeedbackNodelessLink other = (FeedbackNodelessLink) obj;
 		if (elementIdentifier != other.elementIdentifier)
 			return false;
 		return true;

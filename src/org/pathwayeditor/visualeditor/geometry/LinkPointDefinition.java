@@ -52,6 +52,18 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 		this.tgtTermDefn = new GraphicalLinkTerminusDefinition(link.getTargetTerminus());
 		this.srcLineStartPosn = calcFirstDrawnPoint(this.getSourceLineSegment(), this.srcTermDefn.getEndSize(), this.srcTermDefn.getGap());
 		this.tgtLineEndPosn = calcFirstDrawnPoint(this.getTargetLineSegment(), this.tgtTermDefn.getEndSize(), this.tgtTermDefn.getGap());
+		this.srcTermDefn.addDefinitionChangeListener(new IGraphicalLinkTerminusDefinitionChangeListener() {
+			@Override
+			public void linkTerminusPropertyChange(IGraphicalLinkTerminusDefinitionChangeEvent e) {
+				updateLineStart();
+			}
+		});
+		this.tgtTermDefn.addDefinitionChangeListener(new IGraphicalLinkTerminusDefinitionChangeListener() {
+			@Override
+			public void linkTerminusPropertyChange(IGraphicalLinkTerminusDefinitionChangeEvent e) {
+				updateLineStart();
+			}
+		});
 	}
 	
 	public LinkPointDefinition(ILinkObjectType linkObjectType, Point srcPosn, Point tgtPosn){
@@ -66,6 +78,18 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 		this.tgtTermDefn = new GraphicalLinkTerminusDefinition(linkObjectType.getTargetTerminusDefinition());
 		this.srcLineStartPosn = calcFirstDrawnPoint(this.getSourceLineSegment(), this.srcTermDefn.getEndSize(), this.srcTermDefn.getGap());
 		this.tgtLineEndPosn = calcFirstDrawnPoint(this.getTargetLineSegment(), this.tgtTermDefn.getEndSize(), this.tgtTermDefn.getGap());
+		this.srcTermDefn.addDefinitionChangeListener(new IGraphicalLinkTerminusDefinitionChangeListener() {
+			@Override
+			public void linkTerminusPropertyChange(IGraphicalLinkTerminusDefinitionChangeEvent e) {
+				updateLineStart();
+			}
+		});
+		this.tgtTermDefn.addDefinitionChangeListener(new IGraphicalLinkTerminusDefinitionChangeListener() {
+			@Override
+			public void linkTerminusPropertyChange(IGraphicalLinkTerminusDefinitionChangeEvent e) {
+				updateLineStart();
+			}
+		});
 	}
 	
 	public LinkPointDefinition(Point srcAnchor, Point tgtAnchor) {
@@ -76,6 +100,18 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 		this.pointList.add(tgtAnchor);
 		this.srcLineStartPosn = calcFirstDrawnPoint(this.getSourceLineSegment(), this.srcTermDefn.getEndSize(), this.srcTermDefn.getGap());
 		this.tgtLineEndPosn = calcFirstDrawnPoint(this.getTargetLineSegment(), this.tgtTermDefn.getEndSize(), this.tgtTermDefn.getGap());
+		this.srcTermDefn.addDefinitionChangeListener(new IGraphicalLinkTerminusDefinitionChangeListener() {
+			@Override
+			public void linkTerminusPropertyChange(IGraphicalLinkTerminusDefinitionChangeEvent e) {
+				updateLineStart();
+			}
+		});
+		this.tgtTermDefn.addDefinitionChangeListener(new IGraphicalLinkTerminusDefinitionChangeListener() {
+			@Override
+			public void linkTerminusPropertyChange(IGraphicalLinkTerminusDefinitionChangeEvent e) {
+				updateLineStart();
+			}
+		});
 	}
 	
 	public LinkPointDefinition(LinkPointDefinition other, Point translation){
@@ -90,6 +126,18 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 		tgtTermDefn = new GraphicalLinkTerminusDefinition(other.tgtTermDefn);
 		this.srcLineStartPosn = other.srcLineStartPosn;
 		this.tgtLineEndPosn = other.tgtLineEndPosn;
+		this.srcTermDefn.addDefinitionChangeListener(new IGraphicalLinkTerminusDefinitionChangeListener() {
+			@Override
+			public void linkTerminusPropertyChange(IGraphicalLinkTerminusDefinitionChangeEvent e) {
+				updateLineStart();
+			}
+		});
+		this.tgtTermDefn.addDefinitionChangeListener(new IGraphicalLinkTerminusDefinitionChangeListener() {
+			@Override
+			public void linkTerminusPropertyChange(IGraphicalLinkTerminusDefinitionChangeEvent e) {
+				updateLineStart();
+			}
+		});
 	}
 
 	public LinkPointDefinition(LinkPointDefinition other){
@@ -101,6 +149,18 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 		tgtTermDefn = new GraphicalLinkTerminusDefinition(other.tgtTermDefn);
 		this.srcLineStartPosn = other.srcLineStartPosn;
 		this.tgtLineEndPosn = other.tgtLineEndPosn;
+		this.srcTermDefn.addDefinitionChangeListener(new IGraphicalLinkTerminusDefinitionChangeListener() {
+			@Override
+			public void linkTerminusPropertyChange(IGraphicalLinkTerminusDefinitionChangeEvent e) {
+				updateLineStart();
+			}
+		});
+		this.tgtTermDefn.addDefinitionChangeListener(new IGraphicalLinkTerminusDefinitionChangeListener() {
+			@Override
+			public void linkTerminusPropertyChange(IGraphicalLinkTerminusDefinitionChangeEvent e) {
+				updateLineStart();
+			}
+		});
 	}
 
 	@Override

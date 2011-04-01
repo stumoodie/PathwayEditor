@@ -25,37 +25,37 @@ import org.pathwayeditor.visualeditor.geometry.ILinkPointDefinition;
 public class LinkDrawer  {
 	private final Logger logger = Logger.getLogger(this.getClass()); 
 	private final ILinkPointDefinition linkEdge;
-	private Point startPosition = Point.ORIGIN;
-	private Point endPosition = Point.ORIGIN;
+//	private Point startPosition = Point.ORIGIN;
+//	private Point endPosition = Point.ORIGIN;
 	
 	public LinkDrawer(ILinkPointDefinition linkEdge){
 		this.linkEdge = linkEdge;
 	}
 	
 	
-	public double getLineLength() {
-		return startPosition.getDistance(endPosition);
-	}
-	
-	
-	public Point getStartPosition() {
-		return startPosition;
-	}
-
-
-	public void setStartPosition(Point startPosition) {
-		this.startPosition = startPosition;
-	}
-
-
-	public Point getEndPosition() {
-		return endPosition;
-	}
-
-
-	public void setEndPosition(Point endPosition) {
-		this.endPosition = endPosition;
-	}
+//	public double getLineLength() {
+//		return startPosition.getDistance(endPosition);
+//	}
+//	
+//	
+//	public Point getStartPosition() {
+//		return startPosition;
+//	}
+//
+//
+//	public void setStartPosition(Point startPosition) {
+//		this.startPosition = startPosition;
+//	}
+//
+//
+//	public Point getEndPosition() {
+//		return endPosition;
+//	}
+//
+//
+//	public void setEndPosition(Point endPosition) {
+//		this.endPosition = endPosition;
+//	}
 
 
 	private Stroke createStroke(LineStyle lineStyle, double lineWidth){

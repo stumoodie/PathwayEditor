@@ -1,41 +1,31 @@
 package org.pathwayeditor.visualeditor.behaviour;
 
-import java.util.SortedSet;
-
 import javax.swing.JPopupMenu;
 
 import org.apache.log4j.Logger;
 import org.pathwayeditor.figure.geometry.Point;
-import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
-import org.pathwayeditor.visualeditor.controller.INodeController;
-import org.pathwayeditor.visualeditor.editingview.IDomainModelLayer;
 import org.pathwayeditor.visualeditor.editingview.ISelectionLayer;
 import org.pathwayeditor.visualeditor.editingview.IShapePane;
 import org.pathwayeditor.visualeditor.editingview.LayerType;
-import org.pathwayeditor.visualeditor.geometry.IIntersectionCalcnFilter;
-import org.pathwayeditor.visualeditor.geometry.IIntersectionCalculator;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
 
 public class GeneralStateController implements ISelectionStateBehaviourController {
 	private final Logger logger = Logger.getLogger(this.getClass());
+	private final IHitCalculator hitCalc;
 	private final IShapePane shapePane;
 	private final IControllerResponses responses;
-	private Point mousePosition;
+//	private Point mousePosition;
 
-	public GeneralStateController(IShapePane pane, IControllerResponses responses){
+	public GeneralStateController(IShapePane pane, IHitCalculator hitCalc, IControllerResponses responses){
 		this.shapePane = pane;
 		this.responses = responses;
+		this.hitCalc = hitCalc;
 	}
 	
 
 	@Override
 	public Point getDiagramLocation(){
-		Point retVal = this.shapePane.getPaneBounds().getOrigin();
-		retVal = retVal.translate(this.mousePosition);
-		if(logger.isTraceEnabled()){
-			logger.trace("Adjust position. orig=" + this.mousePosition + " : adjustedPoint=" + retVal + ", paneBounds=" + shapePane.getPaneBounds());
-		}
-		return retVal;  
+		return this.hitCalc.getDiagramLocation();
 	}
 	
 
@@ -73,31 +63,32 @@ public class GeneralStateController implements ISelectionStateBehaviourControlle
 
 	@Override
 	public void showPopupMenus(JPopupMenu popup) {
-		this.shapePane.showPopup(popup, this.mousePosition.getX(), this.mousePosition.getY());
+		Point mousePosition = this.hitCalc.getMousePosition();
+		this.shapePane.showPopup(popup, mousePosition.getX(), mousePosition.getY());
 	}
 
 
 	@Override
 	public void setMousePosition(double x, double y) {
-		this.mousePosition = new Point(x, y);
+		this.hitCalc.setMousePosition(x, y);
 	}
 
 
-	@Override
-	public INodeController getNodeAtCurrentPoint() {
-		IDomainModelLayer domainLayer = this.shapePane.getLayer(LayerType.DOMAIN);
-		IIntersectionCalculator intnCalc = domainLayer.getViewControllerStore().getIntersectionCalculator();
-		intnCalc.setFilter(new IIntersectionCalcnFilter() {
-			@Override
-			public boolean accept(IDrawingElementController node) {
-				return node instanceof INodeController;
-			}
-		});
-		SortedSet<IDrawingElementController> hits = intnCalc.findDrawingPrimitivesAt(getDiagramLocation());
-		INodeController retVal = null;
-		if(!hits.isEmpty()){
-			retVal = (INodeController)hits.first();
-		}
-		return retVal;
-	}
+//	@Override
+//	public INodeController getNodeAtCurrentPoint() {
+//		IDomainModelLayer domainLayer = this.shapePane.getLayer(LayerType.DOMAIN);
+//		IIntersectionCalculator intnCalc = domainLayer.getViewControllerStore().getIntersectionCalculator();
+//		intnCalc.setFilter(new IIntersectionCalcnFilter() {
+//			@Override
+//			public boolean accept(IDrawingElementController node) {
+//				return node instanceof INodeController;
+//			}
+//		});
+//		SortedSet<IDrawingElementController> hits = intnCalc.findDrawingPrimitivesAt(getDiagramLocation());
+//		INodeController retVal = null;
+//		if(!hits.isEmpty()){
+//			retVal = (INodeController)hits.first();
+//		}
+//		return retVal;
+//	}
 }

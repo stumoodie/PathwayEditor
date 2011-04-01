@@ -12,7 +12,6 @@ import org.pathwayeditor.visualeditor.behaviour.creation.IShapeTypeInspector;
 import org.pathwayeditor.visualeditor.behaviour.creation.MouseCreationFeedbackResponse;
 import org.pathwayeditor.visualeditor.behaviour.creation.ShapeCreationMouseBehaviourListener;
 import org.pathwayeditor.visualeditor.behaviour.linkcreation.ILinkTypeInspector;
-import org.pathwayeditor.visualeditor.behaviour.linkcreation.LinkCreationControllerResponses;
 import org.pathwayeditor.visualeditor.behaviour.linkcreation.LinkCreationMouseBehaviourListener;
 import org.pathwayeditor.visualeditor.behaviour.operation.IOperationFactory;
 import org.pathwayeditor.visualeditor.behaviour.selection.PopupMenuListener;
@@ -39,10 +38,11 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 		this.shapePane = pane;
 		IControllerResponses selectionResponse = new SelectionControllerResponses(opFactory);
 		this.keyListener = new SelectionKeyListener(selectionResponse);
-		ISelectionStateBehaviourController selectionController = new GeneralStateController(pane, selectionResponse);
+		ISelectionStateBehaviourController selectionController = new GeneralStateController(pane, new HitCalculator(pane), selectionResponse);
 		this.popupMenuListener = new PopupMenuListener(selectionController, selectionResponse);
 		this.selectionStateController = new SelectionMouseBehaviourListener(selectionController);
-		this.shapeCreationStateController = new ShapeCreationMouseBehaviourListener(new GeneralStateController(pane, new CreationControllerResponses(opFactory,
+		this.shapeCreationStateController = new ShapeCreationMouseBehaviourListener(new GeneralStateController(pane, new HitCalculator(pane),
+				new CreationControllerResponses(opFactory,
 				new IShapeTypeInspector() {
 					
 					@Override
@@ -56,14 +56,22 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 				return (IShapeObjectType)currShapeType;
 			}
 		}), new MouseCreationFeedbackResponse());
-		this.linkCreationStateController = new LinkCreationMouseBehaviourListener(new GeneralStateController(pane, new LinkCreationControllerResponses(opFactory,
+//		this.linkCreationStateController = new LinkCreationMouseBehaviourListener(new HitCalculator(pane),
+//				new LinkCreationResponse(
+//						new ILinkTypeInspector() {
+//							@Override
+//							public ILinkObjectType getCurrentLinkType() {
+//								return (ILinkObjectType)currShapeType;
+//							}
+//						}, opFactory.getLinkCreationOperation()));
+		this.linkCreationStateController = new LinkCreationMouseBehaviourListener(new HitCalculator(pane),
+				opFactory.getLinkCreationOperation(),
 				new ILinkTypeInspector() {
-			
 			@Override
 			public ILinkObjectType getCurrentLinkType() {
 				return (ILinkObjectType)currShapeType;
 			}
-		})));
+		});
 		this.currentStateController = this.selectionStateController;
 	}
 

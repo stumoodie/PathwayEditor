@@ -14,4 +14,6 @@ public interface IFeedbackLinkBuilder {
 	IFeedbackLink createFromAttribute(IFeedbackNode srcNode, IFeedbackNode tgtNode, ILinkAttribute linkAttribute,
 			Point point, IAnchorLocator srcAnchorLocator, Point point2, IAnchorLocator tgtAnchorLocator);
 
+	IFeedbackLink createNodelessLinkFromObjectType(Point srcPosn, Point tgtPosn, ILinkObjectType linkObjectType);
+
 }

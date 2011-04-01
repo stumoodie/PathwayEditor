@@ -1,10 +1,15 @@
 package org.pathwayeditor.visualeditor.geometry;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkTerminus;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LinkEndDecoratorShape;
 import org.pathwayeditor.businessobjects.typedefn.ILinkTerminusDefaults;
 import org.pathwayeditor.businessobjects.typedefn.ILinkTerminusDefinition;
 import org.pathwayeditor.figure.geometry.Dimension;
+import org.pathwayeditor.visualeditor.geometry.IGraphicalLinkTerminusDefinitionChangeEvent.GraphicalLinkTerminusDefinitionChangeType;
 
 public class GraphicalLinkTerminusDefinition implements IGraphicalLinkTerminusDefinition {
 	private static final Dimension DEFAULT_END_SIZE = new Dimension(0, 0);
@@ -13,6 +18,7 @@ public class GraphicalLinkTerminusDefinition implements IGraphicalLinkTerminusDe
 	private Dimension endSize;
 	private double gap;
 	private LinkEndDecoratorShape endDecoratorType;
+	private final List<IGraphicalLinkTerminusDefinitionChangeListener> listeners = new LinkedList<IGraphicalLinkTerminusDefinitionChangeListener>();
 	
 	public GraphicalLinkTerminusDefinition(ILinkTerminus terminus) {
 		this.endSize = terminus.getEndSize();
@@ -56,16 +62,72 @@ public class GraphicalLinkTerminusDefinition implements IGraphicalLinkTerminusDe
 
 	@Override
 	public void setEndSize(Dimension endSize) {
-		this.endSize = endSize;
+		if(!this.endSize.equals(endSize)){
+			Dimension oldValue = this.endSize;
+			this.endSize = endSize;
+			notifyPropertyChange(GraphicalLinkTerminusDefinitionChangeType.SIZE, oldValue, this.endSize);
+		}
 	}
 
 	@Override
 	public void setGap(double gap) {
-		this.gap = gap;
+		if(this.gap != gap){
+			double oldValue = this.gap;
+			this.gap = gap;
+			notifyPropertyChange(GraphicalLinkTerminusDefinitionChangeType.GAP, oldValue, gap);
+		}
 	}
 
 	@Override
 	public void setEndDecoratorType(LinkEndDecoratorShape endDecoratorType) {
-		this.endDecoratorType = endDecoratorType;
+		if(!this.endDecoratorType.equals(endDecoratorType)){
+			LinkEndDecoratorShape oldValue = this.endDecoratorType;
+			this.endDecoratorType = endDecoratorType;
+			notifyPropertyChange(GraphicalLinkTerminusDefinitionChangeType.END_DECORATOR, oldValue, this.endDecoratorType);
+		}
+	}
+
+	@Override
+	public void addDefinitionChangeListener(IGraphicalLinkTerminusDefinitionChangeListener l) {
+		this.listeners.add(l);
+	}
+
+	@Override
+	public void removeDefinitionChangeListener(IGraphicalLinkTerminusDefinitionChangeListener l) {
+		this.listeners.remove(l);
+	}
+
+	@Override
+	public List<IGraphicalLinkTerminusDefinitionChangeListener> getDefinitionChangeListeners() {
+		return new ArrayList<IGraphicalLinkTerminusDefinitionChangeListener>(this.listeners);
+	}
+	
+	private void notifyPropertyChange(final GraphicalLinkTerminusDefinitionChangeType type, final Object oldGap, final Object newGap){
+		IGraphicalLinkTerminusDefinitionChangeEvent e = new IGraphicalLinkTerminusDefinitionChangeEvent(){
+
+			@Override
+			public Object getOldValue() {
+				return oldGap;
+			}
+
+			@Override
+			public Object getNewValue() {
+				return newGap;
+			}
+
+			@Override
+			public GraphicalLinkTerminusDefinitionChangeType getChangeType() {
+				return type;
+			}
+
+			@Override
+			public IGraphicalLinkTerminusDefinition getSource() {
+				return GraphicalLinkTerminusDefinition.this;
+			}
+			
+		};
+		for(IGraphicalLinkTerminusDefinitionChangeListener l : this.listeners){
+			l.linkTerminusPropertyChange(e);
+		}
 	}
 }

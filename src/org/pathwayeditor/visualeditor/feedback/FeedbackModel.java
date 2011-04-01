@@ -279,11 +279,11 @@ public class FeedbackModel implements IFeedbackModel {
 		return this.nodes.iterator().next();
 	}
 
-	void addNode(FeedbackNode newNode) {
+	void addNode(IFeedbackNode newNode) {
 		this.nodes.add(newNode);
 	}
 
-	void addEdge(FeedbackLink newEdge) {
+	void addEdge(IFeedbackLink newEdge) {
 		this.links.add(newEdge);
 	}
 
