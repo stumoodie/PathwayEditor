@@ -173,10 +173,12 @@ public class LinkCreationOperation implements ILinkCreationOperation {
 	@Override
 	public void cancel() {
 		this.feedbackModel.clear();
+		this.creationStarted = false;
 		this.currentEdge = null;
 		this.linkObjectType = null;
 		this.srcNode = null;
 		this.potentialTargetNode = null;
+		this.shapePane.updateView();
 	}
 
 

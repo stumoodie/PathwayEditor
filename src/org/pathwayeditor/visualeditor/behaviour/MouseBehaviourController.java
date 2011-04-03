@@ -1,7 +1,5 @@
 package org.pathwayeditor.visualeditor.behaviour;
 
-import java.awt.event.KeyListener;
-
 import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.typedefn.ILinkObjectType;
 import org.pathwayeditor.businessobjects.typedefn.IObjectType;
@@ -14,9 +12,7 @@ import org.pathwayeditor.visualeditor.behaviour.creation.ShapeCreationMouseBehav
 import org.pathwayeditor.visualeditor.behaviour.linkcreation.ILinkTypeInspector;
 import org.pathwayeditor.visualeditor.behaviour.linkcreation.LinkCreationMouseBehaviourListener;
 import org.pathwayeditor.visualeditor.behaviour.operation.IOperationFactory;
-import org.pathwayeditor.visualeditor.behaviour.selection.PopupMenuListener;
 import org.pathwayeditor.visualeditor.behaviour.selection.SelectionControllerResponses;
-import org.pathwayeditor.visualeditor.behaviour.selection.SelectionKeyListener;
 import org.pathwayeditor.visualeditor.behaviour.selection.SelectionMouseBehaviourListener;
 import org.pathwayeditor.visualeditor.editingview.IShapePane;
 
@@ -31,16 +27,12 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 	private boolean activated;
 	private IObjectType currShapeType;
 	private final IShapePane shapePane;
-	private final IPopupMenuListener popupMenuListener;
-	private final KeyListener keyListener; 
 	
 	public MouseBehaviourController(IShapePane pane, IOperationFactory opFactory){
 		this.shapePane = pane;
 		IControllerResponses selectionResponse = new SelectionControllerResponses(opFactory);
-		this.keyListener = new SelectionKeyListener(selectionResponse);
 		ISelectionStateBehaviourController selectionController = new GeneralStateController(pane, new HitCalculator(pane), selectionResponse);
-		this.popupMenuListener = new PopupMenuListener(selectionController, selectionResponse);
-		this.selectionStateController = new SelectionMouseBehaviourListener(selectionController);
+		this.selectionStateController = new SelectionMouseBehaviourListener(selectionController, selectionResponse);
 		this.shapeCreationStateController = new ShapeCreationMouseBehaviourListener(new GeneralStateController(pane, new HitCalculator(pane),
 				new CreationControllerResponses(opFactory,
 				new IShapeTypeInspector() {
@@ -56,14 +48,6 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 				return (IShapeObjectType)currShapeType;
 			}
 		}), new MouseCreationFeedbackResponse());
-//		this.linkCreationStateController = new LinkCreationMouseBehaviourListener(new HitCalculator(pane),
-//				new LinkCreationResponse(
-//						new ILinkTypeInspector() {
-//							@Override
-//							public ILinkObjectType getCurrentLinkType() {
-//								return (ILinkObjectType)currShapeType;
-//							}
-//						}, opFactory.getLinkCreationOperation()));
 		this.linkCreationStateController = new LinkCreationMouseBehaviourListener(new HitCalculator(pane),
 				opFactory.getLinkCreationOperation(),
 				new ILinkTypeInspector() {
@@ -77,21 +61,23 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 
 	@Override
 	public void activate(){
-		this.shapePane.addKeyListener(this.keyListener);
-        this.shapePane.addMouseMotionListener(this.currentStateController);
-        this.shapePane.addMouseListener(this.currentStateController);
-        this.shapePane.addMouseListener(popupMenuListener);
-        this.popupMenuListener.activate();
+//		this.shapePane.addKeyListener(this.keyListener);
+//        this.shapePane.addMouseMotionListener(this.currentStateController);
+//        this.shapePane.addMouseListener(this.currentStateController);
+//        this.shapePane.addMouseListener(popupMenuListener);
+//        this.popupMenuListener.activate();
+		this.currentStateController.activate(shapePane);
         this.activated = true;
 	}
 
 	@Override
 	public void deactivate(){
-		this.shapePane.removeKeyListener(this.keyListener);
-        this.shapePane.removeMouseMotionListener(this.currentStateController);
-        this.shapePane.removeMouseListener(this.currentStateController);
-        this.shapePane.removeMouseListener(popupMenuListener);
-        this.popupMenuListener.deactivate();
+//		this.shapePane.removeKeyListener(this.keyListener);
+//        this.shapePane.removeMouseMotionListener(this.currentStateController);
+//        this.shapePane.removeMouseListener(this.currentStateController);
+//        this.shapePane.removeMouseListener(popupMenuListener);
+//        this.popupMenuListener.deactivate();
+		this.currentStateController.deactivate(shapePane);
         this.activated = false;
 	}
 
@@ -105,13 +91,11 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 		this.currShapeType = linkType;
 		if(!this.currentStateController.equals(this.linkCreationStateController)){
 			if(this.isActivated()){
-		        this.shapePane.removeMouseMotionListener(this.currentStateController);
-		        this.shapePane.removeMouseListener(this.currentStateController);
+				this.currentStateController.deactivate(shapePane);
 			}
 			this.currentStateController = this.linkCreationStateController;
 			if(this.isActivated()){
-		        this.shapePane.addMouseMotionListener(this.currentStateController);
-		        this.shapePane.addMouseListener(this.currentStateController);
+				this.currentStateController.activate(shapePane);
 			}
 		}
 		if(logger.isDebugEnabled()){
@@ -123,13 +107,15 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 	public void setSelectionMode() {
 		if(this.currentStateController != this.selectionStateController){
 			if(this.isActivated()){
-		        this.shapePane.removeMouseMotionListener(this.currentStateController);
-		        this.shapePane.removeMouseListener(this.currentStateController);
+//		        this.shapePane.removeMouseMotionListener(this.currentStateController);
+//		        this.shapePane.removeMouseListener(this.currentStateController);
+				this.currentStateController.deactivate(shapePane);
 			}
 			this.currentStateController = this.selectionStateController;
 			if(this.isActivated()){
-		        this.shapePane.addMouseMotionListener(this.currentStateController);
-		        this.shapePane.addMouseListener(this.currentStateController);
+//		        this.shapePane.addMouseMotionListener(this.currentStateController);
+//		        this.shapePane.addMouseListener(this.currentStateController);
+				this.currentStateController.activate(shapePane);
 			}
 			logger.debug("Setting selection controller state");
 		}
@@ -140,13 +126,11 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 		this.currShapeType = shapeType;
 		if(!this.currentStateController.equals(this.shapeCreationStateController)){
 			if(this.isActivated()){
-		        this.shapePane.removeMouseMotionListener(this.currentStateController);
-		        this.shapePane.removeMouseListener(this.currentStateController);
+				this.currentStateController.deactivate(shapePane);
 			}
 			this.currentStateController = this.shapeCreationStateController;
 			if(this.isActivated()){
-		        this.shapePane.addMouseMotionListener(this.currentStateController);
-		        this.shapePane.addMouseListener(this.currentStateController);
+				this.currentStateController.activate(shapePane);
 			}
 		}
 		if(logger.isDebugEnabled()){

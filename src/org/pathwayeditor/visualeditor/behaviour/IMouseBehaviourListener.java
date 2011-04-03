@@ -1,8 +1,13 @@
 package org.pathwayeditor.visualeditor.behaviour;
 
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import org.pathwayeditor.visualeditor.editingview.IShapePane;
 
-public interface IMouseBehaviourListener extends MouseListener,	MouseMotionListener {
+public interface IMouseBehaviourListener {
+	
+	void activate(IShapePane shapePane);
+	
+	void deactivate(IShapePane shapePane);
+
+	boolean isActive();
 	
 }

@@ -2,6 +2,8 @@ package org.pathwayeditor.visualeditor.behaviour.creation;
 
 import java.awt.Cursor;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 import org.apache.log4j.Logger;
 import org.pathwayeditor.figure.geometry.Point;
@@ -10,12 +12,14 @@ import org.pathwayeditor.visualeditor.behaviour.IMouseBehaviourListener;
 import org.pathwayeditor.visualeditor.behaviour.IMouseFeedbackResponse;
 import org.pathwayeditor.visualeditor.behaviour.IMouseFeedbackResponse.StateType;
 import org.pathwayeditor.visualeditor.behaviour.ISelectionStateBehaviourController;
+import org.pathwayeditor.visualeditor.editingview.IShapePane;
 
-public class ShapeCreationMouseBehaviourListener implements IMouseBehaviourListener {
+public class ShapeCreationMouseBehaviourListener implements IMouseBehaviourListener, MouseMotionListener, MouseListener {
 	private IDragResponse currDragResponse;
 	private IMouseFeedbackResponse currMouseFeedbackResponse;
 	private final ISelectionStateBehaviourController mouseBehaviourController;
 	private final Logger logger = Logger.getLogger(this.getClass());
+	private boolean active;
 	
 	public ShapeCreationMouseBehaviourListener(ISelectionStateBehaviourController mouseBehaviourController, IDragResponse creationDragResponse,
 			IMouseFeedbackResponse mouseFeedbackResponse) {
@@ -97,6 +101,27 @@ public class ShapeCreationMouseBehaviourListener implements IMouseBehaviourListe
 		this.mouseBehaviourController.setMousePosition(e.getPoint().getX(), e.getPoint().getY());
 		setCurrentCursorResponse();
 		e.getComponent().setCursor(currMouseFeedbackResponse.getCurrentCursor());
+	}
+
+	@Override
+	public void activate(IShapePane shapePane) {
+		shapePane.addMouseListener(this);
+		shapePane.addMouseMotionListener(this);
+		this.active = true;
+	}
+
+	@Override
+	public void deactivate(IShapePane shapePane) {
+		shapePane.removeMouseListener(this);
+		shapePane.removeMouseMotionListener(this);
+		this.currDragResponse = null;
+		this.currMouseFeedbackResponse = null;
+		this.active = false;
+	}
+
+	@Override
+	public boolean isActive() {
+		return this.active;
 	}
 
 }

@@ -1,25 +1,40 @@
 package org.pathwayeditor.visualeditor.behaviour.selection;
 
 import java.awt.Cursor;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.util.Iterator;
+
+import javax.swing.JPopupMenu;
 
 import org.apache.log4j.Logger;
 import org.pathwayeditor.figure.geometry.Point;
+import org.pathwayeditor.visualeditor.behaviour.IControllerResponses;
+import org.pathwayeditor.visualeditor.behaviour.IKeyboardResponse.CursorType;
 import org.pathwayeditor.visualeditor.behaviour.IMouseBehaviourListener;
 import org.pathwayeditor.visualeditor.behaviour.IMouseFeedbackResponse;
 import org.pathwayeditor.visualeditor.behaviour.IMouseFeedbackResponse.StateType;
+import org.pathwayeditor.visualeditor.behaviour.IPopupMenuResponse;
 import org.pathwayeditor.visualeditor.behaviour.ISelectionResponse;
 import org.pathwayeditor.visualeditor.behaviour.ISelectionStateBehaviourController;
+import org.pathwayeditor.visualeditor.editingview.IShapePane;
 
-public class SelectionMouseBehaviourListener implements IMouseBehaviourListener {
+public class SelectionMouseBehaviourListener implements IMouseBehaviourListener, MouseMotionListener, MouseListener, KeyListener {
 //	private ISelectionHandle currSelectionHandle;
 	private ISelectionDragResponse currDragResponse;
 	private IMouseFeedbackResponse currMouseFeedbackResponse;
 	private final ISelectionStateBehaviourController mouseBehaviourController;
+	private final IControllerResponses responses;
 	private final Logger logger = Logger.getLogger(this.getClass());
+	private boolean isActive = false;;
 	
-	public SelectionMouseBehaviourListener(ISelectionStateBehaviourController mouseBehaviourController) {
+	public SelectionMouseBehaviourListener(ISelectionStateBehaviourController mouseBehaviourController,
+			IControllerResponses responses) {
 		this.mouseBehaviourController = mouseBehaviourController;
+		this.responses = responses;
 	}
 
 	private void setCurrentCursorResponse(){
@@ -98,7 +113,49 @@ public class SelectionMouseBehaviourListener implements IMouseBehaviourListener 
 	}
 
 	@Override
+	public boolean isActive() {
+		return this.isActive;
+	}
+
+	@Override
+	public void activate(IShapePane shapePane) {
+		shapePane.addKeyListener(this);
+		shapePane.addMouseMotionListener(this);
+		shapePane.addMouseListener(this);
+        Iterator<IPopupMenuResponse> iter = this.responses.popResponseIterator();
+        while(iter.hasNext()){
+        	IPopupMenuResponse popupResponse = iter.next();
+        	popupResponse.activate();
+        }
+        this.isActive  = true;
+	}
+
+	@Override
+	public void deactivate(IShapePane shapePane) {
+		Iterator<IPopupMenuResponse> iter = this.responses.popResponseIterator();
+        while(iter.hasNext()){
+        	IPopupMenuResponse popupResponse = iter.next();
+        	popupResponse.deactivate();
+        }
+		shapePane.removeKeyListener(this);
+		shapePane.removeMouseMotionListener(this);
+		shapePane.removeMouseListener(this);
+        this.currDragResponse = null;
+        this.currMouseFeedbackResponse = null;
+        this.isActive = false;
+	}
+	
+	@Override
 	public void mousePressed(MouseEvent e) {
+		if(e.isPopupTrigger()){
+			this.mouseBehaviourController.setMousePosition(e.getPoint().getX(), e.getPoint().getY());
+			
+			IPopupMenuResponse response = mouseBehaviourController.getPopupMenuResponse();
+			JPopupMenu popup = response.getPopupMenu();
+			if(popup != null){
+				mouseBehaviourController.showPopupMenus(popup);
+			}
+		}
 	}
 
 	@Override
@@ -113,4 +170,54 @@ public class SelectionMouseBehaviourListener implements IMouseBehaviourListener 
 		e.getComponent().setCursor(currMouseFeedbackResponse.getCurrentCursor());
 	}
 
+	@Override
+	public void keyPressed(KeyEvent e) {
+		logger.trace("Key press detected");
+		if(e.getKeyCode() == KeyEvent.VK_RIGHT){
+			handleKeyPress(CursorType.Right);
+		}
+		else if(e.getKeyCode() == KeyEvent.VK_LEFT){
+			handleKeyPress(CursorType.Left);
+		}
+		else if(e.getKeyCode() == KeyEvent.VK_UP){
+			handleKeyPress(CursorType.Up);
+		}
+		else if(e.getKeyCode() == KeyEvent.VK_DOWN){
+			handleKeyPress(CursorType.Down);
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		logger.trace("Key release detected");
+		if(e.getKeyCode() == KeyEvent.VK_RIGHT ||
+				e.getKeyCode() == KeyEvent.VK_LEFT ||
+				e.getKeyCode() == KeyEvent.VK_UP ||
+				e.getKeyCode() == KeyEvent.VK_DOWN){
+			handleKeyRelease();
+		}
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		logger.trace("Key type detected");
+	}
+
+	private void handleKeyRelease(){
+		if(this.responses.getKeyboardResponse().isKeyPressed()){
+			this.responses.getKeyboardResponse().cursorsKeyUp();
+			logger.trace("Key release detected");
+		}
+	}
+	
+	private void handleKeyPress(CursorType cursorPressed){
+		if(!this.responses.getKeyboardResponse().isKeyPressed()){
+			this.responses.getKeyboardResponse().cursorKeyDown(cursorPressed);
+			logger.trace("Initial key press detected");
+		}
+		else{
+			this.responses.getKeyboardResponse().cursorKeyStillDown(cursorPressed);
+			logger.trace("Key press ongoing");
+		}
+	}
 }
