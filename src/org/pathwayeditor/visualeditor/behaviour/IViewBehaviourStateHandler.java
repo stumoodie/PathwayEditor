@@ -1,5 +1,7 @@
 package org.pathwayeditor.visualeditor.behaviour;
 
+import java.util.List;
+
 import org.pathwayeditor.visualeditor.editingview.IShapePane;
 
 public interface IViewBehaviourStateHandler {
@@ -10,4 +12,9 @@ public interface IViewBehaviourStateHandler {
 
 	boolean isActive();
 	
+	void addViewBehaviourStateHandlerChangeListener(IViewBehaviourStateHandlerChangeListener l);
+	
+	void removeViewBehaviourStateHandlerChangeListener(IViewBehaviourStateHandlerChangeListener l);
+
+	List<IViewBehaviourStateHandlerChangeListener> getViewBehaviourStateHandlerChangeListener();
 }

@@ -3,11 +3,16 @@ package org.pathwayeditor.visualeditor.behaviour.linkcreation;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.behaviour.IHitCalculator;
+import org.pathwayeditor.visualeditor.behaviour.IViewBehaviourOperationCompletionEvent;
 import org.pathwayeditor.visualeditor.behaviour.IViewBehaviourStateHandler;
+import org.pathwayeditor.visualeditor.behaviour.IViewBehaviourStateHandlerChangeListener;
 import org.pathwayeditor.visualeditor.behaviour.operation.ILinkCreationOperation;
 import org.pathwayeditor.visualeditor.controller.IShapeController;
 import org.pathwayeditor.visualeditor.editingview.IShapePane;
@@ -18,12 +23,14 @@ public class LinkCreationBehaviourStateHandler implements IViewBehaviourStateHan
 	private final Logger logger = Logger.getLogger(this.getClass());
 	private ILinkTypeInspector objectTypeInspector;
 	private boolean active;
+	private final List<IViewBehaviourStateHandlerChangeListener> listeners;
 	
 	public LinkCreationBehaviourStateHandler(IHitCalculator locationCalculator, ILinkCreationOperation linkCreationResponse,
 			ILinkTypeInspector objectTypeInspector) {
 		this.mouseBehaviourController = locationCalculator;
 		this.linkCreationResponse = linkCreationResponse;
 		this.objectTypeInspector = objectTypeInspector;
+		this.listeners = new LinkedList<IViewBehaviourStateHandlerChangeListener>();
 	}
 
 	@Override
@@ -52,6 +59,7 @@ public class LinkCreationBehaviourStateHandler implements IViewBehaviourStateHan
 				this.linkCreationResponse.setPotentialTarget(finalShape);
 				if(this.linkCreationResponse.canFinishCreation()){
 					this.linkCreationResponse.finishCreation();
+					notifyComplete(true);
 				}
 				else {
 					Point intermediatePoint = this.mouseBehaviourController.getDiagramLocation();
@@ -71,6 +79,7 @@ public class LinkCreationBehaviourStateHandler implements IViewBehaviourStateHan
 		}
 		else if(e.getButton() == MouseEvent.BUTTON3){
 			this.linkCreationResponse.cancel();
+			notifyComplete(false);
 		}
 	}
 
@@ -89,6 +98,20 @@ public class LinkCreationBehaviourStateHandler implements IViewBehaviourStateHan
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
+	}
+
+	private void notifyComplete(final boolean successfulCompletion) {
+		IViewBehaviourOperationCompletionEvent e = new IViewBehaviourOperationCompletionEvent(){
+
+			@Override
+			public boolean wasCompletedSuccessfully() {
+				return successfulCompletion;
+			}
+			
+		};
+		for(IViewBehaviourStateHandlerChangeListener l : this.listeners){
+			l.operationCompletionEvent(e);
+		}
 	}
 
 	@Override
@@ -111,4 +134,20 @@ public class LinkCreationBehaviourStateHandler implements IViewBehaviourStateHan
 	public boolean isActive() {
 		return this.active;
 	}
+
+	@Override
+	public void addViewBehaviourStateHandlerChangeListener(IViewBehaviourStateHandlerChangeListener l) {
+		this.listeners.add(l);
+	}
+
+	@Override
+	public void removeViewBehaviourStateHandlerChangeListener(IViewBehaviourStateHandlerChangeListener l) {
+		this.listeners.remove(l);
+	}
+
+	@Override
+	public List<IViewBehaviourStateHandlerChangeListener> getViewBehaviourStateHandlerChangeListener() {
+		return new ArrayList<IViewBehaviourStateHandlerChangeListener>(this.listeners);
+	}
+
 }

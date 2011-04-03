@@ -4,14 +4,19 @@ import java.awt.Cursor;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.behaviour.IDragResponse;
+import org.pathwayeditor.visualeditor.behaviour.IViewBehaviourOperationCompletionEvent;
 import org.pathwayeditor.visualeditor.behaviour.IViewBehaviourStateHandler;
 import org.pathwayeditor.visualeditor.behaviour.IMouseFeedbackResponse;
 import org.pathwayeditor.visualeditor.behaviour.IMouseFeedbackResponse.StateType;
 import org.pathwayeditor.visualeditor.behaviour.ISelectionStateBehaviourController;
+import org.pathwayeditor.visualeditor.behaviour.IViewBehaviourStateHandlerChangeListener;
 import org.pathwayeditor.visualeditor.editingview.IShapePane;
 
 public class ShapeCreationBehaviourStateHandler implements IViewBehaviourStateHandler, MouseMotionListener, MouseListener {
@@ -20,12 +25,14 @@ public class ShapeCreationBehaviourStateHandler implements IViewBehaviourStateHa
 	private final ISelectionStateBehaviourController mouseBehaviourController;
 	private final Logger logger = Logger.getLogger(this.getClass());
 	private boolean active;
+	private final List<IViewBehaviourStateHandlerChangeListener> listeners;
 	
 	public ShapeCreationBehaviourStateHandler(ISelectionStateBehaviourController mouseBehaviourController, IDragResponse creationDragResponse,
 			IMouseFeedbackResponse mouseFeedbackResponse) {
 		this.mouseBehaviourController = mouseBehaviourController;
 		this.currMouseFeedbackResponse = mouseFeedbackResponse;
 		this.currDragResponse = creationDragResponse;
+		this.listeners = new LinkedList<IViewBehaviourStateHandlerChangeListener>();
 	}
 
 //	private void setCurrentCursorResponse(){
@@ -94,8 +101,22 @@ public class ShapeCreationBehaviourStateHandler implements IViewBehaviourStateHa
 		currDragResponse.dragFinished();
 		currMouseFeedbackResponse.reset();
 		this.mouseBehaviourController.setMousePosition(e.getPoint().getX(), e.getPoint().getY());
-//		setCurrentCursorResponse();
 		e.getComponent().setCursor(currMouseFeedbackResponse.getCurrentCursor());
+		notifyComplete(true);
+	}
+
+	private void notifyComplete(final boolean successfulCompletion) {
+		IViewBehaviourOperationCompletionEvent e = new IViewBehaviourOperationCompletionEvent(){
+
+			@Override
+			public boolean wasCompletedSuccessfully() {
+				return successfulCompletion;
+			}
+			
+		};
+		for(IViewBehaviourStateHandlerChangeListener l : this.listeners){
+			l.operationCompletionEvent(e);
+		}
 	}
 
 	@Override
@@ -115,6 +136,21 @@ public class ShapeCreationBehaviourStateHandler implements IViewBehaviourStateHa
 	@Override
 	public boolean isActive() {
 		return this.active;
+	}
+
+	@Override
+	public void addViewBehaviourStateHandlerChangeListener(IViewBehaviourStateHandlerChangeListener l) {
+		this.listeners.add(l);
+	}
+
+	@Override
+	public void removeViewBehaviourStateHandlerChangeListener(IViewBehaviourStateHandlerChangeListener l) {
+		this.listeners.remove(l);
+	}
+
+	@Override
+	public List<IViewBehaviourStateHandlerChangeListener> getViewBehaviourStateHandlerChangeListener() {
+		return new ArrayList<IViewBehaviourStateHandlerChangeListener>(this.listeners);
 	}
 
 }

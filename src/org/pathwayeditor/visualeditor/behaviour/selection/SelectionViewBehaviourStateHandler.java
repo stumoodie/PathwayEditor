@@ -6,7 +6,10 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.JPopupMenu;
 
@@ -20,6 +23,7 @@ import org.pathwayeditor.visualeditor.behaviour.IMouseFeedbackResponse.StateType
 import org.pathwayeditor.visualeditor.behaviour.IPopupMenuResponse;
 import org.pathwayeditor.visualeditor.behaviour.ISelectionResponse;
 import org.pathwayeditor.visualeditor.behaviour.ISelectionStateBehaviourController;
+import org.pathwayeditor.visualeditor.behaviour.IViewBehaviourStateHandlerChangeListener;
 import org.pathwayeditor.visualeditor.editingview.IShapePane;
 
 public class SelectionViewBehaviourStateHandler implements IViewBehaviourStateHandler, MouseMotionListener, MouseListener, KeyListener {
@@ -29,12 +33,14 @@ public class SelectionViewBehaviourStateHandler implements IViewBehaviourStateHa
 	private final ISelectionStateBehaviourController mouseBehaviourController;
 	private final IControllerResponses responses;
 	private final Logger logger = Logger.getLogger(this.getClass());
-	private boolean isActive = false;;
+	private boolean isActive = false;
+	private final List<IViewBehaviourStateHandlerChangeListener> listeners;
 	
 	public SelectionViewBehaviourStateHandler(ISelectionStateBehaviourController mouseBehaviourController,
 			IControllerResponses responses) {
 		this.mouseBehaviourController = mouseBehaviourController;
 		this.responses = responses;
+		this.listeners = new LinkedList<IViewBehaviourStateHandlerChangeListener>();
 	}
 
 	private void setCurrentCursorResponse(){
@@ -220,4 +226,20 @@ public class SelectionViewBehaviourStateHandler implements IViewBehaviourStateHa
 			logger.trace("Key press ongoing");
 		}
 	}
+
+	@Override
+	public void addViewBehaviourStateHandlerChangeListener(IViewBehaviourStateHandlerChangeListener l) {
+		this.listeners.add(l);
+	}
+
+	@Override
+	public void removeViewBehaviourStateHandlerChangeListener(IViewBehaviourStateHandlerChangeListener l) {
+		this.listeners.remove(l);
+	}
+
+	@Override
+	public List<IViewBehaviourStateHandlerChangeListener> getViewBehaviourStateHandlerChangeListener() {
+		return new ArrayList<IViewBehaviourStateHandlerChangeListener>(this.listeners);
+	}
+
 }

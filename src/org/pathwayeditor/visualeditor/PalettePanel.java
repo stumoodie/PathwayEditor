@@ -19,6 +19,9 @@ import org.pathwayeditor.businessobjects.typedefn.ILinkObjectType;
 import org.pathwayeditor.businessobjects.typedefn.IShapeObjectType;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.visualeditor.behaviour.IViewBehaviourController;
+import org.pathwayeditor.visualeditor.behaviour.IViewBehaviourModeChangeEvent;
+import org.pathwayeditor.visualeditor.behaviour.IViewBehaviourModeChangeEvent.ModeType;
+import org.pathwayeditor.visualeditor.behaviour.IViewBehaviourModeChangeListener;
 
 public class PalettePanel extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -110,6 +113,14 @@ public class PalettePanel extends JPanel {
 		this.splitPane.setDividerLocation(250);
 		this.add(this.splitPane);
 		paletteGroup.setSelected(selectionButton.getModel(), true);
+		editBehaviourController.addViewBehaviourModeChangeListener(new IViewBehaviourModeChangeListener() {
+			@Override
+			public void viewModeChange(IViewBehaviourModeChangeEvent e) {
+				if(e.getNewModeType().equals(ModeType.SELECTION)){
+					paletteGroup.setSelected(selectionButton.getModel(), true);
+				}
+			}
+		});
 //		this.add(this.palettePane);
 //		this.add(this.linkScrollPanel);
 //		this.add(this.palettePane, BorderLayout.LINE_START);
