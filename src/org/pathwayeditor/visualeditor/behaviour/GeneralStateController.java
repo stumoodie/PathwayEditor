@@ -14,7 +14,6 @@ public class GeneralStateController implements ISelectionStateBehaviourControlle
 	private final IHitCalculator hitCalc;
 	private final IShapePane shapePane;
 	private final IControllerResponses responses;
-//	private Point mousePosition;
 
 	public GeneralStateController(IShapePane pane, IHitCalculator hitCalc, IControllerResponses responses){
 		this.shapePane = pane;

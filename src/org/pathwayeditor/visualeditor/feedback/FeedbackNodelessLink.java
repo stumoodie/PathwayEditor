@@ -52,33 +52,33 @@ public class FeedbackNodelessLink implements IFeedbackLink {
 		Point newLocation = this.linkDefinition.getBendPointPosition(bpIdx).translate(delta);
 		this.linkDefinition.setBendPointPosition(bpIdx, newLocation);
 		lastDelta = translation;
-		updateLinksToBendPoints(bpIdx, newLocation);
+//		updateLinksToBendPoints(bpIdx, newLocation);
 		notifyLinkChange(origDefn, this.linkDefinition);
 	}
 
-	private void updateLinksToBendPoints(int bpIdx, Point bpPosn){
-		// check if bp attached to anchor and recalc anchor if it is
-		if(bpIdx == 0){
-			updateSrcAnchor(bpPosn);
-		}
-		if(bpIdx == this.linkDefinition.numBendPoints()-1){
-			updateTgtAnchor(bpPosn);
-		}
-	}
+//	private void updateLinksToBendPoints(int bpIdx, Point bpPosn){
+//		// check if bp attached to anchor and recalc anchor if it is
+//		if(bpIdx == 0){
+//			updateSrcAnchor(bpPosn);
+//		}
+//		if(bpIdx == this.linkDefinition.numBendPoints()-1){
+//			updateTgtAnchor(bpPosn);
+//		}
+//	}
 	
-	private void updateSrcAnchor(Point otherEndPos){
-		this.linkDefinition.setSrcAnchorPosition(otherEndPos);
-	}
+//	private void updateSrcAnchor(Point otherEndPos){
+//		this.linkDefinition.setSrcAnchorPosition(otherEndPos);
+//	}
 	
-	private void updateTgtAnchor(Point otherEndPos){
-		this.linkDefinition.setTgtAnchorPosition(otherEndPos);
-	}
+//	private void updateTgtAnchor(Point otherEndPos){
+//		this.linkDefinition.setTgtAnchorPosition(otherEndPos);
+//	}
 
 	@Override
 	public void newBendPoint(int newBpIdx, Point initialLocation) {
 		ILinkPointDefinition origDefn = this.linkDefinition.getCopy();;
 		this.linkDefinition.addNewBendPoint(newBpIdx, initialLocation);
-		updateLinksToBendPoints(newBpIdx, initialLocation);
+//		updateLinksToBendPoints(newBpIdx, initialLocation);
 		notifyLinkChange(origDefn, this.linkDefinition);
 	}
 

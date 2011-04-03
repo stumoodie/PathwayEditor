@@ -3,6 +3,7 @@ package org.pathwayeditor.visualeditor.behaviour.linkcreation;
 import java.awt.event.MouseEvent;
 
 import org.apache.log4j.Logger;
+import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.behaviour.IHitCalculator;
 import org.pathwayeditor.visualeditor.behaviour.IMouseBehaviourListener;
 import org.pathwayeditor.visualeditor.behaviour.operation.ILinkCreationOperation;
@@ -48,6 +49,12 @@ public class LinkCreationMouseBehaviourListener implements IMouseBehaviourListen
 				if(this.linkCreationResponse.canFinishCreation()){
 					this.linkCreationResponse.finishCreation();
 				}
+				else {
+					Point intermediatePoint = this.mouseBehaviourController.getDiagramLocation();
+					if(this.linkCreationResponse.canCreateIntermediatePoint(intermediatePoint)){
+						this.linkCreationResponse.createIntermediatePoint(intermediatePoint);
+					}
+				}
 			}
 			else{
 				IShapeController startShape = this.mouseBehaviourController.getShapeAtCurrentLocation();
@@ -57,6 +64,9 @@ public class LinkCreationMouseBehaviourListener implements IMouseBehaviourListen
 					this.linkCreationResponse.startCreation();
 				}
 			}
+		}
+		else if(e.getButton() == MouseEvent.BUTTON3){
+			this.linkCreationResponse.cancel();
 		}
 	}
 

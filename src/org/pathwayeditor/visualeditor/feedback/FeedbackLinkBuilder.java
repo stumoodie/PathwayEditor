@@ -7,7 +7,6 @@ import org.pathwayeditor.businessobjects.typedefn.ILinkAttributeDefaults;
 import org.pathwayeditor.businessobjects.typedefn.ILinkObjectType;
 import org.pathwayeditor.businessobjects.typedefn.ILinkTerminusDefaults;
 import org.pathwayeditor.figure.geometry.Point;
-import org.pathwayeditor.figure.rendering.IAnchorLocator;
 import org.pathwayeditor.visualeditor.geometry.ILinkPointDefinition;
 
 public class FeedbackLinkBuilder implements IFeedbackLinkBuilder {
@@ -30,9 +29,8 @@ public class FeedbackLinkBuilder implements IFeedbackLinkBuilder {
 	}
 	
 	@Override
-	public IFeedbackLink createFromAttribute(IFeedbackNode srcNode, IFeedbackNode tgtNode, ILinkAttribute linkAttribute,
-			Point srcAnchorLocn, IAnchorLocator srcAnchorLocator, Point tgtAnchorLocation, IAnchorLocator tgtAnchorLocator) {
-		FeedbackLink retVal = new FeedbackLink(srcNode,	tgtNode, nextCounter(), srcAnchorLocn, srcAnchorLocator, tgtAnchorLocation, tgtAnchorLocator);
+	public IFeedbackLink createFromAttribute(ILinkAttribute linkAttribute) {
+		IFeedbackLink retVal = new FeedbackNodelessLink(nextCounter(), linkAttribute.getSourceTerminus().getLocation(), linkAttribute.getTargetTerminus().getLocation());
 		ILinkPointDefinition linkDefn = retVal.getLinkDefinition();
 		Iterator<Point> bpIter = linkAttribute.getBendPointContainer().bendPointIterator();
 		while(bpIter.hasNext()){
@@ -48,21 +46,97 @@ public class FeedbackLinkBuilder implements IFeedbackLinkBuilder {
 		linkDefn.getTargetTerminusDefinition().setEndDecoratorType(linkAttribute.getTargetTerminus().getEndDecoratorType());
 		linkDefn.getTargetTerminusDefinition().setGap(linkAttribute.getTargetTerminus().getGap());
 		linkDefn.getTargetTerminusDefinition().setEndSize(linkAttribute.getTargetTerminus().getEndSize());
+//		final ILinkDefinitionAnchorCalculator anchorCalc = new LinkDefinitionAnchorCalculator(linkDefn);
+//		if(srcNode != null){
+//			srcNode.addFeedbackNodeListener(new IFeedbackNodeListener(){
+//				@Override
+//				public void nodeTranslationEvent(IFeedbackNodeTranslationEvent e) {
+//					anchorCalc.setSrcLocation(srcNode.getFigureController().getAnchorLocatorFactory().createAnchorLocator());
+//					anchorCalc.recalculateBothAnchors();
+//				}
+//				@Override
+//				public void nodeResizeEvent(IFeedbackNodeResizeEvent e) {
+//					anchorCalc.setSrcLocation(srcNode.getFigureController().getAnchorLocatorFactory().createAnchorLocator());
+//					anchorCalc.recalculateBothAnchors();
+//				}
+//			});
+//		}
+//		if(tgtNode != null){
+//			tgtNode.addFeedbackNodeListener(new IFeedbackNodeListener(){
+//				@Override
+//				public void nodeTranslationEvent(IFeedbackNodeTranslationEvent e) {
+//					anchorCalc.setTgtLocation(tgtNode.getFigureController().getAnchorLocatorFactory().createAnchorLocator());
+//					anchorCalc.recalculateBothAnchors();
+//				}
+//				@Override
+//				public void nodeResizeEvent(IFeedbackNodeResizeEvent e) {
+//					anchorCalc.setTgtLocation(tgtNode.getFigureController().getAnchorLocatorFactory().createAnchorLocator());
+//					anchorCalc.recalculateBothAnchors();
+//				}
+//			});
+//		}
+//		retVal.addFeedbackLinkListener(new IFeedbackLinkListener() {
+//			@Override
+//			public void linkChangeEvent(IFeedbackLinkChangeEvent e) {
+//				if(srcNode != null){
+//					anchorCalc.setSrcLocation(srcNode.getFigureController().getAnchorLocatorFactory().createAnchorLocator());
+//				}
+//				if(tgtNode != null){
+//					anchorCalc.setTgtLocation(tgtNode.getFigureController().getAnchorLocatorFactory().createAnchorLocator());
+//				}
+//				anchorCalc.recalculateBothAnchors();
+//			}
+//		});
 		this.feedbackModel.addEdge(retVal);
 		return retVal;
 	}
 
 
-	@Override
-	public IFeedbackLink createFromObjectType(IFeedbackNode srcNode, IFeedbackNode tgtNode, ILinkObjectType objectType) {
-		IAnchorLocator srcAnchorLocator = srcNode.getFigureController().getAnchorLocatorFactory().createAnchorLocator();
-		IAnchorLocator tgtAnchorLocator = tgtNode.getFigureController().getAnchorLocatorFactory().createAnchorLocator();
-		FeedbackLink retVal = new FeedbackLink(srcNode,	tgtNode, nextCounter(),
-				srcNode.getConvexHull().getCentre(), srcAnchorLocator,
-				tgtNode.getConvexHull().getCentre(), tgtAnchorLocator);
-		this.feedbackModel.addEdge(retVal);
-		return buildFromObjectType(retVal, objectType);
-	}
+//	@Override
+//	public IFeedbackLink createFromObjectType(final IFeedbackNode srcNode, final IFeedbackNode tgtNode, ILinkObjectType objectType) {
+////		IAnchorLocator srcAnchorLocator = srcNode.getFigureController().getAnchorLocatorFactory().createAnchorLocator();
+////		IAnchorLocator tgtAnchorLocator = tgtNode.getFigureController().getAnchorLocatorFactory().createAnchorLocator();
+////		IFeedbackLink retVal = new FeedbackLink(srcNode,	tgtNode, nextCounter(),
+////				srcNode.getConvexHull().getCentre(), srcAnchorLocator,
+////				tgtNode.getConvexHull().getCentre(), tgtAnchorLocator);
+//		IFeedbackLink retVal = new FeedbackNodelessLink(nextCounter(), srcNode.getConvexHull().getCentre(),
+//				tgtNode.getConvexHull().getCentre());
+//		final ILinkDefinitionAnchorCalculator anchorCalc = new LinkDefinitionAnchorCalculator(retVal.getLinkDefinition());
+//		srcNode.addFeedbackNodeListener(new IFeedbackNodeListener(){
+//			@Override
+//			public void nodeTranslationEvent(IFeedbackNodeTranslationEvent e) {
+//				anchorCalc.setSrcLocation(srcNode.getFigureController().getAnchorLocatorFactory().createAnchorLocator());
+//				anchorCalc.recalculateBothAnchors();
+//			}
+//			@Override
+//			public void nodeResizeEvent(IFeedbackNodeResizeEvent e) {
+//				anchorCalc.setSrcLocation(srcNode.getFigureController().getAnchorLocatorFactory().createAnchorLocator());
+//				anchorCalc.recalculateBothAnchors();
+//			}
+//		});
+//		tgtNode.addFeedbackNodeListener(new IFeedbackNodeListener(){
+//			@Override
+//			public void nodeTranslationEvent(IFeedbackNodeTranslationEvent e) {
+//				anchorCalc.setTgtLocation(tgtNode.getFigureController().getAnchorLocatorFactory().createAnchorLocator());
+//				anchorCalc.recalculateBothAnchors();
+//			}
+//			@Override
+//			public void nodeResizeEvent(IFeedbackNodeResizeEvent e) {
+//				anchorCalc.setTgtLocation(tgtNode.getFigureController().getAnchorLocatorFactory().createAnchorLocator());
+//				anchorCalc.recalculateBothAnchors();
+//			}
+//		});
+//		retVal.addFeedbackLinkListener(new IFeedbackLinkListener() {
+//			@Override
+//			public void linkChangeEvent(IFeedbackLinkChangeEvent e) {
+//				anchorCalc.setSrcLocation(srcNode.getFigureController().getAnchorLocatorFactory().createAnchorLocator());
+//				anchorCalc.setTgtLocation(tgtNode.getFigureController().getAnchorLocatorFactory().createAnchorLocator());
+//				anchorCalc.recalculateBothAnchors();
+//			}
+//		});
+//		this.feedbackModel.addEdge(retVal);
+//		return buildFromObjectType(retVal, objectType);
+//	}
 
 
 	@Override

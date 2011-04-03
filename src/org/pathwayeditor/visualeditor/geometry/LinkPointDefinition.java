@@ -18,6 +18,7 @@ import org.pathwayeditor.figure.geometry.LineSegment;
 import org.pathwayeditor.figure.geometry.Point;
 
 public class LinkPointDefinition implements ILinkPointDefinition {
+//	private static final int MAX_NUM_ANCHOR_RECALCS = 5;
 	private final Logger logger = Logger.getLogger(this.getClass());
 	
 	private static final double LINE_HIT_TOLERENCE = 2.0;
@@ -434,4 +435,33 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 	public ILinkPointDefinition getCopy() {
 		return new LinkPointDefinition(this);
 	}
+
+//	@Override
+//	public void recalculateAnchorPositions(IAnchorLocator srcAnchorLocator,	IAnchorLocator tgtAnchorLocator) {
+//		int cntr = MAX_NUM_ANCHOR_RECALCS;
+//		boolean converged = false;
+//		while(cntr-- > 0 && !converged){
+//			Point oldSrcLocn = this.getSrcAnchorPosition();
+//			Point oldTgtLocn = this.getTgtAnchorPosition();
+//			recalculateSrcAnchorPosition(srcAnchorLocator);
+//			recalculateTgtAnchorPosition(tgtAnchorLocator);
+//			Point newSrcLocn = this.getSrcAnchorPosition();
+//			Point newTgtLocn = this.getTgtAnchorPosition();
+//			converged = oldSrcLocn.equals(newSrcLocn) && oldTgtLocn.equals(newTgtLocn);
+//		}
+//	}
+//
+//	@Override
+//	public void recalculateSrcAnchorPosition(IAnchorLocator srcAnchorLocator) {
+//		srcAnchorLocator.setOtherEndPoint(this.getSourceLineSegment().getTerminus());
+//		Point newSrcPosn = srcAnchorLocator.calcAnchorPosition();
+//		this.setSrcAnchorPosition(newSrcPosn);
+//	}
+//
+//	@Override
+//	public void recalculateTgtAnchorPosition(IAnchorLocator tgtAnchorCalc) {
+//		tgtAnchorCalc.setOtherEndPoint(this.getTargetLineSegment().getTerminus());
+//		Point newTgtPosn = tgtAnchorCalc.calcAnchorPosition();
+//		this.setTgtAnchorPosition(newTgtPosn);
+//	}
 }

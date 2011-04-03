@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILabelNode;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkEdge;
@@ -15,12 +16,14 @@ import org.pathwayeditor.businessobjects.impl.facades.LabelNodeFacade;
 import org.pathwayeditor.businessobjects.impl.facades.LinkEdgeFacade;
 import org.pathwayeditor.businessobjects.impl.facades.ShapeNodeFacade;
 import org.pathwayeditor.businessobjects.impl.facades.SubModelFacade;
-import org.pathwayeditor.figure.rendering.IAnchorLocator;
+import org.pathwayeditor.figure.rendering.IAnchorLocatorFactory;
 import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
 import org.pathwayeditor.visualeditor.controller.ILinkController;
 import org.pathwayeditor.visualeditor.controller.INodeController;
 import org.pathwayeditor.visualeditor.controller.IShapeController;
 import org.pathwayeditor.visualeditor.controller.IViewControllerModel;
+import org.pathwayeditor.visualeditor.geometry.ILinkDefinitionAnchorCalculator;
+import org.pathwayeditor.visualeditor.geometry.LinkDefinitionAnchorCalculator;
 import org.pathwayeditor.visualeditor.selection.ILinkSelection;
 import org.pathwayeditor.visualeditor.selection.INodeSelection;
 import org.pathwayeditor.visualeditor.selection.ISelectionRecord;
@@ -29,6 +32,7 @@ import uk.ac.ed.inf.graph.compound.ICompoundEdge;
 import uk.ac.ed.inf.graph.compound.ICompoundNode;
 
 public class FeedbackModel implements IFeedbackModel {
+	private final Logger logger = Logger.getLogger(this.getClass());
 	private final Set<IFeedbackNode> nodes;
 	private final Set<IFeedbackLink> links;
 	private final Map<IDrawingElementController, IFeedbackElement> selectionMapping;
@@ -84,14 +88,13 @@ public class FeedbackModel implements IFeedbackModel {
 			ILinkSelection selectedLink = iter.next();
 			ILinkController linkController = selectedLink.getPrimitiveController(); 
 			incidentEdgeSet.remove(linkController);
-			IFeedbackLink feedbackLink = createFeedbackLink(selectedLink.getPrimitiveController(), selectedLink.getPrimitiveController().getViewModel());
+			IFeedbackLink feedbackLink = createFeedbackLink(selectedLink.getPrimitiveController());
 			this.links.add(feedbackLink);
 			this.selectionMapping.put(linkController, feedbackLink);
 			buildLinkLabels(linkController);
 		}
-		IViewControllerModel viewController = this.selectionRecord.getPrimarySelection().getPrimitiveController().getViewModel();
 		for(ILinkController linkEdge : incidentEdgeSet){
-			IFeedbackLink feedbackLink = createFeedbackLink(linkEdge, viewController);
+			IFeedbackLink feedbackLink = createFeedbackLink(linkEdge);
 			this.links.add(feedbackLink);
 			buildLinkLabels(linkEdge);
 		}
@@ -209,35 +212,79 @@ public class FeedbackModel implements IFeedbackModel {
 		
 	}
 
-	private IFeedbackLink createFeedbackLink(ILinkController linkEdge, IViewControllerModel viewControllerStore){
+	private static IAnchorLocatorFactory getCorrectAnchorFactory(IFeedbackNode feedbackNode, IShapeController nodeController){
+		IAnchorLocatorFactory srcAnchorLocatorFact = null;
+		if(feedbackNode != null){
+			srcAnchorLocatorFact = feedbackNode.getFigureController().getAnchorLocatorFactory();
+		}
+		else{
+			srcAnchorLocatorFact = nodeController.getFigureController().getAnchorLocatorFactory();
+		}
+		return srcAnchorLocatorFact;
+	}
+	
+	private IFeedbackLink createFeedbackLink(ILinkController linkEdge){
 		IShapeNode srcShape = new ShapeNodeFacade(linkEdge.getDrawingElement().getSourceShape());
+		IViewControllerModel viewControllerStore = linkEdge.getViewModel();
 		IShapeController srcShapeController = viewControllerStore.getShapeController(srcShape); 
-		IAnchorLocator srcAnchorLocator = srcShapeController.getFigureController().getAnchorLocatorFactory().createAnchorLocator();
+//		IAnchorLocator srcAnchorLocator = srcShapeController.getFigureController().getAnchorLocatorFactory().createAnchorLocator();
 		ILinkAttribute linkAtt = linkEdge.getDrawingElement().getAttribute();
 		IShapeNode tgtShape = new ShapeNodeFacade(linkEdge.getDrawingElement().getTargetShape());
 		IShapeController tgtShapeController = viewControllerStore.getShapeController(tgtShape); 
-		IAnchorLocator tgtAnchorLocator = tgtShapeController.getFigureController().getAnchorLocatorFactory().createAnchorLocator();
-		IFeedbackLink retVal = this.linkBuilder.createFromAttribute((IFeedbackNode)this.selectionMapping.get(srcShapeController),
-				(IFeedbackNode)this.selectionMapping.get(tgtShapeController), linkAtt, linkAtt.getSourceTerminus().getLocation(), srcAnchorLocator,
-				linkAtt.getTargetTerminus().getLocation(), tgtAnchorLocator);
-//		FeedbackLink retVal = new FeedbackLink((FeedbackNode)this.selectionMapping.get(srcShapeController),
-//				(FeedbackNode)this.selectionMapping.get(tgtShapeController), linkAtt.getCreationSerial(),
-//				linkAtt.getSourceTerminus().getLocation(), srcAnchorLocator, linkAtt.getTargetTerminus().getLocation(), tgtAnchorLocator);
-//		ILinkPointDefinition linkDefn = retVal.getLinkDefinition();
-//		Iterator<Point> bpIter = linkAtt.getBendPointContainer().bendPointIterator();
-//		while(bpIter.hasNext()){
-//			Point bp = bpIter.next();
-//			linkDefn.addNewBendPoint(bp);
-//		}
-//		linkDefn.setLineColour(linkAtt.getLineColour());
-//		linkDefn.setLineStyle(linkAtt.getLineStyle());
-//		linkDefn.setLineWidth(linkAtt.getLineWidth());
-//		linkDefn.getSourceTerminusDefinition().setEndDecoratorType(linkAtt.getSourceTerminus().getEndDecoratorType());
-//		linkDefn.getSourceTerminusDefinition().setGap(linkAtt.getSourceTerminus().getGap());
-//		linkDefn.getSourceTerminusDefinition().setEndSize(linkAtt.getSourceTerminus().getEndSize());
-//		linkDefn.getTargetTerminusDefinition().setEndDecoratorType(linkAtt.getTargetTerminus().getEndDecoratorType());
-//		linkDefn.getTargetTerminusDefinition().setGap(linkAtt.getTargetTerminus().getGap());
-//		linkDefn.getTargetTerminusDefinition().setEndSize(linkAtt.getTargetTerminus().getEndSize());
+//		IAnchorLocator tgtAnchorLocator = tgtShapeController.getFigureController().getAnchorLocatorFactory().createAnchorLocator();
+		final IFeedbackLink retVal = this.linkBuilder.createFromAttribute(linkAtt);
+		final IFeedbackNode srcNode = (IFeedbackNode)this.selectionMapping.get(srcShapeController);
+		final IAnchorLocatorFactory srcAnchorLocatorFact = getCorrectAnchorFactory(srcNode, srcShapeController);
+		final IFeedbackNode tgtNode = (IFeedbackNode)this.selectionMapping.get(tgtShapeController);
+		final IAnchorLocatorFactory tgtAnchorLocatorFact = getCorrectAnchorFactory(tgtNode, tgtShapeController);
+		if(srcNode != null){
+			srcNode.addFeedbackNodeListener(new IFeedbackNodeListener(){
+				@Override
+				public void nodeTranslationEvent(IFeedbackNodeTranslationEvent e) {
+					ILinkDefinitionAnchorCalculator anchorCalc = new LinkDefinitionAnchorCalculator(retVal.getLinkDefinition());
+					anchorCalc.setSrcLocation(e.getNode().getFigureController().getAnchorLocatorFactory().createAnchorLocator());
+					anchorCalc.setTgtLocation(tgtAnchorLocatorFact.createAnchorLocator());
+					anchorCalc.recalculateBothAnchors();
+				}
+				@Override
+				public void nodeResizeEvent(IFeedbackNodeResizeEvent e) {
+					ILinkDefinitionAnchorCalculator anchorCalc = new LinkDefinitionAnchorCalculator(retVal.getLinkDefinition());
+					anchorCalc.setSrcLocation(e.getNode().getFigureController().getAnchorLocatorFactory().createAnchorLocator());
+					anchorCalc.setTgtLocation(tgtAnchorLocatorFact.createAnchorLocator());
+					anchorCalc.recalculateBothAnchors();
+				}
+			});
+		}
+		if(tgtNode != null){
+			tgtNode.addFeedbackNodeListener(new IFeedbackNodeListener(){
+				@Override
+				public void nodeTranslationEvent(IFeedbackNodeTranslationEvent e) {
+					ILinkDefinitionAnchorCalculator anchorCalc = new LinkDefinitionAnchorCalculator(retVal.getLinkDefinition());
+					anchorCalc.setSrcLocation(srcAnchorLocatorFact.createAnchorLocator());
+					anchorCalc.setTgtLocation(e.getNode().getFigureController().getAnchorLocatorFactory().createAnchorLocator());
+					anchorCalc.recalculateBothAnchors();
+				}
+				@Override
+				public void nodeResizeEvent(IFeedbackNodeResizeEvent e) {
+					ILinkDefinitionAnchorCalculator anchorCalc = new LinkDefinitionAnchorCalculator(retVal.getLinkDefinition());
+					anchorCalc.setSrcLocation(srcAnchorLocatorFact.createAnchorLocator());
+					anchorCalc.setTgtLocation(e.getNode().getFigureController().getAnchorLocatorFactory().createAnchorLocator());
+					anchorCalc.recalculateBothAnchors();
+				}
+			});
+		}
+		retVal.addFeedbackLinkListener(new IFeedbackLinkListener() {
+			@Override
+			public void linkChangeEvent(IFeedbackLinkChangeEvent e) {
+				ILinkDefinitionAnchorCalculator anchorCalc = new LinkDefinitionAnchorCalculator(e.getNewLinkDefintion());
+				anchorCalc.setSrcLocation(srcAnchorLocatorFact.createAnchorLocator());
+				anchorCalc.setTgtLocation(tgtAnchorLocatorFact.createAnchorLocator());
+				anchorCalc.recalculateBothAnchors();
+				if(logger.isTraceEnabled()){
+					logger.trace("Feedback link changed: recalculated link end points");
+				}
+			}
+		});
 		return retVal;
 	}
 
@@ -247,7 +294,7 @@ public class FeedbackModel implements IFeedbackModel {
 		this.nodes.clear();
 		this.links.clear();
 		this.selectionMapping.clear();
-		IFeedbackLink feedbackLink = createFeedbackLink(selection.getPrimitiveController(), selection.getPrimitiveController().getViewModel());
+		IFeedbackLink feedbackLink = createFeedbackLink(selection.getPrimitiveController());
 		this.links.add(feedbackLink);
 	}
 

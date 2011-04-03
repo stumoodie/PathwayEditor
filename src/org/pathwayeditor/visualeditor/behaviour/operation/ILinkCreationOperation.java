@@ -26,4 +26,10 @@ public interface ILinkCreationOperation {
 
 	boolean canStartCreation();
 
+	boolean canCreateIntermediatePoint(Point intermediatePoint);
+
+	void createIntermediatePoint(Point intermediatePoint);
+
+	void cancel();
+
 }

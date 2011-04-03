@@ -22,12 +22,13 @@ import org.pathwayeditor.businessobjects.impl.facades.ShapeNodeFacade;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.LineSegment;
 import org.pathwayeditor.figure.geometry.Point;
-import org.pathwayeditor.figure.rendering.IAnchorLocator;
+import org.pathwayeditor.visualeditor.geometry.ILinkDefinitionAnchorCalculator;
 import org.pathwayeditor.visualeditor.geometry.ILinkPointDefinition;
+import org.pathwayeditor.visualeditor.geometry.LinkDefinitionAnchorCalculator;
 import org.pathwayeditor.visualeditor.geometry.LinkPointDefinition;
 
 public class LinkController extends DrawingElementController implements ILinkController {
-	private static final int MAX_NUM_ANCHOR_RECALCS = 5;
+//	private static final int MAX_NUM_ANCHOR_RECALCS = 5;
 	private final Logger logger = Logger.getLogger(this.getClass());
 	private final ICanvasElementAttribute parentAttribute;
 	private final ILinkEdge linkAttribute;
@@ -90,7 +91,7 @@ public class LinkController extends DrawingElementController implements ILinkCon
 				Point bpPosn = e.getNewPosition();
 				int idx = e.getBendPointIndex();
 				linkDefinition.setBendPointPosition(idx, bpPosn);
-				updateLinksToBendPoints(idx, bpPosn);
+				updateLinksToBendPoints(idx);
 			}
 
 			@Override
@@ -100,15 +101,15 @@ public class LinkController extends DrawingElementController implements ILinkCon
 					int bpIdx = e.getNewIndexPos();
 					Point bpPosn = e.getBendPoint();
 					linkDefinition.addNewBendPoint(bpIdx, bpPosn);
-					updateLinksToBendPoints(bpIdx, bpPosn);
+					updateLinksToBendPoints(bpIdx);
 				}
 				else if(e.getChangeType().equals(BendPointStructureChange.BEND_POINT_REMOVED)){
 					int bpIdx = e.getOldIndexPos();
 					linkDefinition.removeBendPoint(bpIdx);
 					if(bpIdx < linkDefinition.numBendPoints()){
 						// recalculate anchor points on remaining bend-point(s)
-						Point bpPosn = linkAttribute.getAttribute().getBendPointContainer().getBendPoint(bpIdx);
-						updateLinksToBendPoints(bpIdx, bpPosn);
+//						Point bpPosn = linkAttribute.getAttribute().getBendPointContainer().getBendPoint(bpIdx);
+						updateLinksToBendPoints(bpIdx);
 					}
 					else if(linkDefinition.numBendPoints() == 0){
 						// no bend-points
@@ -117,8 +118,8 @@ public class LinkController extends DrawingElementController implements ILinkCon
 					else{
 						// in this case the last bp was removed so we need to take the new last bp
 						int lastBpIdx = linkDefinition.numBendPoints()-1;
-						Point bpPosn = linkAttribute.getAttribute().getBendPointContainer().getBendPoint(lastBpIdx);
-						updateLinksToBendPoints(lastBpIdx, bpPosn);
+//						Point bpPosn = linkAttribute.getAttribute().getBendPointContainer().getBendPoint(lastBpIdx);
+						updateLinksToBendPoints(lastBpIdx);
 					}
 				}
 				notifyDrawnBoundsChanged(originalDrawnBounds, getDrawnBounds());
@@ -210,42 +211,60 @@ public class LinkController extends DrawingElementController implements ILinkCon
 //	}
 	
 	private void updateAnchorPoints() {
-		int cntr = MAX_NUM_ANCHOR_RECALCS;
-		boolean converged = false;
-		while(cntr-- > 0 && !converged){
-			Point oldSrcLocn = linkAttribute.getAttribute().getSourceTerminus().getLocation();
-			Point oldTgtLocn = linkAttribute.getAttribute().getTargetTerminus().getLocation();
-			updateSrcAnchor(linkAttribute.getAttribute().getTargetTerminus().getLocation());
-			updateTgtAnchor(linkAttribute.getAttribute().getSourceTerminus().getLocation());
-			Point newSrcLocn = linkAttribute.getAttribute().getSourceTerminus().getLocation();
-			Point newTgtLocn = linkAttribute.getAttribute().getTargetTerminus().getLocation();
-			converged = oldSrcLocn.equals(newSrcLocn) && oldTgtLocn.equals(newTgtLocn);
-		}
+		ILinkDefinitionAnchorCalculator anchorCalc = new LinkDefinitionAnchorCalculator(new LinkPointDefinition(this.linkAttribute.getAttribute()));
+		IShapeController srcShapeController = getViewModel().getShapeController(new ShapeNodeFacade(linkAttribute.getSourceShape()));
+		anchorCalc.setSrcLocation(srcShapeController.getFigureController().getAnchorLocatorFactory().createAnchorLocator());
+		IShapeController tgtShapeController = getViewModel().getShapeController(new ShapeNodeFacade(linkAttribute.getTargetShape()));
+		anchorCalc.setTgtLocation(tgtShapeController.getFigureController().getAnchorLocatorFactory().createAnchorLocator());
+		anchorCalc.recalculateBothAnchors();
+		linkAttribute.getAttribute().getSourceTerminus().setLocation(anchorCalc.getLinkDefinition().getSrcAnchorPosition());
+		linkAttribute.getAttribute().getTargetTerminus().setLocation(anchorCalc.getLinkDefinition().getTgtAnchorPosition());
+//		int cntr = MAX_NUM_ANCHOR_RECALCS;
+//		boolean converged = false;
+//		while(cntr-- > 0 && !converged){
+//			Point oldSrcLocn = linkAttribute.getAttribute().getSourceTerminus().getLocation();
+//			Point oldTgtLocn = linkAttribute.getAttribute().getTargetTerminus().getLocation();
+//			updateSrcAnchor(linkAttribute.getAttribute().getTargetTerminus().getLocation());
+//			updateTgtAnchor(linkAttribute.getAttribute().getSourceTerminus().getLocation());
+//			Point newSrcLocn = linkAttribute.getAttribute().getSourceTerminus().getLocation();
+//			Point newTgtLocn = linkAttribute.getAttribute().getTargetTerminus().getLocation();
+//			converged = oldSrcLocn.equals(newSrcLocn) && oldTgtLocn.equals(newTgtLocn);
+//		}
 	}
 
-	private void updateSrcAnchor(Point otherEndPos){
-		IShapeController shapeController = getViewModel().getShapeController(new ShapeNodeFacade(linkAttribute.getSourceShape()));
-		IAnchorLocator anchorCalc = shapeController.getFigureController().getAnchorLocatorFactory().createAnchorLocator();
-		anchorCalc.setOtherEndPoint(otherEndPos);
-		Point newSrcPosn = anchorCalc.calcAnchorPosition();
-		linkAttribute.getAttribute().getSourceTerminus().setLocation(newSrcPosn);
-	}
+//	private void updateSrcAnchor(Point otherEndPos){
+//		
+//		IShapeController shapeController = getViewModel().getShapeController(new ShapeNodeFacade(linkAttribute.getSourceShape()));
+//		IAnchorLocator anchorCalc = shapeController.getFigureController().getAnchorLocatorFactory().createAnchorLocator();
+//		anchorCalc.setOtherEndPoint(otherEndPos);
+//		Point newSrcPosn = anchorCalc.calcAnchorPosition();
+//		linkAttribute.getAttribute().getSourceTerminus().setLocation(newSrcPosn);
+//	}
 	
-	private void updateTgtAnchor(Point otherEndPos){
-		IShapeController shapeController = getViewModel().getShapeController(new ShapeNodeFacade(linkAttribute.getTargetShape()));
-		IAnchorLocator anchorCalc = shapeController.getFigureController().getAnchorLocatorFactory().createAnchorLocator();
-		anchorCalc.setOtherEndPoint(otherEndPos);
-		Point newSrcPosn = anchorCalc.calcAnchorPosition();
-		linkAttribute.getAttribute().getTargetTerminus().setLocation(newSrcPosn);
-	}
+//	private void updateTgtAnchor(Point otherEndPos){
+//		IShapeController shapeController = getViewModel().getShapeController(new ShapeNodeFacade(linkAttribute.getTargetShape()));
+//		IAnchorLocator anchorCalc = shapeController.getFigureController().getAnchorLocatorFactory().createAnchorLocator();
+//		anchorCalc.setOtherEndPoint(otherEndPos);
+//		Point newSrcPosn = anchorCalc.calcAnchorPosition();
+//		linkAttribute.getAttribute().getTargetTerminus().setLocation(newSrcPosn);
+//	}
 	
-	private void updateLinksToBendPoints(int bpIdx, Point bpPosn){
+	private void updateLinksToBendPoints(int bpIdx){
+		ILinkDefinitionAnchorCalculator anchorCalc = new LinkDefinitionAnchorCalculator(new LinkPointDefinition(this.linkAttribute.getAttribute()));
+		IShapeController srcShapeController = getViewModel().getShapeController(new ShapeNodeFacade(linkAttribute.getSourceShape()));
+		anchorCalc.setSrcLocation(srcShapeController.getFigureController().getAnchorLocatorFactory().createAnchorLocator());
+		IShapeController tgtShapeController = getViewModel().getShapeController(new ShapeNodeFacade(linkAttribute.getTargetShape()));
+		anchorCalc.setTgtLocation(tgtShapeController.getFigureController().getAnchorLocatorFactory().createAnchorLocator());
 		// check if bp attached to anchor and recalc anchor if it is
 		if(bpIdx == 0){
-			updateSrcAnchor(bpPosn);
+			anchorCalc.recalculateSrcAnchor();
+			linkAttribute.getAttribute().getSourceTerminus().setLocation(anchorCalc.getLinkDefinition().getSrcAnchorPosition());
+//			updateSrcAnchor(bpPosn);
 		}
 		if(bpIdx == linkAttribute.getAttribute().getBendPointContainer().numBendPoints()-1){
-			updateTgtAnchor(bpPosn);
+			anchorCalc.recalculateTgtAnchor();
+			linkAttribute.getAttribute().getTargetTerminus().setLocation(anchorCalc.getLinkDefinition().getTgtAnchorPosition());
+//			updateTgtAnchor(bpPosn);
 		}
 	}
 	
