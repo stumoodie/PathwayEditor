@@ -18,7 +18,7 @@ import org.pathwayeditor.businessobjects.notationsubsystem.INotationSubsystem;
 import org.pathwayeditor.businessobjects.typedefn.ILinkObjectType;
 import org.pathwayeditor.businessobjects.typedefn.IShapeObjectType;
 import org.pathwayeditor.figure.geometry.Envelope;
-import org.pathwayeditor.visualeditor.behaviour.IMouseBehaviourController;
+import org.pathwayeditor.visualeditor.behaviour.IViewBehaviourController;
 
 public class PalettePanel extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -26,7 +26,7 @@ public class PalettePanel extends JPanel {
 	private JScrollPane linkScrollPanel;
 	private JSplitPane splitPane;
 
-	public PalettePanel(INotationSubsystem notationSubsystem, final IMouseBehaviourController editBehaviourController) {
+	public PalettePanel(INotationSubsystem notationSubsystem, final IViewBehaviourController editBehaviourController) {
 		final ButtonGroup paletteGroup = new ButtonGroup();
 		JPanel selectionButtonPanel = new JPanel();
 		selectionButtonPanel.setLayout(new BoxLayout(selectionButtonPanel, BoxLayout.PAGE_AXIS));

@@ -14,7 +14,7 @@ import org.apache.log4j.Logger;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.behaviour.IControllerResponses;
 import org.pathwayeditor.visualeditor.behaviour.IKeyboardResponse.CursorType;
-import org.pathwayeditor.visualeditor.behaviour.IMouseBehaviourListener;
+import org.pathwayeditor.visualeditor.behaviour.IViewBehaviourStateHandler;
 import org.pathwayeditor.visualeditor.behaviour.IMouseFeedbackResponse;
 import org.pathwayeditor.visualeditor.behaviour.IMouseFeedbackResponse.StateType;
 import org.pathwayeditor.visualeditor.behaviour.IPopupMenuResponse;
@@ -22,7 +22,7 @@ import org.pathwayeditor.visualeditor.behaviour.ISelectionResponse;
 import org.pathwayeditor.visualeditor.behaviour.ISelectionStateBehaviourController;
 import org.pathwayeditor.visualeditor.editingview.IShapePane;
 
-public class SelectionMouseBehaviourListener implements IMouseBehaviourListener, MouseMotionListener, MouseListener, KeyListener {
+public class SelectionViewBehaviourStateHandler implements IViewBehaviourStateHandler, MouseMotionListener, MouseListener, KeyListener {
 //	private ISelectionHandle currSelectionHandle;
 	private ISelectionDragResponse currDragResponse;
 	private IMouseFeedbackResponse currMouseFeedbackResponse;
@@ -31,7 +31,7 @@ public class SelectionMouseBehaviourListener implements IMouseBehaviourListener,
 	private final Logger logger = Logger.getLogger(this.getClass());
 	private boolean isActive = false;;
 	
-	public SelectionMouseBehaviourListener(ISelectionStateBehaviourController mouseBehaviourController,
+	public SelectionViewBehaviourStateHandler(ISelectionStateBehaviourController mouseBehaviourController,
 			IControllerResponses responses) {
 		this.mouseBehaviourController = mouseBehaviourController;
 		this.responses = responses;

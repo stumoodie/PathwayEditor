@@ -2,7 +2,7 @@ package org.pathwayeditor.visualeditor.behaviour;
 
 import org.pathwayeditor.visualeditor.editingview.IShapePane;
 
-public interface IMouseBehaviourListener {
+public interface IViewBehaviourStateHandler {
 	
 	void activate(IShapePane shapePane);
 	

@@ -16,8 +16,8 @@ import org.pathwayeditor.businessobjects.drawingprimitives.ILinkEdge;
 import org.pathwayeditor.businessobjects.drawingprimitives.IModel;
 import org.pathwayeditor.businessobjects.notationsubsystem.INotationSubsystem;
 import org.pathwayeditor.figure.geometry.Envelope;
-import org.pathwayeditor.visualeditor.behaviour.IMouseBehaviourController;
-import org.pathwayeditor.visualeditor.behaviour.MouseBehaviourController;
+import org.pathwayeditor.visualeditor.behaviour.IViewBehaviourController;
+import org.pathwayeditor.visualeditor.behaviour.ViewBehaviourController;
 import org.pathwayeditor.visualeditor.commands.CommandStack;
 import org.pathwayeditor.visualeditor.commands.ICommandStack;
 import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
@@ -52,7 +52,7 @@ public class PathwayEditor extends JPanel {
 	private IViewControllerModel viewModel;
 	private ISelectionRecord selectionRecord;
 	private ICommandStack commandStack;
-	private IMouseBehaviourController editBehaviourController;
+	private IViewBehaviourController editBehaviourController;
 	private ISelectionChangeListener selectionChangeListener;
 	private IFeedbackModel feedbackModel;
 	private boolean isOpen = false;
@@ -104,7 +104,7 @@ public class PathwayEditor extends JPanel {
 		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 		scrollPane.setFocusable(true);
 		scrollPane.setWheelScrollingEnabled(true);
-        this.editBehaviourController = new MouseBehaviourController(shapePane, new OperationFactory(this.shapePane, this.feedbackModel, this.selectionRecord, viewModel, this.commandStack));
+        this.editBehaviourController = new ViewBehaviourController(shapePane, new OperationFactory(this.shapePane, this.feedbackModel, this.selectionRecord, viewModel, this.commandStack));
         INotationSubsystem notationSubsystem = canvas.getNotationSubsystem();
 		this.palettePane = new PalettePanel(notationSubsystem, editBehaviourController);
 		this.add(palettePane, BorderLayout.LINE_START);

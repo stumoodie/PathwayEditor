@@ -8,32 +8,32 @@ import org.pathwayeditor.visualeditor.behaviour.creation.CreationControllerRespo
 import org.pathwayeditor.visualeditor.behaviour.creation.CreationDragResponse;
 import org.pathwayeditor.visualeditor.behaviour.creation.IShapeTypeInspector;
 import org.pathwayeditor.visualeditor.behaviour.creation.MouseCreationFeedbackResponse;
-import org.pathwayeditor.visualeditor.behaviour.creation.ShapeCreationMouseBehaviourListener;
+import org.pathwayeditor.visualeditor.behaviour.creation.ShapeCreationBehaviourStateHandler;
 import org.pathwayeditor.visualeditor.behaviour.linkcreation.ILinkTypeInspector;
-import org.pathwayeditor.visualeditor.behaviour.linkcreation.LinkCreationMouseBehaviourListener;
+import org.pathwayeditor.visualeditor.behaviour.linkcreation.LinkCreationBehaviourStateHandler;
 import org.pathwayeditor.visualeditor.behaviour.operation.IOperationFactory;
 import org.pathwayeditor.visualeditor.behaviour.selection.SelectionControllerResponses;
-import org.pathwayeditor.visualeditor.behaviour.selection.SelectionMouseBehaviourListener;
+import org.pathwayeditor.visualeditor.behaviour.selection.SelectionViewBehaviourStateHandler;
 import org.pathwayeditor.visualeditor.editingview.IShapePane;
 
-public class MouseBehaviourController implements IMouseBehaviourController {
+public class ViewBehaviourController implements IViewBehaviourController {
 	private final Logger logger = Logger.getLogger(this.getClass());
 	
-	private IMouseBehaviourListener currentStateController; 
-	private final IMouseBehaviourListener selectionStateController;
-	private final IMouseBehaviourListener shapeCreationStateController;
-	private final IMouseBehaviourListener linkCreationStateController;
+	private IViewBehaviourStateHandler currentStateController; 
+	private final IViewBehaviourStateHandler selectionStateController;
+	private final IViewBehaviourStateHandler shapeCreationStateController;
+	private final IViewBehaviourStateHandler linkCreationStateController;
 
 	private boolean activated;
 	private IObjectType currShapeType;
 	private final IShapePane shapePane;
 	
-	public MouseBehaviourController(IShapePane pane, IOperationFactory opFactory){
+	public ViewBehaviourController(IShapePane pane, IOperationFactory opFactory){
 		this.shapePane = pane;
 		IControllerResponses selectionResponse = new SelectionControllerResponses(opFactory);
 		ISelectionStateBehaviourController selectionController = new GeneralStateController(pane, new HitCalculator(pane), selectionResponse);
-		this.selectionStateController = new SelectionMouseBehaviourListener(selectionController, selectionResponse);
-		this.shapeCreationStateController = new ShapeCreationMouseBehaviourListener(new GeneralStateController(pane, new HitCalculator(pane),
+		this.selectionStateController = new SelectionViewBehaviourStateHandler(selectionController, selectionResponse);
+		this.shapeCreationStateController = new ShapeCreationBehaviourStateHandler(new GeneralStateController(pane, new HitCalculator(pane),
 				new CreationControllerResponses(opFactory,
 				new IShapeTypeInspector() {
 					
@@ -48,7 +48,7 @@ public class MouseBehaviourController implements IMouseBehaviourController {
 				return (IShapeObjectType)currShapeType;
 			}
 		}), new MouseCreationFeedbackResponse());
-		this.linkCreationStateController = new LinkCreationMouseBehaviourListener(new HitCalculator(pane),
+		this.linkCreationStateController = new LinkCreationBehaviourStateHandler(new HitCalculator(pane),
 				opFactory.getLinkCreationOperation(),
 				new ILinkTypeInspector() {
 			@Override

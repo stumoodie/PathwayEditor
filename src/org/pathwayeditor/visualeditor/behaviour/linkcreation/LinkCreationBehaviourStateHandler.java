@@ -7,19 +7,19 @@ import java.awt.event.MouseMotionListener;
 import org.apache.log4j.Logger;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.behaviour.IHitCalculator;
-import org.pathwayeditor.visualeditor.behaviour.IMouseBehaviourListener;
+import org.pathwayeditor.visualeditor.behaviour.IViewBehaviourStateHandler;
 import org.pathwayeditor.visualeditor.behaviour.operation.ILinkCreationOperation;
 import org.pathwayeditor.visualeditor.controller.IShapeController;
 import org.pathwayeditor.visualeditor.editingview.IShapePane;
 
-public class LinkCreationMouseBehaviourListener implements IMouseBehaviourListener, MouseMotionListener, MouseListener {
+public class LinkCreationBehaviourStateHandler implements IViewBehaviourStateHandler, MouseMotionListener, MouseListener {
 	private ILinkCreationOperation linkCreationResponse;
 	private final IHitCalculator mouseBehaviourController;
 	private final Logger logger = Logger.getLogger(this.getClass());
 	private ILinkTypeInspector objectTypeInspector;
 	private boolean active;
 	
-	public LinkCreationMouseBehaviourListener(IHitCalculator locationCalculator, ILinkCreationOperation linkCreationResponse,
+	public LinkCreationBehaviourStateHandler(IHitCalculator locationCalculator, ILinkCreationOperation linkCreationResponse,
 			ILinkTypeInspector objectTypeInspector) {
 		this.mouseBehaviourController = locationCalculator;
 		this.linkCreationResponse = linkCreationResponse;

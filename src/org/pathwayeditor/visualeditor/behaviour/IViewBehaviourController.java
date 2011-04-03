@@ -3,7 +3,7 @@ package org.pathwayeditor.visualeditor.behaviour;
 import org.pathwayeditor.businessobjects.typedefn.ILinkObjectType;
 import org.pathwayeditor.businessobjects.typedefn.IShapeObjectType;
 
-public interface IMouseBehaviourController {
+public interface IViewBehaviourController {
 
 	void activate();
 
