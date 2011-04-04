@@ -42,6 +42,7 @@ import uk.ac.ed.inf.graph.compound.IGraphStructureChangeAction.GraphStructureCha
 import uk.ac.ed.inf.graph.compound.IGraphStructureChangeListener;
 
 public class ViewControllerStore implements IViewControllerModel {
+	private static final Envelope DEFAULT_CANVAS_BOUNDS = new Envelope(0.0, 0.0, 600.0, 600.0);
 //	private final Logger logger = Logger.getLogger(this.getClass());
 	private final IModel domainModel;
 	private final SortedMap<ICompoundGraphElement, IDrawingElementController> domainToViewMap;
@@ -431,14 +432,17 @@ public class ViewControllerStore implements IViewControllerModel {
 
 	@Override
 	public Envelope getCanvasBounds() {
+		Envelope retVal = DEFAULT_CANVAS_BOUNDS;
 		double minX = Double.MAX_VALUE;
-		double maxX = Double.MIN_VALUE;
+		double maxX = -Double.MAX_VALUE;
 		double minY = Double.MAX_VALUE;
-		double maxY = Double.MIN_VALUE;
+		double maxY = -Double.MAX_VALUE;
 		Iterator<INodeController> nodeIter = this.nodeControllerIterator();
+		boolean onlyRoot = true;
 		while(nodeIter.hasNext()){
 			INodeController nodeController = nodeIter.next();
 			if(!(nodeController instanceof IRootController)){
+				onlyRoot = false;
 				// ignore the root as this doesn't have real bounds values - we are only intersted in shapes and labels
 				Point nodeOrigin = nodeController.getConvexHull().getEnvelope().getOrigin();
 				minX = Math.min(minX, nodeOrigin.getX());
@@ -448,20 +452,23 @@ public class ViewControllerStore implements IViewControllerModel {
 				maxY = Math.max(maxY, nodeDiagonal.getY());
 			}
 		}
-		Iterator<ILinkController> edgeIter = this.linkControllerIterator();
-		while(edgeIter.hasNext()){
-			ILinkController linkController = edgeIter.next();
-			ILinkPointDefinition defn = linkController.getLinkDefinition();
-			Iterator<Point> pointIter = defn.pointIterator();
-			while(pointIter.hasNext()){
-				Point linkPoint = pointIter.next();
-				minX = Math.min(minX, linkPoint.getX());
-				minY = Math.min(minY, linkPoint.getY());
-				maxX = Math.max(maxX, linkPoint.getX());
-				maxY = Math.max(maxY, linkPoint.getY());
+		if(!onlyRoot){
+			Iterator<ILinkController> edgeIter = this.linkControllerIterator();
+			while(edgeIter.hasNext()){
+				ILinkController linkController = edgeIter.next();
+				ILinkPointDefinition defn = linkController.getLinkDefinition();
+				Iterator<Point> pointIter = defn.pointIterator();
+				while(pointIter.hasNext()){
+					Point linkPoint = pointIter.next();
+					minX = Math.min(minX, linkPoint.getX());
+					minY = Math.min(minY, linkPoint.getY());
+					maxX = Math.max(maxX, linkPoint.getX());
+					maxY = Math.max(maxY, linkPoint.getY());
+				}
 			}
+			retVal = new Envelope(minX, minY, maxX-minX, maxY-minY);
 		}
-		return new Envelope(minX, minY, maxX-minX, maxY-minY);
+		return retVal;
 	}
 
 	@Override

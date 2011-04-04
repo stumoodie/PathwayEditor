@@ -436,6 +436,12 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 		return new LinkPointDefinition(this);
 	}
 
+	@Override
+	public Iterator<Point> bendPointIterator() {
+		List<Point> retVal = this.pointList.subList(SRC_IDX+1, this.pointList.size()-1);
+		return retVal.iterator();
+	}
+
 //	@Override
 //	public void recalculateAnchorPositions(IAnchorLocator srcAnchorLocator,	IAnchorLocator tgtAnchorLocator) {
 //		int cntr = MAX_NUM_ANCHOR_RECALCS;

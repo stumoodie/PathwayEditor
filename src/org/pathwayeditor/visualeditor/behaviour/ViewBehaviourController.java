@@ -97,7 +97,7 @@ public class ViewBehaviourController implements IViewBehaviourController {
 //        this.shapePane.addMouseListener(this.currentStateController);
 //        this.shapePane.addMouseListener(popupMenuListener);
 //        this.popupMenuListener.activate();
-		this.setSelectionMode();
+		this.currentStateController.activate(shapePane);
 		this.shapeCreationStateController.addViewBehaviourStateHandlerChangeListener(this.viewBehaviourShapeCreationStateHandlerChangeListener);
 		this.linkCreationStateController.addViewBehaviourStateHandlerChangeListener(this.viewBehaviourLinkCreationStateHandlerChangeListener);
 		this.selectionStateController.addViewBehaviourStateHandlerChangeListener(this.viewBehaviourSelectionStateHandlerChangeListener);
@@ -111,8 +111,10 @@ public class ViewBehaviourController implements IViewBehaviourController {
 //        this.shapePane.removeMouseListener(this.currentStateController);
 //        this.shapePane.removeMouseListener(popupMenuListener);
 //        this.popupMenuListener.deactivate();
+		this.shapeCreationStateController.removeViewBehaviourStateHandlerChangeListener(this.viewBehaviourShapeCreationStateHandlerChangeListener);
+		this.linkCreationStateController.removeViewBehaviourStateHandlerChangeListener(this.viewBehaviourLinkCreationStateHandlerChangeListener);
+		this.selectionStateController.removeViewBehaviourStateHandlerChangeListener(this.viewBehaviourSelectionStateHandlerChangeListener);
 		this.currentStateController.deactivate(shapePane);
-		this.currentStateController.removeViewBehaviourStateHandlerChangeListener(this.viewBehaviourSelectionStateHandlerChangeListener);
         this.activated = false;
 	}
 

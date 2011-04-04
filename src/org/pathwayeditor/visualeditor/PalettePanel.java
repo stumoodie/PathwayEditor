@@ -112,7 +112,6 @@ public class PalettePanel extends JPanel {
 		this.splitPane.setOneTouchExpandable(true);
 		this.splitPane.setDividerLocation(250);
 		this.add(this.splitPane);
-		paletteGroup.setSelected(selectionButton.getModel(), true);
 		editBehaviourController.addViewBehaviourModeChangeListener(new IViewBehaviourModeChangeListener() {
 			@Override
 			public void viewModeChange(IViewBehaviourModeChangeEvent e) {
@@ -121,6 +120,7 @@ public class PalettePanel extends JPanel {
 				}
 			}
 		});
+		paletteGroup.setSelected(selectionButton.getModel(), true);
 //		this.add(this.palettePane);
 //		this.add(this.linkScrollPanel);
 //		this.add(this.palettePane, BorderLayout.LINE_START);

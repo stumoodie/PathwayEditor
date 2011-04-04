@@ -33,6 +33,8 @@ public interface ILinkPointDefinition {
 
 	Iterator<Point> pointIterator();
 
+	int numPoints();
+
 	Iterator<LineSegment> lineSegIterator();
 
 	Iterator<LineSegment> drawnLineSegIterator();
@@ -41,10 +43,10 @@ public interface ILinkPointDefinition {
 
 	void addNewBendPoint(Point bpPosn);
 
-	int numPoints();
-
 	int numBendPoints();
 
+	Iterator<Point> bendPointIterator();
+	
 	void removeBendPoint(int bpIdx);
 
 	/**

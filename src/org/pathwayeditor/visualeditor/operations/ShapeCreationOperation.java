@@ -109,15 +109,15 @@ public class ShapeCreationOperation implements IShapeCreationOperation {
 		this.startLocation = origin;
 		calculateBounds(origin);
 		feedbackModel.clear();
+		if(logger.isTraceEnabled()){
+			logger.trace("Starting create shape drag. origin=" + origin);
+		}
 		IFeedbackNode node = feedbackModel.getFeedbackNodeBuilder().createFromDrawingNodeObjectType(this.shapeObjectType, new Envelope(origin, new Dimension(0.1, 0.1)));
 //		node.setFillColour(RGB.BLUE);
 		node.setLineColour(RGB.RED);
 		node.setLineStyle(LineStyle.SOLID);
 		node.setLineWidth(1.0);
 		this.shapePane.updateView();
-		if(logger.isTraceEnabled()){
-			logger.trace("Starting create shape drag. origin=" + origin);
-		}
 	}
 
 	private void calculateBounds(Point delta){

@@ -14,6 +14,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import javax.swing.JFileChooser;
@@ -26,9 +29,13 @@ import javax.swing.KeyStroke;
 import javax.swing.WindowConstants;
 import javax.swing.filechooser.FileFilter;
 
+import org.pathwayeditor.businessobjects.drawingprimitives.IModel;
 import org.pathwayeditor.businessobjects.exchange.FileXmlCanvasPersistenceManager;
 import org.pathwayeditor.businessobjects.exchange.IXmlPersistenceManager;
+import org.pathwayeditor.businessobjects.management.IModelFactory;
 import org.pathwayeditor.businessobjects.management.INotationSubsystemPool;
+import org.pathwayeditor.businessobjects.management.ModelFactory;
+import org.pathwayeditor.businessobjects.notationsubsystem.INotationSubsystem;
 
 public class VisualEditor extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -37,6 +44,9 @@ public class VisualEditor extends JFrame {
 	private static final int HEIGHT = 800;
 	private final JMenuBar menuBar;
 	private final PathwayEditor insp;
+
+	private final INotationSubsystemPool subsystemPool;
+	private final Map<String, INotationSubsystem> nsMap;
 	
 	public VisualEditor(String title){
 		super(title);
@@ -92,16 +102,37 @@ public class VisualEditor extends JFrame {
 		this.pack();
 		this.setLocationByPlatform(true);
 		this.setVisible(true);
+		subsystemPool = new NotationSubsystemPool();
+		this.nsMap = new HashMap<String, INotationSubsystem>();
+		Iterator<INotationSubsystem> notIter = subsystemPool.subsystemIterator();
+		while(notIter.hasNext()){
+			INotationSubsystem ns = notIter.next();
+			this.nsMap.put(ns.getNotation().getDisplayName(), ns);
+		}
 	}
 
 	private void initFileMenu(){
 		JMenu fileMenu = new JMenu("File");
 		fileMenu.setMnemonic(KeyEvent.VK_F);
 		menuBar.add(fileMenu);
+		JMenuItem fileMenuNewItem = new JMenuItem("New", KeyEvent.VK_N);
+		fileMenuNewItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.ALT_MASK));
+		fileMenuNewItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String selection = (String)JOptionPane.showInputDialog(VisualEditor.this, "Select a notation:", "New Diagram", JOptionPane.PLAIN_MESSAGE, null, nsMap.keySet().toArray(), "foo");
+				IModelFactory modelFactory = new ModelFactory();
+				INotationSubsystem selectedNs = nsMap.get(selection);
+				modelFactory.setNotationSubsystem(selectedNs);
+				modelFactory.setName("New Map");
+				IModel newModel = modelFactory.createModel();
+				insp.renderModel(newModel);
+			}
+		});
+		fileMenu.add(fileMenuNewItem);
 		//a group of JMenuItems
 		JMenuItem fileMenuOpenItem = new JMenuItem("Open", KeyEvent.VK_O);
 		fileMenuOpenItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.ALT_MASK));
-		fileMenuOpenItem.getAccessibleContext().setAccessibleDescription("This doesn't really do anything");
 		fileMenuOpenItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -145,7 +176,6 @@ public class VisualEditor extends JFrame {
 
 	public void openFile(File file){
 		try{
-			INotationSubsystemPool subsystemPool = new NotationSubsystemPool();
 			IXmlPersistenceManager canvasPersistenceManager = new FileXmlCanvasPersistenceManager(subsystemPool);
 			InputStream in = new FileInputStream(file);
 			canvasPersistenceManager.readCanvasFromStream(in);

@@ -18,12 +18,11 @@ import javax.swing.JPopupMenu;
 
 import org.apache.log4j.Logger;
 import org.pathwayeditor.figure.geometry.Envelope;
-import org.pathwayeditor.figure.geometry.Point;
 
 public class ShapePane extends JPanel implements IShapePane {
 	private final Logger logger = Logger.getLogger(this.getClass());
 	private static final long serialVersionUID = -7580080598416351849L;
-	private static final double RESIZE_DIM = 20.0;
+//	private static final double RESIZE_DIM = 20.0;
 	private static final boolean DEBUG_REFRESH_BOUNDS = Boolean.getBoolean("org.pathwayeditor.visualeditor.editingview.debugRefreshBounds");
 
 //	private final double PANE_BORDER = 20.0;
@@ -155,26 +154,26 @@ public class ShapePane extends JPanel implements IShapePane {
 //		return bounds;  
 //	}
 
-	private Rectangle getAdjustedBounds(Envelope modelClipBounds){
-		Envelope updateBounds = modelClipBounds.translate(new Point(-this.canvasBounds.getOrigin().getX()+PANE_BORDER, -this.canvasBounds.getOrigin().getY()+PANE_BORDER));
-		Rectangle bounds = new Rectangle();
-		bounds.setRect(updateBounds.getOrigin().getX(), updateBounds.getOrigin().getY(), updateBounds.getDimension().getWidth(), updateBounds.getDimension().getHeight());
-		if(logger.isTraceEnabled()){
-			logger.trace("Adjusted update bounds=" + bounds);
-		}
-		return bounds;  
-	}
+//	private Rectangle getAdjustedBounds(Envelope modelClipBounds){
+//		Envelope updateBounds = modelClipBounds.translate(new Point(-this.canvasBounds.getOrigin().getX()+PANE_BORDER, -this.canvasBounds.getOrigin().getY()+PANE_BORDER));
+//		Rectangle bounds = new Rectangle();
+//		bounds.setRect(updateBounds.getOrigin().getX(), updateBounds.getOrigin().getY(), updateBounds.getDimension().getWidth(), updateBounds.getDimension().getHeight());
+//		if(logger.isTraceEnabled()){
+//			logger.trace("Adjusted update bounds=" + bounds);
+//		}
+//		return bounds;  
+//	}
 
 	@Override
 	public void updateView(Envelope refreshBounds) {
-		Envelope updateBounds = refreshBounds.deltaResize(-RESIZE_DIM, -RESIZE_DIM, 2*RESIZE_DIM, 2*RESIZE_DIM);
+//		Envelope updateBounds = refreshBounds.deltaResize(-RESIZE_DIM, -RESIZE_DIM, 2*RESIZE_DIM, 2*RESIZE_DIM);
 		Dimension prefSize = new Dimension();
 		prefSize.setSize(canvasBounds.getDimension().getWidth()+2*PANE_BORDER, canvasBounds.getDimension().getHeight() + 2*PANE_BORDER);
 		this.setPreferredSize(prefSize);
-		Rectangle bounds = getAdjustedBounds(updateBounds);
-		if(logger.isTraceEnabled()){
-			logger.trace("Update requested. Model bounds=" + updateBounds + ", screen bounds=" + bounds);
-		}
+//		Rectangle bounds = getAdjustedBounds(updateBounds);
+//		if(logger.isTraceEnabled()){
+//			logger.trace("Update requested. Model bounds=" + updateBounds + ", screen bounds=" + bounds);
+//		}
 		revalidate();
 //		repaint(bounds);
 		repaint();

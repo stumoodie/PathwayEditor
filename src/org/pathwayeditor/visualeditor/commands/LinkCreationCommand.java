@@ -42,7 +42,7 @@ public class LinkCreationCommand implements ICommand {
 		ILinkAttribute linkAttribute = link.getAttribute();
 		linkAttribute.getSourceTerminus().setLocation(linkPointDefinition.getSrcAnchorPosition());
 		linkAttribute.getTargetTerminus().setLocation(linkPointDefinition.getTgtAnchorPosition());
-		Iterator<Point> ptIter = linkPointDefinition.pointIterator();
+		Iterator<Point> ptIter = linkPointDefinition.bendPointIterator();
 		IBendPointContainer bpContainer = linkAttribute.getBendPointContainer();
 		while(ptIter.hasNext()){
 			Point pt = ptIter.next();
