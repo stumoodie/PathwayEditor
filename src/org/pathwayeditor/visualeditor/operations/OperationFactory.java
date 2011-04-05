@@ -27,6 +27,7 @@ import org.pathwayeditor.visualeditor.editingview.IShapePane;
 import org.pathwayeditor.visualeditor.feedback.IFeedbackModel;
 import org.pathwayeditor.visualeditor.geometry.CommonParentCalculator;
 import org.pathwayeditor.visualeditor.geometry.ICommonParentCalculator;
+import org.pathwayeditor.visualeditor.layout.LabelPositionCalculator;
 import org.pathwayeditor.visualeditor.selection.ILinkSelection;
 import org.pathwayeditor.visualeditor.selection.INodeSelection;
 import org.pathwayeditor.visualeditor.selection.ISelectionRecord;
@@ -62,7 +63,7 @@ public class OperationFactory implements IOperationFactory {
 		linkOperation = new LinkOperation(shapePane, feedbackModel, selectionRecord, commandStack);
 		marqueeOperation = new MarqueeOperation(shapePane, feedbackModel, selectionRecord, viewModel.getIntersectionCalculator());
 		initResponses();
-		shapeCreationOperation = new ShapeCreationOperation(shapePane, feedbackModel, viewModel, commandStack);
+		shapeCreationOperation = new ShapeCreationOperation(shapePane, feedbackModel, viewModel, commandStack, new LabelPositionCalculator());
 		this.selectionOperations = new SelectionOperation(selectionRecord, viewModel.getIntersectionCalculator());
 		this.linkCreationOperation = new LinkCreationOperation(shapePane, feedbackModel, commandStack);
 	}

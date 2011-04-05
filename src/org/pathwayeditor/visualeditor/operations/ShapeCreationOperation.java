@@ -19,6 +19,7 @@ import org.pathwayeditor.visualeditor.controller.IViewControllerModel;
 import org.pathwayeditor.visualeditor.editingview.IShapePane;
 import org.pathwayeditor.visualeditor.feedback.IFeedbackModel;
 import org.pathwayeditor.visualeditor.feedback.IFeedbackNode;
+import org.pathwayeditor.visualeditor.layout.ILabelPositionCalculator;
 
 public class ShapeCreationOperation implements IShapeCreationOperation {
 	private final Logger logger = Logger.getLogger(this.getClass());
@@ -29,28 +30,19 @@ public class ShapeCreationOperation implements IShapeCreationOperation {
 	private IShapeObjectType shapeObjectType;
 	private Point originDelta;
 	private Dimension sizeDelta;
-	private Point startLocation;
+//	private Point startLocation;
 	private boolean canCreationSucceed = false;
 	private final IViewControllerModel viewModel;
+	private ILabelPositionCalculator labelPositionCalculator;
 
-	public ShapeCreationOperation(IShapePane shapePane, IFeedbackModel feedbackModel, IViewControllerModel viewModel, ICommandStack commandStack) {
+	public ShapeCreationOperation(IShapePane shapePane, IFeedbackModel feedbackModel,
+			IViewControllerModel viewModel, ICommandStack commandStack, ILabelPositionCalculator labelPositionCalculator) {
 		this.shapePane = shapePane;
 		this.viewModel = viewModel;
-//		this.domainModel = viewModel.getDomainModel();
 		this.feedbackModel = feedbackModel;
 		this.commandStack = commandStack;
+		this.labelPositionCalculator = labelPositionCalculator;
 	}
-
-//	@Override
-//	public void createShape(Point origin) {
-//		Envelope bounds = new Envelope(origin, this.shapeObjectType.getDefaultAttributes().getSize());
-//		ICommand cmd = new ShapeCreationCommand(new RootNodeFacade(domainModel.getGraph().getRoot()), this.shapeObjectType, bounds);
-//		this.commandStack.execute(cmd);
-//		if(logger.isDebugEnabled()){
-//			logger.debug("Create a new shape at: " + cmd);
-//		}
-//		this.shapePane.updateView();
-//	}
 
 	@Override
 	public IShapeObjectType getShapeObjectType() {
@@ -70,8 +62,8 @@ public class ShapeCreationOperation implements IShapeCreationOperation {
 		IDrawingElementController potentialParent = getParentElement(node);
 		ICanvasElementAttribute drawingElementAtt = potentialParent.getDrawingElement().getAttribute();
 		if(drawingElementAtt.getObjectType().getParentingRules().isValidChild(getShapeObjectType())){
-			Envelope bounds = new Envelope(this.startLocation, new Dimension(0, 0)).resize(originDelta, sizeDelta);
-			ICommand cmd = new ShapeCreationCommand(potentialParent.getDrawingElement(), this.shapeObjectType, bounds);
+			ICommand cmd = new ShapeCreationCommand(potentialParent.getDrawingElement(), this.shapeObjectType,
+					node.getFigureController(), labelPositionCalculator);
 			this.commandStack.execute(cmd);
 			if(logger.isDebugEnabled()){
 				logger.debug("Create a new shape at: " + cmd);
@@ -82,6 +74,41 @@ public class ShapeCreationOperation implements IShapeCreationOperation {
 		this.feedbackModel.clear();
 		this.shapePane.updateView();
 	}
+	
+	
+//	private void createShapeLabels(IShapeController shapeHull){
+//		currentCmd = new CompoundCommand();
+//		INotationSyntaxService syntaxService = this.domainModel.getNotationSubsystem().getSyntaxService();
+//		Iterator<IAnnotationProperty> defnIter = shapeHull.getDrawingElement().getAttribute().propertyIterator();
+//		while(defnIter.hasNext()){
+//			IAnnotationProperty defn = defnIter.next();
+//			if(syntaxService.isVisualisableProperty(defn.getDefinition())){
+//				ILabelObjectType labelObjectType = syntaxService.getLabelObjectTypeByProperty(defn.getDefinition());
+//				if(labelObjectType.isAlwaysDisplayed()){
+//					String defaultText = getDisplayedLabelText(labelObjectType, defn);
+//					Envelope labelBounds = this.labelPositionCalculator.calculateLabelPosition(shapeHull, labelObjectType, defaultText);
+//					currentCmd.addCommand(new LabelCreationCommand(shapeHull.getDrawingElement(), defn, labelBounds));
+//					if(logger.isTraceEnabled()){
+//						logger.trace("Create label at: " + labelBounds);
+//					}
+//				}
+//			}
+//		}
+////		this.commandStack.execute(currentCmd);
+//	}
+//	
+//	private String getDisplayedLabelText(ILabelObjectType labelObjectType, IAnnotationProperty defn) {
+//		Format displayFormat = labelObjectType.getDefaultAttributes().getDisplayFormat();
+//		String retVal = null;
+//		if(displayFormat != null){
+//			retVal = displayFormat.format(defn.getValue());
+//		}
+//		else{
+//			retVal = defn.getValue().toString();
+//		}
+//		return retVal;
+//	}
+
 
 	@Override
 	public void ongoingCreationDrag(Point delta) {
@@ -106,7 +133,7 @@ public class ShapeCreationOperation implements IShapeCreationOperation {
 	@Override
 	public void startCreationDrag(Point origin) {
 		this.canCreationSucceed = false;
-		this.startLocation = origin;
+//		this.startLocation = origin;
 		calculateBounds(origin);
 		feedbackModel.clear();
 		if(logger.isTraceEnabled()){

@@ -35,10 +35,6 @@ public class ShapeCreationBehaviourStateHandler implements IViewBehaviourStateHa
 		this.listeners = new LinkedList<IViewBehaviourStateHandlerChangeListener>();
 	}
 
-//	private void setCurrentCursorResponse(){
-//		currMouseFeedbackResponse = this.mouseBehaviourController.getMouseFeedbackResponse();
-//	}
-
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		if(e.getButton() == MouseEvent.BUTTON1){

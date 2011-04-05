@@ -1,20 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry excluding="org/pathwayeditor/visualeditor/behaviour/IMoveResponse.java|org/pathwayeditor/visualeditor/behaviour/ShapeCreationStateController.java|org/pathwayeditor/visualeditor/behaviour/SelectionStateController.java|org/pathwayeditor/visualeditor/behaviour/CreationMouseListener.java|org/pathwayeditor/visualeditor/behaviour/linkcreation/LinkCreationDragResponse.java|org/pathwayeditor/visualeditor/behaviour/linkcreation/LinkCreationControllerResponses.java|org/pathwayeditor/visualeditor/behaviour/linkcreation/LinkCreationResponse.java|org/pathwayeditor/visualeditor/behaviour/linkcreation/ILinkCreationResponse.java|org/pathwayeditor/visualeditor/behaviour/ILinkStateBehaviourController.java|org/pathwayeditor/visualeditor/feedback/FeedbackLink.java|org/pathwayeditor/visualeditor/behaviour/selection/PopupMenuListener.java|org/pathwayeditor/visualeditor/behaviour/selection/SelectionKeyListener.java" kind="src" path="src"/>
+	<classpathentry excluding="org/pathwayeditor/visualeditor/behaviour/IMoveResponse.java|org/pathwayeditor/visualeditor/behaviour/ShapeCreationStateController.java|org/pathwayeditor/visualeditor/behaviour/SelectionStateController.java|org/pathwayeditor/visualeditor/behaviour/CreationMouseListener.java|org/pathwayeditor/visualeditor/behaviour/linkcreation/LinkCreationDragResponse.java|org/pathwayeditor/visualeditor/behaviour/linkcreation/LinkCreationControllerResponses.java|org/pathwayeditor/visualeditor/behaviour/linkcreation/LinkCreationResponse.java|org/pathwayeditor/visualeditor/behaviour/linkcreation/ILinkCreationResponse.java|org/pathwayeditor/visualeditor/behaviour/ILinkStateBehaviourController.java|org/pathwayeditor/visualeditor/feedback/FeedbackLink.java|org/pathwayeditor/visualeditor/behaviour/selection/PopupMenuListener.java|org/pathwayeditor/visualeditor/behaviour/selection/SelectionKeyListener.java|org/pathwayeditor/visualeditor/commands/LabelCreationCommand.java" kind="src" path="src"/>
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="lib" path="libs/apache-log4j-1.2.15/log4j-1.2.15.jar"/>
 	<classpathentry kind="lib" path="libs/antlr-3.2/antlr-3.2.jar"/>
-	<classpathentry kind="lib" path="libs/sbgnPd/SbgnPdNotation.jar" sourcepath="libs/sbgnPd/SbgnPdNotation-src.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:platform:/resource/GraphicsEngine/libs/sbgnPd/SbgnPdNotation-docs.jar!/"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="libs/toolkit/toolkit.jar" sourcepath="libs/toolkit/toolkit-src.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:platform:/resource/GraphicsEngine/libs/toolkit/toolkit-docs.jar!/"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="lib" path="libs/castor-1.3/castor-1.3-core.jar"/>
 	<classpathentry kind="lib" path="libs/castor-1.3/castor-1.3-xml-schema.jar"/>
 	<classpathentry kind="lib" path="libs/castor-1.3/castor-1.3-xml.jar"/>
@@ -51,11 +41,6 @@
 	<classpathentry kind="lib" path="libs/batik-1.7/lib/xml-apis-ext.jar"/>
 	<classpathentry kind="lib" path="libs/batik-1.7/lib/xml-apis.jar"/>
 	<classpathentry kind="con" path="org.eclipse.ajdt.core.ASPECTJRT_CONTAINER"/>
-	<classpathentry kind="lib" path="libs/annotator/AnnotatorNotation.jar" sourcepath="libs/annotator/AnnotatorNotation-src.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:platform:/resource/GraphicsEngine/libs/annotator/AnnotatorNotation-docs.jar!/"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="lib" path="libs/compoundGraph/CompoundGraph.jar" sourcepath="libs/compoundGraph/CompoundGraph-src.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:platform:/resource/GraphicsEngine/libs/compoundGraph/CompoundGraph-docs.jar!/"/>
@@ -66,5 +51,7 @@
 			<attribute name="javadoc_location" value="jar:platform:/resource/GraphicsEngine/libs/jopt-simple-3.2/jopt-simple-3.2-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry combineaccessrules="false" kind="src" path="/SbgnPdNotationSubsystem"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Toolkit"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -18,6 +18,8 @@ limitations under the License.
  */
 package org.pathwayeditor.graphicsengine.stubs.notationsubsystem;
 
+import java.text.Format;
+
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LabelLocationPolicy;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LineStyle;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.RGB;
@@ -114,6 +116,11 @@ public class StubLabelAttributeDefaults implements ILabelAttributeDefaults {
 	@Override
 	public boolean hasNoFill() {
 		return false;
+	}
+
+	@Override
+	public Format getDisplayFormat() {
+		return null;
 	}
 
 }
