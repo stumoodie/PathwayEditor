@@ -1,5 +1,10 @@
 package org.pathwayeditor.visualeditor.controller;
 
+import java.awt.Font;
+import java.awt.font.FontRenderContext;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
+
 import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNodeAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILabelAttribute;
@@ -21,7 +26,10 @@ import org.pathwayeditor.figure.rendering.IFigureRenderingController;
 import org.pathwayeditor.visualeditor.feedback.FigureCompilationCache;
 
 public abstract class CommonLabelController extends NodeController implements ILabelController {
+	private static final String FONT_NAME = "Arial";
+	private static final double DEFAULT_FONT_HEIGHT = 15.0;
 	private static final String LABEL_TEXT = "labelText";
+	private static final Dimension MIN_LABEL_SIZE = new Dimension(2.0, DEFAULT_FONT_HEIGHT);
 	private final Logger logger = Logger.getLogger(this.getClass());
 	private final String LABEL_DEFINITION =
 		"curbounds /h exch def /w exch def /y exch def /x exch def\n" +
@@ -71,13 +79,35 @@ public abstract class CommonLabelController extends NodeController implements IL
 			}
 		};
 		propertyValueChangeListener = new IAnnotationPropertyChangeListener() {
-			
 			@Override
 			public void propertyChange(IAnnotationPropertyChangeEvent e) {
-				getFigureController().setBindString(LABEL_TEXT, domainNode.getAttribute().getDisplayedContent());
+				String text = domainNode.getAttribute().getDisplayedContent();
+				getFigureController().setBindString(LABEL_TEXT, text);
+				Dimension textExtent = MIN_LABEL_SIZE;
+				if(!text.isEmpty()){
+					textExtent = handleGetTextBounds(text);
+				}
+				Envelope newBounds = adjustForDefaultTextLength(getConvexHull().getCentre(), textExtent);
+				getFigureController().setRequestedEnvelope(newBounds);
 				getFigureController().generateFigureDefinition();
 			}
 		};
+	}
+
+	private Dimension handleGetTextBounds(String text) {
+		double size = DEFAULT_FONT_HEIGHT;
+		int style = Font.PLAIN;
+    	Font f = new Font(FONT_NAME, style, (int)Math.ceil(size));
+    	AffineTransform af = new AffineTransform();
+    	FontRenderContext ctx = new FontRenderContext(af, false, false);
+    	Rectangle2D bounds = f.getStringBounds(text, ctx);
+		return new Dimension(bounds.getWidth(), bounds.getHeight());
+	}
+
+	private Envelope adjustForDefaultTextLength(Point centralPosition, Dimension textExtent){
+		double textWidth = textExtent.getWidth();
+		double textHeight = textExtent.getHeight();
+		return new Envelope(new Point(centralPosition.getX() - (textWidth/2), centralPosition.getY() - (textHeight/2)), textExtent);
 	}
 
 	private IFigureRenderingController createController(ILabelAttribute attribute){

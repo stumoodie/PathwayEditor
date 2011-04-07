@@ -156,16 +156,20 @@ public class Java2DGraphicsEngine implements IGraphicsEngine {
 
 	@Override
 	public void drawString(String text, double x, double y, GraphicalTextAlignment align) {
-		this.setLineColour();
-		this.setStroke();
-		Font f = g.getFont();
-		TextLayout layout = new TextLayout(text, f, g.getFontRenderContext());
-		Rectangle2D textBounds = layout.getBounds();
-		Point2D.Double p = getAlignedTextPosition(align, x, y, textBounds);
-		p.setLocation(p.getX(), p.getY()+ textBounds.getHeight());
-		layout.draw(g, (float)p.getX(), (float)p.getY());
-		if(logger.isDebugEnabled()){
-			logger.debug("drawString: x=" + x + ", y=" + y + ", text=" + text);
+		if (!text.isEmpty()) {
+			this.setLineColour();
+			this.setStroke();
+			Font f = g.getFont();
+			TextLayout layout = new TextLayout(text, f,
+					g.getFontRenderContext());
+			Rectangle2D textBounds = layout.getBounds();
+			Point2D.Double p = getAlignedTextPosition(align, x, y, textBounds);
+			p.setLocation(p.getX(), p.getY() + textBounds.getHeight());
+			layout.draw(g, (float) p.getX(), (float) p.getY());
+			if (logger.isDebugEnabled()) {
+				logger.debug("drawString: x=" + x + ", y=" + y + ", text="
+						+ text);
+			}
 		}
 	}
 	
