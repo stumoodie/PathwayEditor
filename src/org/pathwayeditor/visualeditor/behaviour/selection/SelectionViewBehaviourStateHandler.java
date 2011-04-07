@@ -183,7 +183,9 @@ public class SelectionViewBehaviourStateHandler implements IViewBehaviourStateHa
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		logger.trace("Key press detected");
+		if(logger.isTraceEnabled()){
+			logger.trace("Key press detected: " + e.toString());
+		}
 		if(e.getKeyCode() == KeyEvent.VK_RIGHT){
 			handleKeyPress(CursorType.Right);
 		}
