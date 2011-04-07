@@ -4,7 +4,6 @@ import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
-import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.behaviour.operation.IEditingOperation;
 import org.pathwayeditor.visualeditor.commands.CompoundCommand;
@@ -26,7 +25,6 @@ import org.pathwayeditor.visualeditor.feedback.IFeedbackNode;
 import org.pathwayeditor.visualeditor.feedback.IFeedbackNodeListener;
 import org.pathwayeditor.visualeditor.feedback.IFeedbackNodeResizeEvent;
 import org.pathwayeditor.visualeditor.feedback.IFeedbackNodeTranslationEvent;
-import org.pathwayeditor.visualeditor.geometry.EnvelopeBuilder;
 import org.pathwayeditor.visualeditor.geometry.ICommonParentCalculator;
 import org.pathwayeditor.visualeditor.selection.ILinkSelection;
 import org.pathwayeditor.visualeditor.selection.INodeSelection;
@@ -41,7 +39,7 @@ public class EditingOperation implements IEditingOperation {
 	private final ISelectionRecord selectionRecord;
 	private final ICommonParentCalculator newParentCalc;
 	private final ICommandStack commandStack;
-	private EnvelopeBuilder refreshBoundsBuilder;
+//	private EnvelopeBuilder refreshBoundsBuilder;
 	private final IFeedbackLinkListener feedbackLinkListener;
 	private final IFeedbackNodeListener feedbackNodeListener;
 	
@@ -55,27 +53,27 @@ public class EditingOperation implements IEditingOperation {
 		this.feedbackLinkListener = new IFeedbackLinkListener() {
 			@Override
 			public void linkChangeEvent(IFeedbackLinkChangeEvent e) {
-				refreshBoundsBuilder.union(e.getNewLinkDefintion().getBounds());
+//				refreshBoundsBuilder.union(e.getNewLinkDefintion().getBounds());
 			}
 		};
 		this.feedbackNodeListener = new IFeedbackNodeListener() {
 			@Override
 			public void nodeTranslationEvent(IFeedbackNodeTranslationEvent e) {
-				refreshBoundsBuilder.union(e.getNode().getBounds());
+//				refreshBoundsBuilder.union(e.getNode().getBounds());
 			}
 			@Override
 			public void nodeResizeEvent(IFeedbackNodeResizeEvent e) {
-				refreshBoundsBuilder.union(e.getNode().getBounds());
+//				refreshBoundsBuilder.union(e.getNode().getBounds());
 			}
 		};
 	}
 	
 	@Override
 	public void moveFinished(Point delta, ReparentingStateType reparentingState) {
-		Envelope refreshBounds = refreshBoundsBuilder.getEnvelope();
-		if(logger.isTraceEnabled()){
-			logger.trace("Move finished. Delta=" + delta + ", Refresh Bounds=" + refreshBounds);
-		}
+//		Envelope refreshBounds = refreshBoundsBuilder.getEnvelope();
+//		if(logger.isTraceEnabled()){
+//			logger.trace("Move finished. Delta=" + delta + ", Refresh Bounds=" + refreshBounds);
+//		}
 		Iterator<IFeedbackNode> nodeIter = feedbackModel.nodeIterator();
 		while(nodeIter.hasNext()){
 			IFeedbackNode node = nodeIter.next();
@@ -95,24 +93,25 @@ public class EditingOperation implements IEditingOperation {
 			selectionRecord.restoreSelection();
 		}
 		feedbackModel.clear();
-		shapePane.updateView(refreshBounds);
-		
+//		shapePane.updateView(refreshBounds);
+		shapePane.updateView();
 	}
 
 	@Override
 	public void moveOngoing(Point delta) {
-		Envelope refreshBounds = refreshBoundsBuilder.getEnvelope();
-		if(logger.isTraceEnabled()){
-			logger.trace("Ongoning move. Delta=" + delta + ", Refresh Bounds=" + refreshBounds);
-		}
+//		Envelope refreshBounds = refreshBoundsBuilder.getEnvelope();
+//		if(logger.isTraceEnabled()){
+//			logger.trace("Ongoning move. Delta=" + delta + ", Refresh Bounds=" + refreshBounds);
+//		}
 		moveSelection(delta);
-		shapePane.updateView(refreshBounds);
+//		shapePane.updateView(refreshBounds);
+		shapePane.updateView();
 	}
 
 	@Override
 	public void moveStarted() {
-		Envelope originalBounds = this.selectionRecord.getTotalSelectionBounds();
-		refreshBoundsBuilder = new EnvelopeBuilder(originalBounds);
+//		Envelope originalBounds = this.selectionRecord.getTotalSelectionBounds();
+//		refreshBoundsBuilder = new EnvelopeBuilder(originalBounds);
 		logger.trace("Move started.");
 		feedbackModel.rebuildIncludingHierarchy();
 		Iterator<IFeedbackNode> nodeIter = feedbackModel.nodeIterator();

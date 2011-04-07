@@ -9,8 +9,11 @@
     <Notation qualifiedName="org.pathwayeditor.notations.sbgnpd"
         majorVersion="0" minorVersion="11" patchVersion="0" displayName="SBGN-PD L1 V1.1 ">
         <Description>SBGN Process Description Notation</Description>
-        <ObjectType uniqueId="16" name="Macromolecule" classification="Shape">
-            <description>Macromolecule</description>
+        <ObjectType uniqueId="11" name="Unit Of Information" classification="Shape">
+            <description>Unit of information</description>
+        </ObjectType>
+        <ObjectType uniqueId="13" name="Compartment" classification="Shape">
+            <description>Compartment</description>
         </ObjectType>
         <ObjectType uniqueId="14" name="Complex" classification="Shape">
             <description>Complex</description>
@@ -18,59 +21,41 @@
         <ObjectType uniqueId="15" name="Nucleic Acid Feature" classification="Shape">
             <description>Nucleic Acid Feature</description>
         </ObjectType>
-        <ObjectType uniqueId="13" name="Compartment" classification="Shape">
-            <description>Compartment</description>
-        </ObjectType>
-        <ObjectType uniqueId="10" name="State" classification="Shape">
-            <description>State decription.</description>
-        </ObjectType>
-        <ObjectType uniqueId="11" name="Unit Of Information" classification="Shape">
-            <description>Unit of information</description>
-        </ObjectType>
-        <ObjectType uniqueId="24" name="Catalysis" classification="Link">
-            <description>Catalysis.</description>
-        </ObjectType>
-        <ObjectType uniqueId="25" name="Inhibition" classification="Link">
-            <description>Inhibition arc.</description>
-        </ObjectType>
-        <ObjectType uniqueId="22" name="Modulation" classification="Link">
-            <description>Modulation arc.</description>
-        </ObjectType>
-        <ObjectType uniqueId="23" name="Stimulation" classification="Link">
-            <description>Stimulation arc.</description>
-        </ObjectType>
-        <ObjectType uniqueId="20" name="Consumption" classification="Link">
-            <description>Consumption arc.</description>
-        </ObjectType>
-        <ObjectType uniqueId="21" name="Production" classification="Link">
-            <description>Production arc.</description>
-        </ObjectType>
-        <ObjectType uniqueId="26" name="Necessary Stimulation" classification="Link">
-            <description>Necessary stimulation.</description>
+        <ObjectType uniqueId="16" name="Macromolecule" classification="Shape">
+            <description>Macromolecule</description>
         </ObjectType>
         <ObjectType uniqueId="18" name="Simple Chemical" classification="Shape">
             <description>Simple chemical</description>
         </ObjectType>
+        <ObjectType uniqueId="10" name="State" classification="Shape">
+            <description>State decription.</description>
+        </ObjectType>
         <ObjectType uniqueId="27" name="LogicArc" classification="Link">
             <description>Logic arc.</description>
         </ObjectType>
-        <ObjectType uniqueId="0" name="ROOT_OBJECT" classification="Root">
-            <description>No descn</description>
+        <ObjectType uniqueId="20" name="Consumption" classification="Link">
+            <description>Consumption arc.</description>
+        </ObjectType>
+        <ObjectType uniqueId="22" name="Modulation" classification="Link">
+            <description>Modulation arc.</description>
+        </ObjectType>
+        <ObjectType uniqueId="21" name="Production" classification="Link">
+            <description>Production arc.</description>
+        </ObjectType>
+        <ObjectType uniqueId="24" name="Catalysis" classification="Link">
+            <description>Catalysis.</description>
+        </ObjectType>
+        <ObjectType uniqueId="23" name="Stimulation" classification="Link">
+            <description>Stimulation arc.</description>
+        </ObjectType>
+        <ObjectType uniqueId="26" name="Necessary Stimulation" classification="Link">
+            <description>Necessary stimulation.</description>
+        </ObjectType>
+        <ObjectType uniqueId="25" name="Inhibition" classification="Link">
+            <description>Inhibition arc.</description>
         </ObjectType>
         <ObjectType uniqueId="114" name="Phenotype" classification="Shape">
             <description>Phenotype</description>
-        </ObjectType>
-        <ObjectType uniqueId="121" name="Association" classification="Shape">
-            <description>Association</description>
-        </ObjectType>
-        <ObjectType uniqueId="120" name="Uncertain Process" classification="Shape">
-            <description>Uncertain process</description>
-        </ObjectType>
-        <ObjectType uniqueId="119" name="Omitted Process" classification="Shape">
-            <description>Omitted process</description>
-        </ObjectType>
-        <ObjectType uniqueId="118" name="Process" classification="Shape">
-            <description>Process node</description>
         </ObjectType>
         <ObjectType uniqueId="113" name="Perturbing Agent" classification="Shape">
             <description>Perturbing Agent</description>
@@ -84,8 +69,26 @@
         <ObjectType uniqueId="110" name="Unspecified Entity" classification="Shape">
             <description>Unspecified entity</description>
         </ObjectType>
+        <ObjectType uniqueId="121" name="Association" classification="Shape">
+            <description>Association</description>
+        </ObjectType>
         <ObjectType uniqueId="122" name="Dissociation" classification="Shape">
             <description>Dissociation arc.</description>
+        </ObjectType>
+        <ObjectType uniqueId="0" name="ROOT_OBJECT" classification="Root">
+            <description>No descn</description>
+        </ObjectType>
+        <ObjectType uniqueId="119" name="Omitted Process" classification="Shape">
+            <description>Omitted process</description>
+        </ObjectType>
+        <ObjectType uniqueId="120" name="Uncertain Process" classification="Shape">
+            <description>Uncertain process</description>
+        </ObjectType>
+        <ObjectType uniqueId="118" name="Process" classification="Shape">
+            <description>Process node</description>
+        </ObjectType>
+        <ObjectType uniqueId="125" name="NOT" classification="Shape">
+            <description>NOT Logical Operator</description>
         </ObjectType>
         <ObjectType uniqueId="123" name="AND" classification="Shape">
             <description>AND Logical Operator</description>
@@ -93,13 +96,10 @@
         <ObjectType uniqueId="124" name="OR" classification="Shape">
             <description>OR Logical Operator</description>
         </ObjectType>
-        <ObjectType uniqueId="125" name="NOT" classification="Shape">
-            <description>NOT Logical Operator</description>
-        </ObjectType>
     </Notation>
     <CanvasSize width="1.7976931348623157E308" height="1.7976931348623157E308"/>
     <Background red="255" green="255" blue="255"/>
-    <Model lastNodeIndex="19" lastEdgeIndex="2">
+    <Model lastNodeIndex="18" lastEdgeIndex="2">
         <RootNode nodeId="0">
             <SubModel>
                 <ShapeNode nodeId="1">
@@ -111,7 +111,7 @@
                                     <LabelAttribute creationSerial="11"
                                     lineStyle="SOLID"
                                     lineWidth="1.0" noFill="true" noBorder="true">
-                                    <Location x="214.0" y="324.0"/>
+                                    <Location x="234.0" y="330.0"/>
                                     <Size width="42.0" height="22.0"/>
                                     <LineColour red="0" green="0" blue="0"/>
                                     <FillColour red="255"
@@ -122,7 +122,7 @@
                             </SubModel>
                             <ShapeAttribute creationSerial="10"
                                 objectTypeId="16" lineWidth="1.0" lineStyle="SOLID">
-                                <Location x="204.0" y="313.0"/>
+                                <Location x="224.0" y="319.0"/>
                                 <Size width="60.0" height="40.0"/>
                                 <FillColour red="255" green="255" blue="255"/>
                                 <LineColour red="0" green="0" blue="0"/>
@@ -157,7 +157,7 @@ grestore
                                     <LabelAttribute creationSerial="13"
                                     lineStyle="SOLID"
                                     lineWidth="1.0" noFill="true" noBorder="true">
-                                    <Location x="118.0" y="353.0"/>
+                                    <Location x="138.0" y="359.0"/>
                                     <Size width="42.0" height="22.0"/>
                                     <LineColour red="0" green="0" blue="0"/>
                                     <FillColour red="255"
@@ -168,7 +168,7 @@ grestore
                             </SubModel>
                             <ShapeAttribute creationSerial="12"
                                 objectTypeId="16" lineWidth="1.0" lineStyle="SOLID">
-                                <Location x="108.0" y="342.0"/>
+                                <Location x="128.0" y="348.0"/>
                                 <Size width="60.0" height="40.0"/>
                                 <FillColour red="102" green="102" blue="255"/>
                                 <LineColour red="0" green="0" blue="0"/>
@@ -203,7 +203,7 @@ grestore
                                     <LabelAttribute creationSerial="15"
                                     lineStyle="SOLID"
                                     lineWidth="1.0" noFill="true" noBorder="true">
-                                    <Location x="216.0" y="429.0"/>
+                                    <Location x="236.0" y="435.0"/>
                                     <Size width="42.0" height="22.0"/>
                                     <LineColour red="0" green="0" blue="0"/>
                                     <FillColour red="255"
@@ -214,7 +214,7 @@ grestore
                             </SubModel>
                             <ShapeAttribute creationSerial="14"
                                 objectTypeId="16" lineWidth="1.0" lineStyle="SOLID">
-                                <Location x="207.0" y="421.0"/>
+                                <Location x="227.0" y="427.0"/>
                                 <Size width="60.0" height="40.0"/>
                                 <FillColour red="255" green="255" blue="255"/>
                                 <LineColour red="0" green="0" blue="0"/>
@@ -249,7 +249,7 @@ grestore
                                     <LabelAttribute creationSerial="26"
                                     lineStyle="SOLID"
                                     lineWidth="1.0" noFill="true" noBorder="true">
-                                    <Location x="150.0" y="507.0"/>
+                                    <Location x="170.0" y="513.0"/>
                                     <Size width="11.0" height="22.0"/>
                                     <LineColour red="0" green="0" blue="0"/>
                                     <FillColour red="255"
@@ -260,7 +260,7 @@ grestore
                             </SubModel>
                             <ShapeAttribute creationSerial="25"
                                 objectTypeId="10" lineWidth="1.0" lineStyle="SOLID">
-                                <Location x="133.0" y="503.0"/>
+                                <Location x="153.0" y="509.0"/>
                                 <Size width="40.0" height="30.0"/>
                                 <FillColour red="255" green="255" blue="255"/>
                                 <LineColour red="0" green="0" blue="0"/>
@@ -275,7 +275,7 @@ h w le  {x y w h 1 h mul 1 h mul rrect}
                             <LabelAttribute creationSerial="7"
                                 lineStyle="SOLID" lineWidth="1.0"
                                 noFill="true" noBorder="true">
-                                <Location x="119.0" y="281.0"/>
+                                <Location x="139.0" y="287.0"/>
                                 <Size width="42.0" height="22.0"/>
                                 <LineColour red="0" green="0" blue="0"/>
                                 <FillColour red="255" green="255" blue="255"/>
@@ -285,8 +285,8 @@ h w le  {x y w h 1 h mul 1 h mul rrect}
                     </SubModel>
                     <ShapeAttribute creationSerial="6" objectTypeId="14"
                         lineWidth="1.0" lineStyle="SOLID">
-                        <Location x="79.0" y="264.0"/>
-                        <Size width="234.0" height="259.0"/>
+                        <Location x="99.0" y="270.0"/>
+                        <Size width="276.0" height="252.0"/>
                         <FillColour red="255" green="255" blue="255"/>
                         <LineColour red="0" green="0" blue="0"/>
                         <PropertyRef id="5"/>
@@ -324,7 +324,7 @@ grestore
                             <LabelAttribute creationSerial="9"
                                 lineStyle="SOLID" lineWidth="1.0"
                                 noFill="true" noBorder="true">
-                                <Location x="668.0" y="276.0"/>
+                                <Location x="689.0" y="336.0"/>
                                 <Size width="42.0" height="22.0"/>
                                 <LineColour red="0" green="0" blue="0"/>
                                 <FillColour red="255" green="255" blue="255"/>
@@ -334,7 +334,7 @@ grestore
                     </SubModel>
                     <ShapeAttribute creationSerial="8" objectTypeId="14"
                         lineWidth="1.0" lineStyle="SOLID">
-                        <Location x="628.0" y="241.0"/>
+                        <Location x="649.0" y="301.0"/>
                         <Size width="298.0" height="304.0"/>
                         <FillColour red="255" green="255" blue="255"/>
                         <LineColour red="0" green="0" blue="0"/>
@@ -370,7 +370,7 @@ grestore
                     <SubModel/>
                     <ShapeAttribute creationSerial="16"
                         objectTypeId="118" lineWidth="1.0" lineStyle="SOLID">
-                        <Location x="468.0" y="377.0"/>
+                        <Location x="483.0" y="377.0"/>
                         <Size width="30.0" height="30.0"/>
                         <FillColour red="255" green="255" blue="255"/>
                         <LineColour red="0" green="0" blue="0"/>
@@ -399,7 +399,7 @@ ifelse
                             <LabelAttribute creationSerial="24"
                                 lineStyle="SOLID" lineWidth="1.0"
                                 noFill="true" noBorder="true">
-                                <Location x="478.0" y="210.0"/>
+                                <Location x="457.0" y="229.0"/>
                                 <Size width="42.0" height="22.0"/>
                                 <LineColour red="0" green="0" blue="0"/>
                                 <FillColour red="255" green="255" blue="255"/>
@@ -409,7 +409,7 @@ ifelse
                     </SubModel>
                     <ShapeAttribute creationSerial="23"
                         objectTypeId="18" lineWidth="1.0" lineStyle="SOLID">
-                        <Location x="411.0" y="131.0"/>
+                        <Location x="390.0" y="150.0"/>
                         <Size width="183.0" height="152.0"/>
                         <FillColour red="255" green="255" blue="255"/>
                         <LineColour red="0" green="0" blue="0"/>
@@ -437,9 +437,9 @@ grestore
 { x y w h oval } ifelse</FigureDefinition>
                     </ShapeAttribute>
                 </ShapeNode>
-                <ShapeNode nodeId="19">
+                <ShapeNode nodeId="9">
                     <SubModel>
-                        <LabelNode nodeId="20">
+                        <LabelNode nodeId="19">
                             <SubModel/>
                             <LabelAttribute creationSerial="31"
                                 lineStyle="SOLID" lineWidth="1.0"
@@ -486,32 +486,32 @@ grestore
 } ifelse</FigureDefinition>
                     </ShapeAttribute>
                 </ShapeNode>
-                <LinkEdge linkIdx="9" srcNodeIdx="1" tgtNodeIdx="7">
+                <LinkEdge linkIdx="10" srcNodeIdx="1" tgtNodeIdx="7">
                     <LinkAttribute creationSerial="17" lineStyle="SOLID"
                         lineWidth="1.0" objectTypeId="20" lastBendPointIndex="0">
                         <LineColour red="0" green="0" blue="0"/>
                         <srcTerminus creationSerial="17" gap="5.0" endDecoratorType="NONE">
-                            <Location x="313.0" y="392.85"/>
+                            <Location x="375.0" y="392.8"/>
                             <DecoratorSize width="0.0" height="0.0"/>
                         </srcTerminus>
                         <tgtTerminus creationSerial="17" gap="0.0" endDecoratorType="NONE">
-                            <Location x="462.0" y="392.0"/>
+                            <Location x="477.0" y="392.0"/>
                             <DecoratorSize width="0.0" height="0.0"/>
                         </tgtTerminus>
                         <PropertyRef id="1"/>
                         <PropertyRef id="2"/>
                     </LinkAttribute>
                 </LinkEdge>
-                <LinkEdge linkIdx="10" srcNodeIdx="7" tgtNodeIdx="6">
+                <LinkEdge linkIdx="11" srcNodeIdx="7" tgtNodeIdx="6">
                     <LinkAttribute creationSerial="20" lineStyle="SOLID"
                         lineWidth="1.0" objectTypeId="21" lastBendPointIndex="0">
                         <LineColour red="0" green="0" blue="0"/>
                         <srcTerminus creationSerial="20" gap="0.0" endDecoratorType="NONE">
-                            <Location x="504.0" y="392.0"/>
+                            <Location x="519.0" y="392.0"/>
                             <DecoratorSize width="0.0" height="0.0"/>
                         </srcTerminus>
                         <tgtTerminus creationSerial="20" gap="5.0" endDecoratorType="TRIANGLE">
-                            <Location x="628.0" y="393.4"/>
+                            <Location x="649.0" y="421.4"/>
                             <DecoratorSize width="10.0" height="10.0"/>
                         </tgtTerminus>
                         <PropertyRef id="3"/>

@@ -159,7 +159,7 @@ public class FastShapeIntersectionCalculator implements IIntersectionCalculator 
 	}
 	
 	@Override
-	public SortedSet<IDrawingElementController> findIntersectingNodes(IConvexHull queryHull, IDrawingElementController queryNode){
+	public SortedSet<IDrawingElementController> findIntersectingParentNodes(IConvexHull queryHull, IDrawingElementController queryNode){
 		SortedSet<IDrawingElementController> retVal = createSortedSet();
 		// the root node will always intersect - that's a give so add it in and exclude it from
 		// intersection tests
@@ -177,6 +177,32 @@ public class FastShapeIntersectionCalculator implements IIntersectionCalculator 
 				INodeController node = (INodeController)prim;
 				// ignore matches to self
 				if(!node.equals(queryNode) && !node.equals(rootNode) && filter.accept(node) && !queryNode.getDrawingElement().isDescendent(node.getDrawingElement()) && node.intersectsHull(queryHull)){
+					retVal.add(node);
+				}
+			}
+		}
+		return retVal;
+	}
+
+	@Override
+	public SortedSet<IDrawingElementController> findIntersectingNodes(IConvexHull queryHull, IDrawingElementController queryNode){
+		SortedSet<IDrawingElementController> retVal = createSortedSet();
+		// the root node will always intersect - that's a give so add it in and exclude it from
+		// intersection tests
+		IRootController rootNode = model.getRootNode();
+		if(filter.accept(rootNode)){
+			retVal.add(rootNode);
+		}
+		Envelope drawnBounds = queryHull.getEnvelope();
+		Point origin = drawnBounds.getOrigin();
+		Point diagonal = drawnBounds.getDiagonalCorner();
+		ISpacialEntry2DEnumerator<IDrawingElementController> iter = this.spacialIndex.queryOverlap((float)origin.getX(), (float)origin.getY(), (float)diagonal.getX(), (float)diagonal.getY(), null, 0, false);
+		while(iter.numRemaining() > 0){
+			IDrawingElementController prim = iter.nextInt();
+			if(prim instanceof INodeController){
+				INodeController node = (INodeController)prim;
+				// ignore matches to self
+				if(!node.equals(queryNode) && !node.equals(rootNode) && filter.accept(node) && node.intersectsHull(queryHull)){
 					retVal.add(node);
 				}
 			}

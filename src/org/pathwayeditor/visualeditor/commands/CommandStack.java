@@ -103,6 +103,7 @@ public class CommandStack implements ICommandStack {
 	public void clear() {
 		this.redoStack.clear();
 		this.undoStack.clear();
+		notifyChange(CommandChangeType.CLEAR, null);
 	}
 
 }

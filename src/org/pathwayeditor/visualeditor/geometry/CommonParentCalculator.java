@@ -167,7 +167,7 @@ public class CommonParentCalculator implements ICommonParentCalculator {
 			}
 			
 		});
-		SortedSet<IDrawingElementController> nodes = calc.findIntersectingNodes(testPlacement, potentialChild);
+		SortedSet<IDrawingElementController> nodes = calc.findIntersectingParentNodes(testPlacement, potentialChild);
 		INodeController retVal = null;
 		if(logger.isTraceEnabled()){
 			logger.trace("Potential parents = " + nodes);

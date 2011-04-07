@@ -84,10 +84,7 @@ public class VisualEditor extends JFrame implements AboutHandler, QuitHandler, P
 
 			@Override
 			public void windowClosing(WindowEvent e) {
-				int reply = JOptionPane.showConfirmDialog(VisualEditor.this, "Are you sure you want to exit?", "Exit Confirmation", JOptionPane.YES_NO_OPTION);
-				if(reply == JOptionPane.YES_OPTION){
-					System.exit(0);
-				}
+				closeWindow();
 			}
 
 			@Override
@@ -141,6 +138,25 @@ public class VisualEditor extends JFrame implements AboutHandler, QuitHandler, P
 		setFileMenuEnablement();
 		setEditMenuEnablement();
 		this.insp.addEditorStateChangeListener(pathwayEditorStateChangeListener);
+	}
+
+	protected void closeWindow() {
+		if(this.visualEditorController.getPathwayEditor().isEdited()){
+			int reply = JOptionPane.showConfirmDialog(VisualEditor.this, "Do you want to save your changes before exiting?", "Unsaved Changes to Diagram", JOptionPane.YES_NO_CANCEL_OPTION);
+			if(reply == JOptionPane.YES_OPTION){
+				this.visualEditorController.saveFile();
+				System.exit(0);
+			}
+			else if(reply == JOptionPane.NO_OPTION){
+				System.exit(0);
+			}
+		}
+		else{
+			int reply = JOptionPane.showConfirmDialog(VisualEditor.this, "Are you sure you want to exit?", "Exit Confirmation", JOptionPane.YES_NO_OPTION);
+			if(reply == JOptionPane.YES_OPTION){
+				System.exit(0);
+			}
+		}
 	}
 
 	private void initEditMenu(){
@@ -300,14 +316,30 @@ public class VisualEditor extends JFrame implements AboutHandler, QuitHandler, P
 
 	@Override
 	public void handleQuitRequestWith(QuitEvent arg0, QuitResponse arg1) {
-		processEvent(new WindowEvent(VisualEditor.this, WindowEvent.WINDOW_CLOSING));
-//		int ok = JOptionPane.showConfirmDialog(this, "Do you want to quit?", "Quit Dialog", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-//		if(ok == JOptionPane.YES_OPTION){
-//			arg1.performQuit();
-//		}
-//		else{
-//			arg1.cancelQuit();
-//		}
+//		closeWindow();
+//		processEvent(new WindowEvent(VisualEditor.this, WindowEvent.WINDOW_CLOSING));
+		if(this.visualEditorController.getPathwayEditor().isEdited()){
+			int reply = JOptionPane.showConfirmDialog(VisualEditor.this, "Do you want to save your changes before exiting?", "Unsaved Changes to Diagram", JOptionPane.YES_NO_CANCEL_OPTION);
+			if(reply == JOptionPane.YES_OPTION){
+				this.visualEditorController.saveFile();
+				arg1.performQuit();
+			}
+			else if(reply == JOptionPane.NO_OPTION){
+				arg1.performQuit();
+			}
+			else{
+				arg1.cancelQuit();
+			}
+		}
+		else{
+			int ok = JOptionPane.showConfirmDialog(this, "Do you want to quit?", "Quit Dialog", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+			if(ok == JOptionPane.YES_OPTION){
+				arg1.performQuit();
+			}
+			else{
+				arg1.cancelQuit();
+			}
+		}
 	}
 
 	@Override

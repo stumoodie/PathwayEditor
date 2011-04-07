@@ -11,9 +11,11 @@ import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
 
 import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkEdge;
@@ -67,6 +69,7 @@ public class PathwayEditor extends JPanel {
 //	private final IGraphStructureChangeListener graphStuctureChangeListener;
 	private final ICommandChangeListener commandStackListener;
 	private Dialog dialog;
+	private JLabel nameHeader;
 
 	public PathwayEditor(Dialog dialog){
 		super();
@@ -100,18 +103,25 @@ public class PathwayEditor extends JPanel {
 			public void notifyCommandChange(ICommandChangeEvent e) {
 				if(e.getChangeType().equals(CommandChangeType.EXECUTE)){
 					notifyStateChange(StateChangeType.EDITED, viewModel.getDomainModel());
+					updateNameHeader();
 				}
 				else if(e.getChangeType().equals(CommandChangeType.REDO)){
 					notifyStateChange(StateChangeType.EDITED, viewModel.getDomainModel());
+					updateNameHeader();
 					selectionRecord.restoreSelection();
 					shapePane.updateView();
 				}
 				else if(e.getChangeType().equals(CommandChangeType.UNDO)){
 					if(!commandStack.canUndo()){
 						notifyStateChange(StateChangeType.UNEDITED, viewModel.getDomainModel());
+						updateNameHeader();
 					}
 					selectionRecord.restoreSelection();
 					shapePane.updateView();
+				}
+				else if(e.getChangeType().equals(CommandChangeType.CLEAR)){
+					notifyStateChange(StateChangeType.UNEDITED, viewModel.getDomainModel());
+					updateNameHeader();
 				}
 			}
 		};
@@ -180,6 +190,14 @@ public class PathwayEditor extends JPanel {
 		this.commandStack = new CommandStack();
 	}
 	
+	protected void updateNameHeader() {
+		String headerText = getHeaderText();
+		if(!headerText.equals(this.nameHeader.getText())){
+			// only set if name has changed.
+			nameHeader.setText(getHeaderText());
+		}
+	}
+
 	public boolean isOpen(){
 		return isOpen;
 	}
@@ -258,6 +276,13 @@ public class PathwayEditor extends JPanel {
         this.editBehaviourController = new ViewBehaviourController(shapePane, new OperationFactory(this.shapePane, this.feedbackModel, this.selectionRecord, viewModel, this.commandStack, labelDialog));
         INotationSubsystem notationSubsystem = canvas.getNotationSubsystem();
 		this.palettePane = new PalettePanel(notationSubsystem, editBehaviourController);
+		this.nameHeader = new JLabel();
+		this.nameHeader.setBorder(BorderFactory.createLoweredBevelBorder());
+		this.nameHeader.setHorizontalTextPosition(SwingConstants.CENTER);
+		this.nameHeader.setHorizontalAlignment(SwingConstants.CENTER);
+		this.nameHeader.setPreferredSize(new Dimension(500, 30));
+		this.nameHeader.setText(getHeaderText());
+		this.add(this.nameHeader, BorderLayout.PAGE_START);
 		this.add(palettePane, BorderLayout.LINE_START);
 		this.add(scrollPane, BorderLayout.CENTER);
  		this.revalidate();
@@ -269,6 +294,15 @@ public class PathwayEditor extends JPanel {
 		this.commandStack.addCommandChangeListener(commandStackListener);
 	}
 	
+	private String getHeaderText() {
+		StringBuilder buf = new StringBuilder();
+		buf.append(this.viewModel.getDomainModel().getName());
+		if(this.isEdited()){
+			buf.append("*");
+		}
+		return buf.toString();
+	}
+
 	/**
 	 * Sets the layout calculator to be used for auto-layout of the canvas.
 	 * @param layoutCalculator the layout calculator 
@@ -310,6 +344,7 @@ public class PathwayEditor extends JPanel {
 	
 	private void reset(){
 		this.scrollPane.remove((JComponent)this.shapePane);
+		this.remove(this.nameHeader);
 		this.remove(scrollPane);
 		this.remove(this.palettePane);
 		this.validate();

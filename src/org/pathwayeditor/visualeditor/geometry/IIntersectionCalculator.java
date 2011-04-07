@@ -24,6 +24,8 @@ public interface IIntersectionCalculator {
 
 	void setComparator(Comparator<IDrawingElementController> comparator);
 	
+	SortedSet<IDrawingElementController> findIntersectingParentNodes(IConvexHull queryHull, IDrawingElementController queryNode);
+
 	SortedSet<IDrawingElementController> findIntersectingNodes(IConvexHull queryHull, IDrawingElementController queryNode);
 
 	SortedSet<IDrawingElementController> findDrawingPrimitivesAt(Point p);
