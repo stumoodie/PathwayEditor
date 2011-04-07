@@ -5,21 +5,13 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.regex.Pattern;
 
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -27,33 +19,56 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.WindowConstants;
-import javax.swing.filechooser.FileFilter;
 
-import org.pathwayeditor.businessobjects.drawingprimitives.IModel;
-import org.pathwayeditor.businessobjects.exchange.FileXmlCanvasPersistenceManager;
-import org.pathwayeditor.businessobjects.exchange.IXmlPersistenceManager;
-import org.pathwayeditor.businessobjects.management.IModelFactory;
-import org.pathwayeditor.businessobjects.management.INotationSubsystemPool;
-import org.pathwayeditor.businessobjects.management.ModelFactory;
-import org.pathwayeditor.businessobjects.notationsubsystem.INotationSubsystem;
+import org.pathwayeditor.visualeditor.IPathwayEditorStateChangeEvent.StateChangeType;
+import org.pathwayeditor.visualeditor.commands.ICommandChangeEvent;
+import org.pathwayeditor.visualeditor.commands.ICommandChangeListener;
 
-public class VisualEditor extends JFrame {
+import com.apple.eawt.AboutHandler;
+import com.apple.eawt.AppEvent.AboutEvent;
+import com.apple.eawt.AppEvent.PreferencesEvent;
+import com.apple.eawt.AppEvent.QuitEvent;
+import com.apple.eawt.Application;
+import com.apple.eawt.PreferencesHandler;
+import com.apple.eawt.QuitHandler;
+import com.apple.eawt.QuitResponse;
+
+public class VisualEditor extends JFrame implements AboutHandler, QuitHandler, PreferencesHandler {
 	private static final long serialVersionUID = 1L;
 
 	private static final int WIDTH = 1200;
 	private static final int HEIGHT = 800;
 	private final JMenuBar menuBar;
 	private final PathwayEditor insp;
-
-	private final INotationSubsystemPool subsystemPool;
-	private final Map<String, INotationSubsystem> nsMap;
+	private IVisualEditorController visualEditorController;
+	private JMenuItem fileMenuExitItem;
+	private JMenuItem fileMenuSaveAsItem;
+	private JMenuItem fileMenuSaveItem;
+	private JMenuItem fileMenuCloseItem;
+	private IPathwayEditorStateChangeListener pathwayEditorStateChangeListener;
+	private JMenuItem editMenuRedoItem;
+	private JMenuItem editMenuUndoItem;
+	private ICommandChangeListener commandStackChangeListener;
 	
-	public VisualEditor(String title){
+	public VisualEditor(String title, IVisualEditorController visualEditorController){
 		super(title);
 //		doSplashScreen();
+//		MacOSXController macController = new MacOSXController();
+		boolean isMacOS = System.getProperty("mrj.version") != null;
+		if (isMacOS){
+			Application.getApplication().setAboutHandler(this);
+			Application.getApplication().setPreferencesHandler(this);
+			Application.getApplication().setQuitHandler(this);
+//		  Application.getApplication().setAboutHandler(macController);
+//		  Application.getApplication().setPreferencesHandler(macController);
+//		  Application.getApplication().setQuitHandler(macController);
+		}
+		this.visualEditorController = visualEditorController;
+		this.visualEditorController.setVisualEditor(this);
 		this.setLayout(new BorderLayout());
 		this.menuBar = new JMenuBar();
-		initFileMenu();
+		initFileMenu(isMacOS);
+		initEditMenu();
 		this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		this.addWindowListener(new WindowListener(){
 
@@ -98,96 +113,156 @@ public class VisualEditor extends JFrame {
 		this.setJMenuBar(menuBar);
 		this.insp = new PathwayEditor();
 		this.insp.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+		this.visualEditorController.setPathwayEditor(this.insp);
 		this.add(this.insp, BorderLayout.CENTER);
 		this.pack();
 		this.setLocationByPlatform(true);
 		this.setVisible(true);
-		subsystemPool = new NotationSubsystemPool();
-		this.nsMap = new HashMap<String, INotationSubsystem>();
-		Iterator<INotationSubsystem> notIter = subsystemPool.subsystemIterator();
-		while(notIter.hasNext()){
-			INotationSubsystem ns = notIter.next();
-			this.nsMap.put(ns.getNotation().getDisplayName(), ns);
+		this.pathwayEditorStateChangeListener = new IPathwayEditorStateChangeListener() {
+			@Override
+			public void editorChangedEvent(IPathwayEditorStateChangeEvent e) {
+				setFileMenuEnablement();
+				if(e.getChangeType().equals(StateChangeType.OPEN)){
+					e.getSource().getCommandStack().addCommandChangeListener(commandStackChangeListener);
+				}
+				else if(e.getChangeType().equals(StateChangeType.CLOSED)){
+					e.getSource().getCommandStack().removeCommandChangeListener(commandStackChangeListener);
+				}
+			}
+		};
+		this.commandStackChangeListener = new ICommandChangeListener() {
+			
+			@Override
+			public void notifyCommandChange(ICommandChangeEvent e) {
+				setEditMenuEnablement();
+			}
+		};
+		setFileMenuEnablement();
+		setEditMenuEnablement();
+		this.insp.addEditorStateChangeListener(pathwayEditorStateChangeListener);
+	}
+
+	private void initEditMenu(){
+		JMenu editMenu = new JMenu("Edit");
+		editMenu.setMnemonic(KeyEvent.VK_E);
+		menuBar.add(editMenu);
+		editMenuUndoItem = new JMenuItem("Undo", KeyEvent.VK_U);
+		editMenuUndoItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+		editMenuUndoItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				visualEditorController.undoAction();
+			}
+		});
+		editMenu.add(editMenuUndoItem);
+		editMenuRedoItem = new JMenuItem("Redo", KeyEvent.VK_R);
+		editMenuRedoItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, ActionEvent.SHIFT_MASK|Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+		editMenuRedoItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				visualEditorController.redoAction();
+			}
+		});
+		editMenu.add(editMenuRedoItem);
+	}
+	
+	private void setEditMenuEnablement() {
+		if(insp.getCommandStack().canRedo()){
+			editMenuRedoItem.setEnabled(true);
+		}
+		else{
+			editMenuRedoItem.setEnabled(false);
+		}
+		if(insp.getCommandStack().canUndo()){
+			editMenuUndoItem.setEnabled(true);
+		}
+		else{
+			editMenuUndoItem.setEnabled(false);
 		}
 	}
 
-	private void initFileMenu(){
+	private void initFileMenu(boolean isMacOS){
 		JMenu fileMenu = new JMenu("File");
 		fileMenu.setMnemonic(KeyEvent.VK_F);
 		menuBar.add(fileMenu);
 		JMenuItem fileMenuNewItem = new JMenuItem("New", KeyEvent.VK_N);
-		fileMenuNewItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.ALT_MASK));
+		fileMenuNewItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		fileMenuNewItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String selection = (String)JOptionPane.showInputDialog(VisualEditor.this, "Select a notation:", "New Diagram", JOptionPane.PLAIN_MESSAGE, null, nsMap.keySet().toArray(), "foo");
-				IModelFactory modelFactory = new ModelFactory();
-				INotationSubsystem selectedNs = nsMap.get(selection);
-				modelFactory.setNotationSubsystem(selectedNs);
-				modelFactory.setName("New Map");
-				IModel newModel = modelFactory.createModel();
-				insp.renderModel(newModel);
+				visualEditorController.newDiagram();
 			}
 		});
 		fileMenu.add(fileMenuNewItem);
 		//a group of JMenuItems
 		JMenuItem fileMenuOpenItem = new JMenuItem("Open", KeyEvent.VK_O);
-		fileMenuOpenItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.ALT_MASK));
+		fileMenuOpenItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		fileMenuOpenItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JFileChooser chooser = new JFileChooser();
-				chooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
-				chooser.setFileFilter(new FileFilter(){
-					
-					@Override
-					public boolean accept(File f) {
-						String fileName = f.getName();
-						return Pattern.matches(".*\\.pwe$", fileName);
-					}
-
-					@Override
-					public String getDescription() {
-						return "Pathway Editor files";
-					}
-					
-				});
-				int response = chooser.showOpenDialog(VisualEditor.this);
-				if(response == JFileChooser.APPROVE_OPTION){
-					File openFile = chooser.getSelectedFile();
-					openFile(openFile);
-				}
+				visualEditorController.openFileAction();
 			}
 		});
 		fileMenu.add(fileMenuOpenItem);
-		JMenuItem fileMenuExitItem = new JMenuItem("Exit", KeyEvent.VK_X);
-		fileMenuExitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.ALT_MASK));
-		fileMenuExitItem.getAccessibleContext().setAccessibleDescription("This doesn't really do anything");
-		fileMenuExitItem.addActionListener(new ActionListener(){
+		fileMenuCloseItem = new JMenuItem("Close", KeyEvent.VK_C);
+		fileMenuCloseItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+		fileMenuCloseItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				processEvent(new WindowEvent(VisualEditor.this, WindowEvent.WINDOW_CLOSING));
+				visualEditorController.closeFile();
 			}
 		});
-		fileMenu.add(fileMenuExitItem);
+		fileMenu.add(fileMenuCloseItem);
+		fileMenuSaveItem = new JMenuItem("Save", KeyEvent.VK_S);
+		fileMenuSaveItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+		fileMenuSaveItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				visualEditorController.saveFile();
+			}
+		});
+		fileMenu.add(fileMenuSaveItem);
+		fileMenuSaveAsItem = new JMenuItem("Save As ...", KeyEvent.VK_S);
+		fileMenuSaveAsItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()|ActionEvent.SHIFT_MASK));
+		fileMenuSaveAsItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				visualEditorController.saveFileAs();
+			}
+		});
+		fileMenu.add(fileMenuSaveAsItem);
+		if(!isMacOS){
+			// Macs handle exit in another way.
+			fileMenuExitItem = new JMenuItem("Exit", KeyEvent.VK_X);
+			fileMenuExitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+			fileMenuExitItem.getAccessibleContext().setAccessibleDescription("This doesn't really do anything");
+			fileMenuExitItem.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					processEvent(new WindowEvent(VisualEditor.this, WindowEvent.WINDOW_CLOSING));
+				}
+			});
+			fileMenu.add(fileMenuExitItem);
+		}
 	}
 
+	private void setFileMenuEnablement(){
+		if(!this.insp.isOpen()){
+			fileMenuSaveAsItem.setEnabled(false);
+			fileMenuCloseItem.setEnabled(false);
+		}
+		else{
+			fileMenuSaveAsItem.setEnabled(true);
+			fileMenuCloseItem.setEnabled(true);
+		}
+		if(this.insp.isEdited()){
+			fileMenuSaveItem.setEnabled(true);
+		}
+		else{
+			fileMenuSaveItem.setEnabled(false);
+		}
+	}
 	
-
-	public void openFile(File file){
-		try{
-			IXmlPersistenceManager canvasPersistenceManager = new FileXmlCanvasPersistenceManager(subsystemPool);
-			InputStream in = new FileInputStream(file);
-			canvasPersistenceManager.readCanvasFromStream(in);
-			in.close();
-			insp.renderModel(canvasPersistenceManager.getCurrentModel());
-			
-		}
-		catch(IOException ex){
-			System.err.println("Error opening file!");
-			System.err.println();
-		}
-	}
 
 //	private void doSplashScreen(){
 //		final SplashScreen splash = SplashScreen.getSplashScreen();
@@ -213,4 +288,32 @@ public class VisualEditor extends JFrame {
         g.setColor(Color.YELLOW);
         g.drawString("Loading "+comps[(frame/5)%3]+"...", 120, 150);
     }
+
+	@Override
+	public void handlePreferences(PreferencesEvent arg0) {
+	    JOptionPane.showMessageDialog(this, 
+                "prefs", 
+                "prefs", 
+                JOptionPane.INFORMATION_MESSAGE);
+	}
+
+	@Override
+	public void handleQuitRequestWith(QuitEvent arg0, QuitResponse arg1) {
+		processEvent(new WindowEvent(VisualEditor.this, WindowEvent.WINDOW_CLOSING));
+//		int ok = JOptionPane.showConfirmDialog(this, "Do you want to quit?", "Quit Dialog", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+//		if(ok == JOptionPane.YES_OPTION){
+//			arg1.performQuit();
+//		}
+//		else{
+//			arg1.cancelQuit();
+//		}
+	}
+
+	@Override
+	public void handleAbout(AboutEvent arg0) {
+	    JOptionPane.showMessageDialog(this, 
+                "about", 
+                "about", 
+                JOptionPane.INFORMATION_MESSAGE);
+	}
 }

@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.swing.UIManager;
+
 import joptsimple.OptionException;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
@@ -44,9 +46,10 @@ public class PathwayEditorCmd {
 	
 	public void runApplication(){
 		try {
-			this.visualEditor = new VisualEditor("Pathway Editor");
+			IVisualEditorController vec = new VisualEditorController(new NotationSubsystemPool());
+			this.visualEditor = new VisualEditor("Pathway Editor", vec);
 			if(this.structureFile != null){
-				this.visualEditor.openFile(structureFile);
+				vec.openFile(structureFile);
 			}
 			this.exitStatus = SUCCESS;
 		} catch (RuntimeException e) {
@@ -120,13 +123,20 @@ public class PathwayEditorCmd {
 	}
 
 	public static final void main(String args[]){
-		PathwayEditorCmd cmd = new PathwayEditorCmd();
-		cmd.processParameters(args);
-		if(cmd.areParametersValid()){
-			cmd.runApplication();
-		}
-		else{
-			System.err.println("Error handling parameters");
+		try {
+			System.setProperty("apple.laf.useScreenMenuBar", "true");
+			System.setProperty("com.apple.mrj.application.apple.menu.about.name", "EPEe");
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			PathwayEditorCmd cmd = new PathwayEditorCmd();
+			cmd.processParameters(args);
+			if(cmd.areParametersValid()){
+				cmd.runApplication();
+			}
+			else{
+				System.err.println("Error handling parameters");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
