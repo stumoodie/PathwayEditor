@@ -3,6 +3,7 @@ package org.pathwayeditor.visualeditor;
 import java.awt.AlphaComposite;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
@@ -111,7 +112,7 @@ public class VisualEditor extends JFrame implements AboutHandler, QuitHandler, P
 			
 		});
 		this.setJMenuBar(menuBar);
-		this.insp = new PathwayEditor();
+		this.insp = new PathwayEditor(new Dialog(this, true));
 		this.insp.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		this.visualEditorController.setPathwayEditor(this.insp);
 		this.add(this.insp, BorderLayout.CENTER);

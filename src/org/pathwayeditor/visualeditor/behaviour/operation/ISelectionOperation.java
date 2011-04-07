@@ -12,4 +12,6 @@ public interface ISelectionOperation {
 
 	void setSecondaryClick();
 
+	void setDoubleClick();
+
 }

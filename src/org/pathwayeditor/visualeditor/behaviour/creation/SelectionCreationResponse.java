@@ -16,4 +16,8 @@ public class SelectionCreationResponse implements ISelectionResponse {
 	public void secondaryClick(Point location) {
 	}
 
+	@Override
+	public void doubleClick(Point location) {
+	}
+
 }

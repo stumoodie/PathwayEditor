@@ -5,6 +5,8 @@ import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNodeAttribute
 import org.pathwayeditor.businessobjects.drawingprimitives.ILabelAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILabelNode;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.CanvasAttributePropertyChange;
+import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IAnnotationPropertyChangeEvent;
+import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IAnnotationPropertyChangeListener;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributeChangeListener;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributePropertyChangeEvent;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributeResizedEvent;
@@ -19,6 +21,7 @@ import org.pathwayeditor.figure.rendering.IFigureRenderingController;
 import org.pathwayeditor.visualeditor.feedback.FigureCompilationCache;
 
 public abstract class CommonLabelController extends NodeController implements ILabelController {
+	private static final String LABEL_TEXT = "labelText";
 	private final Logger logger = Logger.getLogger(this.getClass());
 	private final String LABEL_DEFINITION =
 		"curbounds /h exch def /w exch def /y exch def /x exch def\n" +
@@ -40,6 +43,7 @@ public abstract class CommonLabelController extends NodeController implements IL
 	private final IFigureRenderingController controller;
 	private boolean isActive;
 	private final ICanvasAttributeChangeListener drawingNodePropertyChangeListener;
+	private IAnnotationPropertyChangeListener propertyValueChangeListener;
 	
 	protected CommonLabelController(IViewControllerModel viewModel, ILabelNode node, int index) {
 		super(viewModel, index);
@@ -66,6 +70,14 @@ public abstract class CommonLabelController extends NodeController implements IL
 			public void nodeResized(ICanvasAttributeResizedEvent e) {
 			}
 		};
+		propertyValueChangeListener = new IAnnotationPropertyChangeListener() {
+			
+			@Override
+			public void propertyChange(IAnnotationPropertyChangeEvent e) {
+				getFigureController().setBindString(LABEL_TEXT, domainNode.getAttribute().getDisplayedContent());
+				getFigureController().generateFigureDefinition();
+			}
+		};
 	}
 
 	private IFigureRenderingController createController(ILabelAttribute attribute){
@@ -76,7 +88,7 @@ public abstract class CommonLabelController extends NodeController implements IL
 		figureRenderingController.setLineStyle(attribute.getLineStyle());
 		figureRenderingController.setLineWidth(attribute.getLineWidth());
 		figureRenderingController.setBindDouble("labelFontSize", 10.0);
-		figureRenderingController.setBindString("labelText", attribute.getDisplayedContent());
+		figureRenderingController.setBindString(LABEL_TEXT, attribute.getDisplayedContent());
 		figureRenderingController.setBindBoolean("noborderFlag", attribute.hasNoBorder());
 		figureRenderingController.generateFigureDefinition();
 		return figureRenderingController;
@@ -100,6 +112,7 @@ public abstract class CommonLabelController extends NodeController implements IL
 	@Override
 	public void inactivate() {
 		this.getDrawingElement().getAttribute().removeChangeListener(drawingNodePropertyChangeListener);
+		this.getDrawingElement().getAttribute().getProperty().removeChangeListener(propertyValueChangeListener);
 		inactivateOverride();
 		this.isActive = false;
 	}
@@ -110,6 +123,7 @@ public abstract class CommonLabelController extends NodeController implements IL
 	@Override
 	public final void activate() {
 		this.getDrawingElement().getAttribute().addChangeListener(this.drawingNodePropertyChangeListener);
+		this.getDrawingElement().getAttribute().getProperty().addChangeListener(propertyValueChangeListener);
 		activateOverride();
 		this.isActive = true;
 	}

@@ -8,4 +8,6 @@ public interface ISelectionResponse {
 
 	void secondaryClick(Point location);
 
+	void doubleClick(Point location);
+
 }

@@ -96,16 +96,21 @@ public class SelectionViewBehaviourStateHandler implements IViewBehaviourStateHa
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if(e.getButton() == MouseEvent.BUTTON1){
-			this.mouseBehaviourController.setMousePosition(e.getPoint().getX(), e.getPoint().getY());
-			Point location = this.mouseBehaviourController.getDiagramLocation();
-			ISelectionResponse currSelnResponse = null;
+				this.mouseBehaviourController.setMousePosition(e.getPoint().getX(), e.getPoint().getY());
+				Point location = this.mouseBehaviourController.getDiagramLocation();
+				ISelectionResponse currSelnResponse = null;
 				currSelnResponse = this.mouseBehaviourController.getClickResponse();
-			if(!e.isShiftDown() && !e.isAltDown()){
-				currSelnResponse.primaryClick(location);
-			}
-			else if(e.isShiftDown() && !e.isAltDown()){
-				currSelnResponse.secondaryClick(location);
-			}
+				if(e.getClickCount() == 1){
+					if(!e.isShiftDown() && !e.isAltDown()){
+						currSelnResponse.primaryClick(location);
+					}
+					else if(e.isShiftDown() && !e.isAltDown()){
+						currSelnResponse.secondaryClick(location);
+					}
+				}
+				else{
+					currSelnResponse.doubleClick(location);
+				}
 		}
 	}
 

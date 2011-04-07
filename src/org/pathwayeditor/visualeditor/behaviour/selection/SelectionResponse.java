@@ -25,4 +25,11 @@ public class SelectionResponse implements ISelectionResponse {
 		selectionOperation.handleClick();
 	}
 
+	@Override
+	public void doubleClick(Point location) {
+		selectionOperation.setCurrentLocation(location);
+		selectionOperation.setDoubleClick();
+		selectionOperation.handleClick();
+	}
+
 }

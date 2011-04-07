@@ -2,6 +2,7 @@ package org.pathwayeditor.visualeditor;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dialog;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -38,6 +39,7 @@ import org.pathwayeditor.visualeditor.editingview.ShapePane;
 import org.pathwayeditor.visualeditor.feedback.FeedbackModel;
 import org.pathwayeditor.visualeditor.feedback.IFeedbackModel;
 import org.pathwayeditor.visualeditor.geometry.EnvelopeBuilder;
+import org.pathwayeditor.visualeditor.operations.LabelPropValueDialog;
 import org.pathwayeditor.visualeditor.operations.OperationFactory;
 import org.pathwayeditor.visualeditor.selection.ISelection;
 import org.pathwayeditor.visualeditor.selection.ISelectionChangeEvent;
@@ -64,9 +66,11 @@ public class PathwayEditor extends JPanel {
 	private List<IPathwayEditorStateChangeListener> listeners = new LinkedList<IPathwayEditorStateChangeListener>();
 //	private final IGraphStructureChangeListener graphStuctureChangeListener;
 	private final ICommandChangeListener commandStackListener;
+	private Dialog dialog;
 
-	public PathwayEditor(){
+	public PathwayEditor(Dialog dialog){
 		super();
+		this.dialog = dialog;
 		this.setLayout(new BorderLayout());
 		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 //		this.graphStuctureChangeListener = new IGraphStructureChangeListener() {
@@ -250,7 +254,8 @@ public class PathwayEditor extends JPanel {
 		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 		scrollPane.setFocusable(true);
 		scrollPane.setWheelScrollingEnabled(true);
-        this.editBehaviourController = new ViewBehaviourController(shapePane, new OperationFactory(this.shapePane, this.feedbackModel, this.selectionRecord, viewModel, this.commandStack));
+		LabelPropValueDialog labelDialog = new LabelPropValueDialog(this.dialog);
+        this.editBehaviourController = new ViewBehaviourController(shapePane, new OperationFactory(this.shapePane, this.feedbackModel, this.selectionRecord, viewModel, this.commandStack, labelDialog));
         INotationSubsystem notationSubsystem = canvas.getNotationSubsystem();
 		this.palettePane = new PalettePanel(notationSubsystem, editBehaviourController);
 		this.add(palettePane, BorderLayout.LINE_START);

@@ -1,5 +1,6 @@
 package org.pathwayeditor.visualeditor.operations;
 
+import java.awt.Dialog;
 import java.util.Iterator;
 
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElementSelection;
@@ -52,7 +53,7 @@ public class OperationFactory implements IOperationFactory {
 	private final ILinkCreationOperation linkCreationOperation;
 
 	public OperationFactory(IShapePane shapePane, IFeedbackModel feedbackModel, ISelectionRecord selectionRecord, IViewControllerModel viewModel,
-			ICommandStack commandStack){
+			ICommandStack commandStack, LabelPropValueDialog labelDialog){
 		ICommonParentCalculator newParentCalc = new CommonParentCalculator(viewModel.getIntersectionCalculator());
 		this.shapePane = shapePane;
 		this.selectionRecord = selectionRecord;
@@ -64,7 +65,7 @@ public class OperationFactory implements IOperationFactory {
 		marqueeOperation = new MarqueeOperation(shapePane, feedbackModel, selectionRecord, viewModel.getIntersectionCalculator());
 		initResponses();
 		shapeCreationOperation = new ShapeCreationOperation(shapePane, feedbackModel, viewModel, commandStack, new LabelPositionCalculator());
-		this.selectionOperations = new SelectionOperation(selectionRecord, viewModel.getIntersectionCalculator());
+		this.selectionOperations = new SelectionOperation(selectionRecord, viewModel.getIntersectionCalculator(), labelDialog, this.commandStack, shapePane);
 		this.linkCreationOperation = new LinkCreationOperation(shapePane, feedbackModel, commandStack);
 	}
 	
