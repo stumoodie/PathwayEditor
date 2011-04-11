@@ -2,51 +2,15 @@
 <epx:canvas xmlns:epx="http://www.pathwayeditor.org/Exchange"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.pathwayeditor.org/Exchange http://www.pathwayeditor.org/Exchange/Canvas.xsd"
-    name="za.pwe" lastCreationSerial="31">
+    name="za.pwe" lastCreationSerial="37">
     <Grid snapToGrid="false" gridOn="false">
         <GridSize width="10.0" height="10.0"/>
     </Grid>
     <Notation qualifiedName="org.pathwayeditor.notations.sbgnpd"
         majorVersion="0" minorVersion="11" patchVersion="0" displayName="SBGN-PD L1 V1.1 ">
         <Description>SBGN Process Description Notation</Description>
-        <ObjectType uniqueId="11" name="Unit Of Information" classification="Shape">
-            <description>Unit of information</description>
-        </ObjectType>
-        <ObjectType uniqueId="13" name="Compartment" classification="Shape">
-            <description>Compartment</description>
-        </ObjectType>
-        <ObjectType uniqueId="14" name="Complex" classification="Shape">
-            <description>Complex</description>
-        </ObjectType>
-        <ObjectType uniqueId="15" name="Nucleic Acid Feature" classification="Shape">
-            <description>Nucleic Acid Feature</description>
-        </ObjectType>
-        <ObjectType uniqueId="16" name="Macromolecule" classification="Shape">
-            <description>Macromolecule</description>
-        </ObjectType>
-        <ObjectType uniqueId="18" name="Simple Chemical" classification="Shape">
-            <description>Simple chemical</description>
-        </ObjectType>
-        <ObjectType uniqueId="10" name="State" classification="Shape">
-            <description>State decription.</description>
-        </ObjectType>
         <ObjectType uniqueId="27" name="LogicArc" classification="Link">
             <description>Logic arc.</description>
-        </ObjectType>
-        <ObjectType uniqueId="20" name="Consumption" classification="Link">
-            <description>Consumption arc.</description>
-        </ObjectType>
-        <ObjectType uniqueId="22" name="Modulation" classification="Link">
-            <description>Modulation arc.</description>
-        </ObjectType>
-        <ObjectType uniqueId="21" name="Production" classification="Link">
-            <description>Production arc.</description>
-        </ObjectType>
-        <ObjectType uniqueId="24" name="Catalysis" classification="Link">
-            <description>Catalysis.</description>
-        </ObjectType>
-        <ObjectType uniqueId="23" name="Stimulation" classification="Link">
-            <description>Stimulation arc.</description>
         </ObjectType>
         <ObjectType uniqueId="26" name="Necessary Stimulation" classification="Link">
             <description>Necessary stimulation.</description>
@@ -54,29 +18,44 @@
         <ObjectType uniqueId="25" name="Inhibition" classification="Link">
             <description>Inhibition arc.</description>
         </ObjectType>
-        <ObjectType uniqueId="114" name="Phenotype" classification="Shape">
-            <description>Phenotype</description>
+        <ObjectType uniqueId="24" name="Catalysis" classification="Link">
+            <description>Catalysis.</description>
         </ObjectType>
-        <ObjectType uniqueId="113" name="Perturbing Agent" classification="Shape">
-            <description>Perturbing Agent</description>
+        <ObjectType uniqueId="23" name="Stimulation" classification="Link">
+            <description>Stimulation arc.</description>
         </ObjectType>
-        <ObjectType uniqueId="112" name="Source" classification="Shape">
-            <description>Source</description>
+        <ObjectType uniqueId="22" name="Modulation" classification="Link">
+            <description>Modulation arc.</description>
         </ObjectType>
-        <ObjectType uniqueId="111" name="Sink" classification="Shape">
-            <description>Sink</description>
+        <ObjectType uniqueId="21" name="Production" classification="Link">
+            <description>Production arc.</description>
         </ObjectType>
-        <ObjectType uniqueId="110" name="Unspecified Entity" classification="Shape">
-            <description>Unspecified entity</description>
+        <ObjectType uniqueId="20" name="Consumption" classification="Link">
+            <description>Consumption arc.</description>
         </ObjectType>
-        <ObjectType uniqueId="121" name="Association" classification="Shape">
-            <description>Association</description>
+        <ObjectType uniqueId="18" name="Simple Chemical" classification="Shape">
+            <description>Simple chemical</description>
         </ObjectType>
-        <ObjectType uniqueId="122" name="Dissociation" classification="Shape">
-            <description>Dissociation arc.</description>
+        <ObjectType uniqueId="16" name="Macromolecule" classification="Shape">
+            <description>Macromolecule</description>
         </ObjectType>
-        <ObjectType uniqueId="0" name="ROOT_OBJECT" classification="Root">
-            <description>No descn</description>
+        <ObjectType uniqueId="14" name="Complex" classification="Shape">
+            <description>Complex</description>
+        </ObjectType>
+        <ObjectType uniqueId="15" name="Nucleic Acid Feature" classification="Shape">
+            <description>Nucleic Acid Feature</description>
+        </ObjectType>
+        <ObjectType uniqueId="13" name="Compartment" classification="Shape">
+            <description>Compartment</description>
+        </ObjectType>
+        <ObjectType uniqueId="10" name="State" classification="Shape">
+            <description>State decription.</description>
+        </ObjectType>
+        <ObjectType uniqueId="11" name="Unit Of Information" classification="Shape">
+            <description>Unit of information</description>
+        </ObjectType>
+        <ObjectType uniqueId="118" name="Process" classification="Shape">
+            <description>Process node</description>
         </ObjectType>
         <ObjectType uniqueId="119" name="Omitted Process" classification="Shape">
             <description>Omitted process</description>
@@ -84,17 +63,38 @@
         <ObjectType uniqueId="120" name="Uncertain Process" classification="Shape">
             <description>Uncertain process</description>
         </ObjectType>
-        <ObjectType uniqueId="118" name="Process" classification="Shape">
-            <description>Process node</description>
+        <ObjectType uniqueId="0" name="ROOT_OBJECT" classification="Root">
+            <description>No descn</description>
         </ObjectType>
-        <ObjectType uniqueId="125" name="NOT" classification="Shape">
-            <description>NOT Logical Operator</description>
+        <ObjectType uniqueId="121" name="Association" classification="Shape">
+            <description>Association</description>
+        </ObjectType>
+        <ObjectType uniqueId="114" name="Phenotype" classification="Shape">
+            <description>Phenotype</description>
+        </ObjectType>
+        <ObjectType uniqueId="122" name="Dissociation" classification="Shape">
+            <description>Dissociation arc.</description>
         </ObjectType>
         <ObjectType uniqueId="123" name="AND" classification="Shape">
             <description>AND Logical Operator</description>
         </ObjectType>
         <ObjectType uniqueId="124" name="OR" classification="Shape">
             <description>OR Logical Operator</description>
+        </ObjectType>
+        <ObjectType uniqueId="125" name="NOT" classification="Shape">
+            <description>NOT Logical Operator</description>
+        </ObjectType>
+        <ObjectType uniqueId="111" name="Sink" classification="Shape">
+            <description>Sink</description>
+        </ObjectType>
+        <ObjectType uniqueId="110" name="Unspecified Entity" classification="Shape">
+            <description>Unspecified entity</description>
+        </ObjectType>
+        <ObjectType uniqueId="113" name="Perturbing Agent" classification="Shape">
+            <description>Perturbing Agent</description>
+        </ObjectType>
+        <ObjectType uniqueId="112" name="Source" classification="Shape">
+            <description>Source</description>
         </ObjectType>
     </Notation>
     <CanvasSize width="1.7976931348623157E308" height="1.7976931348623157E308"/>
@@ -203,7 +203,7 @@ grestore
                                     <LabelAttribute creationSerial="15"
                                     lineStyle="SOLID"
                                     lineWidth="1.0" noFill="true" noBorder="true">
-                                    <Location x="236.0" y="435.0"/>
+                                    <Location x="336.0" y="491.0"/>
                                     <Size width="42.0" height="22.0"/>
                                     <LineColour red="0" green="0" blue="0"/>
                                     <FillColour red="255"
@@ -214,7 +214,7 @@ grestore
                             </SubModel>
                             <ShapeAttribute creationSerial="14"
                                 objectTypeId="16" lineWidth="1.0" lineStyle="SOLID">
-                                <Location x="227.0" y="427.0"/>
+                                <Location x="327.0" y="483.0"/>
                                 <Size width="60.0" height="40.0"/>
                                 <FillColour red="255" green="255" blue="255"/>
                                 <LineColour red="0" green="0" blue="0"/>
@@ -324,7 +324,7 @@ grestore
                             <LabelAttribute creationSerial="9"
                                 lineStyle="SOLID" lineWidth="1.0"
                                 noFill="true" noBorder="true">
-                                <Location x="689.0" y="336.0"/>
+                                <Location x="706.0" y="279.0"/>
                                 <Size width="42.0" height="22.0"/>
                                 <LineColour red="0" green="0" blue="0"/>
                                 <FillColour red="255" green="255" blue="255"/>
@@ -334,7 +334,7 @@ grestore
                     </SubModel>
                     <ShapeAttribute creationSerial="8" objectTypeId="14"
                         lineWidth="1.0" lineStyle="SOLID">
-                        <Location x="649.0" y="301.0"/>
+                        <Location x="666.0" y="244.0"/>
                         <Size width="298.0" height="304.0"/>
                         <FillColour red="255" green="255" blue="255"/>
                         <LineColour red="0" green="0" blue="0"/>
@@ -511,7 +511,7 @@ grestore
                             <DecoratorSize width="0.0" height="0.0"/>
                         </srcTerminus>
                         <tgtTerminus creationSerial="20" gap="5.0" endDecoratorType="TRIANGLE">
-                            <Location x="649.0" y="421.4"/>
+                            <Location x="666.0" y="394.4"/>
                             <DecoratorSize width="10.0" height="10.0"/>
                         </tgtTerminus>
                         <PropertyRef id="3"/>

@@ -58,4 +58,8 @@ public class LinkBendPointResponse extends HandleResponse implements ISelectionD
 	public void setSelectionHandle(ISelectionHandle selectionHandle) {
 		this.selectionHandle = selectionHandle;
 	}
+
+	@Override
+	protected void handleAltSelection(boolean isSelected) {
+	}
 }

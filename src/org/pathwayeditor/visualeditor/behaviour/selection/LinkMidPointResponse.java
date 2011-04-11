@@ -54,4 +54,8 @@ public class LinkMidPointResponse extends HandleResponse implements ISelectionDr
 	public void setSelectionHandle(ISelectionHandle selectionHandle) {
 		this.selectionHandle = selectionHandle;
 	}
+
+	@Override
+	protected void handleAltSelection(boolean isSelected) {
+	}
 }

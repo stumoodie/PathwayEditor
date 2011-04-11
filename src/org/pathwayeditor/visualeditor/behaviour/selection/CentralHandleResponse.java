@@ -56,4 +56,9 @@ public class CentralHandleResponse extends HandleResponse implements ISelectionD
 	public void setSelectionHandle(ISelectionHandle selectionHandle) {
 	}
 
+	@Override
+	protected void handleAltSelection(boolean isSelected) {
+		this.editingOperation.setCopyOnMove(isSelected);
+	}
+
 }

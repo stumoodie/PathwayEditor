@@ -81,4 +81,8 @@ public class ResizeHandleResponse extends HandleResponse implements ISelectionDr
 	public void setSelectionHandle(ISelectionHandle selectionHandle) {
 	}
 
+	@Override
+	protected void handleAltSelection(boolean isSelected) {
+	}
+
 }

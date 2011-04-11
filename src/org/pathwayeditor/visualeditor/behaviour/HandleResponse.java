@@ -53,7 +53,10 @@ public abstract class HandleResponse implements IDragResponse {
 	@Override
 	public final void altSelected(boolean isSelected) {
 		this.altSelected = isSelected;
+		handleAltSelection(isSelected);
 	}
+
+	protected abstract void handleAltSelection(boolean isSelected);
 
 	@Override
 	public final void cmdSelected(boolean isSelected) {

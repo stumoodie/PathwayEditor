@@ -16,4 +16,11 @@ public interface IEditingOperation {
 
 	void deleteSelection();
 
+	/**
+	 * Indicates whether the move operation should actually copy the selected
+	 * elements.
+	 * @param isSelected true if it is a copy, false otherwise.
+	 */
+	void setCopyOnMove(boolean isSelected);
+
 }

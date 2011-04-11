@@ -84,4 +84,8 @@ public class MarqueeSelectionHandleResponse extends HandleResponse implements IS
 	public void setSelectionHandle(ISelectionHandle selectionHandle) {
 	}
 
+	@Override
+	protected void handleAltSelection(boolean isSelected) {
+	}
+
 }

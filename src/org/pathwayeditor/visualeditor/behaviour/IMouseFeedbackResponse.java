@@ -13,4 +13,6 @@ public interface IMouseFeedbackResponse {
 	Cursor getCurrentCursor();
 
 	void reset();
+
+	void altSelected(boolean isAltSelected);
 }

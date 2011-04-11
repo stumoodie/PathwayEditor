@@ -7,6 +7,7 @@ import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.behaviour.operation.IEditingOperation;
 import org.pathwayeditor.visualeditor.commands.CompoundCommand;
+import org.pathwayeditor.visualeditor.commands.CopySelectionCommand;
 import org.pathwayeditor.visualeditor.commands.DeleteSelectionCommand;
 import org.pathwayeditor.visualeditor.commands.ICommand;
 import org.pathwayeditor.visualeditor.commands.ICommandStack;
@@ -43,6 +44,7 @@ public class EditingOperation implements IEditingOperation {
 //	private EnvelopeBuilder refreshBoundsBuilder;
 	private final IFeedbackLinkListener feedbackLinkListener;
 	private final IFeedbackNodeListener feedbackNodeListener;
+	private boolean copyOnMove;
 	
 	public EditingOperation(IShapePane shapePane, IFeedbackModel feedbackModel, ISelectionRecord selectionRecord,
 			ICommonParentCalculator newParentCalc, ICommandStack commandStack){
@@ -85,17 +87,33 @@ public class EditingOperation implements IEditingOperation {
 			IFeedbackLink link = linkIter.next();
 			link.removeFeedbackLinkListener(feedbackLinkListener);
 		}
+		feedbackModel.clear();
 		if(reparentingState.equals(ReparentingStateType.CAN_REPARENT)){
-			createMoveCommand(delta, true);
+			if(this.copyOnMove){
+				createCopyCommand(delta);
+			}
+			else{
+				createMoveCommand(delta, true);
+			}
 			selectionRecord.restoreSelection();
 		}
 		else if(reparentingState.equals(ReparentingStateType.CAN_MOVE)){
-			createMoveCommand(delta, false);
+			if(this.copyOnMove){
+				createCopyCommand(delta);
+			}
+			else{
+				createMoveCommand(delta, false);
+			}
 			selectionRecord.restoreSelection();
 		}
-		feedbackModel.clear();
 //		shapePane.updateView(refreshBounds);
 		shapePane.updateView();
+	}
+
+	private void createCopyCommand(Point delta) {
+		IDrawingElementController target = calculateReparentTarget(delta);
+		ICommand cmd = new CopySelectionCommand(target.getDrawingElement(), this.selectionRecord.getSubgraphSelection().getDrawingElementSelection(), delta);
+		this.commandStack.execute(cmd);
 	}
 
 	@Override
@@ -229,5 +247,10 @@ public class EditingOperation implements IEditingOperation {
 			selectionRecord.clear();
 			shapePane.updateView();
 		}
+	}
+
+	@Override
+	public void setCopyOnMove(boolean isSelected) {
+		this.copyOnMove = isSelected;
 	}
 }

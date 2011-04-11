@@ -51,4 +51,8 @@ public class CreationDragResponse extends HandleResponse {
 		return this.shapeCreationOperation.canCreationSucceed();
 	}
 
+	@Override
+	protected void handleAltSelection(boolean isSelected) {
+	}
+
 }

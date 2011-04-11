@@ -57,6 +57,14 @@ public class SelectionViewBehaviourStateHandler implements IViewBehaviourStateHa
 			}
 			if(currDragResponse != null){
 				Point location = this.mouseBehaviourController.getDiagramLocation();
+				if(e.isAltDown()){
+					currDragResponse.altSelected(true);
+					currMouseFeedbackResponse.altSelected(true);
+				}
+				else{
+					currDragResponse.altSelected(false);
+					currMouseFeedbackResponse.altSelected(false);
+				}
 				if(currDragResponse.isDragOngoing()){
 					if(currDragResponse.canContinueDrag(location)){
 						currDragResponse.dragContinuing(location);

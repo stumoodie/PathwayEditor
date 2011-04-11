@@ -42,4 +42,8 @@ public class MouseLinkCreationFeedbackResponse implements IMouseFeedbackResponse
 		this.currentState = StateType.DEFAULT;
 	}
 
+	@Override
+	public void altSelected(boolean isAltSelected) {
+	}
+
 }

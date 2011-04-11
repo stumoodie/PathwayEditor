@@ -54,6 +54,10 @@ public class CreationControllerResponses implements IControllerResponses {
 			@Override
 			public void deleteSelection() {
 			}
+
+			@Override
+			public void setCopyOnMove(boolean isSelected) {
+			}
 		});
         this.popupMenuMap = new HashMap<SelectionHandleType, IPopupMenuResponse>();
         initialisePopupMenuResponse(opFactory);

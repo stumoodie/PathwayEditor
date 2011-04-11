@@ -26,4 +26,9 @@ public class DefaultMouseFeedbackResponse implements IMouseFeedbackResponse {
 	public void reset() {
 	}
 
+	@Override
+	public void altSelected(boolean isAltSelected) {
+		
+	}
+
 }
