@@ -63,4 +63,6 @@ public interface ISelectionRecord {
 	void restoreSelection();
 
 	Envelope getTotalSelectionBounds();
+
+	void selectAll();
 }

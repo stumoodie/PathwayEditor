@@ -13,4 +13,6 @@ public interface IKeyboardResponse {
 	CursorType getCurrentCursorKey();
 	
 	boolean isKeyPressed();
+
+	void deleteKeyDetected();
 }

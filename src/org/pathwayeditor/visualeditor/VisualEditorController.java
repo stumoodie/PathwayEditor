@@ -15,11 +15,13 @@ import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
-import org.pathwayeditor.businessobjects.drawingprimitives.IModel;
 import org.pathwayeditor.businessobjects.exchange.FileXmlCanvasPersistenceManager;
 import org.pathwayeditor.businessobjects.exchange.IXmlPersistenceManager;
 import org.pathwayeditor.businessobjects.management.INotationSubsystemPool;
 import org.pathwayeditor.businessobjects.notationsubsystem.INotationSubsystem;
+import org.pathwayeditor.visualeditor.selection.ISelectionChangeEvent;
+import org.pathwayeditor.visualeditor.selection.ISelectionChangeListener;
+import org.pathwayeditor.visualeditor.selection.SelectionChangeType;
 
 public class VisualEditorController implements IVisualEditorController {
 	private static final int BUF_SIZE = 1024;
@@ -28,6 +30,7 @@ public class VisualEditorController implements IVisualEditorController {
 	private PathwayEditor pathwayEditor;
 	private File currentFile;
 	private IXmlPersistenceManager canvasPersistenceManager;
+	private ISelectionChangeListener selectionChangeListener;
 
 	
 	public VisualEditorController(INotationSubsystemPool subsystemPool){
@@ -38,6 +41,17 @@ public class VisualEditorController implements IVisualEditorController {
 			this.nsMap.put(ns.getNotation().getDisplayName(), ns);
 		}
 		canvasPersistenceManager = new FileXmlCanvasPersistenceManager(subsystemPool);
+		this.selectionChangeListener = new ISelectionChangeListener() {
+			@Override
+			public void selectionChanged(ISelectionChangeEvent event) {
+				if(event.getSelectionChange() == SelectionChangeType.SELECTION_CLEARED){
+					visualEditor.setSelectionDependentMenuItemsEnablement(false);
+				}
+				else{
+					visualEditor.setSelectionDependentMenuItemsEnablement(true);
+				}
+			}
+		};
 	}
 	
 	@Override
@@ -57,6 +71,14 @@ public class VisualEditorController implements IVisualEditorController {
 			openFile(new File(openFile));
 		}
 	}
+	
+	private void renderModel(){
+		if(pathwayEditor.isOpen()){
+			pathwayEditor.getSelectionRecord().removeSelectionChangeListener(selectionChangeListener);
+		}
+		pathwayEditor.renderModel(canvasPersistenceManager.getCurrentModel());
+		pathwayEditor.getSelectionRecord().addSelectionChangeListener(selectionChangeListener);
+	}
 
 	@Override
 	public void openFile(File file){
@@ -65,7 +87,7 @@ public class VisualEditorController implements IVisualEditorController {
 			InputStream in = new FileInputStream(file);
 			canvasPersistenceManager.readCanvasFromStream(in);
 			in.close();
-			pathwayEditor.renderModel(canvasPersistenceManager.getCurrentModel());
+			renderModel();
 		}
 		catch(IOException ex){
 			JOptionPane.showMessageDialog(visualEditor, ex.getMessage(), "Error Opening File", JOptionPane.ERROR_MESSAGE);
@@ -78,8 +100,7 @@ public class VisualEditorController implements IVisualEditorController {
 		INotationSubsystem selectedNs = nsMap.get(selection);
 		this.canvasPersistenceManager.createNewModelStream(selectedNs, "New Map");
 		this.currentFile = null;
-		IModel newModel = this.canvasPersistenceManager.getCurrentModel();
-		this.pathwayEditor.renderModel(newModel);
+		renderModel();
 	}
 
 	@Override
@@ -168,6 +189,7 @@ public class VisualEditorController implements IVisualEditorController {
 	@Override
 	public void closeFile() {
 		this.pathwayEditor.close();
+		pathwayEditor.getSelectionRecord().removeSelectionChangeListener(selectionChangeListener);
 	}
 
 	@Override
@@ -178,6 +200,16 @@ public class VisualEditorController implements IVisualEditorController {
 	@Override
 	public void redoAction() {
 		this.pathwayEditor.getCommandStack().redo();
+	}
+
+	@Override
+	public void deleteAction() {
+		pathwayEditor.deleteSelection();
+	}
+
+	@Override
+	public void selectAllAction() {
+		this.pathwayEditor.getSelectionRecord().selectAll();
 	}
 	
 }

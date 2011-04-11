@@ -92,13 +92,17 @@ public class SelectionRecord implements ISelectionRecord {
 			}
 		}
 	}
+	
+	private void reset(){
+		this.selections.clear();
+		this.controllerMapping.clear();
+		this.builder = null;
+	}
 
 	@Override
 	public void clear() {
 		List<ISelection> oldSelection = new ArrayList<ISelection>(this.selections);
-		this.selections.clear();
-		this.controllerMapping.clear();
-		this.builder = null;
+		reset();
 		notifySelectionChange(SelectionChangeType.SELECTION_CLEARED, oldSelection.iterator(), this.selections.iterator());
 	}
 
@@ -303,6 +307,25 @@ public class SelectionRecord implements ISelectionRecord {
 			retVal = this.builder.getEnvelope();
 		}
 		return retVal;
+	}
+
+	@Override
+	public void selectAll() {
+		reset();
+		Iterator<IDrawingElementController> primIter = this.viewModel.drawingPrimitiveIterator();
+		boolean firstTime = true;
+		while(primIter.hasNext()){
+			IDrawingElementController controller = primIter.next();
+			if(!(controller instanceof IRootController)){
+				if(firstTime){
+					this.setPrimarySelection(controller);
+					firstTime = false;
+				}
+				else{
+					this.addSecondarySelection(controller);
+				}
+			}
+		}
 	}
 
 }

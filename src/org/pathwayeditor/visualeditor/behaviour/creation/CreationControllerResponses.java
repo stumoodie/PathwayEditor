@@ -50,6 +50,10 @@ public class CreationControllerResponses implements IControllerResponses {
 			public ReparentingStateType getReparentingState(Point delta) {
 				return ReparentingStateType.FORBIDDEN;
 			}
+
+			@Override
+			public void deleteSelection() {
+			}
 		});
         this.popupMenuMap = new HashMap<SelectionHandleType, IPopupMenuResponse>();
         initialisePopupMenuResponse(opFactory);

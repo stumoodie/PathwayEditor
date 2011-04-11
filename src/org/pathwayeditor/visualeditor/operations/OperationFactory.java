@@ -1,11 +1,5 @@
 package org.pathwayeditor.visualeditor.operations;
 
-import java.awt.Dialog;
-import java.util.Iterator;
-
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElementSelection;
-import org.pathwayeditor.businessobjects.drawingprimitives.ISelectionFactory;
-import org.pathwayeditor.businessobjects.impl.facades.SelectionFactoryFacade;
 import org.pathwayeditor.visualeditor.behaviour.operation.IDefaultPopupActions;
 import org.pathwayeditor.visualeditor.behaviour.operation.IEditingOperation;
 import org.pathwayeditor.visualeditor.behaviour.operation.ILinkBendPointPopupActions;
@@ -19,10 +13,9 @@ import org.pathwayeditor.visualeditor.behaviour.operation.ISelectionOperation;
 import org.pathwayeditor.visualeditor.behaviour.operation.IShapeCreationOperation;
 import org.pathwayeditor.visualeditor.behaviour.operation.IShapePopupActions;
 import org.pathwayeditor.visualeditor.commands.DeleteBendPointCommand;
+import org.pathwayeditor.visualeditor.commands.DeleteSelectionCommand;
 import org.pathwayeditor.visualeditor.commands.ICommand;
 import org.pathwayeditor.visualeditor.commands.ICommandStack;
-import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
-import org.pathwayeditor.visualeditor.controller.IRootController;
 import org.pathwayeditor.visualeditor.controller.IViewControllerModel;
 import org.pathwayeditor.visualeditor.editingview.IShapePane;
 import org.pathwayeditor.visualeditor.feedback.IFeedbackModel;
@@ -30,10 +23,7 @@ import org.pathwayeditor.visualeditor.geometry.CommonParentCalculator;
 import org.pathwayeditor.visualeditor.geometry.ICommonParentCalculator;
 import org.pathwayeditor.visualeditor.layout.LabelPositionCalculator;
 import org.pathwayeditor.visualeditor.selection.ILinkSelection;
-import org.pathwayeditor.visualeditor.selection.INodeSelection;
 import org.pathwayeditor.visualeditor.selection.ISelectionRecord;
-
-import uk.ac.ed.inf.graph.compound.ISubgraphRemovalBuilder;
 
 public class OperationFactory implements IOperationFactory {
 	private final IEditingOperation editOperation;
@@ -47,7 +37,7 @@ public class OperationFactory implements IOperationFactory {
 	private final IShapePane shapePane;
 	private final ISelectionRecord selectionRecord;
 	private final ICommandStack commandStack;
-	private final IViewControllerModel viewModel;
+//	private final IViewControllerModel viewModel;
 	private final IShapeCreationOperation shapeCreationOperation;
 	private final ISelectionOperation selectionOperations;
 	private final ILinkCreationOperation linkCreationOperation;
@@ -58,7 +48,7 @@ public class OperationFactory implements IOperationFactory {
 		this.shapePane = shapePane;
 		this.selectionRecord = selectionRecord;
 		this.commandStack = commandStack;
-		this.viewModel = viewModel;
+//		this.viewModel = viewModel;
         editOperation = new EditingOperation(shapePane, feedbackModel, selectionRecord, newParentCalc, commandStack);
         resizeOperation = new ResizeOperation(shapePane, feedbackModel, selectionRecord, commandStack);
 		linkOperation = new LinkOperation(shapePane, feedbackModel, selectionRecord, commandStack);
@@ -168,20 +158,7 @@ public class OperationFactory implements IOperationFactory {
 	}
 
 	private void selectAllElements() {
-		Iterator<IDrawingElementController> primIter = this.viewModel.drawingPrimitiveIterator();
-		boolean firstTime = true;
-		while(primIter.hasNext()){
-			IDrawingElementController controller = primIter.next();
-			if(!(controller instanceof IRootController)){
-				if(firstTime){
-					selectionRecord.setPrimarySelection(controller);
-					firstTime = false;
-				}
-				else{
-					selectionRecord.addSecondarySelection(controller);
-				}
-			}
-		}
+		selectionRecord.selectAll();
 	}
 
 	private void deleteBendpoint(int bpIdx) {
@@ -191,29 +168,30 @@ public class OperationFactory implements IOperationFactory {
 	}
 	
 	private void deleteSelection() {
-		Iterator<INodeSelection> nodeSelectionIter = selectionRecord.selectedNodeIterator();
-		ISelectionFactory selectionFact = null;
-		while(nodeSelectionIter.hasNext()){
-			INodeSelection selectedNode = nodeSelectionIter.next();
-			if(selectionFact == null){
-				selectionFact = new SelectionFactoryFacade(selectedNode.getPrimitiveController().getViewModel().getDomainModel().getGraph().subgraphFactory());
-			}
-			selectionFact.addDrawingNode(selectedNode.getPrimitiveController().getDrawingElement());
-		}
-		Iterator<ILinkSelection> linkSelectionIter = selectionRecord.selectedLinkIterator();
-		while(linkSelectionIter.hasNext()){
-			ILinkSelection selectedLink = linkSelectionIter.next();
-			if(selectionFact == null){
-				selectionFact = new SelectionFactoryFacade(selectedLink.getPrimitiveController().getViewModel().getDomainModel().getGraph().subgraphFactory());
-			}
-			selectionFact.addLink(selectedLink.getPrimitiveController().getDrawingElement());
-		}
-		if(selectionFact != null){
-			IDrawingElementSelection seln = selectionFact.createGeneralSelection();
-			ISubgraphRemovalBuilder removalBuilder = seln.getSubgraph().getSuperGraph().newSubgraphRemovalBuilder();
-			removalBuilder.setRemovalSubgraph(seln.getSubgraph());
-			removalBuilder.removeSubgraph();
-		}
+		this.commandStack.execute(new DeleteSelectionCommand(this.selectionRecord.getSubgraphSelection()));
+//		Iterator<INodeSelection> nodeSelectionIter = selectionRecord.selectedNodeIterator();
+//		ISelectionFactory selectionFact = null;
+//		while(nodeSelectionIter.hasNext()){
+//			INodeSelection selectedNode = nodeSelectionIter.next();
+//			if(selectionFact == null){
+//				selectionFact = new SelectionFactoryFacade(selectedNode.getPrimitiveController().getViewModel().getDomainModel().getGraph().subgraphFactory());
+//			}
+//			selectionFact.addDrawingNode(selectedNode.getPrimitiveController().getDrawingElement());
+//		}
+//		Iterator<ILinkSelection> linkSelectionIter = selectionRecord.selectedLinkIterator();
+//		while(linkSelectionIter.hasNext()){
+//			ILinkSelection selectedLink = linkSelectionIter.next();
+//			if(selectionFact == null){
+//				selectionFact = new SelectionFactoryFacade(selectedLink.getPrimitiveController().getViewModel().getDomainModel().getGraph().subgraphFactory());
+//			}
+//			selectionFact.addLink(selectedLink.getPrimitiveController().getDrawingElement());
+//		}
+//		if(selectionFact != null){
+//			IDrawingElementSelection seln = selectionFact.createGeneralSelection();
+//			ISubgraphRemovalBuilder removalBuilder = seln.getSubgraph().getSuperGraph().newSubgraphRemovalBuilder();
+//			removalBuilder.setRemovalSubgraph(seln.getSubgraph());
+//			removalBuilder.removeSubgraph();
+//		}
 	}
 
 	@Override

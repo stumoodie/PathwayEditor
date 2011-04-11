@@ -11,11 +11,11 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.behaviour.IDragResponse;
-import org.pathwayeditor.visualeditor.behaviour.IViewBehaviourOperationCompletionEvent;
-import org.pathwayeditor.visualeditor.behaviour.IViewBehaviourStateHandler;
 import org.pathwayeditor.visualeditor.behaviour.IMouseFeedbackResponse;
 import org.pathwayeditor.visualeditor.behaviour.IMouseFeedbackResponse.StateType;
 import org.pathwayeditor.visualeditor.behaviour.ISelectionStateBehaviourController;
+import org.pathwayeditor.visualeditor.behaviour.IViewBehaviourOperationCompletionEvent;
+import org.pathwayeditor.visualeditor.behaviour.IViewBehaviourStateHandler;
 import org.pathwayeditor.visualeditor.behaviour.IViewBehaviourStateHandlerChangeListener;
 import org.pathwayeditor.visualeditor.editingview.IShapePane;
 

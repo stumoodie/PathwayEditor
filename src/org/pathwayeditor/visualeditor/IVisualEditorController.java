@@ -27,4 +27,8 @@ public interface IVisualEditorController {
 	void undoAction();
 
 	void redoAction();
+
+	void deleteAction();
+
+	void selectAllAction();
 }

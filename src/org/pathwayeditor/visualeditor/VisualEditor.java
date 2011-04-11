@@ -50,6 +50,8 @@ public class VisualEditor extends JFrame implements AboutHandler, QuitHandler, P
 	private JMenuItem editMenuRedoItem;
 	private JMenuItem editMenuUndoItem;
 	private ICommandChangeListener commandStackChangeListener;
+	private JMenuItem editMenuDeleteItem;
+	private JMenuItem editMenuSelectAllItem;
 	
 	public VisualEditor(String title, IVisualEditorController visualEditorController){
 		super(title);
@@ -120,6 +122,7 @@ public class VisualEditor extends JFrame implements AboutHandler, QuitHandler, P
 			@Override
 			public void editorChangedEvent(IPathwayEditorStateChangeEvent e) {
 				setFileMenuEnablement();
+				setEditMenuEnablement();
 				if(e.getChangeType().equals(StateChangeType.OPEN)){
 					e.getSource().getCommandStack().addCommandChangeListener(commandStackChangeListener);
 				}
@@ -137,7 +140,13 @@ public class VisualEditor extends JFrame implements AboutHandler, QuitHandler, P
 		};
 		setFileMenuEnablement();
 		setEditMenuEnablement();
+		setSelectionDependentMenuItemsEnablement(false);
 		this.insp.addEditorStateChangeListener(pathwayEditorStateChangeListener);
+		setSelectionDependentMenuItemsEnablement(false);
+	}
+
+	protected void setSelectionDependentMenuItemsEnablement(boolean b) {
+		this.editMenuDeleteItem.setEnabled(b);
 	}
 
 	protected void closeWindow() {
@@ -181,6 +190,23 @@ public class VisualEditor extends JFrame implements AboutHandler, QuitHandler, P
 			}
 		});
 		editMenu.add(editMenuRedoItem);
+		editMenuDeleteItem = new JMenuItem("Delete", KeyEvent.VK_D);
+		editMenuDeleteItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				visualEditorController.deleteAction();
+			}
+		});
+		editMenu.add(editMenuDeleteItem);
+		editMenuSelectAllItem = new JMenuItem("Select All", KeyEvent.VK_A);
+		editMenuSelectAllItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+		editMenuSelectAllItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				visualEditorController.selectAllAction();
+			}
+		});
+		editMenu.add(editMenuSelectAllItem);
 	}
 	
 	private void setEditMenuEnablement() {
@@ -195,6 +221,12 @@ public class VisualEditor extends JFrame implements AboutHandler, QuitHandler, P
 		}
 		else{
 			editMenuUndoItem.setEnabled(false);
+		}
+		if(insp.isOpen()){
+			this.editMenuSelectAllItem.setEnabled(true);
+		}
+		else{
+			this.editMenuSelectAllItem.setEnabled(false);
 		}
 	}
 

@@ -37,6 +37,7 @@ import org.pathwayeditor.visualeditor.geometry.ILinkPointDefinition;
 import uk.ac.ed.inf.graph.compound.ICompoundEdge;
 import uk.ac.ed.inf.graph.compound.ICompoundGraphElement;
 import uk.ac.ed.inf.graph.compound.ICompoundNode;
+import uk.ac.ed.inf.graph.compound.IGraphRestoreStateAction;
 import uk.ac.ed.inf.graph.compound.IGraphStructureChangeAction;
 import uk.ac.ed.inf.graph.compound.IGraphStructureChangeAction.GraphStructureChangeType;
 import uk.ac.ed.inf.graph.compound.IGraphStructureChangeListener;
@@ -105,12 +106,10 @@ public class ViewControllerStore implements IViewControllerModel {
 			@Override
 			public void graphStructureChange(IGraphStructureChangeAction event) {
 				if(event.getChangeType().equals(GraphStructureChangeType.SUBGRAPH_REMOVED)){
-//					rebuildModel();
 					inactivateSelection(new DrawingElementSelectionFacade(event.originalSubgraph()));
 					removeSelection(new DrawingElementSelectionFacade(event.originalSubgraph()));
 				}
 				else if(event.getChangeType().equals(GraphStructureChangeType.SUBGRAPH_MOVED)){
-					// reinitialise the nodes
 					inactivateSelection(new DrawingElementSelectionFacade(event.originalSubgraph()));
 					removeSelection(new DrawingElementSelectionFacade(event.originalSubgraph()));
 					addSelection(new DrawingElementSelectionFacade(event.changedSubgraph()));
@@ -131,7 +130,13 @@ public class ViewControllerStore implements IViewControllerModel {
 					throw new IllegalStateException("Inconsistent number of controllers and drawing elements");
 				}
 			}
-			
+			@Override
+			public void notifyRestoreCompleted(IGraphRestoreStateAction event) {
+				inactivateSelection(new DrawingElementSelectionFacade(event.getRemovedElements()));
+				removeSelection(new DrawingElementSelectionFacade(event.getRemovedElements()));
+				addSelection(new DrawingElementSelectionFacade(event.getRestoredElements()));
+				activateSelection(new DrawingElementSelectionFacade(event.getRestoredElements()));
+			}
 		};
 		this.domainModel.getGraph().addGraphStructureChangeListener(modelListener);
 	}

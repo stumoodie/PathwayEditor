@@ -14,4 +14,6 @@ public interface IEditingOperation {
 
 	void moveFinished(Point delta, ReparentingStateType reparentingState);
 
+	void deleteSelection();
+
 }

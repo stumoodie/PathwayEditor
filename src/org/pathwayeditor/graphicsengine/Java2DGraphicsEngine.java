@@ -25,8 +25,8 @@ import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LineStyle;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.RGB;
 import org.pathwayeditor.figure.rendering.GraphicalTextAlignment;
 import org.pathwayeditor.figure.rendering.IFont;
-import org.pathwayeditor.figure.rendering.IGraphicsEngine;
 import org.pathwayeditor.figure.rendering.IFont.Style;
+import org.pathwayeditor.figure.rendering.IGraphicsEngine;
 
 public class Java2DGraphicsEngine implements IGraphicsEngine {
 	private final Logger logger = Logger.getLogger(this.getClass());

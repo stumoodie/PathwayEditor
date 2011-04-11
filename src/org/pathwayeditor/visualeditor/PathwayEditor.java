@@ -26,6 +26,7 @@ import org.pathwayeditor.visualeditor.IPathwayEditorStateChangeEvent.StateChange
 import org.pathwayeditor.visualeditor.behaviour.IViewBehaviourController;
 import org.pathwayeditor.visualeditor.behaviour.ViewBehaviourController;
 import org.pathwayeditor.visualeditor.commands.CommandStack;
+import org.pathwayeditor.visualeditor.commands.DeleteSelectionCommand;
 import org.pathwayeditor.visualeditor.commands.ICommandChangeEvent;
 import org.pathwayeditor.visualeditor.commands.ICommandChangeEvent.CommandChangeType;
 import org.pathwayeditor.visualeditor.commands.ICommandChangeListener;
@@ -76,27 +77,6 @@ public class PathwayEditor extends JPanel {
 		this.dialog = dialog;
 		this.setLayout(new BorderLayout());
 		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-//		this.graphStuctureChangeListener = new IGraphStructureChangeListener() {
-//			@Override
-//			public void graphStructureChange(IGraphStructureChangeAction iGraphStructureChangeAction) {
-//				GraphStructureChangeType type = iGraphStructureChangeAction.getChangeType();
-//				if(type.equals(GraphStructureChangeType.ELEMENT_ADDED)){
-//					registerWithPropChangeListeners(iGraphStructureChangeAction.changedSubgraph());
-//				}
-//				else if(type.equals(GraphStructureChangeType.SUBGRAPH_COPIED)){
-//					registerWithPropChangeListeners(iGraphStructureChangeAction.changedSubgraph());
-//				}
-//				else if(type.equals(GraphStructureChangeType.SUBGRAPH_MOVED)){
-//					registerWithPropChangeListeners(iGraphStructureChangeAction.changedSubgraph());
-//					deregisterWithPropChangeListeners(iGraphStructureChangeAction.originalSubgraph());
-//				}
-//				else if(type.equals(GraphStructureChangeType.SUBGRAPH_REMOVED)){
-//					deregisterWithPropChangeListeners(iGraphStructureChangeAction.originalSubgraph());
-//				}
-//				isEdited = true;
-//				notifyStateChange(StateChangeType.EDITED, viewModel.getDomainModel());
-//			}
-//		};
 		this.commandStackListener = new ICommandChangeListener() {
 			
 			@Override
@@ -187,6 +167,17 @@ public class PathwayEditor extends JPanel {
 				}
 			}
 		};
+//		this.graphStuctureChangeListener = new IGraphStructureChangeListener() {
+//			@Override
+//			public void graphStructureChange(IGraphStructureChangeAction iGraphStructureChangeAction) {
+//			}
+//
+//			@Override
+//			public void notifyRestoreCompleted(IGraphRestoreStateAction e) {
+//				selectionRecord.restoreSelection();
+//				shapePane.updateView();
+//			}
+//		};
 		this.commandStack = new CommandStack();
 	}
 	
@@ -334,6 +325,7 @@ public class PathwayEditor extends JPanel {
 		setUpEditorViews(this.viewModel.getDomainModel());
 		((ShapePane)this.shapePane).setPreferredSize(new Dimension(1800, 1800));
 		((ShapePane)this.shapePane).revalidate();
+//		model.getGraph().addGraphStructureChangeListener(graphStuctureChangeListener);
 		notifyStateChange(StateChangeType.OPEN, model);
 	}
 
@@ -348,10 +340,10 @@ public class PathwayEditor extends JPanel {
 		this.remove(scrollPane);
 		this.remove(this.palettePane);
 		this.validate();
+//		this.viewModel.getDomainModel().getGraph().removeGraphStructureChangeListener(graphStuctureChangeListener);
 		this.selectionRecord.removeSelectionChangeListener(selectionChangeListener);
 		this.commandStack.removeCommandChangeListener(commandStackListener);
 		this.commandStack.clear();
-//		this.viewModel.getDomainModel().getGraph().removeGraphStructureChangeListener(this.graphStuctureChangeListener);
 		this.viewModel.deactivate();
 		this.editBehaviourController.deactivate();
 		this.shapePane = null;
@@ -370,5 +362,11 @@ public class PathwayEditor extends JPanel {
 	
 	public ISelectionRecord getSelectionRecord(){
 		return this.selectionRecord;
+	}
+
+	public void deleteSelection() {
+		commandStack.execute(new DeleteSelectionCommand(selectionRecord.getSubgraphSelection()));
+		selectionRecord.clear();
+		shapePane.updateView();
 	}
 }

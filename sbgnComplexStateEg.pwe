@@ -1,0 +1,887 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<epx:canvas xmlns:epx="http://www.pathwayeditor.org/Exchange"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.pathwayeditor.org/Exchange http://www.pathwayeditor.org/Exchange/Canvas.xsd"
+    name="New Map" lastCreationSerial="38">
+    <Grid snapToGrid="false" gridOn="false">
+        <GridSize width="10.0" height="10.0"/>
+    </Grid>
+    <Notation qualifiedName="org.pathwayeditor.notations.sbgnpd"
+        majorVersion="0" minorVersion="11" patchVersion="0" displayName="SBGN-PD L1 V1.1 ">
+        <Description>SBGN Process Description Notation</Description>
+        <ObjectType uniqueId="11" name="Unit Of Information" classification="Shape">
+            <description>Unit of information</description>
+        </ObjectType>
+        <ObjectType uniqueId="13" name="Compartment" classification="Shape">
+            <description>Compartment</description>
+        </ObjectType>
+        <ObjectType uniqueId="14" name="Complex" classification="Shape">
+            <description>Complex</description>
+        </ObjectType>
+        <ObjectType uniqueId="15" name="Nucleic Acid Feature" classification="Shape">
+            <description>Nucleic Acid Feature</description>
+        </ObjectType>
+        <ObjectType uniqueId="16" name="Macromolecule" classification="Shape">
+            <description>Macromolecule</description>
+        </ObjectType>
+        <ObjectType uniqueId="18" name="Simple Chemical" classification="Shape">
+            <description>Simple chemical</description>
+        </ObjectType>
+        <ObjectType uniqueId="10" name="State" classification="Shape">
+            <description>State decription.</description>
+        </ObjectType>
+        <ObjectType uniqueId="27" name="LogicArc" classification="Link">
+            <description>Logic arc.</description>
+        </ObjectType>
+        <ObjectType uniqueId="20" name="Consumption" classification="Link">
+            <description>Consumption arc.</description>
+        </ObjectType>
+        <ObjectType uniqueId="22" name="Modulation" classification="Link">
+            <description>Modulation arc.</description>
+        </ObjectType>
+        <ObjectType uniqueId="21" name="Production" classification="Link">
+            <description>Production arc.</description>
+        </ObjectType>
+        <ObjectType uniqueId="24" name="Catalysis" classification="Link">
+            <description>Catalysis.</description>
+        </ObjectType>
+        <ObjectType uniqueId="23" name="Stimulation" classification="Link">
+            <description>Stimulation arc.</description>
+        </ObjectType>
+        <ObjectType uniqueId="26" name="Necessary Stimulation" classification="Link">
+            <description>Necessary stimulation.</description>
+        </ObjectType>
+        <ObjectType uniqueId="25" name="Inhibition" classification="Link">
+            <description>Inhibition arc.</description>
+        </ObjectType>
+        <ObjectType uniqueId="114" name="Phenotype" classification="Shape">
+            <description>Phenotype</description>
+        </ObjectType>
+        <ObjectType uniqueId="113" name="Perturbing Agent" classification="Shape">
+            <description>Perturbing Agent</description>
+        </ObjectType>
+        <ObjectType uniqueId="112" name="Source" classification="Shape">
+            <description>Source</description>
+        </ObjectType>
+        <ObjectType uniqueId="111" name="Sink" classification="Shape">
+            <description>Sink</description>
+        </ObjectType>
+        <ObjectType uniqueId="110" name="Unspecified Entity" classification="Shape">
+            <description>Unspecified entity</description>
+        </ObjectType>
+        <ObjectType uniqueId="121" name="Association" classification="Shape">
+            <description>Association</description>
+        </ObjectType>
+        <ObjectType uniqueId="122" name="Dissociation" classification="Shape">
+            <description>Dissociation arc.</description>
+        </ObjectType>
+        <ObjectType uniqueId="0" name="ROOT_OBJECT" classification="Root">
+            <description>No descn</description>
+        </ObjectType>
+        <ObjectType uniqueId="119" name="Omitted Process" classification="Shape">
+            <description>Omitted process</description>
+        </ObjectType>
+        <ObjectType uniqueId="120" name="Uncertain Process" classification="Shape">
+            <description>Uncertain process</description>
+        </ObjectType>
+        <ObjectType uniqueId="118" name="Process" classification="Shape">
+            <description>Process node</description>
+        </ObjectType>
+        <ObjectType uniqueId="125" name="NOT" classification="Shape">
+            <description>NOT Logical Operator</description>
+        </ObjectType>
+        <ObjectType uniqueId="123" name="AND" classification="Shape">
+            <description>AND Logical Operator</description>
+        </ObjectType>
+        <ObjectType uniqueId="124" name="OR" classification="Shape">
+            <description>OR Logical Operator</description>
+        </ObjectType>
+    </Notation>
+    <CanvasSize width="1.7976931348623157E308" height="1.7976931348623157E308"/>
+    <Background red="255" green="255" blue="255"/>
+    <Model lastNodeIndex="32" lastEdgeIndex="2">
+        <RootNode nodeId="0">
+            <SubModel>
+                <ShapeNode nodeId="1">
+                    <SubModel>
+                        <ShapeNode nodeId="2">
+                            <SubModel>
+                                <ShapeNode nodeId="3">
+                                    <SubModel>
+                                    <LabelNode nodeId="21">
+                                    <SubModel/>
+                                    <LabelAttribute
+                                    creationSerial="15"
+                                    lineStyle="SOLID"
+                                    lineWidth="1.0"
+                                    noFill="true" noBorder="true">
+                                    <Location
+                                    x="434.0499999999797" y="482.9257324218506"/>
+                                    <Size width="8.0" height="17.24853515625"/>
+                                    <LineColour red="0"
+                                    green="0" blue="0"/>
+                                    <FillColour red="255"
+                                    green="255" blue="255"/>
+                                    <PropertyRef id="15"/>
+                                    </LabelAttribute>
+                                    </LabelNode>
+                                    </SubModel>
+                                    <ShapeAttribute creationSerial="14"
+                                    objectTypeId="10"
+                                    lineWidth="1.0" lineStyle="SOLID">
+                                    <Location x="417.0" y="481.0"/>
+                                    <Size width="42.10000000000002" height="21.100000000000023"/>
+                                    <FillColour red="255"
+                                    green="255" blue="255"/>
+                                    <LineColour red="0" green="0" blue="0"/>
+                                    <PropertyRef id="15"/>
+                                    <FigureDefinition>curbounds /h exch def /w exch def /y exch def /x exch def
+h w le  {x y w h 1 h mul 1 h mul rrect}
+{x y w h 1 w mul 1 w mul rrect} ifelse</FigureDefinition>
+                                    </ShapeAttribute>
+                                </ShapeNode>
+                                <LabelNode nodeId="20">
+                                    <SubModel/>
+                                    <LabelAttribute creationSerial="6"
+                                    lineStyle="SOLID"
+                                    lineWidth="1.0" noFill="true" noBorder="true">
+                                    <Location x="409.55000000000166" y="510.9257324218772"/>
+                                    <Size width="39.0" height="17.24853515625"/>
+                                    <LineColour red="0" green="0" blue="0"/>
+                                    <FillColour red="255"
+                                    green="255" blue="255"/>
+                                    <PropertyRef id="10"/>
+                                    </LabelAttribute>
+                                </LabelNode>
+                            </SubModel>
+                            <ShapeAttribute creationSerial="5"
+                                objectTypeId="16" lineWidth="1.0" lineStyle="SOLID">
+                                <Location x="391.0" y="491.0"/>
+                                <Size width="77.10000000000002" height="59.10000000000002"/>
+                                <FillColour red="255" green="255" blue="255"/>
+                                <LineColour red="0" green="0" blue="0"/>
+                                <PropertyRef id="10"/>
+                                <PropertyRef id="11"/>
+                                <PropertyRef id="12"/>
+                                <PropertyRef id="13"/>
+                                <PropertyRef id="14"/>
+                                <FigureDefinition>(C) setanchor
+curbounds /h exch def /w exch def /y exch def /x exch def
+/xoffset { w mul x add } def /yoffset { h mul y add } def
+/cardinalityBox { /card exch def /fsize exch def /cpy exch def /cpx exch def
+fsize setfontsize
+card cvs textbounds /hoff exch curlinewidth 2 mul add h div def /woff exch curlinewidth 2 mul add w div def 
+cpx woff 2 div sub xoffset cpy hoff 2 div sub yoffset woff w mul hoff h mul rect
+gsave
+null setfillcol cpx xoffset cpy yoffset (C) card cvs text
+grestore
+} def
+:cardinality 1 gt {
+0.10 xoffset 0.10 yoffset 0.90 w mul 0.90 h mul 0.20 w mul 0.20 h mul rrect
+0 xoffset 0 yoffset 0.90 w mul 0.90 h mul 0.20 w mul 0.20 h mul rrect
+0.3 0 :cardFontSize :cardinality cardinalityBox
+}
+{ x y w h 0.2 w mul 0.20 h mul rrect } ifelse</FigureDefinition>
+                            </ShapeAttribute>
+                        </ShapeNode>
+                        <ShapeNode nodeId="4">
+                            <SubModel>
+                                <ShapeNode nodeId="5">
+                                    <SubModel>
+                                    <LabelNode nodeId="23">
+                                    <SubModel/>
+                                    <LabelAttribute
+                                    creationSerial="25"
+                                    lineStyle="SOLID"
+                                    lineWidth="1.0"
+                                    noFill="true" noBorder="true">
+                                    <Location
+                                    x="531.5500000000355" y="480.9257324219084"/>
+                                    <Size width="8.0" height="17.24853515625"/>
+                                    <LineColour red="0"
+                                    green="0" blue="0"/>
+                                    <FillColour red="255"
+                                    green="255" blue="255"/>
+                                    <PropertyRef id="21"/>
+                                    </LabelAttribute>
+                                    </LabelNode>
+                                    </SubModel>
+                                    <ShapeAttribute creationSerial="24"
+                                    objectTypeId="10"
+                                    lineWidth="1.0" lineStyle="SOLID">
+                                    <Location x="517.0" y="478.0"/>
+                                    <Size width="37.10000000000002" height="23.100000000000023"/>
+                                    <FillColour red="255"
+                                    green="255" blue="255"/>
+                                    <LineColour red="0" green="0" blue="0"/>
+                                    <PropertyRef id="21"/>
+                                    <FigureDefinition>curbounds /h exch def /w exch def /y exch def /x exch def
+h w le  {x y w h 1 h mul 1 h mul rrect}
+{x y w h 1 w mul 1 w mul rrect} ifelse</FigureDefinition>
+                                    </ShapeAttribute>
+                                </ShapeNode>
+                                <LabelNode nodeId="22">
+                                    <SubModel/>
+                                    <LabelAttribute creationSerial="8"
+                                    lineStyle="SOLID"
+                                    lineWidth="1.0" noFill="true" noBorder="true">
+                                    <Location x="512.5499999999993" y="512.425732421875"/>
+                                    <Size width="39.0" height="17.24853515625"/>
+                                    <LineColour red="0" green="0" blue="0"/>
+                                    <FillColour red="255"
+                                    green="255" blue="255"/>
+                                    <PropertyRef id="17"/>
+                                    </LabelAttribute>
+                                </LabelNode>
+                            </SubModel>
+                            <ShapeAttribute creationSerial="7"
+                                objectTypeId="16" lineWidth="1.0" lineStyle="SOLID">
+                                <Location x="491.0" y="489.0"/>
+                                <Size width="82.10000000000002" height="64.10000000000002"/>
+                                <FillColour red="255" green="255" blue="255"/>
+                                <LineColour red="0" green="0" blue="0"/>
+                                <PropertyRef id="16"/>
+                                <PropertyRef id="17"/>
+                                <PropertyRef id="18"/>
+                                <PropertyRef id="19"/>
+                                <PropertyRef id="20"/>
+                                <FigureDefinition>(C) setanchor
+curbounds /h exch def /w exch def /y exch def /x exch def
+/xoffset { w mul x add } def /yoffset { h mul y add } def
+/cardinalityBox { /card exch def /fsize exch def /cpy exch def /cpx exch def
+fsize setfontsize
+card cvs textbounds /hoff exch curlinewidth 2 mul add h div def /woff exch curlinewidth 2 mul add w div def 
+cpx woff 2 div sub xoffset cpy hoff 2 div sub yoffset woff w mul hoff h mul rect
+gsave
+null setfillcol cpx xoffset cpy yoffset (C) card cvs text
+grestore
+} def
+:cardinality 1 gt {
+0.10 xoffset 0.10 yoffset 0.90 w mul 0.90 h mul 0.20 w mul 0.20 h mul rrect
+0 xoffset 0 yoffset 0.90 w mul 0.90 h mul 0.20 w mul 0.20 h mul rrect
+0.3 0 :cardFontSize :cardinality cardinalityBox
+}
+{ x y w h 0.2 w mul 0.20 h mul rrect } ifelse</FigureDefinition>
+                            </ShapeAttribute>
+                        </ShapeNode>
+                        <ShapeNode nodeId="6">
+                            <SubModel>
+                                <ShapeNode nodeId="7">
+                                    <SubModel>
+                                    <ShapeNode nodeId="8">
+                                    <SubModel>
+                                    <LabelNode nodeId="26">
+                                    <SubModel/>
+                                    <LabelAttribute
+                                    creationSerial="23"
+                                    lineStyle="SOLID"
+                                    lineWidth="1.0"
+                                    noFill="true" noBorder="true">
+                                    <Location
+                                    x="444.0499999999753" y="605.9257324218354"/>
+                                    <Size
+                                    width="8.0" height="17.24853515625"/>
+                                    <LineColour
+                                    red="0"
+                                    green="0" blue="0"/>
+                                    <FillColour
+                                    red="255"
+                                    green="255" blue="255"/>
+                                    <PropertyRef id="32"/>
+                                    </LabelAttribute>
+                                    </LabelNode>
+                                    </SubModel>
+                                    <ShapeAttribute
+                                    creationSerial="22"
+                                    objectTypeId="10"
+                                    lineWidth="1.0" lineStyle="SOLID">
+                                    <Location x="433.0" y="604.0"/>
+                                    <Size
+                                    width="29.100000000000023" height="20.100000000000023"/>
+                                    <FillColour red="255"
+                                    green="255" blue="255"/>
+                                    <LineColour red="0"
+                                    green="0" blue="0"/>
+                                    <PropertyRef id="32"/>
+                                    <FigureDefinition>curbounds /h exch def /w exch def /y exch def /x exch def
+h w le  {x y w h 1 h mul 1 h mul rrect}
+{x y w h 1 w mul 1 w mul rrect} ifelse</FigureDefinition>
+                                    </ShapeAttribute>
+                                    </ShapeNode>
+                                    <LabelNode nodeId="25">
+                                    <SubModel/>
+                                    <LabelAttribute
+                                    creationSerial="19"
+                                    lineStyle="SOLID"
+                                    lineWidth="1.0"
+                                    noFill="true" noBorder="true">
+                                    <Location
+                                    x="429.5500000000017" y="581.4257324218761"/>
+                                    <Size width="39.0" height="22.24853515625"/>
+                                    <LineColour red="0"
+                                    green="0" blue="0"/>
+                                    <FillColour red="255"
+                                    green="255" blue="255"/>
+                                    <PropertyRef id="28"/>
+                                    </LabelAttribute>
+                                    </LabelNode>
+                                    </SubModel>
+                                    <ShapeAttribute creationSerial="18"
+                                    objectTypeId="16"
+                                    lineWidth="1.0" lineStyle="SOLID">
+                                    <Location x="425.0" y="573.0"/>
+                                    <Size width="48.10000000000002" height="42.10000000000002"/>
+                                    <FillColour red="255"
+                                    green="255" blue="255"/>
+                                    <LineColour red="0" green="0" blue="0"/>
+                                    <PropertyRef id="27"/>
+                                    <PropertyRef id="28"/>
+                                    <PropertyRef id="29"/>
+                                    <PropertyRef id="30"/>
+                                    <PropertyRef id="31"/>
+                                    <FigureDefinition>(C) setanchor
+curbounds /h exch def /w exch def /y exch def /x exch def
+/xoffset { w mul x add } def /yoffset { h mul y add } def
+/cardinalityBox { /card exch def /fsize exch def /cpy exch def /cpx exch def
+fsize setfontsize
+card cvs textbounds /hoff exch curlinewidth 2 mul add h div def /woff exch curlinewidth 2 mul add w div def 
+cpx woff 2 div sub xoffset cpy hoff 2 div sub yoffset woff w mul hoff h mul rect
+gsave
+null setfillcol cpx xoffset cpy yoffset (C) card cvs text
+grestore
+} def
+:cardinality 1 gt {
+0.10 xoffset 0.10 yoffset 0.90 w mul 0.90 h mul 0.20 w mul 0.20 h mul rrect
+0 xoffset 0 yoffset 0.90 w mul 0.90 h mul 0.20 w mul 0.20 h mul rrect
+0.3 0 :cardFontSize :cardinality cardinalityBox
+}
+{ x y w h 0.2 w mul 0.20 h mul rrect } ifelse</FigureDefinition>
+                                    </ShapeAttribute>
+                                </ShapeNode>
+                                <ShapeNode nodeId="9">
+                                    <SubModel>
+                                    <LabelNode nodeId="27">
+                                    <SubModel/>
+                                    <LabelAttribute
+                                    creationSerial="21"
+                                    lineStyle="SOLID"
+                                    lineWidth="1.0"
+                                    noFill="true" noBorder="true">
+                                    <Location
+                                    x="487.5500000000029" y="584.4257324218793"/>
+                                    <Size width="39.0" height="17.24853515625"/>
+                                    <LineColour red="0"
+                                    green="0" blue="0"/>
+                                    <FillColour red="255"
+                                    green="255" blue="255"/>
+                                    <PropertyRef id="35"/>
+                                    </LabelAttribute>
+                                    </LabelNode>
+                                    </SubModel>
+                                    <ShapeAttribute creationSerial="20"
+                                    objectTypeId="16"
+                                    lineWidth="1.0" lineStyle="SOLID">
+                                    <Location x="480.0" y="573.0"/>
+                                    <Size width="50.10000000000002" height="41.10000000000002"/>
+                                    <FillColour red="255"
+                                    green="255" blue="255"/>
+                                    <LineColour red="0" green="0" blue="0"/>
+                                    <PropertyRef id="33"/>
+                                    <PropertyRef id="34"/>
+                                    <PropertyRef id="35"/>
+                                    <PropertyRef id="36"/>
+                                    <PropertyRef id="37"/>
+                                    <FigureDefinition>(C) setanchor
+curbounds /h exch def /w exch def /y exch def /x exch def
+/xoffset { w mul x add } def /yoffset { h mul y add } def
+/cardinalityBox { /card exch def /fsize exch def /cpy exch def /cpx exch def
+fsize setfontsize
+card cvs textbounds /hoff exch curlinewidth 2 mul add h div def /woff exch curlinewidth 2 mul add w div def 
+cpx woff 2 div sub xoffset cpy hoff 2 div sub yoffset woff w mul hoff h mul rect
+gsave
+null setfillcol cpx xoffset cpy yoffset (C) card cvs text
+grestore
+} def
+:cardinality 1 gt {
+0.10 xoffset 0.10 yoffset 0.90 w mul 0.90 h mul 0.20 w mul 0.20 h mul rrect
+0 xoffset 0 yoffset 0.90 w mul 0.90 h mul 0.20 w mul 0.20 h mul rrect
+0.3 0 :cardFontSize :cardinality cardinalityBox
+}
+{ x y w h 0.2 w mul 0.20 h mul rrect } ifelse</FigureDefinition>
+                                    </ShapeAttribute>
+                                </ShapeNode>
+                                <LabelNode nodeId="24">
+                                    <SubModel/>
+                                    <LabelAttribute creationSerial="17"
+                                    lineStyle="SOLID"
+                                    lineWidth="1.0" noFill="true" noBorder="true">
+                                    <Location x="470.550000000002" y="564.4257324218778"/>
+                                    <Size width="11.0" height="2.24853515625"/>
+                                    <LineColour red="0" green="0" blue="0"/>
+                                    <FillColour red="255"
+                                    green="255" blue="255"/>
+                                    <PropertyRef id="24"/>
+                                    </LabelAttribute>
+                                </LabelNode>
+                            </SubModel>
+                            <ShapeAttribute creationSerial="16"
+                                objectTypeId="14" lineWidth="1.0" lineStyle="SOLID">
+                                <Location x="418.0" y="562.0"/>
+                                <Size width="118.10000000000002" height="66.10000000000002"/>
+                                <FillColour red="255" green="255" blue="255"/>
+                                <LineColour red="0" green="0" blue="0"/>
+                                <PropertyRef id="22"/>
+                                <PropertyRef id="23"/>
+                                <PropertyRef id="24"/>
+                                <PropertyRef id="25"/>
+                                <PropertyRef id="26"/>
+                                <FigureDefinition>(C) setanchor
+curbounds /h exch def /w exch def /y exch def /x exch def
+:cardinality 1 gt {
+/cardinalityBox { /card exch def /fsize exch def /cpy exch def /cpx exch def
+fsize setfontsize
+card cvs textbounds /hoff exch curlinewidth 2 mul add h div def /woff exch curlinewidth 2 mul add w div def 
+cpx woff 2 div sub xoffset cpy hoff 2 div sub yoffset woff w mul hoff h mul rect
+gsave
+null setfillcol cpx xoffset cpy yoffset (C) card cvs text
+grestore
+} def
+/xoffset { w 0.9 mul mul x 0.1 w mul add add } def /yoffset { h 0.9 mul mul y 0.1 h mul add add } def
+[0 xoffset 0.15 yoffset 0.15 xoffset 0 yoffset 0.85 xoffset 0 yoffset 1.00 xoffset 0.15 yoffset 1.00 xoffset 0.85 yoffset 0.85 xoffset 1.00 yoffset 0.15 xoffset 1.00 yoffset 0 xoffset 0.85 yoffset] pgon
+/xoffset { w 0.9 mul mul x add } def /yoffset { h 0.9 mul mul y add } def
+[0 xoffset 0.15 yoffset 0.15 xoffset 0 yoffset 0.85 xoffset 0 yoffset 1.00 xoffset 0.15 yoffset 1.00 xoffset 0.85 yoffset 0.85 xoffset 1.00 yoffset 0.15 xoffset 1.00 yoffset 0 xoffset 0.85 yoffset] pgon
+0.3 0 :cardFontSize :cardinality cardinalityBox
+}
+{
+/xoffset { w mul x add } def /yoffset { h mul y add } def
+[0 xoffset 0.15 yoffset 0.15 xoffset 0 yoffset 0.85 xoffset 0 yoffset 1.00 xoffset 0.15 yoffset 1.00 xoffset 0.85 yoffset 0.85 xoffset 1.00 yoffset 0.15 xoffset 1.00 yoffset 0 xoffset 0.85 yoffset] pgon
+} ifelse</FigureDefinition>
+                            </ShapeAttribute>
+                        </ShapeNode>
+                        <LabelNode nodeId="19">
+                            <SubModel/>
+                            <LabelAttribute creationSerial="2"
+                                lineStyle="SOLID" lineWidth="1.0"
+                                noFill="true" noBorder="true">
+                                <Location x="395.05" y="470.425732421875"/>
+                                <Size width="39.0" height="17.24853515625"/>
+                                <LineColour red="0" green="0" blue="0"/>
+                                <FillColour red="255" green="255" blue="255"/>
+                                <PropertyRef id="7"/>
+                            </LabelAttribute>
+                        </LabelNode>
+                    </SubModel>
+                    <ShapeAttribute creationSerial="1" objectTypeId="14"
+                        lineWidth="1.0" lineStyle="SOLID">
+                        <Location x="365.0" y="462.0"/>
+                        <Size width="234.10000000000002" height="185.10000000000002"/>
+                        <FillColour red="255" green="255" blue="255"/>
+                        <LineColour red="0" green="0" blue="0"/>
+                        <PropertyRef id="5"/>
+                        <PropertyRef id="6"/>
+                        <PropertyRef id="7"/>
+                        <PropertyRef id="8"/>
+                        <PropertyRef id="9"/>
+                        <FigureDefinition>(C) setanchor
+curbounds /h exch def /w exch def /y exch def /x exch def
+:cardinality 1 gt {
+/cardinalityBox { /card exch def /fsize exch def /cpy exch def /cpx exch def
+fsize setfontsize
+card cvs textbounds /hoff exch curlinewidth 2 mul add h div def /woff exch curlinewidth 2 mul add w div def 
+cpx woff 2 div sub xoffset cpy hoff 2 div sub yoffset woff w mul hoff h mul rect
+gsave
+null setfillcol cpx xoffset cpy yoffset (C) card cvs text
+grestore
+} def
+/xoffset { w 0.9 mul mul x 0.1 w mul add add } def /yoffset { h 0.9 mul mul y 0.1 h mul add add } def
+[0 xoffset 0.15 yoffset 0.15 xoffset 0 yoffset 0.85 xoffset 0 yoffset 1.00 xoffset 0.15 yoffset 1.00 xoffset 0.85 yoffset 0.85 xoffset 1.00 yoffset 0.15 xoffset 1.00 yoffset 0 xoffset 0.85 yoffset] pgon
+/xoffset { w 0.9 mul mul x add } def /yoffset { h 0.9 mul mul y add } def
+[0 xoffset 0.15 yoffset 0.15 xoffset 0 yoffset 0.85 xoffset 0 yoffset 1.00 xoffset 0.15 yoffset 1.00 xoffset 0.85 yoffset 0.85 xoffset 1.00 yoffset 0.15 xoffset 1.00 yoffset 0 xoffset 0.85 yoffset] pgon
+0.3 0 :cardFontSize :cardinality cardinalityBox
+}
+{
+/xoffset { w mul x add } def /yoffset { h mul y add } def
+[0 xoffset 0.15 yoffset 0.15 xoffset 0 yoffset 0.85 xoffset 0 yoffset 1.00 xoffset 0.15 yoffset 1.00 xoffset 0.85 yoffset 0.85 xoffset 1.00 yoffset 0.15 xoffset 1.00 yoffset 0 xoffset 0.85 yoffset] pgon
+} ifelse</FigureDefinition>
+                    </ShapeAttribute>
+                </ShapeNode>
+                <ShapeNode nodeId="10">
+                    <SubModel>
+                        <ShapeNode nodeId="11">
+                            <SubModel>
+                                <LabelNode nodeId="29">
+                                    <SubModel/>
+                                    <LabelAttribute creationSerial="27"
+                                    lineStyle="SOLID"
+                                    lineWidth="1.0" noFill="true" noBorder="true">
+                                    <Location x="750.0500000000077" y="448.42573242187996"/>
+                                    <Size width="8.0" height="17.24853515625"/>
+                                    <LineColour red="0" green="0" blue="0"/>
+                                    <FillColour red="255"
+                                    green="255" blue="255"/>
+                                    <PropertyRef id="43"/>
+                                    </LabelAttribute>
+                                </LabelNode>
+                            </SubModel>
+                            <ShapeAttribute creationSerial="26"
+                                objectTypeId="10" lineWidth="1.0" lineStyle="SOLID">
+                                <Location x="726.0" y="444.0"/>
+                                <Size width="56.10000000000002" height="31.100000000000023"/>
+                                <FillColour red="255" green="255" blue="255"/>
+                                <LineColour red="0" green="0" blue="0"/>
+                                <PropertyRef id="43"/>
+                                <FigureDefinition>curbounds /h exch def /w exch def /y exch def /x exch def
+h w le  {x y w h 1 h mul 1 h mul rrect}
+{x y w h 1 w mul 1 w mul rrect} ifelse</FigureDefinition>
+                            </ShapeAttribute>
+                        </ShapeNode>
+                        <ShapeNode nodeId="12">
+                            <SubModel>
+                                <LabelNode nodeId="30">
+                                    <SubModel/>
+                                    <LabelAttribute creationSerial="29"
+                                    lineStyle="SOLID"
+                                    lineWidth="1.0" noFill="true" noBorder="true">
+                                    <Location x="835.5500000000072" y="451.9257324218785"/>
+                                    <Size width="8.0" height="17.24853515625"/>
+                                    <LineColour red="0" green="0" blue="0"/>
+                                    <FillColour red="255"
+                                    green="255" blue="255"/>
+                                    <PropertyRef id="44"/>
+                                    </LabelAttribute>
+                                </LabelNode>
+                            </SubModel>
+                            <ShapeAttribute creationSerial="28"
+                                objectTypeId="10" lineWidth="1.0" lineStyle="SOLID">
+                                <Location x="814.0" y="444.0"/>
+                                <Size width="51.10000000000002" height="33.10000000000002"/>
+                                <FillColour red="255" green="255" blue="255"/>
+                                <LineColour red="0" green="0" blue="0"/>
+                                <PropertyRef id="44"/>
+                                <FigureDefinition>curbounds /h exch def /w exch def /y exch def /x exch def
+h w le  {x y w h 1 h mul 1 h mul rrect}
+{x y w h 1 w mul 1 w mul rrect} ifelse</FigureDefinition>
+                            </ShapeAttribute>
+                        </ShapeNode>
+                        <ShapeNode nodeId="13">
+                            <SubModel>
+                                <LabelNode nodeId="31">
+                                    <SubModel/>
+                                    <LabelAttribute creationSerial="31"
+                                    lineStyle="SOLID"
+                                    lineWidth="1.0" noFill="true" noBorder="true">
+                                    <Location x="766.5500000000309" y="635.9257324219001"/>
+                                    <Size width="52.0" height="17.24853515625"/>
+                                    <LineColour red="0" green="0" blue="0"/>
+                                    <FillColour red="255"
+                                    green="255" blue="255"/>
+                                    <PropertyRef id="45"/>
+                                    </LabelAttribute>
+                                </LabelNode>
+                            </SubModel>
+                            <ShapeAttribute creationSerial="30"
+                                objectTypeId="10" lineWidth="1.0" lineStyle="SOLID">
+                                <Location x="722.0" y="632.0"/>
+                                <Size width="139.10000000000002" height="27.100000000000023"/>
+                                <FillColour red="255" green="255" blue="255"/>
+                                <LineColour red="0" green="0" blue="0"/>
+                                <PropertyRef id="45"/>
+                                <FigureDefinition>curbounds /h exch def /w exch def /y exch def /x exch def
+h w le  {x y w h 1 h mul 1 h mul rrect}
+{x y w h 1 w mul 1 w mul rrect} ifelse</FigureDefinition>
+                            </ShapeAttribute>
+                        </ShapeNode>
+                        <LabelNode nodeId="28">
+                            <SubModel/>
+                            <LabelAttribute creationSerial="4"
+                                lineStyle="SOLID" lineWidth="1.0"
+                                noFill="true" noBorder="true">
+                                <Location x="777.5499999999998" y="541.925732421875"/>
+                                <Size width="39.0" height="17.24853515625"/>
+                                <LineColour red="0" green="0" blue="0"/>
+                                <FillColour red="255" green="255" blue="255"/>
+                                <PropertyRef id="39"/>
+                            </LabelAttribute>
+                        </LabelNode>
+                    </SubModel>
+                    <ShapeAttribute creationSerial="3" objectTypeId="14"
+                        lineWidth="1.0" lineStyle="SOLID">
+                        <Location x="667.0" y="460.0"/>
+                        <Size width="252.10000000000002" height="185.10000000000002"/>
+                        <FillColour red="255" green="255" blue="255"/>
+                        <LineColour red="0" green="0" blue="0"/>
+                        <PropertyRef id="38"/>
+                        <PropertyRef id="39"/>
+                        <PropertyRef id="40"/>
+                        <PropertyRef id="41"/>
+                        <PropertyRef id="42"/>
+                        <FigureDefinition>(C) setanchor
+curbounds /h exch def /w exch def /y exch def /x exch def
+:cardinality 1 gt {
+/cardinalityBox { /card exch def /fsize exch def /cpy exch def /cpx exch def
+fsize setfontsize
+card cvs textbounds /hoff exch curlinewidth 2 mul add h div def /woff exch curlinewidth 2 mul add w div def 
+cpx woff 2 div sub xoffset cpy hoff 2 div sub yoffset woff w mul hoff h mul rect
+gsave
+null setfillcol cpx xoffset cpy yoffset (C) card cvs text
+grestore
+} def
+/xoffset { w 0.9 mul mul x 0.1 w mul add add } def /yoffset { h 0.9 mul mul y 0.1 h mul add add } def
+[0 xoffset 0.15 yoffset 0.15 xoffset 0 yoffset 0.85 xoffset 0 yoffset 1.00 xoffset 0.15 yoffset 1.00 xoffset 0.85 yoffset 0.85 xoffset 1.00 yoffset 0.15 xoffset 1.00 yoffset 0 xoffset 0.85 yoffset] pgon
+/xoffset { w 0.9 mul mul x add } def /yoffset { h 0.9 mul mul y add } def
+[0 xoffset 0.15 yoffset 0.15 xoffset 0 yoffset 0.85 xoffset 0 yoffset 1.00 xoffset 0.15 yoffset 1.00 xoffset 0.85 yoffset 0.85 xoffset 1.00 yoffset 0.15 xoffset 1.00 yoffset 0 xoffset 0.85 yoffset] pgon
+0.3 0 :cardFontSize :cardinality cardinalityBox
+}
+{
+/xoffset { w mul x add } def /yoffset { h mul y add } def
+[0 xoffset 0.15 yoffset 0.15 xoffset 0 yoffset 0.85 xoffset 0 yoffset 1.00 xoffset 0.15 yoffset 1.00 xoffset 0.85 yoffset 0.85 xoffset 1.00 yoffset 0.15 xoffset 1.00 yoffset 0 xoffset 0.85 yoffset] pgon
+} ifelse</FigureDefinition>
+                    </ShapeAttribute>
+                </ShapeNode>
+                <ShapeNode nodeId="14">
+                    <SubModel>
+                        <LabelNode nodeId="32">
+                            <SubModel/>
+                            <LabelAttribute creationSerial="33"
+                                lineStyle="SOLID" lineWidth="1.0"
+                                noFill="true" noBorder="true">
+                                <Location x="506.0500000000005" y="790.9257324218758"/>
+                                <Size width="39.0" height="17.24853515625"/>
+                                <LineColour red="0" green="0" blue="0"/>
+                                <FillColour red="255" green="255" blue="255"/>
+                                <PropertyRef id="50"/>
+                            </LabelAttribute>
+                        </LabelNode>
+                    </SubModel>
+                    <ShapeAttribute creationSerial="32"
+                        objectTypeId="16" lineWidth="1.0" lineStyle="SOLID">
+                        <Location x="459.0" y="749.0"/>
+                        <Size width="133.10000000000002" height="101.10000000000002"/>
+                        <FillColour red="255" green="255" blue="255"/>
+                        <LineColour red="0" green="0" blue="0"/>
+                        <PropertyRef id="46"/>
+                        <PropertyRef id="47"/>
+                        <PropertyRef id="48"/>
+                        <PropertyRef id="49"/>
+                        <PropertyRef id="50"/>
+                        <FigureDefinition>(C) setanchor
+curbounds /h exch def /w exch def /y exch def /x exch def
+/xoffset { w mul x add } def /yoffset { h mul y add } def
+/cardinalityBox { /card exch def /fsize exch def /cpy exch def /cpx exch def
+fsize setfontsize
+card cvs textbounds /hoff exch curlinewidth 2 mul add h div def /woff exch curlinewidth 2 mul add w div def 
+cpx woff 2 div sub xoffset cpy hoff 2 div sub yoffset woff w mul hoff h mul rect
+gsave
+null setfillcol cpx xoffset cpy yoffset (C) card cvs text
+grestore
+} def
+:cardinality 1 gt {
+0.10 xoffset 0.10 yoffset 0.90 w mul 0.90 h mul 0.20 w mul 0.20 h mul rrect
+0 xoffset 0 yoffset 0.90 w mul 0.90 h mul 0.20 w mul 0.20 h mul rrect
+0.3 0 :cardFontSize :cardinality cardinalityBox
+}
+{ x y w h 0.2 w mul 0.20 h mul rrect } ifelse</FigureDefinition>
+                    </ShapeAttribute>
+                </ShapeNode>
+                <ShapeNode nodeId="15">
+                    <SubModel/>
+                    <ShapeAttribute creationSerial="34"
+                        objectTypeId="118" lineWidth="1.0" lineStyle="SOLID">
+                        <Location x="701.18" y="782.0"/>
+                        <Size width="31.74000000000001" height="32.10000000000002"/>
+                        <FillColour red="255" green="255" blue="255"/>
+                        <LineColour red="0" green="0" blue="0"/>
+                        <PropertyRef id="51"/>
+                        <PropertyRef id="52"/>
+                        <PropertyRef id="53"/>
+                        <PropertyRef id="54"/>
+                        <FigureDefinition>curbounds /h exch def /w exch def /y exch def /x exch def
+/xoffset { w mul x add } def /yoffset { h mul y add } def
+0 xoffset y w h rect
+:vertFlag
+{0.50 xoffset 0 yoffset 0.50 xoffset -0.20 yoffset line
+0.50 xoffset 1.20 yoffset 0.50 xoffset 1.00 yoffset line
+[0.0 xoffset 0.5 yoffset 1.0 xoffset 0.5 yoffset 0.5 xoffset -0.2 yoffset 0.5 xoffset 1.2 yoffset] (S) setanchor}
+{0 xoffset 0.50 yoffset -0.20 xoffset 0.50 yoffset line
+1.20 xoffset 0.50 yoffset 1.00 xoffset 0.50 yoffset line
+[-0.2 xoffset 0.5 yoffset 1.2 xoffset 0.5 yoffset 0.5 xoffset 0 yoffset 0.5 xoffset 1.0 yoffset] (S) setanchor}
+ifelse
+</FigureDefinition>
+                    </ShapeAttribute>
+                </ShapeNode>
+                <ShapeNode nodeId="16">
+                    <SubModel>
+                        <LabelNode nodeId="33">
+                            <SubModel/>
+                            <LabelAttribute creationSerial="37"
+                                lineStyle="SOLID" lineWidth="1.0"
+                                noFill="true" noBorder="true">
+                                <Location x="873.549999999999" y="786.9257324218759"/>
+                                <Size width="39.0" height="17.24853515625"/>
+                                <LineColour red="0" green="0" blue="0"/>
+                                <FillColour red="255" green="255" blue="255"/>
+                                <PropertyRef id="59"/>
+                            </LabelAttribute>
+                        </LabelNode>
+                    </SubModel>
+                    <ShapeAttribute creationSerial="36"
+                        objectTypeId="16" lineWidth="1.0" lineStyle="SOLID">
+                        <Location x="830.0" y="747.0"/>
+                        <Size width="130.10000000000002" height="101.10000000000002"/>
+                        <FillColour red="255" green="255" blue="255"/>
+                        <LineColour red="0" green="0" blue="0"/>
+                        <PropertyRef id="55"/>
+                        <PropertyRef id="56"/>
+                        <PropertyRef id="57"/>
+                        <PropertyRef id="58"/>
+                        <PropertyRef id="59"/>
+                        <FigureDefinition>(C) setanchor
+curbounds /h exch def /w exch def /y exch def /x exch def
+/xoffset { w mul x add } def /yoffset { h mul y add } def
+/cardinalityBox { /card exch def /fsize exch def /cpy exch def /cpx exch def
+fsize setfontsize
+card cvs textbounds /hoff exch curlinewidth 2 mul add h div def /woff exch curlinewidth 2 mul add w div def 
+cpx woff 2 div sub xoffset cpy hoff 2 div sub yoffset woff w mul hoff h mul rect
+gsave
+null setfillcol cpx xoffset cpy yoffset (C) card cvs text
+grestore
+} def
+:cardinality 1 gt {
+0.10 xoffset 0.10 yoffset 0.90 w mul 0.90 h mul 0.20 w mul 0.20 h mul rrect
+0 xoffset 0 yoffset 0.90 w mul 0.90 h mul 0.20 w mul 0.20 h mul rrect
+0.3 0 :cardFontSize :cardinality cardinalityBox
+}
+{ x y w h 0.2 w mul 0.20 h mul rrect } ifelse</FigureDefinition>
+                    </ShapeAttribute>
+                </ShapeNode>
+                <LinkEdge linkIdx="17" srcNodeIdx="14" tgtNodeIdx="15">
+                    <LinkAttribute creationSerial="35" lineStyle="SOLID"
+                        lineWidth="1.0" objectTypeId="20" lastBendPointIndex="0">
+                        <LineColour red="0" green="0" blue="0"/>
+                        <srcTerminus creationSerial="35" gap="5.0" endDecoratorType="NONE">
+                            <Location x="592.1" y="798.11"/>
+                            <DecoratorSize width="0.0" height="0.0"/>
+                        </srcTerminus>
+                        <tgtTerminus creationSerial="35" gap="0.0" endDecoratorType="NONE">
+                            <Location x="694.832" y="798.05"/>
+                            <DecoratorSize width="0.0" height="0.0"/>
+                        </tgtTerminus>
+                        <PropertyRef id="1"/>
+                        <PropertyRef id="2"/>
+                    </LinkAttribute>
+                </LinkEdge>
+                <LinkEdge linkIdx="18" srcNodeIdx="15" tgtNodeIdx="16">
+                    <LinkAttribute creationSerial="38" lineStyle="SOLID"
+                        lineWidth="1.0" objectTypeId="21" lastBendPointIndex="0">
+                        <LineColour red="0" green="0" blue="0"/>
+                        <srcTerminus creationSerial="38" gap="0.0" endDecoratorType="NONE">
+                            <Location x="739.2679999999999" y="798.05"/>
+                            <DecoratorSize width="0.0" height="0.0"/>
+                        </srcTerminus>
+                        <tgtTerminus creationSerial="38" gap="5.0" endDecoratorType="TRIANGLE">
+                            <Location x="830.0" y="797.99"/>
+                            <DecoratorSize width="10.0" height="10.0"/>
+                        </tgtTerminus>
+                        <PropertyRef id="3"/>
+                        <PropertyRef id="4"/>
+                    </LinkAttribute>
+                </LinkEdge>
+            </SubModel>
+            <rootAttribute creationSerial="0" objectTypeId="0">
+                <Location x="-8.988465674311579E307" y="-8.988465674311579E307"/>
+                <Size width="1.7976931348623157E308" height="1.7976931348623157E308"/>
+            </rootAttribute>
+        </RootNode>
+    </Model>
+    <PropertyList>
+        <TextAnnotationProperty id="1" name="exportName" displayName="Export Name"/>
+        <TextAnnotationProperty id="4" name="exportName" displayName="Export Name"/>
+        <TextAnnotationProperty id="7" name="name" displayName="Name"/>
+        <TextAnnotationProperty id="9" name="exportName" displayName="Export Name"/>
+        <TextAnnotationProperty id="10" name="name" displayName="Name">A1</TextAnnotationProperty>
+        <TextAnnotationProperty id="11" name="exportName" displayName="Export Name"/>
+        <TextAnnotationProperty id="15" name="stateValue" displayName="Value">P</TextAnnotationProperty>
+        <TextAnnotationProperty id="17" name="name" displayName="Name">A2</TextAnnotationProperty>
+        <TextAnnotationProperty id="18" name="exportName" displayName="Export Name"/>
+        <TextAnnotationProperty id="21" name="stateValue" displayName="Value"/>
+        <TextAnnotationProperty id="24" name="name" displayName="Name"/>
+        <TextAnnotationProperty id="25" name="exportName" displayName="Export Name"/>
+        <TextAnnotationProperty id="27" name="exportName" displayName="Export Name"/>
+        <TextAnnotationProperty id="28" name="name" displayName="Name">B1</TextAnnotationProperty>
+        <TextAnnotationProperty id="32" name="stateValue" displayName="Value">P</TextAnnotationProperty>
+        <TextAnnotationProperty id="35" name="name" displayName="Name">B2</TextAnnotationProperty>
+        <TextAnnotationProperty id="36" name="exportName" displayName="Export Name"/>
+        <TextAnnotationProperty id="38" name="exportName" displayName="Export Name"/>
+        <TextAnnotationProperty id="39" name="name" displayName="Name">A1:A2:Complex(B1:B2)</TextAnnotationProperty>
+        <TextAnnotationProperty id="43" name="stateValue" displayName="Value">P@A1</TextAnnotationProperty>
+        <TextAnnotationProperty id="44" name="stateValue" displayName="Value">@A2</TextAnnotationProperty>
+        <TextAnnotationProperty id="45" name="stateValue" displayName="Value">P@Complex(B1:B2)</TextAnnotationProperty>
+        <TextAnnotationProperty id="47" name="exportName" displayName="Export Name"/>
+        <TextAnnotationProperty id="50" name="name" displayName="Name">Foo</TextAnnotationProperty>
+        <TextAnnotationProperty id="51" name="revRate" displayName="Reverse Rate"/>
+        <TextAnnotationProperty id="52" name="fwdRate" displayName="Forward Rate"/>
+        <TextAnnotationProperty id="54" name="exportName" displayName="Export Name"/>
+        <TextAnnotationProperty id="57" name="exportName" displayName="Export Name"/>
+        <TextAnnotationProperty id="59" name="name" displayName="Name">Bar</TextAnnotationProperty>
+        <NumberAnnotationProperty id="8" name="cardFontSize"
+            displayName="Cardinality Font Size" value="12"/>
+        <NumberAnnotationProperty id="13" name="cardFontSize"
+            displayName="Cardinality Font Size" value="12"/>
+        <NumberAnnotationProperty id="20" name="cardFontSize"
+            displayName="Cardinality Font Size" value="12"/>
+        <NumberAnnotationProperty id="26" name="cardFontSize"
+            displayName="Cardinality Font Size" value="12"/>
+        <NumberAnnotationProperty id="30" name="cardFontSize"
+            displayName="Cardinality Font Size" value="12"/>
+        <NumberAnnotationProperty id="37" name="cardFontSize"
+            displayName="Cardinality Font Size" value="12"/>
+        <NumberAnnotationProperty id="40" name="cardFontSize"
+            displayName="Cardinality Font Size" value="12"/>
+        <NumberAnnotationProperty id="46" name="cardFontSize"
+            displayName="Cardinality Font Size" value="12"/>
+        <NumberAnnotationProperty id="56" name="cardFontSize"
+            displayName="Cardinality Font Size" value="12"/>
+        <BooleanAnnotationProperty id="53" name="vertFlag"
+            displayName="Vertical Lugs?" value="false"/>
+        <IntegerAnnotationProperty id="2" name="stoich"
+            displayName="Stoichiometry" value="1"/>
+        <IntegerAnnotationProperty id="3" name="stoich"
+            displayName="Stoichiometry" value="1"/>
+        <IntegerAnnotationProperty id="5" name="cardinality"
+            displayName="Cardinality" value="1"/>
+        <IntegerAnnotationProperty id="6" name="entityCount"
+            displayName="Entity Count" value="0"/>
+        <IntegerAnnotationProperty id="12" name="cardinality"
+            displayName="Cardinality" value="1"/>
+        <IntegerAnnotationProperty id="14" name="entityCount"
+            displayName="Entity Count" value="0"/>
+        <IntegerAnnotationProperty id="16" name="entityCount"
+            displayName="Entity Count" value="0"/>
+        <IntegerAnnotationProperty id="19" name="cardinality"
+            displayName="Cardinality" value="1"/>
+        <IntegerAnnotationProperty id="22" name="entityCount"
+            displayName="Entity Count" value="0"/>
+        <IntegerAnnotationProperty id="23" name="cardinality"
+            displayName="Cardinality" value="1"/>
+        <IntegerAnnotationProperty id="29" name="entityCount"
+            displayName="Entity Count" value="0"/>
+        <IntegerAnnotationProperty id="31" name="cardinality"
+            displayName="Cardinality" value="1"/>
+        <IntegerAnnotationProperty id="33" name="cardinality"
+            displayName="Cardinality" value="1"/>
+        <IntegerAnnotationProperty id="34" name="entityCount"
+            displayName="Entity Count" value="0"/>
+        <IntegerAnnotationProperty id="41" name="entityCount"
+            displayName="Entity Count" value="0"/>
+        <IntegerAnnotationProperty id="42" name="cardinality"
+            displayName="Cardinality" value="1"/>
+        <IntegerAnnotationProperty id="48" name="cardinality"
+            displayName="Cardinality" value="1"/>
+        <IntegerAnnotationProperty id="49" name="entityCount"
+            displayName="Entity Count" value="0"/>
+        <IntegerAnnotationProperty id="55" name="entityCount"
+            displayName="Entity Count" value="0"/>
+        <IntegerAnnotationProperty id="58" name="cardinality"
+            displayName="Cardinality" value="1"/>
+    </PropertyList>
+</epx:canvas>

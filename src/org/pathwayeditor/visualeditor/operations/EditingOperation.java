@@ -7,6 +7,7 @@ import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.behaviour.operation.IEditingOperation;
 import org.pathwayeditor.visualeditor.commands.CompoundCommand;
+import org.pathwayeditor.visualeditor.commands.DeleteSelectionCommand;
 import org.pathwayeditor.visualeditor.commands.ICommand;
 import org.pathwayeditor.visualeditor.commands.ICommandStack;
 import org.pathwayeditor.visualeditor.commands.ICompoundCommand;
@@ -219,5 +220,14 @@ public class EditingOperation implements IEditingOperation {
     		logger.trace("Can reparent=" + retVal);
     	}
         return retVal;
+	}
+
+	@Override
+	public void deleteSelection() {
+		if(this.selectionRecord.numSelected() > 0){
+			commandStack.execute(new DeleteSelectionCommand(selectionRecord.getSubgraphSelection()));
+			selectionRecord.clear();
+			shapePane.updateView();
+		}
 	}
 }

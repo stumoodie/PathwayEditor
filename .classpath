@@ -36,16 +36,12 @@
 	<classpathentry kind="lib" path="libs/batik-1.7/lib/batik-xml.jar"/>
 	<classpathentry kind="lib" path="libs/batik-1.7/lib/js.jar"/>
 	<classpathentry kind="lib" path="libs/batik-1.7/lib/xalan-2.6.0.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/CompoundGraph"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/BusinessObjects"/>
 	<classpathentry kind="lib" path="libs/batik-1.7/lib/xerces_2_5_0.jar"/>
 	<classpathentry kind="lib" path="libs/batik-1.7/lib/xml-apis-ext.jar"/>
 	<classpathentry kind="lib" path="libs/batik-1.7/lib/xml-apis.jar"/>
 	<classpathentry kind="con" path="org.eclipse.ajdt.core.ASPECTJRT_CONTAINER"/>
-	<classpathentry kind="lib" path="libs/compoundGraph/CompoundGraph.jar" sourcepath="libs/compoundGraph/CompoundGraph-src.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:platform:/resource/GraphicsEngine/libs/compoundGraph/CompoundGraph-docs.jar!/"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="lib" path="libs/jopt-simple-3.2/jopt-simple-3.2.jar" sourcepath="libs/jopt-simple-3.2/jopt-simple-3.2-sources.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:platform:/resource/GraphicsEngine/libs/jopt-simple-3.2/jopt-simple-3.2-javadoc.jar!/"/>

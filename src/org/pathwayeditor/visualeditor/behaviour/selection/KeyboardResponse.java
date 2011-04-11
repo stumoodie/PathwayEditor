@@ -2,9 +2,9 @@ package org.pathwayeditor.visualeditor.behaviour.selection;
 
 import org.apache.log4j.Logger;
 import org.pathwayeditor.figure.geometry.Point;
+import org.pathwayeditor.visualeditor.behaviour.IKeyboardResponse;
 import org.pathwayeditor.visualeditor.behaviour.operation.IEditingOperation;
 import org.pathwayeditor.visualeditor.behaviour.operation.IEditingOperation.ReparentingStateType;
-import org.pathwayeditor.visualeditor.behaviour.IKeyboardResponse;
 
 public class KeyboardResponse implements IKeyboardResponse {
 	private final Logger logger = Logger.getLogger(this.getClass());
@@ -80,6 +80,11 @@ public class KeyboardResponse implements IKeyboardResponse {
 	@Override
 	public boolean isKeyPressed() {
 		return this.keyDown;
+	}
+
+	@Override
+	public void deleteKeyDetected() {
+		this.editingOperation.deleteSelection();
 	}
 	
 }
