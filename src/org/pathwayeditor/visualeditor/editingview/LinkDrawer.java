@@ -224,11 +224,12 @@ public class LinkDrawer  {
 		double x = size.getWidth();
 		double y = size.getHeight();
 		GeneralPath path = new GeneralPath();
-		path.moveTo(0.0*x, 0.5*y);
-		path.lineTo(0.0*x, -0.5*y);
-		path.moveTo(0.0*x, 0.0*y);
-		path.lineTo(1.0*x, 0.5*y);
+		path.moveTo(1.0*x, 0.5*y);
 		path.lineTo(1.0*x, -0.5*y);
+		path.closePath();
+		path.moveTo(0.0*x, 0.0*y);
+		path.lineTo(0.5*x, 0.5*y);
+		path.lineTo(0.5*x, -0.5*y);
 		path.closePath();
 		return path;
 	}
