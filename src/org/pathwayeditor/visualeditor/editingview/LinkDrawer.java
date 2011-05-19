@@ -35,12 +35,13 @@ import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LineStyle;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LinkEndDecoratorShape;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.RGB;
 import org.pathwayeditor.figure.geometry.Dimension;
+import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.LineSegment;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.geometry.IGraphicalLinkTerminusDefinition;
 import org.pathwayeditor.visualeditor.geometry.ILinkPointDefinition;
 
-public class LinkDrawer  {
+public class LinkDrawer  implements IMiniCanvas {
 	private final Logger logger = Logger.getLogger(this.getClass()); 
 	private final ILinkPointDefinition linkEdge;
 //	private Point startPosition = Point.ORIGIN;
@@ -100,6 +101,7 @@ public class LinkDrawer  {
 		return stroke;
 	}
 
+	@Override
 	public void paint(Graphics2D g2d){
 		drawLineSegments(g2d);
 		IGraphicalLinkTerminusDefinition srcTermDefaults = this.linkEdge.getSourceTerminusDefinition();
@@ -300,5 +302,11 @@ public class LinkDrawer  {
 		path.lineTo(0.5*x, -0.5*y);
 		path.closePath();
 		return path;
+	}
+
+
+	@Override
+	public Envelope getBounds() {
+		return this.linkEdge.getBounds();
 	}
 }

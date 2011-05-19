@@ -18,6 +18,9 @@
 */
 package org.pathwayeditor.visualeditor.feedback;
 
+import java.awt.AlphaComposite;
+import java.awt.Composite;
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -28,7 +31,11 @@ import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
+import org.pathwayeditor.figure.rendering.FigureRenderer;
 import org.pathwayeditor.figure.rendering.IFigureRenderingController;
+import org.pathwayeditor.figure.rendering.IGraphicsEngine;
+import org.pathwayeditor.graphicsengine.Java2DGraphicsEngine;
+import org.pathwayeditor.visualeditor.editingview.IMiniCanvas;
 
 public class FeedbackNode implements IFeedbackNode {
 //	private final Logger logger = Logger.getLogger(this.getClass()); 
@@ -202,6 +209,29 @@ public class FeedbackNode implements IFeedbackNode {
 	public void setLocation(Point newPosition) {
 		Point delta = this.initialBounds.getOrigin().difference(newPosition);
 		this.translatePrimitive(delta);
+	}
+
+	@Override
+	public IMiniCanvas getMiniCanvas() {
+		return new IMiniCanvas() {
+			
+			@Override
+			public void paint(Graphics2D g2d) {
+				IGraphicsEngine graphicsEngine = new Java2DGraphicsEngine(g2d);
+				final Composite original = g2d.getComposite();
+				final AlphaComposite alpha = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f);
+				g2d.setComposite(alpha);
+				IFigureRenderingController controller = figureRenderingController;
+				FigureRenderer drawer = new FigureRenderer(controller.getFigureDefinition());
+				drawer.drawFigure(graphicsEngine);
+				g2d.setComposite(original);
+			}
+			
+			@Override
+			public Envelope getBounds() {
+				return figureRenderingController.getEnvelope();
+			}
+		};
 	}
 
 }

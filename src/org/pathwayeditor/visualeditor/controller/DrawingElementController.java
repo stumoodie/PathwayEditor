@@ -27,14 +27,14 @@ import org.pathwayeditor.figure.geometry.Envelope;
 public abstract class DrawingElementController implements IDrawingElementController {
 	private final List<IDrawingElementControllerListener> listeners;
 	private final IViewControllerModel viewModel;
-	private final IViewControllerSubModel viewSubModel;
+//	private final IViewControllerSubModel viewSubModel;
 	private final int index;
 	
 	protected DrawingElementController(IViewControllerModel viewModel, int index){
 		this.listeners = new LinkedList<IDrawingElementControllerListener>();
 		this.viewModel = viewModel;
 		this.index = index;
-		this.viewSubModel = new ViewControllerSubModel(viewModel, this);
+//		this.viewSubModel = new ViewControllerSubModel(viewModel, this);
 	}
 	
 	@Override
@@ -42,14 +42,14 @@ public abstract class DrawingElementController implements IDrawingElementControl
 		return this.viewModel;
 	}
 
-	/**
-	 * Get the view controller sub-model for this node
-	 * @return the view controller sub-model, which cannot be null.
-	 */
-	@Override
-	public IViewControllerSubModel getViewControllerSubModel(){
-		return this.viewSubModel;
-	}
+//	/**
+//	 * Get the view controller sub-model for this node
+//	 * @return the view controller sub-model, which cannot be null.
+//	 */
+//	@Override
+//	public IViewControllerSubModel getViewControllerSubModel(){
+//		return this.viewSubModel;
+//	}
 	
 	@Override
 	public final void addDrawingPrimitiveControllerListener(IDrawingElementControllerListener listener) {

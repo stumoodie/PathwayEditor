@@ -23,6 +23,7 @@ import java.util.List;
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElement;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.Point;
+import org.pathwayeditor.visualeditor.editingview.IMiniCanvas;
 
 public interface IDrawingElementController extends Comparable<IDrawingElementController> {
 
@@ -30,11 +31,13 @@ public interface IDrawingElementController extends Comparable<IDrawingElementCon
 	
 	IViewControllerModel getViewModel();
 	
-	/**
-	 * Get the view controller sub-model for this element
-	 * @return the view controller sub-model, which cannot be null.
-	 */
-	IViewControllerSubModel getViewControllerSubModel(); 
+//	/**
+//	 * Get the view controller sub-model for this element
+//	 * @return the view controller sub-model, which cannot be null.
+//	 */
+//	IViewControllerSubModel getViewControllerSubModel(); 
+	
+	IMiniCanvas getMiniCanvas();
 	
 	/**
 	 * Gets the drawing element that is the domain model for this primitive.

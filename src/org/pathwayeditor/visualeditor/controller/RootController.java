@@ -18,12 +18,15 @@
 */
 package org.pathwayeditor.visualeditor.controller;
 
+import java.awt.Graphics2D;
+
 import org.pathwayeditor.businessobjects.drawingprimitives.IRootNode;
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.figure.geometry.RectangleHull;
+import org.pathwayeditor.visualeditor.editingview.IMiniCanvas;
 
 public class RootController extends NodeController implements IRootController {
 	private final IRootNode domainNode;
@@ -91,5 +94,20 @@ public class RootController extends NodeController implements IRootController {
 	@Override
 	public boolean intersectsBounds(Envelope drawnBounds) {
 		return true;
+	}
+
+	@Override
+	public IMiniCanvas getMiniCanvas() {
+		return new IMiniCanvas() {
+			
+			@Override
+			public void paint(Graphics2D g) {
+			}
+			
+			@Override
+			public Envelope getBounds() {
+				return hull.getEnvelope();
+			}
+		};
 	}
 }

@@ -31,7 +31,7 @@ import org.pathwayeditor.visualeditor.selection.ISelection;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle.SelectionHandleType;
 
-public class SelectionShape {
+public class SelectionShape implements IMiniCanvas {
 	private final Logger logger = Logger.getLogger(this.getClass());
 	private static final float HANDLE_LINE_WIDTH = 1.0f;
 	private final ISelection selection;
@@ -41,9 +41,10 @@ public class SelectionShape {
 	}
 	
 	
+	@Override
 	public void paint(Graphics2D g2d){
 		g2d.setColor(Color.red);
-		Envelope bounds = this.selection.getSelectionHandle(SelectionHandleType.Central).get(0).getBounds();
+		Envelope bounds = getBounds(); 
 		Rectangle2D selectionShape = new Rectangle2D.Double(bounds.getOrigin().getX(), bounds.getOrigin().getY(),
 				bounds.getDimension().getWidth(), bounds.getDimension().getHeight());
 		if(logger.isTraceEnabled()){
@@ -90,5 +91,11 @@ public class SelectionShape {
 		g2d.draw(cornerHandle);
 		g2d.setColor(Color.red);
 		g2d.fill(cornerHandle);
+	}
+
+
+	@Override
+	public Envelope getBounds() {
+		return this.selection.getSelectionHandle(SelectionHandleType.Central).get(0).getBounds();
 	}
 }

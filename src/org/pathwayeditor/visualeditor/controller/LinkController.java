@@ -40,6 +40,8 @@ import org.pathwayeditor.businessobjects.impl.facades.ShapeNodeFacade;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.LineSegment;
 import org.pathwayeditor.figure.geometry.Point;
+import org.pathwayeditor.visualeditor.editingview.IMiniCanvas;
+import org.pathwayeditor.visualeditor.feedback.DomainLinkMiniCanvas;
 import org.pathwayeditor.visualeditor.geometry.ILinkDefinitionAnchorCalculator;
 import org.pathwayeditor.visualeditor.geometry.ILinkPointDefinition;
 import org.pathwayeditor.visualeditor.geometry.LinkDefinitionAnchorCalculator;
@@ -368,5 +370,10 @@ public class LinkController extends DrawingElementController implements ILinkCon
 			|| line.intersect(new LineSegment(horizontalCorner, diagonalCorner), this.linkAttribute.getAttribute().getLineWidth()) != null
 			|| line.intersect(new LineSegment(diagonalCorner, verticalCorner), this.linkAttribute.getAttribute().getLineWidth()) != null
 			|| line.intersect(new LineSegment(verticalCorner, origin), this.linkAttribute.getAttribute().getLineWidth()) != null;
+	}
+
+	@Override
+	public IMiniCanvas getMiniCanvas() {
+		return new DomainLinkMiniCanvas(linkDefinition);
 	}
 }

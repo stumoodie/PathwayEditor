@@ -43,6 +43,8 @@ import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.figure.geometry.RectangleHull;
 import org.pathwayeditor.figure.rendering.IFigureRenderingController;
+import org.pathwayeditor.visualeditor.editingview.FigureDefinitionMiniCanvas;
+import org.pathwayeditor.visualeditor.editingview.IMiniCanvas;
 import org.pathwayeditor.visualeditor.geometry.IIntersectionCalcnFilter;
 import org.pathwayeditor.visualeditor.geometry.IIntersectionCalculator;
 
@@ -133,6 +135,12 @@ public class ShapeController extends NodeController implements IShapeController 
 		this.isActive = true;
 	}
 	
+	
+	@Override
+	public IMiniCanvas getMiniCanvas(){
+		IFigureRenderingController renderingController = this.figureController.getFigureController();
+		return new FigureDefinitionMiniCanvas(renderingController.getFigureDefinition(), renderingController.getEnvelope());
+	}
 
 //	public void changeSourceAnchor(ILinkController linkController, IShapeController srcNode, IShapeController tgtNode){
 //		if(linkController.getLinkDefinition().numBendPoints() > 0){

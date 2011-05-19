@@ -23,6 +23,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.pathwayeditor.figure.geometry.Point;
+import org.pathwayeditor.visualeditor.editingview.IMiniCanvas;
 import org.pathwayeditor.visualeditor.geometry.ILinkPointDefinition;
 import org.pathwayeditor.visualeditor.geometry.LinkPointDefinition;
 
@@ -180,5 +181,10 @@ public class FeedbackNodelessLink implements IFeedbackLink {
 		buf.append(this.linkDefinition.getTgtAnchorPosition());
 		buf.append(")");
 		return buf.toString();
+	}
+
+	@Override
+	public IMiniCanvas getMiniCanvas() {
+		return new FeedbackLinkMiniCanvas(linkDefinition);
 	}
 }

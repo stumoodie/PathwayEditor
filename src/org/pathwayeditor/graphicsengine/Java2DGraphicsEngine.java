@@ -52,7 +52,7 @@ public class Java2DGraphicsEngine implements IGraphicsEngine {
 	private static final double POINT_H = 1.0;
 	private static final double POINT_W = 1.0;
 	private static final String DEFAULT_FONT = "SansSerif";
-	private final Graphics2D g;
+	private Graphics2D g;
 	private RGB fillColour = RGB.WHITE;
 	private RGB lineColour = RGB.BLACK;
 	private double lineWidth = MIN_LINE_WIDTH_PIXELS;
@@ -61,8 +61,18 @@ public class Java2DGraphicsEngine implements IGraphicsEngine {
 	public Java2DGraphicsEngine(Graphics2D localG){
 		this.g = localG;
 	}
-	
+
+	public Java2DGraphicsEngine(){
+	}
+
+	public void setGraphics(Graphics2D g){
+		this.g = g;
+	}
  
+	public Graphics2D getGraphics(){
+		return this.g;
+	}
+	
 	private void setColour(RGB col){
 		Color awtCol = new Color(col.getRed(), col.getGreen(), col.getBlue());
 		g.setColor(awtCol);

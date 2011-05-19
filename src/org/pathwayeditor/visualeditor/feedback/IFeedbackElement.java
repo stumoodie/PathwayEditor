@@ -19,11 +19,13 @@
 package org.pathwayeditor.visualeditor.feedback;
 
 import org.pathwayeditor.figure.geometry.Point;
+import org.pathwayeditor.visualeditor.editingview.IMiniCanvas;
 
 public interface IFeedbackElement {
 
 	int getElementIdentifier();
 
 	void translatePrimitive(Point translation);
-
+	
+	IMiniCanvas getMiniCanvas();
 }

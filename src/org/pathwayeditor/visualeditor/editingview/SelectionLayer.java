@@ -19,11 +19,9 @@
 package org.pathwayeditor.visualeditor.editingview;
 
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
-import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.visualeditor.selection.ILinkSelection;
 import org.pathwayeditor.visualeditor.selection.INodeSelection;
 import org.pathwayeditor.visualeditor.selection.ISelectionRecord;
@@ -47,34 +45,36 @@ public class SelectionLayer implements ISelectionLayer {
 
 	@Override
 	public void paint(Graphics2D g2d) {
-		Rectangle rectangleBounds = g2d.getClipBounds();
-		Envelope updateBound = new Envelope(rectangleBounds.getX(),rectangleBounds.getY(), rectangleBounds.getWidth(), rectangleBounds.getHeight());
-		if(logger.isDebugEnabled()){
-			logger.debug("Selecting objects to update with bounds=" + updateBound);
-		}
+//		Rectangle rectangleBounds = g2d.getClipBounds();
+//		Envelope updateBound = new Envelope(rectangleBounds.getX(),rectangleBounds.getY(), rectangleBounds.getWidth(), rectangleBounds.getHeight());
+//		if(logger.isDebugEnabled()){
+//			logger.debug("Selecting objects to update with bounds=" + updateBound);
+//		}
 //		ISubgraphSelection selections = this.selections.getSubgraphSelection();
 		Iterator<INodeSelection> selectionNodeIter = selections.selectedNodeIterator();
 		while(selectionNodeIter.hasNext()){
 			INodeSelection selectionNode = selectionNodeIter.next();
-			if(selectionNode.getPrimitiveController().getDrawnBounds().intersects(updateBound)){
-				if(logger.isTraceEnabled()){
-					logger.trace("Will refresh node: " + selectionNode + ", with bounds=" + selectionNode.getPrimitiveController().getDrawnBounds());
-				}
-				SelectionShape selection = new SelectionShape(selectionNode);
-				selection.paint(g2d);
+//			if(selectionNode.getPrimitiveController().getDrawnBounds().intersects(updateBound)){
+			if(logger.isTraceEnabled()){
+				logger.trace("Will refresh node: " + selectionNode + ", with bounds=" + selectionNode.getPrimitiveController().getDrawnBounds());
 			}
+			selectionNode.getMiniCanvas().paint(g2d);
+//			SelectionShape selection = new SelectionShape(selectionNode);
+//			selection.paint(g2d);
+//			}
 		}
 		Iterator<ILinkSelection> selectionLinkIter = selections.selectedLinkIterator();
 		while(selectionLinkIter.hasNext()){
 			ILinkSelection selectionLink = selectionLinkIter.next();
-			if(selectionLink.getPrimitiveController().getDrawnBounds().intersects(updateBound)){
-				if(logger.isTraceEnabled()){
-					logger.trace("Will refresh link: " + selectionLink + ", with bounds=" + selectionLink.getPrimitiveController().getDrawnBounds());
-				}
-				SelectionLinkDrawer selection = new SelectionLinkDrawer(selectionLink);
-				selection.paint(g2d);
+//			if(selectionLink.getPrimitiveController().getDrawnBounds().intersects(updateBound)){
+			if(logger.isTraceEnabled()){
+				logger.trace("Will refresh link: " + selectionLink + ", with bounds=" + selectionLink.getPrimitiveController().getDrawnBounds());
 			}
-		}
+			selectionLink.getMiniCanvas().paint(g2d);
+//				SelectionLinkDrawer selection = new SelectionLinkDrawer(selectionLink);
+//				selection.paint(g2d);
+			}
+//		}
 	}
 
 

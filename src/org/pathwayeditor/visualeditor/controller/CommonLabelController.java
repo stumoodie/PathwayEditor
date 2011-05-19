@@ -41,6 +41,8 @@ import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.figure.geometry.RectangleHull;
 import org.pathwayeditor.figure.rendering.FigureRenderingController;
 import org.pathwayeditor.figure.rendering.IFigureRenderingController;
+import org.pathwayeditor.visualeditor.editingview.FigureDefinitionMiniCanvas;
+import org.pathwayeditor.visualeditor.editingview.IMiniCanvas;
 import org.pathwayeditor.visualeditor.feedback.FigureCompilationCache;
 
 public abstract class CommonLabelController extends NodeController implements ILabelController {
@@ -218,5 +220,11 @@ public abstract class CommonLabelController extends NodeController implements IL
 	public final boolean intersectsBounds(Envelope drawnBounds) {
 		IConvexHull otherHull = new RectangleHull(drawnBounds);
 		return intersectsHull(otherHull);
+	}
+	
+	
+	@Override
+	public final IMiniCanvas getMiniCanvas(){
+		return new FigureDefinitionMiniCanvas(this.controller.getFigureDefinition(), this.controller.getEnvelope());
 	}
 }

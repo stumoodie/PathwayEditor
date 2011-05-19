@@ -26,6 +26,8 @@ import java.util.List;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.controller.INodeController;
+import org.pathwayeditor.visualeditor.editingview.IMiniCanvas;
+import org.pathwayeditor.visualeditor.editingview.SelectionShape;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle.SelectionHandleType;
 
 public class NodeSelection extends Selection implements INodeSelection {
@@ -132,6 +134,11 @@ public class NodeSelection extends Selection implements INodeSelection {
 			}
 		}
 		return retVal;
+	}
+
+	@Override
+	public IMiniCanvas getMiniCanvas() {
+		return new SelectionShape(this);
 	}
 
 }

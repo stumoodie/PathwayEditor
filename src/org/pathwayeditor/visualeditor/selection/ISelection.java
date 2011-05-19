@@ -22,6 +22,7 @@ import java.util.List;
 
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
+import org.pathwayeditor.visualeditor.editingview.IMiniCanvas;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle.SelectionHandleType;
 
 public interface ISelection extends Comparable<ISelection> {
@@ -34,4 +35,6 @@ public interface ISelection extends Comparable<ISelection> {
 	IDrawingElementController getPrimitiveController();
 
 	ISelectionHandle findSelectionModelAt(Point point);
+	
+	IMiniCanvas getMiniCanvas();
 }

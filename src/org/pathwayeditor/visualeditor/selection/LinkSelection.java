@@ -25,6 +25,8 @@ import java.util.List;
 import org.pathwayeditor.figure.geometry.LineSegment;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.controller.ILinkController;
+import org.pathwayeditor.visualeditor.editingview.IMiniCanvas;
+import org.pathwayeditor.visualeditor.editingview.SelectionLinkDrawer;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle.SelectionHandleType;
 
 public class LinkSelection extends Selection implements ILinkSelection {
@@ -82,5 +84,10 @@ public class LinkSelection extends Selection implements ILinkSelection {
 			}
 		}
 		return retVal;
+	}
+
+	@Override
+	public IMiniCanvas getMiniCanvas() {
+		return new SelectionLinkDrawer(this);
 	}
 }

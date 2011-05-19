@@ -29,6 +29,7 @@ import java.awt.geom.Path2D;
 import java.util.Iterator;
 
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkTerminus;
+import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.LineSegment;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.controller.ILinkController;
@@ -44,7 +45,7 @@ import org.pathwayeditor.visualeditor.selection.IMidPointSelectionHandleShape;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle.SelectionHandleType;
 
-public class SelectionLinkDrawer  {
+public class SelectionLinkDrawer implements IMiniCanvas {
 	private static final double SELN_RADIUS = 5.0;
 	private final ILinkSelection selection;
 	private Point startPosition = Point.ORIGIN;
@@ -80,8 +81,8 @@ public class SelectionLinkDrawer  {
 	}
 
 
+	@Override
 	public void paint(Graphics2D g2d){
-//		drawLineSegments(g2d);
 		IHandleShapeDrawer handleDrawer = new HandleDrawer(g2d);
 		for(ISelectionHandle handle : this.selection.getSelectionHandle(SelectionHandleType.Link)){
 			handle.drawShape(handleDrawer);
@@ -198,25 +199,19 @@ public class SelectionLinkDrawer  {
 
 		@Override
 		public void drawHandle(ICentralSelectionHandleShape centralSelectionHandleShape) {
-			// TODO Auto-generated method stub
-			throw new UnsupportedOperationException("Not implemented yet!");
-			
 		}
 
 		@Override
-		public void drawHandle(
-				ICornerSelectionHandleShape cornerSelectionHandleShape) {
-			// TODO Auto-generated method stub
-			throw new UnsupportedOperationException("Not implemented yet!");
-			
+		public void drawHandle(ICornerSelectionHandleShape cornerSelectionHandleShape) {
 		}
 
 		@Override
-		public void drawHandle(
-				IMidPointSelectionHandleShape midPointSelectionHandleShape) {
-			// TODO Auto-generated method stub
-			throw new UnsupportedOperationException("Not implemented yet!");
-			
+		public void drawHandle(IMidPointSelectionHandleShape midPointSelectionHandleShape) {
 		}
+	}
+
+	@Override
+	public Envelope getBounds() {
+		return this.selection.getPrimitiveController().getDrawnBounds();
 	}
 }
