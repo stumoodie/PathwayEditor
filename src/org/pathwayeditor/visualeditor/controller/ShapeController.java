@@ -139,7 +139,7 @@ public class ShapeController extends NodeController implements IShapeController 
 	@Override
 	public IMiniCanvas getMiniCanvas(){
 		IFigureRenderingController renderingController = this.figureController.getFigureController();
-		return new FigureDefinitionMiniCanvas(renderingController.getFigureDefinition(), renderingController.getEnvelope());
+		return new FigureDefinitionMiniCanvas(renderingController.getFigureDefinition(), renderingController.getRequestedEnvelope());
 	}
 
 //	public void changeSourceAnchor(ILinkController linkController, IShapeController srcNode, IShapeController tgtNode){

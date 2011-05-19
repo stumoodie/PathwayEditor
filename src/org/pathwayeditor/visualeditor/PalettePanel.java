@@ -35,6 +35,7 @@ import javax.swing.ScrollPaneConstants;
 import org.pathwayeditor.businessobjects.notationsubsystem.INotationSubsystem;
 import org.pathwayeditor.businessobjects.typedefn.ILinkObjectType;
 import org.pathwayeditor.businessobjects.typedefn.IShapeObjectType;
+import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.visualeditor.behaviour.IViewBehaviourController;
 import org.pathwayeditor.visualeditor.behaviour.IViewBehaviourModeChangeEvent;
@@ -43,6 +44,7 @@ import org.pathwayeditor.visualeditor.behaviour.IViewBehaviourModeChangeListener
 
 public class PalettePanel extends JPanel {
 	private static final long serialVersionUID = 1L;
+	private static final double PREF_ICON_HEIGHT = 16.0;
 	private JScrollPane palettePane;
 	private JScrollPane linkScrollPanel;
 	private JSplitPane splitPane;
@@ -73,10 +75,12 @@ public class PalettePanel extends JPanel {
 		this.palettePane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		shapeButtonPanel.setLayout(new BoxLayout(shapeButtonPanel, BoxLayout.PAGE_AXIS));
 		ShapeIconGenerator iconGenerator = new ShapeIconGenerator();
-		iconGenerator.setBounds(new Envelope(0, 0, 16, 16));
 		Iterator<IShapeObjectType> shapeTypeIterator = notationSubsystem.getSyntaxService().shapeTypeIterator();
 		while(shapeTypeIterator.hasNext()){
 			final IShapeObjectType shapeType = shapeTypeIterator.next();
+			Dimension defSize = shapeType.getDefaultAttributes().getSize();
+			double widToHRatio = defSize.getWidth()/defSize.getHeight();
+			iconGenerator.setBounds(new Envelope(0, 0, PREF_ICON_HEIGHT*widToHRatio, PREF_ICON_HEIGHT));
 			iconGenerator.setObjectType(shapeType);
 			iconGenerator.generateImage();
 			iconGenerator.generateIcon();
