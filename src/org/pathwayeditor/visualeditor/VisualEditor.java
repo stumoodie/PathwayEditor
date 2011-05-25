@@ -31,11 +31,14 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.WindowConstants;
 
@@ -70,6 +73,21 @@ public class VisualEditor extends JFrame implements AboutHandler, QuitHandler, P
 	private ICommandChangeListener commandStackChangeListener;
 	private JMenuItem editMenuDeleteItem;
 	private JMenuItem editMenuSelectAllItem;
+	private JToolBar toolbar;
+
+	private JButton newb;
+
+	private JButton openb;
+
+	private JButton saveb;
+
+	private JButton saveAsb;
+
+	private JButton undob;
+
+	private JButton redob;
+
+	private JButton deleteb;
 	
 	public VisualEditor(String title, IVisualEditorController visualEditorController){
 		super(title);
@@ -88,8 +106,10 @@ public class VisualEditor extends JFrame implements AboutHandler, QuitHandler, P
 		this.visualEditorController.setVisualEditor(this);
 		this.setLayout(new BorderLayout());
 		this.menuBar = new JMenuBar();
+		this.toolbar = new JToolBar();
 		initFileMenu(isMacOS);
 		initEditMenu();
+		initToolBar();
 		this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		this.addWindowListener(new WindowListener(){
 
@@ -132,6 +152,7 @@ public class VisualEditor extends JFrame implements AboutHandler, QuitHandler, P
 		this.insp = new PathwayEditor(new Dialog(this, true));
 		this.insp.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		this.visualEditorController.setPathwayEditor(this.insp);
+		this.add(this.toolbar, BorderLayout.PAGE_START);
 		this.add(this.insp, BorderLayout.CENTER);
 		this.pack();
 		this.setLocationByPlatform(true);
@@ -163,8 +184,85 @@ public class VisualEditor extends JFrame implements AboutHandler, QuitHandler, P
 		setSelectionDependentMenuItemsEnablement(false);
 	}
 
+	private void initToolBar() {
+		ImageIcon newi = new ImageIcon(getClass().getResource("/toolbarButtonGraphics/general/New24.gif"));
+		newb = new JButton(newi);
+		newb.setToolTipText("New");
+		newb.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				visualEditorController.newDiagram();
+			}
+		});
+		ImageIcon open = new ImageIcon(getClass().getResource("/toolbarButtonGraphics/general/Open24.gif"));
+		openb = new JButton(open);
+		openb.setToolTipText("Open");
+		openb.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				visualEditorController.openFileAction();
+			}
+		});
+		ImageIcon save = new ImageIcon(getClass().getResource("/toolbarButtonGraphics/general/Save24.gif"));
+		saveb = new JButton(save);
+		saveb.setToolTipText("Save");
+		saveb.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				visualEditorController.saveFile();
+			}
+		});
+		ImageIcon saveAs = new ImageIcon(getClass().getResource("/toolbarButtonGraphics/general/SaveAs24.gif"));
+		saveAsb = new JButton(saveAs);
+		saveAsb.setToolTipText("Save As");
+		saveAsb.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				visualEditorController.saveFileAs();
+			}
+		});
+		ImageIcon undo = new ImageIcon(getClass().getResource("/toolbarButtonGraphics/general/Undo24.gif"));
+		undob = new JButton(undo);
+		undob.setToolTipText("Undo");
+		undob.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				visualEditorController.undoAction();
+			}
+		});
+		ImageIcon redo = new ImageIcon(getClass().getResource("/toolbarButtonGraphics/general/Redo24.gif"));
+		redob = new JButton(redo);
+		redob.setToolTipText("Redo");
+		redob.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				visualEditorController.redoAction();
+			}
+		});
+		ImageIcon delete = new ImageIcon(getClass().getResource("/toolbarButtonGraphics/general/Delete24.gif"));
+		deleteb = new JButton(delete);
+		deleteb.setToolTipText("Delete");
+		deleteb.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				visualEditorController.deleteAction();
+			}
+		});
+		toolbar.add(newb);
+		toolbar.add(openb);
+		toolbar.add(saveb);
+		toolbar.add(saveAsb);
+		toolbar.addSeparator();
+		toolbar.add(undob);
+		toolbar.add(redob);
+		toolbar.addSeparator();
+		toolbar.add(deleteb);
+		toolbar.setAlignmentX(0);
+	}
+
 	protected void setSelectionDependentMenuItemsEnablement(boolean b) {
 		this.editMenuDeleteItem.setEnabled(b);
+		this.deleteb.setEnabled(b);
 	}
 
 	protected void closeWindow() {
@@ -215,6 +313,7 @@ public class VisualEditor extends JFrame implements AboutHandler, QuitHandler, P
 				visualEditorController.deleteAction();
 			}
 		});
+		editMenu.addSeparator();
 		editMenu.add(editMenuDeleteItem);
 		editMenuSelectAllItem = new JMenuItem("Select All", KeyEvent.VK_A);
 		editMenuSelectAllItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
@@ -230,15 +329,19 @@ public class VisualEditor extends JFrame implements AboutHandler, QuitHandler, P
 	private void setEditMenuEnablement() {
 		if(insp.getCommandStack().canRedo()){
 			editMenuRedoItem.setEnabled(true);
+			this.redob.setEnabled(true);
 		}
 		else{
 			editMenuRedoItem.setEnabled(false);
+			this.redob.setEnabled(false);
 		}
 		if(insp.getCommandStack().canUndo()){
 			editMenuUndoItem.setEnabled(true);
+			this.undob.setEnabled(true);
 		}
 		else{
 			editMenuUndoItem.setEnabled(false);
+			this.undob.setEnabled(false);
 		}
 		if(insp.isOpen()){
 			this.editMenuSelectAllItem.setEnabled(true);
@@ -271,6 +374,7 @@ public class VisualEditor extends JFrame implements AboutHandler, QuitHandler, P
 			}
 		});
 		fileMenu.add(fileMenuOpenItem);
+		fileMenu.addSeparator();
 		fileMenuCloseItem = new JMenuItem("Close", KeyEvent.VK_C);
 		fileMenuCloseItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		fileMenuCloseItem.addActionListener(new ActionListener() {
@@ -317,16 +421,20 @@ public class VisualEditor extends JFrame implements AboutHandler, QuitHandler, P
 		if(!this.insp.isOpen()){
 			fileMenuSaveAsItem.setEnabled(false);
 			fileMenuCloseItem.setEnabled(false);
+			this.saveAsb.setEnabled(false);
 		}
 		else{
 			fileMenuSaveAsItem.setEnabled(true);
 			fileMenuCloseItem.setEnabled(true);
+			this.saveAsb.setEnabled(true);
 		}
 		if(this.insp.isEdited()){
 			fileMenuSaveItem.setEnabled(true);
+			this.saveb.setEnabled(true);
 		}
 		else{
 			fileMenuSaveItem.setEnabled(false);
+			this.saveb.setEnabled(false);
 		}
 	}
 	

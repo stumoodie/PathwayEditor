@@ -49,5 +49,6 @@
 	</classpathentry>
 	<classpathentry combineaccessrules="false" kind="src" path="/SbgnPdNotationSubsystem"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Toolkit"/>
+	<classpathentry kind="lib" path="libs/graphicsRepo/jlfgr-1_0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
