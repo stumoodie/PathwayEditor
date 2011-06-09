@@ -46,9 +46,17 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="libs/graphicsRepo/jlfgr-1_0.jar"/>
-	<classpathentry kind="lib" path="libs/businessObjects/BusinessObjects.jar"/>
 	<classpathentry kind="lib" path="libs/sbgnPd/SbgnPdNotation.jar"/>
-	<classpathentry kind="lib" path="libs/toolkit/toolkit.jar"/>
 	<classpathentry kind="lib" path="libs/compoundGraph/CompoundGraph.jar"/>
+	<classpathentry kind="lib" path="libs/VisualLanguageToolkit/VisualLanguageToolkit.jar" sourcepath="libs/VisualLanguageToolkit/VisualLanguageToolkit-src.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/PathwayEditor/libs/VisualLanguageToolkit/VisualLanguageToolkit-docs.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="libs/NotationSubsystemUtils/NotationSubsystemUtils.jar" sourcepath="libs/NotationSubsystemUtils/NotationSubsystemUtils-src.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/PathwayEditor/libs/NotationSubsystemUtils/NotationSubsystemUtils-docs.jar!/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
