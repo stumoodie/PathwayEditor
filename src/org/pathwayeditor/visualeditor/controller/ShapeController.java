@@ -86,7 +86,7 @@ public class ShapeController extends NodeController implements IShapeController 
 				else if(e.getPropertyChange().equals(CanvasAttributePropertyChange.BOUNDS)){
 					IShapeAttribute attribute = (IShapeAttribute)e.getAttribute();
 					Envelope oldDrawnBounds = figureController.getFigureController().getConvexHull().getEnvelope();
-					figureController.getFigureController().setRequestedEnvelope(attribute.getBounds());
+					figureController.getFigureController().setEnvelope(attribute.getBounds());
 					figureController.refreshGraphicalAttributes();
 //					recalculateSrcLinks();
 //					recalculateTgtLinks();
@@ -139,7 +139,7 @@ public class ShapeController extends NodeController implements IShapeController 
 	@Override
 	public IMiniCanvas getMiniCanvas(){
 		IFigureRenderingController renderingController = this.figureController.getFigureController();
-		return new FigureDefinitionMiniCanvas(renderingController.getFigureDefinition(), renderingController.getRequestedEnvelope());
+		return new FigureDefinitionMiniCanvas(renderingController.getFigureDefinition(), renderingController.getEnvelope());
 	}
 
 //	public void changeSourceAnchor(ILinkController linkController, IShapeController srcNode, IShapeController tgtNode){
@@ -227,7 +227,7 @@ public class ShapeController extends NodeController implements IShapeController 
 
 	@Override
 	public Envelope getBounds() {
-		return this.figureController.getFigureController().getRequestedEnvelope();
+		return this.figureController.getFigureController().getEnvelope();
 	}
 
 	@Override
