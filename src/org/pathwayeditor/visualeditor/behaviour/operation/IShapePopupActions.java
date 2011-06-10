@@ -27,4 +27,6 @@ public interface IShapePopupActions {
 
 	IShapeController getSelectedShape();
 
+	void changeShapeFormat();
+
 }

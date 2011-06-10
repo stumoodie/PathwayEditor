@@ -18,6 +18,9 @@
 */
 package org.pathwayeditor.visualeditor.operations;
 
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+
 import org.pathwayeditor.visualeditor.behaviour.operation.IDefaultPopupActions;
 import org.pathwayeditor.visualeditor.behaviour.operation.IEditingOperation;
 import org.pathwayeditor.visualeditor.behaviour.operation.ILinkBendPointPopupActions;
@@ -30,6 +33,7 @@ import org.pathwayeditor.visualeditor.behaviour.operation.IResizeOperation;
 import org.pathwayeditor.visualeditor.behaviour.operation.ISelectionOperation;
 import org.pathwayeditor.visualeditor.behaviour.operation.IShapeCreationOperation;
 import org.pathwayeditor.visualeditor.behaviour.operation.IShapePopupActions;
+import org.pathwayeditor.visualeditor.behaviour.selection.ShapeFormatDialog;
 import org.pathwayeditor.visualeditor.commands.DeleteBendPointCommand;
 import org.pathwayeditor.visualeditor.commands.DeleteSelectionCommand;
 import org.pathwayeditor.visualeditor.commands.ICommand;
@@ -91,6 +95,21 @@ public class OperationFactory implements IOperationFactory {
 			@Override
 			public IShapeController getSelectedShape() {
 				return (IShapeController)selectionRecord.getPrimarySelection().getPrimitiveController();
+			}
+
+			@Override
+			public void changeShapeFormat() {
+		        JComponent invokerAsJComponent = (JComponent) shapePane;  
+		        JFrame topLevel = (JFrame)invokerAsJComponent.getTopLevelAncestor();  
+		        ShapeFormatDialog shapeFormatDialog = new ShapeFormatDialog(topLevel);
+		        shapeFormatDialog.setLocationRelativeTo(invokerAsJComponent);
+				IShapeController shape = (IShapeController)selectionRecord.getPrimarySelection().getPrimitiveController();
+				shapeFormatDialog.setSelectedShape(shape);
+				shapeFormatDialog.setVisible(true);
+				if(shapeFormatDialog.hasFormatChanged()){
+					commandStack.execute(shapeFormatDialog.getCommand());
+					shapePane.updateView();
+				}
 			}
 		};
 		this.linkPopupMenuResponse = new ILinkPopupActions() {
