@@ -59,4 +59,9 @@ public class CompoundCommand implements ICompoundCommand {
 		return this.commands.size();
 	}
 
+	@Override
+	public boolean isEmpty() {
+		return this.commands.isEmpty();
+	}
+
 }

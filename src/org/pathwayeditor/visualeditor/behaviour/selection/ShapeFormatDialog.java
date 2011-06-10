@@ -20,6 +20,8 @@ package org.pathwayeditor.visualeditor.behaviour.selection;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
@@ -31,6 +33,7 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -39,6 +42,8 @@ import javax.swing.JPanel;
 import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.RGB;
 import org.pathwayeditor.visualeditor.commands.ChangeShapeFillPropertyChange;
+import org.pathwayeditor.visualeditor.commands.ChangeShapeLinePropertyChange;
+import org.pathwayeditor.visualeditor.commands.ChangeShapeLineWidth;
 import org.pathwayeditor.visualeditor.commands.CompoundCommand;
 import org.pathwayeditor.visualeditor.commands.ICommand;
 import org.pathwayeditor.visualeditor.commands.ICompoundCommand;
@@ -49,6 +54,8 @@ public class ShapeFormatDialog extends JDialog implements ActionListener, FocusL
 	private static final long serialVersionUID = 1L;
 	private static final String OK_CMD = "ok_cmd";
 	private static final String CANCEL_CMD = "cancel_cmd";
+	private static final Object[] LINE_WIDTH_OPTION = new Integer[] { new Integer(1), new Integer(2), new Integer(4), new Integer(6), new Integer(8), new Integer(10) };
+	private static final double MIN_LINE_WIDTH = 1.0;
 	private final JPanel fillPanel = new JPanel();
 	private final JPanel linePanel = new JPanel();
 	private final JPanel buttonPanel = new JPanel();
@@ -58,13 +65,13 @@ public class ShapeFormatDialog extends JDialog implements ActionListener, FocusL
 	private JLabel lineColourLabel;
 	private JLabel fillColourLabel;
 	private ICompoundCommand latestCommand;
-	private boolean hasFormatChanged = false;
+	private JComboBox lineWidthCombo;
 
 	public ShapeFormatDialog(JFrame frame){
 		super(frame, true);
 		setTitle("Format Shape");
 		this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.PAGE_AXIS));
-		layoutLineColourPanel();
+		layoutLinePanel();
 		layoutFillColourPanel();
 		this.okButton.addActionListener(this);
 		this.okButton.setActionCommand(OK_CMD);
@@ -87,7 +94,6 @@ public class ShapeFormatDialog extends JDialog implements ActionListener, FocusL
 			}
 			@Override
 			public void componentShown(ComponentEvent arg0) {
-				hasFormatChanged = false;
 				latestCommand = new CompoundCommand();
 			}
 		});
@@ -95,10 +101,11 @@ public class ShapeFormatDialog extends JDialog implements ActionListener, FocusL
 	}
 
 	
-	private void layoutLineColourPanel(){
+	private void layoutLinePanel(){
 		linePanel.setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createTitledBorder("Line"),
 				BorderFactory.createEmptyBorder(5,5,5,5)));
+		linePanel.setLayout(new GridBagLayout());
 		JLabel colourLabel = new JLabel("Colour");
 		lineColourLabel = new JLabel();
 		lineColourLabel.setOpaque(true);
@@ -113,9 +120,32 @@ public class ShapeFormatDialog extends JDialog implements ActionListener, FocusL
 				lineColourLabel.setBackground(lineColour);
 			}
 		});
-		linePanel.add(colourLabel);
-		linePanel.add(lineColourLabel);
-		linePanel.add(colorDialogButton);
+		GridBagConstraints c1 = new GridBagConstraints();
+		c1.gridx = 0;
+		c1.gridy = 0;
+		c1.ipadx = 6;
+		linePanel.add(colourLabel, c1);
+		GridBagConstraints c2 = new GridBagConstraints();
+		c2.gridx = 1;
+		c2.gridy = 0;
+		linePanel.add(lineColourLabel, c2);
+		GridBagConstraints c3 = new GridBagConstraints();
+		c3.gridx = 2;
+		c3.gridy = 0;
+		c3.ipadx = 6;
+		linePanel.add(colorDialogButton, c3);
+		JLabel lineWidthLabel = new JLabel("Width");
+		lineWidthCombo = new JComboBox(LINE_WIDTH_OPTION);
+		GridBagConstraints c4 = new GridBagConstraints();
+		c4.gridx = 0;
+		c4.gridy = 1;
+		linePanel.add(lineWidthLabel, c4);
+		GridBagConstraints c5 = new GridBagConstraints();
+		c5.gridx = 1;
+		c5.gridy = 1;
+		c5.fill = GridBagConstraints.HORIZONTAL;
+		linePanel.add(lineWidthCombo, c5);
+		lineWidthCombo.setEditable(false);
 	}
 
 
@@ -151,6 +181,8 @@ public class ShapeFormatDialog extends JDialog implements ActionListener, FocusL
 		RGB lineRGB = this.selectedShape.getDrawingElement().getAttribute().getLineColour();
 		Color lineColour = new Color(lineRGB.getRed(), lineRGB.getGreen(), lineRGB.getBlue());
 		lineColourLabel.setBackground(lineColour);
+		double lineWidth = Math.max(MIN_LINE_WIDTH, this.selectedShape.getDrawingElement().getAttribute().getLineWidth());
+		this.lineWidthCombo.setSelectedItem(new Integer((int)Math.round(lineWidth)));
 	}
 
 
@@ -171,7 +203,15 @@ public class ShapeFormatDialog extends JDialog implements ActionListener, FocusL
 			RGB fillRGB = new RGB(fillColour.getRed(), fillColour.getGreen(), fillColour.getBlue());
 			if(!this.selectedShape.getDrawingElement().getAttribute().getFillColour().equals(fillRGB)){
 				this.latestCommand.addCommand(new ChangeShapeFillPropertyChange(this.selectedShape.getDrawingElement().getAttribute(), fillRGB));
-				this.hasFormatChanged = true;
+			}
+			Color lineColour = this.lineColourLabel.getBackground();
+			RGB lineRGB = new RGB(lineColour.getRed(), lineColour.getGreen(), lineColour.getBlue());
+			if(!this.selectedShape.getDrawingElement().getAttribute().getLineColour().equals(lineRGB)){
+				this.latestCommand.addCommand(new ChangeShapeLinePropertyChange(this.selectedShape.getDrawingElement().getAttribute(), lineRGB));
+			}
+			Integer selectedLineWidth = (Integer)this.lineWidthCombo.getSelectedItem();
+			if(!(this.selectedShape.getDrawingElement().getAttribute().getLineWidth() == selectedLineWidth.doubleValue())){
+				this.latestCommand.addCommand(new ChangeShapeLineWidth(this.selectedShape.getDrawingElement().getAttribute(), selectedLineWidth.doubleValue()));
 			}
 			this.setVisible(false);
 		}
@@ -186,7 +226,7 @@ public class ShapeFormatDialog extends JDialog implements ActionListener, FocusL
 
 
 	public boolean hasFormatChanged() {
-		return this.hasFormatChanged ;
+		return !this.latestCommand.isEmpty();
 	}
 
 }
