@@ -33,13 +33,16 @@ public class ShapePopupMenuResponse implements IPopupMenuResponse {
 	private final ActionListener deleteListener;
 	private final JMenuItem deleteShapeItem;
 	private final JMenuItem formatMenuItem;
+	private final JMenuItem propMenuItem;
 	private final ActionListener formatListener;
+	private final ActionListener propListener;
 
 	
 	public ShapePopupMenuResponse(final IShapePopupActions popupActions){
 		popup = new JPopupMenu();
 		deleteShapeItem = new JMenuItem("Delete");
 		formatMenuItem = new JMenuItem("Format");
+		propMenuItem = new JMenuItem("Properties");
 		
 		this.deleteListener = new ActionListener(){
 
@@ -57,7 +60,16 @@ public class ShapePopupMenuResponse implements IPopupMenuResponse {
 			}
 			
 		};
+		this.propListener = new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				popupActions.properties();
+			}
+			
+		};
 		popup.add(formatMenuItem);
+		popup.add(propMenuItem);
 		popup.add(deleteShapeItem);
 	}
 	
@@ -66,12 +78,14 @@ public class ShapePopupMenuResponse implements IPopupMenuResponse {
 	public void activate(){
 		deleteShapeItem.addActionListener(deleteListener);
 		formatMenuItem.addActionListener(formatListener);
+		propMenuItem.addActionListener(propListener);
 	}
 	
 	@Override
 	public void deactivate(){
 		deleteShapeItem.removeActionListener(deleteListener);
 		formatMenuItem.removeActionListener(formatListener);
+		propMenuItem.removeActionListener(propListener);
 	}
 	
 	@Override

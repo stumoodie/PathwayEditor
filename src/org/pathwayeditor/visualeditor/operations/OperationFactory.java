@@ -33,6 +33,7 @@ import org.pathwayeditor.visualeditor.behaviour.operation.IResizeOperation;
 import org.pathwayeditor.visualeditor.behaviour.operation.ISelectionOperation;
 import org.pathwayeditor.visualeditor.behaviour.operation.IShapeCreationOperation;
 import org.pathwayeditor.visualeditor.behaviour.operation.IShapePopupActions;
+import org.pathwayeditor.visualeditor.behaviour.selection.PropertyChangeDialog;
 import org.pathwayeditor.visualeditor.behaviour.selection.ShapeFormatDialog;
 import org.pathwayeditor.visualeditor.commands.DeleteBendPointCommand;
 import org.pathwayeditor.visualeditor.commands.DeleteSelectionCommand;
@@ -93,11 +94,6 @@ public class OperationFactory implements IOperationFactory {
 			}
 
 			@Override
-			public IShapeController getSelectedShape() {
-				return (IShapeController)selectionRecord.getPrimarySelection().getPrimitiveController();
-			}
-
-			@Override
 			public void changeShapeFormat() {
 		        JComponent invokerAsJComponent = (JComponent) shapePane;  
 		        JFrame topLevel = (JFrame)invokerAsJComponent.getTopLevelAncestor();  
@@ -108,6 +104,21 @@ public class OperationFactory implements IOperationFactory {
 				shapeFormatDialog.setVisible(true);
 				if(shapeFormatDialog.hasFormatChanged()){
 					commandStack.execute(shapeFormatDialog.getCommand());
+					shapePane.updateView();
+				}
+			}
+
+			@Override
+			public void properties() {
+		        JComponent invokerAsJComponent = (JComponent) shapePane;  
+		        JFrame topLevel = (JFrame)invokerAsJComponent.getTopLevelAncestor();  
+		        PropertyChangeDialog propChangeDialog = new PropertyChangeDialog(topLevel);
+		        propChangeDialog.setLocationRelativeTo(invokerAsJComponent);
+				IShapeController shape = (IShapeController)selectionRecord.getPrimarySelection().getPrimitiveController();
+				propChangeDialog.setSelectedShape(shape);
+				propChangeDialog.setVisible(true);
+				if(propChangeDialog.hasFormatChanged()){
+					commandStack.execute(propChangeDialog.getCommand());
 					shapePane.updateView();
 				}
 			}

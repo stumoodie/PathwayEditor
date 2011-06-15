@@ -18,15 +18,14 @@
 */
 package org.pathwayeditor.visualeditor.behaviour.operation;
 
-import org.pathwayeditor.visualeditor.controller.IShapeController;
 
 
 public interface IShapePopupActions {
 
 	void delete();
 
-	IShapeController getSelectedShape();
-
 	void changeShapeFormat();
+
+	void properties();
 
 }
