@@ -16,7 +16,7 @@ import org.pathwayeditor.businessobjects.drawingprimitives.properties.IPlainText
 public class StringAnnotationPropPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	public static final String CURR_VALUE = "currValue";
-	private static final int DEF_NUM_COLS = 30;
+	private static final int DEF_NUM_COLS = 20;
 	private final JTextField propValueTextField = new JTextField();
 	private IPlainTextAnnotationProperty annotProp;
 	private String currStringValue;

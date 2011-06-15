@@ -107,7 +107,6 @@ public class PropertyChangeDialog extends JDialog implements ActionListener, Foc
 				public void visitPlainTextAnnotationProperty(final IPlainTextAnnotationProperty prop) {
 					StringAnnotationPropPanel panel = new StringAnnotationPropPanel(prop);
 					tabbedPane.addTab(prop.getDefinition().getDisplayName(), panel);
-//					panel.setSize(new Dimension(400, 200));
 					panel.addPropertyChangeListener(StringAnnotationPropPanel.CURR_VALUE, new PropertyChangeListener() {
 						
 						@Override
@@ -126,7 +125,16 @@ public class PropertyChangeDialog extends JDialog implements ActionListener, Foc
 				}
 				
 				@Override
-				public void visitIntegerAnnotationProperty(IIntegerAnnotationProperty prop) {
+				public void visitIntegerAnnotationProperty(final IIntegerAnnotationProperty prop) {
+					IntegerAnnotationPropPanel panel = new IntegerAnnotationPropPanel(prop);
+					tabbedPane.addTab(prop.getDefinition().getDisplayName(), panel);
+					panel.addPropertyChangeListener(StringAnnotationPropPanel.CURR_VALUE, new PropertyChangeListener() {
+						
+						@Override
+						public void propertyChange(PropertyChangeEvent evt) {
+							addCommand(prop, evt.getNewValue());
+						}
+					});
 				}
 				
 				@Override
