@@ -540,7 +540,7 @@ grestore
         <TextAnnotationProperty id="20" name="name" displayName="Name">Name</TextAnnotationProperty>
         <TextAnnotationProperty id="22" name="exportName" displayName="Export Name"/>
         <TextAnnotationProperty id="25" name="stateValue" displayName="Value">?</TextAnnotationProperty>
-        <TextAnnotationProperty id="28" name="name" displayName="Name">Na</TextAnnotationProperty>
+        <TextAnnotationProperty id="28" name="name" displayName="Name">Fee</TextAnnotationProperty>
         <TextAnnotationProperty id="29" name="exportName" displayName="Export Name"/>
         <TextAnnotationProperty id="32" name="exportName" displayName="Export Name"/>
         <TextAnnotationProperty id="33" name="fwdRate" displayName="Forward Rate"/>

@@ -84,7 +84,7 @@ public abstract class CommonLabelController extends NodeController implements IL
 				if(e.getPropertyChange().equals(CanvasAttributePropertyChange.BOUNDS)){
 					Envelope oldDrawnBounds = getFigureController().getConvexHull().getEnvelope();
 					IDrawingNodeAttribute attribute = (IDrawingNodeAttribute)e.getAttribute();
-					getFigureController().setRequestedEnvelope(attribute.getBounds());
+					getFigureController().setEnvelope(attribute.getBounds());
 					getFigureController().generateFigureDefinition();
 					notifyDrawnBoundsChanged(oldDrawnBounds, getFigureController().getConvexHull().getEnvelope());
 				}
@@ -108,7 +108,7 @@ public abstract class CommonLabelController extends NodeController implements IL
 					textExtent = handleGetTextBounds(text);
 				}
 				Envelope newBounds = adjustForDefaultTextLength(getConvexHull().getCentre(), textExtent);
-				getFigureController().setRequestedEnvelope(newBounds);
+				getFigureController().setEnvelope(newBounds);
 				getFigureController().generateFigureDefinition();
 			}
 		};
@@ -132,7 +132,7 @@ public abstract class CommonLabelController extends NodeController implements IL
 
 	private IFigureRenderingController createController(ILabelAttribute attribute){
 		IFigureRenderingController figureRenderingController = new FigureRenderingController(FigureCompilationCache.getInstance().lookup(LABEL_DEFINITION));
-		figureRenderingController.setRequestedEnvelope(attribute.getBounds());
+		figureRenderingController.setEnvelope(attribute.getBounds());
 		figureRenderingController.setFillColour(attribute.getBackgroundColor());
 		figureRenderingController.setLineColour(attribute.getForegroundColor());
 		figureRenderingController.setLineStyle(attribute.getLineStyle());
@@ -151,7 +151,7 @@ public abstract class CommonLabelController extends NodeController implements IL
 
 	@Override
 	public final Envelope getBounds() {
-		return this.controller.getRequestedEnvelope();
+		return this.controller.getEnvelope();
 	}
 
 	@Override
