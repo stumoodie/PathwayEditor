@@ -21,7 +21,7 @@ package org.pathwayeditor.visualeditor.feedback;
 import java.util.List;
 
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LineStyle;
-import org.pathwayeditor.businessobjects.drawingprimitives.attributes.RGB;
+import org.pathwayeditor.businessobjects.drawingprimitives.attributes.Colour;
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.IConvexHull;
@@ -56,9 +56,9 @@ public interface IFeedbackNode extends IFeedbackElement {
 
 	List<IFeedbackNodeListener> getFeedbackNodeListeners();
 
-	void setFillColour(RGB blue);
+	void setFillColour(Colour blue);
 
-	void setLineColour(RGB red);
+	void setLineColour(Colour red);
 
 	void setLineStyle(LineStyle solid);
 

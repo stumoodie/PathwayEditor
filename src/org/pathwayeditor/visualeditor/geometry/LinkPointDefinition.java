@@ -26,8 +26,8 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.drawingprimitives.IBendPointContainer;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.attributes.Colour;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LineStyle;
-import org.pathwayeditor.businessobjects.drawingprimitives.attributes.RGB;
 import org.pathwayeditor.businessobjects.typedefn.ILinkAttributeDefaults;
 import org.pathwayeditor.businessobjects.typedefn.ILinkObjectType;
 import org.pathwayeditor.figure.geometry.Dimension;
@@ -46,7 +46,7 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 	private static final double MOUSE_HOT_SPHERE_RADIUS = 5.0;
 
 	private final List<Point> pointList;
-	private RGB lineColour = RGB.BLACK;
+	private Colour lineColour = Colour.BLACK;
 	private LineStyle lineStyle = LineStyle.SOLID;
 	private double lineWidth = DEFAULT_LINE_WIDTH;
 	private final IGraphicalLinkTerminusDefinition srcTermDefn;
@@ -401,7 +401,7 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 	}
 
 	@Override
-	public RGB getLineColour() {
+	public Colour getLineColour() {
 		return this.lineColour ;
 	}
 
@@ -435,7 +435,7 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 	}
 
 	@Override
-	public void setLineColour(RGB lineColour) {
+	public void setLineColour(Colour lineColour) {
 		this.lineColour = lineColour;
 	}
 

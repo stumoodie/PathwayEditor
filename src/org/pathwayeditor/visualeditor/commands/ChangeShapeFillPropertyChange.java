@@ -1,14 +1,15 @@
 package org.pathwayeditor.visualeditor.commands;
 
 import org.pathwayeditor.businessobjects.drawingprimitives.IShapeAttribute;
-import org.pathwayeditor.businessobjects.drawingprimitives.attributes.RGB;
+import org.pathwayeditor.businessobjects.drawingprimitives.attributes.Colour;
+import org.pathwayeditor.businessobjects.drawingprimitives.attributes.Colour;
 
 public class ChangeShapeFillPropertyChange implements ICommand {
 	private IShapeAttribute attribute;
-	private RGB newFillColour;
-	private RGB oldFillColour;
+	private Colour newFillColour;
+	private Colour oldFillColour;
 
-	public ChangeShapeFillPropertyChange(IShapeAttribute att, RGB newFillColour){
+	public ChangeShapeFillPropertyChange(IShapeAttribute att, Colour newFillColour){
 		this.attribute = att;
 		this.newFillColour = newFillColour;
 	}

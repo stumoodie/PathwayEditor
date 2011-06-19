@@ -26,7 +26,7 @@ import java.text.Format;
 
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LabelLocationPolicy;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LineStyle;
-import org.pathwayeditor.businessobjects.drawingprimitives.attributes.RGB;
+import org.pathwayeditor.businessobjects.drawingprimitives.attributes.Colour;
 import org.pathwayeditor.businessobjects.typedefn.ILabelAttributeDefaults;
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.rendering.GenericFont;
@@ -40,15 +40,15 @@ import org.pathwayeditor.figure.rendering.IFont;
 public class StubLabelAttributeDefaults implements ILabelAttributeDefaults {
 	public static final LineStyle LINE_STYLE = LineStyle.SOLID;
 	public static final int LINE_WIDTH = 1;
-	public static final RGB FILL_COLOUR = RGB.WHITE;
-	public static final RGB LINE_COLOUR = RGB.BLACK;
+	public static final Colour FILL_COLOUR = Colour.WHITE;
+	public static final Colour LINE_COLOUR = Colour.BLACK;
 	public static final Dimension SIZE = new Dimension(20, 10);
 
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.ILabelAttributeDefaults#getFillColour()
 	 */
 	@Override
-	public RGB getFillColour() {
+	public Colour getFillColour() {
 		return FILL_COLOUR;
 	}
 
@@ -56,7 +56,7 @@ public class StubLabelAttributeDefaults implements ILabelAttributeDefaults {
 	 * @see org.pathwayeditor.businessobjects.typedefn.ILabelAttributeDefaults#getLineColour()
 	 */
 	@Override
-	public RGB getLineColour() {
+	public Colour getLineColour() {
 		return LINE_COLOUR;
 	}
 

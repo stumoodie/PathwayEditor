@@ -46,7 +46,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="libs/graphicsRepo/jlfgr-1_0.jar"/>
-	<classpathentry kind="lib" path="libs/sbgnPd/SbgnPdNotation.jar"/>
+	<classpathentry kind="lib" path="libs/sbgnPd/SbgnPdNotation.jar" sourcepath="libs/sbgnPd/SbgnPdNotation-src.jar"/>
 	<classpathentry kind="lib" path="libs/compoundGraph/CompoundGraph.jar"/>
 	<classpathentry kind="lib" path="libs/VisualLanguageToolkit/VisualLanguageToolkit.jar" sourcepath="libs/VisualLanguageToolkit/VisualLanguageToolkit-src.jar">
 		<attributes>

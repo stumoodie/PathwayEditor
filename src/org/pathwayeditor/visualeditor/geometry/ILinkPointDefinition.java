@@ -20,8 +20,8 @@ package org.pathwayeditor.visualeditor.geometry;
 
 import java.util.Iterator;
 
+import org.pathwayeditor.businessobjects.drawingprimitives.attributes.Colour;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LineStyle;
-import org.pathwayeditor.businessobjects.drawingprimitives.attributes.RGB;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.LineSegment;
 import org.pathwayeditor.figure.geometry.Point;
@@ -84,11 +84,11 @@ public interface ILinkPointDefinition {
 
 	LineStyle getLineStyle();
 
-	RGB getLineColour();
+	Colour getLineColour();
 
 	double getLineWidth();
 
-	void setLineColour(RGB lineColour);
+	void setLineColour(Colour lineColour);
 
 	void setLineStyle(LineStyle lineStyle);
 

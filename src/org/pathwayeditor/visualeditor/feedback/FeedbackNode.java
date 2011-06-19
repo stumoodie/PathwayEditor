@@ -26,7 +26,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LineStyle;
-import org.pathwayeditor.businessobjects.drawingprimitives.attributes.RGB;
+import org.pathwayeditor.businessobjects.drawingprimitives.attributes.Colour;
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.IConvexHull;
@@ -182,13 +182,13 @@ public class FeedbackNode implements IFeedbackNode {
 	}
 
 	@Override
-	public void setFillColour(RGB colour) {
+	public void setFillColour(Colour colour) {
 		this.figureRenderingController.setFillColour(colour);
 		this.figureRenderingController.generateFigureDefinition();
 	}
 
 	@Override
-	public void setLineColour(RGB colour) {
+	public void setLineColour(Colour colour) {
 		this.figureRenderingController.setLineColour(colour);
 		this.figureRenderingController.generateFigureDefinition();
 	}

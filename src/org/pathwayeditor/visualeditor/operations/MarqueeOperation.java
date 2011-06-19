@@ -21,7 +21,7 @@ package org.pathwayeditor.visualeditor.operations;
 import java.util.SortedSet;
 
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LineStyle;
-import org.pathwayeditor.businessobjects.drawingprimitives.attributes.RGB;
+import org.pathwayeditor.businessobjects.drawingprimitives.attributes.Colour;
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.Point;
@@ -52,8 +52,8 @@ public class MarqueeOperation implements IMarqueeOperation {
 		feedbackModel.clear();
 		selectionRecord.clear();
 		IFeedbackNode node = feedbackModel.getFeedbackNodeBuilder().createDefaultNode(new Envelope(initialPosn, new Dimension(0.1, 0.1)));
-		node.setFillColour(RGB.BLUE);
-		node.setLineColour(RGB.RED);
+		node.setFillColour(Colour.BLUE);
+		node.setLineColour(Colour.RED);
 		node.setLineStyle(LineStyle.SOLID);
 		node.setLineWidth(1.0);
 	}

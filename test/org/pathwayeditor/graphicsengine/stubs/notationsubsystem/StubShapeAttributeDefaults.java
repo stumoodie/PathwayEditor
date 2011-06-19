@@ -26,7 +26,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LineStyle;
-import org.pathwayeditor.businessobjects.drawingprimitives.attributes.RGB;
+import org.pathwayeditor.businessobjects.drawingprimitives.attributes.Colour;
 import org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyDefinition;
 import org.pathwayeditor.businessobjects.typedefn.IShapeAttributeDefaults;
 import org.pathwayeditor.figure.geometry.Dimension;
@@ -36,8 +36,8 @@ import org.pathwayeditor.figure.geometry.Dimension;
  *
  */
 public abstract class StubShapeAttributeDefaults implements IShapeAttributeDefaults {
-	public   RGB    FILL_COLOR = new RGB ( 100 , 100 , 100 ) ;
-	public   RGB    LINE_COLOR = new RGB ( 150 , 150 , 150 ) ;
+	public   Colour    FILL_COLOR = new Colour ( 100 , 100 , 100 ) ;
+	public   Colour    LINE_COLOR = new Colour ( 150 , 150 , 150 ) ;
 	public   LineStyle LINE_STYLE = LineStyle.DASH_DOT ;     
 	public   int LINE_WIDTH = 1 ;
 	public   String PRIMITIVE_SHAPE_TYPE = "curbounds oval (C) setanchor";
@@ -54,7 +54,7 @@ public abstract class StubShapeAttributeDefaults implements IShapeAttributeDefau
 	 * @see org.pathwayeditor.businessobjects.typedefn.IShapeAttributeDefaults#getFillColour()
 	 */
 	@Override
-	public RGB getFillColour() {
+	public Colour getFillColour() {
 		return FILL_COLOR;
 	}
 
@@ -62,7 +62,7 @@ public abstract class StubShapeAttributeDefaults implements IShapeAttributeDefau
 	 * @see org.pathwayeditor.businessobjects.typedefn.IShapeAttributeDefaults#getLineColour()
 	 */
 	@Override
-	public RGB getLineColour() {
+	public Colour getLineColour() {
 		return LINE_COLOR;
 	}
 

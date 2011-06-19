@@ -23,7 +23,7 @@ import java.util.SortedSet;
 import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasElementAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LineStyle;
-import org.pathwayeditor.businessobjects.drawingprimitives.attributes.RGB;
+import org.pathwayeditor.businessobjects.drawingprimitives.attributes.Colour;
 import org.pathwayeditor.businessobjects.typedefn.IShapeObjectType;
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Envelope;
@@ -158,8 +158,8 @@ public class ShapeCreationOperation implements IShapeCreationOperation {
 			logger.trace("Starting create shape drag. origin=" + origin);
 		}
 		IFeedbackNode node = feedbackModel.getFeedbackNodeBuilder().createFromDrawingNodeObjectType(this.shapeObjectType, new Envelope(origin, new Dimension(0.1, 0.1)));
-//		node.setFillColour(RGB.BLUE);
-		node.setLineColour(RGB.RED);
+//		node.setFillColour(Colour.BLUE);
+		node.setLineColour(Colour.RED);
 		node.setLineStyle(LineStyle.SOLID);
 		node.setLineWidth(1.0);
 		this.shapePane.updateView();

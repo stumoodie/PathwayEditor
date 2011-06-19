@@ -26,8 +26,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 
+import org.pathwayeditor.businessobjects.drawingprimitives.attributes.Colour;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LineStyle;
-import org.pathwayeditor.businessobjects.drawingprimitives.attributes.RGB;
 import org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyDefinition;
 import org.pathwayeditor.businessobjects.typedefn.ILinkAttributeDefaults;
 import org.pathwayeditor.businessobjects.typedefn.ILinkTerminusDefaults;
@@ -46,8 +46,8 @@ public class StubDefaultLinkAttributes implements ILinkAttributeDefaults {
 	public static final String EXPECTED_DEFAULT_URL = "http://www.google.com";
 	public static final String EXPECTED_DEFAULT_DESCRIPTION = "descn";
 	public static final String EXPECTED_DEFAULT_DETAILED_DESCRIPTION = "detailed descn";
-	public static final RGB EXPECTED_DEFAULT_FILL_COLOUR = new RGB(1,2,3);
-	public static final RGB EXPECTED_DEFAULT_LINE_COLOUR = new RGB(4,5, 6);
+	public static final Colour EXPECTED_DEFAULT_FILL_COLOUR = new Colour(1,2,3);
+	public static final Colour EXPECTED_DEFAULT_LINE_COLOUR = new Colour(4,5, 6);
 	public static final LineStyle EXPECTED_DEFAULT_LINE_STYLE = LineStyle.DASH_DOT;
 	public static final Point EXPECTED_INITIAL_LOCATION = new Point(235,5543);
 
@@ -72,7 +72,7 @@ public class StubDefaultLinkAttributes implements ILinkAttributeDefaults {
 	 * @see org.pathwayeditor.businessobjects.typedefn.IShapeAttributeDefaults#getLineColour()
 	 */
 	@Override
-	public RGB getLineColour() {
+	public Colour getLineColour() {
 		return EXPECTED_DEFAULT_LINE_COLOUR;
 	}
 

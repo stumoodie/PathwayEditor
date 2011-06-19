@@ -39,8 +39,9 @@ import java.util.Arrays;
 import java.util.EnumSet;
 
 import org.apache.log4j.Logger;
+import org.pathwayeditor.businessobjects.drawingprimitives.attributes.Colour;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LineStyle;
-import org.pathwayeditor.businessobjects.drawingprimitives.attributes.RGB;
+import org.pathwayeditor.businessobjects.drawingprimitives.attributes.Colour;
 import org.pathwayeditor.figure.rendering.GraphicalTextAlignment;
 import org.pathwayeditor.figure.rendering.IFont;
 import org.pathwayeditor.figure.rendering.IFont.Style;
@@ -53,8 +54,8 @@ public class Java2DGraphicsEngine implements IGraphicsEngine {
 	private static final double POINT_W = 1.0;
 	private static final String DEFAULT_FONT = "SansSerif";
 	private Graphics2D g;
-	private RGB fillColour = RGB.WHITE;
-	private RGB lineColour = RGB.BLACK;
+	private Colour fillColour = Colour.WHITE;
+	private Colour lineColour = Colour.BLACK;
 	private double lineWidth = MIN_LINE_WIDTH_PIXELS;
 	private LineStyle lineStyle = LineStyle.SOLID;
 
@@ -73,8 +74,8 @@ public class Java2DGraphicsEngine implements IGraphicsEngine {
 		return this.g;
 	}
 	
-	private void setColour(RGB col){
-		Color awtCol = new Color(col.getRed(), col.getGreen(), col.getBlue());
+	private void setColour(Colour col){
+		Color awtCol = new Color(col.getRgb().getRed(), col.getRgb().getGreen(), col.getRgb().getBlue(), col.getAlpha());
 		g.setColor(awtCol);
 	}
 	
@@ -360,7 +361,7 @@ public class Java2DGraphicsEngine implements IGraphicsEngine {
 	}
 
 	@Override
-	public void setFillColor(RGB color) {
+	public void setFillColor(Colour color) {
 		if(color == null) throw new IllegalArgumentException("Cannot be null");
 		this.fillColour = color;
 		if(logger.isDebugEnabled()){
@@ -369,7 +370,7 @@ public class Java2DGraphicsEngine implements IGraphicsEngine {
 	}
 
 	@Override
-	public void setLineColor(RGB color) {
+	public void setLineColor(Colour color) {
 		if(color == null) throw new IllegalArgumentException("Cannot be null");
 		this.lineColour = color;
 		if(logger.isDebugEnabled()){

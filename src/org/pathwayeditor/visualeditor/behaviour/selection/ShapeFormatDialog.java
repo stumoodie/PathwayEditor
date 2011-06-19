@@ -40,6 +40,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
+import org.pathwayeditor.businessobjects.drawingprimitives.attributes.Colour;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.RGB;
 import org.pathwayeditor.visualeditor.commands.ChangeShapeFillPropertyChange;
 import org.pathwayeditor.visualeditor.commands.ChangeShapeLinePropertyChange;
@@ -175,11 +176,13 @@ public class ShapeFormatDialog extends JDialog implements ActionListener, FocusL
 
 	public void setSelectedShape(IShapeController shape) {
 		this.selectedShape = shape;
-		RGB fillRGB = this.selectedShape.getDrawingElement().getAttribute().getFillColour();
-		Color fillColour = new Color(fillRGB.getRed(), fillRGB.getGreen(), fillRGB.getBlue());
+		Colour fillCol = this.selectedShape.getDrawingElement().getAttribute().getFillColour();
+		RGB fillRGB = fillCol.getRgb();
+		Color fillColour = new Color(fillRGB.getRed(), fillRGB.getGreen(), fillRGB.getBlue(), fillCol.getAlpha());
 		fillColourLabel.setBackground(fillColour);
-		RGB lineRGB = this.selectedShape.getDrawingElement().getAttribute().getLineColour();
-		Color lineColour = new Color(lineRGB.getRed(), lineRGB.getGreen(), lineRGB.getBlue());
+		Colour lineCol = this.selectedShape.getDrawingElement().getAttribute().getLineColour();
+		RGB lineRGB = lineCol.getRgb();
+		Color lineColour = new Color(lineRGB.getRed(), lineRGB.getGreen(), lineRGB.getBlue(), lineCol.getAlpha());
 		lineColourLabel.setBackground(lineColour);
 		double lineWidth = Math.max(MIN_LINE_WIDTH, this.selectedShape.getDrawingElement().getAttribute().getLineWidth());
 		this.lineWidthCombo.setSelectedItem(new Integer((int)Math.round(lineWidth)));
@@ -200,14 +203,14 @@ public class ShapeFormatDialog extends JDialog implements ActionListener, FocusL
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand().equals(OK_CMD)){
 			Color fillColour = this.fillColourLabel.getBackground();
-			RGB fillRGB = new RGB(fillColour.getRed(), fillColour.getGreen(), fillColour.getBlue());
-			if(!this.selectedShape.getDrawingElement().getAttribute().getFillColour().equals(fillRGB)){
-				this.latestCommand.addCommand(new ChangeShapeFillPropertyChange(this.selectedShape.getDrawingElement().getAttribute(), fillRGB));
+			Colour fillCol = new Colour(fillColour.getRed(), fillColour.getGreen(), fillColour.getBlue());
+			if(!this.selectedShape.getDrawingElement().getAttribute().getFillColour().equals(fillCol)){
+				this.latestCommand.addCommand(new ChangeShapeFillPropertyChange(this.selectedShape.getDrawingElement().getAttribute(), fillCol));
 			}
 			Color lineColour = this.lineColourLabel.getBackground();
-			RGB lineRGB = new RGB(lineColour.getRed(), lineColour.getGreen(), lineColour.getBlue());
-			if(!this.selectedShape.getDrawingElement().getAttribute().getLineColour().equals(lineRGB)){
-				this.latestCommand.addCommand(new ChangeShapeLinePropertyChange(this.selectedShape.getDrawingElement().getAttribute(), lineRGB));
+			Colour lineCol = new Colour(lineColour.getRed(), lineColour.getGreen(), lineColour.getBlue());
+			if(!this.selectedShape.getDrawingElement().getAttribute().getLineColour().equals(lineCol)){
+				this.latestCommand.addCommand(new ChangeShapeLinePropertyChange(this.selectedShape.getDrawingElement().getAttribute(), lineCol));
 			}
 			Integer selectedLineWidth = (Integer)this.lineWidthCombo.getSelectedItem();
 			if(!(this.selectedShape.getDrawingElement().getAttribute().getLineWidth() == selectedLineWidth.doubleValue())){

@@ -25,7 +25,7 @@ import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElement;
 import org.pathwayeditor.businessobjects.drawingprimitives.IShapeAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.IShapeNode;
-import org.pathwayeditor.businessobjects.drawingprimitives.attributes.RGB;
+import org.pathwayeditor.businessobjects.drawingprimitives.attributes.Colour;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.CanvasAttributePropertyChange;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IAnnotationPropertyChangeEvent;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IAnnotationPropertyChangeListener;
@@ -71,11 +71,11 @@ public class ShapeController extends NodeController implements IShapeController 
 			@Override
 			public void propertyChange(ICanvasAttributePropertyChangeEvent e) {
 				if(e.getPropertyChange().equals(CanvasAttributePropertyChange.LINE_COLOUR)){
-					figureController.getFigureController().setLineColour((RGB)e.getNewValue());
+					figureController.getFigureController().setLineColour((Colour)e.getNewValue());
 					figureController.refreshGraphicalAttributes();
 				}
 				else if(e.getPropertyChange().equals(CanvasAttributePropertyChange.FILL_COLOUR)){
-					figureController.getFigureController().setFillColour((RGB)e.getNewValue());
+					figureController.getFigureController().setFillColour((Colour)e.getNewValue());
 					figureController.refreshGraphicalAttributes();
 				}
 				else if(e.getPropertyChange().equals(CanvasAttributePropertyChange.LINE_WIDTH)){

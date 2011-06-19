@@ -33,7 +33,7 @@ import java.util.Iterator;
 import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LineStyle;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LinkEndDecoratorShape;
-import org.pathwayeditor.businessobjects.drawingprimitives.attributes.RGB;
+import org.pathwayeditor.businessobjects.drawingprimitives.attributes.Colour;
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.LineSegment;
@@ -136,8 +136,8 @@ public class LinkDrawer  implements IMiniCanvas {
 	
 	private void drawLineSegments(Graphics2D g2d){
 		ILinkPointDefinition linkDefinition = this.linkEdge;
-		RGB lineCol = this.linkEdge.getLineColour();
-		g2d.setColor(new Color(lineCol.getRed(), lineCol.getGreen(), lineCol.getBlue()));
+		Colour lineCol = this.linkEdge.getLineColour();
+		g2d.setColor(new Color(lineCol.getRgb().getRed(), lineCol.getRgb().getGreen(), lineCol.getRgb().getBlue(), lineCol.getAlpha()));
 		double lineWidth = this.linkEdge.getLineWidth();
 		LineStyle lineStyle = this.linkEdge.getLineStyle();
 		g2d.setStroke(this.createStroke(lineStyle, lineWidth));
@@ -154,13 +154,13 @@ public class LinkDrawer  implements IMiniCanvas {
 		}
 	}
 	
-	private void drawEndDecorator(Graphics2D g2d, RGB lineColour, double lineWidth,
+	private void drawEndDecorator(Graphics2D g2d, Colour lineColour, double lineWidth,
 			LinkEndDecoratorShape endShape, Point startPos, Dimension size){
 		if(logger.isTraceEnabled()){
 			logger.trace("Draw End Dec: startPos=" + startPos + ",size=" + size + ",type=" + endShape);
 		}
 		if(!endShape.equals(LinkEndDecoratorShape.NONE)){
-			g2d.setColor(new Color(lineColour.getRed(), lineColour.getGreen(), lineColour.getBlue()));
+			g2d.setColor(new Color(lineColour.getRgb().getRed(), lineColour.getRgb().getGreen(), lineColour.getRgb().getBlue(), lineColour.getAlpha()));
 			if(endShape.equals(LinkEndDecoratorShape.ARROW)){
 				GeneralPath path = createTriangle(size);
 				g2d.fill(path);

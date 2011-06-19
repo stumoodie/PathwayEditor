@@ -26,7 +26,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LineStyle;
-import org.pathwayeditor.businessobjects.drawingprimitives.attributes.RGB;
+import org.pathwayeditor.businessobjects.drawingprimitives.attributes.Colour;
 import org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyDefinition;
 import org.pathwayeditor.businessobjects.typedefn.ILabelAttributeDefaults;
 import org.pathwayeditor.businessobjects.typedefn.ILinkAttributeDefaults;
@@ -38,7 +38,7 @@ import org.pathwayeditor.businessobjects.typedefn.ILinkTerminusDefaults;
  */
 public abstract class StubLinkAttributeDefaults implements ILinkAttributeDefaults {
 	public static final int EXPECTED_DEFAULT_LINE_WIDTH = 1;
-	public static final RGB EXPECTED_DEFAULT_LINE_COLOUR = new RGB(4,5, 6);
+	public static final Colour EXPECTED_DEFAULT_LINE_COLOUR = new Colour(4,5, 6);
 	public static final LineStyle EXPECTED_DEFAULT_LINE_STYLE = LineStyle.SOLID;
 
 //	private  ILinkTerminusDefaults sourceTermDefaults = new StubSourceTerminusDefaults();
@@ -55,7 +55,7 @@ public abstract class StubLinkAttributeDefaults implements ILinkAttributeDefault
 	 * @see org.pathwayeditor.businessobjects.typedefn.IShapeAttributeDefaults#getLineColour()
 	 */
 	@Override
-	public RGB getLineColour() {
+	public Colour getLineColour() {
 		return EXPECTED_DEFAULT_LINE_COLOUR;
 	}
 
