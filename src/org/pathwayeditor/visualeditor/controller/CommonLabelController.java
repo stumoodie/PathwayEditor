@@ -57,12 +57,12 @@ public abstract class CommonLabelController extends NodeController implements IL
 		"/cardinalityBox { /card exch def /fsize exch def /cpy exch def /cpx exch def\n" +
 		"card cvs textbounds /hoff exch curlinewidth 2 mul add h div def /woff exch curlinewidth 2 mul add w div def \n" +
 		"gsave\n" +
-		"null setfillcol cpx xoffset cpy yoffset (C) card cvs text\n" +
+		"255 255 255 255 setfillcol cpx xoffset cpy yoffset (C) card cvs text\n" +
 		"grestore\n" +
 		"} def\n" +
 		"gsave\n" +
 		":noborderFlag \n{" +
-		"null setlinecol\n" +
+		"0 0 0 255 setlinecol\n" +
 		"} if\n" +
 		"0.0 xoffset 0.0 yoffset w h rect\n" +
 		"grestore\n" +
