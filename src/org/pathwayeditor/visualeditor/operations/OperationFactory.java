@@ -33,8 +33,6 @@ import org.pathwayeditor.visualeditor.behaviour.operation.IResizeOperation;
 import org.pathwayeditor.visualeditor.behaviour.operation.ISelectionOperation;
 import org.pathwayeditor.visualeditor.behaviour.operation.IShapeCreationOperation;
 import org.pathwayeditor.visualeditor.behaviour.operation.IShapePopupActions;
-import org.pathwayeditor.visualeditor.behaviour.selection.PropertyChangeDialog;
-import org.pathwayeditor.visualeditor.behaviour.selection.ShapeFormatDialog;
 import org.pathwayeditor.visualeditor.commands.DeleteBendPointCommand;
 import org.pathwayeditor.visualeditor.commands.DeleteSelectionCommand;
 import org.pathwayeditor.visualeditor.commands.ICommand;
@@ -48,6 +46,8 @@ import org.pathwayeditor.visualeditor.geometry.ICommonParentCalculator;
 import org.pathwayeditor.visualeditor.layout.LabelPositionCalculator;
 import org.pathwayeditor.visualeditor.selection.ILinkSelection;
 import org.pathwayeditor.visualeditor.selection.ISelectionRecord;
+import org.pathwayeditor.visualeditor.ui.PropertyChangeDialog;
+import org.pathwayeditor.visualeditor.ui.ShapeFormatDialog;
 
 public class OperationFactory implements IOperationFactory {
 	private final IEditingOperation editOperation;

@@ -1,4 +1,4 @@
-package org.pathwayeditor.visualeditor.behaviour.selection;
+package org.pathwayeditor.visualeditor.ui;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -8,24 +8,25 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.math.BigDecimal;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import org.pathwayeditor.businessobjects.drawingprimitives.properties.IIntegerAnnotationProperty;
+import org.pathwayeditor.businessobjects.drawingprimitives.properties.INumberAnnotationProperty;
 
-public class IntegerAnnotationPropPanel extends VisualisablePanel {
+public class NumberAnnotationPropPanel extends VisualisablePanel {
 	private static final long serialVersionUID = 1L;
 	public static final String CURR_VALUE = "currValue";
 	private static final int DEF_NUM_COLS = 20;
 	private final JTextField propValueTextField = new JTextField();
-	private IIntegerAnnotationProperty annotProp;
-	private Integer currStringValue;
+	private INumberAnnotationProperty annotProp;
+	private BigDecimal currStringValue;
 	private JLabel annotationLabel;
 
-	public IntegerAnnotationPropPanel(IIntegerAnnotationProperty annotProp) {
+	public NumberAnnotationPropPanel(INumberAnnotationProperty annotProp) {
 		super(annotProp);
 		this.annotProp = annotProp;
 		currStringValue = this.annotProp.getValue();
@@ -100,8 +101,8 @@ public class IntegerAnnotationPropPanel extends VisualisablePanel {
 	
 	private void setCurrentValue(String newText){
 		try{
-			Integer newValue = Integer.valueOf(newText);
-			Integer oldValue = this.currStringValue;
+			BigDecimal newValue = new BigDecimal(newText);
+			BigDecimal oldValue = this.currStringValue;
 			if(!this.currStringValue.equals(newValue)){
 				this.currStringValue = newValue;	
 				this.firePropertyChange(CURR_VALUE, oldValue, this.currStringValue);
@@ -113,11 +114,11 @@ public class IntegerAnnotationPropPanel extends VisualisablePanel {
 	}
 	
 	
-	public Integer getCurrentValue(){
+	public BigDecimal getCurrentValue(){
 		return this.currStringValue;
 	}
 	
-	public IIntegerAnnotationProperty getAnnotationProperty(){
+	public INumberAnnotationProperty getAnnotationProperty(){
 		return this.annotProp;
 	}
 
