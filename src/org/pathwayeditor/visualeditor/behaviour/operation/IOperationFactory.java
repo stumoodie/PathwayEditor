@@ -29,7 +29,7 @@ public interface IOperationFactory {
 
 	IMarqueeOperation getMarqueeOperation();
 
-	IShapePopupActions getShapePopupMenuResponse();
+	INodePopupActions getShapePopupMenuResponse();
 
 	ILinkPopupActions getLinkPopupMenuResponse();
 

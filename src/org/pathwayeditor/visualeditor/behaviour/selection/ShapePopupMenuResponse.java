@@ -25,7 +25,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 import org.pathwayeditor.visualeditor.behaviour.IPopupMenuResponse;
-import org.pathwayeditor.visualeditor.behaviour.operation.IShapePopupActions;
+import org.pathwayeditor.visualeditor.behaviour.operation.INodePopupActions;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
 
 public class ShapePopupMenuResponse implements IPopupMenuResponse {
@@ -38,7 +38,7 @@ public class ShapePopupMenuResponse implements IPopupMenuResponse {
 	private final ActionListener propListener;
 
 	
-	public ShapePopupMenuResponse(final IShapePopupActions popupActions){
+	public ShapePopupMenuResponse(final INodePopupActions popupActions){
 		popup = new JPopupMenu();
 		deleteShapeItem = new JMenuItem("Delete");
 		formatMenuItem = new JMenuItem("Format");
@@ -56,7 +56,7 @@ public class ShapePopupMenuResponse implements IPopupMenuResponse {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				popupActions.changeShapeFormat();
+				popupActions.changeNodeFormat();
 			}
 			
 		};

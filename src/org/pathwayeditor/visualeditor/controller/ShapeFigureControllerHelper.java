@@ -47,7 +47,7 @@ public class ShapeFigureControllerHelper implements IFigureControllerHelper {
 	@Override
 	public void createFigureController(){
 		figureRenderingController = new FigureRenderingController(FigureCompilationCache.getInstance().lookup(attribute.getShapeDefinition()));
-		figureRenderingController.setRequestedEnvelope(attribute.getBounds());
+		figureRenderingController.setEnvelope(attribute.getBounds());
 		figureRenderingController.setFillColour(attribute.getFillColour());
 		figureRenderingController.setLineColour(attribute.getLineColour());
 		figureRenderingController.setLineStyle(attribute.getLineStyle());

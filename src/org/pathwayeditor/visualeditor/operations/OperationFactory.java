@@ -18,9 +18,6 @@
 */
 package org.pathwayeditor.visualeditor.operations;
 
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-
 import org.pathwayeditor.visualeditor.behaviour.operation.IDefaultPopupActions;
 import org.pathwayeditor.visualeditor.behaviour.operation.IEditingOperation;
 import org.pathwayeditor.visualeditor.behaviour.operation.ILinkBendPointPopupActions;
@@ -32,12 +29,11 @@ import org.pathwayeditor.visualeditor.behaviour.operation.IOperationFactory;
 import org.pathwayeditor.visualeditor.behaviour.operation.IResizeOperation;
 import org.pathwayeditor.visualeditor.behaviour.operation.ISelectionOperation;
 import org.pathwayeditor.visualeditor.behaviour.operation.IShapeCreationOperation;
-import org.pathwayeditor.visualeditor.behaviour.operation.IShapePopupActions;
+import org.pathwayeditor.visualeditor.behaviour.operation.INodePopupActions;
 import org.pathwayeditor.visualeditor.commands.DeleteBendPointCommand;
 import org.pathwayeditor.visualeditor.commands.DeleteSelectionCommand;
 import org.pathwayeditor.visualeditor.commands.ICommand;
 import org.pathwayeditor.visualeditor.commands.ICommandStack;
-import org.pathwayeditor.visualeditor.controller.IShapeController;
 import org.pathwayeditor.visualeditor.controller.IViewControllerModel;
 import org.pathwayeditor.visualeditor.editingview.IShapePane;
 import org.pathwayeditor.visualeditor.feedback.IFeedbackModel;
@@ -46,15 +42,13 @@ import org.pathwayeditor.visualeditor.geometry.ICommonParentCalculator;
 import org.pathwayeditor.visualeditor.layout.LabelPositionCalculator;
 import org.pathwayeditor.visualeditor.selection.ILinkSelection;
 import org.pathwayeditor.visualeditor.selection.ISelectionRecord;
-import org.pathwayeditor.visualeditor.ui.PropertyChangeDialog;
-import org.pathwayeditor.visualeditor.ui.ShapeFormatDialog;
 
 public class OperationFactory implements IOperationFactory {
 	private final IEditingOperation editOperation;
 	private final IResizeOperation resizeOperation;
 	private final ILinkOperation linkOperation;
 	private final IMarqueeOperation marqueeOperation;
-	private IShapePopupActions shapePopupMenuResponse;
+	private INodePopupActions shapePopupMenuResponse;
 	private ILinkPopupActions linkPopupMenuResponse;
 	private ILinkBendPointPopupActions linkBendpointPopupResponse;
 	private IDefaultPopupActions defaultPopupMenuResponse;
@@ -84,45 +78,7 @@ public class OperationFactory implements IOperationFactory {
 	}
 	
 	private void initResponses(){
-		this.shapePopupMenuResponse = new IShapePopupActions() {
-			
-			@Override
-			public void delete() {
-				deleteSelection();
-				selectionRecord.clear();
-				shapePane.updateView();
-			}
-
-			@Override
-			public void changeShapeFormat() {
-		        JComponent invokerAsJComponent = (JComponent) shapePane;  
-		        JFrame topLevel = (JFrame)invokerAsJComponent.getTopLevelAncestor();  
-		        ShapeFormatDialog shapeFormatDialog = new ShapeFormatDialog(topLevel);
-		        shapeFormatDialog.setLocationRelativeTo(invokerAsJComponent);
-				IShapeController shape = (IShapeController)selectionRecord.getPrimarySelection().getPrimitiveController();
-				shapeFormatDialog.setSelectedShape(shape);
-				shapeFormatDialog.setVisible(true);
-				if(shapeFormatDialog.hasFormatChanged()){
-					commandStack.execute(shapeFormatDialog.getCommand());
-					shapePane.updateView();
-				}
-			}
-
-			@Override
-			public void properties() {
-		        JComponent invokerAsJComponent = (JComponent) shapePane;  
-		        JFrame topLevel = (JFrame)invokerAsJComponent.getTopLevelAncestor();  
-		        PropertyChangeDialog propChangeDialog = new PropertyChangeDialog(topLevel);
-		        propChangeDialog.setLocationRelativeTo(invokerAsJComponent);
-				IShapeController shape = (IShapeController)selectionRecord.getPrimarySelection().getPrimitiveController();
-				propChangeDialog.setSelectedShape(shape);
-				propChangeDialog.setVisible(true);
-				if(propChangeDialog.hasFormatChanged()){
-					commandStack.execute(propChangeDialog.getCommand());
-					shapePane.updateView();
-				}
-			}
-		};
+		this.shapePopupMenuResponse = new NodePopupActions(shapePane, selectionRecord, commandStack);
 		this.linkPopupMenuResponse = new ILinkPopupActions() {
 			
 			@Override
@@ -207,7 +163,7 @@ public class OperationFactory implements IOperationFactory {
 	}
 
 	@Override
-	public IShapePopupActions getShapePopupMenuResponse() {
+	public INodePopupActions getShapePopupMenuResponse() {
 		return this.shapePopupMenuResponse;
 	}
 

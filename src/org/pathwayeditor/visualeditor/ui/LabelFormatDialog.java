@@ -44,15 +44,15 @@ import javax.swing.event.ChangeListener;
 
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.Colour;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.RGB;
-import org.pathwayeditor.visualeditor.commands.ChangeShapeFillPropertyChange;
-import org.pathwayeditor.visualeditor.commands.ChangeShapeLinePropertyChange;
-import org.pathwayeditor.visualeditor.commands.ChangeShapeLineWidth;
+import org.pathwayeditor.visualeditor.commands.ChangeLabelFillPropertyChange;
+import org.pathwayeditor.visualeditor.commands.ChangeLabelLinePropertyChange;
+import org.pathwayeditor.visualeditor.commands.ChangeLabelLineWidth;
 import org.pathwayeditor.visualeditor.commands.CompoundCommand;
 import org.pathwayeditor.visualeditor.commands.ICommand;
 import org.pathwayeditor.visualeditor.commands.ICompoundCommand;
-import org.pathwayeditor.visualeditor.controller.IShapeController;
+import org.pathwayeditor.visualeditor.controller.ILabelController;
 
-public class ShapeFormatDialog extends JDialog implements ActionListener, FocusListener {
+public class LabelFormatDialog extends JDialog implements ActionListener, FocusListener {
 	private static final long serialVersionUID = 1L;
 	private static final String OK_CMD = "ok_cmd";
 	private static final String CANCEL_CMD = "cancel_cmd";
@@ -66,7 +66,7 @@ public class ShapeFormatDialog extends JDialog implements ActionListener, FocusL
 	private final JPanel buttonPanel = new JPanel();
 	private final JButton okButton = new JButton("OK");
 	private final JButton cancelButton = new JButton("Cancel");
-	private IShapeController selectedShape;
+	private ILabelController selectedShape;
 	private JPanel lineColourLabel;
 	private JPanel fillColourLabel;
 	private ICompoundCommand latestCommand;
@@ -74,9 +74,9 @@ public class ShapeFormatDialog extends JDialog implements ActionListener, FocusL
 	private JSlider lineTransSlider;
 	private JSlider fillTransSlider;
 
-	public ShapeFormatDialog(JFrame frame){
+	public LabelFormatDialog(JFrame frame){
 		super(frame, true);
-		setTitle("Format Shape");
+		setTitle("Format Label");
 		this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.PAGE_AXIS));
 		layoutLinePanel();
 		layoutFillColourPanel();
@@ -122,7 +122,7 @@ public class ShapeFormatDialog extends JDialog implements ActionListener, FocusL
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Color lineColour = JColorChooser.showDialog(ShapeFormatDialog.this, "Line Colour", lineColourLabel.getBackground());
+				Color lineColour = JColorChooser.showDialog(LabelFormatDialog.this, "Line Colour", lineColourLabel.getBackground());
 				Color origColour = lineColourLabel.getBackground();
 				lineColourLabel.setBackground(new Color(lineColour.getRed(), lineColour.getGreen(), lineColour.getBlue(), origColour.getAlpha()));
 				linePanel.repaint();
@@ -202,7 +202,7 @@ public class ShapeFormatDialog extends JDialog implements ActionListener, FocusL
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Color fillColour = JColorChooser.showDialog(ShapeFormatDialog.this, "Fill Colour", fillColourLabel.getBackground());
+				Color fillColour = JColorChooser.showDialog(LabelFormatDialog.this, "Fill Colour", fillColourLabel.getBackground());
 				fillColourLabel.setBackground(new Color(fillColour.getRed(), fillColour.getGreen(), fillColour.getBlue(), fillColourLabel.getBackground().getAlpha()));
 				fillPanel.repaint();
 			}
@@ -255,16 +255,16 @@ public class ShapeFormatDialog extends JDialog implements ActionListener, FocusL
 	}
 
 
-	public void setSelectedShape(IShapeController shape) {
+	public void setSelectedLabel(ILabelController shape) {
 		this.selectedShape = shape;
-		Colour fillCol = this.selectedShape.getDrawingElement().getAttribute().getFillColour();
+		Colour fillCol = this.selectedShape.getDrawingElement().getAttribute().getBackgroundColor();
 		RGB fillRGB = fillCol.getRgb();
 		Color fillColour = new Color(fillRGB.getRed(), fillRGB.getGreen(), fillRGB.getBlue(), fillCol.getAlpha());
 		fillColourLabel.setBackground(fillColour);
 		setFillTransparency(fillColour);
 //		fillColourLabel.setVisible(false);
 //		fillColourLabel.setVisible(true);
-		Colour lineCol = this.selectedShape.getDrawingElement().getAttribute().getLineColour();
+		Colour lineCol = this.selectedShape.getDrawingElement().getAttribute().getForegroundColor();
 		RGB lineRGB = lineCol.getRgb();
 		Color lineColour = new Color(lineRGB.getRed(), lineRGB.getGreen(), lineRGB.getBlue(), lineCol.getAlpha());
 		lineColourLabel.setBackground(lineColour);
@@ -305,17 +305,17 @@ public class ShapeFormatDialog extends JDialog implements ActionListener, FocusL
 		if(e.getActionCommand().equals(OK_CMD)){
 			Color fillColour = this.fillColourLabel.getBackground();
 			Colour fillCol = new Colour(fillColour.getRed(), fillColour.getGreen(), fillColour.getBlue(), fillColour.getAlpha());
-			if(!this.selectedShape.getDrawingElement().getAttribute().getFillColour().equals(fillCol)){
-				this.latestCommand.addCommand(new ChangeShapeFillPropertyChange(this.selectedShape.getDrawingElement().getAttribute(), fillCol));
+			if(!this.selectedShape.getDrawingElement().getAttribute().getBackgroundColor().equals(fillCol)){
+				this.latestCommand.addCommand(new ChangeLabelFillPropertyChange(this.selectedShape.getDrawingElement().getAttribute(), fillCol));
 			}
 			Color lineColour = this.lineColourLabel.getBackground();
 			Colour lineCol = new Colour(lineColour.getRed(), lineColour.getGreen(), lineColour.getBlue(), lineColour.getAlpha());
-			if(!this.selectedShape.getDrawingElement().getAttribute().getLineColour().equals(lineCol)){
-				this.latestCommand.addCommand(new ChangeShapeLinePropertyChange(this.selectedShape.getDrawingElement().getAttribute(), lineCol));
+			if(!this.selectedShape.getDrawingElement().getAttribute().getForegroundColor().equals(lineCol)){
+				this.latestCommand.addCommand(new ChangeLabelLinePropertyChange(this.selectedShape.getDrawingElement().getAttribute(), lineCol));
 			}
 			Integer selectedLineWidth = (Integer)this.lineWidthCombo.getSelectedItem();
 			if(!(this.selectedShape.getDrawingElement().getAttribute().getLineWidth() == selectedLineWidth.doubleValue())){
-				this.latestCommand.addCommand(new ChangeShapeLineWidth(this.selectedShape.getDrawingElement().getAttribute(), selectedLineWidth.doubleValue()));
+				this.latestCommand.addCommand(new ChangeLabelLineWidth(this.selectedShape.getDrawingElement().getAttribute(), selectedLineWidth.doubleValue()));
 			}
 			this.setVisible(false);
 		}

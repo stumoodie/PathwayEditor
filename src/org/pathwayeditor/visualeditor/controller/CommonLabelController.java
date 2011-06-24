@@ -27,6 +27,7 @@ import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNodeAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILabelAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILabelNode;
+import org.pathwayeditor.businessobjects.drawingprimitives.attributes.Colour;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.CanvasAttributePropertyChange;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IAnnotationPropertyChangeEvent;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IAnnotationPropertyChangeListener;
@@ -57,12 +58,12 @@ public abstract class CommonLabelController extends NodeController implements IL
 		"/cardinalityBox { /card exch def /fsize exch def /cpy exch def /cpx exch def\n" +
 		"card cvs textbounds /hoff exch curlinewidth 2 mul add h div def /woff exch curlinewidth 2 mul add w div def \n" +
 		"gsave\n" +
-		"255 255 255 255 setfillcol cpx xoffset cpy yoffset (C) card cvs text\n" +
+		"cpx xoffset cpy yoffset (C) card cvs text\n" +
 		"grestore\n" +
 		"} def\n" +
 		"gsave\n" +
 		":noborderFlag \n{" +
-		"0 0 0 255 setlinecol\n" +
+//		"0 0 0 255 setlinecol\n" +
 		"} if\n" +
 		"0.0 xoffset 0.0 yoffset w h rect\n" +
 		"grestore\n" +
@@ -87,6 +88,19 @@ public abstract class CommonLabelController extends NodeController implements IL
 					getFigureController().setEnvelope(attribute.getBounds());
 					getFigureController().generateFigureDefinition();
 					notifyDrawnBoundsChanged(oldDrawnBounds, getFigureController().getConvexHull().getEnvelope());
+				}
+				else if(e.getPropertyChange().equals(CanvasAttributePropertyChange.LINE_COLOUR)){
+					getFigureController().setLineColour((Colour)e.getNewValue());
+					getFigureController().generateFigureDefinition();
+				}
+				else if(e.getPropertyChange().equals(CanvasAttributePropertyChange.FILL_COLOUR)){
+					getFigureController().setFillColour((Colour)e.getNewValue());
+					getFigureController().generateFigureDefinition();
+				}
+				else if(e.getPropertyChange().equals(CanvasAttributePropertyChange.LINE_WIDTH)){
+					Double newLineWidth = (Double)e.getNewValue();
+					getFigureController().setLineWidth(newLineWidth);
+					getFigureController().generateFigureDefinition();
 				}
 			}
 

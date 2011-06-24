@@ -20,11 +20,11 @@ package org.pathwayeditor.visualeditor.behaviour.operation;
 
 
 
-public interface IShapePopupActions {
+public interface INodePopupActions {
 
 	void delete();
 
-	void changeShapeFormat();
+	void changeNodeFormat();
 
 	void properties();
 

@@ -49,7 +49,6 @@ import org.pathwayeditor.visualeditor.commands.ICommand;
 import org.pathwayeditor.visualeditor.commands.ICompoundCommand;
 import org.pathwayeditor.visualeditor.commands.LabelCreationCommand;
 import org.pathwayeditor.visualeditor.commands.LabelDeletionCommand;
-import org.pathwayeditor.visualeditor.controller.IShapeController;
 import org.pathwayeditor.visualeditor.layout.ILabelPositionCalculator;
 import org.pathwayeditor.visualeditor.layout.LabelPositionCalculator;
 
@@ -113,80 +112,89 @@ public class PropertyChangeDialog extends JDialog implements ActionListener, Foc
 		this.okButton.setEnabled(true);
 	}
 
-	public void setSelectedShape(IShapeController shape) {
-		Iterator<IAnnotationProperty> iter = shape.getDrawingElement().getAttribute().propertyIterator();
+	
+	private void processProperty(IAnnotationProperty annotProp){
+		annotProp.visit(new IAnnotationPropertyVisitor() {
+			
+			@Override
+			public void visitPlainTextAnnotationProperty(final IPlainTextAnnotationProperty prop) {
+				StringAnnotationPropPanel panel = new StringAnnotationPropPanel(prop);
+				tabbedPane.addTab(prop.getDefinition().getDisplayName(), panel);
+				panel.addPropertyChangeListener(StringAnnotationPropPanel.CURR_VALUE, new PropertyChangeListener() {
+					@Override
+					public void propertyChange(PropertyChangeEvent evt) {
+						addCommand(prop, evt.getNewValue());
+					}
+				});
+				panel.addPropertyChangeListener(StringAnnotationPropPanel.IS_VISUALISABLE, new PropertyChangeListener() {
+					@Override
+					public void propertyChange(PropertyChangeEvent evt) {
+						Boolean isVisualised = (Boolean)evt.getNewValue();
+						if(isVisualised.booleanValue()){
+							createLabelCommand(prop);
+						}
+						else{
+							deleteLabelCommand(prop);
+						}
+					}
+
+				});
+			}
+			
+			@Override
+			public void visitNumberAnnotationProperty(final INumberAnnotationProperty prop) {
+				NumberAnnotationPropPanel panel = new NumberAnnotationPropPanel(prop);
+				tabbedPane.addTab(prop.getDefinition().getDisplayName(), panel);
+				panel.addPropertyChangeListener(NumberAnnotationPropPanel.CURR_VALUE, new PropertyChangeListener() {
+					
+					@Override
+					public void propertyChange(PropertyChangeEvent evt) {
+						addCommand(prop, evt.getNewValue());
+					}
+				});
+			}
+			
+			@Override
+			public void visitListAnnotationProperty(IListAnnotationProperty prop) {
+			}
+			
+			@Override
+			public void visitIntegerAnnotationProperty(final IIntegerAnnotationProperty prop) {
+				IntegerAnnotationPropPanel panel = new IntegerAnnotationPropPanel(prop);
+				tabbedPane.addTab(prop.getDefinition().getDisplayName(), panel);
+				panel.addPropertyChangeListener(IntegerAnnotationPropPanel.CURR_VALUE, new PropertyChangeListener() {
+					
+					@Override
+					public void propertyChange(PropertyChangeEvent evt) {
+						addCommand(prop, evt.getNewValue());
+					}
+				});
+			}
+			
+			@Override
+			public void visitBooleanAnnotationProperty(final IBooleanAnnotationProperty prop) {
+				BooleanAnnotationPropPanel panel = new BooleanAnnotationPropPanel(prop);
+				tabbedPane.addTab(prop.getDefinition().getDisplayName(), panel);
+				panel.addPropertyChangeListener(BooleanAnnotationPropPanel.CURR_VALUE, new PropertyChangeListener() {
+					
+					@Override
+					public void propertyChange(PropertyChangeEvent evt) {
+						addCommand(prop, evt.getNewValue());
+					}
+				});
+			}
+		});
+	}
+	
+	public void setAnnotatedObject(IAnnotationProperty annotProp) {
+		this.processProperty(annotProp);
+	}
+		
+	public void setAnnotatedObject(Iterator<IAnnotationProperty> iter) {
+//		Iterator<IAnnotationProperty> iter = shape.propertyIterator();
 		while(iter.hasNext()){
 			IAnnotationProperty annotProp = iter.next();
-			annotProp.visit(new IAnnotationPropertyVisitor() {
-				
-				@Override
-				public void visitPlainTextAnnotationProperty(final IPlainTextAnnotationProperty prop) {
-					StringAnnotationPropPanel panel = new StringAnnotationPropPanel(prop);
-					tabbedPane.addTab(prop.getDefinition().getDisplayName(), panel);
-					panel.addPropertyChangeListener(StringAnnotationPropPanel.CURR_VALUE, new PropertyChangeListener() {
-						@Override
-						public void propertyChange(PropertyChangeEvent evt) {
-							addCommand(prop, evt.getNewValue());
-						}
-					});
-					panel.addPropertyChangeListener(StringAnnotationPropPanel.IS_VISUALISABLE, new PropertyChangeListener() {
-						@Override
-						public void propertyChange(PropertyChangeEvent evt) {
-							Boolean isVisualised = (Boolean)evt.getNewValue();
-							if(isVisualised.booleanValue()){
-								createLabelCommand(prop);
-							}
-							else{
-								deleteLabelCommand(prop);
-							}
-						}
-
-					});
-				}
-				
-				@Override
-				public void visitNumberAnnotationProperty(final INumberAnnotationProperty prop) {
-					NumberAnnotationPropPanel panel = new NumberAnnotationPropPanel(prop);
-					tabbedPane.addTab(prop.getDefinition().getDisplayName(), panel);
-					panel.addPropertyChangeListener(NumberAnnotationPropPanel.CURR_VALUE, new PropertyChangeListener() {
-						
-						@Override
-						public void propertyChange(PropertyChangeEvent evt) {
-							addCommand(prop, evt.getNewValue());
-						}
-					});
-				}
-				
-				@Override
-				public void visitListAnnotationProperty(IListAnnotationProperty prop) {
-				}
-				
-				@Override
-				public void visitIntegerAnnotationProperty(final IIntegerAnnotationProperty prop) {
-					IntegerAnnotationPropPanel panel = new IntegerAnnotationPropPanel(prop);
-					tabbedPane.addTab(prop.getDefinition().getDisplayName(), panel);
-					panel.addPropertyChangeListener(IntegerAnnotationPropPanel.CURR_VALUE, new PropertyChangeListener() {
-						
-						@Override
-						public void propertyChange(PropertyChangeEvent evt) {
-							addCommand(prop, evt.getNewValue());
-						}
-					});
-				}
-				
-				@Override
-				public void visitBooleanAnnotationProperty(final IBooleanAnnotationProperty prop) {
-					BooleanAnnotationPropPanel panel = new BooleanAnnotationPropPanel(prop);
-					tabbedPane.addTab(prop.getDefinition().getDisplayName(), panel);
-					panel.addPropertyChangeListener(BooleanAnnotationPropPanel.CURR_VALUE, new PropertyChangeListener() {
-						
-						@Override
-						public void propertyChange(PropertyChangeEvent evt) {
-							addCommand(prop, evt.getNewValue());
-						}
-					});
-				}
-			});
+			processProperty(annotProp);
 		}
 		this.tabbedPane.validate();
 	}
