@@ -41,7 +41,6 @@ import java.util.EnumSet;
 import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.Colour;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LineStyle;
-import org.pathwayeditor.businessobjects.drawingprimitives.attributes.Colour;
 import org.pathwayeditor.figure.rendering.GraphicalTextAlignment;
 import org.pathwayeditor.figure.rendering.IFont;
 import org.pathwayeditor.figure.rendering.IFont.Style;
@@ -56,6 +55,7 @@ public class Java2DGraphicsEngine implements IGraphicsEngine {
 	private Graphics2D g;
 	private Colour fillColour = Colour.WHITE;
 	private Colour lineColour = Colour.BLACK;
+	private Colour fontColour = Colour.BLACK;
 	private double lineWidth = MIN_LINE_WIDTH_PIXELS;
 	private LineStyle lineStyle = LineStyle.SOLID;
 
@@ -88,6 +88,12 @@ public class Java2DGraphicsEngine implements IGraphicsEngine {
 	private void setFillColour(){
 		if(this.fillColour != null){
 			setColour(this.fillColour);
+		}
+	}
+	
+	private void setFontColour(){
+		if(this.fontColour != null){
+			setColour(this.fontColour);
 		}
 	}
 	
@@ -186,7 +192,7 @@ public class Java2DGraphicsEngine implements IGraphicsEngine {
 	@Override
 	public void drawString(String text, double x, double y, GraphicalTextAlignment align) {
 		if (!text.isEmpty()) {
-			this.setLineColour();
+			this.setFontColour();
 			this.setStroke();
 			Font f = g.getFont();
 			TextLayout layout = new TextLayout(text, f,
@@ -410,6 +416,15 @@ public class Java2DGraphicsEngine implements IGraphicsEngine {
 	@Override
 	public void setLineStyle(LineStyle style) {
 		this.lineStyle = style;
+	}
+
+	@Override
+	public void setFontColor(Colour color) {
+		if(color == null) throw new IllegalArgumentException("Cannot be null");
+		this.fontColour = color;
+		if(logger.isDebugEnabled()){
+			logger.debug("setFontColor: color=" + this.fontColour );
+		}
 	}
 
 }
