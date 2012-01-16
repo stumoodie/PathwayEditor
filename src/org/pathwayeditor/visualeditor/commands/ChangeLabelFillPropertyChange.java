@@ -15,18 +15,18 @@ public class ChangeLabelFillPropertyChange implements ICommand {
 	
 	@Override
 	public void execute() {
-		this.oldFillColour = this.attribute.getBackgroundColor(); 
+		this.oldFillColour = this.attribute.getFillColour(); 
 		redo();
 	}
 
 	@Override
 	public void undo() {
-		this.attribute.setBackgroundColor(this.oldFillColour);
+		this.attribute.setFillColour(this.oldFillColour);
 	}
 
 	@Override
 	public void redo() {
-		this.attribute.setBackgroundColor(newFillColour);
+		this.attribute.setFillColour(newFillColour);
 	}
 
 }

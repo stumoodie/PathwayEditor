@@ -50,19 +50,16 @@ public class FeedbackNodeBuilder implements IFeedbackNodeBuilder {
 	private final String LABEL_DEFINITION =
 		"curbounds /h exch def /w exch def /y exch def /x exch def\n" +
 		"/xoffset { w mul x add } def /yoffset { h mul y add } def\n" +
-		"/cardinalityBox { /card exch def /fsize exch def /cpy exch def /cpx exch def\n" +
+		"/cardinalityBox { /card exch def /cpy exch def /cpx exch def\n" +
 		"card cvs textbounds /hoff exch curlinewidth 2 mul add h div def /woff exch curlinewidth 2 mul add w div def \n" +
 		"gsave\n" +
 		"255 255 255 255 setfillcol cpx xoffset cpy yoffset (C) card cvs text\n" +
 		"grestore\n" +
 		"} def\n" +
 		"gsave\n" +
-		":noborderFlag \n{" +
-		"0 0 0 255 setlinecol\n" +
-		"} if\n" +
 		"0.0 xoffset 0.0 yoffset w h rect\n" +
 		"grestore\n" +
-		"0.5 0.5 :labelFontSize :labelText cardinalityBox\n";
+		"0.5 0.5 :labelText cardinalityBox\n";
 
 	private final Logger logger = Logger.getLogger(this.getClass());
 	private final FeedbackModel feedbackModel;
@@ -129,28 +126,28 @@ public class FeedbackNodeBuilder implements IFeedbackNodeBuilder {
 		FigureDefinitionCompiler compiler = new FigureDefinitionCompiler(DEFAULT_DEFINITION);
 		compiler.compile();
 		IFigureRenderingController figureRenderingController = new FigureRenderingController(compiler.getCompiledFigureDefinition());
-		figureRenderingController.setRequestedEnvelope(initialBounds);
+		figureRenderingController.setEnvelope(initialBounds);
 		figureRenderingController.generateFigureDefinition();
 		return figureRenderingController;
 	}
 
 	private IFigureRenderingController createLabelController(ILabelAttribute attribute){
 		IFigureRenderingController figureRenderingController = new FigureRenderingController(FigureCompilationCache.getInstance().lookup(LABEL_DEFINITION));
-		figureRenderingController.setRequestedEnvelope(attribute.getBounds());
-		figureRenderingController.setFillColour(attribute.getBackgroundColor());
-		figureRenderingController.setLineColour(attribute.getForegroundColor());
+		figureRenderingController.setEnvelope(attribute.getBounds());
+		figureRenderingController.setFillColour(attribute.getFillColour());
+		figureRenderingController.setLineColour(attribute.getLineColour());
 		figureRenderingController.setLineStyle(attribute.getLineStyle());
 		figureRenderingController.setLineWidth(attribute.getLineWidth());
-		figureRenderingController.setBindDouble("labelFontSize", 10.0);
+		figureRenderingController.setFontColour(attribute.getFontColour());
+		figureRenderingController.setFont(attribute.getFont());
 		figureRenderingController.setBindString("labelText", attribute.getDisplayedContent());
-		figureRenderingController.setBindBoolean("noborderFlag", attribute.hasNoBorder());
 		figureRenderingController.generateFigureDefinition();
 		return figureRenderingController;
 	}
 
 	private IFigureRenderingController createShapeController(IShapeAttribute attribute){
 		IFigureRenderingController figureRenderingController = new FigureRenderingController(FigureCompilationCache.getInstance().lookup(attribute.getShapeDefinition()));
-		figureRenderingController.setRequestedEnvelope(attribute.getBounds());
+		figureRenderingController.setEnvelope(attribute.getBounds());
 		figureRenderingController.setFillColour(attribute.getFillColour());
 		figureRenderingController.setLineColour(attribute.getLineColour());
 		figureRenderingController.setLineStyle(attribute.getLineStyle());

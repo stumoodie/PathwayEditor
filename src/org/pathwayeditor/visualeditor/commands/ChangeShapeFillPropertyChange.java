@@ -2,7 +2,6 @@ package org.pathwayeditor.visualeditor.commands;
 
 import org.pathwayeditor.businessobjects.drawingprimitives.IShapeAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.Colour;
-import org.pathwayeditor.businessobjects.drawingprimitives.attributes.Colour;
 
 public class ChangeShapeFillPropertyChange implements ICommand {
 	private IShapeAttribute attribute;

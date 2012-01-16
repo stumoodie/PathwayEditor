@@ -41,7 +41,9 @@ import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.figure.geometry.RectangleHull;
 import org.pathwayeditor.figure.rendering.FigureRenderingController;
+import org.pathwayeditor.figure.rendering.GenericFont;
 import org.pathwayeditor.figure.rendering.IFigureRenderingController;
+import org.pathwayeditor.figure.rendering.IFont;
 import org.pathwayeditor.visualeditor.editingview.FigureDefinitionMiniCanvas;
 import org.pathwayeditor.visualeditor.editingview.IMiniCanvas;
 import org.pathwayeditor.visualeditor.feedback.FigureCompilationCache;
@@ -55,19 +57,16 @@ public abstract class CommonLabelController extends NodeController implements IL
 	private final String LABEL_DEFINITION =
 		"curbounds /h exch def /w exch def /y exch def /x exch def\n" +
 		"/xoffset { w mul x add } def /yoffset { h mul y add } def\n" +
-		"/cardinalityBox { /card exch def /fsize exch def /cpy exch def /cpx exch def\n" +
+		"/cardinalityBox { /card exch def /cpy exch def /cpx exch def\n" +
 		"card cvs textbounds /hoff exch curlinewidth 2 mul add h div def /woff exch curlinewidth 2 mul add w div def \n" +
 		"gsave\n" +
 		"cpx xoffset cpy yoffset (C) card cvs text\n" +
 		"grestore\n" +
 		"} def\n" +
 		"gsave\n" +
-		":noborderFlag \n{" +
-//		"0 0 0 255 setlinecol\n" +
-		"} if\n" +
 		"0.0 xoffset 0.0 yoffset w h rect\n" +
 		"grestore\n" +
-		"0.5 0.5 :labelFontSize :labelText cardinalityBox\n";
+		"0.5 0.5 :labelText cardinalityBox\n";
 	private final ILabelNode domainNode;
 	private final IFigureRenderingController controller;
 	private boolean isActive;
@@ -97,6 +96,17 @@ public abstract class CommonLabelController extends NodeController implements IL
 					getFigureController().setFillColour((Colour)e.getNewValue());
 					getFigureController().generateFigureDefinition();
 				}
+				else if(e.getPropertyChange().equals(CanvasAttributePropertyChange.FONT_COLOUR)){
+					getFigureController().setFontColour((Colour)e.getNewValue());
+					getFigureController().generateFigureDefinition();
+				}
+				else if(e.getPropertyChange().equals(CanvasAttributePropertyChange.FONT)){
+					getFigureController().setFont((GenericFont)e.getNewValue());
+					Envelope newBounds = recalculateLabelSize(domainNode.getAttribute().getDisplayedContent());
+					domainNode.getAttribute().setBounds(newBounds);
+//					getFigureController().setEnvelope(newBounds);
+//					getFigureController().generateFigureDefinition();
+				}
 				else if(e.getPropertyChange().equals(CanvasAttributePropertyChange.LINE_WIDTH)){
 					Double newLineWidth = (Double)e.getNewValue();
 					getFigureController().setLineWidth(newLineWidth);
@@ -117,21 +127,43 @@ public abstract class CommonLabelController extends NodeController implements IL
 			public void propertyChange(IAnnotationPropertyChangeEvent e) {
 				String text = domainNode.getAttribute().getDisplayedContent();
 				getFigureController().setBindString(LABEL_TEXT, text);
-				Dimension textExtent = MIN_LABEL_SIZE;
-				if(!text.isEmpty()){
-					textExtent = handleGetTextBounds(text);
-				}
-				Envelope newBounds = adjustForDefaultTextLength(getConvexHull().getCentre(), textExtent);
+//				recalculateLabelSize(text);
+//				Dimension textExtent = MIN_LABEL_SIZE;
+//				if(!text.isEmpty()){
+//					textExtent = handleGetTextBounds(text);
+//				}
+//				Envelope newBounds = adjustForDefaultTextLength(getConvexHull().getCentre(), textExtent);
+				Envelope newBounds = recalculateLabelSize(text);
 				getFigureController().setEnvelope(newBounds);
 				getFigureController().generateFigureDefinition();
 			}
 		};
 	}
 
+	private Envelope recalculateLabelSize(String text){
+		Dimension textExtent = MIN_LABEL_SIZE;
+		if(!text.isEmpty()){
+			textExtent = handleGetTextBounds(text);
+		}
+		Envelope newBounds = adjustForDefaultTextLength(getConvexHull().getCentre(), textExtent);
+		return newBounds;
+	}
+	
 	private Dimension handleGetTextBounds(String text) {
-		double size = DEFAULT_FONT_HEIGHT;
-		int style = Font.PLAIN;
-    	Font f = new Font(FONT_NAME, style, (int)Math.ceil(size));
+		GenericFont attFont = this.domainNode.getAttribute().getFont();
+		int style = 0;
+		for(IFont.Style s : attFont.getStyle()){
+			if(s.equals(IFont.Style.NORMAL)){
+				style = Font.PLAIN;
+			}
+			else if(s.equals(IFont.Style.BOLD)){
+				style |= Font.BOLD;
+			}
+			else if(s.equals(IFont.Style.ITALIC)){
+				style |= Font.ITALIC;
+			}
+		}
+    	Font f = new Font(FONT_NAME, style, (int)Math.ceil(attFont.getFontSize()));
     	AffineTransform af = new AffineTransform();
     	FontRenderContext ctx = new FontRenderContext(af, false, false);
     	Rectangle2D bounds = f.getStringBounds(text, ctx);
@@ -147,13 +179,13 @@ public abstract class CommonLabelController extends NodeController implements IL
 	private IFigureRenderingController createController(ILabelAttribute attribute){
 		IFigureRenderingController figureRenderingController = new FigureRenderingController(FigureCompilationCache.getInstance().lookup(LABEL_DEFINITION));
 		figureRenderingController.setEnvelope(attribute.getBounds());
-		figureRenderingController.setFillColour(attribute.getBackgroundColor());
-		figureRenderingController.setLineColour(attribute.getForegroundColor());
+		figureRenderingController.setFillColour(attribute.getFillColour());
+		figureRenderingController.setLineColour(attribute.getLineColour());
 		figureRenderingController.setLineStyle(attribute.getLineStyle());
 		figureRenderingController.setLineWidth(attribute.getLineWidth());
-		figureRenderingController.setBindDouble("labelFontSize", 10.0);
+		figureRenderingController.setFontColour(attribute.getFontColour());
+		figureRenderingController.setFont(attribute.getFont());
 		figureRenderingController.setBindString(LABEL_TEXT, attribute.getDisplayedContent());
-		figureRenderingController.setBindBoolean("noborderFlag", attribute.hasNoBorder());
 		figureRenderingController.generateFigureDefinition();
 		return figureRenderingController;
 	}

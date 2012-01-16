@@ -24,8 +24,8 @@ import org.pathwayeditor.figure.geometry.Point;
 
 public class ResizeNodeCommand implements ICommand {
 	private final IDrawingNodeAttribute node;
-	private Point originDelta;
-	private Dimension sizeDelta;
+	private final Point originDelta;
+	private final Dimension sizeDelta;
 	
 	
 	public ResizeNodeCommand(IDrawingNodeAttribute drawingElement, Point originDelta, Dimension sizeDelta) {

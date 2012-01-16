@@ -47,12 +47,8 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="libs/graphicsRepo/jlfgr-1_0.jar"/>
 	<classpathentry kind="lib" path="libs/compoundGraph/CompoundGraph.jar"/>
-	<classpathentry kind="lib" path="libs/NotationSubsystemUtils/NotationSubsystemUtils.jar" sourcepath="libs/NotationSubsystemUtils/NotationSubsystemUtils-src.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:platform:/resource/PathwayEditor/libs/NotationSubsystemUtils/NotationSubsystemUtils-docs.jar!/"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry combineaccessrules="false" kind="src" path="/SbgnPdNotationSubsystem"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/VisualLanguageToolkit"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/NotationSubsystemUtils"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

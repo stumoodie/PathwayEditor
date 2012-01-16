@@ -207,7 +207,6 @@ public class VisualEditorController implements IVisualEditorController {
 	@Override
 	public void closeFile() {
 		this.pathwayEditor.close();
-		pathwayEditor.getSelectionRecord().removeSelectionChangeListener(selectionChangeListener);
 	}
 
 	@Override

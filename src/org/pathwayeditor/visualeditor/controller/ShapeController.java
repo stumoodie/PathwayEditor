@@ -42,6 +42,7 @@ import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.figure.geometry.RectangleHull;
+import org.pathwayeditor.figure.rendering.GenericFont;
 import org.pathwayeditor.figure.rendering.IFigureRenderingController;
 import org.pathwayeditor.visualeditor.editingview.FigureDefinitionMiniCanvas;
 import org.pathwayeditor.visualeditor.editingview.IMiniCanvas;
@@ -76,6 +77,14 @@ public class ShapeController extends NodeController implements IShapeController 
 				}
 				else if(e.getPropertyChange().equals(CanvasAttributePropertyChange.FILL_COLOUR)){
 					figureController.getFigureController().setFillColour((Colour)e.getNewValue());
+					figureController.refreshGraphicalAttributes();
+				}
+				else if(e.getPropertyChange().equals(CanvasAttributePropertyChange.FONT_COLOUR)){
+					figureController.getFigureController().setFontColour((Colour)e.getNewValue());
+					figureController.refreshGraphicalAttributes();
+				}
+				else if(e.getPropertyChange().equals(CanvasAttributePropertyChange.FONT)){
+					figureController.getFigureController().setFont((GenericFont)e.getNewValue());
 					figureController.refreshGraphicalAttributes();
 				}
 				else if(e.getPropertyChange().equals(CanvasAttributePropertyChange.LINE_WIDTH)){

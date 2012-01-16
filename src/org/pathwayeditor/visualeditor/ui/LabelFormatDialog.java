@@ -28,6 +28,8 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -44,7 +46,9 @@ import javax.swing.event.ChangeListener;
 
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.Colour;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.RGB;
+import org.pathwayeditor.visualeditor.commands.ChangeFontColourPropertyChange;
 import org.pathwayeditor.visualeditor.commands.ChangeLabelFillPropertyChange;
+import org.pathwayeditor.visualeditor.commands.ChangeLabelFontSize;
 import org.pathwayeditor.visualeditor.commands.ChangeLabelLinePropertyChange;
 import org.pathwayeditor.visualeditor.commands.ChangeLabelLineWidth;
 import org.pathwayeditor.visualeditor.commands.CompoundCommand;
@@ -57,11 +61,14 @@ public class LabelFormatDialog extends JDialog implements ActionListener, FocusL
 	private static final String OK_CMD = "ok_cmd";
 	private static final String CANCEL_CMD = "cancel_cmd";
 	private static final Object[] LINE_WIDTH_OPTION = new Integer[] { new Integer(1), new Integer(2), new Integer(4), new Integer(6), new Integer(8), new Integer(10) };
+	private static final int MIN_FONT_HEIGHT = 4;
+	private static final int MAX_FONT_HEIGHT = 20;
 	private static final double MIN_LINE_WIDTH = 1.0;
 	private static final int MIN_TRANS = 0;
 	private static final int MAX_TRANS = 100;
 	private static final int TRANS_INIT = MAX_TRANS;
 	private final JPanel fillPanel = new JPanel();
+	private final JPanel fontPanel = new JPanel();
 	private final JPanel linePanel = new JPanel();
 	private final JPanel buttonPanel = new JPanel();
 	private final JButton okButton = new JButton("OK");
@@ -69,10 +76,13 @@ public class LabelFormatDialog extends JDialog implements ActionListener, FocusL
 	private ILabelController selectedShape;
 	private JPanel lineColourLabel;
 	private JPanel fillColourLabel;
+	private JPanel fontColourLabel;
 	private ICompoundCommand latestCommand;
 	private JComboBox lineWidthCombo;
+	private JComboBox fontSizeCombo;
 	private JSlider lineTransSlider;
 	private JSlider fillTransSlider;
+	private JSlider fontTransSlider;
 
 	public LabelFormatDialog(JFrame frame){
 		super(frame, true);
@@ -80,6 +90,7 @@ public class LabelFormatDialog extends JDialog implements ActionListener, FocusL
 		this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.PAGE_AXIS));
 		layoutLinePanel();
 		layoutFillColourPanel();
+		layoutFontColourPanel();
 		this.okButton.addActionListener(this);
 		this.okButton.setActionCommand(OK_CMD);
 		this.cancelButton.addActionListener(this);
@@ -88,6 +99,7 @@ public class LabelFormatDialog extends JDialog implements ActionListener, FocusL
 		this.buttonPanel.add(cancelButton);
 		this.add(linePanel);
 		this.add(fillPanel);
+		this.add(fontPanel);
 		this.add(buttonPanel);
 		this.addComponentListener(new ComponentListener(){
 			@Override
@@ -255,24 +267,109 @@ public class LabelFormatDialog extends JDialog implements ActionListener, FocusL
 	}
 
 
+	private void layoutFontColourPanel(){
+		fontPanel.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createTitledBorder("Font"),
+				BorderFactory.createEmptyBorder(5,5,5,5)));
+		fontPanel.setLayout(new GridBagLayout());
+		JLabel colourLabel = new JLabel("Colour");
+		fontColourLabel = new JPanel();
+		fontColourLabel.setPreferredSize(new Dimension(100, 20));
+		JButton colorDialogButton = new JButton("...");
+		
+		colorDialogButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Color fontColour = JColorChooser.showDialog(LabelFormatDialog.this, "Font Colour", fontColourLabel.getBackground());
+				fontColourLabel.setBackground(new Color(fontColour.getRed(), fontColour.getGreen(), fontColour.getBlue(), fontColourLabel.getBackground().getAlpha()));
+				fontPanel.repaint();
+			}
+		});
+		GridBagConstraints c1 = new GridBagConstraints();
+		c1.gridx = 0;
+		c1.gridy = 0;
+		c1.ipadx = 6;
+		fontPanel.add(colourLabel, c1);
+		GridBagConstraints c2 = new GridBagConstraints();
+		c2.gridx = 1;
+		c2.gridy = 0;
+		fontPanel.add(fontColourLabel, c2);
+		GridBagConstraints c3 = new GridBagConstraints();
+		c3.gridx = 2;
+		c3.gridy = 0;
+		c3.ipadx = 6;
+		fontPanel.add(colorDialogButton, c3);
+		JLabel transparencyLabel = new JLabel("Transparency");
+		this.fontTransSlider = new JSlider(JSlider.HORIZONTAL, MIN_TRANS, MAX_TRANS, TRANS_INIT);
+		this.fontTransSlider.setMajorTickSpacing(25);
+		this.fontTransSlider.setMinorTickSpacing(10);
+		this.fontTransSlider.setPaintTicks(true);
+		this.fontTransSlider.setPaintLabels(true);
+		this.fontTransSlider.setPaintTrack(true);
+		this.fontTransSlider.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				JSlider source = (JSlider)e.getSource();
+				if(!source.getValueIsAdjusting()){
+					float alpha = source.getValue();
+					int currentAlpha = Math.round((alpha/100.0f) * (float)Colour.OPAQUE);
+					Color col = fontColourLabel.getBackground();
+					Color newCol = new Color(col.getRed(), col.getGreen(), col.getBlue(), currentAlpha);
+					fontColourLabel.setBackground(newCol);
+					fontPanel.repaint();
+				}
+			}
+		});
+		
+		GridBagConstraints c6 = new GridBagConstraints();
+		c6.gridx = 0;
+		c6.gridy = 1;
+		fontPanel.add(transparencyLabel, c6);
+		GridBagConstraints c7 = new GridBagConstraints();
+		c7.gridx = 1;
+		c7.gridy = 1;
+		c7.gridwidth = GridBagConstraints.REMAINDER;
+		fontPanel.add(fontTransSlider, c7);
+		JLabel fontSizeLabel = new JLabel("Font Size");
+		List<Integer> fontHeightOptions = new LinkedList<Integer>();
+		for(int i = MIN_FONT_HEIGHT; i <= MAX_FONT_HEIGHT; i++){
+			fontHeightOptions.add(i);
+		}
+		fontSizeCombo = new JComboBox(fontHeightOptions.toArray());
+		GridBagConstraints c8 = new GridBagConstraints();
+		c8.gridx = 0;
+		c8.gridy = 2;
+		fontPanel.add(fontSizeLabel, c8);
+		GridBagConstraints c9 = new GridBagConstraints();
+		c9.gridx = 1;
+		c9.gridy = 2;
+		c9.fill = GridBagConstraints.HORIZONTAL;
+		fontPanel.add(fontSizeCombo, c9);
+	}
+
+
 	public void setSelectedLabel(ILabelController shape) {
 		this.selectedShape = shape;
-		Colour fillCol = this.selectedShape.getDrawingElement().getAttribute().getBackgroundColor();
+		Colour fillCol = this.selectedShape.getDrawingElement().getAttribute().getFillColour();
 		RGB fillRGB = fillCol.getRgb();
 		Color fillColour = new Color(fillRGB.getRed(), fillRGB.getGreen(), fillRGB.getBlue(), fillCol.getAlpha());
 		fillColourLabel.setBackground(fillColour);
 		setFillTransparency(fillColour);
-//		fillColourLabel.setVisible(false);
-//		fillColourLabel.setVisible(true);
-		Colour lineCol = this.selectedShape.getDrawingElement().getAttribute().getForegroundColor();
+		Colour lineCol = this.selectedShape.getDrawingElement().getAttribute().getLineColour();
 		RGB lineRGB = lineCol.getRgb();
 		Color lineColour = new Color(lineRGB.getRed(), lineRGB.getGreen(), lineRGB.getBlue(), lineCol.getAlpha());
 		lineColourLabel.setBackground(lineColour);
 		setLineTransparency(lineColour);
-//		lineColourLabel.setVisible(false);
-//		lineColourLabel.setVisible(true);
 		double lineWidth = Math.max(MIN_LINE_WIDTH, this.selectedShape.getDrawingElement().getAttribute().getLineWidth());
 		this.lineWidthCombo.setSelectedItem(new Integer((int)Math.round(lineWidth)));
+		Colour fontCol = this.selectedShape.getDrawingElement().getAttribute().getFontColour();
+		RGB fontRGB = fontCol.getRgb();
+		Color fontColour = new Color(fontRGB.getRed(), fontRGB.getGreen(), fontRGB.getBlue(), fontCol.getAlpha());
+		fontColourLabel.setBackground(fontColour);
+		setFontTransparency(fontColour);
+		double fontSize = this.selectedShape.getDrawingElement().getAttribute().getFont().getFontSize();
+		this.fontSizeCombo.setSelectedItem(new Integer((int)Math.round(fontSize)));
 	}
 
 
@@ -287,6 +384,12 @@ public class LabelFormatDialog extends JDialog implements ActionListener, FocusL
 		float alpha = fillColour.getAlpha();
 		float opaque = Colour.OPAQUE;
 		this.fillTransSlider.setValue(Math.round((alpha/opaque)*(float)MAX_TRANS));
+	}
+
+	private void setFontTransparency(Color fontColour) {
+		float alpha = fontColour.getAlpha();
+		float opaque = Colour.OPAQUE;
+		this.fontTransSlider.setValue(Math.round((alpha/opaque)*(float)MAX_TRANS));
 	}
 
 
@@ -305,23 +408,35 @@ public class LabelFormatDialog extends JDialog implements ActionListener, FocusL
 		if(e.getActionCommand().equals(OK_CMD)){
 			Color fillColour = this.fillColourLabel.getBackground();
 			Colour fillCol = new Colour(fillColour.getRed(), fillColour.getGreen(), fillColour.getBlue(), fillColour.getAlpha());
-			if(!this.selectedShape.getDrawingElement().getAttribute().getBackgroundColor().equals(fillCol)){
+			if(!this.selectedShape.getDrawingElement().getAttribute().getFillColour().equals(fillCol)){
 				this.latestCommand.addCommand(new ChangeLabelFillPropertyChange(this.selectedShape.getDrawingElement().getAttribute(), fillCol));
 			}
 			Color lineColour = this.lineColourLabel.getBackground();
 			Colour lineCol = new Colour(lineColour.getRed(), lineColour.getGreen(), lineColour.getBlue(), lineColour.getAlpha());
-			if(!this.selectedShape.getDrawingElement().getAttribute().getForegroundColor().equals(lineCol)){
+			if(!this.selectedShape.getDrawingElement().getAttribute().getLineColour().equals(lineCol)){
 				this.latestCommand.addCommand(new ChangeLabelLinePropertyChange(this.selectedShape.getDrawingElement().getAttribute(), lineCol));
 			}
 			Integer selectedLineWidth = (Integer)this.lineWidthCombo.getSelectedItem();
 			if(!(this.selectedShape.getDrawingElement().getAttribute().getLineWidth() == selectedLineWidth.doubleValue())){
 				this.latestCommand.addCommand(new ChangeLabelLineWidth(this.selectedShape.getDrawingElement().getAttribute(), selectedLineWidth.doubleValue()));
 			}
+			Colour fontCol = toDomColour(this.fontColourLabel.getBackground());
+			if(!this.selectedShape.getDrawingElement().getAttribute().getFontColour().equals(fontCol)){
+				this.latestCommand.addCommand(new ChangeFontColourPropertyChange(this.selectedShape.getDrawingElement().getAttribute(), fontCol));
+			}
+			Integer selectedFontSize = (Integer)this.fontSizeCombo.getSelectedItem();
+			if(!(this.selectedShape.getDrawingElement().getAttribute().getFont().getFontSize() == selectedFontSize.doubleValue())){
+				this.latestCommand.addCommand(new ChangeLabelFontSize(this.selectedShape.getDrawingElement().getAttribute(), selectedFontSize.doubleValue()));
+			}
 			this.setVisible(false);
 		}
 		else if(e.getActionCommand().equals(CANCEL_CMD)){
 			this.setVisible(false);
 		}
+	}
+	
+	private static Colour toDomColour(Color col){
+		return new Colour(col.getRed(), col.getGreen(), col.getBlue(), col.getAlpha()); 
 	}
 	
 	public ICommand getCommand(){

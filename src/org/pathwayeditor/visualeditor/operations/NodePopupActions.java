@@ -78,6 +78,7 @@ public class NodePopupActions implements INodePopupActions {
 				labelFormatDialog.setVisible(true);
 				if(labelFormatDialog.hasFormatChanged()){
 					commandStack.execute(labelFormatDialog.getCommand());
+					selectionRecord.restoreSelection();
 					shapePane.updateView();
 				}
 			}

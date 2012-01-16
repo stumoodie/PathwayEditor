@@ -15,18 +15,18 @@ public class ChangeLabelLinePropertyChange implements ICommand {
 
 	@Override
 	public void execute() {
-		this.oldLineColour = this.attribute.getForegroundColor(); 
+		this.oldLineColour = this.attribute.getLineColour(); 
 		redo();
 	}
 
 	@Override
 	public void undo() {
-		this.attribute.setForegroundColor(oldLineColour);
+		this.attribute.setLineColour(oldLineColour);
 	}
 
 	@Override
 	public void redo() {
-		this.attribute.setForegroundColor(newLineColour);
+		this.attribute.setLineColour(newLineColour);
 	}
 
 }

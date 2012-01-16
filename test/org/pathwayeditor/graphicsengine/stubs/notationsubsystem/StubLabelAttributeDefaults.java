@@ -24,13 +24,12 @@ package org.pathwayeditor.graphicsengine.stubs.notationsubsystem;
 
 import java.text.Format;
 
+import org.pathwayeditor.businessobjects.drawingprimitives.attributes.Colour;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LabelLocationPolicy;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LineStyle;
-import org.pathwayeditor.businessobjects.drawingprimitives.attributes.Colour;
 import org.pathwayeditor.businessobjects.typedefn.ILabelAttributeDefaults;
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.rendering.GenericFont;
-import org.pathwayeditor.figure.rendering.IFont;
 
 
 /**
@@ -94,7 +93,8 @@ public class StubLabelAttributeDefaults implements ILabelAttributeDefaults {
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.typedefn.ILabelAttributeDefaults#getFont()
 	 */
-	public IFont getFont() {
+	@Override
+	public GenericFont getFont() {
 		return new GenericFont();
 	}
 
@@ -106,25 +106,14 @@ public class StubLabelAttributeDefaults implements ILabelAttributeDefaults {
 		return new Dimension(10.0, 10.0);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.pathwayeditor.businessobjects.typedefn.ILabelAttributeDefaults#hasNoBorder()
-	 */
-	@Override
-	public boolean hasNoBorder() {
-		return false;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.pathwayeditor.businessobjects.typedefn.ILabelAttributeDefaults#hasNoFill()
-	 */
-	@Override
-	public boolean hasNoFill() {
-		return false;
-	}
-
 	@Override
 	public Format getDisplayFormat() {
 		return null;
+	}
+
+	@Override
+	public Colour getFontColour() {
+		return LINE_COLOUR;
 	}
 
 }
