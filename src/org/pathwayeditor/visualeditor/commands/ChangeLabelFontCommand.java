@@ -3,14 +3,14 @@ package org.pathwayeditor.visualeditor.commands;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILabelAttribute;
 import org.pathwayeditor.figure.rendering.GenericFont;
 
-public class ChangeLabelFontSize implements ICommand {
+public class ChangeLabelFontCommand implements ICommand {
 	private final ILabelAttribute attribute;
-	private final double newFontSize;
+	private final GenericFont newFont;
 	private GenericFont oldFont;
 	
-	public ChangeLabelFontSize(ILabelAttribute attribute, double fontSize) {
+	public ChangeLabelFontCommand(ILabelAttribute attribute, GenericFont newFont) {
 		this.attribute = attribute;
-		this.newFontSize = fontSize;
+		this.newFont = newFont;
 	}
 
 	@Override
@@ -26,7 +26,7 @@ public class ChangeLabelFontSize implements ICommand {
 
 	@Override
 	public void redo() {
-		this.attribute.setFont(this.oldFont.newSize(newFontSize));
+		this.attribute.setFont(this.newFont);
 	}
 
 }

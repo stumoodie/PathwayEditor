@@ -116,7 +116,7 @@ public class ShapeIconGenerator {
 		compiler.compile();
 		IFigureRenderingController figureRenderingController = new FigureRenderingController(compiler.getCompiledFigureDefinition());
 //		figureController.setRequestedEnvelope(requestedBounds.translate(new Point(20.0, 20.0)));
-		figureRenderingController.setRequestedEnvelope(requestedBounds);
+		figureRenderingController.setEnvelope(requestedBounds);
 		IShapeAttributeDefaults attribute = objectType.getDefaultAttributes();
 		figureRenderingController.setFillColour(attribute.getFillColour());
 		figureRenderingController.setLineColour(attribute.getLineColour());

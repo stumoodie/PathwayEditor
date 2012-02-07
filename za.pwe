@@ -9,8 +9,11 @@
     <Notation qualifiedName="org.pathwayeditor.notations.sbgnpd"
         majorVersion="0" minorVersion="11" patchVersion="0" displayName="SBGN-PD L1 V1.1 ">
         <Description>SBGN Process Description Notation</Description>
-        <ObjectType uniqueId="0" name="ROOT_OBJECT" classification="Root">
-            <description>No descn</description>
+        <ObjectType uniqueId="110" name="Unspecified Entity" classification="Shape">
+            <description>Unspecified entity</description>
+        </ObjectType>
+        <ObjectType uniqueId="111" name="Sink" classification="Shape">
+            <description>Sink</description>
         </ObjectType>
         <ObjectType uniqueId="112" name="Source" classification="Shape">
             <description>Source</description>
@@ -18,29 +21,23 @@
         <ObjectType uniqueId="113" name="Perturbing Agent" classification="Shape">
             <description>Perturbing Agent</description>
         </ObjectType>
-        <ObjectType uniqueId="110" name="Unspecified Entity" classification="Shape">
-            <description>Unspecified entity</description>
-        </ObjectType>
-        <ObjectType uniqueId="111" name="Sink" classification="Shape">
-            <description>Sink</description>
-        </ObjectType>
         <ObjectType uniqueId="114" name="Phenotype" classification="Shape">
             <description>Phenotype</description>
-        </ObjectType>
-        <ObjectType uniqueId="121" name="Association" classification="Shape">
-            <description>Association</description>
-        </ObjectType>
-        <ObjectType uniqueId="120" name="Uncertain Process" classification="Shape">
-            <description>Uncertain process</description>
-        </ObjectType>
-        <ObjectType uniqueId="119" name="Omitted Process" classification="Shape">
-            <description>Omitted process</description>
         </ObjectType>
         <ObjectType uniqueId="118" name="Process" classification="Shape">
             <description>Process node</description>
         </ObjectType>
-        <ObjectType uniqueId="125" name="NOT" classification="Shape">
-            <description>NOT Logical Operator</description>
+        <ObjectType uniqueId="119" name="Omitted Process" classification="Shape">
+            <description>Omitted process</description>
+        </ObjectType>
+        <ObjectType uniqueId="120" name="Uncertain Process" classification="Shape">
+            <description>Uncertain process</description>
+        </ObjectType>
+        <ObjectType uniqueId="122" name="Dissociation" classification="Shape">
+            <description>Dissociation arc.</description>
+        </ObjectType>
+        <ObjectType uniqueId="121" name="Association" classification="Shape">
+            <description>Association</description>
         </ObjectType>
         <ObjectType uniqueId="124" name="OR" classification="Shape">
             <description>OR Logical Operator</description>
@@ -48,26 +45,20 @@
         <ObjectType uniqueId="123" name="AND" classification="Shape">
             <description>AND Logical Operator</description>
         </ObjectType>
-        <ObjectType uniqueId="122" name="Dissociation" classification="Shape">
-            <description>Dissociation arc.</description>
+        <ObjectType uniqueId="125" name="NOT" classification="Shape">
+            <description>NOT Logical Operator</description>
         </ObjectType>
-        <ObjectType uniqueId="14" name="Complex" classification="Shape">
-            <description>Complex</description>
+        <ObjectType uniqueId="0" name="ROOT_OBJECT" classification="Root">
+            <description>No descn</description>
         </ObjectType>
-        <ObjectType uniqueId="15" name="Nucleic Acid Feature" classification="Shape">
-            <description>Nucleic Acid Feature</description>
+        <ObjectType uniqueId="20" name="Consumption" classification="Link">
+            <description>Consumption arc.</description>
         </ObjectType>
-        <ObjectType uniqueId="16" name="Macromolecule" classification="Shape">
-            <description>Macromolecule</description>
+        <ObjectType uniqueId="18" name="Simple Chemical" classification="Shape">
+            <description>Simple chemical</description>
         </ObjectType>
-        <ObjectType uniqueId="10" name="State" classification="Shape">
-            <description>State decription.</description>
-        </ObjectType>
-        <ObjectType uniqueId="11" name="Unit Of Information" classification="Shape">
-            <description>Unit of information</description>
-        </ObjectType>
-        <ObjectType uniqueId="13" name="Compartment" classification="Shape">
-            <description>Compartment</description>
+        <ObjectType uniqueId="24" name="Catalysis" classification="Link">
+            <description>Catalysis.</description>
         </ObjectType>
         <ObjectType uniqueId="23" name="Stimulation" classification="Link">
             <description>Stimulation arc.</description>
@@ -75,23 +66,32 @@
         <ObjectType uniqueId="22" name="Modulation" classification="Link">
             <description>Modulation arc.</description>
         </ObjectType>
-        <ObjectType uniqueId="25" name="Inhibition" classification="Link">
-            <description>Inhibition arc.</description>
-        </ObjectType>
-        <ObjectType uniqueId="24" name="Catalysis" classification="Link">
-            <description>Catalysis.</description>
-        </ObjectType>
-        <ObjectType uniqueId="18" name="Simple Chemical" classification="Shape">
-            <description>Simple chemical</description>
-        </ObjectType>
         <ObjectType uniqueId="21" name="Production" classification="Link">
             <description>Production arc.</description>
         </ObjectType>
-        <ObjectType uniqueId="20" name="Consumption" classification="Link">
-            <description>Consumption arc.</description>
+        <ObjectType uniqueId="11" name="Unit Of Information" classification="Shape">
+            <description>Unit of information</description>
+        </ObjectType>
+        <ObjectType uniqueId="10" name="State" classification="Shape">
+            <description>State decription.</description>
+        </ObjectType>
+        <ObjectType uniqueId="16" name="Macromolecule" classification="Shape">
+            <description>Macromolecule</description>
+        </ObjectType>
+        <ObjectType uniqueId="15" name="Nucleic Acid Feature" classification="Shape">
+            <description>Nucleic Acid Feature</description>
+        </ObjectType>
+        <ObjectType uniqueId="14" name="Complex" classification="Shape">
+            <description>Complex</description>
+        </ObjectType>
+        <ObjectType uniqueId="13" name="Compartment" classification="Shape">
+            <description>Compartment</description>
         </ObjectType>
         <ObjectType uniqueId="27" name="LogicArc" classification="Link">
             <description>Logic arc.</description>
+        </ObjectType>
+        <ObjectType uniqueId="25" name="Inhibition" classification="Link">
+            <description>Inhibition arc.</description>
         </ObjectType>
         <ObjectType uniqueId="26" name="Necessary Stimulation" classification="Link">
             <description>Necessary stimulation.</description>
@@ -461,14 +461,15 @@ ifelse
                             <SubModel/>
                             <LabelAttribute creationSerial="24"
                                 lineStyle="SOLID" lineWidth="1.0">
-                                <Location x="466.0" y="219.95068359375"/>
-                                <Size width="38.0" height="16.0986328125"/>
+                                <Location x="490.0" y="276.95068359375"/>
+                                <Size width="98.0" height="16.0986328125"/>
                                 <LineColour red="0" green="0" blue="0" alpha="0"/>
                                 <FillColour red="255" green="255"
                                     blue="255" alpha="0"/>
                                 <FontColour red="0" green="0" blue="0" alpha="255"/>
                                 <Font size="14.0">
-                                    <style>NORMAL</style>
+                                    <style>ITALIC</style>
+                                    <style>BOLD</style>
                                 </Font>
                                 <PropertyRef id="39"/>
                             </LabelAttribute>
@@ -476,7 +477,7 @@ ifelse
                     </SubModel>
                     <ShapeAttribute creationSerial="23"
                         objectTypeId="18" lineWidth="1.0" lineStyle="SOLID">
-                        <Location x="390.0" y="150.0"/>
+                        <Location x="444.0" y="207.0"/>
                         <Size width="183.0" height="152.0"/>
                         <FillColour red="255" green="255" blue="255" alpha="255"/>
                         <LineColour red="0" green="0" blue="0" alpha="255"/>

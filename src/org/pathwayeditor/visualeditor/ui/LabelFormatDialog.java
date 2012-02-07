@@ -28,8 +28,11 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -46,9 +49,11 @@ import javax.swing.event.ChangeListener;
 
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.Colour;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.RGB;
+import org.pathwayeditor.figure.rendering.GenericFont;
+import org.pathwayeditor.figure.rendering.IFont;
 import org.pathwayeditor.visualeditor.commands.ChangeFontColourPropertyChange;
 import org.pathwayeditor.visualeditor.commands.ChangeLabelFillPropertyChange;
-import org.pathwayeditor.visualeditor.commands.ChangeLabelFontSize;
+import org.pathwayeditor.visualeditor.commands.ChangeLabelFontCommand;
 import org.pathwayeditor.visualeditor.commands.ChangeLabelLinePropertyChange;
 import org.pathwayeditor.visualeditor.commands.ChangeLabelLineWidth;
 import org.pathwayeditor.visualeditor.commands.CompoundCommand;
@@ -83,9 +88,16 @@ public class LabelFormatDialog extends JDialog implements ActionListener, FocusL
 	private JSlider lineTransSlider;
 	private JSlider fillTransSlider;
 	private JSlider fontTransSlider;
+	private JComboBox fontStyleCombo;
+	private final Map<String, EnumSet<IFont.Style>> fontStyleMap;
 
 	public LabelFormatDialog(JFrame frame){
 		super(frame, true);
+		fontStyleMap = new HashMap<String, EnumSet<IFont.Style>>();
+		fontStyleMap.put("Normal", EnumSet.of(IFont.Style.NORMAL));
+		fontStyleMap.put("Bold", EnumSet.of(IFont.Style.BOLD));
+		fontStyleMap.put("Italic", EnumSet.of(IFont.Style.ITALIC));
+		fontStyleMap.put("Bold+Italic", EnumSet.of(IFont.Style.BOLD, IFont.Style.ITALIC));
 		setTitle("Format Label");
 		this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.PAGE_AXIS));
 		layoutLinePanel();
@@ -346,6 +358,17 @@ public class LabelFormatDialog extends JDialog implements ActionListener, FocusL
 		c9.gridy = 2;
 		c9.fill = GridBagConstraints.HORIZONTAL;
 		fontPanel.add(fontSizeCombo, c9);
+		JLabel fontStyleLabel = new JLabel("Font Style");
+		fontStyleCombo = new JComboBox(this.fontStyleMap.keySet().toArray());
+		GridBagConstraints c10 = new GridBagConstraints();
+		c10.gridx = 0;
+		c10.gridy = 3;
+		fontPanel.add(fontStyleLabel, c10);
+		GridBagConstraints c11 = new GridBagConstraints();
+		c11.gridx = 1;
+		c11.gridy = 3;
+		c11.fill = GridBagConstraints.HORIZONTAL;
+		fontPanel.add(fontStyleCombo, c11);
 	}
 
 
@@ -370,6 +393,21 @@ public class LabelFormatDialog extends JDialog implements ActionListener, FocusL
 		setFontTransparency(fontColour);
 		double fontSize = this.selectedShape.getDrawingElement().getAttribute().getFont().getFontSize();
 		this.fontSizeCombo.setSelectedItem(new Integer((int)Math.round(fontSize)));
+		EnumSet<IFont.Style> s = this.selectedShape.getDrawingElement().getAttribute().getFont().getStyle();
+		if(s.contains(IFont.Style.NORMAL)){
+			this.fontStyleCombo.setSelectedItem("Normal");
+		}
+		else if(s.contains(IFont.Style.BOLD)){
+			if(s.contains(IFont.Style.ITALIC)){
+				this.fontStyleCombo.setSelectedItem("Bold+Italic");
+			}
+			else{
+				this.fontStyleCombo.setSelectedItem("Bold");
+			}
+		}
+		else if(s.contains(IFont.Style.ITALIC)){
+			this.fontStyleCombo.setSelectedItem("Italic");
+		}
 	}
 
 
@@ -426,7 +464,13 @@ public class LabelFormatDialog extends JDialog implements ActionListener, FocusL
 			}
 			Integer selectedFontSize = (Integer)this.fontSizeCombo.getSelectedItem();
 			if(!(this.selectedShape.getDrawingElement().getAttribute().getFont().getFontSize() == selectedFontSize.doubleValue())){
-				this.latestCommand.addCommand(new ChangeLabelFontSize(this.selectedShape.getDrawingElement().getAttribute(), selectedFontSize.doubleValue()));
+				GenericFont newFont = this.selectedShape.getDrawingElement().getAttribute().getFont().newSize(selectedFontSize);
+				this.latestCommand.addCommand(new ChangeLabelFontCommand(this.selectedShape.getDrawingElement().getAttribute(), newFont));
+			}
+			EnumSet<IFont.Style> selectedFontStyle = this.fontStyleMap.get(this.fontStyleCombo.getSelectedItem());
+			if(!(this.selectedShape.getDrawingElement().getAttribute().getFont().getStyle().containsAll(selectedFontStyle))){
+				GenericFont newFont = this.selectedShape.getDrawingElement().getAttribute().getFont().newStyle(selectedFontStyle);
+				this.latestCommand.addCommand(new ChangeLabelFontCommand(this.selectedShape.getDrawingElement().getAttribute(), newFont));
 			}
 			this.setVisible(false);
 		}
