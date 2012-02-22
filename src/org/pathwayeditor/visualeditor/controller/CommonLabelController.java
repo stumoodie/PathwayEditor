@@ -42,6 +42,7 @@ import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.figure.geometry.RectangleHull;
 import org.pathwayeditor.figure.rendering.FigureRenderingController;
 import org.pathwayeditor.figure.rendering.GenericFont;
+import org.pathwayeditor.figure.rendering.IAnchorLocatorFactory;
 import org.pathwayeditor.figure.rendering.IFigureRenderingController;
 import org.pathwayeditor.figure.rendering.IFont;
 import org.pathwayeditor.visualeditor.editingview.FigureDefinitionMiniCanvas;
@@ -272,5 +273,10 @@ public abstract class CommonLabelController extends NodeController implements IL
 	@Override
 	public final IMiniCanvas getMiniCanvas(){
 		return new FigureDefinitionMiniCanvas(this.controller.getFigureDefinition(), this.controller.getEnvelope());
+	}
+
+	@Override
+	public IAnchorLocatorFactory getAnchorLocatorFactory() {
+		throw new UnsupportedOperationException("Not in use. This should not be called!");
 	}
 }

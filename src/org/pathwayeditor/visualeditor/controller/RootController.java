@@ -26,6 +26,7 @@ import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.figure.geometry.RectangleHull;
+import org.pathwayeditor.figure.rendering.IAnchorLocatorFactory;
 import org.pathwayeditor.visualeditor.editingview.IMiniCanvas;
 
 public class RootController extends NodeController implements IRootController {
@@ -109,5 +110,10 @@ public class RootController extends NodeController implements IRootController {
 				return hull.getEnvelope();
 			}
 		};
+	}
+
+	@Override
+	public IAnchorLocatorFactory getAnchorLocatorFactory() {
+		throw new UnsupportedOperationException("Not in use. This should not be called!");
 	}
 }

@@ -23,6 +23,7 @@ import java.util.SortedSet;
 import org.apache.log4j.Logger;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
+import org.pathwayeditor.visualeditor.controller.ILinkController;
 import org.pathwayeditor.visualeditor.controller.IShapeController;
 import org.pathwayeditor.visualeditor.editingview.IDomainModelLayer;
 import org.pathwayeditor.visualeditor.editingview.IShapePane;
@@ -43,6 +44,24 @@ public class HitCalculator implements IHitCalculator {
 	@Override
 	public void setMousePosition(double x, double y) {
 		this.mousePosition = new Point(x, y);
+	}
+
+	@Override
+	public IDrawingElementController getElementAtCurrentLocation() {
+		IDomainModelLayer domainLayer = this.shapePane.getLayer(LayerType.DOMAIN);
+		IIntersectionCalculator intnCalc = domainLayer.getViewControllerStore().getIntersectionCalculator();
+		intnCalc.setFilter(new IIntersectionCalcnFilter() {
+			@Override
+			public boolean accept(IDrawingElementController node) {
+				return node instanceof IShapeController || node instanceof ILinkController;
+			}
+		});
+		SortedSet<IDrawingElementController> hits = intnCalc.findDrawingPrimitivesAt(getDiagramLocation());
+		IDrawingElementController retVal = null;
+		if(!hits.isEmpty()){
+			retVal = hits.first();
+		}
+		return retVal;
 	}
 
 	@Override
@@ -78,5 +97,6 @@ public class HitCalculator implements IHitCalculator {
 	public Point getMousePosition() {
 		return this.mousePosition;
 	}
+
 
 }

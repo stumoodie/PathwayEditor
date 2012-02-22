@@ -18,6 +18,8 @@
 */
 package org.pathwayeditor.visualeditor.controller;
 
+import org.pathwayeditor.figure.geometry.Point;
+
 
 
 public abstract class NodeController extends DrawingElementController implements INodeController {
@@ -26,4 +28,8 @@ public abstract class NodeController extends DrawingElementController implements
 		super(viewController, index);
 	}
 
+	@Override
+	public final Point getCentre(){
+		return this.getBounds().getCentre();
+	}
 }

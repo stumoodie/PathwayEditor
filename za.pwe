@@ -2,18 +2,15 @@
 <epx:canvas xmlns:epx="http://www.pathwayeditor.org/Exchange"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.pathwayeditor.org/Exchange http://www.pathwayeditor.org/Exchange/Canvas.xsd"
-    name="za.pwe" lastCreationSerial="37">
+    name="za.pwe" lastCreationSerial="38">
     <Grid snapToGrid="false" gridOn="false">
         <GridSize width="10.0" height="10.0"/>
     </Grid>
     <Notation qualifiedName="org.pathwayeditor.notations.sbgnpd"
         majorVersion="0" minorVersion="11" patchVersion="0" displayName="SBGN-PD L1 V1.1 ">
         <Description>SBGN Process Description Notation</Description>
-        <ObjectType uniqueId="110" name="Unspecified Entity" classification="Shape">
-            <description>Unspecified entity</description>
-        </ObjectType>
-        <ObjectType uniqueId="111" name="Sink" classification="Shape">
-            <description>Sink</description>
+        <ObjectType uniqueId="0" name="ROOT_OBJECT" classification="Root">
+            <description>No descn</description>
         </ObjectType>
         <ObjectType uniqueId="112" name="Source" classification="Shape">
             <description>Source</description>
@@ -21,23 +18,29 @@
         <ObjectType uniqueId="113" name="Perturbing Agent" classification="Shape">
             <description>Perturbing Agent</description>
         </ObjectType>
+        <ObjectType uniqueId="110" name="Unspecified Entity" classification="Shape">
+            <description>Unspecified entity</description>
+        </ObjectType>
+        <ObjectType uniqueId="111" name="Sink" classification="Shape">
+            <description>Sink</description>
+        </ObjectType>
         <ObjectType uniqueId="114" name="Phenotype" classification="Shape">
             <description>Phenotype</description>
         </ObjectType>
-        <ObjectType uniqueId="118" name="Process" classification="Shape">
-            <description>Process node</description>
-        </ObjectType>
-        <ObjectType uniqueId="119" name="Omitted Process" classification="Shape">
-            <description>Omitted process</description>
+        <ObjectType uniqueId="121" name="Association" classification="Shape">
+            <description>Association</description>
         </ObjectType>
         <ObjectType uniqueId="120" name="Uncertain Process" classification="Shape">
             <description>Uncertain process</description>
         </ObjectType>
-        <ObjectType uniqueId="122" name="Dissociation" classification="Shape">
-            <description>Dissociation arc.</description>
+        <ObjectType uniqueId="119" name="Omitted Process" classification="Shape">
+            <description>Omitted process</description>
         </ObjectType>
-        <ObjectType uniqueId="121" name="Association" classification="Shape">
-            <description>Association</description>
+        <ObjectType uniqueId="118" name="Process" classification="Shape">
+            <description>Process node</description>
+        </ObjectType>
+        <ObjectType uniqueId="125" name="NOT" classification="Shape">
+            <description>NOT Logical Operator</description>
         </ObjectType>
         <ObjectType uniqueId="124" name="OR" classification="Shape">
             <description>OR Logical Operator</description>
@@ -45,20 +48,26 @@
         <ObjectType uniqueId="123" name="AND" classification="Shape">
             <description>AND Logical Operator</description>
         </ObjectType>
-        <ObjectType uniqueId="125" name="NOT" classification="Shape">
-            <description>NOT Logical Operator</description>
+        <ObjectType uniqueId="122" name="Dissociation" classification="Shape">
+            <description>Dissociation arc.</description>
         </ObjectType>
-        <ObjectType uniqueId="0" name="ROOT_OBJECT" classification="Root">
-            <description>No descn</description>
+        <ObjectType uniqueId="14" name="Complex" classification="Shape">
+            <description>Complex</description>
         </ObjectType>
-        <ObjectType uniqueId="20" name="Consumption" classification="Link">
-            <description>Consumption arc.</description>
+        <ObjectType uniqueId="15" name="Nucleic Acid Feature" classification="Shape">
+            <description>Nucleic Acid Feature</description>
         </ObjectType>
-        <ObjectType uniqueId="18" name="Simple Chemical" classification="Shape">
-            <description>Simple chemical</description>
+        <ObjectType uniqueId="16" name="Macromolecule" classification="Shape">
+            <description>Macromolecule</description>
         </ObjectType>
-        <ObjectType uniqueId="24" name="Catalysis" classification="Link">
-            <description>Catalysis.</description>
+        <ObjectType uniqueId="10" name="State" classification="Shape">
+            <description>State decription.</description>
+        </ObjectType>
+        <ObjectType uniqueId="11" name="Unit Of Information" classification="Shape">
+            <description>Unit of information</description>
+        </ObjectType>
+        <ObjectType uniqueId="13" name="Compartment" classification="Shape">
+            <description>Compartment</description>
         </ObjectType>
         <ObjectType uniqueId="23" name="Stimulation" classification="Link">
             <description>Stimulation arc.</description>
@@ -66,32 +75,23 @@
         <ObjectType uniqueId="22" name="Modulation" classification="Link">
             <description>Modulation arc.</description>
         </ObjectType>
+        <ObjectType uniqueId="25" name="Inhibition" classification="Link">
+            <description>Inhibition arc.</description>
+        </ObjectType>
+        <ObjectType uniqueId="24" name="Catalysis" classification="Link">
+            <description>Catalysis.</description>
+        </ObjectType>
+        <ObjectType uniqueId="18" name="Simple Chemical" classification="Shape">
+            <description>Simple chemical</description>
+        </ObjectType>
         <ObjectType uniqueId="21" name="Production" classification="Link">
             <description>Production arc.</description>
         </ObjectType>
-        <ObjectType uniqueId="11" name="Unit Of Information" classification="Shape">
-            <description>Unit of information</description>
-        </ObjectType>
-        <ObjectType uniqueId="10" name="State" classification="Shape">
-            <description>State decription.</description>
-        </ObjectType>
-        <ObjectType uniqueId="16" name="Macromolecule" classification="Shape">
-            <description>Macromolecule</description>
-        </ObjectType>
-        <ObjectType uniqueId="15" name="Nucleic Acid Feature" classification="Shape">
-            <description>Nucleic Acid Feature</description>
-        </ObjectType>
-        <ObjectType uniqueId="14" name="Complex" classification="Shape">
-            <description>Complex</description>
-        </ObjectType>
-        <ObjectType uniqueId="13" name="Compartment" classification="Shape">
-            <description>Compartment</description>
+        <ObjectType uniqueId="20" name="Consumption" classification="Link">
+            <description>Consumption arc.</description>
         </ObjectType>
         <ObjectType uniqueId="27" name="LogicArc" classification="Link">
             <description>Logic arc.</description>
-        </ObjectType>
-        <ObjectType uniqueId="25" name="Inhibition" classification="Link">
-            <description>Inhibition arc.</description>
         </ObjectType>
         <ObjectType uniqueId="26" name="Necessary Stimulation" classification="Link">
             <description>Necessary stimulation.</description>
@@ -99,7 +99,7 @@
     </Notation>
     <CanvasSize width="1.7976931348623157E308" height="1.7976931348623157E308"/>
     <Background red="255" green="255" blue="255"/>
-    <Model lastNodeIndex="18" lastEdgeIndex="2">
+    <Model lastNodeIndex="18" lastEdgeIndex="3">
         <RootNode nodeId="0">
             <SubModel>
                 <ShapeNode nodeId="1">
@@ -121,7 +121,7 @@
                                     <Font size="12.0">
                                     <style>NORMAL</style>
                                     </Font>
-                                    <PropertyRef id="11"/>
+                                    <PropertyRef id="12"/>
                                     </LabelAttribute>
                                 </LabelNode>
                             </SubModel>
@@ -136,11 +136,11 @@
                                 <Font size="12.0">
                                     <style>NORMAL</style>
                                 </Font>
-                                <PropertyRef id="10"/>
                                 <PropertyRef id="11"/>
                                 <PropertyRef id="12"/>
                                 <PropertyRef id="13"/>
                                 <PropertyRef id="14"/>
+                                <PropertyRef id="15"/>
                                 <FigureDefinition>(C) setanchor
 curbounds /h exch def /w exch def /y exch def /x exch def
 /xoffset { w mul x add } def /yoffset { h mul y add } def
@@ -177,7 +177,7 @@ grestore
                                     <Font size="12.0">
                                     <style>NORMAL</style>
                                     </Font>
-                                    <PropertyRef id="18"/>
+                                    <PropertyRef id="19"/>
                                     </LabelAttribute>
                                 </LabelNode>
                             </SubModel>
@@ -192,11 +192,11 @@ grestore
                                 <Font size="12.0">
                                     <style>NORMAL</style>
                                 </Font>
-                                <PropertyRef id="15"/>
                                 <PropertyRef id="16"/>
                                 <PropertyRef id="17"/>
                                 <PropertyRef id="18"/>
                                 <PropertyRef id="19"/>
+                                <PropertyRef id="20"/>
                                 <FigureDefinition>(C) setanchor
 curbounds /h exch def /w exch def /y exch def /x exch def
 /xoffset { w mul x add } def /yoffset { h mul y add } def
@@ -233,7 +233,7 @@ grestore
                                     <Font size="12.0">
                                     <style>NORMAL</style>
                                     </Font>
-                                    <PropertyRef id="20"/>
+                                    <PropertyRef id="21"/>
                                     </LabelAttribute>
                                 </LabelNode>
                             </SubModel>
@@ -248,11 +248,11 @@ grestore
                                 <Font size="12.0">
                                     <style>NORMAL</style>
                                 </Font>
-                                <PropertyRef id="20"/>
                                 <PropertyRef id="21"/>
                                 <PropertyRef id="22"/>
                                 <PropertyRef id="23"/>
                                 <PropertyRef id="24"/>
+                                <PropertyRef id="25"/>
                                 <FigureDefinition>(C) setanchor
 curbounds /h exch def /w exch def /y exch def /x exch def
 /xoffset { w mul x add } def /yoffset { h mul y add } def
@@ -289,7 +289,7 @@ grestore
                                     <Font size="12.0">
                                     <style>NORMAL</style>
                                     </Font>
-                                    <PropertyRef id="25"/>
+                                    <PropertyRef id="26"/>
                                     </LabelAttribute>
                                 </LabelNode>
                             </SubModel>
@@ -304,7 +304,7 @@ grestore
                                 <Font size="12.0">
                                     <style>NORMAL</style>
                                 </Font>
-                                <PropertyRef id="25"/>
+                                <PropertyRef id="26"/>
                                 <FigureDefinition>curbounds /h exch def /w exch def /y exch def /x exch def
 h w le  {x y w h 1 h mul 1 h mul rrect}
 {x y w h 1 w mul 1 w mul rrect} ifelse</FigureDefinition>
@@ -323,7 +323,7 @@ h w le  {x y w h 1 h mul 1 h mul rrect}
                                 <Font size="12.0">
                                     <style>NORMAL</style>
                                 </Font>
-                                <PropertyRef id="7"/>
+                                <PropertyRef id="8"/>
                             </LabelAttribute>
                         </LabelNode>
                     </SubModel>
@@ -337,11 +337,11 @@ h w le  {x y w h 1 h mul 1 h mul rrect}
                         <Font size="12.0">
                             <style>NORMAL</style>
                         </Font>
-                        <PropertyRef id="5"/>
                         <PropertyRef id="6"/>
                         <PropertyRef id="7"/>
                         <PropertyRef id="8"/>
                         <PropertyRef id="9"/>
+                        <PropertyRef id="10"/>
                         <FigureDefinition>(C) setanchor
 curbounds /h exch def /w exch def /y exch def /x exch def
 :cardinality 1 gt {
@@ -371,7 +371,7 @@ grestore
                             <SubModel/>
                             <LabelAttribute creationSerial="9"
                                 lineStyle="SOLID" lineWidth="1.0">
-                                <Location x="706.0" y="279.0"/>
+                                <Location x="745.0" y="224.0"/>
                                 <Size width="42.0" height="22.0"/>
                                 <LineColour red="0" green="0" blue="0" alpha="255"/>
                                 <FillColour red="255" green="255"
@@ -380,13 +380,13 @@ grestore
                                 <Font size="12.0">
                                     <style>NORMAL</style>
                                 </Font>
-                                <PropertyRef id="28"/>
+                                <PropertyRef id="29"/>
                             </LabelAttribute>
                         </LabelNode>
                     </SubModel>
                     <ShapeAttribute creationSerial="8" objectTypeId="14"
                         lineWidth="1.0" lineStyle="SOLID">
-                        <Location x="666.0" y="244.0"/>
+                        <Location x="705.0" y="189.0"/>
                         <Size width="298.0" height="304.0"/>
                         <FillColour red="0" green="153" blue="153" alpha="255"/>
                         <LineColour red="0" green="0" blue="0" alpha="255"/>
@@ -394,11 +394,11 @@ grestore
                         <Font size="12.0">
                             <style>NORMAL</style>
                         </Font>
-                        <PropertyRef id="26"/>
                         <PropertyRef id="27"/>
                         <PropertyRef id="28"/>
                         <PropertyRef id="29"/>
                         <PropertyRef id="30"/>
+                        <PropertyRef id="31"/>
                         <FigureDefinition>(C) setanchor
 curbounds /h exch def /w exch def /y exch def /x exch def
 :cardinality 1 gt {
@@ -426,7 +426,7 @@ grestore
                     <SubModel/>
                     <ShapeAttribute creationSerial="16"
                         objectTypeId="118" lineWidth="1.0" lineStyle="SOLID">
-                        <Location x="484.0" y="382.0"/>
+                        <Location x="553.0" y="470.0"/>
                         <Size width="42.0" height="29.0"/>
                         <FillColour red="255" green="255" blue="255" alpha="255"/>
                         <LineColour red="0" green="0" blue="0" alpha="255"/>
@@ -434,10 +434,10 @@ grestore
                         <Font size="12.0">
                             <style>NORMAL</style>
                         </Font>
-                        <PropertyRef id="31"/>
                         <PropertyRef id="32"/>
                         <PropertyRef id="33"/>
                         <PropertyRef id="34"/>
+                        <PropertyRef id="35"/>
                         <FigureDefinition>curbounds /h exch def /w exch def /y exch def /x exch def
 /xoffset { w mul x add } def /yoffset { h mul y add } def
 /lugLen 0.15 def /firstBoxOffset lugLen def /sndBoxOffset 1.0 lugLen sub def
@@ -469,9 +469,8 @@ ifelse
                                 <FontColour red="0" green="0" blue="0" alpha="255"/>
                                 <Font size="14.0">
                                     <style>ITALIC</style>
-                                    <style>BOLD</style>
                                 </Font>
-                                <PropertyRef id="39"/>
+                                <PropertyRef id="40"/>
                             </LabelAttribute>
                         </LabelNode>
                     </SubModel>
@@ -485,11 +484,11 @@ ifelse
                         <Font size="12.0">
                             <style>NORMAL</style>
                         </Font>
-                        <PropertyRef id="35"/>
                         <PropertyRef id="36"/>
                         <PropertyRef id="37"/>
                         <PropertyRef id="38"/>
                         <PropertyRef id="39"/>
+                        <PropertyRef id="40"/>
                         <FigureDefinition>(C) setanchor
 curbounds /h exch def /w exch def /y exch def /x exch def
 /xoffset { w mul x add } def /yoffset { h mul y add } def
@@ -524,7 +523,7 @@ grestore
                                 <Font size="12.0">
                                     <style>NORMAL</style>
                                 </Font>
-                                <PropertyRef id="42"/>
+                                <PropertyRef id="43"/>
                             </LabelAttribute>
                         </LabelNode>
                     </SubModel>
@@ -538,11 +537,11 @@ grestore
                         <Font size="12.0">
                             <style>NORMAL</style>
                         </Font>
-                        <PropertyRef id="40"/>
                         <PropertyRef id="41"/>
                         <PropertyRef id="42"/>
                         <PropertyRef id="43"/>
                         <PropertyRef id="44"/>
+                        <PropertyRef id="45"/>
                         <FigureDefinition>(C) setanchor
 curbounds /h exch def /w exch def /y exch def /x exch def
 :cardinality 1 gt {
@@ -571,11 +570,11 @@ grestore
                         lineWidth="1.0" objectTypeId="20" lastBendPointIndex="0">
                         <LineColour red="0" green="0" blue="0" alpha="255"/>
                         <srcTerminus creationSerial="17" gap="5.0" endDecoratorType="NONE">
-                            <Location x="387.0" y="396.8"/>
+                            <Location x="387.0" y="437.8"/>
                             <DecoratorSize width="0.0" height="0.0"/>
                         </srcTerminus>
                         <tgtTerminus creationSerial="17" gap="0.0" endDecoratorType="NONE">
-                            <Location x="484.0" y="396.5"/>
+                            <Location x="553.0" y="484.5"/>
                             <DecoratorSize width="0.0" height="0.0"/>
                         </tgtTerminus>
                         <PropertyRef id="1"/>
@@ -584,18 +583,36 @@ grestore
                 </LinkEdge>
                 <LinkEdge linkIdx="11" srcNodeIdx="7" tgtNodeIdx="6">
                     <LinkAttribute creationSerial="20" lineStyle="SOLID"
-                        lineWidth="1.0" objectTypeId="21" lastBendPointIndex="0">
+                        lineWidth="1.0" objectTypeId="21" lastBendPointIndex="1">
                         <LineColour red="0" green="0" blue="0" alpha="255"/>
                         <srcTerminus creationSerial="20" gap="0.0" endDecoratorType="NONE">
-                            <Location x="526.0" y="396.5"/>
+                            <Location x="595.0" y="484.5"/>
                             <DecoratorSize width="0.0" height="0.0"/>
                         </srcTerminus>
                         <tgtTerminus creationSerial="20" gap="5.0" endDecoratorType="TRIANGLE">
-                            <Location x="666.0" y="396.4"/>
+                            <Location x="705.0" y="393.4"/>
                             <DecoratorSize width="10.0" height="10.0"/>
                         </tgtTerminus>
                         <PropertyRef id="3"/>
                         <PropertyRef id="4"/>
+                        <BendPoint creationSerial="0" indexPosn="0">
+                            <Position x="656.5" y="409.45"/>
+                        </BendPoint>
+                    </LinkAttribute>
+                </LinkEdge>
+                <LinkEdge linkIdx="20" srcNodeIdx="8" tgtNodeIdx="7">
+                    <LinkAttribute creationSerial="38" lineStyle="SOLID"
+                        lineWidth="1.0" objectTypeId="23" lastBendPointIndex="0">
+                        <LineColour red="0" green="0" blue="0" alpha="255"/>
+                        <srcTerminus creationSerial="38" gap="0.0" endDecoratorType="NONE">
+                            <Location x="551.1819426268806" y="356.4103627979692"/>
+                            <DecoratorSize width="0.0" height="0.0"/>
+                        </srcTerminus>
+                        <tgtTerminus creationSerial="38" gap="5.0" endDecoratorType="EMPTY_TRIANGLE">
+                            <Location x="574.0" y="470.0"/>
+                            <DecoratorSize width="10.0" height="10.0"/>
+                        </tgtTerminus>
+                        <PropertyRef id="5"/>
                     </LinkAttribute>
                 </LinkEdge>
             </SubModel>
@@ -608,71 +625,72 @@ grestore
     <PropertyList>
         <TextAnnotationProperty id="2" name="exportName" displayName="Export Name"/>
         <TextAnnotationProperty id="4" name="exportName" displayName="Export Name"/>
-        <TextAnnotationProperty id="6" name="exportName" displayName="Export Name"/>
-        <TextAnnotationProperty id="7" name="name" displayName="Name">Name</TextAnnotationProperty>
-        <TextAnnotationProperty id="11" name="name" displayName="Name">Name</TextAnnotationProperty>
-        <TextAnnotationProperty id="14" name="exportName" displayName="Export Name"/>
-        <TextAnnotationProperty id="16" name="exportName" displayName="Export Name"/>
-        <TextAnnotationProperty id="18" name="name" displayName="Name">Name</TextAnnotationProperty>
-        <TextAnnotationProperty id="20" name="name" displayName="Name">Name</TextAnnotationProperty>
-        <TextAnnotationProperty id="22" name="exportName" displayName="Export Name"/>
-        <TextAnnotationProperty id="25" name="stateValue" displayName="Value">?</TextAnnotationProperty>
-        <TextAnnotationProperty id="28" name="name" displayName="Name">Fee</TextAnnotationProperty>
-        <TextAnnotationProperty id="29" name="exportName" displayName="Export Name"/>
-        <TextAnnotationProperty id="32" name="exportName" displayName="Export Name"/>
-        <TextAnnotationProperty id="33" name="fwdRate" displayName="Forward Rate"/>
-        <TextAnnotationProperty id="34" name="revRate" displayName="Reverse Rate"/>
-        <TextAnnotationProperty id="35" name="exportName" displayName="Export Name"/>
-        <TextAnnotationProperty id="39" name="name" displayName="Name">Shape Names!</TextAnnotationProperty>
-        <TextAnnotationProperty id="42" name="name" displayName="Name">Name</TextAnnotationProperty>
-        <TextAnnotationProperty id="44" name="exportName" displayName="Export Name"/>
-        <NumberAnnotationProperty id="5" name="cardFontSize"
+        <TextAnnotationProperty id="5" name="exportName" displayName="Export Name"/>
+        <TextAnnotationProperty id="7" name="exportName" displayName="Export Name"/>
+        <TextAnnotationProperty id="8" name="name" displayName="Name">Name</TextAnnotationProperty>
+        <TextAnnotationProperty id="12" name="name" displayName="Name">Name</TextAnnotationProperty>
+        <TextAnnotationProperty id="15" name="exportName" displayName="Export Name"/>
+        <TextAnnotationProperty id="17" name="exportName" displayName="Export Name"/>
+        <TextAnnotationProperty id="19" name="name" displayName="Name">Name</TextAnnotationProperty>
+        <TextAnnotationProperty id="21" name="name" displayName="Name">Name</TextAnnotationProperty>
+        <TextAnnotationProperty id="23" name="exportName" displayName="Export Name"/>
+        <TextAnnotationProperty id="26" name="stateValue" displayName="Value">?</TextAnnotationProperty>
+        <TextAnnotationProperty id="29" name="name" displayName="Name">Fee</TextAnnotationProperty>
+        <TextAnnotationProperty id="30" name="exportName" displayName="Export Name"/>
+        <TextAnnotationProperty id="33" name="exportName" displayName="Export Name"/>
+        <TextAnnotationProperty id="34" name="fwdRate" displayName="Forward Rate"/>
+        <TextAnnotationProperty id="35" name="revRate" displayName="Reverse Rate"/>
+        <TextAnnotationProperty id="36" name="exportName" displayName="Export Name"/>
+        <TextAnnotationProperty id="40" name="name" displayName="Name">Shape Names!</TextAnnotationProperty>
+        <TextAnnotationProperty id="43" name="name" displayName="Name">Name</TextAnnotationProperty>
+        <TextAnnotationProperty id="45" name="exportName" displayName="Export Name"/>
+        <NumberAnnotationProperty id="6" name="cardFontSize"
             displayName="Cardinality Font Size" value="12"/>
-        <NumberAnnotationProperty id="12" name="cardFontSize"
+        <NumberAnnotationProperty id="13" name="cardFontSize"
             displayName="Cardinality Font Size" value="12"/>
-        <NumberAnnotationProperty id="15" name="cardFontSize"
+        <NumberAnnotationProperty id="16" name="cardFontSize"
             displayName="Cardinality Font Size" value="12"/>
-        <NumberAnnotationProperty id="21" name="cardFontSize"
+        <NumberAnnotationProperty id="22" name="cardFontSize"
             displayName="Cardinality Font Size" value="12"/>
-        <NumberAnnotationProperty id="30" name="cardFontSize"
+        <NumberAnnotationProperty id="31" name="cardFontSize"
             displayName="Cardinality Font Size" value="12"/>
-        <NumberAnnotationProperty id="37" name="cardFontSize"
+        <NumberAnnotationProperty id="38" name="cardFontSize"
             displayName="Cardinality Font Size" value="12"/>
-        <NumberAnnotationProperty id="43" name="cardFontSize"
+        <NumberAnnotationProperty id="44" name="cardFontSize"
             displayName="Cardinality Font Size" value="12"/>
-        <BooleanAnnotationProperty id="31" name="vertFlag"
+        <BooleanAnnotationProperty id="32" name="vertFlag"
             displayName="Vertical Lugs?" value="false"/>
         <IntegerAnnotationProperty id="1" name="stoich"
             displayName="Stoichiometry" value="1"/>
         <IntegerAnnotationProperty id="3" name="stoich"
             displayName="Stoichiometry" value="1"/>
-        <IntegerAnnotationProperty id="8" name="cardinality"
+        <IntegerAnnotationProperty id="9" name="cardinality"
             displayName="Cardinality" value="1"/>
-        <IntegerAnnotationProperty id="9" name="entityCount"
-            displayName="Entity Count" value="0"/>
         <IntegerAnnotationProperty id="10" name="entityCount"
             displayName="Entity Count" value="0"/>
-        <IntegerAnnotationProperty id="13" name="cardinality"
-            displayName="Cardinality" value="1"/>
-        <IntegerAnnotationProperty id="17" name="entityCount"
+        <IntegerAnnotationProperty id="11" name="entityCount"
             displayName="Entity Count" value="0"/>
-        <IntegerAnnotationProperty id="19" name="cardinality"
+        <IntegerAnnotationProperty id="14" name="cardinality"
             displayName="Cardinality" value="1"/>
-        <IntegerAnnotationProperty id="23" name="cardinality"
+        <IntegerAnnotationProperty id="18" name="entityCount"
+            displayName="Entity Count" value="0"/>
+        <IntegerAnnotationProperty id="20" name="cardinality"
             displayName="Cardinality" value="1"/>
-        <IntegerAnnotationProperty id="24" name="entityCount"
-            displayName="Entity Count" value="0"/>
-        <IntegerAnnotationProperty id="26" name="cardinality"
+        <IntegerAnnotationProperty id="24" name="cardinality"
             displayName="Cardinality" value="1"/>
-        <IntegerAnnotationProperty id="27" name="entityCount"
+        <IntegerAnnotationProperty id="25" name="entityCount"
             displayName="Entity Count" value="0"/>
-        <IntegerAnnotationProperty id="36" name="cardinality"
+        <IntegerAnnotationProperty id="27" name="cardinality"
             displayName="Cardinality" value="1"/>
-        <IntegerAnnotationProperty id="38" name="entityCount"
+        <IntegerAnnotationProperty id="28" name="entityCount"
             displayName="Entity Count" value="0"/>
-        <IntegerAnnotationProperty id="40" name="entityCount"
+        <IntegerAnnotationProperty id="37" name="cardinality"
+            displayName="Cardinality" value="1"/>
+        <IntegerAnnotationProperty id="39" name="entityCount"
             displayName="Entity Count" value="0"/>
-        <IntegerAnnotationProperty id="41" name="cardinality"
+        <IntegerAnnotationProperty id="41" name="entityCount"
+            displayName="Entity Count" value="0"/>
+        <IntegerAnnotationProperty id="42" name="cardinality"
             displayName="Cardinality" value="1"/>
     </PropertyList>
 </epx:canvas>

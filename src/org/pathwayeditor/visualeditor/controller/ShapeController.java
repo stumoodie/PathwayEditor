@@ -43,6 +43,7 @@ import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.figure.geometry.RectangleHull;
 import org.pathwayeditor.figure.rendering.GenericFont;
+import org.pathwayeditor.figure.rendering.IAnchorLocatorFactory;
 import org.pathwayeditor.figure.rendering.IFigureRenderingController;
 import org.pathwayeditor.visualeditor.editingview.FigureDefinitionMiniCanvas;
 import org.pathwayeditor.visualeditor.editingview.IMiniCanvas;
@@ -321,5 +322,10 @@ public class ShapeController extends NodeController implements IShapeController 
 	public boolean intersectsBounds(Envelope otherBounds) {
 		IConvexHull otherHull = new RectangleHull(otherBounds);
 		return intersectsHull(otherHull);
+	}
+
+	@Override
+	public IAnchorLocatorFactory getAnchorLocatorFactory() {
+		return this.getFigureController().getAnchorLocatorFactory();
 	}
 }

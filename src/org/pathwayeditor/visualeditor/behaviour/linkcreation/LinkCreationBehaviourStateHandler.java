@@ -32,6 +32,7 @@ import org.pathwayeditor.visualeditor.behaviour.IViewBehaviourOperationCompletio
 import org.pathwayeditor.visualeditor.behaviour.IViewBehaviourStateHandler;
 import org.pathwayeditor.visualeditor.behaviour.IViewBehaviourStateHandlerChangeListener;
 import org.pathwayeditor.visualeditor.behaviour.operation.ILinkCreationOperation;
+import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
 import org.pathwayeditor.visualeditor.controller.IShapeController;
 import org.pathwayeditor.visualeditor.editingview.IShapePane;
 
@@ -62,7 +63,7 @@ public class LinkCreationBehaviourStateHandler implements IViewBehaviourStateHan
 			if(logger.isTraceEnabled()){
 				logger.trace("Link creation ongoing posn=" + this.mouseBehaviourController.getDiagramLocation());
 			}
-			IShapeController potentialTarget = this.mouseBehaviourController.getShapeAtCurrentLocation();
+			IDrawingElementController potentialTarget = this.mouseBehaviourController.getElementAtCurrentLocation();
 			this.linkCreationResponse.setPotentialTarget(potentialTarget);
 			this.linkCreationResponse.creationOngoing(this.mouseBehaviourController.getDiagramLocation());
 		}

@@ -20,11 +20,13 @@ package org.pathwayeditor.visualeditor.operations;
 
 import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.typedefn.ILinkObjectType;
+import org.pathwayeditor.businessobjects.typedefn.IShapeObjectType;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.behaviour.operation.ILinkCreationOperation;
 import org.pathwayeditor.visualeditor.commands.ICommand;
 import org.pathwayeditor.visualeditor.commands.ICommandStack;
 import org.pathwayeditor.visualeditor.commands.LinkCreationCommand;
+import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
 import org.pathwayeditor.visualeditor.controller.IShapeController;
 import org.pathwayeditor.visualeditor.editingview.IShapePane;
 import org.pathwayeditor.visualeditor.feedback.IFeedbackLink;
@@ -40,9 +42,9 @@ public class LinkCreationOperation implements ILinkCreationOperation {
 	private final ICommandStack commandStack;
 	private ILinkObjectType linkObjectType;
 	private IFeedbackLink currentEdge;
-	private IShapeController srcNode;
+	private IDrawingElementController srcNode;
 	private boolean creationStarted;
-	private IShapeController potentialTargetNode;
+	private IDrawingElementController potentialTargetNode;
 
 	public LinkCreationOperation(IShapePane shapePane, IFeedbackModel feedbackModel, ICommandStack commandStack) {
 		this.shapePane = shapePane;
@@ -64,8 +66,8 @@ public class LinkCreationOperation implements ILinkCreationOperation {
 	public void finishCreation() {
 		if(potentialTargetNode != null){
 			ILinkDefinitionAnchorCalculator anchorCalc = new LinkDefinitionAnchorCalculator(currentEdge.getLinkDefinition());
-			anchorCalc.setSrcLocation(this.srcNode.getFigureController().getAnchorLocatorFactory().createAnchorLocator());
-			anchorCalc.setTgtLocation(this.potentialTargetNode.getFigureController().getAnchorLocatorFactory().createAnchorLocator());
+			anchorCalc.setSrcLocation(this.srcNode.getAnchorLocatorFactory().createAnchorLocator());
+			anchorCalc.setTgtLocation(this.potentialTargetNode.getAnchorLocatorFactory().createAnchorLocator());
 			anchorCalc.recalculateBothAnchors();
 			ICommand cmd = new LinkCreationCommand(srcNode.getDrawingElement(), potentialTargetNode.getDrawingElement(), this.linkObjectType, currentEdge.getLinkDefinition());
 			this.commandStack.execute(cmd);
@@ -109,11 +111,11 @@ public class LinkCreationOperation implements ILinkCreationOperation {
 		}
 		else if(this.canFinishCreation()){
 			if(currentEdge == null){
-				currentEdge = feedbackModel.getFeedbackLinkBuilder().createNodelessLinkFromObjectType(this.srcNode.getBounds().getCentre(), newPosition, linkObjectType);
+				currentEdge = feedbackModel.getFeedbackLinkBuilder().createNodelessLinkFromObjectType(this.srcNode.getCentre(), newPosition, linkObjectType);
 			}
 			ILinkDefinitionAnchorCalculator anchorCalc = new LinkDefinitionAnchorCalculator(currentEdge.getLinkDefinition());
-			anchorCalc.setSrcLocation(this.srcNode.getFigureController().getAnchorLocatorFactory().createAnchorLocator());
-			anchorCalc.setTgtLocation(this.potentialTargetNode.getFigureController().getAnchorLocatorFactory().createAnchorLocator());
+			anchorCalc.setSrcLocation(this.srcNode.getAnchorLocatorFactory().createAnchorLocator());
+			anchorCalc.setTgtLocation(this.potentialTargetNode.getAnchorLocatorFactory().createAnchorLocator());
 			anchorCalc.recalculateBothAnchors();
 			if(logger.isTraceEnabled()){
 				logger.trace("Drawing link from shape to shape. Link=" + currentEdge);
@@ -125,10 +127,10 @@ public class LinkCreationOperation implements ILinkCreationOperation {
 		}
 		else{
 			if(currentEdge == null){
-				currentEdge = feedbackModel.getFeedbackLinkBuilder().createNodelessLinkFromObjectType(this.srcNode.getBounds().getCentre(), newPosition, linkObjectType);
+				currentEdge = feedbackModel.getFeedbackLinkBuilder().createNodelessLinkFromObjectType(this.srcNode.getCentre(), newPosition, linkObjectType);
 			}
 			ILinkDefinitionAnchorCalculator anchorCalc = new LinkDefinitionAnchorCalculator(currentEdge.getLinkDefinition());
-			anchorCalc.setSrcLocation(this.srcNode.getFigureController().getAnchorLocatorFactory().createAnchorLocator());
+			anchorCalc.setSrcLocation(this.srcNode.getAnchorLocatorFactory().createAnchorLocator());
 			currentEdge.getLinkDefinition().setTgtAnchorPosition(newPosition);
 			anchorCalc.recalculateSrcAnchor();
 			if(logger.isTraceEnabled()){
@@ -146,7 +148,7 @@ public class LinkCreationOperation implements ILinkCreationOperation {
 	}
 
 	@Override
-	public void setPotentialTarget(IShapeController potentialTarget) {
+	public void setPotentialTarget(IDrawingElementController potentialTarget) {
 		this.potentialTargetNode = potentialTarget;
 	}
 
@@ -157,22 +159,24 @@ public class LinkCreationOperation implements ILinkCreationOperation {
 
 	@Override
 	public boolean canFinishCreation() {
-		return this.srcNode != null && this.potentialTargetNode != null && this.linkObjectType != null &&
-			this.linkObjectType.getLinkConnectionRules().isValidTarget(this.srcNode.getDrawingElement().getAttribute().getObjectType(),
-					this.potentialTargetNode.getDrawingElement().getAttribute().getObjectType()) &&
+		return this.srcNode != null && this.potentialTargetNode != null && this.linkObjectType != null
+				&& this.srcNode instanceof IShapeController && this.potentialTargetNode instanceof IShapeController 
+				&& this.linkObjectType.getLinkConnectionRules().isValidTarget((IShapeObjectType)this.srcNode.getDrawingElement().getAttribute().getObjectType(),
+						(IShapeObjectType)this.potentialTargetNode.getDrawingElement().getAttribute().getObjectType()) &&
 						(!this.srcNode.equals(this.potentialTargetNode) ||
 								(this.srcNode.equals(this.potentialTargetNode) && this.currentEdge.getLinkDefinition().numBendPoints() >= MIN_NUM_SELF_EDGE_BPS));
 	}
 
 	@Override
-	public void setPotentialSourceNode(IShapeController potentialSource) {
+	public void setPotentialSourceNode(IDrawingElementController potentialSource) {
 		this.srcNode = potentialSource;
 	}
 
 	@Override
 	public boolean canStartCreation() {
-		return this.srcNode != null	&& this.linkObjectType != null &&
-			this.linkObjectType.getLinkConnectionRules().isValidSource(this.srcNode.getDrawingElement().getAttribute().getObjectType());
+		return this.srcNode != null	&& this.linkObjectType != null
+				&& this.srcNode instanceof IShapeController
+				&& this.linkObjectType.getLinkConnectionRules().isValidSource((IShapeObjectType)this.srcNode.getDrawingElement().getAttribute().getObjectType());
 	}
 
 	@Override

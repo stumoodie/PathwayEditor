@@ -23,6 +23,7 @@ import java.util.List;
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElement;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.Point;
+import org.pathwayeditor.figure.rendering.IAnchorLocatorFactory;
 import org.pathwayeditor.visualeditor.editingview.IMiniCanvas;
 
 public interface IDrawingElementController extends Comparable<IDrawingElementController> {
@@ -72,4 +73,8 @@ public interface IDrawingElementController extends Comparable<IDrawingElementCon
 	boolean containsPoint(Point p);
 
 	boolean intersectsBounds(Envelope drawnBounds);
+
+	IAnchorLocatorFactory getAnchorLocatorFactory();
+
+	Point getCentre();
 }

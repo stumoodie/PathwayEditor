@@ -40,6 +40,7 @@ import org.pathwayeditor.businessobjects.impl.facades.ShapeNodeFacade;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.LineSegment;
 import org.pathwayeditor.figure.geometry.Point;
+import org.pathwayeditor.figure.rendering.IAnchorLocatorFactory;
 import org.pathwayeditor.visualeditor.editingview.IMiniCanvas;
 import org.pathwayeditor.visualeditor.feedback.DomainLinkMiniCanvas;
 import org.pathwayeditor.visualeditor.geometry.ILinkDefinitionAnchorCalculator;
@@ -375,5 +376,18 @@ public class LinkController extends DrawingElementController implements ILinkCon
 	@Override
 	public IMiniCanvas getMiniCanvas() {
 		return new DomainLinkMiniCanvas(linkDefinition);
+	}
+
+	@Override
+	public IAnchorLocatorFactory getAnchorLocatorFactory() {
+		// TODO: Implement this.
+		throw new UnsupportedOperationException("Not implemented yet!");
+	}
+
+	@Override
+	public Point getCentre() {
+		// TODO: Implement this.
+		throw new UnsupportedOperationException("Not implemented yet!");
+		
 	}
 }
