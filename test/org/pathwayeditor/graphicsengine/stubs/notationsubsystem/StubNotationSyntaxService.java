@@ -266,4 +266,11 @@ public class StubNotationSyntaxService implements INotationSyntaxService {
 		throw new UnsupportedOperationException("Not implemented yet!");
 		
 	}
+
+	@Override
+	public IShapeObjectType getLinkEndObjectType(ILinkObjectType ot) {
+			// TODO Auto-generated method stub
+			throw new UnsupportedOperationException("Not implemented yet!");
+		
+	}
 }

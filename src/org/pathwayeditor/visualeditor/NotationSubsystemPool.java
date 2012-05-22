@@ -26,7 +26,7 @@ import java.util.TreeMap;
 import org.pathwayeditor.businessobjects.management.INotationSubsystemPool;
 import org.pathwayeditor.businessobjects.notationsubsystem.INotation;
 import org.pathwayeditor.businessobjects.notationsubsystem.INotationSubsystem;
-import org.pathwayeditor.notations.sbgnpd.services.SbgnPdNotationSubsystem;
+import org.pathwayeditor.notations.link2link.Link2LinkNotationSubsystem;
 
 
 public class NotationSubsystemPool implements INotationSubsystemPool {
@@ -34,7 +34,8 @@ public class NotationSubsystemPool implements INotationSubsystemPool {
     
     public NotationSubsystemPool(){
         this.lookup = new TreeMap<INotation, INotationSubsystem>();
-        addNotationSubsystem(new SbgnPdNotationSubsystem());
+        addNotationSubsystem(new Link2LinkNotationSubsystem());
+//        addNotationSubsystem(new SbgnPdNotationSubsystem());
 //        addNotationSubsystem(new SbgnERNotationSubsystem());
 //        addNotationSubsystem(new SbgnAfNotationSubsystem());
     }

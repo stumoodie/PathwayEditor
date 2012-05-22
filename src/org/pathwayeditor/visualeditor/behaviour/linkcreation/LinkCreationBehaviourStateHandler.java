@@ -74,7 +74,7 @@ public class LinkCreationBehaviourStateHandler implements IViewBehaviourStateHan
 		if(e.getButton() == MouseEvent.BUTTON1){
 			this.mouseBehaviourController.setMousePosition(e.getPoint().getX(), e.getPoint().getY());
 			if(this.linkCreationResponse.isLinkCreationStarted()){
-				IShapeController finalShape = this.mouseBehaviourController.getShapeAtCurrentLocation();
+				IDrawingElementController finalShape = this.mouseBehaviourController.getElementAtCurrentLocation();
 				this.linkCreationResponse.setPotentialTarget(finalShape);
 				if(this.linkCreationResponse.canFinishCreation()){
 					this.linkCreationResponse.finishCreation();
@@ -92,7 +92,7 @@ public class LinkCreationBehaviourStateHandler implements IViewBehaviourStateHan
 				this.linkCreationResponse.setPotentialSourceNode(startShape);
 				this.linkCreationResponse.setLinkObjectType(this.objectTypeInspector.getCurrentLinkType());
 				if(this.linkCreationResponse.canStartCreation()){
-					this.linkCreationResponse.startCreation();
+					this.linkCreationResponse.startCreation(this.mouseBehaviourController.getMousePosition());
 				}
 			}
 		}

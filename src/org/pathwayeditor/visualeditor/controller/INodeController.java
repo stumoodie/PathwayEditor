@@ -58,5 +58,4 @@ public interface INodeController extends IDrawingElementController {
 	 * @return true of the resize will succeed, false otherwise.
 	 */
 	boolean canResize(Point originDelta, Dimension resizeDelta);
-	
 }

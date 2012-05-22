@@ -25,7 +25,11 @@ import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElement;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttributeFactory;
 import org.pathwayeditor.businessobjects.drawingprimitives.IRootAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.IShapeAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.IShapeAttributeFactory;
 import org.pathwayeditor.businessobjects.typedefn.ILinkObjectType;
+import org.pathwayeditor.businessobjects.typedefn.IShapeObjectType;
+import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.geometry.ILinkPointDefinition;
 
@@ -63,9 +67,9 @@ public class LinkCreationCommand implements ICommand {
 		IRootAttribute rootAttribute = (IRootAttribute)graph.getRoot().getAttribute();
 		ILinkAttributeFactory attFactory = rootAttribute.getModel().linkAttributeFactory();
 		edgeFact.setAttributeFactory(attFactory);
-		Visitor srcVisitor = new Visitor();
+		SrcVisitor srcVisitor = new SrcVisitor();
 		this.srcShape.visit(srcVisitor);
-		Visitor tgtVisitor = new Visitor();
+		TgtVisitor tgtVisitor = new TgtVisitor();
 		this.tgtShape.visit(tgtVisitor);
 		edgeFact.setPair(new CompoundNodePair(srcVisitor.getNode(), tgtVisitor.getNode()));
 //		ILinkEdgeFactory fact = new LinkEdgeFactoryFacade(graph.edgeFactory());
@@ -78,6 +82,10 @@ public class LinkCreationCommand implements ICommand {
 		ILinkAttribute linkAttribute = (ILinkAttribute) edge.getAttribute();
 		linkAttribute.getSourceTerminus().setLocation(linkPointDefinition.getSrcAnchorPosition());
 		linkAttribute.getTargetTerminus().setLocation(linkPointDefinition.getTgtAnchorPosition());
+//		Envelope srcBounds = ((IDrawingNodeAttribute)srcVisitor.getNode().getAttribute()).getBounds();
+//		((IDrawingNodeAttribute)srcVisitor.getNode().getAttribute()).setBounds(srcBounds.changeOrigin(linkPointDefinition.getSrcAnchorPosition()));
+//		Envelope tgtBounds = ((IDrawingNodeAttribute)tgtVisitor.getNode().getAttribute()).getBounds();
+//		((IDrawingNodeAttribute)tgtVisitor.getNode().getAttribute()).setBounds(tgtBounds.changeOrigin(linkPointDefinition.getTgtAnchorPosition()));
 		Iterator<Point> ptIter = linkPointDefinition.bendPointIterator();
 		IBendPointContainer bpContainer = linkAttribute.getBendPointContainer();
 		while(ptIter.hasNext()){
@@ -97,15 +105,21 @@ public class LinkCreationCommand implements ICommand {
 		this.srcShape.getGraph().restoreState(createdState);
 	}
 
-	private class Visitor implements ICompoundGraphElementVisitor{
+	private class SrcVisitor implements ICompoundGraphElementVisitor{
 		ICompoundNode newNode;
 		
 		@Override
 		public void visitEdge(ICompoundEdge edge) {
 			ICompoundNodeFactory fact = edge.getChildCompoundGraph().nodeFactory();
-			//TODO: Sort out the creation of the dummy node.
-			fact.setAttributeFactory(null); 
+			ILinkObjectType linkOt = ((ILinkAttribute)edge.getAttribute()).getObjectType();
+			IShapeObjectType linkEndObjectType = ((ILinkAttribute)edge.getAttribute()).getModel().getNotationSubsystem().getSyntaxService().getLinkEndObjectType(linkOt);
+			IShapeAttributeFactory attFact = ((ILinkAttribute)edge.getAttribute()).getModel().shapeAttributeFactory();
+			attFact.setObjectType(linkEndObjectType);
+			fact.setAttributeFactory(attFact); 
 			newNode = fact.createNode();
+			IShapeAttribute newAtt = (IShapeAttribute)newNode.getAttribute();
+			Envelope origEnv = newAtt.getBounds();
+			newAtt.setBounds(origEnv.changeOrigin(linkPointDefinition.getSrcAnchorPosition()));
 		}
 
 		public ICompoundNode getNode() {
@@ -117,4 +131,32 @@ public class LinkCreationCommand implements ICommand {
 			this.newNode = node;
 		}
 	}
+
+	private class TgtVisitor implements ICompoundGraphElementVisitor{
+		ICompoundNode newNode;
+		
+		@Override
+		public void visitEdge(ICompoundEdge edge) {
+			ICompoundNodeFactory fact = edge.getChildCompoundGraph().nodeFactory();
+			ILinkObjectType linkOt = ((ILinkAttribute)edge.getAttribute()).getObjectType();
+			IShapeObjectType linkEndObjectType = ((ILinkAttribute)edge.getAttribute()).getModel().getNotationSubsystem().getSyntaxService().getLinkEndObjectType(linkOt);
+			IShapeAttributeFactory attFact = ((ILinkAttribute)edge.getAttribute()).getModel().shapeAttributeFactory();
+			attFact.setObjectType(linkEndObjectType);
+			fact.setAttributeFactory(attFact); 
+			newNode = fact.createNode();
+			IShapeAttribute newAtt = (IShapeAttribute)newNode.getAttribute();
+			Envelope origEnv = newAtt.getBounds();
+			newAtt.setBounds(origEnv.changeOrigin(linkPointDefinition.getTgtAnchorPosition()));
+		}
+
+		public ICompoundNode getNode() {
+			return this.newNode;
+		}
+
+		@Override
+		public void visitNode(ICompoundNode node) {
+			this.newNode = node;
+		}
+	}
+
 }

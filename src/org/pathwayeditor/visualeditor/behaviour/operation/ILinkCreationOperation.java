@@ -21,11 +21,10 @@ package org.pathwayeditor.visualeditor.behaviour.operation;
 import org.pathwayeditor.businessobjects.typedefn.ILinkObjectType;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
-import org.pathwayeditor.visualeditor.controller.IShapeController;
 
 public interface ILinkCreationOperation {
 
-	void startCreation();
+	void startCreation(Point startPosn);
 
 	void setLinkObjectType(ILinkObjectType currentLinkType);
 

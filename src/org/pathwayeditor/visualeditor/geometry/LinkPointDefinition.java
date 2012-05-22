@@ -45,7 +45,7 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 	private static final double DEFAULT_LINE_WIDTH = 1.0;
 	private static final double MOUSE_HOT_SPHERE_RADIUS = 5.0;
 
-	private final List<Point> pointList;
+	private List<Point> pointList;
 	private Colour lineColour = Colour.BLACK;
 	private LineStyle lineStyle = LineStyle.SOLID;
 	private double lineWidth = DEFAULT_LINE_WIDTH;
@@ -425,6 +425,26 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 		return this.tgtTermDefn;
 	}
 
+	@Override
+	public void changeEnvelope(Envelope newEnvelope){
+		Envelope bounds = this.getBounds();
+ 		if(!bounds.equals(newEnvelope)){
+ 			Point origin = bounds.getOrigin();
+ 			double xOrig = origin.getX();
+ 			double yOrig = origin.getY();
+ 			Dimension boundsSize = bounds.getDimension();
+			double scaleX = newEnvelope.getDimension().getWidth()/boundsSize.getWidth();
+			double scaleY = newEnvelope.getDimension().getHeight()/boundsSize.getHeight();
+			List<Point> newList = new ArrayList<Point>(this.pointList.size());
+			for(Point p : this.pointList){
+				double scaledX = newEnvelope.getOrigin().getX() + ((p.getX() - xOrig) * scaleX); 
+				double scaledY = newEnvelope.getOrigin().getY() + ((p.getY() - yOrig) * scaleY); 
+				newList.add(new Point(scaledX, scaledY));
+			}
+			this.pointList = newList;
+		}
+	}
+	
 	@Override
 	public void translate(Point translation) {
 		for(int i = 0; i < this.pointList.size(); i++){

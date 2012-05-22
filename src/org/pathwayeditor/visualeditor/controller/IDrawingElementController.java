@@ -73,8 +73,15 @@ public interface IDrawingElementController extends Comparable<IDrawingElementCon
 	boolean containsPoint(Point p);
 
 	boolean intersectsBounds(Envelope drawnBounds);
-
+	
 	IAnchorLocatorFactory getAnchorLocatorFactory();
 
-	Point getCentre();
+	/**
+	 * Gets a preferred anchor point for which the opposite anchor point of a link is to be calculated
+	 * from. This may be based on the original reference point that is passed to the this anchor point. 
+	 * @param originalRefPoint the point that may be used as the anchor point reference or to calculate
+	 * it from.
+	 * @return The point calculated as above.
+	 */
+	Point getAnchorReferencePoint(Point originalRefPoint);
 }

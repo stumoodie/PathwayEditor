@@ -22,7 +22,11 @@ import java.util.Iterator;
 import java.util.SortedSet;
 
 import org.apache.log4j.Logger;
+import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasElementAttributeVisitor;
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElement;
+import org.pathwayeditor.businessobjects.drawingprimitives.ILabelAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.IRootAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.IShapeAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.IShapeNode;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.Colour;
@@ -96,10 +100,16 @@ public class ShapeController extends NodeController implements IShapeController 
 				else if(e.getPropertyChange().equals(CanvasAttributePropertyChange.BOUNDS)){
 					IShapeAttribute attribute = (IShapeAttribute)e.getAttribute();
 					Envelope oldDrawnBounds = figureController.getFigureController().getConvexHull().getEnvelope();
+					if(logger.isTraceEnabled()){
+						logger.trace("Detected shape bound change event. Recalculating figure defn bounds. Att=" + attribute + ",newBounds=" + attribute.getBounds());
+					}
 					figureController.getFigureController().setEnvelope(attribute.getBounds());
 					figureController.refreshGraphicalAttributes();
 //					recalculateSrcLinks();
 //					recalculateTgtLinks();
+					if(logger.isTraceEnabled()){
+						logger.trace("Notifying this controller of bounds change");
+					}
 					notifyDrawnBoundsChanged(oldDrawnBounds, figureController.getFigureController().getConvexHull().getEnvelope());
 				}
 				else if(e.getPropertyChange().equals(CanvasAttributePropertyChange.LINE_STYLE)){
@@ -120,6 +130,9 @@ public class ShapeController extends NodeController implements IShapeController 
 		annotPropChangeListener = new IAnnotationPropertyChangeListener() {
 			@Override
 			public void propertyChange(IAnnotationPropertyChangeEvent e) {
+				if(logger.isTraceEnabled()){
+					logger.trace("Detected annotation props change event. Recalculating bound props of figure defn. PropDefn=" + e.getPropertyDefinition());
+				}
 				figureController.refreshBoundProperties();
 //				assignBindVariablesToProperties(domainNode.getAttribute(), figureController);
 //				figureController.generateFigureDefinition();
@@ -128,9 +141,36 @@ public class ShapeController extends NodeController implements IShapeController 
 		parentDrawingNodePropertyChangeListener = new ICanvasAttributeChangeListener() {
 			@Override
 			public void propertyChange(ICanvasAttributePropertyChangeEvent e) {
+				if(e.getPropertyChange()  == CanvasAttributePropertyChange.DRAWN_PATH){
+					if(logger.isTraceEnabled()){
+						logger.trace("Detected parent drawn path change. Parent att=" + parentAttribute.getAttribute() + ", shapeAtt=" + domainNode.getAttribute());
+					}
+					parentAttribute.getAttribute().visit(new ICanvasElementAttributeVisitor() {
+						
+						@Override
+						public void visitShape(IShapeAttribute attribute) {
+						}
+						
+						@Override
+						public void visitRoot(IRootAttribute attribute) {
+						}
+						
+						@Override
+						public void visitLink(ILinkAttribute attribute) {
+							// TODO:
+						}
+						
+						@Override
+						public void visitLabel(ILabelAttribute attribute) {
+						}
+					});
+				}
 			}
 			@Override
 			public void elementTranslated(ICanvasAttributeTranslationEvent e) {
+				if(logger.isTraceEnabled()){
+					logger.trace("Detected translation att=" + domainNode.getAttribute() + ", delta=" + e.getTranslationDelta());
+				}
 				domainNode.getAttribute().translate(e.getTranslationDelta());
 			}
 			@Override
@@ -307,9 +347,9 @@ public class ShapeController extends NodeController implements IShapeController 
 	public boolean containsPoint(Point p) {
 		IConvexHull attributeHull = this.getConvexHull();
 		boolean retVal = attributeHull.containsPoint(p); 
-		if(logger.isTraceEnabled()){
-			logger.trace("Testing contains node:" + this + ",retVal=" + retVal + ", hull=" + attributeHull + ", point=" + p);
-		}
+//		if(logger.isTraceEnabled()){
+//			logger.trace("Testing contains node:" + this + ",retVal=" + retVal + ", hull=" + attributeHull + ", point=" + p);
+//		}
 		return retVal;
 	}
 

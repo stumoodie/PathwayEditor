@@ -25,11 +25,11 @@ import org.pathwayeditor.visualeditor.behaviour.operation.ILinkCreationOperation
 import org.pathwayeditor.visualeditor.behaviour.operation.ILinkOperation;
 import org.pathwayeditor.visualeditor.behaviour.operation.ILinkPopupActions;
 import org.pathwayeditor.visualeditor.behaviour.operation.IMarqueeOperation;
+import org.pathwayeditor.visualeditor.behaviour.operation.INodePopupActions;
 import org.pathwayeditor.visualeditor.behaviour.operation.IOperationFactory;
 import org.pathwayeditor.visualeditor.behaviour.operation.IResizeOperation;
 import org.pathwayeditor.visualeditor.behaviour.operation.ISelectionOperation;
 import org.pathwayeditor.visualeditor.behaviour.operation.IShapeCreationOperation;
-import org.pathwayeditor.visualeditor.behaviour.operation.INodePopupActions;
 import org.pathwayeditor.visualeditor.commands.DeleteBendPointCommand;
 import org.pathwayeditor.visualeditor.commands.DeleteSelectionCommand;
 import org.pathwayeditor.visualeditor.commands.ICommand;

@@ -40,11 +40,13 @@ import org.pathwayeditor.businessobjects.impl.facades.ShapeNodeFacade;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.LineSegment;
 import org.pathwayeditor.figure.geometry.Point;
+import org.pathwayeditor.figure.rendering.IAnchorLocator;
 import org.pathwayeditor.figure.rendering.IAnchorLocatorFactory;
 import org.pathwayeditor.visualeditor.editingview.IMiniCanvas;
 import org.pathwayeditor.visualeditor.feedback.DomainLinkMiniCanvas;
 import org.pathwayeditor.visualeditor.geometry.ILinkDefinitionAnchorCalculator;
 import org.pathwayeditor.visualeditor.geometry.ILinkPointDefinition;
+import org.pathwayeditor.visualeditor.geometry.Link2LinkAnchorLocator;
 import org.pathwayeditor.visualeditor.geometry.LinkDefinitionAnchorCalculator;
 import org.pathwayeditor.visualeditor.geometry.LinkPointDefinition;
 
@@ -72,6 +74,9 @@ public class LinkController extends DrawingElementController implements ILinkCon
 			@Override
 			public void valueChangeEvent(ILinkTerminusValueChangeEvent e) {
 				if(e.getChangeType().equals(LinkTerminusChangeType.LOCATION)){
+					if(logger.isTraceEnabled()){
+						logger.trace("Detected src anchor location change. Updating linkDefn. Att=" + linkAttribute + ",newLocn=" + e.getNewValue());
+					}
 					Envelope originalDrawnBounds = getDrawnBounds();
 					Point newLocation = (Point)e.getNewValue();
 					linkDefinition.setSrcAnchorPosition(newLocation);
@@ -83,6 +88,9 @@ public class LinkController extends DrawingElementController implements ILinkCon
 			@Override
 			public void valueChangeEvent(ILinkTerminusValueChangeEvent e) {
 				if(e.getChangeType().equals(LinkTerminusChangeType.LOCATION)){
+					if(logger.isTraceEnabled()){
+						logger.trace("Detected tgt anchor location change. Updating linkDefn. Att=" + linkAttribute + ",newLocn=" + e.getNewValue());
+					}
 					Envelope originalDrawnBounds = getDrawnBounds();
 					Point newLocation = (Point)e.getNewValue();
 					linkDefinition.setTgtAnchorPosition(newLocation);
@@ -94,10 +102,16 @@ public class LinkController extends DrawingElementController implements ILinkCon
 			
 			@Override
 			public void propertyChange(ICanvasAttributePropertyChangeEvent e) {
+				if(logger.isTraceEnabled()){
+					logger.trace("Detected parent element bounds change. Doing nothing!. Att=" + linkAttribute + ",delta=" + e.getNewValue());
+				}
 			}
 			
 			@Override
 			public void elementTranslated(ICanvasAttributeTranslationEvent e) {
+				if(logger.isTraceEnabled()){
+					logger.trace("Detected parent element translated. Translating this att. Att=" + linkAttribute + ",delta=" + e.getTranslationDelta());
+				}
 				linkAttribute.getAttribute().translate(e.getTranslationDelta());
 			}
 			
@@ -109,6 +123,9 @@ public class LinkController extends DrawingElementController implements ILinkCon
 			
 			@Override
 			public void locationChange(IBendPointLocationChangeEvent e) {
+				if(logger.isTraceEnabled()){
+					logger.trace("Bendpoint locaton change event. Recalculating links to bps. Att=" + linkAttribute + ",newBounds=" + e.getNewPosition());
+				}
 				Point bpPosn = e.getNewPosition();
 				int idx = e.getBendPointIndex();
 				linkDefinition.setBendPointPosition(idx, bpPosn);
@@ -152,6 +169,9 @@ public class LinkController extends DrawingElementController implements ILinkCon
 			}
 			@Override
 			public void elementTranslated(ICanvasAttributeTranslationEvent e) {
+				if(logger.isTraceEnabled()){
+					logger.trace("Detected translation event.  Att=" + linkAttribute + ",delta=" + e.getTranslationDelta());
+				}
 				Envelope oldDrawnBounds = linkDefinition.getBounds();
 				linkDefinition.translate(e.getTranslationDelta());
 				Envelope newDrawnBounds = linkDefinition.getBounds();
@@ -166,9 +186,15 @@ public class LinkController extends DrawingElementController implements ILinkCon
 			@Override
 			public void propertyChange(ICanvasAttributePropertyChangeEvent e) {
 				if(e.getPropertyChange().equals(CanvasAttributePropertyChange.BOUNDS)){
+					if(logger.isTraceEnabled()){
+						logger.trace("Detected bounds change of src node. Att=" + linkAttribute + ",newBounds=" + linkDefinition.getBounds());
+					}
 					if(!e.getAttribute().equals(parentAttribute)){
 						// only update the anchor points if this is not a child of the src node - in which case it will be dealt with
 						// as a whole link translation
+						if(logger.isTraceEnabled()){
+							logger.trace("Bounds change of non-parent attrib. Recalculating anchor points. Att=" + linkAttribute + ",newBounds=" + linkDefinition.getBounds());
+						}
 						updateAnchorPoints();
 					}
 				}
@@ -188,7 +214,13 @@ public class LinkController extends DrawingElementController implements ILinkCon
 			@Override
 			public void propertyChange(ICanvasAttributePropertyChangeEvent e) {
 				if(e.getPropertyChange().equals(CanvasAttributePropertyChange.BOUNDS)){
+					if(logger.isTraceEnabled()){
+						logger.trace("Detected bounds change of tgt node. Att=" + linkAttribute + ",newBounds=" + e.getNewValue());
+					}
 					if(!e.getAttribute().equals(parentAttribute)){
+						if(logger.isTraceEnabled()){
+							logger.trace("Bounds change of non-parent attrib. Recalculating anchor points. Att=" + linkAttribute + ",newBounds=" + e.getNewValue());
+						}
 						// only update the anchor points if this is not a child of the tgt node - in which case it will be dealt with
 						// as a whole link translation
 						updateAnchorPoints();
@@ -340,9 +372,9 @@ public class LinkController extends DrawingElementController implements ILinkCon
 		if(bounds.containsPoint(p)){
 //			final double halfLineHeight = this.linkAttribute.getLineWidth() + LINE_HIT_TOLERENCE;
 			retVal = this.linkDefinition.containsPoint(p);//, halfLineHeight); 
-			if(logger.isTraceEnabled() && retVal){
-				logger.trace("Bounds contains point. bounds=" + bounds + ",point=" + p);
-			}
+//			if(logger.isTraceEnabled() && retVal){
+//				logger.trace("Bounds contains point. bounds=" + bounds + ",point=" + p);
+//			}
 		}
 		return retVal;
 	}
@@ -380,14 +412,29 @@ public class LinkController extends DrawingElementController implements ILinkCon
 
 	@Override
 	public IAnchorLocatorFactory getAnchorLocatorFactory() {
-		// TODO: Implement this.
-		throw new UnsupportedOperationException("Not implemented yet!");
+		return new IAnchorLocatorFactory() {
+			
+			@Override
+			public IAnchorLocator createAnchorLocator(Envelope newBounds) {
+				ILinkPointDefinition linkDefnCopy = linkDefinition.getCopy();
+				linkDefnCopy.changeEnvelope(newBounds);
+				return new Link2LinkAnchorLocator(linkDefnCopy);
+			}
+			
+			@Override
+			public IAnchorLocator createAnchorLocator() {
+				return new Link2LinkAnchorLocator(linkDefinition);
+			}
+
+		};
 	}
 
 	@Override
-	public Point getCentre() {
-		// TODO: Implement this.
-		throw new UnsupportedOperationException("Not implemented yet!");
-		
+	public Point getAnchorReferencePoint(Point originalRefPoint) {
+		IAnchorLocator locator = new Link2LinkAnchorLocator(linkDefinition);
+		locator.setOtherEndPoint(originalRefPoint);
+		return locator.calcAnchorPosition();
 	}
+
+
 }

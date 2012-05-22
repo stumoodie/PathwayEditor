@@ -97,4 +97,6 @@ public interface ILinkPointDefinition {
 	Envelope getBounds();
 
 	ILinkPointDefinition getCopy();
+
+	void changeEnvelope(Envelope newEnvelope);
 }
