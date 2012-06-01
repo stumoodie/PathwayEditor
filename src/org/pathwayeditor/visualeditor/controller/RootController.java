@@ -112,8 +112,8 @@ public class RootController extends NodeController implements IRootController {
 		};
 	}
 
-	@Override
-	public IAnchorLocatorFactory getAnchorLocatorFactory() {
-		throw new UnsupportedOperationException("Not in use. This should not be called!");
-	}
+//	@Override
+//	public IAnchorLocatorFactory getAnchorLocatorFactory() {
+//		throw new UnsupportedOperationException("Not in use. This should not be called!");
+//	}
 }

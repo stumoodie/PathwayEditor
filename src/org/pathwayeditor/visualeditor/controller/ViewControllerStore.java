@@ -28,6 +28,7 @@ import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import org.pathwayeditor.businessobjects.drawingprimitives.IAnchorNodeAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasElementAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasElementAttributeVisitor;
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElement;
@@ -555,6 +556,12 @@ public class ViewControllerStore implements IViewControllerModel {
 			else{
 				viewNode = new LabelController(viewController, new LabelNodeFacade(attribute.getCurrentElement()), indexCounter++);
 			}
+		}
+
+		@Override
+		public void visitAnchorNode(IAnchorNodeAttribute anchorNodeAttribute) {
+			throw new UnsupportedOperationException("Not in use at the moment");
+//			viewNode = new AnchorNodeController(viewController, anchorNodeAttribute, indexCounter++);
 		}
 		
 	}

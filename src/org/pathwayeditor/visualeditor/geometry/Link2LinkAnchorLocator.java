@@ -2,6 +2,7 @@ package org.pathwayeditor.visualeditor.geometry;
 
 import java.util.Iterator;
 
+import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
 import org.pathwayeditor.figure.geometry.LineSegment;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.figure.geometry.Vector;
@@ -14,6 +15,10 @@ public class Link2LinkAnchorLocator implements IAnchorLocator {
 	
 	public Link2LinkAnchorLocator(ILinkPointDefinition linkDefn) {
 		this.linkDefn = linkDefn;
+	}
+	
+	public Link2LinkAnchorLocator(ILinkAttribute linkAtt) {
+		this.linkDefn = new LinkPointDefinition(linkAtt);
 	}
 	
 	@Override

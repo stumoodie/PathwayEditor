@@ -29,9 +29,9 @@ import org.pathwayeditor.businessobjects.typedefn.ILinkAttributeDefaults;
 import org.pathwayeditor.businessobjects.typedefn.ILinkConnectionRules;
 import org.pathwayeditor.businessobjects.typedefn.ILinkObjectType;
 import org.pathwayeditor.businessobjects.typedefn.ILinkTerminusDefinition;
+import org.pathwayeditor.businessobjects.typedefn.INodeObjectType;
 import org.pathwayeditor.businessobjects.typedefn.IObjectType;
 import org.pathwayeditor.businessobjects.typedefn.IObjectTypeParentingRules;
-import org.pathwayeditor.businessobjects.typedefn.IShapeObjectType;
 
 /**
  * @author smoodie
@@ -65,12 +65,12 @@ public class StubLinkBObjectType implements ILinkObjectType {
 			}
 
 			@Override
-			public boolean isValidSource(IShapeObjectType source) {
+			public boolean isValidSource(INodeObjectType source) {
 				return StubShapeCObjectType.UNIQUE_ID == source.getUniqueId();
 			}
 
 			@Override
-			public boolean isValidTarget(IShapeObjectType source, IShapeObjectType target) {
+			public boolean isValidTarget(INodeObjectType source, INodeObjectType target) {
 				return isValidSource(source)
 					&& (StubShapeAObjectType.UNIQUE_ID == target.getUniqueId()
 							|| StubShapeCObjectType.UNIQUE_ID == target.getUniqueId()

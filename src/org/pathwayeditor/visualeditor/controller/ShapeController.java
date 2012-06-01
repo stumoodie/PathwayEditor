@@ -22,11 +22,7 @@ import java.util.Iterator;
 import java.util.SortedSet;
 
 import org.apache.log4j.Logger;
-import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasElementAttributeVisitor;
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElement;
-import org.pathwayeditor.businessobjects.drawingprimitives.ILabelAttribute;
-import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
-import org.pathwayeditor.businessobjects.drawingprimitives.IRootAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.IShapeAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.IShapeNode;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.Colour;
@@ -47,7 +43,6 @@ import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.figure.geometry.RectangleHull;
 import org.pathwayeditor.figure.rendering.GenericFont;
-import org.pathwayeditor.figure.rendering.IAnchorLocatorFactory;
 import org.pathwayeditor.figure.rendering.IFigureRenderingController;
 import org.pathwayeditor.visualeditor.editingview.FigureDefinitionMiniCanvas;
 import org.pathwayeditor.visualeditor.editingview.IMiniCanvas;
@@ -141,30 +136,6 @@ public class ShapeController extends NodeController implements IShapeController 
 		parentDrawingNodePropertyChangeListener = new ICanvasAttributeChangeListener() {
 			@Override
 			public void propertyChange(ICanvasAttributePropertyChangeEvent e) {
-				if(e.getPropertyChange()  == CanvasAttributePropertyChange.DRAWN_PATH){
-					if(logger.isTraceEnabled()){
-						logger.trace("Detected parent drawn path change. Parent att=" + parentAttribute.getAttribute() + ", shapeAtt=" + domainNode.getAttribute());
-					}
-					parentAttribute.getAttribute().visit(new ICanvasElementAttributeVisitor() {
-						
-						@Override
-						public void visitShape(IShapeAttribute attribute) {
-						}
-						
-						@Override
-						public void visitRoot(IRootAttribute attribute) {
-						}
-						
-						@Override
-						public void visitLink(ILinkAttribute attribute) {
-							// TODO:
-						}
-						
-						@Override
-						public void visitLabel(ILabelAttribute attribute) {
-						}
-					});
-				}
 			}
 			@Override
 			public void elementTranslated(ICanvasAttributeTranslationEvent e) {
@@ -364,8 +335,8 @@ public class ShapeController extends NodeController implements IShapeController 
 		return intersectsHull(otherHull);
 	}
 
-	@Override
-	public IAnchorLocatorFactory getAnchorLocatorFactory() {
-		return this.getFigureController().getAnchorLocatorFactory();
-	}
+//	@Override
+//	public IAnchorLocatorFactory getAnchorLocatorFactory() {
+//		return this.getFigureController().getAnchorLocatorFactory();
+//	}
 }

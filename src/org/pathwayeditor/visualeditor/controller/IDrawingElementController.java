@@ -23,7 +23,6 @@ import java.util.List;
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElement;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.Point;
-import org.pathwayeditor.figure.rendering.IAnchorLocatorFactory;
 import org.pathwayeditor.visualeditor.editingview.IMiniCanvas;
 
 public interface IDrawingElementController extends Comparable<IDrawingElementController> {
@@ -31,12 +30,6 @@ public interface IDrawingElementController extends Comparable<IDrawingElementCon
 	int getIndex();
 	
 	IViewControllerModel getViewModel();
-	
-//	/**
-//	 * Get the view controller sub-model for this element
-//	 * @return the view controller sub-model, which cannot be null.
-//	 */
-//	IViewControllerSubModel getViewControllerSubModel(); 
 	
 	IMiniCanvas getMiniCanvas();
 	
@@ -73,15 +66,4 @@ public interface IDrawingElementController extends Comparable<IDrawingElementCon
 	boolean containsPoint(Point p);
 
 	boolean intersectsBounds(Envelope drawnBounds);
-	
-	IAnchorLocatorFactory getAnchorLocatorFactory();
-
-	/**
-	 * Gets a preferred anchor point for which the opposite anchor point of a link is to be calculated
-	 * from. This may be based on the original reference point that is passed to the this anchor point. 
-	 * @param originalRefPoint the point that may be used as the anchor point reference or to calculate
-	 * it from.
-	 * @return The point calculated as above.
-	 */
-	Point getAnchorReferencePoint(Point originalRefPoint);
 }

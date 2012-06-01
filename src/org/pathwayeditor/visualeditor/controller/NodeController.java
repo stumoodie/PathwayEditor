@@ -29,8 +29,8 @@ public abstract class NodeController extends DrawingElementController implements
 		super(viewController, index);
 	}
 
-	@Override
-	public final Point getAnchorReferencePoint(Point refPoint){
-		return this.getBounds().getCentre();
-	}
+//	@Override
+//	public final Point getAnchorReferencePoint(Point refPoint){
+//		return this.getBounds().getCentre();
+//	}
 }

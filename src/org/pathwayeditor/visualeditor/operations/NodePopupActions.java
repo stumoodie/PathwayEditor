@@ -3,6 +3,7 @@ package org.pathwayeditor.visualeditor.operations;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
+import org.pathwayeditor.businessobjects.drawingprimitives.IAnchorNodeAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasElementAttributeVisitor;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILabelAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
@@ -82,6 +83,10 @@ public class NodePopupActions implements INodePopupActions {
 					shapePane.updateView();
 				}
 			}
+			@Override
+			public void visitAnchorNode(IAnchorNodeAttribute anchorNodeAttribute) {
+				throw new UnsupportedOperationException("Should not be called");
+			}
 		});
 	}
 
@@ -110,6 +115,10 @@ public class NodePopupActions implements INodePopupActions {
 			public void visitLabel(ILabelAttribute attribute) {
 				ILabelController shape = (ILabelController)nodeController;
 				propChangeDialog.setAnnotatedObject(shape.getDrawingElement().getAttribute().getProperty());
+			}
+			@Override
+			public void visitAnchorNode(IAnchorNodeAttribute anchorNodeAttribute) {
+				throw new UnsupportedOperationException("Should not be called");
 			}
 		});
 		propChangeDialog.setVisible(true);

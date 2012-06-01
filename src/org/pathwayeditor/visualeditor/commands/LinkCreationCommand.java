@@ -21,71 +21,45 @@ package org.pathwayeditor.visualeditor.commands;
 import java.util.Iterator;
 
 import org.pathwayeditor.businessobjects.drawingprimitives.IBendPointContainer;
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElement;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
-import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttributeFactory;
-import org.pathwayeditor.businessobjects.drawingprimitives.IRootAttribute;
-import org.pathwayeditor.businessobjects.drawingprimitives.IShapeAttribute;
-import org.pathwayeditor.businessobjects.drawingprimitives.IShapeAttributeFactory;
+import org.pathwayeditor.businessobjects.drawingprimitives.ILinkEdge;
+import org.pathwayeditor.businessobjects.drawingprimitives.ILinkEdgeFactory;
+import org.pathwayeditor.businessobjects.drawingprimitives.IShapeNode;
+import org.pathwayeditor.businessobjects.impl.facades.LinkEdgeFactoryFacade;
 import org.pathwayeditor.businessobjects.typedefn.ILinkObjectType;
-import org.pathwayeditor.businessobjects.typedefn.IShapeObjectType;
-import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.geometry.ILinkPointDefinition;
 
-import uk.ac.ed.inf.graph.compound.CompoundNodePair;
-import uk.ac.ed.inf.graph.compound.ICompoundEdge;
-import uk.ac.ed.inf.graph.compound.ICompoundEdgeFactory;
 import uk.ac.ed.inf.graph.compound.ICompoundGraph;
-import uk.ac.ed.inf.graph.compound.ICompoundGraphElement;
-import uk.ac.ed.inf.graph.compound.ICompoundGraphElementVisitor;
-import uk.ac.ed.inf.graph.compound.ICompoundNode;
-import uk.ac.ed.inf.graph.compound.ICompoundNodeFactory;
 import uk.ac.ed.inf.graph.state.IGraphState;
 
 public class LinkCreationCommand implements ICommand {
-	private final ICompoundGraphElement srcShape;
-	private final ICompoundGraphElement tgtShape;
+	private final IShapeNode srcShape;
+	private final IShapeNode tgtShape;
 	private final ILinkObjectType linkObjectType;
 	private IGraphState originalState;
 	private IGraphState createdState;
 	private final ILinkPointDefinition linkPointDefinition;
 
-	public LinkCreationCommand(IDrawingElement srcNode, IDrawingElement tgtNode,
+	public LinkCreationCommand(IShapeNode srcNode, IShapeNode tgtNode,
 			ILinkObjectType linkObjectType, ILinkPointDefinition linkDefinition) {
-		this.srcShape = srcNode.getGraphElement();
-		this.tgtShape = tgtNode.getGraphElement();
+		this.srcShape = srcNode;
+		this.tgtShape = tgtNode;
 		this.linkObjectType = linkObjectType;
 		this.linkPointDefinition = linkDefinition.getCopy();
 	}
 
 	@Override
 	public void execute() {
-		ICompoundGraph graph = this.srcShape.getGraph();
+		ICompoundGraph graph = this.srcShape.getGraphElement().getGraph();
 		this.originalState = graph.getCurrentState();
-		ICompoundEdgeFactory edgeFact = graph.edgeFactory();
-		IRootAttribute rootAttribute = (IRootAttribute)graph.getRoot().getAttribute();
-		ILinkAttributeFactory attFactory = rootAttribute.getModel().linkAttributeFactory();
-		edgeFact.setAttributeFactory(attFactory);
-		SrcVisitor srcVisitor = new SrcVisitor();
-		this.srcShape.visit(srcVisitor);
-		TgtVisitor tgtVisitor = new TgtVisitor();
-		this.tgtShape.visit(tgtVisitor);
-		edgeFact.setPair(new CompoundNodePair(srcVisitor.getNode(), tgtVisitor.getNode()));
-//		ILinkEdgeFactory fact = new LinkEdgeFactoryFacade(graph.edgeFactory());
-//		fact.setShapeNodePair(srcShape, tgtShape);
-//		fact.setObjectType(linkObjectType);
-		attFactory.setObjectType(linkObjectType);
-//		ILinkEdge link = fact.createLinkEdge();
-		ICompoundEdge edge = edgeFact.createEdge();
-//		ILinkAttribute linkAttribute = link.getAttribute();
-		ILinkAttribute linkAttribute = (ILinkAttribute) edge.getAttribute();
+		ILinkEdgeFactory fact = new LinkEdgeFactoryFacade(graph.edgeFactory());
+		fact.setShapeNodePair(srcShape, tgtShape);
+		fact.setObjectType(linkObjectType);
+		ILinkEdge link = fact.createLinkEdge();
+		ILinkAttribute linkAttribute = link.getAttribute();
 		linkAttribute.getSourceTerminus().setLocation(linkPointDefinition.getSrcAnchorPosition());
 		linkAttribute.getTargetTerminus().setLocation(linkPointDefinition.getTgtAnchorPosition());
-//		Envelope srcBounds = ((IDrawingNodeAttribute)srcVisitor.getNode().getAttribute()).getBounds();
-//		((IDrawingNodeAttribute)srcVisitor.getNode().getAttribute()).setBounds(srcBounds.changeOrigin(linkPointDefinition.getSrcAnchorPosition()));
-//		Envelope tgtBounds = ((IDrawingNodeAttribute)tgtVisitor.getNode().getAttribute()).getBounds();
-//		((IDrawingNodeAttribute)tgtVisitor.getNode().getAttribute()).setBounds(tgtBounds.changeOrigin(linkPointDefinition.getTgtAnchorPosition()));
 		Iterator<Point> ptIter = linkPointDefinition.bendPointIterator();
 		IBendPointContainer bpContainer = linkAttribute.getBendPointContainer();
 		while(ptIter.hasNext()){
@@ -97,66 +71,12 @@ public class LinkCreationCommand implements ICommand {
 
 	@Override
 	public void undo() {
-		this.srcShape.getGraph().restoreState(this.originalState);
+		this.srcShape.getGraphElement().getGraph().restoreState(this.originalState);
 	}
 
 	@Override
 	public void redo() {
-		this.srcShape.getGraph().restoreState(createdState);
-	}
-
-	private class SrcVisitor implements ICompoundGraphElementVisitor{
-		ICompoundNode newNode;
-		
-		@Override
-		public void visitEdge(ICompoundEdge edge) {
-			ICompoundNodeFactory fact = edge.getChildCompoundGraph().nodeFactory();
-			ILinkObjectType linkOt = ((ILinkAttribute)edge.getAttribute()).getObjectType();
-			IShapeObjectType linkEndObjectType = ((ILinkAttribute)edge.getAttribute()).getModel().getNotationSubsystem().getSyntaxService().getLinkEndObjectType(linkOt);
-			IShapeAttributeFactory attFact = ((ILinkAttribute)edge.getAttribute()).getModel().shapeAttributeFactory();
-			attFact.setObjectType(linkEndObjectType);
-			fact.setAttributeFactory(attFact); 
-			newNode = fact.createNode();
-			IShapeAttribute newAtt = (IShapeAttribute)newNode.getAttribute();
-			Envelope origEnv = newAtt.getBounds();
-			newAtt.setBounds(origEnv.changeOrigin(linkPointDefinition.getSrcAnchorPosition()));
-		}
-
-		public ICompoundNode getNode() {
-			return this.newNode;
-		}
-
-		@Override
-		public void visitNode(ICompoundNode node) {
-			this.newNode = node;
-		}
-	}
-
-	private class TgtVisitor implements ICompoundGraphElementVisitor{
-		ICompoundNode newNode;
-		
-		@Override
-		public void visitEdge(ICompoundEdge edge) {
-			ICompoundNodeFactory fact = edge.getChildCompoundGraph().nodeFactory();
-			ILinkObjectType linkOt = ((ILinkAttribute)edge.getAttribute()).getObjectType();
-			IShapeObjectType linkEndObjectType = ((ILinkAttribute)edge.getAttribute()).getModel().getNotationSubsystem().getSyntaxService().getLinkEndObjectType(linkOt);
-			IShapeAttributeFactory attFact = ((ILinkAttribute)edge.getAttribute()).getModel().shapeAttributeFactory();
-			attFact.setObjectType(linkEndObjectType);
-			fact.setAttributeFactory(attFact); 
-			newNode = fact.createNode();
-			IShapeAttribute newAtt = (IShapeAttribute)newNode.getAttribute();
-			Envelope origEnv = newAtt.getBounds();
-			newAtt.setBounds(origEnv.changeOrigin(linkPointDefinition.getTgtAnchorPosition()));
-		}
-
-		public ICompoundNode getNode() {
-			return this.newNode;
-		}
-
-		@Override
-		public void visitNode(ICompoundNode node) {
-			this.newNode = node;
-		}
+		this.srcShape.getGraphElement().getGraph().restoreState(createdState);
 	}
 
 }
