@@ -55,6 +55,7 @@ public class ShapeCreationBehaviourStateHandler implements IViewBehaviourStateHa
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
+		logger.trace("Dragging");
 		if(e.getButton() == MouseEvent.BUTTON1){
 			this.mouseBehaviourController.setMousePosition(e.getPoint().getX(), e.getPoint().getY());
 			Point location = this.mouseBehaviourController.getDiagramLocation();
@@ -75,9 +76,6 @@ public class ShapeCreationBehaviourStateHandler implements IViewBehaviourStateHa
 					}
 				}
 			}
-			else{
-				currDragResponse.dragStarted(location);
-			}
 		}
 		e.getComponent().setCursor(currMouseFeedbackResponse.getCurrentCursor());
 	}
@@ -95,6 +93,7 @@ public class ShapeCreationBehaviourStateHandler implements IViewBehaviourStateHa
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		logger.trace("Clicked");
 	}
 
 
@@ -108,10 +107,17 @@ public class ShapeCreationBehaviourStateHandler implements IViewBehaviourStateHa
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+		logger.trace("Pressed");
+		if(e.getButton() == MouseEvent.BUTTON1){
+			this.mouseBehaviourController.setMousePosition(e.getPoint().getX(), e.getPoint().getY());
+			Point location = this.mouseBehaviourController.getDiagramLocation();
+			currDragResponse.dragStarted(location);
+		}
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		logger.trace("Released");
 		currDragResponse.dragFinished();
 		currMouseFeedbackResponse.reset();
 		this.mouseBehaviourController.setMousePosition(e.getPoint().getX(), e.getPoint().getY());

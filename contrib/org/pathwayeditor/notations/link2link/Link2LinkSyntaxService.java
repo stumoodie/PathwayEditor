@@ -2,17 +2,16 @@ package org.pathwayeditor.notations.link2link;
 
 import java.util.Collection;
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.Colour;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LineStyle;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LinkEndDecoratorShape;
+import org.pathwayeditor.businessobjects.drawingprimitives.attributes.RGB;
 import org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyDefinition;
 import org.pathwayeditor.businessobjects.notationsubsystem.INotation;
 import org.pathwayeditor.businessobjects.notationsubsystem.INotationSubsystem;
@@ -38,38 +37,58 @@ public class Link2LinkSyntaxService implements INotationSyntaxService {
 	public static final int LINKA = 100;
 	public static final int LABELA_OT = 1000;
 	private static final int LINKA_END_OT = 10000;
+	private static final int ANCHOR_SHAPEA = 50;
 	
 	private final INotationSubsystem subsystem;
 	private final SortedMap<Integer, IShapeObjectType> shapeOts;
 	private final SortedMap<Integer, ILinkObjectType> linkOts;
 	private final SortedMap<IPropertyDefinition, ILabelObjectType> labelOts;
 	private final RootObjectType rootObjectType;
-	private final Map<ILinkObjectType, IShapeObjectType> linkEndObjectTypes;
+//	private final Map<ILinkObjectType, IShapeObjectType> linkEndObjectTypes;
 
 	public Link2LinkSyntaxService(INotationSubsystem subsystem){
 		this.subsystem = subsystem;
 		this.shapeOts = new TreeMap<Integer, IShapeObjectType>();
 		this.linkOts = new TreeMap<Integer, ILinkObjectType>();
 		this.labelOts = new TreeMap<IPropertyDefinition, ILabelObjectType>();
-		this.linkEndObjectTypes = new HashMap<ILinkObjectType, IShapeObjectType>();
+//		this.linkEndObjectTypes = new HashMap<ILinkObjectType, IShapeObjectType>();
 		this.rootObjectType = createRootObject();
 		assignObjectType(this.shapeOts, createShapeA());
 		assignObjectType(this.linkOts, createLinkA());
+		assignObjectType(this.shapeOts, createAnchorShapeA());
 		defineParenting();
 		defineConnections();
 	}
 	
+	private IShapeObjectType createAnchorShapeA() {
+		ShapeObjectType retVal = new ShapeObjectType(this, ANCHOR_SHAPEA, "Anchor Shape A");
+		retVal.setDescription("Test anchor shape A");
+		retVal.setEditableAttributes(EnumSet.allOf(IShapeObjectType.EditableShapeAttributes.class));
+		retVal.getDefaultAttributes().setFillColour(new Colour(RGB.WHITE, Colour.TRANSPARENT));
+		retVal.getDefaultAttributes().setLineColour(Colour.BLACK);
+		retVal.getDefaultAttributes().setFontColour(Colour.BLACK);
+		retVal.getDefaultAttributes().setLineStyle(LineStyle.SOLID);
+		retVal.getDefaultAttributes().setLineWidth(1.0);
+		retVal.getDefaultAttributes().setSize(new Dimension(30.0, 30.0));
+		retVal.getDefaultAttributes().setShapeDefinition(
+				"(C) setanchor\n"
+						+ "curbounds /h exch def /w exch def /y exch def /x exch def\n"
+						+ "x y w h oval"
+				);
+		return retVal;
+	}
+
 	private void defineParenting() {
 		this.rootObjectType.getParentingRules().addChild(this.getShapeObjectType(SHAPEA));
 		ILinkObjectType linkObjectType = this.getLinkObjectType(LINKA);
-		IShapeObjectType linkEndShapeOt = this.getLinkEndObjectType(linkObjectType);
-		((LinkParentingRules)linkObjectType.getParentingRules()).addChild(linkEndShapeOt);
+//		IShapeObjectType linkEndShapeOt = this.getLinkEndObjectType(linkObjectType);
+		((LinkParentingRules)linkObjectType.getParentingRules()).addChild(this.getShapeObjectType(ANCHOR_SHAPEA));
 	}
 
 	private void defineConnections(){
 		LinkObjectType linkOt = (LinkObjectType)this.getLinkObjectType(LINKA);
 		IShapeObjectType shapeAOt = this.getShapeObjectType(SHAPEA);
-		IShapeObjectType linkEndShapeOt = this.getLinkEndObjectType(linkOt);
+		IShapeObjectType linkEndShapeOt = this.getShapeObjectType(ANCHOR_SHAPEA);
 		linkOt.getLinkConnectionRules().addConnection(shapeAOt, shapeAOt);
 		linkOt.getLinkConnectionRules().addConnection(shapeAOt, linkEndShapeOt);
 	}
@@ -117,17 +136,17 @@ public class Link2LinkSyntaxService implements INotationSyntaxService {
 
 	@Override
 	public boolean containsShapeObjectType(int uniqueId) {
-		return this.shapeOts.containsKey(SHAPEA);
+		return this.shapeOts.containsKey(uniqueId);
 	}
 
 	@Override
 	public IShapeObjectType getShapeObjectType(int uniqueId) {
-		return this.shapeOts.get(SHAPEA);
+		return this.shapeOts.get(uniqueId);
 	}
 
 	@Override
 	public boolean containsLinkObjectType(int uniqueId) {
-		return this.linkOts.containsKey(LINKA);
+		return this.linkOts.containsKey(uniqueId);
 	}
 
 	@Override
@@ -215,10 +234,10 @@ public class Link2LinkSyntaxService implements INotationSyntaxService {
 		return findObjectTypeByName(this.linkOts.values(), name);
 	}
 
-	@Override
-	public IShapeObjectType getLinkEndObjectType(ILinkObjectType linkOt) {
-		return this.linkEndObjectTypes.get(linkOt);
-	}
+//	@Override
+//	public IShapeObjectType getLinkEndObjectType(ILinkObjectType linkOt) {
+//		return this.linkEndObjectTypes.get(linkOt);
+//	}
 
 	
 	private ShapeObjectType createShapeA(){
@@ -230,7 +249,7 @@ public class Link2LinkSyntaxService implements INotationSyntaxService {
 		retVal.getDefaultAttributes().setFontColour(Colour.BLACK);
 		retVal.getDefaultAttributes().setLineStyle(LineStyle.SOLID);
 		retVal.getDefaultAttributes().setLineWidth(1.0);
-		retVal.getDefaultAttributes().setSize(new Dimension(30.0, 30.0));
+		retVal.getDefaultAttributes().setSize(new Dimension(40.0, 40.0));
 		retVal.getDefaultAttributes().setShapeDefinition(
 				"(C) setanchor\n"
 						+ "curbounds /h exch def /w exch def /y exch def /x exch def\n"
@@ -239,6 +258,7 @@ public class Link2LinkSyntaxService implements INotationSyntaxService {
 		PlainTextPropertyDefinition name = new PlainTextPropertyDefinition("name", "Name");
 		name.setDisplayName("Name");
 		name.setEditable(true);
+		retVal.getDefaultAttributes().addPropertyDefinition(name);
 		this.labelOts.put(name, createNameLabel());
 		return retVal;
 	}
@@ -255,20 +275,20 @@ public class Link2LinkSyntaxService implements INotationSyntaxService {
 		return retVal;
 	}
 	
-	private IShapeObjectType createLinkEndOt() {
-		ShapeObjectType retVal = new ShapeObjectType(this, LINKA_END_OT, "LinkA End Ot");
-		retVal.getDefaultAttributes().setShapeDefinition(
-				"(C) setanchor\n"
-				+ "curbounds /h exch def /w exch def /y exch def /x exch def\n"
-				+ "x y w h rect"
-
-				);
-		retVal.getDefaultAttributes().setFillColour(new Colour(Colour.BLACK.getRgb(), Colour.TRANSPARENT));
-		retVal.getDefaultAttributes().setLineColour(new Colour(Colour.BLACK.getRgb(), Colour.TRANSPARENT));
-		retVal.getDefaultAttributes().setSize(new Dimension(5, 5));
-
-		return retVal;
-	}
+//	private IShapeObjectType createLinkEndOt() {
+//		ShapeObjectType retVal = new ShapeObjectType(this, LINKA_END_OT, "LinkA End Ot");
+//		retVal.getDefaultAttributes().setShapeDefinition(
+//				"(C) setanchor\n"
+//				+ "curbounds /h exch def /w exch def /y exch def /x exch def\n"
+//				+ "x y w h rect"
+//
+//				);
+//		retVal.getDefaultAttributes().setFillColour(new Colour(Colour.BLACK.getRgb(), Colour.TRANSPARENT));
+//		retVal.getDefaultAttributes().setLineColour(new Colour(Colour.BLACK.getRgb(), Colour.TRANSPARENT));
+//		retVal.getDefaultAttributes().setSize(new Dimension(5, 5));
+//
+//		return retVal;
+//	}
 
 	private LinkObjectType createLinkA(){
 		LinkObjectType retVal = new LinkObjectType(this, LINKA, "Link A");
@@ -293,7 +313,7 @@ public class Link2LinkSyntaxService implements INotationSyntaxService {
 		retVal.getTargetTerminusDefinition().getDefaultAttributes().setGap(3);
 		retVal.getTargetTerminusDefinition().getDefaultAttributes().setEndDecoratorType(LinkEndDecoratorShape.ARROW);
 		
-		this.linkEndObjectTypes.put(retVal, createLinkEndOt());
+//		this.linkEndObjectTypes.put(retVal, createLinkEndOt());
 		
 		return retVal;
 	}

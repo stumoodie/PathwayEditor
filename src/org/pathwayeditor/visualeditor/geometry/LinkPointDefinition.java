@@ -32,6 +32,7 @@ import org.pathwayeditor.businessobjects.typedefn.ILinkAttributeDefaults;
 import org.pathwayeditor.businessobjects.typedefn.ILinkObjectType;
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Envelope;
+import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.LineSegment;
 import org.pathwayeditor.figure.geometry.Point;
 
@@ -478,6 +479,46 @@ public class LinkPointDefinition implements ILinkPointDefinition {
 	public Iterator<Point> bendPointIterator() {
 		List<Point> retVal = this.pointList.subList(SRC_IDX+1, this.pointList.size()-1);
 		return retVal.iterator();
+	}
+
+	@Override
+	public boolean intersectsBounds(Envelope drawnBounds) {
+		boolean retVal = false;
+		Iterator<LineSegment> iter = this.lineSegIterator();
+		while(iter.hasNext() && !retVal){
+			LineSegment line = iter.next();
+			retVal = isLineIntersectingBounds(line, drawnBounds);
+			if(logger.isTraceEnabled() && retVal){
+				logger.trace("Line intersects bounds. Bounds=" + drawnBounds + " lineSeg=" + line);
+			}
+		}
+		return retVal;
+	}
+
+	private boolean isLineIntersectingBounds(LineSegment line, Envelope drawnBounds) {
+		Point origin = drawnBounds.getOrigin();
+		Point horizontalCorner = drawnBounds.getHorizontalCorner();
+		Point diagonalCorner = drawnBounds.getDiagonalCorner();
+		Point verticalCorner = drawnBounds.getVerticalCorner();
+		return drawnBounds.containsPoint(line.getOrigin()) || drawnBounds.containsPoint(line.getTerminus())
+			|| line.intersect(new LineSegment(origin, horizontalCorner), this.lineWidth) != null
+			|| line.intersect(new LineSegment(horizontalCorner, diagonalCorner), this.lineWidth) != null
+			|| line.intersect(new LineSegment(diagonalCorner, verticalCorner), this.lineWidth) != null
+			|| line.intersect(new LineSegment(verticalCorner, origin), this.lineWidth) != null;
+	}
+
+	@Override
+	public boolean intersectsHull(IConvexHull queryHull) {
+		boolean retVal = false;
+		Iterator<LineSegment> iter = this.lineSegIterator();
+		while(iter.hasNext() && !retVal){
+			LineSegment line = iter.next();
+			retVal = queryHull.hullIntersectsLine(line);
+			if(logger.isTraceEnabled() && retVal){
+				logger.trace("Line intersects bounds. Hull=" + queryHull + " lineSeg=" + line);
+			}
+		}
+		return retVal;
 	}
 
 //	@Override

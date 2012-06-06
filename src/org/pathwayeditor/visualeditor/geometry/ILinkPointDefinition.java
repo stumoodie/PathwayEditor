@@ -23,6 +23,7 @@ import java.util.Iterator;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.Colour;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LineStyle;
 import org.pathwayeditor.figure.geometry.Envelope;
+import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.LineSegment;
 import org.pathwayeditor.figure.geometry.Point;
 
@@ -99,4 +100,8 @@ public interface ILinkPointDefinition {
 	ILinkPointDefinition getCopy();
 
 	void changeEnvelope(Envelope newEnvelope);
+
+	boolean intersectsBounds(Envelope drawnBounds);
+
+	boolean intersectsHull(IConvexHull queryHull);
 }

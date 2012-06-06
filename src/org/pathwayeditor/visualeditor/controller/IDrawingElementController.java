@@ -22,6 +22,7 @@ import java.util.List;
 
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElement;
 import org.pathwayeditor.figure.geometry.Envelope;
+import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.editingview.IMiniCanvas;
 
@@ -66,4 +67,6 @@ public interface IDrawingElementController extends Comparable<IDrawingElementCon
 	boolean containsPoint(Point p);
 
 	boolean intersectsBounds(Envelope drawnBounds);
+
+	boolean intersectsHull(IConvexHull queryHull);
 }

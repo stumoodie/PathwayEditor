@@ -38,6 +38,7 @@ import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ILinkTermin
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.LinkTerminusChangeType;
 import org.pathwayeditor.businessobjects.impl.facades.ShapeNodeFacade;
 import org.pathwayeditor.figure.geometry.Envelope;
+import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.LineSegment;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.editingview.IMiniCanvas;
@@ -349,31 +350,16 @@ public class LinkController extends DrawingElementController implements ILinkCon
 	@Override
 	public boolean intersectsBounds(Envelope drawnBounds) {
 		boolean retVal = false;
-		Iterator<LineSegment> iter = this.linkDefinition.lineSegIterator();
-		while(iter.hasNext() && !retVal){
-			LineSegment line = iter.next();
-			retVal = isLineIntersectingBounds(line, drawnBounds);
-			if(logger.isTraceEnabled() && retVal){
-				logger.trace("Line intersects bounds. Bounds=" + drawnBounds + " lineSeg=" + line);
-			}
-		}
-		return retVal;
-	}
-
-	private boolean isLineIntersectingBounds(LineSegment line, Envelope drawnBounds) {
-		Point origin = drawnBounds.getOrigin();
-		Point horizontalCorner = drawnBounds.getHorizontalCorner();
-		Point diagonalCorner = drawnBounds.getDiagonalCorner();
-		Point verticalCorner = drawnBounds.getVerticalCorner();
-		return drawnBounds.containsPoint(line.getOrigin()) || drawnBounds.containsPoint(line.getTerminus())
-			|| line.intersect(new LineSegment(origin, horizontalCorner), this.linkAttribute.getAttribute().getLineWidth()) != null
-			|| line.intersect(new LineSegment(horizontalCorner, diagonalCorner), this.linkAttribute.getAttribute().getLineWidth()) != null
-			|| line.intersect(new LineSegment(diagonalCorner, verticalCorner), this.linkAttribute.getAttribute().getLineWidth()) != null
-			|| line.intersect(new LineSegment(verticalCorner, origin), this.linkAttribute.getAttribute().getLineWidth()) != null;
+		return this.linkDefinition.intersectsBounds(drawnBounds);
 	}
 
 	@Override
 	public IMiniCanvas getMiniCanvas() {
 		return new DomainLinkMiniCanvas(linkDefinition);
+	}
+
+	@Override
+	public boolean intersectsHull(IConvexHull queryHull) {
+		return this.linkDefinition.intersectsHull(queryHull);
 	}
 }

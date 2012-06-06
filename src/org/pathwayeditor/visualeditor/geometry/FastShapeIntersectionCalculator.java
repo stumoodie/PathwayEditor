@@ -253,6 +253,29 @@ public class FastShapeIntersectionCalculator implements IIntersectionCalculator 
 	}
 
 	@Override
+	public SortedSet<IDrawingElementController> findIntersectingElements(IConvexHull queryHull){
+		SortedSet<IDrawingElementController> retVal = createSortedSet();
+		// the root node will always intersect - that's a give so add it in and exclude it from
+		// intersection tests
+		IRootController rootNode = model.getRootNode();
+		if(filter.accept(rootNode)){
+			retVal.add(rootNode);
+		}
+		Envelope drawnBounds = queryHull.getEnvelope();
+		Point origin = drawnBounds.getOrigin();
+		Point diagonal = drawnBounds.getDiagonalCorner();
+		ISpacialEntry2DEnumerator<IDrawingElementController> iter = this.spacialIndex.queryOverlap((float)origin.getX(), (float)origin.getY(), (float)diagonal.getX(), (float)diagonal.getY(), null, 0, false);
+		while(iter.numRemaining() > 0){
+			IDrawingElementController drawingElem = iter.nextInt();
+			// ignore matches to self
+			if(!drawingElem.equals(rootNode) && filter.accept(drawingElem)  && drawingElem.intersectsHull(queryHull)){
+				retVal.add(drawingElem);
+			}
+		}
+		return retVal;
+	}
+
+	@Override
 	public SortedSet<IDrawingElementController> findDrawingPrimitivesAt(Point p) {
 		SortedSet<IDrawingElementController> retVal = createSortedSet();
 		Point origin = p;

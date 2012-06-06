@@ -54,6 +54,8 @@ public interface IIntersectionCalculator {
 	 * @return the nodes, including the root node that intersect this hull.
 	 */
 	SortedSet<IDrawingElementController> findIntersectingNodes(IConvexHull queryHull);
+
+	SortedSet<IDrawingElementController> findIntersectingElements(IConvexHull convexHull);
 	
 //	SortedSet<IDrawingElementController> findIntersectingControllerBounds(Envelope bounds);
 }

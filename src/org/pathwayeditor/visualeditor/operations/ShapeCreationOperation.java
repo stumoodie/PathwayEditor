@@ -28,6 +28,7 @@ import org.pathwayeditor.businessobjects.typedefn.IShapeObjectType;
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.Point;
+import org.pathwayeditor.figure.geometry.Scale;
 import org.pathwayeditor.visualeditor.behaviour.operation.IShapeCreationOperation;
 import org.pathwayeditor.visualeditor.commands.ICommand;
 import org.pathwayeditor.visualeditor.commands.ICommandStack;
@@ -37,9 +38,11 @@ import org.pathwayeditor.visualeditor.controller.IViewControllerModel;
 import org.pathwayeditor.visualeditor.editingview.IShapePane;
 import org.pathwayeditor.visualeditor.feedback.IFeedbackModel;
 import org.pathwayeditor.visualeditor.feedback.IFeedbackNode;
+import org.pathwayeditor.visualeditor.geometry.IIntersectionCalcnFilter;
 import org.pathwayeditor.visualeditor.layout.ILabelPositionCalculator;
 
 public class ShapeCreationOperation implements IShapeCreationOperation {
+	private static final Point NO_SIZE_DELTA = new Point(0.0, 0.0);
 	private final Logger logger = Logger.getLogger(this.getClass());
 	private final IShapePane shapePane;
 //	private final IModel domainModel;
@@ -72,9 +75,22 @@ public class ShapeCreationOperation implements IShapeCreationOperation {
 		this.shapeObjectType = shapeType;
 	}
 
+	private void calculateDefaultBounds(){
+		Dimension delta = this.shapeObjectType.getDefaultAttributes().getSize().scale(new Scale(0.5, 0.5)).negate();
+		double originX = delta.getWidth();
+		double originY = delta.getHeight();
+		this.originDelta = new Point(originX, originY);
+		this.sizeDelta = this.shapeObjectType.getDefaultAttributes().getSize();
+	}
+	
 	@Override
 	public void finishCreationDrag(Point delta) {
-		calculateBounds(delta);
+		if(delta.equals(NO_SIZE_DELTA)){
+			calculateDefaultBounds();
+		}
+		else{
+			calculateBounds(delta);
+		}
 		IFeedbackNode node = this.feedbackModel.uniqueFeedbackNode();
 		node.resizePrimitive(originDelta, sizeDelta);
 		IDrawingElementController potentialParent = getParentElement(node);
@@ -138,13 +154,26 @@ public class ShapeCreationOperation implements IShapeCreationOperation {
 		ICanvasElementAttribute drawingElementAtt = potentialParent.getDrawingElement().getAttribute();
 		this.canCreationSucceed = drawingElementAtt.getObjectType().getParentingRules().isValidChild(getShapeObjectType());
 		if(logger.isTraceEnabled()){
-			logger.trace("Ongoing drag. newLocation=" + originDelta + ", sizeDelta=" + sizeDelta + ",creationSucceed=" + canCreationSucceed);
+			logger.trace("PotParent=" + potentialParent + "Ongoing drag. newLocation=" + originDelta + ", sizeDelta=" + sizeDelta + ",creationSucceed=" + canCreationSucceed);
 		}
 	}
 	
 	private IDrawingElementController getParentElement(IFeedbackNode node){
-		SortedSet<IDrawingElementController> intersections = viewModel.getIntersectionCalculator().findIntersectingNodes(node.getConvexHull());
+		viewModel.getIntersectionCalculator().setFilter(new IIntersectionCalcnFilter() {
+			@Override
+			public boolean accept(IDrawingElementController node) {
+				return true;
+			}
+		});
+		SortedSet<IDrawingElementController> intersections = viewModel.getIntersectionCalculator().findIntersectingElements(node.getConvexHull());
+		viewModel.getIntersectionCalculator().setFilter(null);
 		IDrawingElementController potentialParent = intersections.first();
+		if(logger.isTraceEnabled()){
+			int i = 1;
+			for(IDrawingElementController intn : intersections){
+				logger.trace("Parent Hit=" + intn + "hit#=" + i++);
+			}
+		}
 		return potentialParent;
 	}
 
