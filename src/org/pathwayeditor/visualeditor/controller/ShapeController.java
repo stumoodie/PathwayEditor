@@ -335,6 +335,11 @@ public class ShapeController extends NodeController implements IShapeController 
 		return intersectsHull(otherHull);
 	}
 
+	@Override
+	public IShapeAttribute getAssociatedAttribute() {
+		return this.domainNode.getAttribute();
+	}
+
 //	@Override
 //	public IAnchorLocatorFactory getAnchorLocatorFactory() {
 //		return this.getFigureController().getAnchorLocatorFactory();

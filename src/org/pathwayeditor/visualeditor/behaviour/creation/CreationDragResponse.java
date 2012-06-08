@@ -18,16 +18,17 @@
 */
 package org.pathwayeditor.visualeditor.behaviour.creation;
 
+import org.pathwayeditor.businessobjects.typedefn.INodeObjectType;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.behaviour.HandleResponse;
 import org.pathwayeditor.visualeditor.behaviour.operation.IShapeCreationOperation;
 
-public class CreationDragResponse extends HandleResponse {
-	private final IShapeCreationOperation shapeCreationOperation;
-	private final IShapeTypeInspector shapeTypeInspector;
+public class CreationDragResponse<T extends INodeObjectType> extends HandleResponse {
+	private final IShapeCreationOperation<T> shapeCreationOperation;
+	private final IShapeTypeInspector<T> shapeTypeInspector;
 	private Point lastDelta;
 
-	public CreationDragResponse(IShapeCreationOperation shapeCreationOperation, IShapeTypeInspector shapeTypeInspector) {
+	public CreationDragResponse(IShapeCreationOperation<T> shapeCreationOperation, IShapeTypeInspector<T> shapeTypeInspector) {
 		this.shapeCreationOperation = shapeCreationOperation;
 		this.shapeTypeInspector = shapeTypeInspector;
 	}

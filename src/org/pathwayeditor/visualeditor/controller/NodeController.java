@@ -18,7 +18,6 @@
 */
 package org.pathwayeditor.visualeditor.controller;
 
-import org.pathwayeditor.figure.geometry.Point;
 
 
 

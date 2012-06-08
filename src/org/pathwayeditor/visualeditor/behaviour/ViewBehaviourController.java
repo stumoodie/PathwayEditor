@@ -23,10 +23,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.pathwayeditor.businessobjects.typedefn.IAnchorNodeObjectType;
 import org.pathwayeditor.businessobjects.typedefn.ILinkObjectType;
 import org.pathwayeditor.businessobjects.typedefn.IObjectType;
 import org.pathwayeditor.businessobjects.typedefn.IShapeObjectType;
 import org.pathwayeditor.visualeditor.behaviour.IViewBehaviourModeChangeEvent.ModeType;
+import org.pathwayeditor.visualeditor.behaviour.creation.AnchorNodeCreationBehaviourStateHandler;
 import org.pathwayeditor.visualeditor.behaviour.creation.CreationControllerResponses;
 import org.pathwayeditor.visualeditor.behaviour.creation.CreationDragResponse;
 import org.pathwayeditor.visualeditor.behaviour.creation.IShapeTypeInspector;
@@ -46,6 +48,7 @@ public class ViewBehaviourController implements IViewBehaviourController {
 	private final IViewBehaviourStateHandler selectionStateController;
 	private final IViewBehaviourStateHandler shapeCreationStateController;
 	private final IViewBehaviourStateHandler linkCreationStateController;
+	private final IViewBehaviourStateHandler anchorNodeCreationStateController;
 
 	private boolean activated;
 	private IObjectType currShapeType;
@@ -53,6 +56,7 @@ public class ViewBehaviourController implements IViewBehaviourController {
 	private final IViewBehaviourStateHandlerChangeListener viewBehaviourSelectionStateHandlerChangeListener;
 	private final IViewBehaviourStateHandlerChangeListener viewBehaviourShapeCreationStateHandlerChangeListener;
 	private final IViewBehaviourStateHandlerChangeListener viewBehaviourLinkCreationStateHandlerChangeListener;
+	private final IViewBehaviourStateHandlerChangeListener viewBehaviourAnchorNodeCreationStateHandlerChangeListener;
 	private final List<IViewBehaviourModeChangeListener> listeners;
 	private ModeType currModeType = ModeType.SELECTION;
 	
@@ -61,21 +65,39 @@ public class ViewBehaviourController implements IViewBehaviourController {
 		IControllerResponses selectionResponse = new SelectionControllerResponses(opFactory);
 		ISelectionStateBehaviourController selectionController = new GeneralStateController(pane, new HitCalculator(pane), selectionResponse);
 		this.selectionStateController = new SelectionViewBehaviourStateHandler(selectionController, selectionResponse);
+
 		this.shapeCreationStateController = new ShapeCreationBehaviourStateHandler(new GeneralStateController(pane, new HitCalculator(pane),
 				new CreationControllerResponses(opFactory,
-				new IShapeTypeInspector() {
+				new IShapeTypeInspector<IShapeObjectType>() {
 					
 					@Override
 					public IShapeObjectType getCurrentShapeType() {
 						return (IShapeObjectType)currShapeType;
 					}
-		})), new CreationDragResponse(opFactory.getShapeCreationOperation(), new IShapeTypeInspector() {
+		})), new CreationDragResponse<IShapeObjectType>(opFactory.getShapeCreationOperation(), new IShapeTypeInspector<IShapeObjectType>() {
 			
 			@Override
 			public IShapeObjectType getCurrentShapeType() {
 				return (IShapeObjectType)currShapeType;
 			}
 		}), new MouseCreationFeedbackResponse());
+		
+		this.anchorNodeCreationStateController = new AnchorNodeCreationBehaviourStateHandler(new GeneralStateController(pane, new HitCalculator(pane),
+				new CreationControllerResponses(opFactory,
+				new IShapeTypeInspector<IAnchorNodeObjectType>() {
+					
+					@Override
+					public IAnchorNodeObjectType getCurrentShapeType() {
+						return (IAnchorNodeObjectType)currShapeType;
+					}
+		})), new CreationDragResponse<IAnchorNodeObjectType>(opFactory.getAnchorNodeCreationOperation(), new IShapeTypeInspector<IAnchorNodeObjectType>() {
+			
+			@Override
+			public IAnchorNodeObjectType getCurrentShapeType() {
+				return (IAnchorNodeObjectType)currShapeType;
+			}
+		}), new MouseCreationFeedbackResponse());
+		
 		this.linkCreationStateController = new LinkCreationBehaviourStateHandler(new HitCalculator(pane),
 				opFactory.getLinkCreationOperation(),
 				new ILinkTypeInspector() {
@@ -98,6 +120,13 @@ public class ViewBehaviourController implements IViewBehaviourController {
 				setSelectionMode();
 			}
 		}; 
+		this.viewBehaviourAnchorNodeCreationStateHandlerChangeListener = new IViewBehaviourStateHandlerChangeListener() {
+			
+			@Override
+			public void operationCompletionEvent(IViewBehaviourOperationCompletionEvent e) {
+				setSelectionMode();
+			}
+		};
 		this.viewBehaviourLinkCreationStateHandlerChangeListener = new IViewBehaviourStateHandlerChangeListener() {
 
 			@Override
@@ -119,6 +148,7 @@ public class ViewBehaviourController implements IViewBehaviourController {
 		this.shapeCreationStateController.addViewBehaviourStateHandlerChangeListener(this.viewBehaviourShapeCreationStateHandlerChangeListener);
 		this.linkCreationStateController.addViewBehaviourStateHandlerChangeListener(this.viewBehaviourLinkCreationStateHandlerChangeListener);
 		this.selectionStateController.addViewBehaviourStateHandlerChangeListener(this.viewBehaviourSelectionStateHandlerChangeListener);
+		this.anchorNodeCreationStateController.addViewBehaviourStateHandlerChangeListener(this.viewBehaviourAnchorNodeCreationStateHandlerChangeListener);
         this.activated = true;
 	}
 
@@ -129,6 +159,7 @@ public class ViewBehaviourController implements IViewBehaviourController {
 //        this.shapePane.removeMouseListener(this.currentStateController);
 //        this.shapePane.removeMouseListener(popupMenuListener);
 //        this.popupMenuListener.deactivate();
+		this.anchorNodeCreationStateController.removeViewBehaviourStateHandlerChangeListener(this.viewBehaviourAnchorNodeCreationStateHandlerChangeListener);
 		this.shapeCreationStateController.removeViewBehaviourStateHandlerChangeListener(this.viewBehaviourShapeCreationStateHandlerChangeListener);
 		this.linkCreationStateController.removeViewBehaviourStateHandlerChangeListener(this.viewBehaviourLinkCreationStateHandlerChangeListener);
 		this.selectionStateController.removeViewBehaviourStateHandlerChangeListener(this.viewBehaviourSelectionStateHandlerChangeListener);
@@ -231,6 +262,26 @@ public class ViewBehaviourController implements IViewBehaviourController {
 	@Override
 	public List<IViewBehaviourModeChangeListener> getViewBehaviourModeChangeListeners() {
 		return new ArrayList<IViewBehaviourModeChangeListener>(this.listeners);
+	}
+
+	@Override
+	public void setAnchorNodeCreationMode(IAnchorNodeObjectType shapeType) {
+		ModeType oldType = this.currModeType;
+		this.currShapeType = shapeType;
+		if(!this.currentStateController.equals(this.anchorNodeCreationStateController)){
+			if(this.isActivated()){
+				this.currentStateController.deactivate(shapePane);
+			}
+			this.currentStateController = this.anchorNodeCreationStateController;
+			if(this.isActivated()){
+				this.currentStateController.activate(shapePane);
+			}
+			this.currModeType = ModeType.ANCHOR_NODE_CREATION;
+		}
+		if(logger.isDebugEnabled()){
+			logger.debug("In anchor node creation mode for object type: " + shapeType.getName());
+		}
+		notifyModeChange(oldType, this.currModeType);
 	}
 
 }

@@ -19,8 +19,12 @@
 package org.pathwayeditor.visualeditor.feedback;
 
 import org.apache.log4j.Logger;
+import org.pathwayeditor.businessobjects.drawingprimitives.IAnchorNodeAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasElementAttributeVisitor;
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNodeAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILabelAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.IRootAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.IShapeAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.properties.IAnnotationProperty;
 import org.pathwayeditor.businessobjects.drawingprimitives.properties.IAnnotationPropertyVisitor;
@@ -34,6 +38,8 @@ import org.pathwayeditor.businessobjects.drawingprimitives.properties.INumberPro
 import org.pathwayeditor.businessobjects.drawingprimitives.properties.IPlainTextAnnotationProperty;
 import org.pathwayeditor.businessobjects.drawingprimitives.properties.IPlainTextPropertyDefinition;
 import org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyDefinition;
+import org.pathwayeditor.businessobjects.typedefn.IAnchorNodeAttributeDefaults;
+import org.pathwayeditor.businessobjects.typedefn.IAnchorNodeObjectType;
 import org.pathwayeditor.businessobjects.typedefn.IShapeAttributeDefaults;
 import org.pathwayeditor.businessobjects.typedefn.IShapeObjectType;
 import org.pathwayeditor.figure.definition.FigureDefinitionCompiler;
@@ -79,7 +85,7 @@ public class FeedbackNodeBuilder implements IFeedbackNodeBuilder {
 		FigureDefinitionCompiler compiler = new FigureDefinitionCompiler(objectType.getDefaultAttributes().getShapeDefinition());
 		compiler.compile();
 		IFigureRenderingController figureRenderingController = new FigureRenderingController(compiler.getCompiledFigureDefinition());
-		figureRenderingController.setRequestedEnvelope(initialBounds);
+		figureRenderingController.setEnvelope(initialBounds);
 		IShapeAttributeDefaults attribute = objectType.getDefaultAttributes();
 		figureRenderingController.setFillColour(attribute.getFillColour());
 		figureRenderingController.setLineColour(attribute.getLineColour());
@@ -92,23 +98,63 @@ public class FeedbackNodeBuilder implements IFeedbackNodeBuilder {
 		return retVal;
 	}
 	
+	@Override
+	public IFeedbackNode createFromDrawingNodeObjectType(IAnchorNodeObjectType objectType, Envelope initialBounds){
+		FigureDefinitionCompiler compiler = new FigureDefinitionCompiler(objectType.getDefaultAttributes().getShapeDefinition());
+		compiler.compile();
+		IFigureRenderingController figureRenderingController = new FigureRenderingController(compiler.getCompiledFigureDefinition());
+		figureRenderingController.setEnvelope(initialBounds);
+		IAnchorNodeAttributeDefaults attribute = objectType.getDefaultAttributes();
+		figureRenderingController.setFillColour(attribute.getFillColour());
+		figureRenderingController.setLineColour(attribute.getLineColour());
+		figureRenderingController.setLineStyle(attribute.getLineStyle());
+		figureRenderingController.setLineWidth(attribute.getLineWidth());
+//		assignBindVariablesToPropertyDefaults(attribute, figureRenderingController);
+		figureRenderingController.generateFigureDefinition();
+		FeedbackNode retVal = new FeedbackNode(nextCounter(), figureRenderingController, initialBounds);
+		this.feedbackModel.addNode(retVal);
+		return retVal;
+	}
+	
 	private int nextCounter(){
 		return idCount++;
 	}
 	
+	private class NodeCreationVisitor implements ICanvasElementAttributeVisitor {
+		IFigureRenderingController figureRenderingController;
+		
+		@Override
+		public void visitShape(IShapeAttribute attribute) {
+			figureRenderingController = createShapeController(attribute);
+		}
+		
+		@Override
+		public void visitRoot(IRootAttribute attribute) {
+			throw new UnsupportedOperationException("Not meant to try and create root nodes here.");
+		}
+		
+		@Override
+		public void visitLink(ILinkAttribute attribute) {
+			throw new UnsupportedOperationException("Not meant to try and create links here.");
+			
+		}
+		
+		@Override
+		public void visitLabel(ILabelAttribute attribute) {
+			figureRenderingController = createLabelController(attribute);
+		}
+		
+		@Override
+		public void visitAnchorNode(IAnchorNodeAttribute anchorNodeAttribute) {
+			figureRenderingController = createAnchorNodeController(anchorNodeAttribute);
+		}
+	}
+	
 	@Override
-	public IFeedbackNode createFromDrawingNodeAttribute(IDrawingNodeAttribute nodeAttribute){
-		IFigureRenderingController figureRenderingController = null;
-		if(nodeAttribute instanceof IShapeAttribute){
-			figureRenderingController = createShapeController((IShapeAttribute)nodeAttribute);
-		}
-		else if(nodeAttribute instanceof ILabelAttribute){
-			figureRenderingController = createLabelController((ILabelAttribute)nodeAttribute);
-		}
-		else{
-			throw new IllegalArgumentException("Cannot deal with node of unknown type: " + nodeAttribute);
-		}
-		FeedbackNode retVal = new FeedbackNode(nextCounter(), figureRenderingController, nodeAttribute.getBounds());
+	public IFeedbackNode createFromDrawingNodeAttribute(final IDrawingNodeAttribute nodeAttribute){
+		NodeCreationVisitor visit = new NodeCreationVisitor();
+		nodeAttribute.visit(visit);
+		FeedbackNode retVal = new FeedbackNode(nextCounter(), visit.figureRenderingController, nodeAttribute.getBounds());
 		this.feedbackModel.addNode(retVal);
 		return retVal;
 	}
@@ -153,6 +199,17 @@ public class FeedbackNodeBuilder implements IFeedbackNodeBuilder {
 		figureRenderingController.setLineStyle(attribute.getLineStyle());
 		figureRenderingController.setLineWidth(attribute.getLineWidth());
 		assignBindVariablesToProperties(attribute, figureRenderingController);
+		figureRenderingController.generateFigureDefinition();
+		return figureRenderingController;
+	}
+
+	private IFigureRenderingController createAnchorNodeController(IAnchorNodeAttribute attribute){
+		IFigureRenderingController figureRenderingController = new FigureRenderingController(FigureCompilationCache.getInstance().lookup(attribute.getShapeDefinition()));
+		figureRenderingController.setEnvelope(attribute.getBounds());
+		figureRenderingController.setFillColour(attribute.getFillColour());
+		figureRenderingController.setLineColour(attribute.getLineColour());
+		figureRenderingController.setLineStyle(attribute.getLineStyle());
+		figureRenderingController.setLineWidth(attribute.getLineWidth());
 		figureRenderingController.generateFigureDefinition();
 		return figureRenderingController;
 	}

@@ -19,7 +19,7 @@
 package org.pathwayeditor.visualeditor.behaviour;
 
 public interface IViewBehaviourModeChangeEvent {
-	enum ModeType { SELECTION, SHAPE_CREATION, LINK_CREATION };
+	enum ModeType { SELECTION, SHAPE_CREATION, LINK_CREATION, ANCHOR_NODE_CREATION };
 	
 	ModeType getOldModeType();
 	

@@ -33,6 +33,7 @@ import javax.swing.JSplitPane;
 import javax.swing.ScrollPaneConstants;
 
 import org.pathwayeditor.businessobjects.notationsubsystem.INotationSubsystem;
+import org.pathwayeditor.businessobjects.typedefn.IAnchorNodeObjectType;
 import org.pathwayeditor.businessobjects.typedefn.ILinkObjectType;
 import org.pathwayeditor.businessobjects.typedefn.IShapeObjectType;
 import org.pathwayeditor.figure.geometry.Dimension;
@@ -45,7 +46,8 @@ import org.pathwayeditor.visualeditor.behaviour.IViewBehaviourModeChangeListener
 public class PalettePanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private static final double PREF_ICON_HEIGHT = 16.0;
-	private JScrollPane palettePane;
+	private JScrollPane shapeScrollPane;
+	private JScrollPane anchorScrollPane;
 	private JScrollPane linkScrollPanel;
 	private JSplitPane splitPane;
 
@@ -70,37 +72,34 @@ public class PalettePanel extends JPanel {
 		selectionButtonPanel.add(selectionButton);
 		this.add(selectionButtonPanel);
 		
-		JPanel shapeButtonPanel = new JPanel();
-		this.palettePane = new JScrollPane(shapeButtonPanel);
-		this.palettePane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		shapeButtonPanel.setLayout(new BoxLayout(shapeButtonPanel, BoxLayout.PAGE_AXIS));
-		ShapeIconGenerator iconGenerator = new ShapeIconGenerator();
-		Iterator<IShapeObjectType> shapeTypeIterator = notationSubsystem.getSyntaxService().shapeTypeIterator();
-		while(shapeTypeIterator.hasNext()){
-			final IShapeObjectType shapeType = shapeTypeIterator.next();
-			Dimension defSize = shapeType.getDefaultAttributes().getSize();
-			double widToHRatio = defSize.getWidth()/defSize.getHeight();
-			iconGenerator.setBounds(new Envelope(0, 0, PREF_ICON_HEIGHT*widToHRatio, PREF_ICON_HEIGHT));
-			iconGenerator.setObjectType(shapeType);
-			iconGenerator.generateImage();
-			iconGenerator.generateIcon();
-			final JButton shapeButton = new JButton(iconGenerator.getIcon());
-			shapeButton.setText(shapeType.getName());
-			shapeButton.setToolTipText(shapeType.getDescription());
-//			shapeButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-			shapeButtonPanel.add(shapeButton);
-			paletteGroup.add(shapeButton);
-			shapeButton.addActionListener(new ActionListener(){
+		createShapePane(paletteGroup, notationSubsystem, editBehaviourController);
 
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					editBehaviourController.setShapeCreationMode(shapeType);
-					paletteGroup.setSelected(shapeButton.getModel(), true);
-				}
-				
-			});
-		}
+		createAnchorPane(paletteGroup, notationSubsystem, editBehaviourController);
 		
+		createLinkPane(paletteGroup, notationSubsystem, editBehaviourController);
+
+		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+		JSplitPane topPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, this.shapeScrollPane, this.anchorScrollPane);
+		topPane.setOneTouchExpandable(true);
+		topPane.setDividerLocation(250);
+		this.splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, topPane, this.linkScrollPanel);
+		this.splitPane.setOneTouchExpandable(true);
+		this.splitPane.setDividerLocation(250);
+		this.add(this.splitPane);
+
+		editBehaviourController.addViewBehaviourModeChangeListener(new IViewBehaviourModeChangeListener() {
+			@Override
+			public void viewModeChange(IViewBehaviourModeChangeEvent e) {
+				if(e.getNewModeType().equals(ModeType.SELECTION)){
+					paletteGroup.setSelected(selectionButton.getModel(), true);
+				}
+			}
+		});
+		paletteGroup.setSelected(selectionButton.getModel(), true);
+	}
+	
+
+	private void createLinkPane(final ButtonGroup paletteGroup, INotationSubsystem notationSubsystem, final IViewBehaviourController editBehaviourController){
 		JPanel linkButtonPanel = new JPanel();
 		linkButtonPanel.setLayout(new BoxLayout(linkButtonPanel, BoxLayout.PAGE_AXIS));
 		
@@ -129,24 +128,74 @@ public class PalettePanel extends JPanel {
 				
 			});
 		}
-		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-		this.splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, this.palettePane, this.linkScrollPanel);
-		this.splitPane.setOneTouchExpandable(true);
-		this.splitPane.setDividerLocation(250);
-		this.add(this.splitPane);
-		editBehaviourController.addViewBehaviourModeChangeListener(new IViewBehaviourModeChangeListener() {
-			@Override
-			public void viewModeChange(IViewBehaviourModeChangeEvent e) {
-				if(e.getNewModeType().equals(ModeType.SELECTION)){
-					paletteGroup.setSelected(selectionButton.getModel(), true);
+	}
+	
+	private void createShapePane(final ButtonGroup paletteGroup, INotationSubsystem notationSubsystem, final IViewBehaviourController editBehaviourController){
+		JPanel shapeButtonPanel = new JPanel();
+		this.shapeScrollPane = new JScrollPane(shapeButtonPanel);
+		this.shapeScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		shapeButtonPanel.setLayout(new BoxLayout(shapeButtonPanel, BoxLayout.PAGE_AXIS));
+		ShapeIconGenerator iconGenerator = new ShapeIconGenerator();
+		Iterator<IShapeObjectType> shapeTypeIterator = notationSubsystem.getSyntaxService().shapeTypeIterator();
+		while(shapeTypeIterator.hasNext()){
+			final IShapeObjectType shapeType = shapeTypeIterator.next();
+			Dimension defSize = shapeType.getDefaultAttributes().getSize();
+			double widToHRatio = defSize.getWidth()/defSize.getHeight();
+			iconGenerator.setBounds(new Envelope(0, 0, PREF_ICON_HEIGHT*widToHRatio, PREF_ICON_HEIGHT));
+			iconGenerator.setObjectType(shapeType);
+			iconGenerator.generateImage();
+			iconGenerator.generateIcon();
+			final JButton shapeButton = new JButton(iconGenerator.getIcon());
+			shapeButton.setText(shapeType.getName());
+			shapeButton.setToolTipText(shapeType.getDescription());
+//			shapeButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+			shapeButtonPanel.add(shapeButton);
+			paletteGroup.add(shapeButton);
+			shapeButton.addActionListener(new ActionListener(){
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					editBehaviourController.setShapeCreationMode(shapeType);
+					paletteGroup.setSelected(shapeButton.getModel(), true);
 				}
-			}
-		});
-		paletteGroup.setSelected(selectionButton.getModel(), true);
-//		this.add(this.palettePane);
-//		this.add(this.linkScrollPanel);
-//		this.add(this.palettePane, BorderLayout.LINE_START);
-//		this.add(this.linkPalette);
+				
+			});
+		}
+		
+	}
+
+	private void createAnchorPane(final ButtonGroup paletteGroup, INotationSubsystem notationSubsystem, final IViewBehaviourController editBehaviourController){
+		JPanel buttonPanel = new JPanel();
+		this.anchorScrollPane = new JScrollPane(buttonPanel);
+		this.anchorScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.PAGE_AXIS));
+		AnchorNodeIconGenerator iconGenerator = new AnchorNodeIconGenerator();
+		Iterator<IAnchorNodeObjectType> shapeTypeIterator = notationSubsystem.getSyntaxService().anchorNodeTypeIterator();
+		while(shapeTypeIterator.hasNext()){
+			final IAnchorNodeObjectType shapeType = shapeTypeIterator.next();
+			Dimension defSize = shapeType.getDefaultAttributes().getSize();
+			double widToHRatio = defSize.getWidth()/defSize.getHeight();
+			iconGenerator.setBounds(new Envelope(0, 0, PREF_ICON_HEIGHT*widToHRatio, PREF_ICON_HEIGHT));
+			iconGenerator.setObjectType(shapeType);
+			iconGenerator.generateImage();
+			iconGenerator.generateIcon();
+			final JButton nodeButton = new JButton(iconGenerator.getIcon());
+			nodeButton.setText(shapeType.getName());
+			nodeButton.setToolTipText(shapeType.getDescription());
+//			shapeButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+			buttonPanel.add(nodeButton);
+			paletteGroup.add(nodeButton);
+			nodeButton.addActionListener(new ActionListener(){
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					editBehaviourController.setAnchorNodeCreationMode(shapeType);
+					paletteGroup.setSelected(nodeButton.getModel(), true);
+				}
+				
+			});
+		}
+		
 	}
 
     private ImageIcon createImageIcon(String path) {

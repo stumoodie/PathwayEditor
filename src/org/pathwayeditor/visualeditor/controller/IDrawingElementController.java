@@ -20,6 +20,7 @@ package org.pathwayeditor.visualeditor.controller;
 
 import java.util.List;
 
+import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasElementAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElement;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.IConvexHull;
@@ -39,6 +40,9 @@ public interface IDrawingElementController extends Comparable<IDrawingElementCon
 	 * @return the drawing element, which cannot be null.
 	 */
 	IDrawingElement getDrawingElement();
+	
+	ICanvasElementAttribute getAssociatedAttribute();
+
 	
 	Envelope getDrawnBounds();
 	

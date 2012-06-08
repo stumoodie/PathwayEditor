@@ -18,6 +18,7 @@
 */
 package org.pathwayeditor.visualeditor.controller;
 
+import org.pathwayeditor.businessobjects.drawingprimitives.ILabelAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILabelNode;
 import org.pathwayeditor.figure.rendering.IFigureRenderingController;
 
@@ -28,4 +29,6 @@ public interface ILabelController extends INodeController {
 	@Override
 	ILabelNode getDrawingElement();
 	
+	@Override
+	ILabelAttribute getAssociatedAttribute();
 }

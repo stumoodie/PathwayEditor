@@ -61,5 +61,4 @@ public class LabelController extends CommonLabelController implements ILabelCont
 	public void activateOverride() {
 		parentAttribute.addChangeListener(parentDrawingNodePropertyChangeListener);
 	}
-
 }

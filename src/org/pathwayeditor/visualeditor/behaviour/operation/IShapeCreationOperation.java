@@ -18,10 +18,10 @@
 */
 package org.pathwayeditor.visualeditor.behaviour.operation;
 
-import org.pathwayeditor.businessobjects.typedefn.IShapeObjectType;
+import org.pathwayeditor.businessobjects.typedefn.INodeObjectType;
 import org.pathwayeditor.figure.geometry.Point;
 
-public interface IShapeCreationOperation {
+public interface IShapeCreationOperation<T extends INodeObjectType> {
 
 //	void createShape(Point origin);
 
@@ -29,13 +29,13 @@ public interface IShapeCreationOperation {
 	 * Set shape object type of new shate to create.
 	 * @param shapeType the new shape type.
 	 */
-	void setShapeObjectType(IShapeObjectType shapeType);
+	void setShapeObjectType(T shapeType);
 
 	/**
 	 * Gets the shape type currently set.
 	 * @return current shape type, null if none set.
 	 */
-	IShapeObjectType getShapeObjectType();
+	T getShapeObjectType();
 
 	/**
 	 * Start creation drag.

@@ -58,7 +58,7 @@ public class FeedbackNode implements IFeedbackNode {
 
 	@Override
 	public void resizePrimitive(Point originDelta, Dimension resizeDelta) {
-		figureRenderingController.setRequestedEnvelope(this.initialBounds.resize(originDelta, resizeDelta));
+		figureRenderingController.setEnvelope(this.initialBounds.resize(originDelta, resizeDelta));
 		figureRenderingController.generateFigureDefinition();
 		notifyResize(this.initialBounds, originDelta, resizeDelta);
 	}
@@ -91,7 +91,7 @@ public class FeedbackNode implements IFeedbackNode {
 
 	@Override
 	public void translatePrimitive(Point translation) {
-		figureRenderingController.setRequestedEnvelope(this.initialBounds.translate(translation));
+		figureRenderingController.setEnvelope(this.initialBounds.translate(translation));
 		figureRenderingController.generateFigureDefinition();
 		notifyTranslation(this.initialBounds, translation);
 	}
@@ -131,7 +131,7 @@ public class FeedbackNode implements IFeedbackNode {
 
 	@Override
 	public Envelope getBounds() {
-		return this.getFigureController().getRequestedEnvelope();
+		return this.getFigureController().getEnvelope();
 	}
 
 	@Override

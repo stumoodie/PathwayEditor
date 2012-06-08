@@ -24,54 +24,51 @@ import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasElementAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.Colour;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LineStyle;
-import org.pathwayeditor.businessobjects.typedefn.IShapeObjectType;
+import org.pathwayeditor.businessobjects.typedefn.IAnchorNodeObjectType;
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.figure.geometry.Scale;
 import org.pathwayeditor.visualeditor.behaviour.operation.IShapeCreationOperation;
+import org.pathwayeditor.visualeditor.commands.AnchorNodeCreationCommand;
 import org.pathwayeditor.visualeditor.commands.ICommand;
 import org.pathwayeditor.visualeditor.commands.ICommandStack;
-import org.pathwayeditor.visualeditor.commands.ShapeCreationCommand;
 import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
 import org.pathwayeditor.visualeditor.controller.IViewControllerModel;
 import org.pathwayeditor.visualeditor.editingview.IShapePane;
 import org.pathwayeditor.visualeditor.feedback.IFeedbackModel;
 import org.pathwayeditor.visualeditor.feedback.IFeedbackNode;
 import org.pathwayeditor.visualeditor.geometry.IIntersectionCalcnFilter;
-import org.pathwayeditor.visualeditor.layout.ILabelPositionCalculator;
 
-public class ShapeCreationOperation implements IShapeCreationOperation<IShapeObjectType> {
+public class AnchorNodeCreationOperation implements IShapeCreationOperation<IAnchorNodeObjectType> {
 	private static final Point NO_SIZE_DELTA = new Point(0.0, 0.0);
 	private final Logger logger = Logger.getLogger(this.getClass());
 	private final IShapePane shapePane;
 //	private final IModel domainModel;
 	private final IFeedbackModel feedbackModel;
 	private final ICommandStack commandStack;
-	private IShapeObjectType shapeObjectType;
+	private IAnchorNodeObjectType shapeObjectType;
 	private Point originDelta;
 	private Dimension sizeDelta;
 //	private Point startLocation;
 	private boolean canCreationSucceed = false;
 	private final IViewControllerModel viewModel;
-	private ILabelPositionCalculator labelPositionCalculator;
 
-	public ShapeCreationOperation(IShapePane shapePane, IFeedbackModel feedbackModel,
-			IViewControllerModel viewModel, ICommandStack commandStack, ILabelPositionCalculator labelPositionCalculator) {
+	public AnchorNodeCreationOperation(IShapePane shapePane, IFeedbackModel feedbackModel,
+			IViewControllerModel viewModel, ICommandStack commandStack) {
 		this.shapePane = shapePane;
 		this.viewModel = viewModel;
 		this.feedbackModel = feedbackModel;
 		this.commandStack = commandStack;
-		this.labelPositionCalculator = labelPositionCalculator;
 	}
 
 	@Override
-	public IShapeObjectType getShapeObjectType() {
+	public IAnchorNodeObjectType getShapeObjectType() {
 		return this.shapeObjectType;
 	}
 
 	@Override
-	public void setShapeObjectType(IShapeObjectType shapeType) {
+	public void setShapeObjectType(IAnchorNodeObjectType shapeType) {
 		this.shapeObjectType = shapeType;
 	}
 
@@ -96,8 +93,10 @@ public class ShapeCreationOperation implements IShapeCreationOperation<IShapeObj
 		IDrawingElementController potentialParent = getParentElement(node);
 		ICanvasElementAttribute drawingElementAtt = potentialParent.getDrawingElement().getAttribute();
 		if(drawingElementAtt.getObjectType().getParentingRules().isValidChild(getShapeObjectType())){
-			ICommand cmd = new ShapeCreationCommand(potentialParent.getDrawingElement(), this.shapeObjectType,
-					node.getFigureController(), labelPositionCalculator);
+			
+			//TODO:  Need to get curve segment where this shape is to sit!
+			ICommand cmd = new AnchorNodeCreationCommand(potentialParent.getDrawingElement(), this.shapeObjectType,
+					node.getFigureController(), null);
 			this.commandStack.execute(cmd);
 			if(logger.isDebugEnabled()){
 				logger.debug("Create a new shape at: " + cmd);

@@ -18,6 +18,7 @@
 */
 package org.pathwayeditor.visualeditor.controller;
 
+import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkEdge;
 import org.pathwayeditor.visualeditor.geometry.ILinkPointDefinition;
 
@@ -28,4 +29,7 @@ public interface ILinkController extends IDrawingElementController {
 	@Override
 	ILinkEdge getDrawingElement();
 	
+	
+	@Override
+	ILinkAttribute getAssociatedAttribute();
 }

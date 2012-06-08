@@ -18,10 +18,9 @@
 */
 package org.pathwayeditor.visualeditor.controller;
 
-import java.util.Iterator;
-
 import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasElementAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkEdge;
 import org.pathwayeditor.businessobjects.drawingprimitives.IShapeAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.BendPointStructureChange;
@@ -39,7 +38,6 @@ import org.pathwayeditor.businessobjects.drawingprimitives.listeners.LinkTerminu
 import org.pathwayeditor.businessobjects.impl.facades.ShapeNodeFacade;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.IConvexHull;
-import org.pathwayeditor.figure.geometry.LineSegment;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.editingview.IMiniCanvas;
 import org.pathwayeditor.visualeditor.feedback.DomainLinkMiniCanvas;
@@ -349,7 +347,6 @@ public class LinkController extends DrawingElementController implements ILinkCon
 
 	@Override
 	public boolean intersectsBounds(Envelope drawnBounds) {
-		boolean retVal = false;
 		return this.linkDefinition.intersectsBounds(drawnBounds);
 	}
 
@@ -361,5 +358,10 @@ public class LinkController extends DrawingElementController implements ILinkCon
 	@Override
 	public boolean intersectsHull(IConvexHull queryHull) {
 		return this.linkDefinition.intersectsHull(queryHull);
+	}
+
+	@Override
+	public ILinkAttribute getAssociatedAttribute() {
+		return this.linkAttribute.getAttribute();
 	}
 }

@@ -23,6 +23,7 @@
 package org.pathwayeditor.graphicsengine.stubs.notationsubsystem;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -33,6 +34,7 @@ import org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyD
 import org.pathwayeditor.businessobjects.notationsubsystem.INotation;
 import org.pathwayeditor.businessobjects.notationsubsystem.INotationSubsystem;
 import org.pathwayeditor.businessobjects.notationsubsystem.INotationSyntaxService;
+import org.pathwayeditor.businessobjects.typedefn.IAnchorNodeObjectType;
 import org.pathwayeditor.businessobjects.typedefn.ILabelObjectType;
 import org.pathwayeditor.businessobjects.typedefn.ILinkObjectType;
 import org.pathwayeditor.businessobjects.typedefn.IObjectType;
@@ -57,6 +59,8 @@ public class StubNotationSyntaxService implements INotationSyntaxService {
 	private final ILinkObjectType linkDObjectType;
 	private final Map<Integer, IShapeObjectType> shapes;
 	private final Map<Integer, ILinkObjectType> links;
+	private final Map<Integer, IAnchorNodeObjectType> anchorNodes;
+	private final Map<IPropertyDefinition, ILabelObjectType> labelNodes;
 	
 	public StubNotationSyntaxService(INotationSubsystem notationSubsystem){
 		this.notationSubsystem = notationSubsystem;
@@ -79,6 +83,8 @@ public class StubNotationSyntaxService implements INotationSyntaxService {
 		this.links.put(this.linkBObjectType.getUniqueId(), this.linkBObjectType);
 		this.links.put(this.linkCObjectType.getUniqueId(), this.linkCObjectType);
 		this.links.put(this.linkDObjectType.getUniqueId(), this.linkDObjectType);
+		this.anchorNodes = Collections.emptyMap();
+		this.labelNodes = Collections.emptyMap();
 	}
 	
 	/* (non-Javadoc)
@@ -247,30 +253,44 @@ public class StubNotationSyntaxService implements INotationSyntaxService {
 
 	@Override
 	public ILabelObjectType getLabelObjectType(int uniqueId) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
-		
+		ILabelObjectType retVal = null;
+		for(ILabelObjectType ot :this.labelNodes.values()){
+			if(ot.getUniqueId() == uniqueId){
+				retVal = ot;
+				break;
+			}
+		}
+		return retVal;
 	}
 
 	@Override
-	public ILabelObjectType getLabelObjectTypeByProperty(
-			IPropertyDefinition propDefn) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
-		
+	public ILabelObjectType getLabelObjectTypeByProperty(IPropertyDefinition propDefn) {
+		return this.labelNodes.get(propDefn);
 	}
 
 	@Override
 	public boolean isVisualisableProperty(IPropertyDefinition propDefn) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
-		
+		return this.labelNodes.containsKey(propDefn);
 	}
 
-//	@Override
-//	public IShapeObjectType getLinkEndObjectType(ILinkObjectType ot) {
-//			// TODO Auto-generated method stub
-//			throw new UnsupportedOperationException("Not implemented yet!");
-//		
-//	}
+	@Override
+	public Iterator<IAnchorNodeObjectType> anchorNodeTypeIterator() {
+		return this.anchorNodes.values().iterator();
+	}
+
+	@Override
+	public int numAnchorNodeTypes() {
+		return this.anchorNodes.size();
+	}
+
+	@Override
+	public IAnchorNodeObjectType getAnchorNodeObjectType(int uniqueId) {
+		return this.anchorNodes.get(uniqueId);
+	}
+
+	@Override
+	public boolean containsAnchorNodeObjectType(int uniqueId) {
+		return this.anchorNodes.containsKey(uniqueId);
+	}
+
 }

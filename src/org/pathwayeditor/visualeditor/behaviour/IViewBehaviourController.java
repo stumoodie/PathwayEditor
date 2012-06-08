@@ -20,6 +20,7 @@ package org.pathwayeditor.visualeditor.behaviour;
 
 import java.util.List;
 
+import org.pathwayeditor.businessobjects.typedefn.IAnchorNodeObjectType;
 import org.pathwayeditor.businessobjects.typedefn.ILinkObjectType;
 import org.pathwayeditor.businessobjects.typedefn.IShapeObjectType;
 
@@ -42,5 +43,7 @@ public interface IViewBehaviourController {
 	void removeViewBehaviourModeChangeListener(IViewBehaviourModeChangeListener l);
 
 	List<IViewBehaviourModeChangeListener> getViewBehaviourModeChangeListeners();
+
+	void setAnchorNodeCreationMode(IAnchorNodeObjectType shapeType);
 
 }

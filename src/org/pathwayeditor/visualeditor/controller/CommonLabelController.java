@@ -274,8 +274,10 @@ public abstract class CommonLabelController extends NodeController implements IL
 		return new FigureDefinitionMiniCanvas(this.controller.getFigureDefinition(), this.controller.getEnvelope());
 	}
 
-//	@Override
-//	public IAnchorLocatorFactory getAnchorLocatorFactory() {
-//		throw new UnsupportedOperationException("Not in use. This should not be called!");
-//	}
+
+	@Override
+	public ILabelAttribute getAssociatedAttribute() {
+		return this.domainNode.getAttribute();
+	}
+
 }

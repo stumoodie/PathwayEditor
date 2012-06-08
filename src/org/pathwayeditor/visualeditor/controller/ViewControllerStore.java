@@ -560,8 +560,7 @@ public class ViewControllerStore implements IViewControllerModel {
 
 		@Override
 		public void visitAnchorNode(IAnchorNodeAttribute anchorNodeAttribute) {
-			throw new UnsupportedOperationException("Not in use at the moment");
-//			viewNode = new AnchorNodeController(viewController, anchorNodeAttribute, indexCounter++);
+			this.viewNode = new AnchorNodeController(viewController, anchorNodeAttribute, indexCounter++);
 		}
 		
 	}

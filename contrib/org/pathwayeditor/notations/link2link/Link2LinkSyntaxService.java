@@ -16,6 +16,7 @@ import org.pathwayeditor.businessobjects.drawingprimitives.properties.IPropertyD
 import org.pathwayeditor.businessobjects.notationsubsystem.INotation;
 import org.pathwayeditor.businessobjects.notationsubsystem.INotationSubsystem;
 import org.pathwayeditor.businessobjects.notationsubsystem.INotationSyntaxService;
+import org.pathwayeditor.businessobjects.typedefn.IAnchorNodeObjectType;
 import org.pathwayeditor.businessobjects.typedefn.ILabelObjectType;
 import org.pathwayeditor.businessobjects.typedefn.ILinkObjectType;
 import org.pathwayeditor.businessobjects.typedefn.ILinkObjectType.LinkEditableAttributes;
@@ -24,6 +25,7 @@ import org.pathwayeditor.businessobjects.typedefn.IObjectType;
 import org.pathwayeditor.businessobjects.typedefn.IRootObjectType;
 import org.pathwayeditor.businessobjects.typedefn.IShapeObjectType;
 import org.pathwayeditor.figure.geometry.Dimension;
+import org.pathwayeditor.notationsubsystem.toolkit.definition.AnchorNodeObjectType;
 import org.pathwayeditor.notationsubsystem.toolkit.definition.LabelObjectType;
 import org.pathwayeditor.notationsubsystem.toolkit.definition.LinkObjectType;
 import org.pathwayeditor.notationsubsystem.toolkit.definition.LinkParentingRules;
@@ -36,12 +38,12 @@ public class Link2LinkSyntaxService implements INotationSyntaxService {
 	public static final int SHAPEA = 1;
 	public static final int LINKA = 100;
 	public static final int LABELA_OT = 1000;
-	private static final int LINKA_END_OT = 10000;
-	private static final int ANCHOR_SHAPEA = 50;
+	public static final int ANCHOR_SHAPEA = 10000;
 	
 	private final INotationSubsystem subsystem;
 	private final SortedMap<Integer, IShapeObjectType> shapeOts;
 	private final SortedMap<Integer, ILinkObjectType> linkOts;
+	private final SortedMap<Integer, IAnchorNodeObjectType> anchorNodeOts;
 	private final SortedMap<IPropertyDefinition, ILabelObjectType> labelOts;
 	private final RootObjectType rootObjectType;
 //	private final Map<ILinkObjectType, IShapeObjectType> linkEndObjectTypes;
@@ -50,20 +52,20 @@ public class Link2LinkSyntaxService implements INotationSyntaxService {
 		this.subsystem = subsystem;
 		this.shapeOts = new TreeMap<Integer, IShapeObjectType>();
 		this.linkOts = new TreeMap<Integer, ILinkObjectType>();
+		this.anchorNodeOts = new TreeMap<Integer, IAnchorNodeObjectType>();
 		this.labelOts = new TreeMap<IPropertyDefinition, ILabelObjectType>();
 //		this.linkEndObjectTypes = new HashMap<ILinkObjectType, IShapeObjectType>();
 		this.rootObjectType = createRootObject();
 		assignObjectType(this.shapeOts, createShapeA());
 		assignObjectType(this.linkOts, createLinkA());
-		assignObjectType(this.shapeOts, createAnchorShapeA());
+		assignObjectType(this.anchorNodeOts, createAnchorShapeA());
 		defineParenting();
 		defineConnections();
 	}
 	
-	private IShapeObjectType createAnchorShapeA() {
-		ShapeObjectType retVal = new ShapeObjectType(this, ANCHOR_SHAPEA, "Anchor Shape A");
+	private IAnchorNodeObjectType createAnchorShapeA() {
+		AnchorNodeObjectType retVal = new AnchorNodeObjectType(this, ANCHOR_SHAPEA, "Anchor Shape A");
 		retVal.setDescription("Test anchor shape A");
-		retVal.setEditableAttributes(EnumSet.allOf(IShapeObjectType.EditableShapeAttributes.class));
 		retVal.getDefaultAttributes().setFillColour(new Colour(RGB.WHITE, Colour.TRANSPARENT));
 		retVal.getDefaultAttributes().setLineColour(Colour.BLACK);
 		retVal.getDefaultAttributes().setFontColour(Colour.BLACK);
@@ -82,13 +84,13 @@ public class Link2LinkSyntaxService implements INotationSyntaxService {
 		this.rootObjectType.getParentingRules().addChild(this.getShapeObjectType(SHAPEA));
 		ILinkObjectType linkObjectType = this.getLinkObjectType(LINKA);
 //		IShapeObjectType linkEndShapeOt = this.getLinkEndObjectType(linkObjectType);
-		((LinkParentingRules)linkObjectType.getParentingRules()).addChild(this.getShapeObjectType(ANCHOR_SHAPEA));
+		((LinkParentingRules)linkObjectType.getParentingRules()).addChild(this.anchorNodeOts.get(ANCHOR_SHAPEA));
 	}
 
 	private void defineConnections(){
 		LinkObjectType linkOt = (LinkObjectType)this.getLinkObjectType(LINKA);
 		IShapeObjectType shapeAOt = this.getShapeObjectType(SHAPEA);
-		IShapeObjectType linkEndShapeOt = this.getShapeObjectType(ANCHOR_SHAPEA);
+		IAnchorNodeObjectType linkEndShapeOt = this.getAnchorNodeObjectType(ANCHOR_SHAPEA);
 		linkOt.getLinkConnectionRules().addConnection(shapeAOt, shapeAOt);
 		linkOt.getLinkConnectionRules().addConnection(shapeAOt, linkEndShapeOt);
 	}
@@ -126,6 +128,8 @@ public class Link2LinkSyntaxService implements INotationSyntaxService {
 	public Iterator<IObjectType> objectTypeIterator() {
 		List<IObjectType> retVal = new LinkedList<IObjectType>(this.shapeOts.values());
 		retVal.addAll(this.linkOts.values());
+		retVal.addAll(this.anchorNodeOts.values());
+		retVal.addAll(this.labelOts.values());
 		return retVal.iterator();
 	}
 
@@ -156,8 +160,17 @@ public class Link2LinkSyntaxService implements INotationSyntaxService {
 
 	@Override
 	public boolean containsObjectType(int uniqueId) {
-		return uniqueId == ROOT_OT || this.shapeOts.containsKey(uniqueId)
-				|| this.linkOts.containsKey(uniqueId);
+		boolean retVal = uniqueId == ROOT_OT || this.shapeOts.containsKey(uniqueId)
+				|| this.anchorNodeOts.containsKey(uniqueId) || this.linkOts.containsKey(uniqueId);
+		if(!retVal){
+			for(ILabelObjectType labOt : this.labelOts.values()){
+				if(labOt.getUniqueId() == uniqueId){
+					retVal = true;
+					break;
+				}
+			}
+		}
+		return retVal;
 	}
 
 	@Override
@@ -168,6 +181,9 @@ public class Link2LinkSyntaxService implements INotationSyntaxService {
 		}
 		else if(this.shapeOts.containsKey(uniqueId)){
 			retVal = this.shapeOts.get(uniqueId);
+		}
+		else if(this.anchorNodeOts.containsKey(uniqueId)){
+			retVal = this.anchorNodeOts.get(uniqueId);
 		}
 		else{
 			retVal = this.linkOts.get(uniqueId);
@@ -316,5 +332,25 @@ public class Link2LinkSyntaxService implements INotationSyntaxService {
 //		this.linkEndObjectTypes.put(retVal, createLinkEndOt());
 		
 		return retVal;
+	}
+
+	@Override
+	public Iterator<IAnchorNodeObjectType> anchorNodeTypeIterator() {
+		return this.anchorNodeOts.values().iterator();
+	}
+
+	@Override
+	public int numAnchorNodeTypes() {
+		return this.anchorNodeOts.size();
+	}
+
+	@Override
+	public IAnchorNodeObjectType getAnchorNodeObjectType(int uniqueId) {
+		return this.anchorNodeOts.get(uniqueId);
+	}
+
+	@Override
+	public boolean containsAnchorNodeObjectType(int uniqueId) {
+		return this.anchorNodeOts.containsKey(uniqueId);
 	}
 }

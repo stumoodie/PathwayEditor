@@ -18,6 +18,9 @@
 */
 package org.pathwayeditor.visualeditor.behaviour.operation;
 
+import org.pathwayeditor.businessobjects.typedefn.IAnchorNodeObjectType;
+import org.pathwayeditor.businessobjects.typedefn.IShapeObjectType;
+
 
 public interface IOperationFactory {
 
@@ -37,8 +40,10 @@ public interface IOperationFactory {
 
 	ILinkBendPointPopupActions getLinkBendpointPopupMenuResponse();
 
-	IShapeCreationOperation getShapeCreationOperation();
+	IShapeCreationOperation<IShapeObjectType> getShapeCreationOperation();
 	
+	IShapeCreationOperation<IAnchorNodeObjectType> getAnchorNodeCreationOperation();
+
 	ISelectionOperation getSelectionOperation();
 
 	ILinkCreationOperation getLinkCreationOperation();

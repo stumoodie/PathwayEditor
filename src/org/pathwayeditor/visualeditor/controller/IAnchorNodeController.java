@@ -16,12 +16,15 @@
   specific language governing permissions and limitations
   under the License.
 */
-package org.pathwayeditor.visualeditor.behaviour.creation;
+package org.pathwayeditor.visualeditor.controller;
 
-import org.pathwayeditor.businessobjects.typedefn.INodeObjectType;
+import org.pathwayeditor.businessobjects.drawingprimitives.IAnchorNodeAttribute;
+import org.pathwayeditor.figure.rendering.IFigureRenderingController;
 
-public interface IShapeTypeInspector<T extends INodeObjectType> {
+public interface IAnchorNodeController extends INodeController {
 
-	T getCurrentShapeType();
-
+	IFigureRenderingController getFigureController();
+	
+	@Override
+	IAnchorNodeAttribute getAssociatedAttribute();
 }

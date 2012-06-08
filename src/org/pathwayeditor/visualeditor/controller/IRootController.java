@@ -18,6 +18,7 @@
 */
 package org.pathwayeditor.visualeditor.controller;
 
+import org.pathwayeditor.businessobjects.drawingprimitives.IRootAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.IRootNode;
 
 public interface IRootController extends INodeController {
@@ -25,4 +26,6 @@ public interface IRootController extends INodeController {
 	@Override
 	IRootNode getDrawingElement();
 
+	@Override
+	IRootAttribute getAssociatedAttribute();
 }

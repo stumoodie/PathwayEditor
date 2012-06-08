@@ -18,6 +18,8 @@
 */
 package org.pathwayeditor.visualeditor.operations;
 
+import org.pathwayeditor.businessobjects.typedefn.IAnchorNodeObjectType;
+import org.pathwayeditor.businessobjects.typedefn.IShapeObjectType;
 import org.pathwayeditor.visualeditor.behaviour.operation.IDefaultPopupActions;
 import org.pathwayeditor.visualeditor.behaviour.operation.IEditingOperation;
 import org.pathwayeditor.visualeditor.behaviour.operation.ILinkBendPointPopupActions;
@@ -56,7 +58,8 @@ public class OperationFactory implements IOperationFactory {
 	private final ISelectionRecord selectionRecord;
 	private final ICommandStack commandStack;
 //	private final IViewControllerModel viewModel;
-	private final IShapeCreationOperation shapeCreationOperation;
+	private final IShapeCreationOperation<IShapeObjectType> shapeCreationOperation;
+	private final IShapeCreationOperation<IAnchorNodeObjectType> anchorNodeCreationOperation;
 	private final ISelectionOperation selectionOperations;
 	private final ILinkCreationOperation linkCreationOperation;
 
@@ -73,6 +76,7 @@ public class OperationFactory implements IOperationFactory {
 		marqueeOperation = new MarqueeOperation(shapePane, feedbackModel, selectionRecord, viewModel.getIntersectionCalculator());
 		initResponses();
 		shapeCreationOperation = new ShapeCreationOperation(shapePane, feedbackModel, viewModel, commandStack, new LabelPositionCalculator());
+		anchorNodeCreationOperation = new AnchorNodeCreationOperation(shapePane, feedbackModel, viewModel, commandStack);
 		this.selectionOperations = new SelectionOperation(selectionRecord, viewModel.getIntersectionCalculator(), labelDialog, this.commandStack, shapePane);
 		this.linkCreationOperation = new LinkCreationOperation(shapePane, feedbackModel, commandStack);
 	}
@@ -182,7 +186,7 @@ public class OperationFactory implements IOperationFactory {
 	}
 
 	@Override
-	public IShapeCreationOperation getShapeCreationOperation() {
+	public IShapeCreationOperation<IShapeObjectType> getShapeCreationOperation() {
 		return this.shapeCreationOperation;
 	}
 
@@ -194,5 +198,10 @@ public class OperationFactory implements IOperationFactory {
 	@Override
 	public ILinkCreationOperation getLinkCreationOperation() {
 		return this.linkCreationOperation;
+	}
+
+	@Override
+	public IShapeCreationOperation<IAnchorNodeObjectType> getAnchorNodeCreationOperation() {
+		return this.anchorNodeCreationOperation;
 	}
 }
