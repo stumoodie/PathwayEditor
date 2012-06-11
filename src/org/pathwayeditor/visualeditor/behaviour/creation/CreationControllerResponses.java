@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.pathwayeditor.businessobjects.typedefn.INodeObjectType;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.behaviour.IControllerResponses;
 import org.pathwayeditor.visualeditor.behaviour.IDragResponse;
@@ -31,6 +32,7 @@ import org.pathwayeditor.visualeditor.behaviour.IPopupMenuResponse;
 import org.pathwayeditor.visualeditor.behaviour.ISelectionResponse;
 import org.pathwayeditor.visualeditor.behaviour.operation.IEditingOperation;
 import org.pathwayeditor.visualeditor.behaviour.operation.IOperationFactory;
+import org.pathwayeditor.visualeditor.behaviour.operation.IShapeCreationOperation;
 import org.pathwayeditor.visualeditor.behaviour.selection.DefaultPopupMenuResponse;
 import org.pathwayeditor.visualeditor.behaviour.selection.KeyboardResponse;
 import org.pathwayeditor.visualeditor.behaviour.selection.LinkBendpointPopupMenuResponse;
@@ -39,15 +41,15 @@ import org.pathwayeditor.visualeditor.behaviour.selection.ShapePopupMenuResponse
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle.SelectionHandleType;
 
-public class CreationControllerResponses implements IControllerResponses {
+public class CreationControllerResponses <T extends INodeObjectType> implements IControllerResponses {
 	private final IDragResponse dragResponse;
 	private final ISelectionResponse selectionResponse;
 	private final IMouseFeedbackResponse feedbackResponse;
 	private final IKeyboardResponse keyboardResponse;
 	private final Map<SelectionHandleType, IPopupMenuResponse> popupMenuMap; 
 	
-	public CreationControllerResponses(IOperationFactory opFactory, IShapeTypeInspector shapeTypeInspector) {
-		this.dragResponse = new CreationDragResponse(opFactory.getShapeCreationOperation(), shapeTypeInspector);
+	public CreationControllerResponses(IOperationFactory opFactory, IShapeCreationOperation<T> creationOp, IShapeTypeInspector<T> shapeTypeInspector) {
+		this.dragResponse = new CreationDragResponse<T>(creationOp, shapeTypeInspector);
         this.selectionResponse = new SelectionCreationResponse();
         this.feedbackResponse = new MouseCreationFeedbackResponse();
         this.keyboardResponse = new KeyboardResponse(new IEditingOperation() {

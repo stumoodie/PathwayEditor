@@ -5,6 +5,7 @@ import java.util.SortedSet;
 
 import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.drawingprimitives.IAnchorNodeAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.ICurveSegment;
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNode;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.Colour;
@@ -13,6 +14,10 @@ import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttr
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributePropertyChangeEvent;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributeResizedEvent;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributeTranslationEvent;
+import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICurveSegmentChangeListener;
+import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICurveSegmentContainerEvent;
+import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICurveSegmentContainerListener;
+import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICurveSegmentLocationChangeEvent;
 import org.pathwayeditor.businessobjects.impl.facades.DrawingNodeFacade;
 import org.pathwayeditor.businessobjects.impl.facades.LinkEdgeFacade;
 import org.pathwayeditor.businessobjects.impl.facades.SubModelFacade;
@@ -38,8 +43,8 @@ public class AnchorNodeController extends DrawingElementController implements IA
 	private final ICanvasAttributeChangeListener anchorNodePropertyChangeListener;
 	private ICanvasAttributeChangeListener parentDrawingNodePropertyChangeListener;
 	private boolean isActive;
-//	private final ICurveSegmentChangeListener associatedCurveChangeListener;
-//	private final ICurveSegmentContainerListener curveSegmentChangeListener;
+	private final ICurveSegmentChangeListener associatedCurveChangeListener;
+	private final ICurveSegmentContainerListener curveSegmentChangeListener;
 
 	
 	public AnchorNodeController(IViewControllerModel viewController, IAnchorNodeAttribute lanchorNodeAttribute, int index) {
@@ -107,36 +112,45 @@ public class AnchorNodeController extends DrawingElementController implements IA
 			}
 			@Override
 			public void elementTranslated(ICanvasAttributeTranslationEvent e) {
-				if(logger.isTraceEnabled()){
-					logger.trace("Detected translation att=" + anchorNodeAttribute + ", delta=" + e.getTranslationDelta());
-				}
-				anchorNodeAttribute.translate(e.getTranslationDelta());
+//				if(logger.isTraceEnabled()){
+//					logger.trace("Detected translation att=" + anchorNodeAttribute + ", delta=" + e.getTranslationDelta());
+//				}
+//				anchorNodeAttribute.translate(e.getTranslationDelta());
 			}
 			@Override
 			public void nodeResized(ICanvasAttributeResizedEvent e) {
 			}
 		};
-//		this.associatedCurveChangeListener = new ICurveSegmentChangeListener() {
-//			
-//			@Override
-//			public void locationChange(ICurveSegmentLocationChangeEvent e) {
-//				//TODO: Calculate the position of the anchor node.
-//				logger.info("This is where I should be recalculating the anchor node's location");
-//			}
-//		};
-//		this.curveSegmentChangeListener = new ICurveSegmentContainerListener() {
-//			
-//			@Override
-//			public void curveSegmentsReplaced(ICurveSegmentContainerEvent e) {
-//				ICurveSegment currSeg = getAssociatedCurveSegment();
-//				for(ICurveSegment cs : e.getOriginalSegments()){
-//					if(cs.equals(currSeg)){
-//						//TODO: need to work out how to replace this seg with a new one
-//						logger.info("This is where I work out which line seg to replace the old one with");
-//					}
-//				}
-//			}
-//		};
+		this.associatedCurveChangeListener = new ICurveSegmentChangeListener() {
+			
+			@Override
+			public void locationChange(ICurveSegmentLocationChangeEvent e) {
+				if(logger.isTraceEnabled()){
+					logger.trace("Detected associatedSeg move. Old seg posns=" + e.getOldPosition() + ", Old anchorPosn=" + anchorNodeAttribute.getAnchorLocation());
+				}
+				AnchorPointChangeCalculator calc = new AnchorPointChangeCalculator(e.getOldPosition(), e.getNewPosition());
+				calc.setAnchorPosn(getConvexHull().getCentre());
+				ICurveSegment curveSeg = getAssociatedCurveSegment();
+				curveSeg.visit(calc);
+				anchorNodeAttribute.setAnchorLocation(calc.getNewAnchorPosn());
+				if(logger.isTraceEnabled()){
+					logger.trace("Calculated new anchor posn. New seg posns=" + e.getNewPosition() + ", New anchorPosn=" + anchorNodeAttribute.getAnchorLocation());
+				}
+			}
+		};
+		this.curveSegmentChangeListener = new ICurveSegmentContainerListener() {
+			
+			@Override
+			public void curveSegmentsReplaced(ICurveSegmentContainerEvent e) {
+				ICurveSegment currSeg = getAssociatedCurveSegment();
+				for(ICurveSegment cs : e.getOriginalSegments()){
+					if(cs.equals(currSeg)){
+						//TODO: need to work out how to replace this seg with a new one
+						logger.info("This is where I work out which line seg to replace the old one with");
+					}
+				}
+			}
+		};
 		this.isActive = false;
 	}
 
@@ -144,9 +158,9 @@ public class AnchorNodeController extends DrawingElementController implements IA
 		return (ILinkAttribute)this.anchorNodeAttribute.getCurrentElement().getParent().getAttribute();
 	}
 	
-//	private ICurveSegment getAssociatedCurveSegment(){
-//		return this.anchorNodeAttribute.getAssociatedCurveSegment();
-//	}
+	private ICurveSegment getAssociatedCurveSegment(){
+		return this.anchorNodeAttribute.getAssociatedCurveSegment();
+	}
 	
 	@Override
 	public IMiniCanvas getMiniCanvas() {
@@ -162,15 +176,15 @@ public class AnchorNodeController extends DrawingElementController implements IA
 	private void addListeners() {
 		anchorNodeAttribute.addChangeListener(anchorNodePropertyChangeListener);
 		this.getParentAttribute().addChangeListener(parentDrawingNodePropertyChangeListener);
-//		this.getParentAttribute().getCurveSegmentContainer().addCurveSegmentContainerListener(this.curveSegmentChangeListener);
-//		this.getAssociatedCurveSegment().addCurveSegmentChangeListener(this.associatedCurveChangeListener);
+		this.getParentAttribute().getCurveSegmentContainer().addCurveSegmentContainerListener(this.curveSegmentChangeListener);
+		this.getAssociatedCurveSegment().addCurveSegmentChangeListener(this.associatedCurveChangeListener);
 	}
 	
 	private void removeListeners() {
 		anchorNodeAttribute.removeChangeListener(anchorNodePropertyChangeListener);
 		getParentAttribute().removeChangeListener(parentDrawingNodePropertyChangeListener);
-//		this.getParentAttribute().getCurveSegmentContainer().removeCurveSegmentContainerListener(this.curveSegmentChangeListener);
-//		this.getAssociatedCurveSegment().removeCurveSegmentChangeListener(this.associatedCurveChangeListener);
+		this.getParentAttribute().getCurveSegmentContainer().removeCurveSegmentContainerListener(this.curveSegmentChangeListener);
+		this.getAssociatedCurveSegment().removeCurveSegmentChangeListener(this.associatedCurveChangeListener);
 	}
 
 	@Override

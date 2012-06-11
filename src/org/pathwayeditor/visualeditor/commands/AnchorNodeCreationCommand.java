@@ -24,7 +24,8 @@ import org.pathwayeditor.businessobjects.drawingprimitives.IAnchorNodeAttributeF
 import org.pathwayeditor.businessobjects.drawingprimitives.ICurveSegment;
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElement;
 import org.pathwayeditor.businessobjects.typedefn.IAnchorNodeObjectType;
-import org.pathwayeditor.figure.rendering.IFigureRenderingController;
+import org.pathwayeditor.figure.geometry.Dimension;
+import org.pathwayeditor.figure.geometry.Point;
 
 import uk.ac.ed.inf.graph.compound.ICompoundNode;
 import uk.ac.ed.inf.graph.compound.ICompoundNodeFactory;
@@ -34,17 +35,19 @@ public class AnchorNodeCreationCommand implements ICommand {
 	private final Logger logger = Logger.getLogger(this.getClass());
 	private final IDrawingElement parentNode;
 	private final IAnchorNodeObjectType objectType;
-	private final IFigureRenderingController figController;
+	private final Point anchorPosn;
+	private final Dimension size;
 	private IGraphState createdState;
 	private IGraphState originalState;
 	private final ICurveSegment parentSegment;
 	
-	public AnchorNodeCreationCommand(IDrawingElement rootNode, IAnchorNodeObjectType shapeObjectType, IFigureRenderingController iFigureRenderingController,
-			ICurveSegment parentSegment) {
+	public AnchorNodeCreationCommand(IDrawingElement rootNode, IAnchorNodeObjectType shapeObjectType,
+			Point anchorPoint, Dimension size, ICurveSegment parentSegment) {
 		this.parentNode = rootNode;
 		this.objectType = shapeObjectType;
-		this.figController = iFigureRenderingController;
 		this.parentSegment = parentSegment;
+		this.anchorPosn = anchorPoint;
+		this.size = size;
 	}
 
 	@Override
@@ -58,9 +61,10 @@ public class AnchorNodeCreationCommand implements ICommand {
 		attFact.setAssociateCurveSegment(parentSegment);
 		ICompoundNode node = fact.createNode();
 		IAnchorNodeAttribute nodeAtt = (IAnchorNodeAttribute)node.getAttribute(); 
-		nodeAtt.setBounds(figController.getEnvelope());
+		nodeAtt.setAnchorLocation(this.anchorPosn);
+		nodeAtt.setBounds(nodeAtt.getBounds().changeDimension(this.size));
 		if(logger.isDebugEnabled()){
-			logger.debug("Creating shapeNode=" + node + ", bounds=" + nodeAtt.getBounds());
+			logger.debug("Creating anchorNode=" + node + ", requested locn= " + this.anchorPosn + ", location=" + nodeAtt.getAnchorLocation() + ",size=" + this.size);
 		}
 		this.createdState = node.getGraph().getCurrentState();
 	}
@@ -81,8 +85,10 @@ public class AnchorNodeCreationCommand implements ICommand {
 		buf.append("(");
 		buf.append("parentNodeIdx=");
 		buf.append(parentNode.getGraphElement().getIndex());
-		buf.append(",bounds=");
-		buf.append(this.figController.getEnvelope());
+		buf.append(",curveSegment=");
+		buf.append(this.parentSegment);
+		buf.append(",requestedLocn=");
+		buf.append(this.anchorPosn);
 		buf.append(",objectType=");
 		buf.append(objectType.getName());
 		return buf.toString();

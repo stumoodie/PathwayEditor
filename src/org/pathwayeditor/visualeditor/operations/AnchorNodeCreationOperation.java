@@ -18,15 +18,20 @@
 */
 package org.pathwayeditor.visualeditor.operations;
 
+import java.util.Iterator;
 import java.util.SortedSet;
 
 import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasElementAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.ICurveSegment;
+import org.pathwayeditor.businessobjects.drawingprimitives.ICurveSegmentContainer;
+import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.Colour;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.LineStyle;
 import org.pathwayeditor.businessobjects.typedefn.IAnchorNodeObjectType;
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Envelope;
+import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.figure.geometry.Scale;
 import org.pathwayeditor.visualeditor.behaviour.operation.IShapeCreationOperation;
@@ -38,6 +43,7 @@ import org.pathwayeditor.visualeditor.controller.IViewControllerModel;
 import org.pathwayeditor.visualeditor.editingview.IShapePane;
 import org.pathwayeditor.visualeditor.feedback.IFeedbackModel;
 import org.pathwayeditor.visualeditor.feedback.IFeedbackNode;
+import org.pathwayeditor.visualeditor.geometry.CurveSegmentAnchorCalculator;
 import org.pathwayeditor.visualeditor.geometry.IIntersectionCalcnFilter;
 
 public class AnchorNodeCreationOperation implements IShapeCreationOperation<IAnchorNodeObjectType> {
@@ -53,6 +59,7 @@ public class AnchorNodeCreationOperation implements IShapeCreationOperation<IAnc
 //	private Point startLocation;
 	private boolean canCreationSucceed = false;
 	private final IViewControllerModel viewModel;
+	private Point startLocation;
 
 	public AnchorNodeCreationOperation(IShapePane shapePane, IFeedbackModel feedbackModel,
 			IViewControllerModel viewModel, ICommandStack commandStack) {
@@ -92,20 +99,35 @@ public class AnchorNodeCreationOperation implements IShapeCreationOperation<IAnc
 		node.resizePrimitive(originDelta, sizeDelta);
 		IDrawingElementController potentialParent = getParentElement(node);
 		ICanvasElementAttribute drawingElementAtt = potentialParent.getDrawingElement().getAttribute();
-		if(drawingElementAtt.getObjectType().getParentingRules().isValidChild(getShapeObjectType())){
-			
-			//TODO:  Need to get curve segment where this shape is to sit!
-			ICommand cmd = new AnchorNodeCreationCommand(potentialParent.getDrawingElement(), this.shapeObjectType,
-					node.getFigureController(), null);
+		if(drawingElementAtt.getObjectType().getParentingRules().isValidChild(getShapeObjectType()) && drawingElementAtt instanceof ILinkAttribute){
+			ICurveSegment associatedCurveSegment = findOverlappingCurveSegment((ILinkAttribute)drawingElementAtt, node.getFigureController().getConvexHull());
+			CurveSegmentAnchorCalculator calc = new CurveSegmentAnchorCalculator();
+			calc.setAnchorPoint(this.startLocation.translate(delta));
+			calc.setCurveSegment(associatedCurveSegment);
+			Point adjustedAnchorLocn = calc.adjustAnchorOnCurveSegment();
+			ICommand cmd = new AnchorNodeCreationCommand(potentialParent.getDrawingElement(), this.shapeObjectType, adjustedAnchorLocn, this.sizeDelta, associatedCurveSegment);
 			this.commandStack.execute(cmd);
 			if(logger.isDebugEnabled()){
-				logger.debug("Create a new shape at: " + cmd);
+				logger.debug("Create a new anchor node at: " + cmd);
 			}
 		}
 		
 //		this.shapePane.updateView();
 		this.feedbackModel.clear();
 		this.shapePane.updateView();
+	}
+	
+	private ICurveSegment findOverlappingCurveSegment(ILinkAttribute parentLink, IConvexHull hull){
+		ICurveSegmentContainer cont = parentLink.getCurveSegmentContainer();
+		Iterator<ICurveSegment> iter = cont.curveIterator();
+		ICurveSegment retVal = null;
+		while(iter.hasNext() && retVal == null){
+			ICurveSegment currSeg = iter.next();
+			if(currSeg.intersects(hull)){
+				retVal = currSeg;
+			}
+		}
+		return retVal;
 	}
 	
 	
@@ -179,7 +201,7 @@ public class AnchorNodeCreationOperation implements IShapeCreationOperation<IAnc
 	@Override
 	public void startCreationDrag(Point origin) {
 		this.canCreationSucceed = false;
-//		this.startLocation = origin;
+		this.startLocation = origin;
 		calculateBounds(origin);
 		feedbackModel.clear();
 		if(logger.isTraceEnabled()){

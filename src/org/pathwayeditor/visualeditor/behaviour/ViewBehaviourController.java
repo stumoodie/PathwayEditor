@@ -67,7 +67,7 @@ public class ViewBehaviourController implements IViewBehaviourController {
 		this.selectionStateController = new SelectionViewBehaviourStateHandler(selectionController, selectionResponse);
 
 		this.shapeCreationStateController = new ShapeCreationBehaviourStateHandler(new GeneralStateController(pane, new HitCalculator(pane),
-				new CreationControllerResponses(opFactory,
+				new CreationControllerResponses<IShapeObjectType>(opFactory, opFactory.getShapeCreationOperation(),
 				new IShapeTypeInspector<IShapeObjectType>() {
 					
 					@Override
@@ -83,7 +83,7 @@ public class ViewBehaviourController implements IViewBehaviourController {
 		}), new MouseCreationFeedbackResponse());
 		
 		this.anchorNodeCreationStateController = new AnchorNodeCreationBehaviourStateHandler(new GeneralStateController(pane, new HitCalculator(pane),
-				new CreationControllerResponses(opFactory,
+				new CreationControllerResponses<IAnchorNodeObjectType>(opFactory, opFactory.getAnchorNodeCreationOperation(),
 				new IShapeTypeInspector<IAnchorNodeObjectType>() {
 					
 					@Override
