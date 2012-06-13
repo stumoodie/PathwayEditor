@@ -23,7 +23,7 @@ public class AnchorPointChangeCalculator implements ICurveSegmentVisitor {
 	@Override
 	public void visitStraightLineCurveSegment(IStraightLineCurveSegment v) {
 		LineSegment origSeg = new LineSegment(this.oldPositions.get(0), this.oldPositions.get(1));
-		if(!origSeg.containsPoint(anchorPosn)){
+		if(logger.isTraceEnabled() && !origSeg.containsPoint(anchorPosn)){
 			logger.error("This anchor point does not lie on the line segment!. pt=" + this.anchorPosn +", LineSeg=" + origSeg);
 		}
 		LineSegment origToAnchor = new LineSegment(this.oldPositions.get(0), this.anchorPosn);
@@ -38,7 +38,7 @@ public class AnchorPointChangeCalculator implements ICurveSegmentVisitor {
 		if(logger.isTraceEnabled()){
 			logger.trace("newSeg=" + this.newPositions + ",newToAnchor=" + newToAnchor + ",newAnchorPos=" + this.newAnchorPosn);
 		}
-		if(!newSeg.containsPoint(newAnchorPosn)){
+		if(logger.isTraceEnabled() && !newSeg.containsPoint(newAnchorPosn)){
 			logger.error("The recalculated anchor point does not lie on the line segment!. pt=" + this.newAnchorPosn +", LineSeg=" + newSeg);
 		}
 	}

@@ -142,13 +142,18 @@ public class AnchorNodeController extends DrawingElementController implements IA
 			
 			@Override
 			public void curveSegmentsReplaced(ICurveSegmentContainerEvent e) {
-				ICurveSegment currSeg = getAssociatedCurveSegment();
-				for(ICurveSegment cs : e.getOriginalSegments()){
-					if(cs.equals(currSeg)){
-						//TODO: need to work out how to replace this seg with a new one
-						logger.info("This is where I work out which line seg to replace the old one with");
-					}
+				AnchorPointSegmentChangeCalculator calc = new AnchorPointSegmentChangeCalculator(e.getOriginalSegments(), e.getReplacementSegments());
+				calc.calculateNewCurveAssociation(anchorNodeAttribute.getAnchorLocation());
+				anchorNodeAttribute.setAnchorLocation(calc.getNewAnchorPosn());
+				ICurveSegment oldCurveSegment = anchorNodeAttribute.getAssociatedCurveSegment();
+				anchorNodeAttribute.setAssociatedCurveSegment(calc.getNewAssociatedCurveSegment());
+				if(logger.isTraceEnabled()){
+					logger.trace("Detected segment replacement. NewAnchorPosn=" + calc.getNewAnchorPosn() + ", NewAssocCurveSeg=" + calc.getNewAssociatedCurveSegment());
 				}
+				// remove listener from previous seg
+				oldCurveSegment.removeCurveSegmentChangeListener(associatedCurveChangeListener);
+				// attach listener to new associated seg
+				anchorNodeAttribute.getAssociatedCurveSegment().addCurveSegmentChangeListener(associatedCurveChangeListener);
 			}
 		};
 		this.isActive = false;

@@ -58,7 +58,7 @@ public class CurveSegmentAnchorCalculator  {
 		this.linkDefn.visit(new ICurveSegmentVisitor() {
 			@Override
 			public void visitStraightLineCurveSegment(IStraightLineCurveSegment v) {
-				LineSegment line = v.getLineSegement(); 
+				LineSegment line = v.getLineSegment(); 
 				Point start = line.getOrigin();
 				Point end = line.getTerminus();
 				Vector ap = new Vector(anchorPoint.getX()-start.getX(), anchorPoint.getY()-start.getY(), 0.0);
