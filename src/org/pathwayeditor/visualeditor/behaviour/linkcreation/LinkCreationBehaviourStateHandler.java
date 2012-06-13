@@ -32,7 +32,7 @@ import org.pathwayeditor.visualeditor.behaviour.IViewBehaviourOperationCompletio
 import org.pathwayeditor.visualeditor.behaviour.IViewBehaviourStateHandler;
 import org.pathwayeditor.visualeditor.behaviour.IViewBehaviourStateHandlerChangeListener;
 import org.pathwayeditor.visualeditor.behaviour.operation.ILinkCreationOperation;
-import org.pathwayeditor.visualeditor.controller.IShapeController;
+import org.pathwayeditor.visualeditor.controller.IConnectingNodeController;
 import org.pathwayeditor.visualeditor.editingview.IShapePane;
 
 public class LinkCreationBehaviourStateHandler implements IViewBehaviourStateHandler, MouseMotionListener, MouseListener {
@@ -59,10 +59,10 @@ public class LinkCreationBehaviourStateHandler implements IViewBehaviourStateHan
 	public void mouseMoved(MouseEvent e) {
 		if(this.linkCreationResponse.isLinkCreationStarted()){
 			this.mouseBehaviourController.setMousePosition(e.getPoint().getX(), e.getPoint().getY());
+			IConnectingNodeController potentialTarget = this.mouseBehaviourController.getShapeAtCurrentLocation();
 			if(logger.isTraceEnabled()){
-				logger.trace("Link creation ongoing posn=" + this.mouseBehaviourController.getDiagramLocation());
+				logger.trace("Link creation ongoing posn=" + this.mouseBehaviourController.getDiagramLocation() + ",potTarget=" + potentialTarget);
 			}
-			IShapeController potentialTarget = this.mouseBehaviourController.getShapeAtCurrentLocation();
 			this.linkCreationResponse.setPotentialTarget(potentialTarget);
 			this.linkCreationResponse.creationOngoing(this.mouseBehaviourController.getDiagramLocation());
 		}
@@ -73,7 +73,7 @@ public class LinkCreationBehaviourStateHandler implements IViewBehaviourStateHan
 		if(e.getButton() == MouseEvent.BUTTON1){
 			this.mouseBehaviourController.setMousePosition(e.getPoint().getX(), e.getPoint().getY());
 			if(this.linkCreationResponse.isLinkCreationStarted()){
-				IShapeController finalShape = this.mouseBehaviourController.getShapeAtCurrentLocation();
+				IConnectingNodeController finalShape = this.mouseBehaviourController.getShapeAtCurrentLocation();
 				this.linkCreationResponse.setPotentialTarget(finalShape);
 				if(this.linkCreationResponse.canFinishCreation()){
 					this.linkCreationResponse.finishCreation();
@@ -87,7 +87,7 @@ public class LinkCreationBehaviourStateHandler implements IViewBehaviourStateHan
 				}
 			}
 			else{
-				IShapeController startShape = this.mouseBehaviourController.getShapeAtCurrentLocation();
+				IConnectingNodeController startShape = this.mouseBehaviourController.getShapeAtCurrentLocation();
 				this.linkCreationResponse.setPotentialSourceNode(startShape);
 				this.linkCreationResponse.setLinkObjectType(this.objectTypeInspector.getCurrentLinkType());
 				if(this.linkCreationResponse.canStartCreation()){

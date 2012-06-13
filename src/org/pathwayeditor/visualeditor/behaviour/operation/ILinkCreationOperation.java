@@ -20,7 +20,7 @@ package org.pathwayeditor.visualeditor.behaviour.operation;
 
 import org.pathwayeditor.businessobjects.typedefn.ILinkObjectType;
 import org.pathwayeditor.figure.geometry.Point;
-import org.pathwayeditor.visualeditor.controller.IShapeController;
+import org.pathwayeditor.visualeditor.controller.IConnectingNodeController;
 
 public interface ILinkCreationOperation {
 
@@ -34,13 +34,13 @@ public interface ILinkCreationOperation {
 
 	void finishCreation();
 
-	void setPotentialTarget(IShapeController potentialTarget);
+	void setPotentialTarget(IConnectingNodeController potentialTarget);
 
 	boolean isLinkCreationStarted();
 
 	boolean canFinishCreation();
 
-	void setPotentialSourceNode(IShapeController potentialSource);
+	void setPotentialSourceNode(IConnectingNodeController potentialSource);
 
 	boolean canStartCreation();
 

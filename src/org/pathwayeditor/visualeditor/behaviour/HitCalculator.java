@@ -22,8 +22,9 @@ import java.util.SortedSet;
 
 import org.apache.log4j.Logger;
 import org.pathwayeditor.figure.geometry.Point;
+import org.pathwayeditor.visualeditor.controller.IAnchorNodeController;
+import org.pathwayeditor.visualeditor.controller.IConnectingNodeController;
 import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
-import org.pathwayeditor.visualeditor.controller.ILinkController;
 import org.pathwayeditor.visualeditor.controller.IShapeController;
 import org.pathwayeditor.visualeditor.editingview.IDomainModelLayer;
 import org.pathwayeditor.visualeditor.editingview.IShapePane;
@@ -53,7 +54,7 @@ public class HitCalculator implements IHitCalculator {
 		intnCalc.setFilter(new IIntersectionCalcnFilter() {
 			@Override
 			public boolean accept(IDrawingElementController node) {
-				return node instanceof IShapeController || node instanceof ILinkController;
+				return node instanceof IConnectingNodeController;
 			}
 		});
 		SortedSet<IDrawingElementController> hits = intnCalc.findDrawingPrimitivesAt(getDiagramLocation());
@@ -65,19 +66,19 @@ public class HitCalculator implements IHitCalculator {
 	}
 
 	@Override
-	public IShapeController getShapeAtCurrentLocation() {
+	public IConnectingNodeController getShapeAtCurrentLocation() {
 		IDomainModelLayer domainLayer = this.shapePane.getLayer(LayerType.DOMAIN);
 		IIntersectionCalculator intnCalc = domainLayer.getViewControllerStore().getIntersectionCalculator();
 		intnCalc.setFilter(new IIntersectionCalcnFilter() {
 			@Override
 			public boolean accept(IDrawingElementController node) {
-				return node instanceof IShapeController;
+				return node instanceof IShapeController || node instanceof IAnchorNodeController;
 			}
 		});
 		SortedSet<IDrawingElementController> hits = intnCalc.findDrawingPrimitivesAt(getDiagramLocation());
-		IShapeController retVal = null;
+		IConnectingNodeController retVal = null;
 		if(!hits.isEmpty()){
-			retVal = (IShapeController)hits.first();
+			retVal = (IConnectingNodeController)hits.first();
 		}
 		return retVal;
 	}

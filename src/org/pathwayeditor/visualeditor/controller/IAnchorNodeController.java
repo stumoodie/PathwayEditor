@@ -19,12 +19,9 @@
 package org.pathwayeditor.visualeditor.controller;
 
 import org.pathwayeditor.businessobjects.drawingprimitives.IAnchorNodeAttribute;
-import org.pathwayeditor.figure.rendering.IFigureRenderingController;
 
-public interface IAnchorNodeController extends INodeController {
+public interface IAnchorNodeController extends IConnectingNodeController {
 
-	IFigureRenderingController getFigureController();
-	
 	@Override
 	IAnchorNodeAttribute getAssociatedAttribute();
 }

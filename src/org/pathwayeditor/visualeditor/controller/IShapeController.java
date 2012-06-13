@@ -20,12 +20,9 @@ package org.pathwayeditor.visualeditor.controller;
 
 import org.pathwayeditor.businessobjects.drawingprimitives.IShapeAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.IShapeNode;
-import org.pathwayeditor.figure.rendering.IFigureRenderingController;
 
-public interface IShapeController extends INodeController {
+public interface IShapeController extends IConnectingNodeController {
 
-	IFigureRenderingController getFigureController();
-	
 	@Override
 	IShapeNode getDrawingElement();
 

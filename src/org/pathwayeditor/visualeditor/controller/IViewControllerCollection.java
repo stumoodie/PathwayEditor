@@ -20,11 +20,13 @@ package org.pathwayeditor.visualeditor.controller;
 
 import java.util.Iterator;
 
+import org.pathwayeditor.businessobjects.drawingprimitives.IAnchorNodeAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasElementAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElement;
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNode;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkEdge;
-import org.pathwayeditor.businessobjects.drawingprimitives.IShapeNode;
+import org.pathwayeditor.businessobjects.drawingprimitives.IShapeAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.ITypedDrawingNodeAttribute;
 
 public interface IViewControllerCollection {
 
@@ -46,7 +48,11 @@ public interface IViewControllerCollection {
 	
 	ILinkController getLinkController(ILinkEdge attribute);
 
-	IShapeController getShapeController(IShapeNode attribute);
+	IShapeController getShapeController(IShapeAttribute attribute);
+
+	IAnchorNodeController getAnchorNodeController(IAnchorNodeAttribute attribute);
+	
+	IConnectingNodeController getConnectingNodeController(ITypedDrawingNodeAttribute att);
 
 	boolean containsDrawingElement(IDrawingElement testPrimitive);
 }

@@ -22,7 +22,7 @@ import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasElementAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkEdge;
-import org.pathwayeditor.businessobjects.drawingprimitives.IShapeAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.ITypedDrawingNodeAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.BendPointStructureChange;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.CanvasAttributePropertyChange;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IBendPointContainerListener;
@@ -35,7 +35,7 @@ import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttr
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ILinkTerminusChangeListener;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ILinkTerminusValueChangeEvent;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.LinkTerminusChangeType;
-import org.pathwayeditor.businessobjects.impl.facades.ShapeNodeFacade;
+import org.pathwayeditor.businessobjects.impl.facades.LinkEdgeFacade;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
@@ -50,7 +50,7 @@ public class LinkController extends DrawingElementController implements ILinkCon
 //	private static final int MAX_NUM_ANCHOR_RECALCS = 5;
 	private final Logger logger = Logger.getLogger(this.getClass());
 	private final ICanvasElementAttribute parentAttribute;
-	private final ILinkEdge linkAttribute;
+	private final ILinkAttribute linkAttribute;
 	private final ILinkPointDefinition linkDefinition;
 	private boolean isActive;
 	private final ICanvasAttributeChangeListener srcNodeListener;
@@ -63,9 +63,9 @@ public class LinkController extends DrawingElementController implements ILinkCon
 	
 	public LinkController(IViewControllerModel localViewControllerStore, ILinkEdge localLinkAttribute, int index){
 		super(localViewControllerStore, index);
-		this.linkAttribute = localLinkAttribute;
-		this.parentAttribute = (ICanvasElementAttribute)this.linkAttribute.getGraphElement().getParent().getAttribute();
-		this.linkDefinition = new LinkPointDefinition(linkAttribute.getAttribute());
+		this.linkAttribute = localLinkAttribute.getAttribute();
+		this.parentAttribute = (ICanvasElementAttribute)this.linkAttribute.getCurrentElement().getParent().getAttribute();
+		this.linkDefinition = new LinkPointDefinition(linkAttribute);
 		this.srcTermChangeListener = new ILinkTerminusChangeListener() {
 			@Override
 			public void valueChangeEvent(ILinkTerminusValueChangeEvent e) {
@@ -96,7 +96,7 @@ public class LinkController extends DrawingElementController implements ILinkCon
 			
 			@Override
 			public void elementTranslated(ICanvasAttributeTranslationEvent e) {
-				linkAttribute.getAttribute().translate(e.getTranslationDelta());
+				linkAttribute.translate(e.getTranslationDelta());
 			}
 			
 			@Override
@@ -229,15 +229,24 @@ public class LinkController extends DrawingElementController implements ILinkCon
 //		}
 //	}
 	
+	
+	private IConnectingNodeController getSrcController(){
+		return getViewModel().getConnectingNodeController((ITypedDrawingNodeAttribute)linkAttribute.getCurrentElement().getConnectedNodes().getOutNode().getAttribute());
+	}
+	
+	private IConnectingNodeController getTgtController(){
+		return getViewModel().getConnectingNodeController((ITypedDrawingNodeAttribute)linkAttribute.getCurrentElement().getConnectedNodes().getInNode().getAttribute());
+	}
+	
 	private void updateAnchorPoints() {
-		ILinkDefinitionAnchorCalculator anchorCalc = new LinkDefinitionAnchorCalculator(new LinkPointDefinition(this.linkAttribute.getAttribute()));
-		IShapeController srcShapeController = getViewModel().getShapeController(new ShapeNodeFacade(linkAttribute.getSourceShape()));
+		ILinkDefinitionAnchorCalculator anchorCalc = new LinkDefinitionAnchorCalculator(new LinkPointDefinition(this.linkAttribute));
+		IConnectingNodeController srcShapeController = getSrcController();
 		anchorCalc.setSrcLocation(srcShapeController.getFigureController().getAnchorLocatorFactory().createAnchorLocator());
-		IShapeController tgtShapeController = getViewModel().getShapeController(new ShapeNodeFacade(linkAttribute.getTargetShape()));
+		IConnectingNodeController tgtShapeController = getTgtController();
 		anchorCalc.setTgtLocation(tgtShapeController.getFigureController().getAnchorLocatorFactory().createAnchorLocator());
 		anchorCalc.recalculateBothAnchors();
-		linkAttribute.getAttribute().getSourceTerminus().setLocation(anchorCalc.getLinkDefinition().getSrcAnchorPosition());
-		linkAttribute.getAttribute().getTargetTerminus().setLocation(anchorCalc.getLinkDefinition().getTgtAnchorPosition());
+		linkAttribute.getSourceTerminus().setLocation(anchorCalc.getLinkDefinition().getSrcAnchorPosition());
+		linkAttribute.getTargetTerminus().setLocation(anchorCalc.getLinkDefinition().getTgtAnchorPosition());
 //		int cntr = MAX_NUM_ANCHOR_RECALCS;
 //		boolean converged = false;
 //		while(cntr-- > 0 && !converged){
@@ -269,55 +278,65 @@ public class LinkController extends DrawingElementController implements ILinkCon
 //	}
 	
 	private void updateLinksToBendPoints(int bpIdx){
-		ILinkDefinitionAnchorCalculator anchorCalc = new LinkDefinitionAnchorCalculator(new LinkPointDefinition(this.linkAttribute.getAttribute()));
-		IShapeController srcShapeController = getViewModel().getShapeController(new ShapeNodeFacade(linkAttribute.getSourceShape()));
+		ILinkDefinitionAnchorCalculator anchorCalc = new LinkDefinitionAnchorCalculator(new LinkPointDefinition(this.linkAttribute));
+		IConnectingNodeController srcShapeController = getSrcController();
 		anchorCalc.setSrcLocation(srcShapeController.getFigureController().getAnchorLocatorFactory().createAnchorLocator());
-		IShapeController tgtShapeController = getViewModel().getShapeController(new ShapeNodeFacade(linkAttribute.getTargetShape()));
+		IConnectingNodeController tgtShapeController = getTgtController();
 		anchorCalc.setTgtLocation(tgtShapeController.getFigureController().getAnchorLocatorFactory().createAnchorLocator());
 		// check if bp attached to anchor and recalc anchor if it is
 		if(bpIdx == 0){
 			anchorCalc.recalculateSrcAnchor();
-			linkAttribute.getAttribute().getSourceTerminus().setLocation(anchorCalc.getLinkDefinition().getSrcAnchorPosition());
+			linkAttribute.getSourceTerminus().setLocation(anchorCalc.getLinkDefinition().getSrcAnchorPosition());
 //			updateSrcAnchor(bpPosn);
 		}
-		if(bpIdx == linkAttribute.getAttribute().getBendPointContainer().numBendPoints()-1){
+		if(bpIdx == linkAttribute.getBendPointContainer().numBendPoints()-1){
 			anchorCalc.recalculateTgtAnchor();
-			linkAttribute.getAttribute().getTargetTerminus().setLocation(anchorCalc.getLinkDefinition().getTgtAnchorPosition());
+			linkAttribute.getTargetTerminus().setLocation(anchorCalc.getLinkDefinition().getTgtAnchorPosition());
 //			updateTgtAnchor(bpPosn);
 		}
 	}
 	
 	@Override
 	public ILinkEdge getDrawingElement() {
-		return this.linkAttribute;
+		return new LinkEdgeFacade(this.linkAttribute.getCurrentElement());
 	}
 
 	@Override
 	public ILinkPointDefinition getLinkDefinition() {
 		return this.linkDefinition;
 	}
+	
+	
+	private ITypedDrawingNodeAttribute getSrcAttribute(){
+		return (ITypedDrawingNodeAttribute)this.linkAttribute.getCurrentElement().getConnectedNodes().getOutNode().getAttribute();
+	}
+	
+	private ITypedDrawingNodeAttribute getTgtAttribute(){
+		return (ITypedDrawingNodeAttribute)this.linkAttribute.getCurrentElement().getConnectedNodes().getInNode().getAttribute();
+	}
+	
 
 	@Override
 	public void activate() {
 		this.parentAttribute.addChangeListener(parentDrawingElementPropertyChangeListener);
-		this.linkAttribute.getAttribute().getSourceTerminus().addLinkTerminusChangeListener(srcTermChangeListener);
-		this.linkAttribute.getAttribute().getTargetTerminus().addLinkTerminusChangeListener(tgtTermChangeListener);
-		this.linkAttribute.getAttribute().getBendPointContainer().addChangeListener(this.bpChangeListener);
-		this.linkAttribute.getAttribute().addChangeListener(linkAttributePropertyChangeListener);
-		((IShapeAttribute)this.linkAttribute.getSourceShape().getAttribute()).addChangeListener(srcNodeListener);
-		((IShapeAttribute)this.linkAttribute.getTargetShape().getAttribute()).addChangeListener(tgtNodeListener);
+		this.linkAttribute.getSourceTerminus().addLinkTerminusChangeListener(srcTermChangeListener);
+		this.linkAttribute.getTargetTerminus().addLinkTerminusChangeListener(tgtTermChangeListener);
+		this.linkAttribute.getBendPointContainer().addChangeListener(this.bpChangeListener);
+		this.linkAttribute.addChangeListener(linkAttributePropertyChangeListener);
+		getSrcAttribute().addChangeListener(srcNodeListener);
+		getTgtAttribute().addChangeListener(tgtNodeListener);
 		this.isActive = true;
 	}
 
 	@Override
 	public void inactivate() {
-		this.linkAttribute.getAttribute().getSourceTerminus().removeLinkTerminusChangeListener(srcTermChangeListener);
-		this.linkAttribute.getAttribute().getTargetTerminus().removeLinkTerminusChangeListener(tgtTermChangeListener);
-		this.linkAttribute.getAttribute().getBendPointContainer().removeChangeListener(this.bpChangeListener);
+		this.linkAttribute.getSourceTerminus().removeLinkTerminusChangeListener(srcTermChangeListener);
+		this.linkAttribute.getTargetTerminus().removeLinkTerminusChangeListener(tgtTermChangeListener);
+		this.linkAttribute.getBendPointContainer().removeChangeListener(this.bpChangeListener);
 		this.parentAttribute.removeChangeListener(parentDrawingElementPropertyChangeListener);
-		this.linkAttribute.getAttribute().removeChangeListener(linkAttributePropertyChangeListener);
-		((IShapeAttribute)this.linkAttribute.getSourceShape().getAttribute()).removeChangeListener(srcNodeListener);
-		((IShapeAttribute)this.linkAttribute.getTargetShape().getAttribute()).removeChangeListener(tgtNodeListener);
+		this.linkAttribute.removeChangeListener(linkAttributePropertyChangeListener);
+		getSrcAttribute().removeChangeListener(srcNodeListener);
+		getTgtAttribute().removeChangeListener(tgtNodeListener);
 		this.isActive = false;
 	}
 
@@ -362,6 +381,6 @@ public class LinkController extends DrawingElementController implements ILinkCon
 
 	@Override
 	public ILinkAttribute getAssociatedAttribute() {
-		return this.linkAttribute.getAttribute();
+		return this.linkAttribute;
 	}
 }

@@ -40,7 +40,7 @@ import org.pathwayeditor.businessobjects.drawingprimitives.ILinkEdge;
 import org.pathwayeditor.businessobjects.drawingprimitives.IModel;
 import org.pathwayeditor.businessobjects.drawingprimitives.IRootAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.IShapeAttribute;
-import org.pathwayeditor.businessobjects.drawingprimitives.IShapeNode;
+import org.pathwayeditor.businessobjects.drawingprimitives.ITypedDrawingNodeAttribute;
 import org.pathwayeditor.businessobjects.impl.facades.DrawingElementSelectionFacade;
 import org.pathwayeditor.businessobjects.impl.facades.DrawingNodeFacade;
 import org.pathwayeditor.businessobjects.impl.facades.LabelNodeFacade;
@@ -449,8 +449,8 @@ public class ViewControllerStore implements IViewControllerModel {
 	}
 
 	@Override
-	public IShapeController getShapeController(IShapeNode attribute) {
-		return (IShapeController)this.domainToViewMap.get(attribute.getGraphElement());
+	public IShapeController getShapeController(IShapeAttribute attribute) {
+		return (IShapeController)this.domainToViewMap.get(attribute.getCurrentElement());
 	}
 
 	@Override
@@ -568,5 +568,15 @@ public class ViewControllerStore implements IViewControllerModel {
 	@Override
 	public IDrawingElementController findControllerByAttribute(ICanvasElementAttribute testAttribute) {
 		return this.domainToViewMap.get(testAttribute.getCurrentElement());
+	}
+
+	@Override
+	public IAnchorNodeController getAnchorNodeController(IAnchorNodeAttribute attribute) {
+		return (IAnchorNodeController)this.domainToViewMap.get(attribute.getCurrentElement());
+	}
+
+	@Override
+	public IConnectingNodeController getConnectingNodeController(ITypedDrawingNodeAttribute att) {
+		return (IConnectingNodeController)this.domainToViewMap.get(att.getCurrentElement());
 	}
 }

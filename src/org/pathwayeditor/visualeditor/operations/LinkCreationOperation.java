@@ -25,7 +25,7 @@ import org.pathwayeditor.visualeditor.behaviour.operation.ILinkCreationOperation
 import org.pathwayeditor.visualeditor.commands.ICommand;
 import org.pathwayeditor.visualeditor.commands.ICommandStack;
 import org.pathwayeditor.visualeditor.commands.LinkCreationCommand;
-import org.pathwayeditor.visualeditor.controller.IShapeController;
+import org.pathwayeditor.visualeditor.controller.IConnectingNodeController;
 import org.pathwayeditor.visualeditor.editingview.IShapePane;
 import org.pathwayeditor.visualeditor.feedback.IFeedbackLink;
 import org.pathwayeditor.visualeditor.feedback.IFeedbackModel;
@@ -40,9 +40,9 @@ public class LinkCreationOperation implements ILinkCreationOperation {
 	private final ICommandStack commandStack;
 	private ILinkObjectType linkObjectType;
 	private IFeedbackLink currentEdge;
-	private IShapeController srcNode;
+	private IConnectingNodeController srcNode;
 	private boolean creationStarted;
-	private IShapeController potentialTargetNode;
+	private IConnectingNodeController potentialTargetNode;
 
 	public LinkCreationOperation(IShapePane shapePane, IFeedbackModel feedbackModel, ICommandStack commandStack) {
 		this.shapePane = shapePane;
@@ -63,11 +63,11 @@ public class LinkCreationOperation implements ILinkCreationOperation {
 	@Override
 	public void finishCreation() {
 		if(potentialTargetNode != null){
-			ILinkDefinitionAnchorCalculator anchorCalc = new LinkDefinitionAnchorCalculator(currentEdge.getLinkDefinition());
+			final ILinkDefinitionAnchorCalculator anchorCalc = new LinkDefinitionAnchorCalculator(currentEdge.getLinkDefinition());
 			anchorCalc.setSrcLocation(this.srcNode.getFigureController().getAnchorLocatorFactory().createAnchorLocator());
 			anchorCalc.setTgtLocation(this.potentialTargetNode.getFigureController().getAnchorLocatorFactory().createAnchorLocator());
 			anchorCalc.recalculateBothAnchors();
-			ICommand cmd = new LinkCreationCommand(srcNode.getDrawingElement(), potentialTargetNode.getDrawingElement(), this.linkObjectType, currentEdge.getLinkDefinition());
+			ICommand cmd = new LinkCreationCommand(srcNode.getAssociatedAttribute(), potentialTargetNode.getAssociatedAttribute(), this.linkObjectType, currentEdge.getLinkDefinition());
 			this.commandStack.execute(cmd);
 			if(logger.isDebugEnabled()){
 				logger.debug("Create a new shape at: " + cmd);
@@ -146,7 +146,7 @@ public class LinkCreationOperation implements ILinkCreationOperation {
 	}
 
 	@Override
-	public void setPotentialTarget(IShapeController potentialTarget) {
+	public void setPotentialTarget(IConnectingNodeController potentialTarget) {
 		this.potentialTargetNode = potentialTarget;
 	}
 
@@ -158,21 +158,21 @@ public class LinkCreationOperation implements ILinkCreationOperation {
 	@Override
 	public boolean canFinishCreation() {
 		return this.srcNode != null && this.potentialTargetNode != null && this.linkObjectType != null &&
-			this.linkObjectType.getLinkConnectionRules().isValidTarget(this.srcNode.getDrawingElement().getAttribute().getObjectType(),
-					this.potentialTargetNode.getDrawingElement().getAttribute().getObjectType()) &&
+			this.linkObjectType.getLinkConnectionRules().isValidTarget(this.srcNode.getAssociatedAttribute().getObjectType(),
+					this.potentialTargetNode.getAssociatedAttribute().getObjectType()) &&
 						(!this.srcNode.equals(this.potentialTargetNode) ||
 								(this.srcNode.equals(this.potentialTargetNode) && this.currentEdge.getLinkDefinition().numBendPoints() >= MIN_NUM_SELF_EDGE_BPS));
 	}
 
 	@Override
-	public void setPotentialSourceNode(IShapeController potentialSource) {
+	public void setPotentialSourceNode(IConnectingNodeController potentialSource) {
 		this.srcNode = potentialSource;
 	}
 
 	@Override
 	public boolean canStartCreation() {
 		return this.srcNode != null	&& this.linkObjectType != null &&
-			this.linkObjectType.getLinkConnectionRules().isValidSource(this.srcNode.getDrawingElement().getAttribute().getObjectType());
+			this.linkObjectType.getLinkConnectionRules().isValidSource(this.srcNode.getAssociatedAttribute().getObjectType());
 	}
 
 	@Override

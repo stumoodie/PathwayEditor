@@ -22,26 +22,28 @@ import java.util.Iterator;
 
 import org.pathwayeditor.businessobjects.drawingprimitives.IBendPointContainer;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
-import org.pathwayeditor.businessobjects.drawingprimitives.ILinkEdge;
-import org.pathwayeditor.businessobjects.drawingprimitives.ILinkEdgeFactory;
-import org.pathwayeditor.businessobjects.drawingprimitives.IShapeNode;
-import org.pathwayeditor.businessobjects.impl.facades.LinkEdgeFactoryFacade;
+import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttributeFactory;
+import org.pathwayeditor.businessobjects.drawingprimitives.IRootAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.ITypedDrawingNodeAttribute;
 import org.pathwayeditor.businessobjects.typedefn.ILinkObjectType;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.geometry.ILinkPointDefinition;
 
+import uk.ac.ed.inf.graph.compound.CompoundNodePair;
+import uk.ac.ed.inf.graph.compound.ICompoundEdge;
+import uk.ac.ed.inf.graph.compound.ICompoundEdgeFactory;
 import uk.ac.ed.inf.graph.compound.ICompoundGraph;
 import uk.ac.ed.inf.graph.state.IGraphState;
 
 public class LinkCreationCommand implements ICommand {
-	private final IShapeNode srcShape;
-	private final IShapeNode tgtShape;
+	private final ITypedDrawingNodeAttribute srcShape;
+	private final ITypedDrawingNodeAttribute tgtShape;
 	private final ILinkObjectType linkObjectType;
 	private IGraphState originalState;
 	private IGraphState createdState;
 	private final ILinkPointDefinition linkPointDefinition;
 
-	public LinkCreationCommand(IShapeNode srcNode, IShapeNode tgtNode,
+	public LinkCreationCommand(ITypedDrawingNodeAttribute srcNode, ITypedDrawingNodeAttribute tgtNode,
 			ILinkObjectType linkObjectType, ILinkPointDefinition linkDefinition) {
 		this.srcShape = srcNode;
 		this.tgtShape = tgtNode;
@@ -51,13 +53,17 @@ public class LinkCreationCommand implements ICommand {
 
 	@Override
 	public void execute() {
-		ICompoundGraph graph = this.srcShape.getGraphElement().getGraph();
+		ICompoundGraph graph = this.srcShape.getCurrentElement().getGraph();
 		this.originalState = graph.getCurrentState();
-		ILinkEdgeFactory fact = new LinkEdgeFactoryFacade(graph.edgeFactory());
-		fact.setShapeNodePair(srcShape, tgtShape);
-		fact.setObjectType(linkObjectType);
-		ILinkEdge link = fact.createLinkEdge();
-		ILinkAttribute linkAttribute = link.getAttribute();
+//		ILinkEdgeFactory fact = new LinkEdgeFactoryFacade(graph.edgeFactory());
+		IRootAttribute rootAttribute = (IRootAttribute)graph.getRoot().getAttribute();
+		ICompoundEdgeFactory fact = graph.edgeFactory();
+		ILinkAttributeFactory attFact = rootAttribute.getModel().linkAttributeFactory();
+		fact.setAttributeFactory(attFact);
+		fact.setPair(new CompoundNodePair(this.srcShape.getCurrentElement(), this.tgtShape.getCurrentElement()));
+		attFact.setObjectType(linkObjectType);
+		ICompoundEdge link = fact.createEdge();
+		ILinkAttribute linkAttribute = (ILinkAttribute)link.getAttribute();
 		linkAttribute.getSourceTerminus().setLocation(linkPointDefinition.getSrcAnchorPosition());
 		linkAttribute.getTargetTerminus().setLocation(linkPointDefinition.getTgtAnchorPosition());
 		Iterator<Point> ptIter = linkPointDefinition.bendPointIterator();
@@ -71,12 +77,12 @@ public class LinkCreationCommand implements ICommand {
 
 	@Override
 	public void undo() {
-		this.srcShape.getGraphElement().getGraph().restoreState(this.originalState);
+		this.srcShape.getCurrentElement().getGraph().restoreState(this.originalState);
 	}
 
 	@Override
 	public void redo() {
-		this.srcShape.getGraphElement().getGraph().restoreState(createdState);
+		this.srcShape.getCurrentElement().getGraph().restoreState(createdState);
 	}
 
 }
