@@ -2,7 +2,7 @@
 <epx:canvas xmlns:epx="http://www.pathwayeditor.org/Exchange"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.pathwayeditor.org/Exchange http://www.pathwayeditor.org/Exchange/Canvas.xsd"
-    name="New Map" lastCreationSerial="11">
+    name="New Map" lastCreationSerial="16">
     <Grid snapToGrid="false" gridOn="false">
         <GridSize width="10.0" height="10.0"/>
     </Grid>
@@ -24,15 +24,15 @@
     </Notation>
     <CanvasSize width="1.7976931348623157E308" height="1.7976931348623157E308"/>
     <Background red="255" green="255" blue="255"/>
-    <Model lastNodeIndex="5" lastEdgeIndex="2">
+    <Model lastNodeIndex="4" lastEdgeIndex="0">
         <RootNode nodeId="0">
             <SubModel>
-                <ShapeNode nodeId="1">
+                <ShapeNode nodeId="4">
                     <SubModel/>
-                    <ShapeAttribute creationSerial="1" objectTypeId="1"
+                    <ShapeAttribute creationSerial="10" objectTypeId="1"
                         lineWidth="1.0" lineStyle="SOLID">
-                        <Location x="92.0" y="112.0"/>
-                        <Size width="231.1" height="179.1"/>
+                        <Location x="308.0" y="431.0"/>
+                        <Size width="40.1" height="40.1"/>
                         <FillColour red="255" green="255" blue="255" alpha="255"/>
                         <LineColour red="0" green="0" blue="0" alpha="255"/>
                         <FontColour red="0" green="0" blue="0" alpha="255"/>
@@ -45,12 +45,12 @@ curbounds /h exch def /w exch def /y exch def /x exch def
 x y w h oval</FigureDefinition>
                     </ShapeAttribute>
                 </ShapeNode>
-                <ShapeNode nodeId="2">
+                <ShapeNode nodeId="7">
                     <SubModel/>
-                    <ShapeAttribute creationSerial="2" objectTypeId="1"
+                    <ShapeAttribute creationSerial="12" objectTypeId="1"
                         lineWidth="1.0" lineStyle="SOLID">
-                        <Location x="630.0" y="126.0"/>
-                        <Size width="260.1" height="199.1"/>
+                        <Location x="723.0" y="187.0"/>
+                        <Size width="220.1" height="159.1"/>
                         <FillColour red="255" green="255" blue="255" alpha="255"/>
                         <LineColour red="0" green="0" blue="0" alpha="255"/>
                         <FontColour red="0" green="0" blue="0" alpha="255"/>
@@ -63,12 +63,12 @@ curbounds /h exch def /w exch def /y exch def /x exch def
 x y w h oval</FigureDefinition>
                     </ShapeAttribute>
                 </ShapeNode>
-                <ShapeNode nodeId="3">
+                <ShapeNode nodeId="8">
                     <SubModel/>
-                    <ShapeAttribute creationSerial="4" objectTypeId="1"
+                    <ShapeAttribute creationSerial="13" objectTypeId="1"
                         lineWidth="1.0" lineStyle="SOLID">
-                        <Location x="346.0" y="339.0"/>
-                        <Size width="168.1" height="142.1"/>
+                        <Location x="186.0" y="157.0"/>
+                        <Size width="232.1" height="205.1"/>
                         <FillColour red="255" green="255" blue="255" alpha="255"/>
                         <LineColour red="0" green="0" blue="0" alpha="255"/>
                         <FontColour red="0" green="0" blue="0" alpha="255"/>
@@ -81,52 +81,6 @@ curbounds /h exch def /w exch def /y exch def /x exch def
 x y w h oval</FigureDefinition>
                     </ShapeAttribute>
                 </ShapeNode>
-                <ShapeNode nodeId="5">
-                    <SubModel/>
-                    <ShapeAttribute creationSerial="10" objectTypeId="1"
-                        lineWidth="1.0" lineStyle="SOLID">
-                        <Location x="163.0" y="367.0"/>
-                        <Size width="40.1" height="40.1"/>
-                        <FillColour red="255" green="255" blue="255" alpha="255"/>
-                        <LineColour red="0" green="0" blue="0" alpha="255"/>
-                        <FontColour red="0" green="0" blue="0" alpha="255"/>
-                        <Font size="12.0">
-                            <style>NORMAL</style>
-                        </Font>
-                        <PropertyRef id="4"/>
-                        <FigureDefinition>(C) setanchor
-curbounds /h exch def /w exch def /y exch def /x exch def
-x y w h oval</FigureDefinition>
-                    </ShapeAttribute>
-                </ShapeNode>
-                <LinkEdge linkIdx="4" srcNodeIdx="1" tgtNodeIdx="2">
-                    <LinkAttribute creationSerial="3" lineStyle="SOLID"
-                        lineWidth="1.0" objectTypeId="100" lastBendPointIndex="0">
-                        <LineColour red="0" green="0" blue="0" alpha="255"/>
-                        <srcTerminus creationSerial="3" gap="3.0" endDecoratorType="ARROW">
-                            <Location x="323.1" y="206.55"/>
-                            <DecoratorSize width="10.0" height="10.0"/>
-                        </srcTerminus>
-                        <tgtTerminus creationSerial="3" gap="3.0" endDecoratorType="ARROW">
-                            <Location x="630.0" y="220.54999999999995"/>
-                            <DecoratorSize width="10.0" height="10.0"/>
-                        </tgtTerminus>
-                    </LinkAttribute>
-                </LinkEdge>
-                <LinkEdge linkIdx="6" srcNodeIdx="5" tgtNodeIdx="2">
-                    <LinkAttribute creationSerial="11" lineStyle="SOLID"
-                        lineWidth="1.0" objectTypeId="100" lastBendPointIndex="0">
-                        <LineColour red="0" green="0" blue="0" alpha="255"/>
-                        <srcTerminus creationSerial="11" gap="3.0" endDecoratorType="ARROW">
-                            <Location x="201.41380934587798" y="381.025"/>
-                            <DecoratorSize width="10.0" height="10.0"/>
-                        </srcTerminus>
-                        <tgtTerminus creationSerial="11" gap="3.0" endDecoratorType="ARROW">
-                            <Location x="639.4233962378337" y="259.325"/>
-                            <DecoratorSize width="10.0" height="10.0"/>
-                        </tgtTerminus>
-                    </LinkAttribute>
-                </LinkEdge>
             </SubModel>
             <rootAttribute creationSerial="0" objectTypeId="1">
                 <Location x="-8.988465674311579E307" y="-8.988465674311579E307"/>
@@ -138,6 +92,5 @@ x y w h oval</FigureDefinition>
         <TextAnnotationProperty id="1" name="name" displayName="Name">Name</TextAnnotationProperty>
         <TextAnnotationProperty id="2" name="name" displayName="Name">Name</TextAnnotationProperty>
         <TextAnnotationProperty id="3" name="name" displayName="Name">Name</TextAnnotationProperty>
-        <TextAnnotationProperty id="4" name="name" displayName="Name">Name</TextAnnotationProperty>
     </PropertyList>
 </epx:canvas>

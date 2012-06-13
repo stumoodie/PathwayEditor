@@ -52,7 +52,7 @@ public class DomainModelLayer implements IDomainModelLayer {
 			IDrawingElementController controller = contIter.next();
 			IMiniCanvas miniCanvas = controller.getMiniCanvas();
 			if(logger.isTraceEnabled()){
-				logger.trace("Painting node=" + controller.getDrawingElement() + " at bounds=" + miniCanvas.getBounds());
+				logger.trace("Painting node=" + controller.getAssociatedAttribute() + " at bounds=" + miniCanvas.getBounds());
 			}
 			miniCanvas.paint(g2d);
 		}

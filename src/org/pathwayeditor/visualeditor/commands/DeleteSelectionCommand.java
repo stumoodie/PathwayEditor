@@ -35,22 +35,22 @@ public class DeleteSelectionCommand implements ICommand {
 
 	@Override
 	public void execute() {
-		ICompoundGraph graph = subgraphSelection.getDrawingElementSelection().getSubgraph().getSuperGraph();
+		ICompoundGraph graph = subgraphSelection.getDrawingElementSelection().getSuperGraph();
 		this.beforeChangeMomento = graph.getCurrentState();
 		ISubgraphRemovalBuilder removalbuilder = graph.newSubgraphRemovalBuilder();
-		removalbuilder.setRemovalSubgraph(subgraphSelection.getDrawingElementSelection().getSubgraph());
+		removalbuilder.setRemovalSubgraph(subgraphSelection.getDrawingElementSelection());
 		removalbuilder.removeSubgraph();
 		this.afterChangeMomento = graph.getCurrentState();
 	}
 
 	@Override
 	public void undo() {
-		this.subgraphSelection.getDrawingElementSelection().getSubgraph().getSuperGraph().restoreState(beforeChangeMomento);
+		this.subgraphSelection.getDrawingElementSelection().getSuperGraph().restoreState(beforeChangeMomento);
 	}
 
 	@Override
 	public void redo() {
-		this.subgraphSelection.getDrawingElementSelection().getSubgraph().getSuperGraph().restoreState(afterChangeMomento);
+		this.subgraphSelection.getDrawingElementSelection().getSuperGraph().restoreState(afterChangeMomento);
 	}
 
 }

@@ -130,7 +130,7 @@ public class EditingOperation implements IEditingOperation {
 
 	private void createCopyCommand(Point delta) {
 		IDrawingElementController target = calculateReparentTarget(delta);
-		ICommand cmd = new CopySelectionCommand(target.getDrawingElement(), this.selectionRecord.getSubgraphSelection().getDrawingElementSelection(), delta);
+		ICommand cmd = new CopySelectionCommand(target.getAssociatedAttribute().getCurrentElement(), this.selectionRecord.getSubgraphSelection().getDrawingElementSelection(), delta);
 		this.commandStack.execute(cmd);
 	}
 
@@ -217,14 +217,14 @@ public class EditingOperation implements IEditingOperation {
 		ICompoundCommand cmpCommand = new CompoundCommand();
 		Iterator<ILinkSelection> moveLinkIterator = this.selectionRecord.getSubgraphSelection().topSelectedLinkIterator();
 		while(moveLinkIterator.hasNext()){
-			ILinkAttribute nodePrimitive = moveLinkIterator.next().getPrimitiveController().getDrawingElement().getAttribute();
+			ILinkAttribute nodePrimitive = moveLinkIterator.next().getPrimitiveController().getAssociatedAttribute();
 			ICommand cmd = new MoveLinkCommand(nodePrimitive, delta);
 			cmpCommand.addCommand(cmd);
 		}
 		Iterator<INodeSelection> moveNodeIterator = this.selectionRecord.getSubgraphSelection().topSelectedNodeIterator();
 		while(moveNodeIterator.hasNext()){
 			INodeController nodePrimitive = moveNodeIterator.next().getPrimitiveController();
-			ICommand cmd = new MoveNodeCommand(nodePrimitive.getDrawingElement().getAttribute(), delta);
+			ICommand cmd = new MoveNodeCommand(nodePrimitive.getAssociatedAttribute(), delta);
 			cmpCommand.addCommand(cmd);
 			if(logger.isTraceEnabled()){
 				logger.trace("Dragged shape to location: " + nodePrimitive.getBounds().getOrigin());
@@ -232,7 +232,7 @@ public class EditingOperation implements IEditingOperation {
 		}
 		if(reparentingEnabled){
 			IDrawingElementController target = calculateReparentTarget(delta);
-			ICommand cmd = new ReparentSelectionCommand(target.getDrawingElement(), this.selectionRecord.getSubgraphSelection().getDrawingElementSelection());
+			ICommand cmd = new ReparentSelectionCommand(target.getAssociatedAttribute().getCurrentElement(), this.selectionRecord.getSubgraphSelection().getDrawingElementSelection());
 			cmpCommand.addCommand(cmd);
 		}
 		this.commandStack.execute(cmpCommand);

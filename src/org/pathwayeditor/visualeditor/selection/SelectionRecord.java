@@ -28,9 +28,6 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasElementAttribute;
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElementSelection;
-import org.pathwayeditor.businessobjects.drawingprimitives.ISelectionFactory;
-import org.pathwayeditor.businessobjects.impl.facades.SelectionFactoryFacade;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
@@ -40,6 +37,9 @@ import org.pathwayeditor.visualeditor.controller.IRootController;
 import org.pathwayeditor.visualeditor.controller.IViewControllerModel;
 import org.pathwayeditor.visualeditor.geometry.EnvelopeBuilder;
 import org.pathwayeditor.visualeditor.selection.ISelection.SelectionType;
+
+import uk.ac.ed.inf.graph.compound.ISubCompoundGraph;
+import uk.ac.ed.inf.graph.compound.ISubCompoundGraphFactory;
 
 public class SelectionRecord implements ISelectionRecord {
 	private final SortedSet<ISelection> selections;
@@ -100,7 +100,7 @@ public class SelectionRecord implements ISelectionRecord {
 		}
 		this.clear();
 		for(ISelection selection : selectedSet){
-			ICanvasElementAttribute att = selection.getPrimitiveController().getDrawingElement().getAttribute();
+			ICanvasElementAttribute att = selection.getPrimitiveController().getAssociatedAttribute();
 			IDrawingElementController newController = this.viewModel.findControllerByAttribute(att);
 			if(selection.getSelectionType().equals(SelectionType.PRIMARY)){
 				this.setPrimarySelection(newController);
@@ -171,18 +171,19 @@ public class SelectionRecord implements ISelectionRecord {
 		}
 	}
 	
-	private void updateSubgraphSelection(ISelectionFactory selectionFactory, ISelection newSelection) {
-		if(newSelection instanceof INodeSelection){
-			INodeSelection nodeSelection = (INodeSelection)newSelection;
-			selectionFactory.addDrawingNode(nodeSelection.getPrimitiveController().getDrawingElement());
-		}
-		else if(newSelection instanceof ILinkSelection){
-			ILinkSelection linkSelection = (ILinkSelection)newSelection;
-			selectionFactory.addLink(linkSelection.getPrimitiveController().getDrawingElement());
-		}
-		else{
-			throw new RuntimeException("Unknown selection type");
-		}
+	private void updateSubgraphSelection(ISubCompoundGraphFactory selectionFactory, ISelection newSelection) {
+		selectionFactory.addElement(newSelection.getPrimitiveController().getAssociatedAttribute().getCurrentElement());
+//		if(newSelection instanceof INodeSelection){
+//			INodeSelection nodeSelection = (INodeSelection)newSelection;
+//			selectionFactory.addElement(nodeSelection.getPrimitiveController().getAssociatedAttribute().getCurrentElement());
+//		}
+//		else if(newSelection instanceof ILinkSelection){
+//			ILinkSelection linkSelection = (ILinkSelection)newSelection;
+//			selectionFactory.addElement(linkSelection.getPrimitiveController().getDrawingElement());
+//		}
+//		else{
+//			throw new RuntimeException("Unknown selection type");
+//		}
 	}
 
 	private void notifySelectionChange(final SelectionChangeType type, final Iterator<ISelection> oldSelectionIter, final Iterator<ISelection> newSelectionIter){
@@ -282,11 +283,13 @@ public class SelectionRecord implements ISelectionRecord {
 
 	@Override
 	public ISubgraphSelection getSubgraphSelection() {
-		ISelectionFactory selectionFactory = new SelectionFactoryFacade(this.viewModel.getDomainModel().getGraph().subgraphFactory());
+		ISubCompoundGraphFactory selectionFactory = this.viewModel.getDomainModel().getGraph().subgraphFactory();
+//		ISelectionFactory selectionFactory = new SelectionFactoryFacade(this.viewModel.getDomainModel().getGraph().subgraphFactory());
 		for(ISelection selection : this.selections){
 			updateSubgraphSelection(selectionFactory, selection);
 		}
-		IDrawingElementSelection currentSelectionSubgraph = selectionFactory.createEdgeExcludedSelection();
+		ISubCompoundGraph currentSelectionSubgraph = selectionFactory.createInducedSubgraph();
+//		IDrawingElementSelection currentSelectionSubgraph = selectionFactory.createEdgeExcludedSelection();
 		SubgraphSelection retVal = new SubgraphSelection(this, this.viewModel, currentSelectionSubgraph);
 		
 		return retVal;
@@ -294,11 +297,11 @@ public class SelectionRecord implements ISelectionRecord {
 
 	@Override
 	public ISubgraphSelection getEdgeIncludedSelection() {
-		ISelectionFactory selectionFactory = new SelectionFactoryFacade(this.viewModel.getDomainModel().getGraph().subgraphFactory());
+		ISubCompoundGraphFactory selectionFactory = this.viewModel.getDomainModel().getGraph().subgraphFactory();
 		for(ISelection selection : this.selections){
 			updateSubgraphSelection(selectionFactory, selection);
 		}
-		IDrawingElementSelection currentSelectionSubgraph = selectionFactory.createGeneralSelection();
+		ISubCompoundGraph currentSelectionSubgraph = selectionFactory.createPermissiveInducedSubgraph();
 		SubgraphSelection retVal = new SubgraphSelection(this, this.viewModel, currentSelectionSubgraph);
 		
 		return retVal;

@@ -22,14 +22,12 @@ import java.text.Format;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElement;
-import org.pathwayeditor.businessobjects.drawingprimitives.ILabelNode;
-import org.pathwayeditor.businessobjects.drawingprimitives.ILabelNodeFactory;
-import org.pathwayeditor.businessobjects.drawingprimitives.IShapeNode;
-import org.pathwayeditor.businessobjects.drawingprimitives.IShapeNodeFactory;
+import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasElementAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.ILabelAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.ILabelAttributeFactory;
+import org.pathwayeditor.businessobjects.drawingprimitives.IShapeAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.IShapeAttributeFactory;
 import org.pathwayeditor.businessobjects.drawingprimitives.properties.IAnnotationProperty;
-import org.pathwayeditor.businessobjects.impl.facades.LabelNodeFactoryFacade;
-import org.pathwayeditor.businessobjects.impl.facades.ShapeNodeFactoryFacade;
 import org.pathwayeditor.businessobjects.notationsubsystem.INotationSyntaxService;
 import org.pathwayeditor.businessobjects.typedefn.ILabelObjectType;
 import org.pathwayeditor.businessobjects.typedefn.IShapeObjectType;
@@ -37,18 +35,21 @@ import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.rendering.IFigureRenderingController;
 import org.pathwayeditor.visualeditor.layout.ILabelPositionCalculator;
 
+import uk.ac.ed.inf.graph.compound.ICompoundGraphElement;
+import uk.ac.ed.inf.graph.compound.ICompoundNode;
+import uk.ac.ed.inf.graph.compound.ICompoundNodeFactory;
 import uk.ac.ed.inf.graph.state.IGraphState;
 
 public class ShapeCreationCommand implements ICommand {
 	private final Logger logger = Logger.getLogger(this.getClass());
-	private final IDrawingElement parentNode;
+	private final ICompoundGraphElement parentNode;
 	private final IShapeObjectType objectType;
 	private final IFigureRenderingController figController;
 	private IGraphState createdState;
 	private IGraphState originalState;
 	private ILabelPositionCalculator labelPositionCalculator;
 	
-	public ShapeCreationCommand(IDrawingElement rootNode, IShapeObjectType shapeObjectType, IFigureRenderingController iFigureRenderingController,
+	public ShapeCreationCommand(ICompoundGraphElement rootNode, IShapeObjectType shapeObjectType, IFigureRenderingController iFigureRenderingController,
 			ILabelPositionCalculator labelPosnCalc) {
 		this.parentNode = rootNode;
 		this.objectType = shapeObjectType;
@@ -58,36 +59,40 @@ public class ShapeCreationCommand implements ICommand {
 
 	@Override
 	public void execute() {
-		this.originalState = this.parentNode.getGraphElement().getGraph().getCurrentState();
-		IShapeNodeFactory fact = new ShapeNodeFactoryFacade(parentNode.getGraphElement().getChildCompoundGraph().nodeFactory());
+		this.originalState = this.parentNode.getGraph().getCurrentState();
+		ICompoundNodeFactory nodeFact = parentNode.getChildCompoundGraph().nodeFactory();
+		IShapeAttributeFactory fact = ((ICanvasElementAttribute)parentNode.getAttribute()).getModel().shapeAttributeFactory();
 		fact.setObjectType(objectType);
-		IShapeNode node = fact.createShapeNode();
-		node.getAttribute().setBounds(figController.getEnvelope());
-		createShapeLabels(node);
+		nodeFact.setAttributeFactory(fact);
+		ICompoundNode node = nodeFact.createNode();
+		((IShapeAttribute)node.getAttribute()).setBounds(figController.getEnvelope());
+		createShapeLabels((IShapeAttribute)node.getAttribute());
 		if(logger.isDebugEnabled()){
-			logger.debug("Creating shapeNode=" + node + ", bounds=" + node.getAttribute().getBounds());
+			logger.debug("Creating shapeNode=" + node + ", bounds=" + ((IShapeAttribute)node.getAttribute()).getBounds());
 		}
-		this.createdState = node.getGraphElement().getGraph().getCurrentState();
+		this.createdState = node.getGraph().getCurrentState();
 	}
 
-	private void createShapeLabels(IShapeNode shapeHull){
-		INotationSyntaxService syntaxService = this.parentNode.getAttribute().getModel().getNotationSubsystem().getSyntaxService();
-		Iterator<IAnnotationProperty> defnIter = shapeHull.getAttribute().propertyIterator();
+	private void createShapeLabels(IShapeAttribute shapeHull){
+		INotationSyntaxService syntaxService = shapeHull.getModel().getNotationSubsystem().getSyntaxService();
+		ILabelAttributeFactory fact = shapeHull.getModel().labelAttributeFactory();
+		Iterator<IAnnotationProperty> defnIter = shapeHull.propertyIterator();
 		while(defnIter.hasNext()){
 			IAnnotationProperty defn = defnIter.next();
 			if(syntaxService.isVisualisableProperty(defn.getDefinition())){
 				ILabelObjectType labelObjectType = syntaxService.getLabelObjectTypeByProperty(defn.getDefinition());
 				if(labelObjectType.isAlwaysDisplayed()){
 					String defaultText = getDisplayedLabelText(labelObjectType, defn);
-					ILabelNodeFactory labelFact = new LabelNodeFactoryFacade(shapeHull.getGraphElement().getChildCompoundGraph().nodeFactory());
+					ICompoundNodeFactory labelFact = shapeHull.getCurrentElement().getChildCompoundGraph().nodeFactory();
 					// display props that are always displayed
-					labelFact.setProperty(defn);
-					ILabelNode labelNode = labelFact.createLabelNode();
+					fact.setProperty(defn);
+					fact.setLabelObjectType(syntaxService.getLabelObjectTypeByProperty(defn.getDefinition()));
+					ICompoundNode labelNode = labelFact.createNode();
 					if(logger.isDebugEnabled()){
-						logger.debug("Create labelNode=" + labelNode + ", bounds=" + labelNode.getAttribute().getBounds());
+						logger.debug("Create labelNode=" + labelNode + ", bounds=" + ((ILabelAttribute)labelNode.getAttribute()).getBounds());
 					}
 					Envelope labelBounds = this.labelPositionCalculator.calculateLabelPosition(this.figController, labelObjectType, defaultText);
-					labelNode.getAttribute().setBounds(labelBounds);
+					((ILabelAttribute)labelNode.getAttribute()).setBounds(labelBounds);
 				}
 			}
 		}
@@ -108,12 +113,12 @@ public class ShapeCreationCommand implements ICommand {
 
 	@Override
 	public void redo() {
-		this.parentNode.getGraphElement().getGraph().restoreState(createdState);
+		this.parentNode.getGraph().restoreState(createdState);
 	}
 
 	@Override
 	public void undo() {
-		this.parentNode.getGraphElement().getGraph().restoreState(this.originalState);
+		this.parentNode.getGraph().restoreState(this.originalState);
 	}
 
 	@Override
@@ -121,7 +126,7 @@ public class ShapeCreationCommand implements ICommand {
 		StringBuilder buf = new StringBuilder(this.getClass().getSimpleName());
 		buf.append("(");
 		buf.append("parentNodeIdx=");
-		buf.append(parentNode.getGraphElement().getIndex());
+		buf.append(parentNode.getIndex());
 		buf.append(",bounds=");
 		buf.append(this.figController.getEnvelope());
 		buf.append(",objectType=");

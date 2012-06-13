@@ -1,13 +1,13 @@
 package org.pathwayeditor.visualeditor.controller;
 
-import java.util.Iterator;
 import java.util.SortedSet;
 
 import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.drawingprimitives.IAnchorNodeAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ICurveSegment;
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNode;
+import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNodeAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.IShapeAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.Colour;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.CanvasAttributePropertyChange;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributeChangeListener;
@@ -18,9 +18,6 @@ import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICurveSegme
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICurveSegmentContainerEvent;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICurveSegmentContainerListener;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICurveSegmentLocationChangeEvent;
-import org.pathwayeditor.businessobjects.impl.facades.DrawingNodeFacade;
-import org.pathwayeditor.businessobjects.impl.facades.LinkEdgeFacade;
-import org.pathwayeditor.businessobjects.impl.facades.SubModelFacade;
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.IConvexHull;
@@ -33,8 +30,9 @@ import org.pathwayeditor.visualeditor.editingview.IMiniCanvas;
 import org.pathwayeditor.visualeditor.geometry.IIntersectionCalcnFilter;
 import org.pathwayeditor.visualeditor.geometry.IIntersectionCalculator;
 
-import uk.ac.ed.inf.graph.compound.ICompoundEdge;
 import uk.ac.ed.inf.graph.compound.ICompoundNode;
+import uk.ac.ed.inf.graph.util.IFilterCriteria;
+import uk.ac.ed.inf.graph.util.impl.FilteredIterator;
 
 public class AnchorNodeController extends DrawingElementController implements IAnchorNodeController {
 	private final Logger logger = Logger.getLogger(this.getClass());
@@ -267,11 +265,6 @@ public class AnchorNodeController extends DrawingElementController implements IA
 	}
 
 	@Override
-	public IDrawingNode getDrawingElement() {
-		return new DrawingNodeFacade((ICompoundNode)this.anchorNodeAttribute.getCurrentElement());
-	}
-
-	@Override
 	public boolean intersectsHull(IConvexHull queryHull) {
 		return this.getConvexHull().hullsIntersect(queryHull);
 	}
@@ -286,7 +279,7 @@ public class AnchorNodeController extends DrawingElementController implements IA
 			logger.trace("In can resize. New bounds = " + newBounds + ",originDelta=" + originDelta + ",resizeDelta=" + resizeDelta);
 		}
 		if(newBounds.getDimension().getWidth() > 0.0 && newBounds.getDimension().getHeight() > 0.0){
-			ILinkController parentNode = this.getViewModel().getLinkController(new LinkEdgeFacade((ICompoundEdge)this.anchorNodeAttribute.getCurrentElement().getParent()));
+			ILinkController parentNode = this.getViewModel().getController((ILinkAttribute)this.anchorNodeAttribute.getCurrentElement().getParent().getAttribute());
 			IIntersectionCalculator intCal = this.getViewModel().getIntersectionCalculator();
 			intCal.setFilter(new IIntersectionCalcnFilter() {
 				@Override
@@ -309,10 +302,17 @@ public class AnchorNodeController extends DrawingElementController implements IA
 	}
 
 	private boolean childrenIntersect(IAnchorNodeController parentNode, SortedSet<IDrawingElementController> intersectingNodes){
-		Iterator<ICompoundNode> iter = new SubModelFacade(parentNode.getDrawingElement().getGraphElement().getChildCompoundGraph()).shapeNodeIterator();
+		FilteredIterator<ICompoundNode> iter = new FilteredIterator<ICompoundNode>(parentNode.getAssociatedAttribute().getCurrentElement().getChildCompoundGraph().nodeIterator(),
+				new IFilterCriteria<ICompoundNode>(){
+					@Override
+					public boolean matched(ICompoundNode testObj) {
+						return testObj.getAttribute() instanceof IShapeAttribute;
+					}
+		});
+//		Iterator<ICompoundNode> iter = new SubModelFacade(parentNode.getDrawingElement().getGraphElement().getChildCompoundGraph()).shapeNodeIterator();
 		boolean retVal = true;
 		while(iter.hasNext() && retVal){
-			INodeController child = this.getViewModel().getNodeController(new DrawingNodeFacade(iter.next()));
+			INodeController child = this.getViewModel().getController((IDrawingNodeAttribute)iter.next().getAttribute());
 			retVal = intersectingNodes.contains(child);
 		}
 		return retVal;

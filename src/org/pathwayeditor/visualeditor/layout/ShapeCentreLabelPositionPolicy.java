@@ -18,14 +18,14 @@
 */
 package org.pathwayeditor.visualeditor.layout;
 
-import org.pathwayeditor.businessobjects.drawingprimitives.IShapeNode;
+import org.pathwayeditor.businessobjects.drawingprimitives.IShapeAttribute;
 import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.figure.rendering.IFigureRenderingController;
 
 public class ShapeCentreLabelPositionPolicy implements IShapeLabelLocationPolicy {
 	private IFigureRenderingController shape;
-	private IShapeNode shapeNode;
+	private IShapeAttribute shapeNode;
 	
 	public ShapeCentreLabelPositionPolicy(){
 		this.shape = null;
@@ -48,12 +48,12 @@ public class ShapeCentreLabelPositionPolicy implements IShapeLabelLocationPolicy
 	}
 
 	@Override
-	public void setOwningShape(IShapeNode shapeNode) {
+	public void setOwningShape(IShapeAttribute shapeNode) {
 		this.shapeNode = shapeNode;
 	}
 
 	@Override
-	public IShapeNode getOwningShape() {
+	public IShapeAttribute getOwningShape() {
 		return this.shapeNode;
 	}
 

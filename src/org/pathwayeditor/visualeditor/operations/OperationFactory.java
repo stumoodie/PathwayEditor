@@ -177,7 +177,7 @@ public class OperationFactory implements IOperationFactory {
 
 	private void deleteBendpoint(int bpIdx) {
 		ILinkSelection linkSelection = this.selectionRecord.getUniqueLinkSelection(); 
-		ICommand cmd = new DeleteBendPointCommand(linkSelection.getPrimitiveController().getDrawingElement().getAttribute().getBendPointContainer(), bpIdx);
+		ICommand cmd = new DeleteBendPointCommand(linkSelection.getPrimitiveController().getAssociatedAttribute().getBendPointContainer(), bpIdx);
 		this.commandStack.execute(cmd);
 	}
 	

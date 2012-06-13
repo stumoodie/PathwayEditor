@@ -21,8 +21,8 @@ package org.pathwayeditor.visualeditor.commands;
 import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.drawingprimitives.IAnchorNodeAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.IAnchorNodeAttributeFactory;
+import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasElementAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ICurveSegment;
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElement;
 import org.pathwayeditor.businessobjects.typedefn.IAnchorNodeObjectType;
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Point;
@@ -33,7 +33,7 @@ import uk.ac.ed.inf.graph.state.IGraphState;
 
 public class AnchorNodeCreationCommand implements ICommand {
 	private final Logger logger = Logger.getLogger(this.getClass());
-	private final IDrawingElement parentNode;
+	private final ICanvasElementAttribute parentNode;
 	private final IAnchorNodeObjectType objectType;
 	private final Point anchorPosn;
 	private final Dimension size;
@@ -41,7 +41,7 @@ public class AnchorNodeCreationCommand implements ICommand {
 	private IGraphState originalState;
 	private final ICurveSegment parentSegment;
 	
-	public AnchorNodeCreationCommand(IDrawingElement rootNode, IAnchorNodeObjectType shapeObjectType,
+	public AnchorNodeCreationCommand(ICanvasElementAttribute rootNode, IAnchorNodeObjectType shapeObjectType,
 			Point anchorPoint, Dimension size, ICurveSegment parentSegment) {
 		this.parentNode = rootNode;
 		this.objectType = shapeObjectType;
@@ -52,12 +52,12 @@ public class AnchorNodeCreationCommand implements ICommand {
 
 	@Override
 	public void execute() {
-		this.originalState = this.parentNode.getGraphElement().getGraph().getCurrentState();
-		ICompoundNodeFactory fact = parentNode.getGraphElement().getChildCompoundGraph().nodeFactory();
-		IAnchorNodeAttributeFactory attFact = parentNode.getAttribute().getModel().anchorNodeAttributeFactory();
+		this.originalState = this.parentNode.getCurrentElement().getGraph().getCurrentState();
+		ICompoundNodeFactory fact = parentNode.getCurrentElement().getChildCompoundGraph().nodeFactory();
+		IAnchorNodeAttributeFactory attFact = parentNode.getModel().anchorNodeAttributeFactory();
 		fact.setAttributeFactory(attFact);
 		attFact.setObjectType(objectType);
-		attFact.setDestinationAttribute(parentNode.getAttribute());
+		attFact.setDestinationAttribute(parentNode);
 		attFact.setAssociateCurveSegment(parentSegment);
 		ICompoundNode node = fact.createNode();
 		IAnchorNodeAttribute nodeAtt = (IAnchorNodeAttribute)node.getAttribute(); 
@@ -71,12 +71,12 @@ public class AnchorNodeCreationCommand implements ICommand {
 
 	@Override
 	public void redo() {
-		this.parentNode.getGraphElement().getGraph().restoreState(createdState);
+		this.parentNode.getCurrentElement().getGraph().restoreState(createdState);
 	}
 
 	@Override
 	public void undo() {
-		this.parentNode.getGraphElement().getGraph().restoreState(this.originalState);
+		this.parentNode.getCurrentElement().getGraph().restoreState(this.originalState);
 	}
 
 	@Override
@@ -84,7 +84,7 @@ public class AnchorNodeCreationCommand implements ICommand {
 		StringBuilder buf = new StringBuilder(this.getClass().getSimpleName());
 		buf.append("(");
 		buf.append("parentNodeIdx=");
-		buf.append(parentNode.getGraphElement().getIndex());
+		buf.append(parentNode.getCreationSerial());
 		buf.append(",curveSegment=");
 		buf.append(this.parentSegment);
 		buf.append(",requestedLocn=");

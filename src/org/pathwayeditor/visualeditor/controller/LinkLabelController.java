@@ -18,7 +18,7 @@
 */
 package org.pathwayeditor.visualeditor.controller;
 
-import org.pathwayeditor.businessobjects.drawingprimitives.ILabelNode;
+import org.pathwayeditor.businessobjects.drawingprimitives.ILabelAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IBendPointContainerListener;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IBendPointLocationChangeEvent;
@@ -40,9 +40,9 @@ public class LinkLabelController extends CommonLabelController implements ILabel
 	private final ILinkTerminusChangeListener parentSourceLinkterminusChangeListener;
 	private final ILinkTerminusChangeListener parentTargetLinkterminusChangeListener;
 	
-	public LinkLabelController(IViewControllerModel viewModel, final ILabelNode node, int index) {
+	public LinkLabelController(IViewControllerModel viewModel, final ILabelAttribute node, int index) {
 		super(viewModel, node, index);
-		this.parentAttribute = (ILinkAttribute)node.getGraphElement().getParent().getAttribute();
+		this.parentAttribute = (ILinkAttribute)node.getCurrentElement().getParent().getAttribute();
 		parentDrawingNodePropertyChangeListener = new ICanvasAttributeChangeListener() {
 			
 			@Override
@@ -51,7 +51,7 @@ public class LinkLabelController extends CommonLabelController implements ILabel
 			
 			@Override
 			public void elementTranslated(ICanvasAttributeTranslationEvent e) {
-				node.getAttribute().translate(e.getTranslationDelta());
+				getAssociatedAttribute().translate(e.getTranslationDelta());
 			}
 			
 			@Override
@@ -97,9 +97,9 @@ public class LinkLabelController extends CommonLabelController implements ILabel
 		LineSegment originalLink = new LineSegment(this.parentAttribute.getSourceTerminus().getLocation(),
 				this.parentAttribute.getTargetTerminus().getLocation());
 		Point linkMidPoint = originalLink.getMidPoint();
-		Point originalCentrePosn = getDrawingElement().getAttribute().getBounds().getCentre();
+		Point originalCentrePosn = getAssociatedAttribute().getBounds().getCentre();
 		Point labelTranslation = originalCentrePosn.difference(linkMidPoint);
-		getDrawingElement().getAttribute().translate(labelTranslation);
+		getAssociatedAttribute().translate(labelTranslation);
 	}
 	
 	@Override

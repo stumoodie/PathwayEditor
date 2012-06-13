@@ -76,10 +76,10 @@ public class SelectionOperation implements ISelectionOperation {
 				IDrawingElementController selectedController = selectedControllers.first();
 				if(selectedController instanceof ILabelController){
 					propValueDialog.setLabelController((ILabelController)selectedController);
-					Object oldValue = ((ILabelController)selectedController).getDrawingElement().getAttribute().getProperty().getValue();
+					Object oldValue = ((ILabelController)selectedController).getAssociatedAttribute().getProperty().getValue();
 					String labelValue = propValueDialog.getLabelValue();
 					if(labelValue != null && !oldValue.equals(labelValue)){
-						IAnnotationProperty prop = ((ILabelController) selectedController).getDrawingElement().getAttribute().getProperty();
+						IAnnotationProperty prop = ((ILabelController) selectedController).getAssociatedAttribute().getProperty();
 						cmdStack.execute(new ChangeAnnotationPropertyValue(prop, labelValue));
 						shapePane.updateView();
 					}

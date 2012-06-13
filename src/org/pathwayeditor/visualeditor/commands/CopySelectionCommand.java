@@ -22,11 +22,10 @@ import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasElementAttribute;
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElement;
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElementSelection;
 import org.pathwayeditor.figure.geometry.Point;
 
 import uk.ac.ed.inf.graph.compound.ICompoundGraphCopyBuilder;
+import uk.ac.ed.inf.graph.compound.ICompoundGraphElement;
 import uk.ac.ed.inf.graph.compound.ICompoundNode;
 import uk.ac.ed.inf.graph.compound.ISubCompoundGraph;
 import uk.ac.ed.inf.graph.state.IGraphState;
@@ -35,14 +34,14 @@ import uk.ac.ed.inf.graph.state.IRestorableGraph;
 public class CopySelectionCommand implements ICommand {
 	private final Logger logger = Logger.getLogger(this.getClass());
 	/** Shape to manipulate. */
-	private IDrawingElementSelection selection;
-	private IDrawingElement newParent;
+	private ISubCompoundGraph selection;
+	private ICompoundGraphElement newParent;
 	private Point delta;
 	private IGraphState beforeChangeMomento;
 	private IGraphState afterChangeMomento;
 	private ISubCompoundGraph copiedElementSelection;
 
-	public CopySelectionCommand(IDrawingElement newParent, IDrawingElementSelection selection, Point delta) {
+	public CopySelectionCommand(ICompoundGraphElement newParent, ISubCompoundGraph selection, Point delta) {
 		this.newParent = newParent;
 		this.selection = selection;
 		this.delta = delta;
@@ -50,13 +49,13 @@ public class CopySelectionCommand implements ICommand {
 
 	@Override
 	public void execute() {
-		this.beforeChangeMomento = this.newParent.getGraphElement().getGraph().getCurrentState();
-		ICompoundGraphCopyBuilder moveBuilder = this.newParent.getGraphElement().getChildCompoundGraph().newCopyBuilder();
-		moveBuilder.setSourceSubgraph(selection.getSubgraph());
+		this.beforeChangeMomento = this.newParent.getGraph().getCurrentState();
+		ICompoundGraphCopyBuilder moveBuilder = this.newParent.getChildCompoundGraph().newCopyBuilder();
+		moveBuilder.setSourceSubgraph(selection);
 		moveBuilder.makeCopy();
 		this.copiedElementSelection = moveBuilder.getCopiedComponents();
 		translateElements(this.delta);
-		this.afterChangeMomento = this.newParent.getGraphElement().getGraph().getCurrentState();
+		this.afterChangeMomento = this.newParent.getGraph().getCurrentState();
 		if(logger.isDebugEnabled()){
 			logger.debug("Moved shape: " +  this.selection + " to  " + this.newParent);
 		}

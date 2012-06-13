@@ -98,14 +98,14 @@ public class AnchorNodeCreationOperation implements IShapeCreationOperation<IAnc
 		IFeedbackNode node = this.feedbackModel.uniqueFeedbackNode();
 		node.resizePrimitive(originDelta, sizeDelta);
 		IDrawingElementController potentialParent = getParentElement(node);
-		ICanvasElementAttribute drawingElementAtt = potentialParent.getDrawingElement().getAttribute();
+		ICanvasElementAttribute drawingElementAtt = potentialParent.getAssociatedAttribute();
 		if(drawingElementAtt.getObjectType().getParentingRules().isValidChild(getShapeObjectType()) && drawingElementAtt instanceof ILinkAttribute){
 			ICurveSegment associatedCurveSegment = findOverlappingCurveSegment((ILinkAttribute)drawingElementAtt, node.getFigureController().getConvexHull());
 			CurveSegmentAnchorCalculator calc = new CurveSegmentAnchorCalculator();
 			calc.setAnchorPoint(this.startLocation.translate(delta));
 			calc.setCurveSegment(associatedCurveSegment);
 			Point adjustedAnchorLocn = calc.adjustAnchorOnCurveSegment();
-			ICommand cmd = new AnchorNodeCreationCommand(potentialParent.getDrawingElement(), this.shapeObjectType, adjustedAnchorLocn, this.sizeDelta, associatedCurveSegment);
+			ICommand cmd = new AnchorNodeCreationCommand(potentialParent.getAssociatedAttribute(), this.shapeObjectType, adjustedAnchorLocn, this.sizeDelta, associatedCurveSegment);
 			this.commandStack.execute(cmd);
 			if(logger.isDebugEnabled()){
 				logger.debug("Create a new anchor node at: " + cmd);
@@ -172,7 +172,7 @@ public class AnchorNodeCreationOperation implements IShapeCreationOperation<IAnc
 		node.resizePrimitive(originDelta, sizeDelta);
 		this.shapePane.updateView();
 		IDrawingElementController potentialParent = getParentElement(node);
-		ICanvasElementAttribute drawingElementAtt = potentialParent.getDrawingElement().getAttribute();
+		ICanvasElementAttribute drawingElementAtt = potentialParent.getAssociatedAttribute();
 		this.canCreationSucceed = drawingElementAtt.getObjectType().getParentingRules().isValidChild(getShapeObjectType());
 		if(logger.isTraceEnabled()){
 			logger.trace("PotParent=" + potentialParent + "Ongoing drag. newLocation=" + originDelta + ", sizeDelta=" + sizeDelta + ",creationSucceed=" + canCreationSucceed);

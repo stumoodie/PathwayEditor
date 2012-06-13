@@ -22,8 +22,6 @@ import java.util.Iterator;
 import java.util.SortedSet;
 
 import org.apache.log4j.Logger;
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElement;
-import org.pathwayeditor.businessobjects.impl.facades.DrawingElementFacade;
 import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
@@ -32,6 +30,8 @@ import org.pathwayeditor.visualeditor.controller.INodeController;
 import org.pathwayeditor.visualeditor.controller.IShapeController;
 import org.pathwayeditor.visualeditor.selection.INodeSelection;
 import org.pathwayeditor.visualeditor.selection.ISubgraphSelection;
+
+import uk.ac.ed.inf.graph.compound.ICompoundGraphElement;
 
 public class CommonParentCalculator implements ICommonParentCalculator {
 	private final Logger logger = Logger.getLogger(this.getClass());
@@ -66,8 +66,8 @@ public class CommonParentCalculator implements ICommonParentCalculator {
 		});
 	}
 	
-	private IDrawingElementController getNodeController(IDrawingElement node){
-		return this.calc.getModel().getDrawingPrimitiveController(node);
+	private IDrawingElementController getNodeController(ICompoundGraphElement node){
+		return this.calc.getModel().getController(node.getAttribute());
 	}
 	
 	/* (non-Javadoc)
@@ -80,7 +80,7 @@ public class CommonParentCalculator implements ICommonParentCalculator {
 			// we're ignoreing labels
 			@Override
 			public IDrawingElementController getLabelParent(ILabelController node) {
-				return getNodeController(new DrawingElementFacade(node.getDrawingElement().getGraphElement().getParent()));
+				return getNodeController(node.getAssociatedAttribute().getCurrentElement().getParent());
 			}
 			
 		});
@@ -119,7 +119,7 @@ public class CommonParentCalculator implements ICommonParentCalculator {
 					numNodesAlreadyHaveParent = 0;
 				} else {
 					// now check if already has this parent
-					if (parent.equals(getNodeController(new DrawingElementFacade(node.getDrawingElement().getGraphElement().getParent())))) {
+					if (parent.equals(getNodeController(node.getAssociatedAttribute().getCurrentElement().getParent()))) {
 						numNodesAlreadyHaveParent++;
 					}
 				}
@@ -176,7 +176,7 @@ public class CommonParentCalculator implements ICommonParentCalculator {
 				boolean retVal = false;
 				if(cont instanceof INodeController){
 					INodeController node = (INodeController)cont;
-					retVal = node.getDrawingElement().getAttribute().getObjectType().getParentingRules().isValidChild(potentialChild.getDrawingElement().getAttribute().getObjectType());
+					retVal = node.getAssociatedAttribute().getObjectType().getParentingRules().isValidChild(potentialChild.getAssociatedAttribute().getObjectType());
 					if(logger.isTraceEnabled()){
 						logger.trace("Node=" + node +" canParent=" + retVal + ", potentialChild=" + potentialChild);
 					}

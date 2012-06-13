@@ -21,7 +21,6 @@ package org.pathwayeditor.visualeditor.controller;
 import java.util.List;
 
 import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasElementAttribute;
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElement;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
@@ -34,13 +33,7 @@ public interface IDrawingElementController extends Comparable<IDrawingElementCon
 	IViewControllerModel getViewModel();
 	
 	IMiniCanvas getMiniCanvas();
-	
-	/**
-	 * Gets the drawing element that is the domain model for this primitive.
-	 * @return the drawing element, which cannot be null.
-	 */
-	IDrawingElement getDrawingElement();
-	
+		
 	ICanvasElementAttribute getAssociatedAttribute();
 
 	

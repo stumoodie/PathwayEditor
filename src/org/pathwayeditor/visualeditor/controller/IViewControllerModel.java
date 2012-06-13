@@ -24,6 +24,8 @@ import org.pathwayeditor.businessobjects.drawingprimitives.IModel;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.visualeditor.geometry.IIntersectionCalculator;
 
+import uk.ac.ed.inf.graph.compound.IElementAttribute;
+
 public interface IViewControllerModel extends IViewControllerCollection {
 
 	IModel getDomainModel();

@@ -57,15 +57,15 @@ public class FastShapeIntersectionCalculator implements IIntersectionCalculator 
 		@Override
 		public int compare(IDrawingElementController o1, IDrawingElementController o2) {
 			int retVal = 0;
-			if(o1.getDrawingElement().getLevel() < o2.getDrawingElement().getLevel()){
+			if(o1.getAssociatedAttribute().getCurrentElement().getLevel() < o2.getAssociatedAttribute().getCurrentElement().getLevel()){
 				retVal = 1;
 			}
-			else if(o1.getDrawingElement().getLevel() > o2.getDrawingElement().getLevel()){
+			else if(o1.getAssociatedAttribute().getCurrentElement().getLevel() > o2.getAssociatedAttribute().getCurrentElement().getLevel()){
 				retVal = -1;
 			}
 			else{
-				long o1Idx = o1.getDrawingElement().getUniqueIndex();
-				long o2Idx = o2.getDrawingElement().getUniqueIndex();
+				long o1Idx = o1.getAssociatedAttribute().getCurrentElement().getIndex();
+				long o2Idx = o2.getAssociatedAttribute().getCurrentElement().getIndex();
 				retVal = o1Idx < o2Idx ? 1 : (o1Idx > o2Idx ? -1 : 0); 
 			}
 			return retVal;
@@ -192,7 +192,7 @@ public class FastShapeIntersectionCalculator implements IIntersectionCalculator 
 			if(prim instanceof INodeController){
 				INodeController node = (INodeController)prim;
 				// ignore matches to self
-				if(!node.equals(queryNode) && !node.equals(rootNode) && filter.accept(node) && !queryNode.getDrawingElement().isDescendent(node.getDrawingElement()) && node.intersectsHull(queryHull)){
+				if(!node.equals(queryNode) && !node.equals(rootNode) && filter.accept(node) && !queryNode.getAssociatedAttribute().getCurrentElement().isDescendent(node.getAssociatedAttribute().getCurrentElement()) && node.intersectsHull(queryHull)){
 					retVal.add(node);
 				}
 			}

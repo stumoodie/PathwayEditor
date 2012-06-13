@@ -19,17 +19,16 @@
 
 package org.pathwayeditor.visualeditor.layout;
 
-import java.util.Iterator;
-
 import org.pathwayeditor.businessobjects.drawingprimitives.ILabelAttribute;
-import org.pathwayeditor.businessobjects.drawingprimitives.IShapeNode;
-import org.pathwayeditor.businessobjects.impl.facades.SubModelFacade;
+import org.pathwayeditor.businessobjects.drawingprimitives.IShapeAttribute;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.figure.rendering.IFigureRenderingController;
 
 import uk.ac.ed.inf.graph.compound.ICompoundNode;
+import uk.ac.ed.inf.graph.util.IFilterCriteria;
+import uk.ac.ed.inf.graph.util.impl.FilteredIterator;
 
 
 /**
@@ -64,7 +63,7 @@ public class CompassLabelPositionPolicy implements IShapeLabelLocationPolicy {
  	private final ILabelCommand []  loci;
 	private final ILabelCommand N,E, W, S, NE, SE, SW, NW;
 	private IFigureRenderingController attribute = null;
-	private IShapeNode shapeNode;
+	private IShapeAttribute shapeNode;
 	
 
 	public CompassLabelPositionPolicy(){
@@ -161,7 +160,14 @@ public class CompassLabelPositionPolicy implements IShapeLabelLocationPolicy {
 	
 	
 	private boolean isNewLocation(Point newloc) {
-		Iterator<ICompoundNode> iter = new SubModelFacade(this.shapeNode.getGraphElement().getChildCompoundGraph()).labelIterator();
+		FilteredIterator<ICompoundNode> iter = new FilteredIterator<ICompoundNode>(this.shapeNode.getCurrentElement().getChildCompoundGraph().nodeIterator(),
+				new IFilterCriteria<ICompoundNode>() {
+			@Override
+			public boolean matched(ICompoundNode testObj) {
+				return testObj.getAttribute() instanceof ILabelAttribute;
+			}
+		});
+//		Iterator<ICompoundNode> iter = new SubModelFacade(this.shapeNode.getGraphElement().getChildCompoundGraph()).labelIterator();
 		boolean retVal = true;
 		while(iter.hasNext() && retVal){
 			ILabelAttribute att = ((ILabelAttribute)iter.next().getAttribute());
@@ -188,12 +194,12 @@ public class CompassLabelPositionPolicy implements IShapeLabelLocationPolicy {
 	}
 
 	@Override
-	public void setOwningShape(IShapeNode shapeNode) {
+	public void setOwningShape(IShapeAttribute shapeNode) {
 		this.shapeNode = shapeNode;
 	}
 
 	@Override
-	public IShapeNode getOwningShape() {
+	public IShapeAttribute getOwningShape() {
 		return this.shapeNode;
 	}
 

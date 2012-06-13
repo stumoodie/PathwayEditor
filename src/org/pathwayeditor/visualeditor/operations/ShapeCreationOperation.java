@@ -94,9 +94,9 @@ public class ShapeCreationOperation implements IShapeCreationOperation<IShapeObj
 		IFeedbackNode node = this.feedbackModel.uniqueFeedbackNode();
 		node.resizePrimitive(originDelta, sizeDelta);
 		IDrawingElementController potentialParent = getParentElement(node);
-		ICanvasElementAttribute drawingElementAtt = potentialParent.getDrawingElement().getAttribute();
+		ICanvasElementAttribute drawingElementAtt = potentialParent.getAssociatedAttribute();
 		if(drawingElementAtt.getObjectType().getParentingRules().isValidChild(getShapeObjectType())){
-			ICommand cmd = new ShapeCreationCommand(potentialParent.getDrawingElement(), this.shapeObjectType,
+			ICommand cmd = new ShapeCreationCommand(potentialParent.getAssociatedAttribute().getCurrentElement(), this.shapeObjectType,
 					node.getFigureController(), labelPositionCalculator);
 			this.commandStack.execute(cmd);
 			if(logger.isDebugEnabled()){
@@ -113,7 +113,7 @@ public class ShapeCreationOperation implements IShapeCreationOperation<IShapeObj
 //	private void createShapeLabels(IShapeController shapeHull){
 //		currentCmd = new CompoundCommand();
 //		INotationSyntaxService syntaxService = this.domainModel.getNotationSubsystem().getSyntaxService();
-//		Iterator<IAnnotationProperty> defnIter = shapeHull.getDrawingElement().getAttribute().propertyIterator();
+//		Iterator<IAnnotationProperty> defnIter = shapeHull.getAssociatedAttribute().propertyIterator();
 //		while(defnIter.hasNext()){
 //			IAnnotationProperty defn = defnIter.next();
 //			if(syntaxService.isVisualisableProperty(defn.getDefinition())){
@@ -151,7 +151,7 @@ public class ShapeCreationOperation implements IShapeCreationOperation<IShapeObj
 		node.resizePrimitive(originDelta, sizeDelta);
 		this.shapePane.updateView();
 		IDrawingElementController potentialParent = getParentElement(node);
-		ICanvasElementAttribute drawingElementAtt = potentialParent.getDrawingElement().getAttribute();
+		ICanvasElementAttribute drawingElementAtt = potentialParent.getAssociatedAttribute();
 		this.canCreationSucceed = drawingElementAtt.getObjectType().getParentingRules().isValidChild(getShapeObjectType());
 		if(logger.isTraceEnabled()){
 			logger.trace("PotParent=" + potentialParent + "Ongoing drag. newLocation=" + originDelta + ", sizeDelta=" + sizeDelta + ",creationSucceed=" + canCreationSucceed);

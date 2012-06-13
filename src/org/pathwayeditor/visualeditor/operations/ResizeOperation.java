@@ -85,7 +85,7 @@ public class ResizeOperation implements IResizeOperation {
 		ICompoundCommand cmpCommand = new CompoundCommand();
 		while(moveNodeIterator.hasNext()){
 			INodeController nodePrimitive = (INodeController)moveNodeIterator.next().getPrimitiveController();
-			ICommand cmd = new ResizeNodeCommand(nodePrimitive.getDrawingElement().getAttribute(), originDelta, resizeDelta);
+			ICommand cmd = new ResizeNodeCommand(nodePrimitive.getAssociatedAttribute(), originDelta, resizeDelta);
 			cmpCommand.addCommand(cmd);
 			logger.trace("Dragged shape to location: " + nodePrimitive.getBounds().getOrigin());
 		}

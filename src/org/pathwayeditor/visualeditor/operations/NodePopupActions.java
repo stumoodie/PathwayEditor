@@ -49,7 +49,7 @@ public class NodePopupActions implements INodePopupActions {
         final JComponent invokerAsJComponent = (JComponent) shapePane;  
         final JFrame topLevel = (JFrame)invokerAsJComponent.getTopLevelAncestor();  
 		final INodeController node = (INodeController)selectionRecord.getPrimarySelection().getPrimitiveController();
-		node.getDrawingElement().getAttribute().visit(new ICanvasElementAttributeVisitor() {
+		node.getAssociatedAttribute().visit(new ICanvasElementAttributeVisitor() {
 			@Override
 			public void visitShape(IShapeAttribute attribute) {
 		        ShapeFormatDialog shapeFormatDialog = new ShapeFormatDialog(topLevel);
@@ -97,7 +97,7 @@ public class NodePopupActions implements INodePopupActions {
         final PropertyChangeDialog propChangeDialog = new PropertyChangeDialog(topLevel);
         propChangeDialog.setLocationRelativeTo(invokerAsJComponent);
 		final INodeController nodeController = (INodeController)selectionRecord.getPrimarySelection().getPrimitiveController();
-		nodeController.getDrawingElement().getAttribute().visit(new ICanvasElementAttributeVisitor() {
+		nodeController.getAssociatedAttribute().visit(new ICanvasElementAttributeVisitor() {
 			@Override
 			public void visitRoot(IRootAttribute attribute) {
 				throw new UnsupportedOperationException("Should not be called");
@@ -105,7 +105,7 @@ public class NodePopupActions implements INodePopupActions {
 			@Override
 			public void visitShape(IShapeAttribute attribute) {
 				IShapeController shape = (IShapeController)nodeController;
-				propChangeDialog.setAnnotatedObject(shape.getDrawingElement().getAttribute().propertyIterator());
+				propChangeDialog.setAnnotatedObject(shape.getAssociatedAttribute().propertyIterator());
 			}
 			@Override
 			public void visitLink(ILinkAttribute attribute) {
@@ -114,7 +114,7 @@ public class NodePopupActions implements INodePopupActions {
 			@Override
 			public void visitLabel(ILabelAttribute attribute) {
 				ILabelController shape = (ILabelController)nodeController;
-				propChangeDialog.setAnnotatedObject(shape.getDrawingElement().getAttribute().getProperty());
+				propChangeDialog.setAnnotatedObject(shape.getAssociatedAttribute().getProperty());
 			}
 			@Override
 			public void visitAnchorNode(IAnchorNodeAttribute anchorNodeAttribute) {

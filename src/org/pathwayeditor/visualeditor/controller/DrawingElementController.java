@@ -126,8 +126,6 @@ public abstract class DrawingElementController implements IDrawingElementControl
 		StringBuilder buf = new StringBuilder(this.getClass().getSimpleName());
 		buf.append("(index=");
 		buf.append(this.index);
-		buf.append(",drawingElement=");
-		buf.append(this.getDrawingElement());
 		buf.append(",drawnBounds=");
 		buf.append(this.getDrawnBounds());
 		buf.append(",active=");
@@ -138,11 +136,11 @@ public abstract class DrawingElementController implements IDrawingElementControl
 	
 	@Override
 	public int compareTo(IDrawingElementController other){
-		int retVal = this.getDrawingElement().getGraphElement().getLevel() < other.getDrawingElement().getGraphElement().getLevel() ? -1 :
-			(this.getDrawingElement().getGraphElement().getLevel() > other.getDrawingElement().getGraphElement().getLevel() ? 1 : 0);
+		int retVal = this.getAssociatedAttribute().getCurrentElement().getLevel() < other.getAssociatedAttribute().getCurrentElement().getLevel() ? -1 :
+			(this.getAssociatedAttribute().getCurrentElement().getLevel() > other.getAssociatedAttribute().getCurrentElement().getLevel() ? 1 : 0);
 		if(retVal == 0){
-			retVal = this.getDrawingElement().getGraphElement().getIndex() < other.getDrawingElement().getGraphElement().getIndex() ? -1 :
-				(this.getDrawingElement().getGraphElement().getIndex() > other.getDrawingElement().getGraphElement().getIndex() ? 1 : 0);
+			retVal = this.getAssociatedAttribute().getCurrentElement().getIndex() < other.getAssociatedAttribute().getCurrentElement().getIndex() ? -1 :
+				(this.getAssociatedAttribute().getCurrentElement().getIndex() > other.getAssociatedAttribute().getCurrentElement().getIndex() ? 1 : 0);
 		}
 		return retVal;
 	}

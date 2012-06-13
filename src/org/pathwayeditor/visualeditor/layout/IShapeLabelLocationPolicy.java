@@ -19,7 +19,7 @@
 
 package org.pathwayeditor.visualeditor.layout;
 
-import org.pathwayeditor.businessobjects.drawingprimitives.IShapeNode;
+import org.pathwayeditor.businessobjects.drawingprimitives.IShapeAttribute;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.figure.rendering.IFigureRenderingController;
 
@@ -29,9 +29,9 @@ public interface IShapeLabelLocationPolicy {
 
 	IFigureRenderingController getShapeFigure();
 	
-	void setOwningShape(IShapeNode shapeNode);
+	void setOwningShape(IShapeAttribute shapeNode);
 	
-	IShapeNode getOwningShape();
+	IShapeAttribute getOwningShape();
 	
 	Point nextLabelLocation();
 	

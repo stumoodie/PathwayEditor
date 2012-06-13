@@ -48,7 +48,7 @@ public class LinkSelection extends Selection implements ILinkSelection {
 			this.handles.add(SelectionHandle.createLinkMidpointRegion(this, controller, lineSeg, cntr));
 			cntr++;
 		}
-		Iterator<Point> bpIter = this.controller.getDrawingElement().getAttribute().getBendPointContainer().bendPointIterator();
+		Iterator<Point> bpIter = this.controller.getAssociatedAttribute().getBendPointContainer().bendPointIterator();
 		int bpIdx = 0;
 		while(bpIter.hasNext()){
 			Point bp = bpIter.next();

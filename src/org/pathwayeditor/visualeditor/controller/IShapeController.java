@@ -19,12 +19,8 @@
 package org.pathwayeditor.visualeditor.controller;
 
 import org.pathwayeditor.businessobjects.drawingprimitives.IShapeAttribute;
-import org.pathwayeditor.businessobjects.drawingprimitives.IShapeNode;
 
 public interface IShapeController extends IConnectingNodeController {
-
-	@Override
-	IShapeNode getDrawingElement();
 
 	@Override
 	IShapeAttribute getAssociatedAttribute();

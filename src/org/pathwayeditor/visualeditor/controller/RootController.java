@@ -21,7 +21,6 @@ package org.pathwayeditor.visualeditor.controller;
 import java.awt.Graphics2D;
 
 import org.pathwayeditor.businessobjects.drawingprimitives.IRootAttribute;
-import org.pathwayeditor.businessobjects.drawingprimitives.IRootNode;
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.IConvexHull;
@@ -30,15 +29,15 @@ import org.pathwayeditor.figure.geometry.RectangleHull;
 import org.pathwayeditor.visualeditor.editingview.IMiniCanvas;
 
 public class RootController extends NodeController implements IRootController {
-	private final IRootNode domainNode;
+	private final IRootAttribute domainNode;
 	private final IConvexHull hull;
 	private boolean isActive;
 	
 	
-	public RootController(IViewControllerModel viewModel, IRootNode node, int index) {
+	public RootController(IViewControllerModel viewModel, IRootAttribute node, int index) {
 		super(viewModel, index);
 		this.domainNode = node;
-		this.hull = new RectangleHull(domainNode.getAttribute().getBounds());
+		this.hull = new RectangleHull(domainNode.getBounds());
 		this.isActive = false;
 	}
 
@@ -50,11 +49,6 @@ public class RootController extends NodeController implements IRootController {
 	@Override
 	public IConvexHull getConvexHull() {
 		return this.hull;
-	}
-
-	@Override
-	public IRootNode getDrawingElement() {
-		return this.domainNode;
 	}
 
 	@Override
@@ -114,7 +108,7 @@ public class RootController extends NodeController implements IRootController {
 
 	@Override
 	public IRootAttribute getAssociatedAttribute() {
-		return this.domainNode.getAttribute();
+		return this.domainNode;
 	}
 
 //	@Override

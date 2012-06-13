@@ -88,8 +88,8 @@ public class SelectionLinkDrawer implements IMiniCanvas {
 			handle.drawShape(handleDrawer);
 		}
 		ILinkController linkEdge = this.selection.getPrimitiveController();
-		ILinkTerminus srcTermDefaults = linkEdge.getDrawingElement().getAttribute().getSourceTerminus();
-		ILinkTerminus tgtTermDefaults = linkEdge.getDrawingElement().getAttribute().getTargetTerminus();
+		ILinkTerminus srcTermDefaults = linkEdge.getAssociatedAttribute().getSourceTerminus();
+		ILinkTerminus tgtTermDefaults = linkEdge.getAssociatedAttribute().getTargetTerminus();
 		AffineTransform before = g2d.getTransform();
 		Point srcPosn = srcTermDefaults.getLocation();
 		g2d.translate(srcPosn.getX()-SELN_RADIUS, srcPosn.getY()-SELN_RADIUS);

@@ -4,13 +4,11 @@ import java.text.Format;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
-import org.pathwayeditor.businessobjects.drawingprimitives.ILabelNode;
-import org.pathwayeditor.businessobjects.drawingprimitives.ILabelNodeFactory;
+import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasElementAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.ILabelAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.ILabelAttributeFactory;
 import org.pathwayeditor.businessobjects.drawingprimitives.IShapeAttribute;
-import org.pathwayeditor.businessobjects.drawingprimitives.IShapeNode;
 import org.pathwayeditor.businessobjects.drawingprimitives.properties.IAnnotationProperty;
-import org.pathwayeditor.businessobjects.impl.facades.LabelNodeFactoryFacade;
-import org.pathwayeditor.businessobjects.impl.facades.ShapeNodeFacade;
 import org.pathwayeditor.businessobjects.notationsubsystem.INotationSyntaxService;
 import org.pathwayeditor.businessobjects.typedefn.ILabelObjectType;
 import org.pathwayeditor.figure.geometry.Envelope;
@@ -18,6 +16,7 @@ import org.pathwayeditor.visualeditor.controller.ShapeFigureControllerHelper;
 import org.pathwayeditor.visualeditor.layout.ILabelPositionCalculator;
 
 import uk.ac.ed.inf.graph.compound.ICompoundNode;
+import uk.ac.ed.inf.graph.compound.ICompoundNodeFactory;
 import uk.ac.ed.inf.graph.state.IGraphState;
 
 public class LabelCreationCommand implements ICommand {
@@ -35,36 +34,42 @@ public class LabelCreationCommand implements ICommand {
 
 	@Override
 	public void execute() {
-		ILabelNodeFactory labelFactory = new LabelNodeFactoryFacade(prop.getOwner().getCurrentElement().getChildCompoundGraph().nodeFactory());
-		this.oldState = labelFactory.getGraphElementFactory().getGraph().getCurrentState();
-		labelFactory.setProperty(prop);
-		ILabelNode newNode = labelFactory.createLabelNode();
-		this.newState = newNode.getGraphElement().getGraph().getCurrentState();
-		createShapeLabels();
+		ICompoundNodeFactory labelFactory = prop.getOwner().getCurrentElement().getChildCompoundGraph().nodeFactory();
+		this.oldState = labelFactory.getGraph().getCurrentState();
+		ILabelAttributeFactory labelAttFact = (ILabelAttributeFactory)labelFactory.getAttributeFactory();
+		labelAttFact.setProperty(prop);
+		ICanvasElementAttribute owningAtt = (ICanvasElementAttribute)prop.getOwner();
+		ILabelObjectType labelObjectType = owningAtt.getModel().getNotationSubsystem().getSyntaxService().getLabelObjectTypeByProperty(prop.getDefinition());
+		labelAttFact.setLabelObjectType(labelObjectType);
+		ICompoundNode newNode = labelFactory.createNode();
+		this.newState = newNode.getGraph().getCurrentState();
+		createShapeLabels(labelFactory, labelAttFact);
 	}
 
-	private void createShapeLabels(){
-		IShapeNode shapeNode = new ShapeNodeFacade((ICompoundNode)prop.getOwner().getCurrentElement());
-		IShapeAttribute owningShapeAtt = shapeNode.getAttribute();
+	private void createShapeLabels(ICompoundNodeFactory nodeFactory, ILabelAttributeFactory labelFact){
+//		ICompoundNode shapeNode = new ShapeNodeFacade((ICompoundNode)prop.getOwner().getCurrentElement());
+		IShapeAttribute owningShapeAtt = (IShapeAttribute)prop.getOwner();
 		INotationSyntaxService syntaxService = owningShapeAtt.getModel().getNotationSubsystem().getSyntaxService();
 		ShapeFigureControllerHelper figureHelper = new ShapeFigureControllerHelper(owningShapeAtt);
 		figureHelper.createFigureController();
-		Iterator<IAnnotationProperty> defnIter = shapeNode.getAttribute().propertyIterator();
+		Iterator<IAnnotationProperty> defnIter = owningShapeAtt.propertyIterator();
 		while(defnIter.hasNext()){
 			IAnnotationProperty defn = defnIter.next();
 			if(syntaxService.isVisualisableProperty(defn.getDefinition())){
 				ILabelObjectType labelObjectType = syntaxService.getLabelObjectTypeByProperty(defn.getDefinition());
 				if(labelObjectType.isAlwaysDisplayed()){
 					String defaultText = getDisplayedLabelText(labelObjectType, defn);
-					ILabelNodeFactory labelFact = new LabelNodeFactoryFacade(shapeNode.getGraphElement().getChildCompoundGraph().nodeFactory());
+//					ILabelNodeFactory labelFact = new shapeNode.getGraphElement().getChildCompoundGraph().nodeFactory();
 					// display props that are always displayed
 					labelFact.setProperty(defn);
-					ILabelNode labelNode = labelFact.createLabelNode();
+					labelFact.setLabelObjectType(syntaxService.getLabelObjectTypeByProperty(defn.getDefinition()));
+					nodeFactory.setAttributeFactory(labelFact);
+					ICompoundNode labelNode = nodeFactory.createNode();
 					if(logger.isDebugEnabled()){
-						logger.debug("Create labelNode=" + labelNode + ", bounds=" + labelNode.getAttribute().getBounds());
+						logger.debug("Create labelNode=" + labelNode + ", bounds=" + ((ILabelAttribute)labelNode.getAttribute()).getBounds());
 					}
 					Envelope labelBounds = this.labelPositionCalculator.calculateLabelPosition(figureHelper.getFigureController(), labelObjectType, defaultText);
-					labelNode.getAttribute().setBounds(labelBounds);
+					((ILabelAttribute)labelNode.getAttribute()).setBounds(labelBounds);
 				}
 			}
 		}

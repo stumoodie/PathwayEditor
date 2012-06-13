@@ -257,21 +257,21 @@ public class ShapeFormatDialog extends JDialog implements ActionListener, FocusL
 
 	public void setSelectedShape(IShapeController shape) {
 		this.selectedShape = shape;
-		Colour fillCol = this.selectedShape.getDrawingElement().getAttribute().getFillColour();
+		Colour fillCol = this.selectedShape.getAssociatedAttribute().getFillColour();
 		RGB fillRGB = fillCol.getRgb();
 		Color fillColour = new Color(fillRGB.getRed(), fillRGB.getGreen(), fillRGB.getBlue(), fillCol.getAlpha());
 		fillColourLabel.setBackground(fillColour);
 		setFillTransparency(fillColour);
 //		fillColourLabel.setVisible(false);
 //		fillColourLabel.setVisible(true);
-		Colour lineCol = this.selectedShape.getDrawingElement().getAttribute().getLineColour();
+		Colour lineCol = this.selectedShape.getAssociatedAttribute().getLineColour();
 		RGB lineRGB = lineCol.getRgb();
 		Color lineColour = new Color(lineRGB.getRed(), lineRGB.getGreen(), lineRGB.getBlue(), lineCol.getAlpha());
 		lineColourLabel.setBackground(lineColour);
 		setLineTransparency(lineColour);
 //		lineColourLabel.setVisible(false);
 //		lineColourLabel.setVisible(true);
-		double lineWidth = Math.max(MIN_LINE_WIDTH, this.selectedShape.getDrawingElement().getAttribute().getLineWidth());
+		double lineWidth = Math.max(MIN_LINE_WIDTH, this.selectedShape.getAssociatedAttribute().getLineWidth());
 		this.lineWidthCombo.setSelectedItem(new Integer((int)Math.round(lineWidth)));
 	}
 
@@ -305,17 +305,17 @@ public class ShapeFormatDialog extends JDialog implements ActionListener, FocusL
 		if(e.getActionCommand().equals(OK_CMD)){
 			Color fillColour = this.fillColourLabel.getBackground();
 			Colour fillCol = new Colour(fillColour.getRed(), fillColour.getGreen(), fillColour.getBlue(), fillColour.getAlpha());
-			if(!this.selectedShape.getDrawingElement().getAttribute().getFillColour().equals(fillCol)){
-				this.latestCommand.addCommand(new ChangeShapeFillPropertyChange(this.selectedShape.getDrawingElement().getAttribute(), fillCol));
+			if(!this.selectedShape.getAssociatedAttribute().getFillColour().equals(fillCol)){
+				this.latestCommand.addCommand(new ChangeShapeFillPropertyChange(this.selectedShape.getAssociatedAttribute(), fillCol));
 			}
 			Color lineColour = this.lineColourLabel.getBackground();
 			Colour lineCol = new Colour(lineColour.getRed(), lineColour.getGreen(), lineColour.getBlue(), lineColour.getAlpha());
-			if(!this.selectedShape.getDrawingElement().getAttribute().getLineColour().equals(lineCol)){
-				this.latestCommand.addCommand(new ChangeShapeLinePropertyChange(this.selectedShape.getDrawingElement().getAttribute(), lineCol));
+			if(!this.selectedShape.getAssociatedAttribute().getLineColour().equals(lineCol)){
+				this.latestCommand.addCommand(new ChangeShapeLinePropertyChange(this.selectedShape.getAssociatedAttribute(), lineCol));
 			}
 			Integer selectedLineWidth = (Integer)this.lineWidthCombo.getSelectedItem();
-			if(!(this.selectedShape.getDrawingElement().getAttribute().getLineWidth() == selectedLineWidth.doubleValue())){
-				this.latestCommand.addCommand(new ChangeShapeLineWidth(this.selectedShape.getDrawingElement().getAttribute(), selectedLineWidth.doubleValue()));
+			if(!(this.selectedShape.getAssociatedAttribute().getLineWidth() == selectedLineWidth.doubleValue())){
+				this.latestCommand.addCommand(new ChangeShapeLineWidth(this.selectedShape.getAssociatedAttribute(), selectedLineWidth.doubleValue()));
 			}
 			this.setVisible(false);
 		}

@@ -19,7 +19,7 @@
 package org.pathwayeditor.visualeditor.controller;
 
 import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasElementAttribute;
-import org.pathwayeditor.businessobjects.drawingprimitives.ILabelNode;
+import org.pathwayeditor.businessobjects.drawingprimitives.ILabelAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributeChangeListener;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributePropertyChangeEvent;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributeResizedEvent;
@@ -30,9 +30,9 @@ public class LabelController extends CommonLabelController implements ILabelCont
 //	private final ICanvasAttributeChangeListener drawingNodePropertyChangeListener;
 	private final ICanvasAttributeChangeListener parentDrawingNodePropertyChangeListener;
 	
-	public LabelController(IViewControllerModel viewModel, final ILabelNode node, int index) {
+	public LabelController(IViewControllerModel viewModel, final ILabelAttribute node, int index) {
 		super(viewModel, node, index);
-		this.parentAttribute = (ICanvasElementAttribute)node.getGraphElement().getParent().getAttribute();
+		this.parentAttribute = (ICanvasElementAttribute)node.getCurrentElement().getParent().getAttribute();
 		parentDrawingNodePropertyChangeListener = new ICanvasAttributeChangeListener() {
 			
 			@Override
@@ -41,7 +41,7 @@ public class LabelController extends CommonLabelController implements ILabelCont
 			
 			@Override
 			public void elementTranslated(ICanvasAttributeTranslationEvent e) {
-				node.getAttribute().translate(e.getTranslationDelta());
+				getAssociatedAttribute().translate(e.getTranslationDelta());
 			}
 			
 			@Override

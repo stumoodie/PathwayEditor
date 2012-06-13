@@ -116,13 +116,13 @@ public class LinkOperation implements ILinkOperation {
 	private void createNewBendPointCommand(int lineSegmentIdx, Point delta) {
 		ILinkSelection linkSelection = this.selectionRecord.getUniqueLinkSelection();
 		Point bpLocation = this.newBpStartPosn.translate(delta);
-		ICommand cmd = new CreateBendPointCommand(linkSelection.getPrimitiveController().getDrawingElement().getAttribute().getBendPointContainer(), lineSegmentIdx, bpLocation);
+		ICommand cmd = new CreateBendPointCommand(linkSelection.getPrimitiveController().getAssociatedAttribute().getBendPointContainer(), lineSegmentIdx, bpLocation);
 		this.commandStack.execute(cmd);
 	}
 
 	private void createMoveBendPointCommand(int bpIdx, Point delta) {
 		ILinkSelection linkSelection = this.selectionRecord.getUniqueLinkSelection(); 
-		ICommand cmd = new MoveBendPointCommand(linkSelection.getPrimitiveController().getDrawingElement().getAttribute().getBendPointContainer(), bpIdx, delta);
+		ICommand cmd = new MoveBendPointCommand(linkSelection.getPrimitiveController().getAssociatedAttribute().getBendPointContainer(), bpIdx, delta);
 		this.commandStack.execute(cmd);
 	}
 }

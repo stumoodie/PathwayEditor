@@ -20,13 +20,7 @@ package org.pathwayeditor.visualeditor.controller;
 
 import java.util.Iterator;
 
-import org.pathwayeditor.businessobjects.drawingprimitives.IAnchorNodeAttribute;
-import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasElementAttribute;
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElement;
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNode;
-import org.pathwayeditor.businessobjects.drawingprimitives.ILinkEdge;
-import org.pathwayeditor.businessobjects.drawingprimitives.IShapeAttribute;
-import org.pathwayeditor.businessobjects.drawingprimitives.ITypedDrawingNodeAttribute;
+import uk.ac.ed.inf.graph.compound.IElementAttribute;
 
 public interface IViewControllerCollection {
 
@@ -40,19 +34,25 @@ public interface IViewControllerCollection {
 
 	Iterator<INodeController> nodeControllerIterator();
 
-	IDrawingElementController getDrawingPrimitiveController(IDrawingElement testAttribute);
-	
-	IDrawingElementController findControllerByAttribute(ICanvasElementAttribute testAttribute);
-	
-	INodeController getNodeController(IDrawingNode testNode);
-	
-	ILinkController getLinkController(ILinkEdge attribute);
+	Iterator<IAnchorNodeController> anchorNodeControllerIterator();
 
-	IShapeController getShapeController(IShapeAttribute attribute);
-
-	IAnchorNodeController getAnchorNodeController(IAnchorNodeAttribute attribute);
+//	IDrawingElementController getDrawingPrimitiveController(ICanvasElementAttribute testAttribute);
 	
-	IConnectingNodeController getConnectingNodeController(ITypedDrawingNodeAttribute att);
+	IDrawingElementController findControllerByAttribute(IElementAttribute testAttribute);
+	
+	<T extends IDrawingElementController> T getController(IElementAttribute attribute);
 
-	boolean containsDrawingElement(IDrawingElement testPrimitive);
+//	INodeController getNodeController(IDrawingNodeAttribute testNode);
+//	
+//	ILinkController getLinkController(ILinkAttribute attribute);
+//
+//	ILabelController getLabelController(ILabelAttribute attribute);
+//
+//	IShapeController getShapeController(IShapeAttribute attribute);
+
+//	IAnchorNodeController getAnchorNodeController(IAnchorNodeAttribute attribute);
+	
+//	IConnectingNodeController getConnectingNodeController(ITypedDrawingNodeAttribute att);
+
+	boolean containsDrawingElement(IElementAttribute testPrimitive);
 }

@@ -106,7 +106,7 @@ public class LabelPropValueDialog extends JDialog implements ActionListener, Foc
 		this.finalValue = null;
 		String val = "";
 		if(this.labelController != null){
-			val = this.labelController.getDrawingElement().getAttribute().getDisplayedContent();
+			val = this.labelController.getAssociatedAttribute().getDisplayedContent();
 		}
 		refreshField(this.nodeSearchTerm, val);
 	}

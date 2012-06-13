@@ -374,26 +374,26 @@ public class LabelFormatDialog extends JDialog implements ActionListener, FocusL
 
 	public void setSelectedLabel(ILabelController shape) {
 		this.selectedShape = shape;
-		Colour fillCol = this.selectedShape.getDrawingElement().getAttribute().getFillColour();
+		Colour fillCol = this.selectedShape.getAssociatedAttribute().getFillColour();
 		RGB fillRGB = fillCol.getRgb();
 		Color fillColour = new Color(fillRGB.getRed(), fillRGB.getGreen(), fillRGB.getBlue(), fillCol.getAlpha());
 		fillColourLabel.setBackground(fillColour);
 		setFillTransparency(fillColour);
-		Colour lineCol = this.selectedShape.getDrawingElement().getAttribute().getLineColour();
+		Colour lineCol = this.selectedShape.getAssociatedAttribute().getLineColour();
 		RGB lineRGB = lineCol.getRgb();
 		Color lineColour = new Color(lineRGB.getRed(), lineRGB.getGreen(), lineRGB.getBlue(), lineCol.getAlpha());
 		lineColourLabel.setBackground(lineColour);
 		setLineTransparency(lineColour);
-		double lineWidth = Math.max(MIN_LINE_WIDTH, this.selectedShape.getDrawingElement().getAttribute().getLineWidth());
+		double lineWidth = Math.max(MIN_LINE_WIDTH, this.selectedShape.getAssociatedAttribute().getLineWidth());
 		this.lineWidthCombo.setSelectedItem(new Integer((int)Math.round(lineWidth)));
-		Colour fontCol = this.selectedShape.getDrawingElement().getAttribute().getFontColour();
+		Colour fontCol = this.selectedShape.getAssociatedAttribute().getFontColour();
 		RGB fontRGB = fontCol.getRgb();
 		Color fontColour = new Color(fontRGB.getRed(), fontRGB.getGreen(), fontRGB.getBlue(), fontCol.getAlpha());
 		fontColourLabel.setBackground(fontColour);
 		setFontTransparency(fontColour);
-		double fontSize = this.selectedShape.getDrawingElement().getAttribute().getFont().getFontSize();
+		double fontSize = this.selectedShape.getAssociatedAttribute().getFont().getFontSize();
 		this.fontSizeCombo.setSelectedItem(new Integer((int)Math.round(fontSize)));
-		EnumSet<IFont.Style> s = this.selectedShape.getDrawingElement().getAttribute().getFont().getStyle();
+		EnumSet<IFont.Style> s = this.selectedShape.getAssociatedAttribute().getFont().getStyle();
 		if(s.contains(IFont.Style.NORMAL)){
 			this.fontStyleCombo.setSelectedItem("Normal");
 		}
@@ -446,31 +446,31 @@ public class LabelFormatDialog extends JDialog implements ActionListener, FocusL
 		if(e.getActionCommand().equals(OK_CMD)){
 			Color fillColour = this.fillColourLabel.getBackground();
 			Colour fillCol = new Colour(fillColour.getRed(), fillColour.getGreen(), fillColour.getBlue(), fillColour.getAlpha());
-			if(!this.selectedShape.getDrawingElement().getAttribute().getFillColour().equals(fillCol)){
-				this.latestCommand.addCommand(new ChangeLabelFillPropertyChange(this.selectedShape.getDrawingElement().getAttribute(), fillCol));
+			if(!this.selectedShape.getAssociatedAttribute().getFillColour().equals(fillCol)){
+				this.latestCommand.addCommand(new ChangeLabelFillPropertyChange(this.selectedShape.getAssociatedAttribute(), fillCol));
 			}
 			Color lineColour = this.lineColourLabel.getBackground();
 			Colour lineCol = new Colour(lineColour.getRed(), lineColour.getGreen(), lineColour.getBlue(), lineColour.getAlpha());
-			if(!this.selectedShape.getDrawingElement().getAttribute().getLineColour().equals(lineCol)){
-				this.latestCommand.addCommand(new ChangeLabelLinePropertyChange(this.selectedShape.getDrawingElement().getAttribute(), lineCol));
+			if(!this.selectedShape.getAssociatedAttribute().getLineColour().equals(lineCol)){
+				this.latestCommand.addCommand(new ChangeLabelLinePropertyChange(this.selectedShape.getAssociatedAttribute(), lineCol));
 			}
 			Integer selectedLineWidth = (Integer)this.lineWidthCombo.getSelectedItem();
-			if(!(this.selectedShape.getDrawingElement().getAttribute().getLineWidth() == selectedLineWidth.doubleValue())){
-				this.latestCommand.addCommand(new ChangeLabelLineWidth(this.selectedShape.getDrawingElement().getAttribute(), selectedLineWidth.doubleValue()));
+			if(!(this.selectedShape.getAssociatedAttribute().getLineWidth() == selectedLineWidth.doubleValue())){
+				this.latestCommand.addCommand(new ChangeLabelLineWidth(this.selectedShape.getAssociatedAttribute(), selectedLineWidth.doubleValue()));
 			}
 			Colour fontCol = toDomColour(this.fontColourLabel.getBackground());
-			if(!this.selectedShape.getDrawingElement().getAttribute().getFontColour().equals(fontCol)){
-				this.latestCommand.addCommand(new ChangeFontColourPropertyChange(this.selectedShape.getDrawingElement().getAttribute(), fontCol));
+			if(!this.selectedShape.getAssociatedAttribute().getFontColour().equals(fontCol)){
+				this.latestCommand.addCommand(new ChangeFontColourPropertyChange(this.selectedShape.getAssociatedAttribute(), fontCol));
 			}
 			Integer selectedFontSize = (Integer)this.fontSizeCombo.getSelectedItem();
-			if(!(this.selectedShape.getDrawingElement().getAttribute().getFont().getFontSize() == selectedFontSize.doubleValue())){
-				GenericFont newFont = this.selectedShape.getDrawingElement().getAttribute().getFont().newSize(selectedFontSize);
-				this.latestCommand.addCommand(new ChangeLabelFontCommand(this.selectedShape.getDrawingElement().getAttribute(), newFont));
+			if(!(this.selectedShape.getAssociatedAttribute().getFont().getFontSize() == selectedFontSize.doubleValue())){
+				GenericFont newFont = this.selectedShape.getAssociatedAttribute().getFont().newSize(selectedFontSize);
+				this.latestCommand.addCommand(new ChangeLabelFontCommand(this.selectedShape.getAssociatedAttribute(), newFont));
 			}
 			EnumSet<IFont.Style> selectedFontStyle = this.fontStyleMap.get(this.fontStyleCombo.getSelectedItem());
-			if(!(this.selectedShape.getDrawingElement().getAttribute().getFont().getStyle().containsAll(selectedFontStyle))){
-				GenericFont newFont = this.selectedShape.getDrawingElement().getAttribute().getFont().newStyle(selectedFontStyle);
-				this.latestCommand.addCommand(new ChangeLabelFontCommand(this.selectedShape.getDrawingElement().getAttribute(), newFont));
+			if(!(this.selectedShape.getAssociatedAttribute().getFont().getStyle().containsAll(selectedFontStyle))){
+				GenericFont newFont = this.selectedShape.getAssociatedAttribute().getFont().newStyle(selectedFontStyle);
+				this.latestCommand.addCommand(new ChangeLabelFontCommand(this.selectedShape.getAssociatedAttribute(), newFont));
 			}
 			this.setVisible(false);
 		}

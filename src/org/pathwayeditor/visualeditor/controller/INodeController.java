@@ -18,7 +18,6 @@
 */
 package org.pathwayeditor.visualeditor.controller;
 
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNode;
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNodeAttribute;
 import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.figure.geometry.Envelope;
@@ -39,12 +38,6 @@ public interface INodeController extends IDrawingElementController {
 	 */
 	IConvexHull getConvexHull();
 
-	/**
-	 * Get the drawing element. 
-	 */
-	@Override
-	IDrawingNode getDrawingElement();
-	
 	@Override
 	IDrawingNodeAttribute getAssociatedAttribute();
 	

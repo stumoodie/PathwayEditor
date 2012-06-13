@@ -19,33 +19,33 @@
 package org.pathwayeditor.visualeditor.commands;
 
 import org.apache.log4j.Logger;
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElement;
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingElementSelection;
 
+import uk.ac.ed.inf.graph.compound.ICompoundGraphElement;
 import uk.ac.ed.inf.graph.compound.ICompoundGraphMoveBuilder;
+import uk.ac.ed.inf.graph.compound.ISubCompoundGraph;
 import uk.ac.ed.inf.graph.state.IGraphState;
 import uk.ac.ed.inf.graph.state.IRestorableGraph;
 
 public class ReparentSelectionCommand implements ICommand {
 	private final Logger logger = Logger.getLogger(this.getClass());
 	/** Shape to manipulate. */
-	private IDrawingElementSelection selection;
-	private IDrawingElement newParent;
+	private ISubCompoundGraph selection;
+	private ICompoundGraphElement newParent;
 	private IGraphState beforeChangeMomento;
 	private IGraphState afterChangeMomento;
 
-	public ReparentSelectionCommand(IDrawingElement newParent, IDrawingElementSelection selection) {
+	public ReparentSelectionCommand(ICompoundGraphElement newParent, ISubCompoundGraph selection) {
 		this.newParent = newParent;
 		this.selection = selection;
 	}
 
 	@Override
 	public void execute() {
-		this.beforeChangeMomento = this.newParent.getGraphElement().getGraph().getCurrentState();
-		ICompoundGraphMoveBuilder moveBuilder = this.newParent.getGraphElement().getChildCompoundGraph().newMoveBuilder();
-		moveBuilder.setSourceSubgraph(selection.getSubgraph());
+		this.beforeChangeMomento = this.newParent.getGraph().getCurrentState();
+		ICompoundGraphMoveBuilder moveBuilder = this.newParent.getChildCompoundGraph().newMoveBuilder();
+		moveBuilder.setSourceSubgraph(selection);
 		moveBuilder.makeMove();
-		this.afterChangeMomento = this.newParent.getGraphElement().getGraph().getCurrentState();
+		this.afterChangeMomento = this.newParent.getGraph().getCurrentState();
 		if(logger.isDebugEnabled()){
 			logger.debug("Moved shape: " +  this.selection + " to  " + this.newParent);
 		}

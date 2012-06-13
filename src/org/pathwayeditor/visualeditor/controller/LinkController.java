@@ -21,7 +21,6 @@ package org.pathwayeditor.visualeditor.controller;
 import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasElementAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
-import org.pathwayeditor.businessobjects.drawingprimitives.ILinkEdge;
 import org.pathwayeditor.businessobjects.drawingprimitives.ITypedDrawingNodeAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.BendPointStructureChange;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.CanvasAttributePropertyChange;
@@ -35,7 +34,6 @@ import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttr
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ILinkTerminusChangeListener;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ILinkTerminusValueChangeEvent;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.LinkTerminusChangeType;
-import org.pathwayeditor.businessobjects.impl.facades.LinkEdgeFacade;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
@@ -61,9 +59,9 @@ public class LinkController extends DrawingElementController implements ILinkCon
 	private final ICanvasAttributeChangeListener parentDrawingElementPropertyChangeListener;
 	private final ICanvasAttributeChangeListener linkAttributePropertyChangeListener;
 	
-	public LinkController(IViewControllerModel localViewControllerStore, ILinkEdge localLinkAttribute, int index){
+	public LinkController(IViewControllerModel localViewControllerStore, ILinkAttribute localLinkAttribute, int index){
 		super(localViewControllerStore, index);
-		this.linkAttribute = localLinkAttribute.getAttribute();
+		this.linkAttribute = localLinkAttribute;
 		this.parentAttribute = (ICanvasElementAttribute)this.linkAttribute.getCurrentElement().getParent().getAttribute();
 		this.linkDefinition = new LinkPointDefinition(linkAttribute);
 		this.srcTermChangeListener = new ILinkTerminusChangeListener() {
@@ -231,11 +229,11 @@ public class LinkController extends DrawingElementController implements ILinkCon
 	
 	
 	private IConnectingNodeController getSrcController(){
-		return getViewModel().getConnectingNodeController((ITypedDrawingNodeAttribute)linkAttribute.getCurrentElement().getConnectedNodes().getOutNode().getAttribute());
+		return getViewModel().getController((ITypedDrawingNodeAttribute)linkAttribute.getCurrentElement().getConnectedNodes().getOutNode().getAttribute());
 	}
 	
 	private IConnectingNodeController getTgtController(){
-		return getViewModel().getConnectingNodeController((ITypedDrawingNodeAttribute)linkAttribute.getCurrentElement().getConnectedNodes().getInNode().getAttribute());
+		return getViewModel().getController((ITypedDrawingNodeAttribute)linkAttribute.getCurrentElement().getConnectedNodes().getInNode().getAttribute());
 	}
 	
 	private void updateAnchorPoints() {
@@ -296,11 +294,6 @@ public class LinkController extends DrawingElementController implements ILinkCon
 		}
 	}
 	
-	@Override
-	public ILinkEdge getDrawingElement() {
-		return new LinkEdgeFacade(this.linkAttribute.getCurrentElement());
-	}
-
 	@Override
 	public ILinkPointDefinition getLinkDefinition() {
 		return this.linkDefinition;
