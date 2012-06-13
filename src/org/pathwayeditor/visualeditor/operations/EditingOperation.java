@@ -261,7 +261,7 @@ public class EditingOperation implements IEditingOperation {
 	@Override
 	public void deleteSelection() {
 		if(this.selectionRecord.numSelected() > 0){
-			commandStack.execute(new DeleteSelectionCommand(selectionRecord.getSubgraphSelection()));
+			commandStack.execute(new DeleteSelectionCommand(selectionRecord.getEdgeIncludedSelection()));
 			selectionRecord.clear();
 			shapePane.updateView();
 		}

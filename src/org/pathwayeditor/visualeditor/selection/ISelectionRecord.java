@@ -68,6 +68,8 @@ public interface ISelectionRecord {
 
 	ISubgraphSelection getSubgraphSelection();
 
+	ISubgraphSelection getEdgeIncludedSelection();
+
 	ILinkSelection getUniqueLinkSelection();
 
 	ILinkSelection getLinkSelection(ILinkController next);

@@ -34,7 +34,7 @@ public class NodePopupActions implements INodePopupActions {
 	}
 	
 	private void deleteSelection() {
-		this.commandStack.execute(new DeleteSelectionCommand(this.selectionRecord.getSubgraphSelection()));
+		this.commandStack.execute(new DeleteSelectionCommand(this.selectionRecord.getEdgeIncludedSelection()));
 	}
 
 	@Override

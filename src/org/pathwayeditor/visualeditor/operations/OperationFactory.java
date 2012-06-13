@@ -182,7 +182,7 @@ public class OperationFactory implements IOperationFactory {
 	}
 	
 	private void deleteSelection() {
-		this.commandStack.execute(new DeleteSelectionCommand(this.selectionRecord.getSubgraphSelection()));
+		this.commandStack.execute(new DeleteSelectionCommand(this.selectionRecord.getEdgeIncludedSelection()));
 	}
 
 	@Override

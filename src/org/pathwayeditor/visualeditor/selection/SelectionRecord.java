@@ -293,6 +293,18 @@ public class SelectionRecord implements ISelectionRecord {
 	}
 
 	@Override
+	public ISubgraphSelection getEdgeIncludedSelection() {
+		ISelectionFactory selectionFactory = new SelectionFactoryFacade(this.viewModel.getDomainModel().getGraph().subgraphFactory());
+		for(ISelection selection : this.selections){
+			updateSubgraphSelection(selectionFactory, selection);
+		}
+		IDrawingElementSelection currentSelectionSubgraph = selectionFactory.createGeneralSelection();
+		SubgraphSelection retVal = new SubgraphSelection(this, this.viewModel, currentSelectionSubgraph);
+		
+		return retVal;
+	}
+
+	@Override
 	public ILinkSelection getUniqueLinkSelection() {
 		ISelection retVal = this.selections.first();
 		return (ILinkSelection)retVal;
