@@ -18,21 +18,19 @@
 */
 package org.pathwayeditor.visualeditor.controller;
 
-import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasElementAttribute;
-import org.pathwayeditor.businessobjects.drawingprimitives.ILabelAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributeChangeListener;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributePropertyChangeEvent;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributeResizedEvent;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.ICanvasAttributeTranslationEvent;
 
+import uk.ac.ed.inf.graph.compound.ICompoundNode;
+
 public class LabelController extends CommonLabelController implements ILabelController {
-	private final ICanvasElementAttribute parentAttribute;
 //	private final ICanvasAttributeChangeListener drawingNodePropertyChangeListener;
 	private final ICanvasAttributeChangeListener parentDrawingNodePropertyChangeListener;
 	
-	public LabelController(IViewControllerModel viewModel, final ILabelAttribute node, int index) {
+	public LabelController(IViewControllerModel viewModel, final ICompoundNode node, int index) {
 		super(viewModel, node, index);
-		this.parentAttribute = (ICanvasElementAttribute)node.getCurrentElement().getParent().getAttribute();
 		parentDrawingNodePropertyChangeListener = new ICanvasAttributeChangeListener() {
 			
 			@Override
@@ -50,15 +48,14 @@ public class LabelController extends CommonLabelController implements ILabelCont
 		};
 	}
 
-
 	@Override
 	public void inactivateOverride() {
-		parentAttribute.removeChangeListener(parentDrawingNodePropertyChangeListener);
+		getParentAttribute().removeChangeListener(parentDrawingNodePropertyChangeListener);
 	}
 
 
 	@Override
 	public void activateOverride() {
-		parentAttribute.addChangeListener(parentDrawingNodePropertyChangeListener);
+		getParentAttribute().addChangeListener(parentDrawingNodePropertyChangeListener);
 	}
 }

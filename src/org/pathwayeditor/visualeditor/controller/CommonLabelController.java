@@ -47,6 +47,8 @@ import org.pathwayeditor.visualeditor.editingview.FigureDefinitionMiniCanvas;
 import org.pathwayeditor.visualeditor.editingview.IMiniCanvas;
 import org.pathwayeditor.visualeditor.feedback.FigureCompilationCache;
 
+import uk.ac.ed.inf.graph.compound.ICompoundNode;
+
 public abstract class CommonLabelController extends NodeController implements ILabelController {
 	private static final String FONT_NAME = "Arial";
 	private static final double DEFAULT_FONT_HEIGHT = 15.0;
@@ -66,17 +68,15 @@ public abstract class CommonLabelController extends NodeController implements IL
 		"0.0 xoffset 0.0 yoffset w h rect\n" +
 		"grestore\n" +
 		"0.5 0.5 :labelText cardinalityBox\n";
-	private final ILabelAttribute domainNode;
 	private final IFigureRenderingController controller;
 	private boolean isActive;
 	private final ICanvasAttributeChangeListener drawingNodePropertyChangeListener;
 	private IAnnotationPropertyChangeListener propertyValueChangeListener;
 	
-	protected CommonLabelController(IViewControllerModel viewModel, ILabelAttribute node, int index) {
-		super(viewModel, index);
-		this.domainNode = node;
+	protected CommonLabelController(IViewControllerModel viewModel, ICompoundNode node, int index) {
+		super(viewModel, index, node);
 		this.isActive = false;
-		this.controller = createController(domainNode);
+		this.controller = createController(getAssociatedAttribute());
 		drawingNodePropertyChangeListener = new ICanvasAttributeChangeListener() {
 			@Override
 			public void propertyChange(ICanvasAttributePropertyChangeEvent e) {
@@ -101,8 +101,8 @@ public abstract class CommonLabelController extends NodeController implements IL
 				}
 				else if(e.getPropertyChange().equals(CanvasAttributePropertyChange.FONT)){
 					getFigureController().setFont((GenericFont)e.getNewValue());
-					Envelope newBounds = recalculateLabelSize(domainNode.getDisplayedContent());
-					domainNode.setBounds(newBounds);
+					Envelope newBounds = recalculateLabelSize(getAssociatedAttribute().getDisplayedContent());
+					getAssociatedAttribute().setBounds(newBounds);
 //					getFigureController().setEnvelope(newBounds);
 //					getFigureController().generateFigureDefinition();
 				}
@@ -124,7 +124,7 @@ public abstract class CommonLabelController extends NodeController implements IL
 		propertyValueChangeListener = new IAnnotationPropertyChangeListener() {
 			@Override
 			public void propertyChange(IAnnotationPropertyChangeEvent e) {
-				String text = domainNode.getDisplayedContent();
+				String text = getAssociatedAttribute().getDisplayedContent();
 				getFigureController().setBindString(LABEL_TEXT, text);
 //				recalculateLabelSize(text);
 //				Dimension textExtent = MIN_LABEL_SIZE;
@@ -149,7 +149,7 @@ public abstract class CommonLabelController extends NodeController implements IL
 	}
 	
 	private Dimension handleGetTextBounds(String text) {
-		GenericFont attFont = this.domainNode.getFont();
+		GenericFont attFont = this.getAssociatedAttribute().getFont();
 		int style = 0;
 		for(IFont.Style s : attFont.getStyle()){
 			if(s.equals(IFont.Style.NORMAL)){
@@ -201,8 +201,8 @@ public abstract class CommonLabelController extends NodeController implements IL
 
 	@Override
 	public void inactivate() {
-		this.domainNode.removeChangeListener(drawingNodePropertyChangeListener);
-		this.domainNode.getProperty().removeChangeListener(propertyValueChangeListener);
+		this.getAssociatedAttribute().removeChangeListener(drawingNodePropertyChangeListener);
+		this.getAssociatedAttribute().getProperty().removeChangeListener(propertyValueChangeListener);
 		inactivateOverride();
 		this.isActive = false;
 	}
@@ -212,8 +212,8 @@ public abstract class CommonLabelController extends NodeController implements IL
 
 	@Override
 	public final void activate() {
-		this.domainNode.addChangeListener(this.drawingNodePropertyChangeListener);
-		this.domainNode.getProperty().addChangeListener(propertyValueChangeListener);
+		this.getAssociatedAttribute().addChangeListener(this.drawingNodePropertyChangeListener);
+		this.getAssociatedAttribute().getProperty().addChangeListener(propertyValueChangeListener);
 		activateOverride();
 		this.isActive = true;
 	}
@@ -271,7 +271,7 @@ public abstract class CommonLabelController extends NodeController implements IL
 
 	@Override
 	public ILabelAttribute getAssociatedAttribute() {
-		return this.domainNode;
+		return (ILabelAttribute)this.getGraphElement().getAttribute();
 	}
 
 }

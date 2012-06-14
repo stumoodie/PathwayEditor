@@ -5,7 +5,6 @@ import java.util.SortedSet;
 import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.drawingprimitives.IAnchorNodeAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ICurveSegment;
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNodeAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.IShapeAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.Colour;
@@ -36,7 +35,6 @@ import uk.ac.ed.inf.graph.util.impl.FilteredIterator;
 
 public class AnchorNodeController extends DrawingElementController implements IAnchorNodeController {
 	private final Logger logger = Logger.getLogger(this.getClass());
-	private final IAnchorNodeAttribute anchorNodeAttribute;
 	private final AnchorNodeFigureControllerHelper helper;
 	private final ICanvasAttributeChangeListener anchorNodePropertyChangeListener;
 	private ICanvasAttributeChangeListener parentDrawingNodePropertyChangeListener;
@@ -45,10 +43,9 @@ public class AnchorNodeController extends DrawingElementController implements IA
 	private final ICurveSegmentContainerListener curveSegmentChangeListener;
 
 	
-	public AnchorNodeController(IViewControllerModel viewController, IAnchorNodeAttribute lanchorNodeAttribute, int index) {
-		super(viewController, index);
-		this.anchorNodeAttribute = lanchorNodeAttribute;
-		this.helper  = new AnchorNodeFigureControllerHelper(anchorNodeAttribute);
+	public AnchorNodeController(IViewControllerModel viewController, ICompoundNode lanchorNodeAttribute, int index) {
+		super(viewController, index, lanchorNodeAttribute);
+		this.helper  = new AnchorNodeFigureControllerHelper(getAssociatedAttribute());
 		this.helper.createFigureController();
 		anchorNodePropertyChangeListener = new ICanvasAttributeChangeListener() {
 			@Override
@@ -124,15 +121,15 @@ public class AnchorNodeController extends DrawingElementController implements IA
 			@Override
 			public void locationChange(ICurveSegmentLocationChangeEvent e) {
 				if(logger.isTraceEnabled()){
-					logger.trace("Detected associatedSeg move. Old seg posns=" + e.getOldPosition() + ", Old anchorPosn=" + anchorNodeAttribute.getAnchorLocation());
+					logger.trace("Detected associatedSeg move. Old seg posns=" + e.getOldPosition() + ", Old anchorPosn=" + getAssociatedAttribute().getAnchorLocation());
 				}
 				AnchorPointChangeCalculator calc = new AnchorPointChangeCalculator(e.getOldPosition(), e.getNewPosition());
 				calc.setAnchorPosn(getConvexHull().getCentre());
 				ICurveSegment curveSeg = getAssociatedCurveSegment();
 				curveSeg.visit(calc);
-				anchorNodeAttribute.setAnchorLocation(calc.getNewAnchorPosn());
+				getAssociatedAttribute().setAnchorLocation(calc.getNewAnchorPosn());
 				if(logger.isTraceEnabled()){
-					logger.trace("Calculated new anchor posn. New seg posns=" + e.getNewPosition() + ", New anchorPosn=" + anchorNodeAttribute.getAnchorLocation());
+					logger.trace("Calculated new anchor posn. New seg posns=" + e.getNewPosition() + ", New anchorPosn=" + getAssociatedAttribute().getAnchorLocation());
 				}
 			}
 		};
@@ -141,28 +138,24 @@ public class AnchorNodeController extends DrawingElementController implements IA
 			@Override
 			public void curveSegmentsReplaced(ICurveSegmentContainerEvent e) {
 				AnchorPointSegmentChangeCalculator calc = new AnchorPointSegmentChangeCalculator(e.getOriginalSegments(), e.getReplacementSegments());
-				calc.calculateNewCurveAssociation(anchorNodeAttribute.getAnchorLocation());
-				anchorNodeAttribute.setAnchorLocation(calc.getNewAnchorPosn());
-				ICurveSegment oldCurveSegment = anchorNodeAttribute.getAssociatedCurveSegment();
-				anchorNodeAttribute.setAssociatedCurveSegment(calc.getNewAssociatedCurveSegment());
+				calc.calculateNewCurveAssociation(getAssociatedAttribute().getAnchorLocation());
+				getAssociatedAttribute().setAnchorLocation(calc.getNewAnchorPosn());
+				ICurveSegment oldCurveSegment = getAssociatedAttribute().getAssociatedCurveSegment();
+				getAssociatedAttribute().setAssociatedCurveSegment(calc.getNewAssociatedCurveSegment());
 				if(logger.isTraceEnabled()){
 					logger.trace("Detected segment replacement. NewAnchorPosn=" + calc.getNewAnchorPosn() + ", NewAssocCurveSeg=" + calc.getNewAssociatedCurveSegment());
 				}
 				// remove listener from previous seg
 				oldCurveSegment.removeCurveSegmentChangeListener(associatedCurveChangeListener);
 				// attach listener to new associated seg
-				anchorNodeAttribute.getAssociatedCurveSegment().addCurveSegmentChangeListener(associatedCurveChangeListener);
+				getAssociatedAttribute().getAssociatedCurveSegment().addCurveSegmentChangeListener(associatedCurveChangeListener);
 			}
 		};
 		this.isActive = false;
 	}
 
-	private ILinkAttribute getParentAttribute(){
-		return (ILinkAttribute)this.anchorNodeAttribute.getCurrentElement().getParent().getAttribute();
-	}
-	
 	private ICurveSegment getAssociatedCurveSegment(){
-		return this.anchorNodeAttribute.getAssociatedCurveSegment();
+		return this.getAssociatedAttribute().getAssociatedCurveSegment();
 	}
 	
 	@Override
@@ -176,15 +169,20 @@ public class AnchorNodeController extends DrawingElementController implements IA
 		return this.helper.getFigureController().getEnvelope();
 	}
 
+	@Override
+	protected ILinkAttribute getParentAttribute(){
+		return (ILinkAttribute)super.getParentAttribute();
+	}
+	
 	private void addListeners() {
-		anchorNodeAttribute.addChangeListener(anchorNodePropertyChangeListener);
+		getAssociatedAttribute().addChangeListener(anchorNodePropertyChangeListener);
 		this.getParentAttribute().addChangeListener(parentDrawingNodePropertyChangeListener);
 		this.getParentAttribute().getCurveSegmentContainer().addCurveSegmentContainerListener(this.curveSegmentChangeListener);
 		this.getAssociatedCurveSegment().addCurveSegmentChangeListener(this.associatedCurveChangeListener);
 	}
 	
 	private void removeListeners() {
-		anchorNodeAttribute.removeChangeListener(anchorNodePropertyChangeListener);
+		getAssociatedAttribute().removeChangeListener(anchorNodePropertyChangeListener);
 		getParentAttribute().removeChangeListener(parentDrawingNodePropertyChangeListener);
 		this.getParentAttribute().getCurveSegmentContainer().removeCurveSegmentContainerListener(this.curveSegmentChangeListener);
 		this.getAssociatedCurveSegment().removeCurveSegmentChangeListener(this.associatedCurveChangeListener);
@@ -274,12 +272,12 @@ public class AnchorNodeController extends DrawingElementController implements IA
 		boolean retVal = false;
 		// algorithm is to find the intersecting shapes and then check if the
 		// children and parents are in the intersection list
-		Envelope newBounds = anchorNodeAttribute.getBounds().resize(originDelta, resizeDelta);
+		Envelope newBounds = getAssociatedAttribute().getBounds().resize(originDelta, resizeDelta);
 		if(logger.isTraceEnabled()){
 			logger.trace("In can resize. New bounds = " + newBounds + ",originDelta=" + originDelta + ",resizeDelta=" + resizeDelta);
 		}
 		if(newBounds.getDimension().getWidth() > 0.0 && newBounds.getDimension().getHeight() > 0.0){
-			ILinkController parentNode = this.getViewModel().getController((ILinkAttribute)this.anchorNodeAttribute.getCurrentElement().getParent().getAttribute());
+			ILinkController parentNode = this.getViewModel().getController(getGraphElement().getParent());
 			IIntersectionCalculator intCal = this.getViewModel().getIntersectionCalculator();
 			intCal.setFilter(new IIntersectionCalcnFilter() {
 				@Override
@@ -312,7 +310,7 @@ public class AnchorNodeController extends DrawingElementController implements IA
 //		Iterator<ICompoundNode> iter = new SubModelFacade(parentNode.getDrawingElement().getGraphElement().getChildCompoundGraph()).shapeNodeIterator();
 		boolean retVal = true;
 		while(iter.hasNext() && retVal){
-			INodeController child = this.getViewModel().getController((IDrawingNodeAttribute)iter.next().getAttribute());
+			INodeController child = this.getViewModel().getController(iter.next());
 			retVal = intersectingNodes.contains(child);
 		}
 		return retVal;
@@ -325,7 +323,7 @@ public class AnchorNodeController extends DrawingElementController implements IA
 
 	@Override
 	public IAnchorNodeAttribute getAssociatedAttribute() {
-		return this.anchorNodeAttribute;
+		return (IAnchorNodeAttribute)this.getGraphElement().getAttribute();
 	}
 
 }

@@ -1,12 +1,12 @@
 package org.pathwayeditor.visualeditor.commands;
 
 import java.text.Format;
-import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasElementAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILabelAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILabelAttributeFactory;
+import org.pathwayeditor.businessobjects.drawingprimitives.IModel;
 import org.pathwayeditor.businessobjects.drawingprimitives.IShapeAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.properties.IAnnotationProperty;
 import org.pathwayeditor.businessobjects.notationsubsystem.INotationSyntaxService;
@@ -36,43 +36,30 @@ public class LabelCreationCommand implements ICommand {
 	public void execute() {
 		ICompoundNodeFactory labelFactory = prop.getOwner().getCurrentElement().getChildCompoundGraph().nodeFactory();
 		this.oldState = labelFactory.getGraph().getCurrentState();
-		ILabelAttributeFactory labelAttFact = (ILabelAttributeFactory)labelFactory.getAttributeFactory();
+		IModel att = ((ICanvasElementAttribute)prop.getOwner()).getModel();
+		ILabelAttributeFactory labelAttFact = att.labelAttributeFactory();
 		labelAttFact.setProperty(prop);
-		ICanvasElementAttribute owningAtt = (ICanvasElementAttribute)prop.getOwner();
-		ILabelObjectType labelObjectType = owningAtt.getModel().getNotationSubsystem().getSyntaxService().getLabelObjectTypeByProperty(prop.getDefinition());
+		ILabelObjectType labelObjectType = att.getNotationSubsystem().getSyntaxService().getLabelObjectTypeByProperty(prop.getDefinition());
 		labelAttFact.setLabelObjectType(labelObjectType);
+		labelFactory.setAttributeFactory(labelAttFact);
 		ICompoundNode newNode = labelFactory.createNode();
 		this.newState = newNode.getGraph().getCurrentState();
-		createShapeLabels(labelFactory, labelAttFact);
+		ILabelAttribute labelAtt = (ILabelAttribute)newNode.getAttribute();
+		createShapeLabels(labelAtt);
+		if(logger.isDebugEnabled()){
+			logger.debug("Created label. Att=" + labelAtt + ", bounds=" + labelAtt.getBounds());
+		}
 	}
 
-	private void createShapeLabels(ICompoundNodeFactory nodeFactory, ILabelAttributeFactory labelFact){
-//		ICompoundNode shapeNode = new ShapeNodeFacade((ICompoundNode)prop.getOwner().getCurrentElement());
+	private void createShapeLabels(ILabelAttribute labelAtt){
 		IShapeAttribute owningShapeAtt = (IShapeAttribute)prop.getOwner();
 		INotationSyntaxService syntaxService = owningShapeAtt.getModel().getNotationSubsystem().getSyntaxService();
 		ShapeFigureControllerHelper figureHelper = new ShapeFigureControllerHelper(owningShapeAtt);
 		figureHelper.createFigureController();
-		Iterator<IAnnotationProperty> defnIter = owningShapeAtt.propertyIterator();
-		while(defnIter.hasNext()){
-			IAnnotationProperty defn = defnIter.next();
-			if(syntaxService.isVisualisableProperty(defn.getDefinition())){
-				ILabelObjectType labelObjectType = syntaxService.getLabelObjectTypeByProperty(defn.getDefinition());
-				if(labelObjectType.isAlwaysDisplayed()){
-					String defaultText = getDisplayedLabelText(labelObjectType, defn);
-//					ILabelNodeFactory labelFact = new shapeNode.getGraphElement().getChildCompoundGraph().nodeFactory();
-					// display props that are always displayed
-					labelFact.setProperty(defn);
-					labelFact.setLabelObjectType(syntaxService.getLabelObjectTypeByProperty(defn.getDefinition()));
-					nodeFactory.setAttributeFactory(labelFact);
-					ICompoundNode labelNode = nodeFactory.createNode();
-					if(logger.isDebugEnabled()){
-						logger.debug("Create labelNode=" + labelNode + ", bounds=" + ((ILabelAttribute)labelNode.getAttribute()).getBounds());
-					}
-					Envelope labelBounds = this.labelPositionCalculator.calculateLabelPosition(figureHelper.getFigureController(), labelObjectType, defaultText);
-					((ILabelAttribute)labelNode.getAttribute()).setBounds(labelBounds);
-				}
-			}
-		}
+		ILabelObjectType labelObjectType = syntaxService.getLabelObjectTypeByProperty(this.prop.getDefinition());
+		String defaultText = getDisplayedLabelText(labelObjectType, this.prop);
+		Envelope labelBounds = this.labelPositionCalculator.calculateLabelPosition(figureHelper.getFigureController(), labelObjectType, defaultText);
+		labelAtt.setBounds(labelBounds);
 	}
 	
 	private String getDisplayedLabelText(ILabelObjectType labelObjectType, IAnnotationProperty defn) {

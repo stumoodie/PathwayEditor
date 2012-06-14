@@ -26,6 +26,8 @@ import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.editingview.IMiniCanvas;
 
+import uk.ac.ed.inf.graph.compound.ICompoundGraphElement;
+
 public interface IDrawingElementController extends Comparable<IDrawingElementController> {
 
 	int getIndex();
@@ -36,6 +38,7 @@ public interface IDrawingElementController extends Comparable<IDrawingElementCon
 		
 	ICanvasElementAttribute getAssociatedAttribute();
 
+	ICompoundGraphElement getGraphElement();
 	
 	Envelope getDrawnBounds();
 	

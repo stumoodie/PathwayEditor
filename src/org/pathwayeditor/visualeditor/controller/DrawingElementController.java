@@ -22,18 +22,23 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasElementAttribute;
 import org.pathwayeditor.figure.geometry.Envelope;
+
+import uk.ac.ed.inf.graph.compound.ICompoundGraphElement;
 
 public abstract class DrawingElementController implements IDrawingElementController {
 	private final List<IDrawingElementControllerListener> listeners;
 	private final IViewControllerModel viewModel;
 //	private final IViewControllerSubModel viewSubModel;
+	private final ICompoundGraphElement graphElement;
 	private final int index;
 	
-	protected DrawingElementController(IViewControllerModel viewModel, int index){
+	protected DrawingElementController(IViewControllerModel viewModel, int index, ICompoundGraphElement element){
 		this.listeners = new LinkedList<IDrawingElementControllerListener>();
 		this.viewModel = viewModel;
 		this.index = index;
+		this.graphElement = element;
 //		this.viewSubModel = new ViewControllerSubModel(viewModel, this);
 	}
 	
@@ -100,6 +105,16 @@ public abstract class DrawingElementController implements IDrawingElementControl
 	}
 
 	@Override
+	public ICompoundGraphElement getGraphElement(){
+		return this.graphElement;
+	}
+	
+	protected ICanvasElementAttribute getParentAttribute(){
+		return (ICanvasElementAttribute)this.getGraphElement().getParent().getAttribute();
+	}
+
+
+	@Override
 	public final int hashCode() {
 		final int prime = 31;
 		int result = 1;
@@ -136,11 +151,11 @@ public abstract class DrawingElementController implements IDrawingElementControl
 	
 	@Override
 	public int compareTo(IDrawingElementController other){
-		int retVal = this.getAssociatedAttribute().getCurrentElement().getLevel() < other.getAssociatedAttribute().getCurrentElement().getLevel() ? -1 :
-			(this.getAssociatedAttribute().getCurrentElement().getLevel() > other.getAssociatedAttribute().getCurrentElement().getLevel() ? 1 : 0);
+		int retVal = this.getGraphElement().getLevel() < other.getGraphElement().getLevel() ? -1 :
+			(this.getGraphElement().getLevel() > other.getGraphElement().getLevel() ? 1 : 0);
 		if(retVal == 0){
-			retVal = this.getAssociatedAttribute().getCurrentElement().getIndex() < other.getAssociatedAttribute().getCurrentElement().getIndex() ? -1 :
-				(this.getAssociatedAttribute().getCurrentElement().getIndex() > other.getAssociatedAttribute().getCurrentElement().getIndex() ? 1 : 0);
+			retVal = this.getGraphElement().getIndex() < other.getGraphElement().getIndex() ? -1 :
+				(this.getGraphElement().getIndex() > other.getGraphElement().getIndex() ? 1 : 0);
 		}
 		return retVal;
 	}

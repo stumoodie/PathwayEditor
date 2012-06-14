@@ -18,7 +18,6 @@
 */
 package org.pathwayeditor.visualeditor.controller;
 
-import org.pathwayeditor.businessobjects.drawingprimitives.ILabelAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IBendPointContainerListener;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.IBendPointLocationChangeEvent;
@@ -33,16 +32,16 @@ import org.pathwayeditor.businessobjects.drawingprimitives.listeners.LinkTerminu
 import org.pathwayeditor.figure.geometry.LineSegment;
 import org.pathwayeditor.figure.geometry.Point;
 
+import uk.ac.ed.inf.graph.compound.ICompoundNode;
+
 public class LinkLabelController extends CommonLabelController implements ILabelController {
-	private final ILinkAttribute parentAttribute;
 	private final ICanvasAttributeChangeListener parentDrawingNodePropertyChangeListener;
 	private final IBendPointContainerListener parentLinkBendpointChangeListener;
 	private final ILinkTerminusChangeListener parentSourceLinkterminusChangeListener;
 	private final ILinkTerminusChangeListener parentTargetLinkterminusChangeListener;
 	
-	public LinkLabelController(IViewControllerModel viewModel, final ILabelAttribute node, int index) {
+	public LinkLabelController(IViewControllerModel viewModel, final ICompoundNode node, int index) {
 		super(viewModel, node, index);
-		this.parentAttribute = (ILinkAttribute)node.getCurrentElement().getParent().getAttribute();
 		parentDrawingNodePropertyChangeListener = new ICanvasAttributeChangeListener() {
 			
 			@Override
@@ -92,10 +91,15 @@ public class LinkLabelController extends CommonLabelController implements ILabel
 			
 		};
 	}
+	
+	@Override
+	protected ILinkAttribute getParentAttribute(){
+		return (ILinkAttribute)super.getParentAttribute();
+	}
 
 	private void recalculateLabelPosition(){
-		LineSegment originalLink = new LineSegment(this.parentAttribute.getSourceTerminus().getLocation(),
-				this.parentAttribute.getTargetTerminus().getLocation());
+		LineSegment originalLink = new LineSegment(this.getParentAttribute().getSourceTerminus().getLocation(),
+				this.getParentAttribute().getTargetTerminus().getLocation());
 		Point linkMidPoint = originalLink.getMidPoint();
 		Point originalCentrePosn = getAssociatedAttribute().getBounds().getCentre();
 		Point labelTranslation = originalCentrePosn.difference(linkMidPoint);
@@ -104,18 +108,18 @@ public class LinkLabelController extends CommonLabelController implements ILabel
 	
 	@Override
 	public void inactivateOverride() {
-		parentAttribute.removeChangeListener(parentDrawingNodePropertyChangeListener);
-		this.parentAttribute.getBendPointContainer().removeChangeListener(parentLinkBendpointChangeListener);
-		this.parentAttribute.getSourceTerminus().removeLinkTerminusChangeListener(parentSourceLinkterminusChangeListener);
-		this.parentAttribute.getTargetTerminus().removeLinkTerminusChangeListener(parentTargetLinkterminusChangeListener);
+		getParentAttribute().removeChangeListener(parentDrawingNodePropertyChangeListener);
+		this.getParentAttribute().getBendPointContainer().removeChangeListener(parentLinkBendpointChangeListener);
+		this.getParentAttribute().getSourceTerminus().removeLinkTerminusChangeListener(parentSourceLinkterminusChangeListener);
+		this.getParentAttribute().getTargetTerminus().removeLinkTerminusChangeListener(parentTargetLinkterminusChangeListener);
 	}
 
 
 	@Override
 	public void activateOverride() {
-		parentAttribute.addChangeListener(parentDrawingNodePropertyChangeListener);
-		this.parentAttribute.getBendPointContainer().addChangeListener(parentLinkBendpointChangeListener);
-		this.parentAttribute.getSourceTerminus().addLinkTerminusChangeListener(parentSourceLinkterminusChangeListener);
-		this.parentAttribute.getTargetTerminus().addLinkTerminusChangeListener(parentTargetLinkterminusChangeListener);
+		getParentAttribute().addChangeListener(parentDrawingNodePropertyChangeListener);
+		this.getParentAttribute().getBendPointContainer().addChangeListener(parentLinkBendpointChangeListener);
+		this.getParentAttribute().getSourceTerminus().addLinkTerminusChangeListener(parentSourceLinkterminusChangeListener);
+		this.getParentAttribute().getTargetTerminus().addLinkTerminusChangeListener(parentTargetLinkterminusChangeListener);
 	}
 }

@@ -36,7 +36,6 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 
 import org.apache.log4j.Logger;
-import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.IModel;
 import org.pathwayeditor.businessobjects.notationsubsystem.INotationSubsystem;
 import org.pathwayeditor.figure.geometry.Envelope;
@@ -376,7 +375,7 @@ public class PathwayEditor extends JPanel {
 	
 	public void selectAndFocusOnElement(ICompoundEdge linkEdge) {
 		selectionRecord.clear();
-		IDrawingElementController linkController = viewModel.getController((ILinkAttribute)linkEdge.getAttribute());
+		IDrawingElementController linkController = viewModel.getController(linkEdge);
 		selectionRecord.setPrimarySelection(linkController);
 	}
 	

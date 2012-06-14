@@ -44,12 +44,12 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="libs/graphicsRepo/jlfgr-1_0.jar"/>
-	<classpathentry kind="lib" path="libs/compoundGraph/CompoundGraph.jar" sourcepath="libs/compoundGraph/CompoundGraph-src.jar"/>
 	<classpathentry kind="lib" path="libs/antlr-3.4/lib/antlr-3.4-complete.jar"/>
 	<classpathentry kind="lib" path="libs/jmock-2.5.1/cglib-nodep-2.1_3.jar"/>
 	<classpathentry kind="lib" path="libs/jmock-2.5.1/jmock-2.5.1.jar"/>
 	<classpathentry kind="lib" path="libs/jmock-2.5.1/jmock-junit4-2.5.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.ajdt.core.ASPECTJRT_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/CompoundGraph"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/VisualLanguageToolkit"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/NotationSubsystemUtils"/>
 	<classpathentry kind="lib" path="libs/jmock-2.5.1/bsh-core-2.0b4.jar"/>

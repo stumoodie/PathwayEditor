@@ -28,16 +28,16 @@ import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.figure.geometry.RectangleHull;
 import org.pathwayeditor.visualeditor.editingview.IMiniCanvas;
 
+import uk.ac.ed.inf.graph.compound.ICompoundNode;
+
 public class RootController extends NodeController implements IRootController {
-	private final IRootAttribute domainNode;
 	private final IConvexHull hull;
 	private boolean isActive;
 	
 	
-	public RootController(IViewControllerModel viewModel, IRootAttribute node, int index) {
-		super(viewModel, index);
-		this.domainNode = node;
-		this.hull = new RectangleHull(domainNode.getBounds());
+	public RootController(IViewControllerModel viewModel, ICompoundNode node, int index) {
+		super(viewModel, index, node);
+		this.hull = new RectangleHull(getAssociatedAttribute().getBounds());
 		this.isActive = false;
 	}
 
@@ -108,11 +108,7 @@ public class RootController extends NodeController implements IRootController {
 
 	@Override
 	public IRootAttribute getAssociatedAttribute() {
-		return this.domainNode;
+		return (IRootAttribute)this.getGraphElement().getAttribute();
 	}
 
-//	@Override
-//	public IAnchorLocatorFactory getAnchorLocatorFactory() {
-//		throw new UnsupportedOperationException("Not in use. This should not be called!");
-//	}
 }

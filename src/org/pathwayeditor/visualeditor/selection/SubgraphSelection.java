@@ -47,7 +47,7 @@ public class SubgraphSelection implements ISubgraphSelection {
 		Iterator<ICompoundNode> nodeIter = currentSelectionSubgraph.nodeIterator();
 		while(nodeIter.hasNext()){
 			ICompoundNode drawingNode = nodeIter.next();
-			INodeController nodeController = this.viewControllerStore.getController(drawingNode.getAttribute());
+			INodeController nodeController = this.viewControllerStore.getController(drawingNode);
 			if(!this.selectionRecord.containsSelection(nodeController)){
 				this.subGraphSelections.put(nodeController, new NodeSelection(SelectionType.SUBGRAPH, nodeController));
 			}
@@ -55,7 +55,7 @@ public class SubgraphSelection implements ISubgraphSelection {
 		Iterator<ICompoundEdge> linkIter = currentSelectionSubgraph.edgeIterator();
 		while(linkIter.hasNext()){
 			ICompoundEdge drawingNode = linkIter.next();
-			ILinkController linkController = this.viewControllerStore.getController(drawingNode.getAttribute());
+			ILinkController linkController = this.viewControllerStore.getController(drawingNode);
 			if(linkController == null){
 				Exception e = new IllegalStateException("Link Controller not found");
 				logger.error("Link Controller not found. drawingElement=" + drawingNode, e);
@@ -93,7 +93,7 @@ public class SubgraphSelection implements ISubgraphSelection {
 
 			@Override
 			public ILinkSelection next() {
-				ILinkController linkController = viewControllerStore.getController(iter.next().getAttribute());
+				ILinkController linkController = viewControllerStore.getController(iter.next());
 				ILinkSelection retVal = selectionRecord.getLinkSelection(linkController);
 				if(retVal == null){
 					retVal = (ILinkSelection)subGraphSelections.get(linkController);
@@ -122,7 +122,7 @@ public class SubgraphSelection implements ISubgraphSelection {
 
 			@Override
 			public INodeSelection next() {
-				INodeController nodeController = viewControllerStore.getController(iter.next().getAttribute());
+				INodeController nodeController = viewControllerStore.getController(iter.next());
 				INodeSelection retVal = selectionRecord.getNodeSelection(nodeController);
 				if(retVal == null){
 					retVal = (INodeSelection)subGraphSelections.get(nodeController);
@@ -152,7 +152,7 @@ public class SubgraphSelection implements ISubgraphSelection {
 
 			@Override
 			public INodeSelection next() {
-				INodeController nodeController = viewControllerStore.getController(iter.next().getAttribute());
+				INodeController nodeController = viewControllerStore.getController(iter.next());
 				INodeSelection retVal = selectionRecord.getNodeSelection(nodeController);
 				if(retVal == null){
 					retVal = (INodeSelection)subGraphSelections.get(nodeController);
@@ -182,7 +182,7 @@ public class SubgraphSelection implements ISubgraphSelection {
 
 			@Override
 			public ILinkSelection next() {
-				ILinkController nodeController = viewControllerStore.getController(iter.next().getAttribute());
+				ILinkController nodeController = viewControllerStore.getController(iter.next());
 				ILinkSelection retVal = selectionRecord.getLinkSelection(nodeController);
 				if(retVal == null){
 					retVal = (ILinkSelection)subGraphSelections.get(nodeController);

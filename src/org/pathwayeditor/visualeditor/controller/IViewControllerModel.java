@@ -24,7 +24,15 @@ import org.pathwayeditor.businessobjects.drawingprimitives.IModel;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.visualeditor.geometry.IIntersectionCalculator;
 
-import uk.ac.ed.inf.graph.compound.IElementAttribute;
+/**
+ * An interface that define a controller model. This is a collection of controllers, but with the
+ * added ability to manage the creation and removal of controllers via listeners that are registered with this interface.
+ * Note that the model must be associated with the {@code ICompoundGraphElement} rather than instances of {@code ICanvasElementAttribute} because
+ * an attribute can be associated with one graph element, for example when a shape becomes a child of another shape, in which case the attribute points
+ * to the new node, but this controller model needs to remove the old controller associated with the old node as well as create a new controller for the new node. 
+ * @author Stuart Moodie
+ *
+ */
 
 public interface IViewControllerModel extends IViewControllerCollection {
 

@@ -86,7 +86,8 @@ public class ShapeCreationCommand implements ICommand {
 					ICompoundNodeFactory labelFact = shapeHull.getCurrentElement().getChildCompoundGraph().nodeFactory();
 					// display props that are always displayed
 					fact.setProperty(defn);
-					fact.setLabelObjectType(syntaxService.getLabelObjectTypeByProperty(defn.getDefinition()));
+					fact.setLabelObjectType(labelObjectType);
+					labelFact.setAttributeFactory(fact);
 					ICompoundNode labelNode = labelFact.createNode();
 					if(logger.isDebugEnabled()){
 						logger.debug("Create labelNode=" + labelNode + ", bounds=" + ((ILabelAttribute)labelNode.getAttribute()).getBounds());

@@ -22,8 +22,6 @@ import java.util.Iterator;
 import java.util.SortedSet;
 
 import org.apache.log4j.Logger;
-import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasElementAttribute;
-import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNodeAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.IShapeAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.attributes.Colour;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.CanvasAttributePropertyChange;
@@ -52,18 +50,16 @@ import uk.ac.ed.inf.graph.util.impl.FilteredIterator;
 
 public class ShapeController extends NodeController implements IShapeController {
 	private final Logger logger = Logger.getLogger(this.getClass());
-	private final IShapeAttribute domainNode;
 	private final ICanvasAttributeChangeListener shapePropertyChangeListener;
 	private final IAnnotationPropertyChangeListener annotPropChangeListener;
 	private final IFigureControllerHelper figureController;
 	private final ICanvasAttributeChangeListener parentDrawingNodePropertyChangeListener;
 	private boolean isActive;
 	
-	public ShapeController(IViewControllerModel viewModel, IShapeAttribute node, int index) {
-		super(viewModel, index);
+	public ShapeController(IViewControllerModel viewModel, ICompoundNode node, int index) {
+		super(viewModel, index, node);
 		
-		this.domainNode = node;
-		this.figureController = new ShapeFigureControllerHelper(domainNode);
+		this.figureController = new ShapeFigureControllerHelper(getAssociatedAttribute());
 		figureController.createFigureController();
 		shapePropertyChangeListener = new ICanvasAttributeChangeListener() {
 			@Override
@@ -137,9 +133,9 @@ public class ShapeController extends NodeController implements IShapeController 
 			@Override
 			public void elementTranslated(ICanvasAttributeTranslationEvent e) {
 				if(logger.isTraceEnabled()){
-					logger.trace("Detected translation att=" + domainNode + ", delta=" + e.getTranslationDelta());
+					logger.trace("Detected translation att=" + getAssociatedAttribute() + ", delta=" + e.getTranslationDelta());
 				}
-				domainNode.translate(e.getTranslationDelta());
+				getAssociatedAttribute().translate(e.getTranslationDelta());
 			}
 			@Override
 			public void nodeResized(ICanvasAttributeResizedEvent e) {
@@ -149,7 +145,7 @@ public class ShapeController extends NodeController implements IShapeController 
 
 	@Override
 	public void activate(){
-		addListeners(this.domainNode);
+		addListeners(this.getAssociatedAttribute());
 		this.isActive = true;
 	}
 	
@@ -223,7 +219,7 @@ public class ShapeController extends NodeController implements IShapeController 
 	}
 	
 	private void removeListeners() {
-		final IShapeAttribute attribute = this.domainNode;
+		final IShapeAttribute attribute = getAssociatedAttribute();
 		attribute.removeChangeListener(shapePropertyChangeListener);
 		Iterator<IAnnotationProperty> iter = attribute.propertyIterator();
 		while(iter.hasNext()){
@@ -233,10 +229,6 @@ public class ShapeController extends NodeController implements IShapeController 
 		this.getParentAttribute().removeChangeListener(parentDrawingNodePropertyChangeListener);
 	}
 		
-	private ICanvasElementAttribute getParentAttribute() {
-		return (ICanvasElementAttribute)this.domainNode.getCurrentElement().getParent().getAttribute();
-	}
-
 	@Override
 	public IFigureRenderingController getFigureController() {
 		return this.figureController.getFigureController();
@@ -257,12 +249,12 @@ public class ShapeController extends NodeController implements IShapeController 
 		boolean retVal = false;
 		// algorithm is to find the intersecting shapes and then check if the
 		// children and parents are in the intersection list
-		Envelope newBounds = this.domainNode.getBounds().resize(originDelta, resizeDelta);
+		Envelope newBounds = this.getAssociatedAttribute().getBounds().resize(originDelta, resizeDelta);
 		if(logger.isTraceEnabled()){
 			logger.trace("In can resize. New bounds = " + newBounds + ",originDelta=" + originDelta + ",resizeDelta=" + resizeDelta);
 		}
 		if(newBounds.getDimension().getWidth() > 0.0 && newBounds.getDimension().getHeight() > 0.0){
-			INodeController parentNode = this.getViewModel().getController((IDrawingNodeAttribute)this.domainNode.getCurrentElement().getParent().getAttribute());
+			INodeController parentNode = this.getViewModel().getController(this.getGraphElement().getParent());
 			IIntersectionCalculator intCal = this.getViewModel().getIntersectionCalculator();
 			intCal.setFilter(new IIntersectionCalcnFilter() {
 				@Override
@@ -295,7 +287,7 @@ public class ShapeController extends NodeController implements IShapeController 
 //		Iterator<ICompoundNode> iter = new SubModelFacade(parentNode.getDrawingElement().getGraphElement().getChildCompoundGraph()).shapeNodeIterator();
 		boolean retVal = true;
 		while(iter.hasNext() && retVal){
-			INodeController child = this.getViewModel().getController((IDrawingNodeAttribute)iter.next().getAttribute());
+			INodeController child = this.getViewModel().getController(iter.next());
 			retVal = intersectingNodes.contains(child);
 		}
 		return retVal;
@@ -340,7 +332,7 @@ public class ShapeController extends NodeController implements IShapeController 
 
 	@Override
 	public IShapeAttribute getAssociatedAttribute() {
-		return this.domainNode;
+		return (IShapeAttribute)this.getGraphElement().getAttribute();
 	}
 
 //	@Override

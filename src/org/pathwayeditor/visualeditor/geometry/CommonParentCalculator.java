@@ -67,7 +67,7 @@ public class CommonParentCalculator implements ICommonParentCalculator {
 	}
 	
 	private IDrawingElementController getNodeController(ICompoundGraphElement node){
-		return this.calc.getModel().getController(node.getAttribute());
+		return this.calc.getModel().getController(node);
 	}
 	
 	/* (non-Javadoc)

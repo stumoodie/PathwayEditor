@@ -27,7 +27,6 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILabelAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
-import org.pathwayeditor.businessobjects.drawingprimitives.ITypedDrawingNodeAttribute;
 import org.pathwayeditor.figure.rendering.IAnchorLocatorFactory;
 import org.pathwayeditor.visualeditor.controller.IConnectingNodeController;
 import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
@@ -83,13 +82,13 @@ public class FeedbackModel implements IFeedbackModel {
 				Iterator<ICompoundEdge> incidentEdgeIterator = shapeNode.getOutEdgeIterator();
 				while(incidentEdgeIterator.hasNext()){
 					ICompoundEdge linkAtt = incidentEdgeIterator.next();
-					ILinkController linkController = selectedNode.getViewModel().getController(linkAtt.getAttribute()); 
+					ILinkController linkController = selectedNode.getViewModel().getController(linkAtt); 
 					incidentEdgeSet.add(linkController);
 				}
 				Iterator<ICompoundEdge> incidentTgtEdgeIterator = shapeNode.getInEdgeIterator();
 				while(incidentTgtEdgeIterator.hasNext()){
 					ICompoundEdge linkAtt = incidentTgtEdgeIterator.next();
-					ILinkController linkController= selectedNode.getViewModel().getController(linkAtt.getAttribute()); 
+					ILinkController linkController= selectedNode.getViewModel().getController(linkAtt); 
 					incidentEdgeSet.add(linkController);
 				}
 			}					
@@ -128,7 +127,7 @@ public class FeedbackModel implements IFeedbackModel {
 //		Iterator<ICompoundNode> labelIter = linkSubmodel.labelIterator();
 		while(labelIter.hasNext()){
 			ICompoundNode label = labelIter.next();
-			INodeController labelController = linkController.getViewModel().getController(label.getAttribute()); 
+			INodeController labelController = linkController.getViewModel().getController(label); 
 			if(!this.selectionMapping.containsKey(labelController)){
 				IFeedbackNode feedbackNode = builder.createFromDrawingNodeAttribute(labelController.getAssociatedAttribute());
 				this.selectionMapping.put(labelController, feedbackNode);
@@ -249,11 +248,11 @@ public class FeedbackModel implements IFeedbackModel {
 		CompoundNodePair pair = linkEdge.getAssociatedAttribute().getCurrentElement().getConnectedNodes();
 		ICompoundNode srcShape = pair.getOutNode();
 		IViewControllerModel viewControllerStore = linkEdge.getViewModel();
-		IConnectingNodeController srcShapeController = viewControllerStore.getController((ITypedDrawingNodeAttribute)srcShape.getAttribute()); 
+		IConnectingNodeController srcShapeController = viewControllerStore.getController(srcShape); 
 //		IAnchorLocator srcAnchorLocator = srcShapeController.getFigureController().getAnchorLocatorFactory().createAnchorLocator();
 		ILinkAttribute linkAtt = linkEdge.getAssociatedAttribute();
 		ICompoundNode tgtShape = pair.getInNode();
-		IConnectingNodeController tgtShapeController = viewControllerStore.getController((ITypedDrawingNodeAttribute)tgtShape.getAttribute()); 
+		IConnectingNodeController tgtShapeController = viewControllerStore.getController(tgtShape); 
 //		IAnchorLocator tgtAnchorLocator = tgtShapeController.getFigureController().getAnchorLocatorFactory().createAnchorLocator();
 		final IFeedbackLink retVal = this.linkBuilder.createFromAttribute(linkAtt);
 		final IFeedbackNode srcNode = (IFeedbackNode)this.selectionMapping.get(srcShapeController);

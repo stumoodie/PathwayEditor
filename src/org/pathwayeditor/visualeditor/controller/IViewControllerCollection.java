@@ -20,7 +20,16 @@ package org.pathwayeditor.visualeditor.controller;
 
 import java.util.Iterator;
 
-import uk.ac.ed.inf.graph.compound.IElementAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasElementAttribute;
+
+import uk.ac.ed.inf.graph.compound.ICompoundGraphElement;
+
+/**
+ * Defines an interface to a collection of controllers. These controllers are associated with
+ *  a {@code ICompoundGraphElement}.
+ * @author Stuart Moodie
+ *
+ */
 
 public interface IViewControllerCollection {
 
@@ -38,9 +47,9 @@ public interface IViewControllerCollection {
 
 //	IDrawingElementController getDrawingPrimitiveController(ICanvasElementAttribute testAttribute);
 	
-	IDrawingElementController findControllerByAttribute(IElementAttribute testAttribute);
+	IDrawingElementController findControllerByAttribute(ICanvasElementAttribute testAttribute);
 	
-	<T extends IDrawingElementController> T getController(IElementAttribute attribute);
+	<T extends IDrawingElementController> T getController(ICompoundGraphElement attribute);
 
 //	INodeController getNodeController(IDrawingNodeAttribute testNode);
 //	
@@ -54,5 +63,5 @@ public interface IViewControllerCollection {
 	
 //	IConnectingNodeController getConnectingNodeController(ITypedDrawingNodeAttribute att);
 
-	boolean containsDrawingElement(IElementAttribute testPrimitive);
+	boolean containsDrawingElement(ICompoundGraphElement testPrimitive);
 }

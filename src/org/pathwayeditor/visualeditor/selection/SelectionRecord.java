@@ -172,7 +172,7 @@ public class SelectionRecord implements ISelectionRecord {
 	}
 	
 	private void updateSubgraphSelection(ISubCompoundGraphFactory selectionFactory, ISelection newSelection) {
-		selectionFactory.addElement(newSelection.getPrimitiveController().getAssociatedAttribute().getCurrentElement());
+		selectionFactory.addElement(newSelection.getPrimitiveController().getGraphElement());
 //		if(newSelection instanceof INodeSelection){
 //			INodeSelection nodeSelection = (INodeSelection)newSelection;
 //			selectionFactory.addElement(nodeSelection.getPrimitiveController().getAssociatedAttribute().getCurrentElement());
