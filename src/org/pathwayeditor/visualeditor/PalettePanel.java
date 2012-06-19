@@ -81,10 +81,12 @@ public class PalettePanel extends JPanel {
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		JSplitPane topPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, this.shapeScrollPane, this.anchorScrollPane);
 		topPane.setOneTouchExpandable(true);
-		topPane.setDividerLocation(250);
+		topPane.setResizeWeight(0.5);
+//		topPane.setDividerLocation(250);
 		this.splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, topPane, this.linkScrollPanel);
 		this.splitPane.setOneTouchExpandable(true);
-		this.splitPane.setDividerLocation(250);
+		this.splitPane.setResizeWeight(0.66);
+//		this.splitPane.setDividerLocation(250);
 		this.add(this.splitPane);
 
 		editBehaviourController.addViewBehaviourModeChangeListener(new IViewBehaviourModeChangeListener() {

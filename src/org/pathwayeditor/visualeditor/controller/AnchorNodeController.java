@@ -138,17 +138,20 @@ public class AnchorNodeController extends DrawingElementController implements IA
 			@Override
 			public void curveSegmentsReplaced(ICurveSegmentContainerEvent e) {
 				AnchorPointSegmentChangeCalculator calc = new AnchorPointSegmentChangeCalculator(e.getOriginalSegments(), e.getReplacementSegments());
-				calc.calculateNewCurveAssociation(getAssociatedAttribute().getAnchorLocation());
-				getAssociatedAttribute().setAnchorLocation(calc.getNewAnchorPosn());
-				ICurveSegment oldCurveSegment = getAssociatedAttribute().getAssociatedCurveSegment();
-				getAssociatedAttribute().setAssociatedCurveSegment(calc.getNewAssociatedCurveSegment());
-				if(logger.isTraceEnabled()){
-					logger.trace("Detected segment replacement. NewAnchorPosn=" + calc.getNewAnchorPosn() + ", NewAssocCurveSeg=" + calc.getNewAssociatedCurveSegment());
+				// check that the curve seg that we care about has been replaced/
+				if(e.getOriginalSegments().contains(getAssociatedCurveSegment())){
+					calc.calculateNewCurveAssociation(getAssociatedAttribute().getAnchorLocation());
+					getAssociatedAttribute().setAnchorLocation(calc.getNewAnchorPosn());
+					ICurveSegment oldCurveSegment = getAssociatedAttribute().getAssociatedCurveSegment();
+					getAssociatedAttribute().setAssociatedCurveSegment(calc.getNewAssociatedCurveSegment());
+					if(logger.isTraceEnabled()){
+						logger.trace("Detected segment replacement. NewAnchorPosn=" + calc.getNewAnchorPosn() + ", NewAssocCurveSeg=" + calc.getNewAssociatedCurveSegment());
+					}
+					// remove listener from previous seg
+					oldCurveSegment.removeCurveSegmentChangeListener(associatedCurveChangeListener);
+					// attach listener to new associated seg
+					getAssociatedAttribute().getAssociatedCurveSegment().addCurveSegmentChangeListener(associatedCurveChangeListener);
 				}
-				// remove listener from previous seg
-				oldCurveSegment.removeCurveSegmentChangeListener(associatedCurveChangeListener);
-				// attach listener to new associated seg
-				getAssociatedAttribute().getAssociatedCurveSegment().addCurveSegmentChangeListener(associatedCurveChangeListener);
 			}
 		};
 		this.isActive = false;

@@ -19,6 +19,7 @@
 package org.pathwayeditor.visualeditor.controller;
 
 import org.apache.log4j.Logger;
+import org.pathwayeditor.businessobjects.drawingprimitives.IBendPointContainer;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ITypedDrawingNodeAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.BendPointStructureChange;
@@ -36,6 +37,7 @@ import org.pathwayeditor.businessobjects.drawingprimitives.listeners.LinkTerminu
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
+import org.pathwayeditor.figure.rendering.IAnchorLocator;
 import org.pathwayeditor.visualeditor.editingview.IMiniCanvas;
 import org.pathwayeditor.visualeditor.feedback.DomainLinkMiniCanvas;
 import org.pathwayeditor.visualeditor.geometry.ILinkDefinitionAnchorCalculator;
@@ -68,6 +70,9 @@ public class LinkController extends DrawingElementController implements ILinkCon
 					Envelope originalDrawnBounds = getDrawnBounds();
 					Point newLocation = (Point)e.getNewValue();
 					linkDefinition.setSrcAnchorPosition(newLocation);
+					if(logger.isTraceEnabled()){
+						logger.trace("Changing linkdefn on detecting srcAnchor posn change. Newlocn=" + newLocation);
+					}
 					notifyDrawnBoundsChanged(originalDrawnBounds, getDrawnBounds());
 				}
 			}
@@ -79,6 +84,9 @@ public class LinkController extends DrawingElementController implements ILinkCon
 					Envelope originalDrawnBounds = getDrawnBounds();
 					Point newLocation = (Point)e.getNewValue();
 					linkDefinition.setTgtAnchorPosition(newLocation);
+					if(logger.isTraceEnabled()){
+						logger.trace("Changing linkdefn on detecting tgtAnchor posn change. Newlocn=" + newLocation);
+					}
 					notifyDrawnBoundsChanged(originalDrawnBounds, getDrawnBounds());
 				}
 			}
@@ -91,7 +99,15 @@ public class LinkController extends DrawingElementController implements ILinkCon
 			
 			@Override
 			public void elementTranslated(ICanvasAttributeTranslationEvent e) {
-				getAssociatedAttribute().translate(e.getTranslationDelta());
+				ILinkAttribute thisLink = getAssociatedAttribute();
+				thisLink.getBendPointContainer().translateAll(e.getTranslationDelta());
+//				// now we want to silence the anchor node/end-point listeners as we will translate the whole link by the same amt
+//				getSrcAttribute().removeChangeListener(srcNodeListener);
+//				getTgtAttribute().removeChangeListener(tgtNodeListener);
+//				thisLink.translate(e.getTranslationDelta());
+//				// now op is complete we re-enable them.
+//				getSrcAttribute().addChangeListener(srcNodeListener);
+//				getTgtAttribute().addChangeListener(tgtNodeListener);
 			}
 			
 			@Override
@@ -105,6 +121,9 @@ public class LinkController extends DrawingElementController implements ILinkCon
 				Point bpPosn = e.getNewPosition();
 				int idx = e.getBendPointIndex();
 				linkDefinition.setBendPointPosition(idx, bpPosn);
+				if(logger.isTraceEnabled()){
+					logger.trace("Detected bp move. bpidx=" + idx + ",newPosn=" + bpPosn);
+				}
 				updateLinksToBendPoints(idx);
 			}
 
@@ -159,9 +178,19 @@ public class LinkController extends DrawingElementController implements ILinkCon
 			@Override
 			public void propertyChange(ICanvasAttributePropertyChangeEvent e) {
 				if(e.getPropertyChange().equals(CanvasAttributePropertyChange.BOUNDS)){
-					if(!e.getAttribute().equals(getParentAttribute())){
-						// only update the anchor points if this is not a child of the src node - in which case it will be dealt with
-						// as a whole link translation
+					ILinkAttribute att = getAssociatedAttribute();
+					if(att.getBendPointContainer().numBendPoints() > 0){
+						// update with the first bp
+						if(logger.isTraceEnabled()){
+							logger.trace("Detected src node bounds change, with bp - updating src anchor. Shape=" + e.getAttribute() + ", newBounds=" + e.getNewValue());
+						}
+						updateSrcAnchor();
+					}
+					else{
+						// no bps so both node anchors may change
+						if(logger.isTraceEnabled()){
+							logger.trace("Detected src node bounds change, no bp - updating both anchors. Shape=" + e.getAttribute() + ", newBounds=" + e.getNewValue());
+						}
 						updateAnchorPoints();
 					}
 				}
@@ -181,9 +210,20 @@ public class LinkController extends DrawingElementController implements ILinkCon
 			@Override
 			public void propertyChange(ICanvasAttributePropertyChangeEvent e) {
 				if(e.getPropertyChange().equals(CanvasAttributePropertyChange.BOUNDS)){
-					if(!e.getAttribute().equals(getParentAttribute())){
-						// only update the anchor points if this is not a child of the tgt node - in which case it will be dealt with
-						// as a whole link translation
+					ILinkAttribute att = getAssociatedAttribute();
+					if(att.getBendPointContainer().numBendPoints() > 0){
+						IBendPointContainer bpc = att.getBendPointContainer();
+						// update with the last bp
+						if(logger.isTraceEnabled()){
+							logger.trace("Detected tgt node bounds change, with bp - updating tgt anchor. Shape=" + e.getAttribute() + ", newBounds=" + e.getNewValue());
+						}
+						updateTgtAnchor();
+					}
+					else{
+						// no bps so both node anchors may change
+						if(logger.isTraceEnabled()){
+							logger.trace("Detected tgt node bounds change, no bp - updating both anchors. Shape=" + e.getAttribute() + ", newBounds=" + e.getNewValue());
+						}
 						updateAnchorPoints();
 					}
 				}
@@ -260,22 +300,33 @@ public class LinkController extends DrawingElementController implements ILinkCon
 //		}
 	}
 
-//	private void updateSrcAnchor(Point otherEndPos){
-//		
+	private void updateSrcAnchor(){
+		ILinkDefinitionAnchorCalculator anchorCalc = new LinkDefinitionAnchorCalculator(new LinkPointDefinition(this.getAssociatedAttribute()));
+		IConnectingNodeController srcShapeController = getSrcController();
+		anchorCalc.setSrcLocation(srcShapeController.getFigureController().getAnchorLocatorFactory().createAnchorLocator());
+		anchorCalc.recalculateSrcAnchor();
+		this.getAssociatedAttribute().getSourceTerminus().setLocation(anchorCalc.getLinkDefinition().getSrcAnchorPosition());
+		
 //		IShapeController shapeController = getViewModel().getShapeController(new ShapeNodeFacade(linkAttribute.getSourceShape()));
 //		IAnchorLocator anchorCalc = shapeController.getFigureController().getAnchorLocatorFactory().createAnchorLocator();
 //		anchorCalc.setOtherEndPoint(otherEndPos);
 //		Point newSrcPosn = anchorCalc.calcAnchorPosition();
 //		linkAttribute.getAttribute().getSourceTerminus().setLocation(newSrcPosn);
-//	}
+	}
 	
-//	private void updateTgtAnchor(Point otherEndPos){
+	private void updateTgtAnchor(){
+		ILinkDefinitionAnchorCalculator anchorCalc = new LinkDefinitionAnchorCalculator(new LinkPointDefinition(this.getAssociatedAttribute()));
+		IConnectingNodeController tgtShapeController = getTgtController();
+		anchorCalc.setTgtLocation(tgtShapeController.getFigureController().getAnchorLocatorFactory().createAnchorLocator());
+		anchorCalc.recalculateTgtAnchor();
+		this.getAssociatedAttribute().getTargetTerminus().setLocation(anchorCalc.getLinkDefinition().getTgtAnchorPosition());
+
 //		IShapeController shapeController = getViewModel().getShapeController(new ShapeNodeFacade(linkAttribute.getTargetShape()));
 //		IAnchorLocator anchorCalc = shapeController.getFigureController().getAnchorLocatorFactory().createAnchorLocator();
 //		anchorCalc.setOtherEndPoint(otherEndPos);
 //		Point newSrcPosn = anchorCalc.calcAnchorPosition();
 //		linkAttribute.getAttribute().getTargetTerminus().setLocation(newSrcPosn);
-//	}
+	}
 	
 	private void updateLinksToBendPoints(int bpIdx){
 		ILinkDefinitionAnchorCalculator anchorCalc = new LinkDefinitionAnchorCalculator(new LinkPointDefinition(this.getAssociatedAttribute()));
@@ -287,11 +338,17 @@ public class LinkController extends DrawingElementController implements ILinkCon
 		if(bpIdx == 0){
 			anchorCalc.recalculateSrcAnchor();
 			getAssociatedAttribute().getSourceTerminus().setLocation(anchorCalc.getLinkDefinition().getSrcAnchorPosition());
+			if(logger.isTraceEnabled()){
+				logger.trace("Recalculated srcAnchorPosn=" + getAssociatedAttribute().getSourceTerminus().getLocation());
+			}
 //			updateSrcAnchor(bpPosn);
 		}
 		if(bpIdx == getAssociatedAttribute().getBendPointContainer().numBendPoints()-1){
 			anchorCalc.recalculateTgtAnchor();
 			getAssociatedAttribute().getTargetTerminus().setLocation(anchorCalc.getLinkDefinition().getTgtAnchorPosition());
+			if(logger.isTraceEnabled()){
+				logger.trace("Recalculated tgtAnchorPosn=" + getAssociatedAttribute().getTargetTerminus().getLocation());
+			}
 //			updateTgtAnchor(bpPosn);
 		}
 	}

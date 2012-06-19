@@ -18,10 +18,12 @@
 */
 package org.pathwayeditor.visualeditor.commands;
 
+import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.drawingprimitives.IDrawingNodeAttribute;
 import org.pathwayeditor.figure.geometry.Point;
 
 public class MoveNodeCommand implements ICommand {
+	private final Logger logger = Logger.getLogger(this.getClass());
 	private final IDrawingNodeAttribute node;
 	private final Point locationDelta;
 	
@@ -37,11 +39,17 @@ public class MoveNodeCommand implements ICommand {
 
 	@Override
 	public void redo() {
+		if(logger.isTraceEnabled()){
+			logger.trace("Redo: Translating node:" + this.node + " by " + this.locationDelta);
+		}
 		this.node.translate(this.locationDelta);
 	}
 
 	@Override
 	public void undo() {
+		if(logger.isTraceEnabled()){
+			logger.trace("Undo: Translating node:" + this.node + " by " + this.locationDelta.negate());
+		}
 		this.node.translate(this.locationDelta.negate());
 	}
 
