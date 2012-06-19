@@ -37,7 +37,6 @@ import org.pathwayeditor.businessobjects.drawingprimitives.listeners.LinkTerminu
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
-import org.pathwayeditor.figure.rendering.IAnchorLocator;
 import org.pathwayeditor.visualeditor.editingview.IMiniCanvas;
 import org.pathwayeditor.visualeditor.feedback.DomainLinkMiniCanvas;
 import org.pathwayeditor.visualeditor.geometry.ILinkDefinitionAnchorCalculator;
@@ -180,7 +179,6 @@ public class LinkController extends DrawingElementController implements ILinkCon
 				if(e.getPropertyChange().equals(CanvasAttributePropertyChange.BOUNDS)){
 					ILinkAttribute att = getAssociatedAttribute();
 					if(att.getBendPointContainer().numBendPoints() > 0){
-						// update with the first bp
 						if(logger.isTraceEnabled()){
 							logger.trace("Detected src node bounds change, with bp - updating src anchor. Shape=" + e.getAttribute() + ", newBounds=" + e.getNewValue());
 						}
@@ -212,8 +210,6 @@ public class LinkController extends DrawingElementController implements ILinkCon
 				if(e.getPropertyChange().equals(CanvasAttributePropertyChange.BOUNDS)){
 					ILinkAttribute att = getAssociatedAttribute();
 					if(att.getBendPointContainer().numBendPoints() > 0){
-						IBendPointContainer bpc = att.getBendPointContainer();
-						// update with the last bp
 						if(logger.isTraceEnabled()){
 							logger.trace("Detected tgt node bounds change, with bp - updating tgt anchor. Shape=" + e.getAttribute() + ", newBounds=" + e.getNewValue());
 						}
