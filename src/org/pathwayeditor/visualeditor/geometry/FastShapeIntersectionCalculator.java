@@ -188,14 +188,15 @@ public class FastShapeIntersectionCalculator implements IIntersectionCalculator 
 		Point diagonal = drawnBounds.getDiagonalCorner();
 		ISpacialEntry2DEnumerator<IDrawingElementController> iter = this.spacialIndex.queryOverlap((float)origin.getX(), (float)origin.getY(), (float)diagonal.getX(), (float)diagonal.getY(), null, 0, false);
 		while(iter.numRemaining() > 0){
-			IDrawingElementController prim = iter.nextInt();
-			if(prim instanceof INodeController){
-				INodeController node = (INodeController)prim;
+//			IDrawingElementController prim = iter.nextInt();
+			IDrawingElementController node = iter.nextInt();
+//			if(prim instanceof INodeController){
+//				INodeController node = (INodeController)prim;
 				// ignore matches to self
 				if(!node.equals(queryNode) && !node.equals(rootNode) && filter.accept(node) && !queryNode.getAssociatedAttribute().getCurrentElement().isDescendent(node.getAssociatedAttribute().getCurrentElement()) && node.intersectsHull(queryHull)){
 					retVal.add(node);
 				}
-			}
+//			}
 		}
 		return retVal;
 	}

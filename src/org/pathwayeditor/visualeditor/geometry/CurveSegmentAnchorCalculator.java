@@ -67,7 +67,10 @@ public class CurveSegmentAnchorCalculator  {
 				Vector aq = ab.unitVector().scale(aqMag);
 				Point q = start.translate(aq.getIMagnitude(), aq.getJMagnitude());
 				if(!line.containsPoint(q)){
-					logger.error("Point does not lie on line. anchorPoint=" + anchorPoint + ",p=" + q + ",line=" + line);
+					q = null;
+					if(logger.isDebugEnabled()){
+						logger.debug("Point does not lie on line. anchorPoint=" + anchorPoint + ",p=" + q + ",line=" + line);
+					}
 				}
 				adjustedPoint = q;
 			}

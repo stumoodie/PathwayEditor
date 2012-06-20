@@ -22,12 +22,17 @@ import java.util.Iterator;
 import java.util.SortedSet;
 
 import org.apache.log4j.Logger;
+import org.pathwayeditor.businessobjects.drawingprimitives.IAnchorNodeAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasElementAttributeVisitor;
+import org.pathwayeditor.businessobjects.drawingprimitives.ILabelAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.IRootAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.IShapeAttribute;
 import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
 import org.pathwayeditor.visualeditor.controller.ILabelController;
 import org.pathwayeditor.visualeditor.controller.INodeController;
-import org.pathwayeditor.visualeditor.controller.IShapeController;
 import org.pathwayeditor.visualeditor.selection.INodeSelection;
 import org.pathwayeditor.visualeditor.selection.ISubgraphSelection;
 
@@ -39,6 +44,7 @@ public class CommonParentCalculator implements ICommonParentCalculator {
 	private IDrawingElementController parent = null;
 	private int numNodesAlreadyHaveParent = 0;
 	private ISubgraphSelection selection = null;
+	private IDrawingElementController potentialParent;
 	
 	private interface IHandleLabel {
 		
@@ -86,7 +92,7 @@ public class CommonParentCalculator implements ICommonParentCalculator {
 		});
 	}
 	
-	private void findCommonParentImpl(ISubgraphSelection testSelection, Point delta, IHandleLabel labelHandler) {
+	private void findCommonParentImpl(ISubgraphSelection testSelection, final Point delta, final IHandleLabel labelHandler) {
 		if (this.selection == null || (!testSelection.equals(this.selection) ) ) {
 			// if new or different selection to last one then recalculate the
 			// common parent
@@ -96,16 +102,32 @@ public class CommonParentCalculator implements ICommonParentCalculator {
 			boolean firstTime = true;
 			numNodesAlreadyHaveParent = 0;
 			while (selectionIter.hasNext() && parent != null) {
-				INodeController node = selectionIter.next().getPrimitiveController();
-				IDrawingElementController potentialParent = null;
-				if (node instanceof IShapeController) {
-					IConvexHull hull = node.getConvexHull();
-					IConvexHull newLocation = hull.translate(delta);
-					potentialParent = this.findPotentialParent(node, newLocation);
-				} else if (node instanceof ILabelController) {
-					// labels cannot be reparented
-					potentialParent = labelHandler.getLabelParent((ILabelController)node);
-				}
+				final INodeController node = selectionIter.next().getPrimitiveController();
+				potentialParent = null;
+				node.getAssociatedAttribute().visit(new ICanvasElementAttributeVisitor() {
+					@Override
+					public void visitShape(IShapeAttribute attribute) {
+						IConvexHull hull = node.getConvexHull();
+						IConvexHull newLocation = hull.translate(delta);
+						potentialParent = findPotentialParent(node, newLocation);
+					}
+					@Override
+					public void visitRoot(IRootAttribute attribute) {
+					}
+					@Override
+					public void visitLink(ILinkAttribute attribute) {
+					}
+					@Override
+					public void visitLabel(ILabelAttribute attribute) {
+						potentialParent = labelHandler.getLabelParent((ILabelController)node);
+					}
+					@Override
+					public void visitAnchorNode(IAnchorNodeAttribute anchorNodeAttribute) {
+						IConvexHull hull = node.getConvexHull();
+						IConvexHull newLocation = hull.translate(delta);
+						potentialParent = findPotentialParent(node, newLocation);
+					}
+				});
 				if (firstTime) {
 					firstTime = false;
 					parent = potentialParent;
@@ -168,30 +190,33 @@ public class CommonParentCalculator implements ICommonParentCalculator {
 	}
 	
 	
-	private INodeController findPotentialParent(final INodeController potentialChild, IConvexHull testPlacement){
+	private IDrawingElementController findPotentialParent(final INodeController potentialChild, IConvexHull testPlacement){
 		calc.setFilter(new IIntersectionCalcnFilter(){
 
 			@Override
-			public boolean accept(IDrawingElementController cont) {
+			public boolean accept(IDrawingElementController node) {
+//			public boolean accept(IDrawingElementController cont) {
 				boolean retVal = false;
-				if(cont instanceof INodeController){
-					INodeController node = (INodeController)cont;
+//				if(cont instanceof INodeController){
+//					INodeController node = (INodeController)cont;
 					retVal = node.getAssociatedAttribute().getObjectType().getParentingRules().isValidChild(potentialChild.getAssociatedAttribute().getObjectType());
 					if(logger.isTraceEnabled()){
 						logger.trace("Node=" + node +" canParent=" + retVal + ", potentialChild=" + potentialChild);
 					}
-				}
+//				}
 				return retVal;
 			}
 			
 		});
 		SortedSet<IDrawingElementController> nodes = calc.findIntersectingParentNodes(testPlacement, potentialChild);
-		INodeController retVal = null;
+//		INodeController retVal = null;
+		IDrawingElementController retVal = null;
 		if(logger.isTraceEnabled()){
 			logger.trace("Potential parents = " + nodes);
 		}
 		if(!nodes.isEmpty()){
-			retVal = (INodeController)nodes.first();
+//			retVal = (INodeController)nodes.first();
+			retVal = nodes.first();
 		}
 		return retVal;
 	}

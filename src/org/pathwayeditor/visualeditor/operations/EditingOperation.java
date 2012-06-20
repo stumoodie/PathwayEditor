@@ -21,6 +21,7 @@ package org.pathwayeditor.visualeditor.operations;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
+import org.pathwayeditor.businessobjects.drawingprimitives.IAnchorNodeAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.behaviour.operation.IEditingOperation;
@@ -33,6 +34,7 @@ import org.pathwayeditor.visualeditor.commands.ICompoundCommand;
 import org.pathwayeditor.visualeditor.commands.MoveLinkCommand;
 import org.pathwayeditor.visualeditor.commands.MoveNodeCommand;
 import org.pathwayeditor.visualeditor.commands.ReparentSelectionCommand;
+import org.pathwayeditor.visualeditor.controller.IAnchorNodeController;
 import org.pathwayeditor.visualeditor.controller.IDrawingElementController;
 import org.pathwayeditor.visualeditor.controller.INodeController;
 import org.pathwayeditor.visualeditor.editingview.IShapePane;
@@ -45,6 +47,7 @@ import org.pathwayeditor.visualeditor.feedback.IFeedbackNode;
 import org.pathwayeditor.visualeditor.feedback.IFeedbackNodeListener;
 import org.pathwayeditor.visualeditor.feedback.IFeedbackNodeResizeEvent;
 import org.pathwayeditor.visualeditor.feedback.IFeedbackNodeTranslationEvent;
+import org.pathwayeditor.visualeditor.geometry.CurveSegmentAnchorCalculator;
 import org.pathwayeditor.visualeditor.geometry.ICommonParentCalculator;
 import org.pathwayeditor.visualeditor.selection.ILinkSelection;
 import org.pathwayeditor.visualeditor.selection.INodeSelection;
@@ -63,6 +66,7 @@ public class EditingOperation implements IEditingOperation {
 	private final IFeedbackLinkListener feedbackLinkListener;
 	private final IFeedbackNodeListener feedbackNodeListener;
 	private boolean copyOnMove;
+	private Point lastPoint;
 	
 	public EditingOperation(IShapePane shapePane, IFeedbackModel feedbackModel, ISelectionRecord selectionRecord,
 			ICommonParentCalculator newParentCalc, ICommandStack commandStack){
@@ -120,7 +124,12 @@ public class EditingOperation implements IEditingOperation {
 				createCopyCommand(delta);
 			}
 			else{
-				createMoveCommand(delta, false);
+				if(this.selectionRecord.numSelected() == 1 && this.selectionRecord.getPrimarySelection().getPrimitiveController() instanceof IAnchorNodeController){
+					createAnchorNodeMoveCommand(delta);
+				}
+				else{
+					createMoveCommand(delta, false);
+				}
 			}
 			selectionRecord.restoreSelection();
 		}
@@ -140,9 +149,39 @@ public class EditingOperation implements IEditingOperation {
 //		if(logger.isTraceEnabled()){
 //			logger.trace("Ongoning move. Delta=" + delta + ", Refresh Bounds=" + refreshBounds);
 //		}
-		moveSelection(delta);
+		// if only one selected then 
+		if(this.selectionRecord.numSelected() == 1 && this.selectionRecord.getPrimarySelection().getPrimitiveController() instanceof IAnchorNodeController){
+			moveAnchorNode(delta);
+		}
+		else{
+			moveSelection(delta);
+		}
 //		shapePane.updateView(refreshBounds);
 		shapePane.updateView();
+	}
+
+	private void moveAnchorNode(Point delta) {
+		ISelection selection = this.selectionRecord.getPrimarySelection();
+		IFeedbackElement feedbackElement = this.feedbackModel.getFeedbackElement(selection.getPrimitiveController());
+		CurveSegmentAnchorCalculator calc = new CurveSegmentAnchorCalculator();
+		IAnchorNodeAttribute anchorAtt = (IAnchorNodeAttribute)selection.getPrimitiveController().getAssociatedAttribute();
+		calc.setCurveSegment(anchorAtt.getAssociatedCurveSegment());
+		Point origLocn = anchorAtt.getAnchorLocation();
+		calc.setAnchorPoint(origLocn.translate(delta));
+		Point point = calc.adjustAnchorOnCurveSegment();
+		if(point == null){
+			if(lastPoint == null){
+				point = origLocn;
+			}
+			else{
+				point = lastPoint;
+			}
+		}
+		feedbackElement.translatePrimitive(origLocn.difference(point));
+		lastPoint = point;
+		if(logger.isTraceEnabled()){
+			logger.trace("Dragged feedback element: " + feedbackElement + " constrained anchor posn move=" + point);
+		}
 	}
 
 	@Override
@@ -150,6 +189,7 @@ public class EditingOperation implements IEditingOperation {
 //		Envelope originalBounds = this.selectionRecord.getTotalSelectionBounds();
 //		refreshBoundsBuilder = new EnvelopeBuilder(originalBounds);
 		logger.trace("Move started.");
+		this.lastPoint = null;
 		feedbackModel.rebuildIncludingHierarchy();
 		Iterator<IFeedbackNode> nodeIter = feedbackModel.nodeIterator();
 		while(nodeIter.hasNext()){
@@ -211,6 +251,32 @@ public class EditingOperation implements IEditingOperation {
 				}
 			}
 		}
+	}
+
+	private void createAnchorNodeMoveCommand(Point delta){
+		ICompoundCommand cmpCommand = new CompoundCommand();
+		IDrawingElementController cntrl = this.selectionRecord.getPrimarySelection().getPrimitiveController();
+		CurveSegmentAnchorCalculator calc = new CurveSegmentAnchorCalculator();
+		IAnchorNodeAttribute anchorAtt = (IAnchorNodeAttribute)cntrl.getAssociatedAttribute();
+		calc.setCurveSegment(anchorAtt.getAssociatedCurveSegment());
+		Point origLocn = anchorAtt.getAnchorLocation();
+		calc.setAnchorPoint(origLocn.translate(delta));
+		Point point = calc.adjustAnchorOnCurveSegment();
+		if(point == null){
+			if(lastPoint == null){
+				point = origLocn;
+			}
+			else{
+				point = lastPoint;
+			}
+		}
+		Point constrainedDelta = origLocn.difference(point);
+		ICommand cmd = new MoveNodeCommand(anchorAtt, constrainedDelta);
+		cmpCommand.addCommand(cmd);
+		if(logger.isTraceEnabled()){
+			logger.trace("Dragged anchor node to location: " + constrainedDelta);
+		}
+		this.commandStack.execute(cmpCommand);
 	}
 
 	private void createMoveCommand(Point delta, boolean reparentingEnabled){

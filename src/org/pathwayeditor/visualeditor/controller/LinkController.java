@@ -277,9 +277,9 @@ public class LinkController extends DrawingElementController implements ILinkCon
 	private void updateAnchorPoints() {
 		ILinkDefinitionAnchorCalculator anchorCalc = new LinkDefinitionAnchorCalculator(new LinkPointDefinition(this.getAssociatedAttribute()));
 		IConnectingNodeController srcShapeController = getSrcController();
-		anchorCalc.setSrcLocation(srcShapeController.getFigureController().getAnchorLocatorFactory().createAnchorLocator());
+		anchorCalc.setSrcLocation(srcShapeController.getFigureController().getAnchorLocatorFactory().createAnchorLocator(this.getSrcAttribute().getBounds()));
 		IConnectingNodeController tgtShapeController = getTgtController();
-		anchorCalc.setTgtLocation(tgtShapeController.getFigureController().getAnchorLocatorFactory().createAnchorLocator());
+		anchorCalc.setTgtLocation(tgtShapeController.getFigureController().getAnchorLocatorFactory().createAnchorLocator(this.getTgtAttribute().getBounds()));
 		anchorCalc.recalculateBothAnchors();
 		getAssociatedAttribute().getSourceTerminus().setLocation(anchorCalc.getLinkDefinition().getSrcAnchorPosition());
 		getAssociatedAttribute().getTargetTerminus().setLocation(anchorCalc.getLinkDefinition().getTgtAnchorPosition());
