@@ -23,9 +23,11 @@ import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.pathwayeditor.visualeditor.commands.ICommandChangeEvent.CommandChangeType;
 
 public class CommandStack implements ICommandStack {
+	private final Logger logger = Logger.getLogger(this.getClass());
 	private final Deque<ICommand> undoStack;
 	private final Deque<ICommand> redoStack;
 	private final List<ICommandChangeListener> listeners = new LinkedList<ICommandChangeListener>();
@@ -49,6 +51,9 @@ public class CommandStack implements ICommandStack {
 	@Override
 	public void execute(ICommand cmd) {
 		cmd.execute();
+		if(logger.isDebugEnabled()){
+			logger.debug("Executing cmd=" + cmd);
+		}
 		this.undoStack.push(cmd);
 		this.redoStack.clear();
 		notifyChange(CommandChangeType.EXECUTE, cmd);
@@ -78,6 +83,9 @@ public class CommandStack implements ICommandStack {
 		
 		ICommand cmd = this.redoStack.pop();
 		cmd.redo();
+		if(logger.isDebugEnabled()){
+			logger.debug("Executing redo cmd=" + cmd);
+		}
 		this.undoStack.push(cmd);
 		notifyChange(CommandChangeType.REDO, cmd);
 	}
@@ -88,6 +96,9 @@ public class CommandStack implements ICommandStack {
 		
 		ICommand cmd = this.undoStack.pop();
 		cmd.undo();
+		if(logger.isDebugEnabled()){
+			logger.debug("Executing undo cmd=" + cmd);
+		}
 		this.redoStack.push(cmd);
 		notifyChange(CommandChangeType.UNDO, cmd);
 	}
