@@ -4,14 +4,19 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 
 import org.pathwayeditor.businessobjects.drawingprimitives.IAnchorNodeAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasElementAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasElementAttributeVisitor;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILabelAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.IRootAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.IShapeAttribute;
+import org.pathwayeditor.businessobjects.drawingprimitives.IZOrderManager;
 import org.pathwayeditor.visualeditor.behaviour.operation.INodePopupActions;
 import org.pathwayeditor.visualeditor.commands.DeleteSelectionCommand;
+import org.pathwayeditor.visualeditor.commands.ICommand;
 import org.pathwayeditor.visualeditor.commands.ICommandStack;
+import org.pathwayeditor.visualeditor.commands.ZOrderChangeCommand;
+import org.pathwayeditor.visualeditor.commands.ZOrderChangeCommand.IZOrderCommandChangeOperation;
 import org.pathwayeditor.visualeditor.controller.ILabelController;
 import org.pathwayeditor.visualeditor.controller.INodeController;
 import org.pathwayeditor.visualeditor.controller.IShapeController;
@@ -126,6 +131,58 @@ public class NodePopupActions implements INodePopupActions {
 			commandStack.execute(propChangeDialog.getCommand());
 			shapePane.updateView();
 		}
+	}
+
+	@Override
+	public void toBack() {
+		ICommand cmd = new ZOrderChangeCommand(this.selectionRecord.getPrimarySelection().getPrimitiveController().getAssociatedAttribute(),
+				new IZOrderCommandChangeOperation() {
+			@Override
+			public void changeZOrder(IZOrderManager manager, ICanvasElementAttribute changedAtt) {
+				manager.toBack(changedAtt);
+			}
+		});
+		this.commandStack.execute(cmd);
+		shapePane.updateView();
+	}
+
+	@Override
+	public void toFront() {
+		ICommand cmd = new ZOrderChangeCommand(this.selectionRecord.getPrimarySelection().getPrimitiveController().getAssociatedAttribute(),
+				new IZOrderCommandChangeOperation() {
+			@Override
+			public void changeZOrder(IZOrderManager manager, ICanvasElementAttribute changedAtt) {
+				manager.toFront(changedAtt);
+			}
+		});
+		this.commandStack.execute(cmd);
+		shapePane.updateView();
+	}
+
+	@Override
+	public void forwardOne() {
+		ICommand cmd = new ZOrderChangeCommand(this.selectionRecord.getPrimarySelection().getPrimitiveController().getAssociatedAttribute(),
+				new IZOrderCommandChangeOperation() {
+			@Override
+			public void changeZOrder(IZOrderManager manager, ICanvasElementAttribute changedAtt) {
+				manager.moveForwardOne(changedAtt);
+			}
+		});
+		this.commandStack.execute(cmd);
+		shapePane.updateView();
+	}
+
+	@Override
+	public void backwardOne() {
+		ICommand cmd = new ZOrderChangeCommand(this.selectionRecord.getPrimarySelection().getPrimitiveController().getAssociatedAttribute(),
+				new IZOrderCommandChangeOperation() {
+			@Override
+			public void changeZOrder(IZOrderManager manager, ICanvasElementAttribute changedAtt) {
+				manager.moveBackwardOne(changedAtt);
+			}
+		});
+		this.commandStack.execute(cmd);
+		shapePane.updateView();
 	}
 
 }

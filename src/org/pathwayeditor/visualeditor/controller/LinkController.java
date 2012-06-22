@@ -19,7 +19,6 @@
 package org.pathwayeditor.visualeditor.controller;
 
 import org.apache.log4j.Logger;
-import org.pathwayeditor.businessobjects.drawingprimitives.IBendPointContainer;
 import org.pathwayeditor.businessobjects.drawingprimitives.ILinkAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.ITypedDrawingNodeAttribute;
 import org.pathwayeditor.businessobjects.drawingprimitives.listeners.BendPointStructureChange;

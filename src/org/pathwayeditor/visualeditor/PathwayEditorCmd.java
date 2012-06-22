@@ -45,6 +45,7 @@ public class PathwayEditorCmd {
 	private final OptionSpec<Void> helpOption;
 	private int exitStatus = FAIL;
 	private File structureFile;
+	@SuppressWarnings("unused")
 	private VisualEditor visualEditor;
 //	private final boolean initialised;
 	private boolean areParamatersValid;

@@ -18,14 +18,13 @@
 */
 package org.pathwayeditor.visualeditor.controller;
 
-import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.drawingprimitives.IAnchorNodeAttribute;
 import org.pathwayeditor.figure.rendering.FigureRenderingController;
 import org.pathwayeditor.figure.rendering.IFigureRenderingController;
 import org.pathwayeditor.visualeditor.feedback.FigureCompilationCache;
 
 public class AnchorNodeFigureControllerHelper implements IFigureControllerHelper {
-	private final Logger logger = Logger.getLogger(this.getClass());
+//	private final Logger logger = Logger.getLogger(this.getClass());
 	private final IAnchorNodeAttribute attribute;
 	private IFigureRenderingController figureRenderingController; 
 

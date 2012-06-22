@@ -18,6 +18,7 @@
 */
 package org.pathwayeditor.visualeditor.controller;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.pathwayeditor.businessobjects.drawingprimitives.IModel;
@@ -62,4 +63,11 @@ public interface IViewControllerModel extends IViewControllerCollection {
 	void removeViewControllerChangeListener(IViewControllerChangeListener listener);
 	
 	List<IViewControllerChangeListener> getViewControllerChangeListeners();
+
+	/**
+	 * Get the controllers associated with this model in Z-order from back to front. This should
+	 * be used then the correct rendering order of the drawing elements is required. 
+	 * @return
+	 */
+	Iterator<IDrawingElementController> zOrderIterator();
 }

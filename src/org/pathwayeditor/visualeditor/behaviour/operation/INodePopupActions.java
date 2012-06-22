@@ -28,4 +28,12 @@ public interface INodePopupActions {
 
 	void properties();
 
+	void toBack();
+
+	void toFront();
+
+	void forwardOne();
+
+	void backwardOne();
+
 }

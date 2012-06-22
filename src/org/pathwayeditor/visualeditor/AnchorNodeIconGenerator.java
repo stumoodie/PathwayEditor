@@ -39,7 +39,6 @@ import org.apache.batik.transcoder.TranscoderException;
 import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.PNGTranscoder;
-import org.apache.log4j.Logger;
 import org.pathwayeditor.businessobjects.typedefn.IAnchorNodeAttributeDefaults;
 import org.pathwayeditor.businessobjects.typedefn.IAnchorNodeObjectType;
 import org.pathwayeditor.figure.definition.FigureDefinitionCompiler;
@@ -56,7 +55,7 @@ import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 
 public class AnchorNodeIconGenerator {
-	private final Logger logger = Logger.getLogger(this.getClass());
+//	private final Logger logger = Logger.getLogger(this.getClass());
 	private Document document;
 	private SVGGraphics2D svgGenerator;
 	private ImageIcon icon;

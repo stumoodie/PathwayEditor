@@ -25,6 +25,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
+import org.pathwayeditor.businessobjects.drawingprimitives.ICanvasElementAttribute;
 import org.pathwayeditor.figure.geometry.Envelope;
 import org.pathwayeditor.figure.geometry.IConvexHull;
 import org.pathwayeditor.figure.geometry.Point;
@@ -64,9 +65,11 @@ public class FastShapeIntersectionCalculator implements IIntersectionCalculator 
 				retVal = -1;
 			}
 			else{
-				long o1Idx = o1.getAssociatedAttribute().getCurrentElement().getIndex();
-				long o2Idx = o2.getAssociatedAttribute().getCurrentElement().getIndex();
-				retVal = o1Idx < o2Idx ? 1 : (o1Idx > o2Idx ? -1 : 0); 
+				ICanvasElementAttribute parent = (ICanvasElementAttribute)o1.getGraphElement().getParent().getAttribute();
+				retVal = parent.getZorderManager().zOrderCompare(o1.getAssociatedAttribute(), o2.getAssociatedAttribute());
+//				long o1Idx = o1.getAssociatedAttribute().getCurrentElement().getIndex();
+//				long o2Idx = o2.getAssociatedAttribute().getCurrentElement().getIndex();
+//				retVal = o1Idx < o2Idx ? 1 : (o1Idx > o2Idx ? -1 : 0); 
 			}
 			return retVal;
 		}

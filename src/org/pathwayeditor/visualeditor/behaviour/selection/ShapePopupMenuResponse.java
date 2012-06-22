@@ -36,6 +36,14 @@ public class ShapePopupMenuResponse implements IPopupMenuResponse {
 	private final JMenuItem propMenuItem;
 	private final ActionListener formatListener;
 	private final ActionListener propListener;
+	private final JMenuItem toBackMenuItem;
+	private final JMenuItem toFrontMenuItem;
+	private final JMenuItem forwardOneMenuItem;
+	private final JMenuItem backOneMenuItem;
+	private final ActionListener toBackListener;
+	private final ActionListener toFrontListener;
+	private final ActionListener forwardOneListener;
+	private final ActionListener backOneListener;
 
 	
 	public ShapePopupMenuResponse(final INodePopupActions popupActions){
@@ -43,6 +51,10 @@ public class ShapePopupMenuResponse implements IPopupMenuResponse {
 		deleteShapeItem = new JMenuItem("Delete");
 		formatMenuItem = new JMenuItem("Format");
 		propMenuItem = new JMenuItem("Properties");
+		toBackMenuItem = new JMenuItem("Send To Back");
+		toFrontMenuItem = new JMenuItem("Bring To Front");
+		forwardOneMenuItem = new JMenuItem("Bring Forward");
+		backOneMenuItem = new JMenuItem("Send Backward");
 		
 		this.deleteListener = new ActionListener(){
 
@@ -68,9 +80,42 @@ public class ShapePopupMenuResponse implements IPopupMenuResponse {
 			}
 			
 		};
+		this.toBackListener = new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				popupActions.toBack();
+			}
+		};
+		this.toFrontListener = new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				popupActions.toFront();
+			}
+		};
+		this.forwardOneListener = new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				popupActions.forwardOne();
+			}
+		};
+		this.backOneListener = new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				popupActions.backwardOne();
+			}
+		};
 		popup.add(formatMenuItem);
 		popup.add(propMenuItem);
 		popup.add(deleteShapeItem);
+		popup.add(toBackMenuItem);
+		popup.add(toFrontMenuItem);
+		popup.add(forwardOneMenuItem);
+		popup.add(backOneMenuItem);
+
 	}
 	
 	
@@ -79,6 +124,10 @@ public class ShapePopupMenuResponse implements IPopupMenuResponse {
 		deleteShapeItem.addActionListener(deleteListener);
 		formatMenuItem.addActionListener(formatListener);
 		propMenuItem.addActionListener(propListener);
+		toBackMenuItem.addActionListener(toBackListener);
+		toFrontMenuItem.addActionListener(toFrontListener);
+		forwardOneMenuItem.addActionListener(forwardOneListener);
+		backOneMenuItem.addActionListener(backOneListener);
 	}
 	
 	@Override

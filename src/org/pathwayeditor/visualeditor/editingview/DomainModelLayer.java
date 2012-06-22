@@ -47,7 +47,7 @@ public class DomainModelLayer implements IDomainModelLayer {
 	 */
 	@Override
 	public void paint(Graphics2D g2d){
-		Iterator<IDrawingElementController> contIter = this.viewControllerStore.drawingPrimitiveIterator();
+		Iterator<IDrawingElementController> contIter = this.viewControllerStore.zOrderIterator();
 		while(contIter.hasNext()){
 			IDrawingElementController controller = contIter.next();
 			IMiniCanvas miniCanvas = controller.getMiniCanvas();

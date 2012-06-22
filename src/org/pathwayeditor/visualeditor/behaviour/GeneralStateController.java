@@ -20,7 +20,6 @@ package org.pathwayeditor.visualeditor.behaviour;
 
 import javax.swing.JPopupMenu;
 
-import org.apache.log4j.Logger;
 import org.pathwayeditor.figure.geometry.Point;
 import org.pathwayeditor.visualeditor.editingview.ISelectionLayer;
 import org.pathwayeditor.visualeditor.editingview.IShapePane;
@@ -28,7 +27,7 @@ import org.pathwayeditor.visualeditor.editingview.LayerType;
 import org.pathwayeditor.visualeditor.selection.ISelectionHandle;
 
 public class GeneralStateController implements ISelectionStateBehaviourController {
-	private final Logger logger = Logger.getLogger(this.getClass());
+//	private final Logger logger = Logger.getLogger(this.getClass());
 	private final IHitCalculator hitCalc;
 	private final IShapePane shapePane;
 	private final IControllerResponses responses;
