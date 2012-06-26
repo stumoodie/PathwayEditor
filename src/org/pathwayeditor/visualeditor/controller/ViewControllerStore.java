@@ -226,7 +226,10 @@ public class ViewControllerStore implements IViewControllerModel {
 	}
 	
 	private void removeLinkController(ILinkController linkController) {
-		domainToViewMap.remove(linkController.getGraphElement());
+		IDrawingElementController removedController = domainToViewMap.remove(linkController.getGraphElement());
+		if(removedController == null){
+			logger.error("Failed to remove the controller from edge mapping. Controller=" + linkController);
+		}
 //		drawingPrimitives.remove(linkController);
 	}
 
