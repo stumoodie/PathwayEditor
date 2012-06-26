@@ -115,10 +115,12 @@ public class VisualEditorController implements IVisualEditorController {
 	@Override
 	public void newDiagram() {
 		String selection = (String)JOptionPane.showInputDialog(this.visualEditor, "Select a notation:", "New Diagram", JOptionPane.PLAIN_MESSAGE, null, nsMap.keySet().toArray(), "foo");
-		INotationSubsystem selectedNs = nsMap.get(selection);
-		this.canvasPersistenceManager.createNewModelStream(selectedNs, "New Map");
-		this.currentFile = null;
-		renderModel();
+		if(selection != null){
+			INotationSubsystem selectedNs = nsMap.get(selection);
+			this.canvasPersistenceManager.createNewModelStream(selectedNs, "New Map");
+			this.currentFile = null;
+			renderModel();
+		}
 	}
 
 	@Override
