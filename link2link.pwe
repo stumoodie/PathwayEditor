@@ -35,7 +35,7 @@
             <SubModel>
                 <ShapeNode nodeId="1">
                     <SubModel>
-                        <LabelNode nodeId="10">
+                        <LabelNode nodeId="2">
                             <SubModel/>
                             <LabelAttribute creationSerial="12"
                                 lineStyle="SOLID" lineWidth="1.0">
@@ -72,9 +72,9 @@ curbounds /h exch def /w exch def /y exch def /x exch def
 x y w h oval</FigureDefinition>
                     </ShapeAttribute>
                 </ShapeNode>
-                <ShapeNode nodeId="2">
+                <ShapeNode nodeId="3">
                     <SubModel>
-                        <LabelNode nodeId="12">
+                        <LabelNode nodeId="4">
                             <SubModel/>
                             <LabelAttribute creationSerial="17"
                                 lineStyle="SOLID" lineWidth="1.0">
@@ -111,9 +111,9 @@ curbounds /h exch def /w exch def /y exch def /x exch def
 x y w h oval</FigureDefinition>
                     </ShapeAttribute>
                 </ShapeNode>
-                <ShapeNode nodeId="3">
+                <ShapeNode nodeId="5">
                     <SubModel>
-                        <LabelNode nodeId="13">
+                        <LabelNode nodeId="6">
                             <SubModel/>
                             <LabelAttribute creationSerial="18"
                                 lineStyle="SOLID" lineWidth="1.0">
@@ -150,7 +150,7 @@ curbounds /h exch def /w exch def /y exch def /x exch def
 x y w h oval</FigureDefinition>
                     </ShapeAttribute>
                 </ShapeNode>
-                <ShapeNode nodeId="4">
+                <ShapeNode nodeId="7">
                     <SubModel/>
                     <ShapeAttribute creationSerial="10" objectTypeId="1"
                         lineWidth="1.0" lineStyle="SOLID">
@@ -169,9 +169,9 @@ curbounds /h exch def /w exch def /y exch def /x exch def
 x y w h oval</FigureDefinition>
                     </ShapeAttribute>
                 </ShapeNode>
-                <ShapeNode nodeId="5">
+                <ShapeNode nodeId="8">
                     <SubModel>
-                        <LabelNode nodeId="11">
+                        <LabelNode nodeId="9">
                             <SubModel/>
                             <LabelAttribute creationSerial="14"
                                 lineStyle="SOLID" lineWidth="1.0">
@@ -209,15 +209,15 @@ curbounds /h exch def /w exch def /y exch def /x exch def
 x y w h rect</FigureDefinition>
                     </ShapeAttribute>
                 </ShapeNode>
-                <LinkEdge linkIdx="6" srcNodeIdx="1" tgtNodeIdx="2">
+                <LinkEdge linkIdx="10" srcNodeIdx="1" tgtNodeIdx="3">
                     <SubModel>
-                        <AnchorNode nodeId="7">
+                        <AnchorNode nodeId="11">
                             <SubModel/>
                             <AnchorNodeAttribute creationSerial="15"
                                 objectTypeId="10000" lineWidth="1.0"
                                 lineStyle="SOLID" associatedCurveSegment="0">
                                 <ZOrdering/>
-                                <Location x="398.38049692744335" y="156.02615662726913"/>
+                                <Location x="394.0697162356904" y="195.47172051906048"/>
                                 <Size width="30.0" height="30.0"/>
                                 <FillColour red="255" green="255"
                                     blue="255" alpha="0"/>
@@ -233,25 +233,22 @@ x y w h oval</FigureDefinition>
                         </AnchorNode>
                     </SubModel>
                     <LinkAttribute creationSerial="3" lineStyle="SOLID"
-                        lineWidth="1.0" objectTypeId="100" lastBendPointIndex="1">
+                        lineWidth="1.0" objectTypeId="100" lastBendPointIndex="0">
                         <ZOrdering>
                             <AttRef creationSerialRef="15"/>
                         </ZOrdering>
                         <LineColour red="0" green="0" blue="0" alpha="255"/>
                         <srcTerminus gap="3.0" endDecoratorType="ARROW">
-                            <Location x="320.1627292277018" y="184.3727545110691"/>
+                            <Location x="323.1" y="206.55"/>
                             <DecoratorSize width="10.0" height="10.0"/>
                         </srcTerminus>
                         <tgtTerminus gap="3.0" endDecoratorType="ARROW">
-                            <Location x="635.4313462911067" y="196.78456406004403"/>
+                            <Location x="630.0" y="220.54999999999995"/>
                             <DecoratorSize width="10.0" height="10.0"/>
                         </tgtTerminus>
-                        <BendPoint creationSerial="0" indexPosn="0">
-                            <Position x="486.55" y="160.54999999999998"/>
-                        </BendPoint>
                     </LinkAttribute>
                 </LinkEdge>
-                <LinkEdge linkIdx="8" srcNodeIdx="4" tgtNodeIdx="2">
+                <LinkEdge linkIdx="12" srcNodeIdx="7" tgtNodeIdx="3">
                     <SubModel/>
                     <LinkAttribute creationSerial="11" lineStyle="SOLID"
                         lineWidth="1.0" objectTypeId="100" lastBendPointIndex="0">
@@ -267,18 +264,18 @@ x y w h oval</FigureDefinition>
                         </tgtTerminus>
                     </LinkAttribute>
                 </LinkEdge>
-                <LinkEdge linkIdx="9" srcNodeIdx="3" tgtNodeIdx="7">
+                <LinkEdge linkIdx="13" srcNodeIdx="5" tgtNodeIdx="11">
                     <SubModel/>
                     <LinkAttribute creationSerial="16" lineStyle="SOLID"
                         lineWidth="1.0" objectTypeId="100" lastBendPointIndex="0">
                         <ZOrdering/>
                         <LineColour red="0" green="0" blue="0" alpha="255"/>
                         <srcTerminus gap="3.0" endDecoratorType="ARROW">
-                            <Location x="425.29625925913314" y="340.4209700421617"/>
+                            <Location x="422.29625925913314" y="340.4209700421617"/>
                             <DecoratorSize width="10.0" height="10.0"/>
                         </srcTerminus>
                         <tgtTerminus gap="3.0" endDecoratorType="ARROW">
-                            <Location x="415.2627826039812" y="185.51504402160515"/>
+                            <Location x="410.95200191222824" y="224.9606079133965"/>
                             <DecoratorSize width="10.0" height="10.0"/>
                         </tgtTerminus>
                     </LinkAttribute>
