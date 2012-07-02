@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<epx:canvas xmlns:epx="http://www.pathwayeditor.org/Exchange/1.3"
+<epx:canvas xmlns:epx="http://www.pathwayeditor.org/Exchange/2.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.pathwayeditor.org/Exchange/1.3 http://www.pathwayeditor.org/Exchange/Canvas.xsd"
+    xsi:schemaLocation="http://www.pathwayeditor.org/Exchange/2.0 http://www.pathwayeditor.org/Exchange/Canvas.xsd"
     name="New Map" lastCreationSerial="18">
     <Grid snapToGrid="false" gridOn="false">
         <GridSize width="10.0" height="10.0"/>
@@ -39,6 +39,7 @@
                             <SubModel/>
                             <LabelAttribute creationSerial="12"
                                 lineStyle="SOLID" lineWidth="1.0">
+                                <ZOrdering/>
                                 <Location x="188.05000000000004" y="192.92573242187507"/>
                                 <Size width="39.0" height="17.24853515625"/>
                                 <LineColour red="0" green="0" blue="0" alpha="0"/>
@@ -54,6 +55,9 @@
                     </SubModel>
                     <ShapeAttribute creationSerial="1" objectTypeId="1"
                         lineWidth="1.0" lineStyle="SOLID">
+                        <ZOrdering>
+                            <AttRef creationSerialRef="12"/>
+                        </ZOrdering>
                         <Location x="92.0" y="112.0"/>
                         <Size width="231.1" height="179.1"/>
                         <FillColour red="255" green="255" blue="255" alpha="255"/>
@@ -74,6 +78,7 @@ x y w h oval</FigureDefinition>
                             <SubModel/>
                             <LabelAttribute creationSerial="17"
                                 lineStyle="SOLID" lineWidth="1.0">
+                                <ZOrdering/>
                                 <Location x="740.5499999999997" y="216.92573242187493"/>
                                 <Size width="39.0" height="17.24853515625"/>
                                 <LineColour red="0" green="0" blue="0" alpha="0"/>
@@ -89,6 +94,9 @@ x y w h oval</FigureDefinition>
                     </SubModel>
                     <ShapeAttribute creationSerial="2" objectTypeId="1"
                         lineWidth="1.0" lineStyle="SOLID">
+                        <ZOrdering>
+                            <AttRef creationSerialRef="17"/>
+                        </ZOrdering>
                         <Location x="630.0" y="126.0"/>
                         <Size width="260.1" height="199.1"/>
                         <FillColour red="255" green="255" blue="255" alpha="255"/>
@@ -109,6 +117,7 @@ x y w h oval</FigureDefinition>
                             <SubModel/>
                             <LabelAttribute creationSerial="18"
                                 lineStyle="SOLID" lineWidth="1.0">
+                                <ZOrdering/>
                                 <Location x="410.5499999999992" y="401.4257324218745"/>
                                 <Size width="39.0" height="17.24853515625"/>
                                 <LineColour red="0" green="0" blue="0" alpha="0"/>
@@ -124,6 +133,9 @@ x y w h oval</FigureDefinition>
                     </SubModel>
                     <ShapeAttribute creationSerial="4" objectTypeId="1"
                         lineWidth="1.0" lineStyle="SOLID">
+                        <ZOrdering>
+                            <AttRef creationSerialRef="18"/>
+                        </ZOrdering>
                         <Location x="346.0" y="339.0"/>
                         <Size width="168.1" height="142.1"/>
                         <FillColour red="255" green="255" blue="255" alpha="255"/>
@@ -142,6 +154,7 @@ x y w h oval</FigureDefinition>
                     <SubModel/>
                     <ShapeAttribute creationSerial="10" objectTypeId="1"
                         lineWidth="1.0" lineStyle="SOLID">
+                        <ZOrdering/>
                         <Location x="657.0" y="559.0"/>
                         <Size width="40.1" height="40.1"/>
                         <FillColour red="255" green="255" blue="255" alpha="255"/>
@@ -162,6 +175,7 @@ x y w h oval</FigureDefinition>
                             <SubModel/>
                             <LabelAttribute creationSerial="14"
                                 lineStyle="SOLID" lineWidth="1.0">
+                                <ZOrdering/>
                                 <Location x="352.55" y="622.4257324218751"/>
                                 <Size width="39.0" height="17.24853515625"/>
                                 <LineColour red="0" green="0" blue="0" alpha="0"/>
@@ -177,6 +191,9 @@ x y w h oval</FigureDefinition>
                     </SubModel>
                     <ShapeAttribute creationSerial="13" objectTypeId="3"
                         lineWidth="1.0" lineStyle="SOLID">
+                        <ZOrdering>
+                            <AttRef creationSerialRef="14"/>
+                        </ZOrdering>
                         <Location x="158.0" y="491.0"/>
                         <Size width="428.1" height="280.1"/>
                         <FillColour red="255" green="255" blue="255" alpha="255"/>
@@ -199,6 +216,7 @@ x y w h rect</FigureDefinition>
                             <AnchorNodeAttribute creationSerial="15"
                                 objectTypeId="10000" lineWidth="1.0"
                                 lineStyle="SOLID" associatedCurveSegment="0">
+                                <ZOrdering/>
                                 <Location x="398.38049692744335" y="156.02615662726913"/>
                                 <Size width="30.0" height="30.0"/>
                                 <FillColour red="255" green="255"
@@ -216,12 +234,15 @@ x y w h oval</FigureDefinition>
                     </SubModel>
                     <LinkAttribute creationSerial="3" lineStyle="SOLID"
                         lineWidth="1.0" objectTypeId="100" lastBendPointIndex="1">
+                        <ZOrdering>
+                            <AttRef creationSerialRef="15"/>
+                        </ZOrdering>
                         <LineColour red="0" green="0" blue="0" alpha="255"/>
-                        <srcTerminus creationSerial="3" gap="3.0" endDecoratorType="ARROW">
+                        <srcTerminus gap="3.0" endDecoratorType="ARROW">
                             <Location x="320.1627292277018" y="184.3727545110691"/>
                             <DecoratorSize width="10.0" height="10.0"/>
                         </srcTerminus>
-                        <tgtTerminus creationSerial="3" gap="3.0" endDecoratorType="ARROW">
+                        <tgtTerminus gap="3.0" endDecoratorType="ARROW">
                             <Location x="635.4313462911067" y="196.78456406004403"/>
                             <DecoratorSize width="10.0" height="10.0"/>
                         </tgtTerminus>
@@ -234,12 +255,13 @@ x y w h oval</FigureDefinition>
                     <SubModel/>
                     <LinkAttribute creationSerial="11" lineStyle="SOLID"
                         lineWidth="1.0" objectTypeId="100" lastBendPointIndex="0">
+                        <ZOrdering/>
                         <LineColour red="0" green="0" blue="0" alpha="255"/>
-                        <srcTerminus creationSerial="11" gap="3.0" endDecoratorType="ARROW">
+                        <srcTerminus gap="3.0" endDecoratorType="ARROW">
                             <Location x="681.05" y="559.0"/>
                             <DecoratorSize width="10.0" height="10.0"/>
                         </srcTerminus>
-                        <tgtTerminus creationSerial="11" gap="3.0" endDecoratorType="ARROW">
+                        <tgtTerminus gap="3.0" endDecoratorType="ARROW">
                             <Location x="737.0500000000001" y="323.1"/>
                             <DecoratorSize width="10.0" height="10.0"/>
                         </tgtTerminus>
@@ -249,12 +271,13 @@ x y w h oval</FigureDefinition>
                     <SubModel/>
                     <LinkAttribute creationSerial="16" lineStyle="SOLID"
                         lineWidth="1.0" objectTypeId="100" lastBendPointIndex="0">
+                        <ZOrdering/>
                         <LineColour red="0" green="0" blue="0" alpha="255"/>
-                        <srcTerminus creationSerial="16" gap="3.0" endDecoratorType="ARROW">
+                        <srcTerminus gap="3.0" endDecoratorType="ARROW">
                             <Location x="425.29625925913314" y="340.4209700421617"/>
                             <DecoratorSize width="10.0" height="10.0"/>
                         </srcTerminus>
-                        <tgtTerminus creationSerial="16" gap="3.0" endDecoratorType="ARROW">
+                        <tgtTerminus gap="3.0" endDecoratorType="ARROW">
                             <Location x="415.2627826039812" y="185.51504402160515"/>
                             <DecoratorSize width="10.0" height="10.0"/>
                         </tgtTerminus>
@@ -262,6 +285,16 @@ x y w h oval</FigureDefinition>
                 </LinkEdge>
             </SubModel>
             <rootAttribute creationSerial="0" objectTypeId="0">
+                <ZOrdering>
+                    <AttRef creationSerialRef="1"/>
+                    <AttRef creationSerialRef="2"/>
+                    <AttRef creationSerialRef="4"/>
+                    <AttRef creationSerialRef="10"/>
+                    <AttRef creationSerialRef="13"/>
+                    <AttRef creationSerialRef="3"/>
+                    <AttRef creationSerialRef="11"/>
+                    <AttRef creationSerialRef="16"/>
+                </ZOrdering>
                 <Location x="-8.988465674311579E307" y="-8.988465674311579E307"/>
                 <Size width="1.7976931348623157E308" height="1.7976931348623157E308"/>
             </rootAttribute>
