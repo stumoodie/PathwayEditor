@@ -28,7 +28,7 @@ import org.pathwayeditor.businessobjects.notationsubsystem.INotationSyntaxServic
 import org.pathwayeditor.businessobjects.typedefn.IObjectType;
 import org.pathwayeditor.businessobjects.typedefn.IShapeAttributeDefaults;
 import org.pathwayeditor.businessobjects.typedefn.IShapeObjectType;
-import org.pathwayeditor.businessobjects.typedefn.IShapeParentingRules;
+import org.pathwayeditor.businessobjects.typedefn.IObjectTypeParentingRules;
 
 /**
  * @author smoodie
@@ -71,8 +71,8 @@ public class StubShapeDObjectType implements IShapeObjectType {
 	 * @see org.pathwayeditor.businessobjects.typedefn.IShapeObjectType#getParentingRules()
 	 */
 	@Override
-	public IShapeParentingRules getParentingRules() {
-		return new IShapeParentingRules(){
+	public IObjectTypeParentingRules getParentingRules() {
+		return new IObjectTypeParentingRules(){
 
 			@Override
 			public IShapeObjectType getObjectType() {

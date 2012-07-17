@@ -1,7 +1,6 @@
 package org.pathwayeditor.notations.link2link;
 
 import java.math.BigDecimal;
-import java.util.Collection;
 import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -29,8 +28,8 @@ import org.pathwayeditor.figure.geometry.Dimension;
 import org.pathwayeditor.notationsubsystem.toolkit.definition.AnchorNodeObjectType;
 import org.pathwayeditor.notationsubsystem.toolkit.definition.LabelObjectType;
 import org.pathwayeditor.notationsubsystem.toolkit.definition.LinkObjectType;
-import org.pathwayeditor.notationsubsystem.toolkit.definition.LinkParentingRules;
 import org.pathwayeditor.notationsubsystem.toolkit.definition.NumberPropertyDefinition;
+import org.pathwayeditor.notationsubsystem.toolkit.definition.ObjectTypeParentingRules;
 import org.pathwayeditor.notationsubsystem.toolkit.definition.PlainTextPropertyDefinition;
 import org.pathwayeditor.notationsubsystem.toolkit.definition.RootObjectType;
 import org.pathwayeditor.notationsubsystem.toolkit.definition.ShapeObjectType;
@@ -91,7 +90,7 @@ public class Link2LinkSyntaxService implements INotationSyntaxService {
 		((ShapeObjectType)this.getShapeObjectType(SHAPEB)).getParentingRules().addChild(this.getShapeObjectType(SHAPEA));
 		ILinkObjectType linkObjectType = this.getLinkObjectType(LINKA);
 //		IShapeObjectType linkEndShapeOt = this.getLinkEndObjectType(linkObjectType);
-		((LinkParentingRules)linkObjectType.getParentingRules()).addChild(this.anchorNodeOts.get(ANCHOR_SHAPEA));
+		((ObjectTypeParentingRules)linkObjectType.getParentingRules()).addChild(this.anchorNodeOts.get(ANCHOR_SHAPEA));
 	}
 
 	private void defineConnections(){
@@ -235,27 +234,27 @@ public class Link2LinkSyntaxService implements INotationSyntaxService {
 		return this.shapeOts.size();
 	}
 
-	private <T extends IObjectType> T findObjectTypeByName(
-			Collection<? extends T> otSet, String name) {
-		T retVal = null;
-		for (T val : otSet) {
-			if (val.getName().equals(name)) {
-				retVal = val;
-				break;
-			}
-		}
-		return retVal;
-	}
+//	private <T extends IObjectType> T findObjectTypeByName(
+//			Collection<? extends T> otSet, String name) {
+//		T retVal = null;
+//		for (T val : otSet) {
+//			if (val.getName().equals(name)) {
+//				retVal = val;
+//				break;
+//			}
+//		}
+//		return retVal;
+//	}
 
-	@Override
-	public IShapeObjectType findShapeObjectTypeByName(String name) {
-		return findObjectTypeByName(this.shapeOts.values(), name);
-	}
-
-	@Override
-	public ILinkObjectType findLinkObjectTypeByName(String name) {
-		return findObjectTypeByName(this.linkOts.values(), name);
-	}
+//	@Override
+//	public IShapeObjectType findShapeObjectTypeByName(String name) {
+//		return findObjectTypeByName(this.shapeOts.values(), name);
+//	}
+//
+//	@Override
+//	public ILinkObjectType findLinkObjectTypeByName(String name) {
+//		return findObjectTypeByName(this.linkOts.values(), name);
+//	}
 
 //	@Override
 //	public IShapeObjectType getLinkEndObjectType(ILinkObjectType linkOt) {
@@ -400,5 +399,10 @@ public class Link2LinkSyntaxService implements INotationSyntaxService {
 	@Override
 	public boolean containsAnchorNodeObjectType(int uniqueId) {
 		return this.anchorNodeOts.containsKey(uniqueId);
+	}
+
+	@Override
+	public int numLabelObjectTypes() {
+		return this.labelOts.size();
 	}
 }

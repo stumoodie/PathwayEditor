@@ -138,10 +138,12 @@ public abstract class StubShapeAttributeDefaults implements IShapeAttributeDefau
 	}
 	
 	
+	@Override
 	public Colour getFontColour(){
 		return LINE_COLOUR;
 	}
 	
+	@Override
 	public GenericFont getFont(){
 		return DEFAULT_FONT;
 	}

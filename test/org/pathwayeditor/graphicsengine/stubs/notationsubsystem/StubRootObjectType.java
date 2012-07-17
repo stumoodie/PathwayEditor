@@ -24,7 +24,7 @@ package org.pathwayeditor.graphicsengine.stubs.notationsubsystem;
 
 import org.pathwayeditor.businessobjects.notationsubsystem.INotationSyntaxService;
 import org.pathwayeditor.businessobjects.typedefn.IObjectType;
-import org.pathwayeditor.businessobjects.typedefn.IRootObjectParentingRules;
+import org.pathwayeditor.businessobjects.typedefn.IObjectTypeParentingRules;
 import org.pathwayeditor.businessobjects.typedefn.IRootObjectType;
 
 /**
@@ -48,7 +48,7 @@ public class StubRootObjectType implements IRootObjectType {
 	 * @see org.pathwayeditor.businessobjects.typedefn.IRootObjectType#getParentingRules()
 	 */
 	@Override
-	public IRootObjectParentingRules getParentingRules() {
+	public IObjectTypeParentingRules getParentingRules() {
 		return new RootObjectParentingRules();
 	}
 
@@ -92,7 +92,7 @@ public class StubRootObjectType implements IRootObjectType {
 		return this.getUniqueId() < o.getUniqueId() ? -1 : this.getUniqueId() > o.getUniqueId() ? 1 : 0;
 	}
 
-	private class RootObjectParentingRules implements IRootObjectParentingRules {
+	private class RootObjectParentingRules implements IObjectTypeParentingRules {
 
 		/* (non-Javadoc)
 		 * @see org.pathwayeditor.businessobjects.typedefn.IRootObjectParentingRules#getObjectType()

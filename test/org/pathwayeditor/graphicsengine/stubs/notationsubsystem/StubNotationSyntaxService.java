@@ -22,7 +22,6 @@
  */
 package org.pathwayeditor.graphicsengine.stubs.notationsubsystem;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -202,32 +201,32 @@ public class StubNotationSyntaxService implements INotationSyntaxService {
 		return retVal.iterator();
 	}
 
-	private <T extends IObjectType> T findObjectTypeByName(Collection<? extends T> otSet, String name){
-		T retVal = null;
-		for(T val : otSet){
-			if(val.getName().equals(name)){
-				retVal = val;
-				break;
-			}
-		}
-		return retVal;
-	}
+//	private <T extends IObjectType> T findObjectTypeByName(Collection<? extends T> otSet, String name){
+//		T retVal = null;
+//		for(T val : otSet){
+//			if(val.getName().equals(name)){
+//				retVal = val;
+//				break;
+//			}
+//		}
+//		return retVal;
+//	}
 	
-	/* (non-Javadoc)
-	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotationSyntaxService#findLinkObjectTypeByName(java.lang.String)
-	 */
-	@Override
-	public ILinkObjectType findLinkObjectTypeByName(String name) {
-		return findObjectTypeByName(this.links.values(), name);
-	}
-
-	/* (non-Javadoc)
-	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotationSyntaxService#findShapeObjectTypeByName(java.lang.String)
-	 */
-	@Override
-	public IShapeObjectType findShapeObjectTypeByName(String name) {
-		return findObjectTypeByName(this.shapes.values(), name);
-	}
+//	/* (non-Javadoc)
+//	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotationSyntaxService#findLinkObjectTypeByName(java.lang.String)
+//	 */
+//	@Override
+//	public ILinkObjectType findLinkObjectTypeByName(String name) {
+//		return findObjectTypeByName(this.links.values(), name);
+//	}
+//
+//	/* (non-Javadoc)
+//	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotationSyntaxService#findShapeObjectTypeByName(java.lang.String)
+//	 */
+//	@Override
+//	public IShapeObjectType findShapeObjectTypeByName(String name) {
+//		return findObjectTypeByName(this.shapes.values(), name);
+//	}
 
 	/* (non-Javadoc)
 	 * @see org.pathwayeditor.businessobjects.notationsubsystem.INotationSyntaxService#numLinkObjectTypes()
@@ -291,6 +290,11 @@ public class StubNotationSyntaxService implements INotationSyntaxService {
 	@Override
 	public boolean containsAnchorNodeObjectType(int uniqueId) {
 		return this.anchorNodes.containsKey(uniqueId);
+	}
+
+	@Override
+	public int numLabelObjectTypes() {
+		return this.labelNodes.size();
 	}
 
 }
